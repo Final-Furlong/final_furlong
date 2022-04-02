@@ -1,0 +1,30 @@
+---
+
+### Generic smell configuration
+
+detectors:
+  # You can disable smells completely
+  IrresponsibleModule:
+    enabled: false
+
+### Directory specific configuration
+
+# Note that we only allow configuration on a directory level, not a file level,
+# so all paths have to point to directories.
+# A Dir.glob pattern can be used.
+directories:
+  "app/controllers":
+    NestedIterators:
+      enabled: false
+  "app/helpers**":
+    UtilityFunction:
+      enabled: false
+  "config":
+    UncommunicativeVariableName:
+      enabled: false
+
+### Excluding directories
+
+# Directories and files below will not be scanned at all
+# exclude_paths:
+#   - lib/legacy
