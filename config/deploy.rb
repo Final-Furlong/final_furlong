@@ -10,13 +10,20 @@ set :repo_url, "git@github.com:pendletons/final_furlong.git"
 
 set :branch, ENV.fetch("REVISION", "main")
 
+set :rbenv_type, :user
+set :rbenv_ruby, "3.1.1"
+
 set :deploy_to, "/var/www/rails.finalfurlong"
 
-append :linked_files, "config/database.yml", ".rbenv-vars"
-append :linked_dirs, "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpacker", "public/system", "vendor", "storage",
-       ".bundle"
+append :linked_files, "config/database.yml", ".rbenv-vars", "config/master.key"
+append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpacker", "public/system", \
+       "vendor", "storage", ".bundle", "public/uploads"
+
+after "deploy", "deploy:cleanup"
 
 set :keep_releases, 3
+
+set :passenger_restart_with_touch, true
 
 set :ssh_options, {
   keys: %w[~/.ssh/ff_deploy],

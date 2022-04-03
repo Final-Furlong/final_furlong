@@ -50,8 +50,8 @@ group :development, :test do
   gem "bcrypt_pbkdf" # required for capistrano
   gem "byebug", platform: :mri
   gem "capistrano", "~> 3.17", require: false
-  gem "capistrano3-puma",   require: false
   gem "capistrano-bundler", "~> 2.0", require: false
+  gem "capistrano-passenger", require: false
   gem "capistrano-rails", "~> 1.3", require: false
   gem "capistrano-rbenv", "~> 2.2", require: false
   gem "debug", platforms: %i[mri mingw x64_mingw]
