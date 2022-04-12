@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "i18n/tasks"
 require "i18n-spec"
 

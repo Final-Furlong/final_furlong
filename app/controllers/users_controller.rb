@@ -1,10 +1,8 @@
-# frozen_string_literal: true
-
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy]
 
   def index
-    @users = User.all
+    @users = User.ordered
   end
 
   def show; end
@@ -17,7 +15,10 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      redirect_to users_path, notice: "User was successfully created."
+      respond_to do |format|
+        format.html { redirect_to users_path, notice: "User was successfully created." }
+        format.turbo_stream
+      end
     else
       render :new, status: :unprocessable_entity
     end
@@ -35,7 +36,10 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
-    redirect_to users_path, notice: "User was successfully destroyed."
+    respond_to do |format|
+      format.html { redirect_to users_path, notice: "User was successfully destroyed." }
+      format.turbo_stream
+    end
   end
 
   private

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -10,6 +8,7 @@ gem "rails", "7.0.2.3"
 gem "bootsnap", require: false
 gem "cssbundling-rails"
 gem "dotenv_validator"
+gem "gretel"
 gem "haml"
 gem "jbuilder"
 gem "jsbundling-rails"
@@ -44,8 +43,8 @@ group :development do
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   gem "rack-mini-profiler"
 
-  # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
-  # gem "spring"
+  gem "hotwire-livereload"
+  gem "pry"
   gem "yalphabetize", require: false
 end
 

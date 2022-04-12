@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "rails_helper"
 
 RSpec.describe "Users" do
@@ -23,10 +21,13 @@ RSpec.describe "Users" do
 
     it "can view users" do
       user
+      user2 = create(:user)
 
       visit users_path
-      click_link user.name
+      expect(page).to have_selector "turbo-frame[id='user_#{user.id}']"
+      expect(page).to have_selector "turbo-frame[id='user_#{user2.id}']"
 
+      click_link user.name
       expect(page).to have_selector "h1", text: user.name
     end
 
@@ -36,7 +37,7 @@ RSpec.describe "Users" do
       visit users_path
       expect(page).to have_selector "h1", text: "Users"
 
-      click_on "Edit", match: :first
+      click_on("user-edit-#{user.id}")
       expect(page).to have_selector "h1", text: "Edit user"
 
       fill_in "user[name]", with: "Updated name"
@@ -52,7 +53,7 @@ RSpec.describe "Users" do
       visit users_path
       expect(page).to have_text user.name
 
-      click_on "Delete", match: :first
+      click_on("user-delete-#{user.id}")
       assert_no_text user.name
     end
   end

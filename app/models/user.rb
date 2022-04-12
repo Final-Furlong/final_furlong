@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class User < ApplicationRecord
   enum status: { pending: "pending", active: "active", deleted: "deleted", banned: "banned" }
 
@@ -11,6 +9,10 @@ class User < ApplicationRecord
   validates :discourse_id, presence: true, uniqueness: true, on: :activate
 
   before_validation :set_defaults, on: :create
+
+  broadcasts_to ->(_user) { "users" }, inserts_by: :prepend
+
+  scope :ordered, -> { order(id: :desc) }
 
   private
 

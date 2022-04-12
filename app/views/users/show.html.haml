@@ -1,8 +1,7 @@
-%main.container
-  = link_to sanitize("&larr; Back to users"), users_path
-  .header
-    %h1= @user.name
+- breadcrumb @user
+.header
+  %h1= @user.name
 
-  .username
-    %strong Username:
-    = @user.username
+.username
+  %strong Username:
+  = @user.username

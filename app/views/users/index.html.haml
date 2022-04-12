@@ -1,5 +1,10 @@
+- breadcrumb :users
+= turbo_stream_from "users"
 .header.is-flex.flex-wrap-wrap.is-justify-content-space-between.is-vcentered.columns
   %h1.is-size-1.column Users
   .has-text-right
-    = link_to "New user", new_user_path, class: "button is-primary"
-= render @users
+    = link_to "New user", new_user_path, class: "button is-primary", data: { turbo_frame: dom_id(User.new) }
+= turbo_frame_tag User.new
+
+= turbo_frame_tag "users" do
+  = render @users

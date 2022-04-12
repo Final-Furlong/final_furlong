@@ -1,0 +1,33 @@
+%nav.navbar.is-light{ role: "navigation", aria: { label: "main navigation" } }
+  -# Navbar Brand containing the Heading
+  .navbar-brand
+    = link_to root_path, class: "navbar-item has-background-success" do
+      %h1.has-text-white Final Furlong
+    -# Burger icons for responsive navbar
+    %a.navbar-burger{ aria: { label: "menu", expanded: "false" }, data: { target: "navbarBasicExample" } }
+      %span{ area: { hidden: "true" } }
+      %span{ area: { hidden: "true" } }
+      %span{ area: { hidden: "true" } }
+  -# Navbar Menu containing a list of items
+  .navbar-menu{ id: "navbarBasicExample" }
+    .navbar-start
+      = link_to "Users", users_path, class: "navbar-item"
+      .navbar-item.has-dropdown.is-hoverable
+        %a.navbar-link More
+        .navbar-dropdown
+          %a.navbar-item About us
+          %a.navbar-item Tutorials
+          %a.navbar-item Practice
+    -# Navbar End containing Sign Up and Sign In Buttons
+    .navbar-end
+      .navbar-item
+        .bd-search
+          %p.control.has-icons-left.mr-2
+            %span.is-flex-grow-1
+              %input.input.is-rounded{ type: "text", placeholder: "Search..." }
+            %span.icon.is-small.is-left
+              %i.fas.fa-search
+        .buttons
+          %a.button.is-primary Log in
+          %a.button.is-primary.is-light
+            %strong Sign up

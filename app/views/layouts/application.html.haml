@@ -8,7 +8,9 @@
     = csp_meta_tag
     = stylesheet_link_tag "application", "data-turbo-track": "reload"
     = javascript_include_tag "application", "data-turbo-track": "reload", defer: true
+    = hotwire_livereload_tags if Rails.env.development?
   %body.has-background-light
+    = render partial: "layouts/nav"
     %main.container
-      %nav.breadcrumb{ aria: { label: "breadcrumbs" } }
-        = yield
+      = breadcrumbs separator: " &rsaquo; ", style: :inline, aria_current: "page"
+      = yield

@@ -3,4 +3,5 @@
   .header
     %h1 New user
 
-  = render "form", user: @user
+  = turbo_frame_tag @user do
+    = render "form", user: @user

@@ -27,8 +27,6 @@ PreCommit:
     enabled: true
   RailsSchemaUpToDate:
     enabled: true
-  Reek:
-    enabled: true
   RuboCop:
     enabled: true
   SlimLint:
