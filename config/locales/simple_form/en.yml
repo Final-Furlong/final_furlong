@@ -11,5 +11,7 @@ en:
         name: Name
     placeholders:
       user:
+        email: Your e-mail
+        login: Username or e-mail
         name: Your name
         username: Username

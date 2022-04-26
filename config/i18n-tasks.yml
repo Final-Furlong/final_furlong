@@ -13,6 +13,7 @@ data:
   read:
     - config/locales/%{locale}.yml
     - config/locales/simple_form.%{locale}.yml
+    - config/locales/**/%{locale}.yml
     ## Default:
     ## More files:
     # - config/locales/**/*.%{locale}.yml
@@ -103,7 +104,7 @@ search:
 # - '{devise,simple_form}.*'
 ignore_missing:
 - 'errors.messages.{accepted,blank,invalid,too_short,too_long}'
-- 'simple_form.*'
+- '{devise,simple_form}.*'
 
 ## Consider these keys used:
 # ignore_unused:
@@ -113,11 +114,14 @@ ignore_missing:
 # - 'simple_form.{placeholders,hints,labels}.*'
 # - 'simple_form.{error_notification,required}.:'
 ignore_unused:
-- 'activerecord.attributes.*'
+- 'activerecord.{attributes,models}.*'
+- 'breadcrumbs.*'
 - '{devise,kaminari,will_paginate,helpers}.*'
 - 'simple_form.{yes,no}'
 - 'simple_form.{placeholders,helpers,hints,labels}.*'
 - 'simple_form.{error_notification,required}.:'
+- 'errors.messages.{already_confirmed,confirmation_period_expired,expired,not_found,not_locked}' # devise
+- 'errors.messages.not_saved.{one,other}' # devise
 
 ## Exclude these keys from the `i18n-tasks eq-base' report:
 # ignore_eq_base:

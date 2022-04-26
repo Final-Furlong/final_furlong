@@ -13,4 +13,5 @@
     = render partial: "layouts/nav"
     %main.container
       = breadcrumbs separator: " &rsaquo; ", style: :inline, aria_current: "page"
+      = render partial: "layouts/flash"
       = yield

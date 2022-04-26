@@ -20,8 +20,10 @@ Bundler/OrderedGems:
 Layout/LineLength:
   Max: 120
   Exclude:
-    - 'config/initializers/simple_form_bulma.rb'
+    - 'config/initializers/**/*.rb'
     - 'config/routes.rb'
+    - 'db/migrate/**/*.rb'
+    - 'Gemfile'
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
   EnforcedStyle: space
@@ -30,6 +32,9 @@ Lint/InterpolationCheck:
 Lint/SuppressedException:
   Exclude:
     - 'Rakefile'
+Metrics/AbcSize:
+  Exclude:
+    - 'db/migrate/**/*.rb'
 Metrics/BlockLength:
   Exclude:
     - 'config/**/*.rb'
@@ -38,6 +43,9 @@ Metrics/BlockLength:
 Metrics/MethodLength:
   Exclude:
     - 'db/migrate/**/*.rb'
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'app/controllers/users/devise_controller.rb'
 Style/Documentation:
   Enabled: false
 Style/FrozenStringLiteralComment:

@@ -1,9 +1,20 @@
 crumb :root do
-  link "Home", root_path
+  link t("breadcrumbs.home"), root_path
 end
 
 crumb :users do
-  link "Users", users_path
+  link t("breadcrumbs.users"), users_path
+end
+
+crumb :new_user do
+  link t("breadcrumbs.new_user")
+  parent :users
+end
+
+crumb :edit_user do |user|
+  link user.name, user_path(user)
+  link t("breadcrumbs.edit")
+  parent :users
 end
 
 crumb :user do |user|

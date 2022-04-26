@@ -1,8 +1,4 @@
-%main.container
-  = link_to sanitize("&larr; Back to user"), user_path(@user)
+- breadcrumb :edit_user, @user
 
-  .header
-    %h1 Edit user
-
-  = turbo_frame_tag @user do
-    = render "form", user: @user
+= turbo_frame_tag @user do
+  = render "form", user: @user

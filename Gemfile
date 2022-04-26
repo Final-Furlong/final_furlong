@@ -7,7 +7,14 @@ gem "rails", "7.0.2.3"
 
 gem "bootsnap", require: false
 gem "cssbundling-rails"
+
+gem "devise", github: "ghiculescu/devise", branch: "error-code-422" # https://github.com/heartcombo/devise/pull/5340 not yet merged
+gem "devise-i18n"
+gem "responders", github: "heartcombo/responders" # https://github.com/heartcombo/responders/pull/223 not yet released
+
+gem "danger"
 gem "dotenv_validator"
+gem "friendly_id"
 gem "gretel"
 gem "haml"
 gem "jbuilder"
@@ -43,13 +50,13 @@ group :development do
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   gem "rack-mini-profiler"
 
+  gem "annotate"
   gem "hotwire-livereload"
   gem "pry"
   gem "yalphabetize", require: false
 end
 
 group :development, :test do
-  gem "annotate", github: "dabit/annotate_models", branch: "rails-7"
   gem "bcrypt_pbkdf" # required for capistrano
   gem "better_errors"
   gem "binding_of_caller"
@@ -62,21 +69,28 @@ group :development, :test do
   gem "capistrano-passenger", require: false
   gem "capistrano-rails", "~> 1.3", require: false
   gem "capistrano-rbenv", "~> 2.2", require: false
+  gem "chusaku", require: false
   gem "debug", platforms: %i[mri mingw x64_mingw]
   gem "dotenv-rails"
   gem "ed25519" # required for capistrano
+  gem "factory_bot-awesome_linter"
   gem "factory_bot_rails"
   gem "faker", require: false
   gem "i18n-tasks"
   gem "letter_opener"
   gem "overcommit"
+  gem "pry-rescue"
+  gem "pry-stack_explorer"
   gem "reek"
 end
 
 group :test do
   gem "capybara", ">= 2.15"
+  gem "capybara-screenshot"
+  gem "fuubar"
   gem "i18n-spec"
   gem "rspec"
+  gem "rspec_junit_formatter"
   gem "rspec-rails"
   gem "rubocop", require: false
   gem "rubocop-performance", require: false

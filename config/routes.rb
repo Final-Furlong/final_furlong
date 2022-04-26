@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
+  devise_for :users, path: "", path_names: {
+    sign_up: "join",
+    sign_in: "login",
+    sign_out: "logout",
+    password: "forgot-password",
+    confirmation: "confirm-account",
+    unlock: "unlock"
+  }
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :users
 
@@ -9,6 +18,27 @@ end
 # == Route Map
 #
 #                                   Prefix Verb   URI Pattern                                                                                       Controller#Action
+#                         new_user_session GET    /login(.:format)                                                                                  devise/sessions#new
+#                             user_session POST   /login(.:format)                                                                                  devise/sessions#create
+#                     destroy_user_session DELETE /logout(.:format)                                                                                 devise/sessions#destroy
+#                        new_user_password GET    /forgot-password/new(.:format)                                                                    devise/passwords#new
+#                       edit_user_password GET    /forgot-password/edit(.:format)                                                                   devise/passwords#edit
+#                            user_password PATCH  /forgot-password(.:format)                                                                        devise/passwords#update
+#                                          PUT    /forgot-password(.:format)                                                                        devise/passwords#update
+#                                          POST   /forgot-password(.:format)                                                                        devise/passwords#create
+#                 cancel_user_registration GET    /cancel(.:format)                                                                                 devise/registrations#cancel
+#                    new_user_registration GET    /join(.:format)                                                                                   devise/registrations#new
+#                   edit_user_registration GET    /edit(.:format)                                                                                   devise/registrations#edit
+#                        user_registration PATCH  /                                                                                                 devise/registrations#update
+#                                          PUT    /                                                                                                 devise/registrations#update
+#                                          DELETE /                                                                                                 devise/registrations#destroy
+#                                          POST   /                                                                                                 devise/registrations#create
+#                    new_user_confirmation GET    /confirm-account/new(.:format)                                                                    devise/confirmations#new
+#                        user_confirmation GET    /confirm-account(.:format)                                                                        devise/confirmations#show
+#                                          POST   /confirm-account(.:format)                                                                        devise/confirmations#create
+#                          new_user_unlock GET    /unlock/new(.:format)                                                                             devise/unlocks#new
+#                              user_unlock GET    /unlock(.:format)                                                                                 devise/unlocks#show
+#                                          POST   /unlock(.:format)                                                                                 devise/unlocks#create
 #                                    users GET    /users(.:format)                                                                                  users#index
 #                                          POST   /users(.:format)                                                                                  users#create
 #                                 new_user GET    /users/new(.:format)                                                                              users#new

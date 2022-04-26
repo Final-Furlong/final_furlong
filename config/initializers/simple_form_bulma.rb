@@ -46,7 +46,7 @@ SimpleForm.setup do |config|
     b.use :input, class: "input", wrap_with: { tag: "div", class: "control" }, error_class: "is-danger",
                   valid_class: "is-success"
     b.use :full_error, wrap_with: { tag: "div", class: "help is-danger" }
-    # b.use :hint, wrap_with: { tag: "small", class: "form-text text-muted" }
+    b.use :hint, wrap_with: { tag: "small", class: "form-text text-muted" }
   end
 
   # bulma vertical select_form
@@ -237,20 +237,20 @@ SimpleForm.setup do |config|
   ## inline forms
   ##
   ## inline default_wrapper
-  # config.wrappers :inline_form, tag: "span", error_class: "form-group-invalid", valid_class: "form-group-valid" do |b|
-  # b.use :html5
-  # b.use :placeholder
-  # b.optional :maxlength
-  # b.optional :minlength
-  # b.optional :pattern
-  # b.optional :min_max
-  # b.optional :readonly
-  # b.use :label, class: "sr-only"
+  config.wrappers :inline_form, tag: "span", error_class: "form-group-invalid", valid_class: "form-group-valid" do |b|
+    b.use :html5
+    b.use :placeholder
+    b.optional :maxlength
+    b.optional :minlength
+    b.optional :pattern
+    b.optional :min_max
+    b.optional :readonly
+    b.use :label, class: "sr-only"
 
-  # b.use :input, class: "form-control", error_class: "is-invalid", valid_class: "is-valid"
-  # b.use :error, wrap_with: { tag: "div", class: "invalid-feedback" }
-  # b.optional :hint, wrap_with: { tag: "small", class: "form-text text-muted" }
-  # end
+    b.use :input, class: "form-control", error_class: "is-invalid", valid_class: "is-valid"
+    b.use :error, wrap_with: { tag: "div", class: "invalid-feedback" }
+    b.optional :hint, wrap_with: { tag: "small", class: "form-text text-muted" }
+  end
 
   ## inline input for boolean
   # config.wrappers :inline_boolean, tag: "span", class: "form-check flex-wrap justify-content-start mr-sm-2", error_class: "form-group-invalid", valid_class: "form-group-valid" do |b|

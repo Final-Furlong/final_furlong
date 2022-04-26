@@ -3,5 +3,10 @@
   %h1= @user.name
 
 .username
-  %strong Username:
+  %strong= User.human_attribute_name(:username)
   = @user.username
+
+.email
+  %strong= User.human_attribute_name(:email)
+  = @user.email
+

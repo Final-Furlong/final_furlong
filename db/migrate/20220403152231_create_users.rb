@@ -4,11 +4,12 @@ class CreateUsers < ActiveRecord::Migration[7.0]
 
     create_table :users do |t|
       t.string :username, null: false
-      t.enum :status, enum_type: "user_status", default: "pending", null: false
-      t.string :name, null: false
+      t.enum :status, enum_type: "user_status", default: "pending", null: false,
+                      comment: "pending, active, deleted, banned"
+      t.string :name, null: false, comment: "displayed on profile"
       t.string :email, null: false
       t.boolean :admin, null: false, default: false
-      t.integer :discourse_id
+      t.integer :discourse_id, comment: "integer from Discourse forum"
 
       t.timestamps
     end

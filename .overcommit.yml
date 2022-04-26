@@ -26,6 +26,7 @@ PreCommit:
   RailsBestPractices:
     enabled: true
   RailsSchemaUpToDate:
+    command: ['rails_best_practices', '--config', 'config/rails_best_practices.yml']
     enabled: true
   RuboCop:
     enabled: true
@@ -43,6 +44,4 @@ PrePush:
     enabled: true
   ProtectedBranches:
     branches: ['main', 'staging', 'production']
-    enabled: true
-  RSpec:
     enabled: true

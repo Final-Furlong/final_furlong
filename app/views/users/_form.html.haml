@@ -6,5 +6,8 @@
   = f.input :username, input_html: { autofocus: true }
   = f.input :email
   = f.input :name
-  = link_to "Cancel", users_path, class: "button is-light"
+  - unless user.persisted?
+    = f.input :password
+    = f.input :password_confirmation
+  = link_to t('forms.cancel'), users_path, class: "button is-light"
   = f.submit class: "button is-primary"

@@ -9,9 +9,9 @@
       %span{ area: { hidden: "true" } }
       %span{ area: { hidden: "true" } }
   -# Navbar Menu containing a list of items
-  .navbar-menu{ id: "navbarBasicExample" }
+  .navbar-menu#navbar-basic-example
     .navbar-start
-      = link_to "Users", users_path, class: "navbar-item"
+      = link_to t(".users"), users_path, class: "navbar-item"
       .navbar-item.has-dropdown.is-hoverable
         %a.navbar-link More
         .navbar-dropdown
@@ -24,10 +24,16 @@
         .bd-search
           %p.control.has-icons-left.mr-2
             %span.is-flex-grow-1
-              %input.input.is-rounded{ type: "text", placeholder: "Search..." }
+              %input.input.is-rounded{ type: "text", placeholder: t(".search_placeholder") }
             %span.icon.is-small.is-left
               %i.fas.fa-search
         .buttons
-          %a.button.is-primary Log in
-          %a.button.is-primary.is-light
-            %strong Sign up
+          - if user_signed_in?
+            = link_to edit_user_registration_path, class: "bd-tw-button button" do
+              %span.icon
+                %i.fa-solid.fa-user
+              %span= current_user.username
+            = button_to t(".logout"), destroy_user_session_path, method: :delete, class: "button is-primary"
+          - else
+            = link_to t(".login"), new_user_session_path, class: "button is-primary"
+            = link_to t(".join"), new_user_registration_path, class: "button is-primary is-light has-text-weight-bold"
