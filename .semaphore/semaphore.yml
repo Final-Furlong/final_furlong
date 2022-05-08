@@ -57,18 +57,17 @@ blocks:
           commands:
             - 'bundle exec rake db:setup'
             - 'bundle exec rails db:test:prepare'
-            - '#bundle exec rspec --format RspecJunitFormatter --out report.xml --format documentation'
-            - bundle exec rspec --format progress
+            - bundle exec rspec --format RspecJunitFormatter --out report.xml --format progress --out report.json
       epilogue:
         always:
           commands:
             - artifact push job log/test.log
             - artifact push job screenshots
-            - 'exitcode=$(if [ "$SEMAPHORE_JOB_RESULT" == "passed" ]; then echo 0; else echo 1; fi)'
+            - 'exitcode=$(if [ "$SEMAPHORE_THREAD_RESULT" == "passed" ]; then echo 0; else echo 1; fi)'
             - ./cc-test-reporter after-build --exit-code $exitcode
         on_pass:
           commands:
-            - '#test-results publish report.xml'
+            - test-results publish report.xml
 after_pipeline:
   task:
     jobs:
