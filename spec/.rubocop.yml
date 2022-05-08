@@ -1,0 +1,32 @@
+inherit_from:
+  - '../.rubocop.yml'
+
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+RSpec/BeEq:
+  Enabled: true
+
+RSpec/BeEql:
+  Enabled: true
+
+RSpec/BeNil:
+  Enabled: true
+
+RSpec/DescribedClass:
+  SkipBlocks: true
+
+RSpec/DescribedClassModuleWrapping:
+  Enabled: true
+
+RSpec/EmptyLineAfterExample:
+  AllowConsecutiveOneLiners: true
+
+RSpec/ExcessiveDocstringSpacing:
+  Enabled: true
+
+RSpec/IdenticalEqualityAssertion:
+  Enabled: true
