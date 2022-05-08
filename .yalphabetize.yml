@@ -1,0 +1,13 @@
+allowed_orders:
+  - [development test staging production]
+  - [zero one two three four five six seven eight nine ten]
+
+exclude:
+  - config/cable.yml
+  - config/i18n-tasks.yml
+  - config/locales/en.yml
+  - .rubocop.yml
+  - spec/.rubocop.yml
+  - spec/system/.rubocop.yml
+
+sort_by: AaBb

@@ -10,13 +10,14 @@ gem "rails", "7.0.2.3"
 gem "bootsnap", require: false
 gem "cssbundling-rails"
 gem "dotenv_validator"
+gem "haml"
 gem "jbuilder"
 gem "jsbundling-rails"
 gem "pagy"
 gem "pg", "~> 1.1"
 gem "puma", "~> 5.0"
 gem "redis", "~> 4.0"
-gem "slim-rails"
+gem "simple_form"
 gem "sprockets-rails"
 gem "stimulus-rails"
 gem "turbo-rails"
@@ -45,10 +46,17 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem "yalphabetize", require: false
 end
 
 group :development, :test do
+  gem "annotate", github: "dabit/annotate_models", branch: "rails-7"
   gem "bcrypt_pbkdf" # required for capistrano
+  gem "better_errors"
+  gem "binding_of_caller"
+  gem "brakeman"
+  gem "bullet"
+  gem "bundler-audit"
   gem "byebug", platform: :mri
   gem "capistrano", "~> 3.17", require: false
   gem "capistrano-bundler", "~> 2.0", require: false
@@ -59,12 +67,16 @@ group :development, :test do
   gem "dotenv-rails"
   gem "ed25519" # required for capistrano
   gem "factory_bot_rails"
+  gem "faker", require: false
+  gem "i18n-tasks"
+  gem "letter_opener"
   gem "overcommit"
   gem "reek"
 end
 
 group :test do
   gem "capybara", ">= 2.15"
+  gem "i18n-spec"
   gem "rspec"
   gem "rspec-rails"
   gem "rubocop", require: false

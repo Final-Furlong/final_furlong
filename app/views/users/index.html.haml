@@ -1,0 +1,5 @@
+.header.is-flex.flex-wrap-wrap.is-justify-content-space-between.is-vcentered.columns
+  %h1.is-size-1.column Users
+  .has-text-right
+    = link_to "New user", new_user_path, class: "button is-primary"
+= render @users

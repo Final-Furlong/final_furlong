@@ -43,6 +43,9 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.perform_deliveries = true
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
@@ -74,6 +77,13 @@ Rails.application.configure do
   # config.action_controller.raise_on_missing_callback_actions = true
 
   config.log_level = :debug
-end
 
-Slim::Engine.set_options pretty: true, sort_attrs: false
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.alert = true
+    Bullet.bullet_logger = true
+    Bullet.console = true
+    Bullet.add_footer = true
+    Bullet.skip_html_injection = false
+  end
+end

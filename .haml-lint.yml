@@ -1,0 +1,5 @@
+linters:
+  AltText:
+    enabled: true
+  LineLength:
+    max: 120

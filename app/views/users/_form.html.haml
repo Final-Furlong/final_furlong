@@ -1,0 +1,9 @@
+= simple_form_for user, html: { class: "user form" } do |f|
+  - if user.errors.any?
+    .error-message
+      = user.errors.full_messages.to_sentence.capitalize
+
+  = f.input :username, input_html: { autofocus: true }
+  = f.input :email
+  = f.input :name
+  = f.submit class: "button is-primary"

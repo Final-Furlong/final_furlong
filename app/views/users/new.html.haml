@@ -1,0 +1,6 @@
+%main.container
+  = link_to sanitize("&larr; Back to users"), users_path
+  .header
+    %h1 New user
+
+  = render "form", user: @user

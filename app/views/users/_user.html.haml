@@ -1,0 +1,11 @@
+.user.mb-4.card
+  .card-content.is-flex.is-justify-content-space-between.p-5
+    .title.is-3.is-vcentered.mb-0.has-text-weight-normal
+      = link_to user.name, user_path(user), data: { "test-id" => user.id }
+    .buttons
+      = button_to user_path(user), method: :delete, class: "button is-light is-danger mb-0" do
+        %span.icon.is-small
+          %i{ class: "fa-solid fa-trash-can" }
+      = link_to edit_user_path(user), class: "button is-light" do
+        %span.icon.is-small
+          %i{ class: "fa-solid fa-pen-to-square" }

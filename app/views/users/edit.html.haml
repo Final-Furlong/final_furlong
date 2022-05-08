@@ -1,0 +1,7 @@
+%main.container
+  = link_to sanitize("&larr; Back to user"), user_path(@user)
+
+  .header
+    %h1 Edit user
+
+  = render "form", user: @user

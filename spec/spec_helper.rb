@@ -2,7 +2,12 @@
 
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require "simplecov"
-SimpleCov.start
+SimpleCov.start "rails" do
+  add_filter "spec"
+end
+
+require "capybara/rspec"
+require "faker"
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
