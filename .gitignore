@@ -43,3 +43,5 @@ spec/examples.txt
 /node_modules
 
 /config/credentials/staging.key
+
+.vscode/
