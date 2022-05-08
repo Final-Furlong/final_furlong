@@ -7,11 +7,6 @@ agent:
 auto_cancel:
   running:
     when: branch != 'main'
-global_job_config:
-  epilogue:
-    always:
-      commands:
-        - '[[ -f report.xml ]] && test-results publish report.xml'
 blocks:
   - name: Setup
     task:
@@ -67,7 +62,7 @@ blocks:
             - ./cc-test-reporter after-build --exit-code $exitcode
         on_pass:
           commands:
-            - test-results publish report.xml
+            - '[[ -f report.xml ]] && test-results publish report.xml'
 after_pipeline:
   task:
     jobs:
