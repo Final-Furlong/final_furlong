@@ -5,6 +5,7 @@ require:
   - rubocop-rake
 
 AllCops:
+  DisplayCopNames: true
   Exclude:
     - 'bin/**/*'
     - 'db/**/schema.rb'
@@ -12,31 +13,44 @@ AllCops:
     - 'tmp/**/*'
     - 'vendor/**/*'
     - '.git/**/*'
-  DisplayCopNames: true
   NewCops: disable
   TargetRubyVersion: 3.1
-
 Bundler/OrderedGems:
   Enabled: true
-
 Layout/LineLength:
   Max: 120
-
+  Exclude:
+    - 'config/initializers/**/*.rb'
+    - 'config/routes.rb'
+    - 'db/migrate/**/*.rb'
+    - 'Gemfile'
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
   EnforcedStyle: space
-
+Lint/InterpolationCheck:
+  Enabled: false
 Lint/SuppressedException:
   Exclude:
     - 'Rakefile'
-
+Metrics/AbcSize:
+  Exclude:
+    - 'db/migrate/**/*.rb'
 Metrics/BlockLength:
   Exclude:
     - 'config/**/*.rb'
-
+    - 'db/migrate/**/*.rb'
+    - 'lib/tasks/**/*.rake'
+Metrics/MethodLength:
+  Exclude:
+    - 'db/migrate/**/*.rb'
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'app/controllers/users/devise_controller.rb'
 Style/Documentation:
   Enabled: false
-
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: never
+  AutoCorrect: true
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: double_quotes
