@@ -66,10 +66,10 @@ blocks:
         on_pass:
           commands:
             - test-results publish report.xml
-            - ./cc-test-reporter after-build --exit-code 0
+            - ./cc-test-reporter after-build -t simplecov --exit-code 0
         on_fail:
           commands:
-            - ./cc-test-reporter after-build --exit-code 1
+            - ./cc-test-reporter after-build -t simplecov --exit-code 1
 after_pipeline:
   task:
     jobs:
