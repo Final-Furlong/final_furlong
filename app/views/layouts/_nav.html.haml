@@ -1,0 +1,39 @@
+%nav.navbar.is-light{ role: "navigation", aria: { label: "main navigation" } }
+  -# Navbar Brand containing the Heading
+  .navbar-brand
+    = link_to root_path, class: "navbar-item has-background-success" do
+      %h1.has-text-white Final Furlong
+    -# Burger icons for responsive navbar
+    %a.navbar-burger{ aria: { label: "menu", expanded: "false" }, data: { target: "navbarBasicExample" } }
+      %span{ area: { hidden: "true" } }
+      %span{ area: { hidden: "true" } }
+      %span{ area: { hidden: "true" } }
+  -# Navbar Menu containing a list of items
+  .navbar-menu#navbar-basic-example
+    .navbar-start
+      = link_to t(".users"), users_path, class: "navbar-item"
+      .navbar-item.has-dropdown.is-hoverable
+        %a.navbar-link More
+        .navbar-dropdown
+          %a.navbar-item About us
+          %a.navbar-item Tutorials
+          %a.navbar-item Practice
+    -# Navbar End containing Sign Up and Sign In Buttons
+    .navbar-end
+      .navbar-item
+        .bd-search
+          %p.control.has-icons-left.mr-2
+            %span.is-flex-grow-1
+              %input.input.is-rounded{ type: "text", placeholder: t(".search_placeholder") }
+            %span.icon.is-small.is-left
+              %i.fas.fa-search
+        .buttons
+          - if user_signed_in?
+            = link_to edit_user_registration_path, class: "bd-tw-button button" do
+              %span.icon
+                %i.fa-solid.fa-user
+              %span= current_user.username
+            = button_to t(".logout"), destroy_user_session_path, method: :delete, class: "button is-primary"
+          - else
+            = link_to t(".login"), new_user_session_path, class: "button is-primary"
+            = link_to t(".join"), new_user_registration_path, class: "button is-primary is-light has-text-weight-bold"

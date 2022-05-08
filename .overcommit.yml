@@ -1,0 +1,47 @@
+CommitMsg:
+  CapitalizedSubject:
+    enabled: false
+  EmptyMessage:
+    enabled: false
+  TextWidth:
+    enabled: false
+  TrailingPeriod:
+    enabled: true
+PreCommit:
+  ALL:
+    on_warn: fail
+  AuthorEmail:
+    enabled: true
+  AuthorName:
+    enabled: true
+  BundleAudit:
+    enabled: true
+  BundleCheck:
+    enabled: true
+  I18nTasks:
+    command: ['bundle', 'exec', 'i18n-tasks', 'health']
+    enabled: true
+  MergeConflicts:
+    enabled: true
+  RailsBestPractices:
+    enabled: true
+  RailsSchemaUpToDate:
+    command: ['rails_best_practices', '--config', 'config/rails_best_practices.yml']
+    enabled: true
+  RuboCop:
+    enabled: true
+  SlimLint:
+    enabled: true
+  TrailingWhitespace:
+    enabled: true
+  Yalphabetize:
+    command: ['bundle', 'exec', 'yalphabetize', '-a']
+    enabled: true
+  YamlSyntax:
+    enabled: true
+PrePush:
+  Brakeman:
+    enabled: true
+  ProtectedBranches:
+    branches: ['main', 'staging', 'production']
+    enabled: true

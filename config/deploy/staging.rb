@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 set :branch, "staging"
 set :stage, :staging
 set :rails_env, :staging

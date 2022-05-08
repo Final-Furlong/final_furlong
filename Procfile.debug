@@ -1,0 +1,3 @@
+web: rescue bin/rails server -p 3000
+js: yarn start --watch
+css: yarn build:css --watch
