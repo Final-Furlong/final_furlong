@@ -55,7 +55,7 @@ blocks:
       epilogue:
         always:
           commands:
-            - artifact push job logs/test.log
+            - artifact push job log/test.log
             - artifact push job screenshots
         on_pass:
           commands:
