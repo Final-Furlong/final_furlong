@@ -1,25 +1,72 @@
 version: v1.0
-name: Final Furlong
+name: Test Final Furlong
 agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu2004
+auto_cancel:
+  running:
+    when: branch != 'main'
 blocks:
-  - name: Test
+  - name: Setup
     task:
+      jobs:
+        - name: bundle
+          commands:
+            - sem-version ruby 3.1.1
+            - checkout -- use-cache
+            - cache restore
+            - bundle install --deployment -j 4 --path vendor/bundle
+            - cache store
+  - name: Code checks
+    task:
+      jobs:
+        - name: check style + security
+          commands:
+            - sem-version ruby 3.1.1
+            - checkout --cache
+            - cache restore
+            - bundle install --deployment --path vendor/bundle
+            - bundle exec danger
+            - bundle exec rubocop
+            - bundle exec brakeman
+  - name: RSpec
+    task:
+      prologue:
+        commands:
+          - checkout --cache
+          - sem-service start postgres 13
+          - sem-version ruby 3.1.1
+          - cache restore
+          - 'curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter'
+          - chmod +x ./cc-test-reporter
+          - bundle install --deployment --path vendor/bundle
+          - cache store
+          - ./cc-test-reporter before-build
       env_vars:
         - name: DATABASE_URL
-          value: 'postgresql://postgres:@0.0.0.0:5432/myapp_test'
+          value: 'postgresql://postgres:@0.0.0.0:5432/finalfurlong_test'
         - name: RAILS_ENV
           value: test
       jobs:
         - name: Test
           commands:
-            - checkout
-            - sem-service start postgres 11
-            - sem-version ruby 3.1.1
-            - cache restore
-            - bundle install --deployment --path vendor/bundle
-            - cache store
             - 'bundle exec rake db:setup'
-            - bundle exec rspec
+            - 'bundle exec rails db:test:prepare'
+            - bundle exec rspec --format RspecJunitFormatter --out report.xml --format progress --out report.json
+      epilogue:
+        always:
+          commands:
+            - artifact push job log/test.log
+            - artifact push job screenshots
+            - 'exitcode=$(if [ "$SEMAPHORE_THREAD_RESULT" == "passed" ]; then echo 0; else echo 1; fi)'
+            - ./cc-test-reporter after-build --exit-code $exitcode
+        on_pass:
+          commands:
+            - '[[ -f report.xml ]] && test-results publish report.xml'
+after_pipeline:
+  task:
+    jobs:
+      - name: Publish Results
+        commands:
+          - test-results gen-pipeline-report

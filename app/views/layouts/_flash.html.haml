@@ -1,0 +1,14 @@
+.flash-messages
+  .col-sm-12
+    - flash.each do |name, messages|
+      - case messages.class.name.to_s
+      - when "String"
+        %div{ class: "notification is-#{name == 'notice' ? 'success' : 'danger'}" }
+          %button.delete{ "aria-hidden" => "true", "data-dismiss" => "alert", type: "button" }
+          = content_tag :span, messages.html_safe, id: "flash_#{name}"
+      - when "Array"
+        - messages.compact.each do |msg|
+          %div{ class: "notification is-#{name == 'notice' ? 'success' : 'danger'}" }
+            %button.delete{ "aria-hidden" => "true", "data-dismiss" => "alert", type: "button" }
+            = content_tag :span, msg.html_safe, id: "flash_#{name}"
+- flash.clear

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
@@ -43,6 +41,10 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
@@ -62,7 +64,7 @@ Rails.application.configure do
   config.assets.quiet = true
 
   # Raises error for missing translations.
-  # config.i18n.raise_on_missing_translations = true
+  config.i18n.raise_on_missing_translations = true
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
@@ -73,7 +75,16 @@ Rails.application.configure do
   # Raise error when a before_action's only/except options reference missing actions
   # config.action_controller.raise_on_missing_callback_actions = true
 
-  config.log_level = :debug
-end
+  config.hotwire_livereload.listen_paths << Rails.root.join("app/assets/builds")
 
-Slim::Engine.set_options pretty: true, sort_attrs: false
+  config.log_level = :debug
+
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.alert = true
+    Bullet.bullet_logger = true
+    Bullet.console = true
+    Bullet.add_footer = true
+    Bullet.skip_html_injection = false
+  end
+end
