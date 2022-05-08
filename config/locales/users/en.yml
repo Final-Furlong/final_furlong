@@ -1,0 +1,12 @@
+---
+en:
+  users:
+    create:
+      success: User was successfully created.
+    index:
+      new_user: New user
+      title: Users
+    new:
+      title: New user
+    update:
+      success: User was successfully updated.
