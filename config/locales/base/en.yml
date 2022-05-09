@@ -1,0 +1,19 @@
+---
+en:
+  breadcrumbs:
+    edit: Edit
+    home: Home
+    new_user: New user
+    users: Users
+  forms:
+    cancel: Cancel
+  layouts:
+    nav:
+      join: Join
+      login: Login
+      logout: Log out
+      search_placeholder: Search...
+      users: Users
+  pages:
+    home:
+      hello: Hi!
