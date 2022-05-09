@@ -103,5 +103,7 @@ group :test do
   gem "selenium-webdriver"
   gem "shoulda-matchers"
   gem "simplecov", require: false
+  gem "simplecov-lcov", require: false
+  gem "undercover", require: false
   gem "webdrivers"
 end
