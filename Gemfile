@@ -13,6 +13,9 @@ gem "devise-i18n"
 gem "responders", github: "heartcombo/responders" # https://github.com/heartcombo/responders/pull/223 not yet released
 
 gem "danger"
+gem "danger-missed_localizable_strings"
+gem "danger-rails_best_practices"
+gem "danger-simplecov_json"
 gem "dotenv_validator"
 gem "friendly_id"
 gem "gretel"
