@@ -30,6 +30,8 @@ blocks:
             - bundle exec danger
             - bundle exec rubocop
             - bundle exec brakeman
+      secrets:
+        - name: Danger
   - name: RSpec
     task:
       prologue:
@@ -64,6 +66,8 @@ blocks:
         on_pass:
           commands:
             - '[[ -f report.xml ]] && test-results publish report.xml'
+      secrets:
+        - name: Code Climate
 after_pipeline:
   task:
     jobs:
