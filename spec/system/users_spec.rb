@@ -19,6 +19,11 @@ RSpec.describe "Users", js: true do
       fill_in "user[username]", with: attrs[:username]
       fill_in "user[email]", with: attrs[:email]
       fill_in "user[name]", with: attrs[:name]
+      fill_in "user[password]", with: "abc"
+      fill_in "user[password_confirmation]", with: "abc"
+      click_on "Create user"
+
+      expect(page).to have_text "Password is too short"
       fill_in "user[password]", with: attrs[:password]
       fill_in "user[password_confirmation]", with: attrs[:password]
       click_on "Create user"
@@ -48,11 +53,16 @@ RSpec.describe "Users", js: true do
 
       click_on("user-edit-#{user.id}")
       expect(page).to have_field "user[name]", with: user.name
-      fill_in "user[name]", with: "Updated name"
+      fill_in "user[username]", with: " "
+      click_on "Update user"
+
+      expect(page).to have_text "Username can't be blank"
+      fill_in "user[username]", with: "Updated name"
       click_on "Update user"
 
       expect(page).to have_selector "h1", text: "Users"
-      assert_text "Updated name"
+      visit user_path(user)
+      expect(page).to have_text "Updated name"
     end
 
     it "can destroy users" do

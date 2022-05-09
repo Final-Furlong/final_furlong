@@ -29,10 +29,4 @@ class ApplicationController < ActionController::Base
   def sign_up_keys
     [:username, :email, :name, :password, :password_confirmation, { stable_attributes: [:name] }]
   end
-
-  def current_stable
-    return unless current_user
-
-    current_user.stable
-  end
 end
