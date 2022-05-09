@@ -1,0 +1,6 @@
+- breadcrumb :new_user
+.header
+  %h1= t(".title")
+
+= turbo_frame_tag @user do
+  = render "form", user: @user
