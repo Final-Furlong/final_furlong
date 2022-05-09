@@ -1,0 +1,21 @@
+%h2= t(".sign_up")
+
+= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { data: { turbo: false } }) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :username, required: true, autofocus: true, input_html: { autocomplete: "username" }
+
+    = f.input :name, required: true, input_html: { autocomplete: "name" }
+
+    = f.input :email, required: true, input_html: { autocomplete: "email" }
+
+    = f.input :password, required: true, input_html: { autocomplete: "new-password" },
+      hint: (t("devise.shared.minimum_password_length", count: @minimum_password_length) if @minimum_password_length)
+
+    = f.input :password_confirmation, required: true, input_html: { autocomplete: "new-password" }
+
+  .form-actions
+    = f.button :submit, t(".sign_up")
+
+= render "devise/shared/links"

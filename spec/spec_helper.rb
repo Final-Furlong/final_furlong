@@ -1,8 +1,18 @@
-# frozen_string_literal: true
-
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require "simplecov"
-SimpleCov.start
+require "simplecov-lcov" if ENV.fetch("CI", false)
+SimpleCov.start "rails" do
+  add_filter(%r{^/spec/})
+  enable_coverage(:branch) if ENV.fetch("CI", false)
+end
+if ENV.fetch("CI", false)
+  SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
+  SimpleCov.formatter = SimpleCov::Formatter::LcovFormatter
+  require "undercover"
+end
+
+require "capybara/rspec"
+require "faker"
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

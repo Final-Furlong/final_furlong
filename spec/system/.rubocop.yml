@@ -1,0 +1,14 @@
+inherit_from:
+  - '../.rubocop.yml'
+
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Max: 20
+
+RSpec/MultipleExpectations:
+  Max: 10
