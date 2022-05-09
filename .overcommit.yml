@@ -10,6 +10,8 @@ CommitMsg:
 PreCommit:
   ALL:
     on_warn: fail
+  AnnotateControllers:
+    enabled: true
   AuthorEmail:
     enabled: true
   AuthorName:
