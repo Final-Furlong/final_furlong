@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require_relative "boot"
 
 require "rails"
@@ -22,9 +20,6 @@ Bundler.require(*Rails.groups)
 
 module FinalFurlong
   class Application < Rails::Application
-    config.generators do |g|
-      g.test_framework :rspec
-    end
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
@@ -37,6 +32,8 @@ module FinalFurlong
     # config.eager_load_paths << Rails.root.join("extras")
 
     # Don't generate system test files.
-    config.generators.system_tests = nil
+    config.generators do |g|
+      g.test_framework :rspec
+    end
   end
 end
