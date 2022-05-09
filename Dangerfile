@@ -9,12 +9,14 @@ has_spec_changes = !git.modified_files.grep(/spec/).empty?
 # --------------------------------------------------------------------------------------------------------------------
 # You've made changes to app, but didn't write any tests?
 # --------------------------------------------------------------------------------------------------------------------
-warn("There're app changes, but not tests. That's OK as long as you're refactoring existing code.", sticky: false) if has_app_changes && !has_spec_changes
+if has_app_changes && !has_spec_changes
+  warn("There're app changes, but not tests. That's OK as long as you're refactoring existing code.", sticky: false)
+end
 
 # Don't let testing shortcuts get into master by accident
-(git.modified_files + git.added_files - %w(Dangerfile)).each do |file|
+(git.modified_files + git.added_files - %w[Dangerfile]).each do |file|
   next unless File.file?(file)
-  next unless file =~ /^spec.*\.rb/
+  next unless file.match?(/^spec.*\.rb/)
 
   contents = File.read(file)
   fail("`xit` or `fit` left in tests (#{file})") if contents.match?(/^\s*[xf]it/)
