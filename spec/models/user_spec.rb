@@ -48,6 +48,10 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "associations" do
+    it { is_expected.to have_one :stable }
+  end
+
   describe "#slug_candidates" do
     it "sets slug based on name" do
       user = build(:user, name: "Bob User")
