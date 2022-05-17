@@ -35,7 +35,7 @@ if Rails.env.development?
       "exclude_fixtures" => "false",
       "exclude_factories" => "false",
       "exclude_serializers" => "false",
-      "exclude_scaffolds" => "tru",
+      "exclude_scaffolds" => "true",
       "exclude_controllers" => "true",
       "exclude_helpers" => "true",
       "exclude_sti_subclasses" => "false",
