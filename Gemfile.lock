@@ -501,7 +501,7 @@ GEM
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
-    rugged (1.2.0)
+    rugged (1.0.1)
     sassc (2.4.0)
       ffi (~> 1.9)
     sawyer (0.8.2)

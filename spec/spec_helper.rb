@@ -1,17 +1,14 @@
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require "simplecov"
-ci_mode = ENV.fetch("CI", false)
-if ci_mode
-  require "simplecov-lcov"
-  SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
-  SimpleCov.formatter = SimpleCov::Formatter::LcovFormatter
-end
+require "simplecov-lcov"
+SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
+SimpleCov.formatter = SimpleCov::Formatter::LcovFormatter
 SimpleCov.start "rails" do
   add_filter(%r{^/spec/})
   add_filter(%r{^/test/})
-  enable_coverage(:branch) if ci_mode
+  enable_coverage(:branch)
 end
-require "undercover" if ci_mode
+require "undercover"
 
 require "capybara/rspec"
 require "faker"
@@ -40,7 +37,7 @@ RSpec.configure do |config|
   #     config.default_formatter = "doc"
   #   end
 
-  #   config.profile_examples = 10
+  config.profile_examples = 10
 
   config.order = :random
 
