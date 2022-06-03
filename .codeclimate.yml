@@ -4,7 +4,7 @@ plugins:
   haml-lint:
     enabled: true
 exclude_patterns:
-  - ".git-hooks"
+  - ".git-hooks/"
   - "config/"
   - "db/"
   - "**/node_modules/"
