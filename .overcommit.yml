@@ -38,7 +38,7 @@ PreCommit:
     enabled: true
   Yalphabetize:
     command: ['bundle', 'exec', 'yalphabetize', '-a']
-    enabled: true
+    enabled: false
   YamlSyntax:
     enabled: true
 PrePush:
