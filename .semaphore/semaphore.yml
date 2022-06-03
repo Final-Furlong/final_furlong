@@ -56,9 +56,6 @@ blocks:
             - 'bundle exec rake db:setup'
             - 'bundle exec rails db:test:prepare'
             - bundle exec rspec --format RspecJunitFormatter --out report.xml --format progress --out report.json
-            - git fetch
-            - gem install undercover
-            - undercover --compare origin/main
       epilogue:
         always:
           commands:
