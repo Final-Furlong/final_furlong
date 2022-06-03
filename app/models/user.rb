@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-  include Sluggable
   include Admin::UserAdmin
 
   extend FriendlyId
