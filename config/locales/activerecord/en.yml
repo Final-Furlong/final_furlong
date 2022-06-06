@@ -3,8 +3,25 @@ en:
   activerecord:
     attributes:
       user:
+        admin: Admin
+        confirmation_sent_at: Confirmation sent
+        confirmation_token: Confirmation token
+        confirmed_at: Confirmed
+        created_at: Created
+        current_sign_in_at: Current sign in
+        current_sign_in_ip: Current IP
+        discourse_id: Discourse Use
         email: Email
-        login: Login
+        failed_attempts: Failed attempts
+        last_sign_in_at: Last sign in
+        last_sign_in_ip: Last IP
+        locked_at: Locked
+        name: Name
+        remember_created_at: Remember Me
+        reset_password_sent_at: Reset password
+        sign_in_count: Sign in count
+        slug: Slug
+        status: Status
+        unconfirmed_email: Email (unconfirmed)
+        updated_at: Updated
         username: Username
-    models:
-      user: Member

@@ -36,8 +36,8 @@ PreCommit:
     enabled: true
   TrailingWhitespace:
     enabled: true
-  Yalphabetize:
-    command: ['bundle', 'exec', 'yalphabetize', '-a']
+  Undercover:
+    command: ['bundle', 'exec', 'undercover']
     enabled: true
   YamlSyntax:
     enabled: true
