@@ -62,7 +62,8 @@ blocks:
         always:
           commands:
             - artifact push job log/test.log
-            - artifact push job log/report.json
+            - artifact push job report.json
+            - artifact push job report.xml
             - exitcode=$(if [ "$SEMAPHORE_JOB_RESULT" == "passed" ]; then echo 0; else echo 1; fi)
             - ./cc-test-reporter after-build --exit-code $exitcode
         on_pass:
