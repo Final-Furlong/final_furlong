@@ -4,6 +4,9 @@ class User < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
 
+  USERNAME_LENGTH = 4
+  PASSWORD_LENGTH = 8
+
   has_one :stable, dependent: :destroy
 
   accepts_nested_attributes_for :stable, allow_destroy: true
@@ -19,7 +22,8 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :email, presence: true, uniqueness: { case_sensitive: false }
   validates :status, presence: true, inclusion: { in: statuses }
-  validates :username, presence: true, uniqueness: { case_sensitive: false }
+  validates :username, presence: true, length: { minimum: USERNAME_LENGTH }, uniqueness: { case_sensitive: false }
+  validates :password, presence: true, length: { minimum: PASSWORD_LENGTH }, on: :create
   validates :admin, inclusion: { in: [true, false] }
   validates :discourse_id, presence: true, uniqueness: true, on: :activate
 
