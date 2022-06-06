@@ -6,16 +6,17 @@ ruby "3.1.1"
 gem "rails", "7.0.2.3"
 
 gem "bootsnap", require: false
-gem "cssbundling-rails"
 
 gem "devise", github: "ghiculescu/devise", branch: "error-code-422" # https://github.com/heartcombo/devise/pull/5340 not yet merged
 gem "devise-i18n"
 gem "responders", github: "heartcombo/responders" # https://github.com/heartcombo/responders/pull/223 not yet released
 
+gem "bulma-rails"
 gem "danger"
 gem "danger-missed_localizable_strings"
 gem "danger-rails_best_practices"
 gem "danger-simplecov_json"
+gem "dartsass-rails"
 gem "dotenv_validator"
 gem "friendly_id"
 gem "gretel"
@@ -25,6 +26,7 @@ gem "jsbundling-rails"
 gem "pagy"
 gem "pg", "~> 1.1"
 gem "puma", "~> 5.0"
+gem "rails_admin"
 gem "redis", "~> 4.0"
 gem "simple_form"
 gem "sprockets-rails"
@@ -39,9 +41,6 @@ gem "turbo-rails"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
-
-# Use Sass to process CSS
-# gem "sassc-rails"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"

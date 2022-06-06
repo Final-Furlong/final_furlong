@@ -1,14 +1,19 @@
 class User < ApplicationRecord
+  include Admin::UserAdmin
+
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
 
   has_one :stable, dependent: :destroy
+
+  accepts_nested_attributes_for :stable, allow_destroy: true
 
   # Include default devise modules. Others available are:
   # :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :confirmable, :lockable, :timeoutable, :trackable
+
   enum status: { pending: "pending", active: "active", deleted: "deleted", banned: "banned" }
 
   validates :name, presence: true

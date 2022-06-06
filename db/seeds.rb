@@ -10,3 +10,7 @@ require "factory_bot_rails"
 max_users = 5
 user_count = max_users - User.count
 FactoryBot.create_list(:user, user_count) if user_count.positive?
+if Rails.env.development?
+  FactoryBot.create(:admin, email: "admin@example.com", password: "password",
+                            password_confirmation: "password")
+end
