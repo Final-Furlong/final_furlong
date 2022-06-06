@@ -21,6 +21,7 @@ gem "dotenv_validator"
 gem "friendly_id"
 gem "gretel"
 gem "haml"
+gem "haml-rails"
 gem "jbuilder"
 gem "jsbundling-rails"
 gem "pagy"
@@ -32,6 +33,7 @@ gem "simple_form"
 gem "sprockets-rails"
 gem "stimulus-rails"
 gem "turbo-rails"
+gem "view_component"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -102,6 +104,7 @@ group :test do
   gem "selenium-webdriver"
   gem "shoulda-matchers"
   gem "simplecov", require: false
+  gem "simplecov-json", require: false
   gem "simplecov-lcov", require: false
   gem "undercover", require: false
   gem "webdrivers"

@@ -1,12 +1,20 @@
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require "simplecov"
+require "simplecov-json"
 require "simplecov-lcov"
 SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
-SimpleCov.formatter = SimpleCov::Formatter::LcovFormatter
 SimpleCov.start "rails" do
   add_filter(%r{^/spec/})
   add_filter(%r{^/test/})
   enable_coverage(:branch)
+  formatter SimpleCov::Formatter::MultiFormatter.new(
+    [
+      SimpleCov::Formatter::SimpleFormatter,
+      SimpleCov::Formatter::HTMLFormatter,
+      SimpleCov::Formatter::JSONFormatter,
+      SimpleCov::Formatter::LcovFormatter
+    ]
+  )
 end
 require "undercover"
 
@@ -37,7 +45,7 @@ RSpec.configure do |config|
   #     config.default_formatter = "doc"
   #   end
 
-  config.profile_examples = 10
+  config.profile_examples = 10 if ENV.fetch("CI", false)
 
   config.order = :random
 

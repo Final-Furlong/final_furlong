@@ -50,6 +50,8 @@ blocks:
           value: 'postgresql://postgres:@0.0.0.0:5432/finalfurlong_test'
         - name: RAILS_ENV
           value: test
+        - name: CI
+          value: "1"
       jobs:
         - name: Test
           commands:
@@ -60,8 +62,8 @@ blocks:
         always:
           commands:
             - artifact push job log/test.log
-            - artifact push job screenshots
-            - 'exitcode=$(if [ "$SEMAPHORE_THREAD_RESULT" == "passed" ]; then echo 0; else echo 1; fi)'
+            - artifact push job log/report.json
+            - exitcode=$(if [ "$SEMAPHORE_JOB_RESULT" == "passed" ]; then echo 0; else echo 1; fi)
             - ./cc-test-reporter after-build --exit-code $exitcode
         on_pass:
           commands:
