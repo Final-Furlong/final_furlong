@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe "Users", js: true do
   include Devise::Test::IntegrationHelpers
 
