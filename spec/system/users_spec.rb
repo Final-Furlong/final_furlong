@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe "Users", js: true do
   include Devise::Test::IntegrationHelpers
 
@@ -61,7 +59,7 @@ RSpec.describe "Users", js: true do
       click_on "Update user"
 
       expect(page).to have_selector "h1", text: "Users"
-      visit user_path(user)
+      visit user_path(user.reload)
       expect(page).to have_text "Updated name"
     end
 
