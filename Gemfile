@@ -96,6 +96,7 @@ group :development, :test do
   gem "rubocop-rake", require: false
   gem "rubocop-rspec", require: false
   gem "rubocop-sorbet", require: false
+  gem "sorbet-progress"
   gem "unparser", require: false # required for rubocop-sorbet
 end
 

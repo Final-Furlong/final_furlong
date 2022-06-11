@@ -1,3 +1,4 @@
+# typed: false
 set :branch, "production"
 set :stage, :production
 set :rails_env, :production

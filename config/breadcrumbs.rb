@@ -1,3 +1,4 @@
+# typed: false
 crumb :root do
   link t("breadcrumbs.home"), root_path
 end

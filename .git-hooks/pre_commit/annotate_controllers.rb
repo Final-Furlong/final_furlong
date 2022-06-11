@@ -1,3 +1,4 @@
+# typed: ignore
 module Overcommit::Hook::PreCommit # rubocop:disable Style/ClassAndModuleChildren
   # Annotate controllers automatically
   class AnnotateControllers < Base

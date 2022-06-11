@@ -1,3 +1,4 @@
+# typed: false
 class UsersController < AuthenticatedController
   before_action :set_user, only: %i[show edit update destroy]
 
@@ -45,7 +46,7 @@ class UsersController < AuthenticatedController
   def destroy
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_path, notice: "User was successfully destroyed." }
+      format.html { redirect_to users_path, notice: t(".success") }
       format.turbo_stream
     end
   end
