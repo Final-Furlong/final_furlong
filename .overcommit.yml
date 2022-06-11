@@ -20,6 +20,9 @@ PreCommit:
     enabled: true
   BundleCheck:
     enabled: true
+  ForbiddenBranches:
+    branches: ['main', 'staging', 'production']
+    enabled: tru
   I18nTasks:
     command: ['bundle', 'exec', 'i18n-tasks', 'health']
     enabled: true
@@ -32,7 +35,6 @@ PreCommit:
     enabled: true
   RuboCop:
     enabled: true
-    flags: ['-a']
   SlimLint:
     enabled: true
   TrailingWhitespace:
