@@ -32,6 +32,7 @@ PreCommit:
     enabled: true
   RuboCop:
     enabled: true
+    flags: ['-a']
   SlimLint:
     enabled: true
   TrailingWhitespace:
