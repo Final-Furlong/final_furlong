@@ -67,6 +67,7 @@ group :development do
   gem "hotwire-livereload"
   gem "pry"
   gem "sorbet"
+  gem "sorbet-progress", require: false
   gem "tapioca"
   gem "yalphabetize", require: false
 end
@@ -78,6 +79,7 @@ group :development, :test do
   gem "bullet"
   gem "bundler-audit"
   gem "byebug", platform: :mri
+  gem "debase", github: "ruby-debug/debase", tag: "v0.2.5.beta2", require: false
   gem "debug", platforms: %i[mri mingw x64_mingw]
   gem "dotenv-rails"
   gem "ed25519" # required for capistrano
@@ -96,7 +98,8 @@ group :development, :test do
   gem "rubocop-rake", require: false
   gem "rubocop-rspec", require: false
   gem "rubocop-sorbet", require: false
-  gem "sorbet-progress"
+  gem "ruby-debug-ide", require: false
+  gem "solargraph", require: false
   gem "unparser", require: false # required for rubocop-sorbet
 end
 

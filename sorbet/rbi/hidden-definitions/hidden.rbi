@@ -7010,11 +7010,6 @@ class ActionMailbox::InboundEmail::Status
   extend ::T::Helpers
 end
 
-class ActionMailbox::InboundEmail
-  extend ::ActionMailbox::InboundEmail::MessageId::ClassMethods
-  def self.with_attached_raw_email(*args, **arg); end
-end
-
 class ActionMailbox::IncinerationJob
   def perform(inbound_email); end
 end
@@ -97703,8 +97698,6 @@ class User
   def self.devise_modules=(value); end
 
   def self.devise_modules?(); end
-
-  def self.ordered(*args, **arg); end
 end
 
 class Vector

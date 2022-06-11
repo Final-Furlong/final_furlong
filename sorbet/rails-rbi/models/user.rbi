@@ -291,8 +291,26 @@ class User < ApplicationRecord
   extend User::QueryMethodsReturningRelation
   RelationType = T.type_alias { T.any(User::ActiveRecord_Relation, User::ActiveRecord_Associations_CollectionProxy, User::ActiveRecord_AssociationRelation) }
 
-  sig { returns(T::Hash[T.any(String, Symbol), T.any()]) }
-  def self.{:status=>{:pending=>"pending", :active=>"active", :deleted=>"deleted", :banned=>"banned"}}s; end
+  class Status < T::Enum
+    enums do
+      pending = new("pending")
+      active = new("active")
+      deleted = new("deleted")
+      banned = new("banned")
+    end
+  end
+
+  sig { returns(T.nilable(String)) }
+  def status; end
+
+  sig { params(value: T.nilable(T.any(Integer, String, Symbol))).void }
+  def status=(value); end
+
+  sig { returns(T.nilable(User::Status)) }
+  def typed_status; end
+
+  sig { params(value: T.nilable(User::Status)).void }
+  def typed_status=(value); end
 
   sig { params(args: T.untyped).returns(User::ActiveRecord_Relation) }
   def self.ordered(*args); end

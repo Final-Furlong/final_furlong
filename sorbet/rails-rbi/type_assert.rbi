@@ -7,9 +7,6 @@ module ITypeAssert
   Elem = type_member(:out)
 
   abstract!
-
-  sig { abstract.params(val: T.untyped).returns(Elem) }
-  def assert(val); end
 end
 
 module TypeAssertImpl; end
@@ -21,7 +18,4 @@ class TA
   extend TypeAssertImpl
 
   Elem = type_member
-
-  sig { override.params(val: T.untyped).returns(Elem) }
-  def assert(val); end
 end

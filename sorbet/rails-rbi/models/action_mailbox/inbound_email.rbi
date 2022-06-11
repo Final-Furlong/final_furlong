@@ -34,8 +34,27 @@ class ActionMailbox::InboundEmail < ActionMailbox::Record
   extend ActionMailbox::InboundEmail::QueryMethodsReturningRelation
   RelationType = T.type_alias { T.any(ActionMailbox::InboundEmail::ActiveRecord_Relation, ActionMailbox::InboundEmail::ActiveRecord_Associations_CollectionProxy, ActionMailbox::InboundEmail::ActiveRecord_AssociationRelation) }
 
-  sig { returns(T::Hash[T.any(String, Symbol), T.any()]) }
-  def self.{:status=>[:pending, :processing, :delivered, :failed, :bounced]}s; end
+  class Status < T::Struct
+    enums do
+      pending = new('pending')
+      processing = new('processing')
+      delivered = new('delivered')
+      failed = new('failed')
+      bounced = new('bounced')
+    end
+  end
+
+  sig { returns(T.nilable(String)) }
+  def status; end
+
+  sig { params(value: T.nilable(T.any(Integer, String, Symbol))).void }
+  def status=(value); end
+
+  sig { returns(T.nilable(ActionMailbox::InboundEmail::Status)) }
+  def typed_status; end
+
+  sig { params(value: T.nilable(ActionMailbox::InboundEmail::Status)).void }
+  def typed_status=(value); end
 
   sig { params(args: T.untyped).returns(ActionMailbox::InboundEmail::ActiveRecord_Relation) }
   def self.with_attached_raw_email(*args); end

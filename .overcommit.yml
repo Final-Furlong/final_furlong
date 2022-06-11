@@ -41,6 +41,9 @@ PreCommit:
     enabled: true
   SlimLint:
     enabled: true
+  Sorbet:
+    enabled: true
+    command: ['bundle', 'exec', 'srb', 'tc']
   TrailingWhitespace:
     enabled: true
   Undercover:
