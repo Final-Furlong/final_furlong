@@ -60,7 +60,7 @@ blocks:
       epilogue:
         always:
           commands:
-            - artifact job push coverage/.resultset.json
+            - artifact push job coverage/.resultset.json
             - exitcode=$(if [ "$SEMAPHORE_JOB_RESULT" == "passed" ]; then echo 0; else echo 1; fi)
             - ./cc-test-reporter after-build --debug -t simplecov --exit-code $exitcode
         on_pass:
