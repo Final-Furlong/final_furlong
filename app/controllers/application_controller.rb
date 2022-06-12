@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
 
   sig { returns(T::Array[Symbol]) }
   def account_update_keys
-    %i[username name email password_confirmation current_password]
+    %i[username name email password password_confirmation current_password]
   end
 
   sig { returns(T::Array[T.any(T::Hash[T.untyped, T.untyped], Symbol)]) }
