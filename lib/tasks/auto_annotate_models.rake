@@ -1,3 +1,4 @@
+# typed: false
 if Rails.env.development?
   require "annotate"
 

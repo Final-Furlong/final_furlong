@@ -10,6 +10,10 @@ CommitMsg:
 PreCommit:
   ALL:
     on_warn: fail
+    exclude:
+      - 'node_modules/**/*'
+      - 'sorbet/rbi/**/*'
+      - 'vendor/**/*'
   AnnotateControllers:
     enabled: true
   AuthorEmail:
@@ -20,6 +24,9 @@ PreCommit:
     enabled: true
   BundleCheck:
     enabled: true
+  ForbiddenBranches:
+    branches: ['main', 'staging', 'production']
+    enabled: tru
   I18nTasks:
     command: ['bundle', 'exec', 'i18n-tasks', 'health']
     enabled: true
@@ -34,6 +41,9 @@ PreCommit:
     enabled: true
   SlimLint:
     enabled: true
+  Sorbet:
+    enabled: true
+    command: ['bundle', 'exec', 'srb', 'tc']
   TrailingWhitespace:
     enabled: true
   Undercover:
@@ -41,6 +51,9 @@ PreCommit:
     enabled: true
   YamlSyntax:
     enabled: true
+    exclude:
+      - .semaphore/semaphore.yml
+
 PrePush:
   Brakeman:
     enabled: true
