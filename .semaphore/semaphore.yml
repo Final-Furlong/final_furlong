@@ -27,11 +27,8 @@ blocks:
             - checkout --cache
             - cache restore
             - bundle install --deployment --path vendor/bundle
-            - bundle exec danger
             - bundle exec rubocop
             - bundle exec brakeman
-      secrets:
-        - name: Danger
   - name: RSpec
     task:
       prologue:
@@ -63,16 +60,25 @@ blocks:
       epilogue:
         always:
           commands:
-            - artifact push job log/test.log
-            - artifact push job report.json
-            - artifact push job report.xml
-            - exitcode=$(if [ "$SEMAPHORE_JOB_RESULT" == "passed" ]; then echo 0; else echo 1; fi)
-            - ./cc-test-reporter after-build --exit-code $exitcode
+            - exitcode=$(if [ "$SEMAPHORE_THREAD_RESULT" == "passed" ]; then echo 0; else echo 1; fi)
+./cc-test-reporter after-build --exit-code $exitcode
         on_pass:
           commands:
             - '[[ -f report.xml ]] && test-results publish report.xml'
       secrets:
         - name: Code Climate
+  - name: Danger
+    task:
+      jobs:
+        - name: danger
+          commands:
+            - sem-version ruby 3.1.1
+            - checkout --cache
+            - cache restore
+            - bundle install --deployment --path vendor/bundle
+            - bundle exec danger
+      secrets:
+        - name: Danger
 after_pipeline:
   task:
     jobs:

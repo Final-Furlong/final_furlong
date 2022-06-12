@@ -51,6 +51,9 @@ PreCommit:
     enabled: true
   YamlSyntax:
     enabled: true
+    exclude:
+      - .semaphore/semaphore.yml
+
 PrePush:
   Brakeman:
     enabled: true
