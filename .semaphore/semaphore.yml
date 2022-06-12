@@ -51,7 +51,9 @@ blocks:
         - name: RAILS_ENV
           value: test
         - name: CI
-          value: "1"
+          value: '1'
+        - name: CC_TEST_REPORTER_ID
+          value: 90a8a48684b9648d5e696e36afad90790f7293d612d7ec5a6fba436b1f1a63bc
       jobs:
         - name: Test
           commands:
@@ -64,7 +66,7 @@ blocks:
             - artifact push job log/test.log
             - artifact push job report.json
             - artifact push job report.xml
-            - exitcode=$(if [ "$SEMAPHORE_JOB_RESULT" == "passed" ]; then echo 0; else echo 1; fi)
+            - 'exitcode=$(if [ "$SEMAPHORE_JOB_RESULT" == "passed" ]; then echo 0; else echo 1; fi)'
             - ./cc-test-reporter after-build --exit-code $exitcode
         on_pass:
           commands:
