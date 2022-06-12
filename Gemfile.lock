@@ -18,6 +18,14 @@ GIT
       actionpack (>= 5.2)
       railties (>= 5.2)
 
+GIT
+  remote: https://github.com/ruby-debug/debase.git
+  revision: a90f2270351ae0f48370d60809ecd82d6110c85c
+  tag: v0.2.5.beta2
+  specs:
+    debase (0.2.5.beta2)
+      debase-ruby_core_source (>= 0.10.12)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -98,8 +106,10 @@ GEM
       activerecord (>= 3.2, < 8.0)
       rake (>= 10.4, < 14.0)
     ast (2.4.2)
+    backport (1.2.0)
     bcrypt (3.1.17)
     bcrypt_pbkdf (1.1.0)
+    benchmark (0.2.0)
     better_errors (2.9.1)
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
@@ -167,6 +177,8 @@ GEM
       sexp_processor
     coderay (1.1.3)
     colored2 (3.1.2)
+    commander (4.6.0)
+      highline (~> 2.0.0)
     concurrent-ruby (1.1.10)
     cork (0.3.0)
       colored2 (~> 3.1)
@@ -195,6 +207,7 @@ GEM
       danger-plugin-api (~> 1.0)
     dartsass-rails (0.3.0)
       railties (>= 6.0.0)
+    debase-ruby_core_source (0.10.16)
     debug (1.5.0)
       irb (>= 1.3.6)
       reline (>= 0.2.7)
@@ -210,6 +223,7 @@ GEM
       railties (>= 3.2)
     dotenv_validator (1.1.0)
       fast_blank (~> 1.0.0)
+    e2mmap (0.1.0)
     ed25519 (1.3.0)
     erubi (1.10.0)
     erubis (2.7.0)
@@ -305,6 +319,7 @@ GEM
       reline (>= 0.3.0)
     iso (0.4.0)
       i18n
+    jaro_winkler (1.5.4)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -384,9 +399,15 @@ GEM
     pagy (5.10.1)
       activesupport
     parallel (1.22.1)
+    parlour (8.0.0)
+      commander (~> 4.5)
+      parser
+      rainbow (~> 3.0)
+      sorbet-runtime (>= 0.5)
     parser (3.1.1.0)
       ast (~> 2.4.1)
     pg (1.3.5)
+    polyfill (1.9.0)
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -453,6 +474,11 @@ GEM
     rb-fsevent (0.11.1)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    rbi (0.0.14)
+      ast
+      parser (>= 2.6.4.0)
+      sorbet-runtime (>= 0.5.9204)
+      unparser
     rchardet (1.8.0)
     redis (4.6.0)
     reek (6.1.0)
@@ -463,6 +489,8 @@ GEM
     reline (0.3.1)
       io-console (~> 0.5)
     require_all (3.0.0)
+    reverse_markdown (2.1.1)
+      nokogiri
     rexml (3.2.5)
     rspec (3.11.0)
       rspec-core (~> 3.11.0)
@@ -509,12 +537,17 @@ GEM
       rubocop (~> 1.0)
     rubocop-rspec (2.9.0)
       rubocop (~> 1.19)
+    rubocop-sorbet (0.6.8)
+      rubocop (>= 0.90.0)
+    ruby-debug-ide (0.7.3)
+      rake (>= 0.8.1)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
     ruby_parser (3.19.1)
       sexp_processor (~> 4.16)
     rubyzip (2.3.2)
     rugged (1.0.1)
+    safe_type (1.1.1)
     sassc (2.4.0)
       ffi (~> 1.9)
     sawyer (0.8.2)
@@ -541,6 +574,46 @@ GEM
     simplecov-lcov (0.8.0)
     simplecov_json_formatter (0.1.4)
     smart_properties (1.17.0)
+    solargraph (0.45.0)
+      backport (~> 1.2)
+      benchmark
+      bundler (>= 1.17.2)
+      diff-lcs (~> 1.4)
+      e2mmap
+      jaro_winkler (~> 1.5)
+      kramdown (~> 2.3)
+      kramdown-parser-gfm (~> 1.1)
+      parser (~> 3.0)
+      reverse_markdown (>= 1.0.5, < 3)
+      rubocop (>= 0.52)
+      thor (~> 1.0)
+      tilt (~> 2.0)
+      yard (~> 0.9, >= 0.9.24)
+    sorbet (0.5.10091)
+      sorbet-static (= 0.5.10091)
+    sorbet-coerce (0.5.0)
+      polyfill (~> 1.8)
+      safe_type (~> 1.1, >= 1.1.1)
+      sorbet-runtime (>= 0.4.4704)
+    sorbet-progress (0.2.5)
+      sorbet (>= 0.4.4314)
+      sorbet-runtime (>= 0.4.4314)
+    sorbet-rails (0.7.33)
+      method_source (>= 0.9.2)
+      parlour (>= 4.0.1)
+      parser (>= 2.7)
+      sorbet-coerce (>= 0.2.6)
+      sorbet-runtime (>= 0.5.9892)
+    sorbet-runtime (0.5.10091)
+    sorbet-static (0.5.10091-universal-darwin-20)
+    sorbet-static (0.5.10091-x86_64-linux)
+    sorbet-static-and-runtime (0.5.10091)
+      sorbet (= 0.5.10091)
+      sorbet-runtime (= 0.5.10091)
+    spoom (1.1.11)
+      sorbet (>= 0.5.9204)
+      sorbet-runtime (>= 0.5.9204)
+      thor (>= 0.19.2)
     sprockets (4.0.3)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -554,6 +627,15 @@ GEM
     stimulus-rails (1.0.4)
       railties (>= 6.0.0)
     strscan (3.0.1)
+    tapioca (0.8.1)
+      bundler (>= 1.17.3)
+      parallel (>= 1.21.0)
+      pry (>= 0.12.2)
+      rbi (~> 0.0.0, >= 0.0.14)
+      sorbet-static-and-runtime (>= 0.5.9204)
+      spoom (~> 1.1.0, >= 1.1.11)
+      thor (>= 1.2.0)
+      yard-sorbet
     temple (0.8.2)
     terminal-table (3.0.2)
       unicode-display_width (>= 1.1.1, < 3)
@@ -571,6 +653,9 @@ GEM
       rugged (>= 0.27, < 1.3)
     unicode-display_width (2.1.0)
     uniform_notifier (1.16.0)
+    unparser (0.6.5)
+      diff-lcs (~> 1.3)
+      parser (>= 3.1.0)
     view_component (2.56.2)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
@@ -585,12 +670,18 @@ GEM
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
       selenium-webdriver (~> 4.0)
+    webrick (1.7.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     yalphabetize (0.6.2)
+    yard (0.9.28)
+      webrick (~> 1.7.0)
+    yard-sorbet (0.6.1)
+      sorbet-runtime (>= 0.5)
+      yard (>= 0.9)
     zeitwerk (2.5.4)
 
 PLATFORMS
@@ -621,6 +712,7 @@ DEPENDENCIES
   danger-rails_best_practices
   danger-simplecov_json
   dartsass-rails
+  debase!
   debug
   devise!
   devise-i18n
@@ -662,17 +754,26 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rake
   rubocop-rspec
+  rubocop-sorbet
+  ruby-debug-ide
   selenium-webdriver
   shoulda-matchers
   simple_form
   simplecov
   simplecov-json
   simplecov-lcov
+  solargraph
+  sorbet
+  sorbet-progress
+  sorbet-rails
+  sorbet-runtime
   sprockets-rails
   stimulus-rails
+  tapioca
   turbo-rails
   tzinfo-data
   undercover
+  unparser
   view_component
   web-console
   webdrivers

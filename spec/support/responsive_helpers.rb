@@ -1,3 +1,4 @@
+# typed: false
 module ResponsiveHelpers
   def resize_window_to_mobile
     resize_window_by([640, 480])
@@ -25,6 +26,6 @@ module ResponsiveHelpers
   end
 
   def driver_manage?
-    Capybara.current_session.driver.browser.respond_to? "manage"
+    Capybara.current_session.driver.browser.respond_to? :manage
   end
 end
