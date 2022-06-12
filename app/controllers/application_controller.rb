@@ -2,6 +2,7 @@
 class ApplicationController < ActionController::Base
   extend T::Sig
   include Pagy::Backend
+  include Devise::Controllers::Helpers
 
   protect_from_forgery prepend: true
   before_action :configure_permitted_parameters, if: :devise_controller?
@@ -15,7 +16,7 @@ class ApplicationController < ActionController::Base
     I18n.locale = :en
   end
 
-  sig { returns(T::Types::Untyped) }
+  sig { returns(T.nilable(T::Types::Untyped)) }
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: sign_up_keys)
     devise_parameter_sanitizer.permit(:sign_in, keys: sign_in_keys)
