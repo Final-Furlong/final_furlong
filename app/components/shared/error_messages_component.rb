@@ -1,3 +1,4 @@
+# typed: true
 module Shared
   class ErrorMessagesComponent < ViewComponent::Base
     def initialize(object:)
