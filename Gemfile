@@ -66,7 +66,7 @@ group :development do
   gem "chusaku", require: false
   gem "hotwire-livereload"
   gem "pry"
-  gem "sorbet"
+  gem "sorbet", require: false
   gem "sorbet-progress", require: false
   gem "tapioca"
   gem "yalphabetize", require: false
