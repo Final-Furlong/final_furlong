@@ -6948,7 +6948,6 @@ module ActionMailbox::InboundEmail::GeneratedAttributeMethods
 end
 
 module ActionMailbox::InboundEmail::GeneratedRelationMethods
-  def with_attached_raw_email(*arg, **arg1, &arg2); end
 end
 
 module ActionMailbox::InboundEmail::GeneratedRelationMethods
@@ -8562,7 +8561,6 @@ module ActionText::RichText::GeneratedAttributeMethods
 end
 
 module ActionText::RichText::GeneratedRelationMethods
-  def with_attached_embeds(*arg, **arg1, &arg2); end
 end
 
 module ActionText::RichText::GeneratedRelationMethods
@@ -9433,8 +9431,6 @@ module ActionView::Helpers::CaptureHelper
 
   def provide(name, content=T.unsafe(nil), &block); end
 
-  def with_output_buffer(*args, &block); end
-
   def with_output_buffer_with_haml_xss(*args, &block); end
 
   def with_output_buffer_without_haml_xss(buf=T.unsafe(nil)); end
@@ -9689,8 +9685,6 @@ module ActionView::Helpers::FormHelper
 
   def file_field(object_name, method, options=T.unsafe(nil)); end
 
-  def form_for(*args, &block); end
-
   def form_for_with_haml_xss(*args, &block); end
 
   def form_for_without_haml_xss(record, options=T.unsafe(nil), &block); end
@@ -9824,8 +9818,6 @@ module ActionView::Helpers::FormTagHelper
 
   def file_field_tag(name, options=T.unsafe(nil)); end
 
-  def form_tag(*args, &block); end
-
   def form_tag_with_haml(url_for_options=T.unsafe(nil), options=T.unsafe(nil), *parameters_for_url, &proc); end
 
   def form_tag_with_haml_xss(*args, &block); end
@@ -9934,8 +9926,6 @@ module ActionView::Helpers::TagHelper
   def cdata_section(content); end
 
   def class_names(*args); end
-
-  def content_tag(name, *args, &block); end
 
   def content_tag_with_haml(name, *args, &block); end
 
@@ -17410,8 +17400,6 @@ module ActiveRecord::Enum
 
   def _define_typed_enum(*args, **arg, &blk); end
 
-  def enum(arg0, &blk); end
-
   def extract_enum_values(arg0, &blk); end
 
   def gen_typed_enum_values(arg0, &blk); end
@@ -20888,7 +20876,6 @@ module ActiveStorage::Attachment::GeneratedAttributeMethods
 end
 
 module ActiveStorage::Attachment::GeneratedRelationMethods
-  def with_all_variant_records(*arg, **arg1, &arg2); end
 end
 
 module ActiveStorage::Attachment::GeneratedRelationMethods
@@ -21027,9 +21014,6 @@ module ActiveStorage::Blob::GeneratedAttributeMethods
 end
 
 module ActiveStorage::Blob::GeneratedRelationMethods
-  def unattached(*arg, **arg1, &arg2); end
-
-  def with_attached_preview_image(*arg, **arg1, &arg2); end
 end
 
 module ActiveStorage::Blob::GeneratedRelationMethods
@@ -21670,7 +21654,6 @@ module ActiveStorage::VariantRecord::GeneratedAttributeMethods
 end
 
 module ActiveStorage::VariantRecord::GeneratedRelationMethods
-  def with_attached_image(*arg, **arg1, &arg2); end
 end
 
 module ActiveStorage::VariantRecord::GeneratedRelationMethods
@@ -33801,7 +33784,6 @@ class CodeRay::Duo
 end
 
 class CodeRay::Duo
-  def self.[](*arg, **arg1); end
 end
 
 module CodeRay::Encoders
@@ -35839,19 +35821,6 @@ module DeviseController::HelperMethods
   include ::Pagy::BulmaExtra
   include ::PreviewHelper
   include ::DeviseHelper
-  def devise_mapping(*args, **arg, &block); end
-
-  def resource(*args, **arg, &block); end
-
-  def resource_class(*args, **arg, &block); end
-
-  def resource_name(*args, **arg, &block); end
-
-  def resource_params(*args, **arg, &block); end
-
-  def scope_name(*args, **arg, &block); end
-
-  def signed_in_resource(*args, **arg, &block); end
 end
 
 module DeviseHelper
@@ -38053,12 +38022,6 @@ class FFI::Struct
 
   def self.alignment(); end
 
-  def self.alloc_in(*arg, **arg1); end
-
-  def self.alloc_inout(*arg, **arg1); end
-
-  def self.alloc_out(*arg, **arg1); end
-
   def self.auto_ptr(); end
 
   def self.by_ref(flags=T.unsafe(nil)); end
@@ -38078,12 +38041,6 @@ class FFI::Struct
   def self.layout(*spec); end
 
   def self.members(); end
-
-  def self.new_in(*arg, **arg1); end
-
-  def self.new_inout(*arg, **arg1); end
-
-  def self.new_out(*arg, **arg1); end
 
   def self.offset_of(name); end
 
@@ -57142,23 +57099,18 @@ class Parlour::Debugging::Tree
 end
 
 module Parlour::Mixin::Searchable
-  Child = type_member
 end
 
 class Parlour::RbiGenerator::ClassNamespace
-  Child = type_member
 end
 
 class Parlour::RbiGenerator::EnumClassNamespace
-  Child = type_member
 end
 
 class Parlour::RbiGenerator::ModuleNamespace
-  Child = type_member
 end
 
 class Parlour::RbiGenerator::Namespace
-  Child = type_member
 end
 
 Parlour::RbiGenerator::Options = Parlour::Options
@@ -57168,7 +57120,6 @@ class Parlour::RbiGenerator::Parameter
 end
 
 class Parlour::RbiGenerator::StructClassNamespace
-  Child = type_member
 end
 
 class Parlour::RbiGenerator::StructProp
@@ -57176,19 +57127,15 @@ class Parlour::RbiGenerator::StructProp
 end
 
 class Parlour::RbsGenerator::ClassNamespace
-  Child = type_member
 end
 
 class Parlour::RbsGenerator::InterfaceNamespace
-  Child = type_member
 end
 
 class Parlour::RbsGenerator::ModuleNamespace
-  Child = type_member
 end
 
 class Parlour::RbsGenerator::Namespace
-  Child = type_member
 end
 
 class Parlour::RbsGenerator::Parameter
@@ -60653,29 +60600,6 @@ class RBI::TStructProp
 end
 
 class RBI::Tree
-  def <<(*args, **arg, &blk); end
-
-  def add_sig_templates!(*args, **arg, &blk); end
-
-  def annotate!(*args, **arg, &blk); end
-
-  def deannotate!(*args, **arg, &blk); end
-
-  def empty?(*args, **arg, &blk); end
-
-  def group_nodes!(*args, **arg, &blk); end
-
-  def index(*args, **arg, &blk); end
-
-  def merge(*args, **arg, &blk); end
-
-  def nest_non_public_methods!(*args, **arg, &blk); end
-
-  def nest_singleton_methods!(*args, **arg, &blk); end
-
-  def nodes(*args, **arg, &blk); end
-
-  def sort_nodes!(*args, **arg, &blk); end
 end
 
 class RBI::TreeBuilder
@@ -68780,7 +68704,6 @@ class Rack::MockResponse
 end
 
 class Rack::MockResponse
-  def self.[](*arg, **arg1); end
 end
 
 module Rack::Multipart
@@ -70390,9 +70313,6 @@ module RailsAdmin::ApplicationController::HelperMethods
   include ::ActionText::ContentHelper
   include ::ActionText::TagHelper
   include ::Hotwire::Livereload::LivereloadTagsHelper
-  def _current_user(*args, **arg, &block); end
-
-  def _get_plugin_name(*args, **arg, &block); end
 end
 
 module RailsAdmin::ApplicationHelper
@@ -93757,7 +93677,6 @@ class Spoom::LSP::Position
 end
 
 module Spoom::LSP::PrintableSymbol
-  def accept_printer(*args, **arg, &blk); end
 end
 
 module Spoom::LSP::PrintableSymbol
@@ -96589,15 +96508,11 @@ module User::GeneratedAttributeMethods
 
   def admin_change_to_be_saved(); end
 
-  def admin_changed?(**options); end
-
   def admin_for_database(); end
 
   def admin_in_database(); end
 
   def admin_previous_change(); end
-
-  def admin_previously_changed?(**options); end
 
   def admin_previously_was(); end
 
@@ -96673,15 +96588,11 @@ module User::GeneratedAttributeMethods
 
   def confirmation_sent_at_change_to_be_saved(); end
 
-  def confirmation_sent_at_changed?(**options); end
-
   def confirmation_sent_at_for_database(); end
 
   def confirmation_sent_at_in_database(); end
 
   def confirmation_sent_at_previous_change(); end
-
-  def confirmation_sent_at_previously_changed?(**options); end
 
   def confirmation_sent_at_previously_was(); end
 
@@ -96705,15 +96616,11 @@ module User::GeneratedAttributeMethods
 
   def confirmation_token_change_to_be_saved(); end
 
-  def confirmation_token_changed?(**options); end
-
   def confirmation_token_for_database(); end
 
   def confirmation_token_in_database(); end
 
   def confirmation_token_previous_change(); end
-
-  def confirmation_token_previously_changed?(**options); end
 
   def confirmation_token_previously_was(); end
 
@@ -96737,15 +96644,11 @@ module User::GeneratedAttributeMethods
 
   def confirmed_at_change_to_be_saved(); end
 
-  def confirmed_at_changed?(**options); end
-
   def confirmed_at_for_database(); end
 
   def confirmed_at_in_database(); end
 
   def confirmed_at_previous_change(); end
-
-  def confirmed_at_previously_changed?(**options); end
 
   def confirmed_at_previously_was(); end
 
@@ -96769,15 +96672,11 @@ module User::GeneratedAttributeMethods
 
   def created_at_change_to_be_saved(); end
 
-  def created_at_changed?(**options); end
-
   def created_at_for_database(); end
 
   def created_at_in_database(); end
 
   def created_at_previous_change(); end
-
-  def created_at_previously_changed?(**options); end
 
   def created_at_previously_was(); end
 
@@ -96801,15 +96700,11 @@ module User::GeneratedAttributeMethods
 
   def current_sign_in_at_change_to_be_saved(); end
 
-  def current_sign_in_at_changed?(**options); end
-
   def current_sign_in_at_for_database(); end
 
   def current_sign_in_at_in_database(); end
 
   def current_sign_in_at_previous_change(); end
-
-  def current_sign_in_at_previously_changed?(**options); end
 
   def current_sign_in_at_previously_was(); end
 
@@ -96833,15 +96728,11 @@ module User::GeneratedAttributeMethods
 
   def current_sign_in_ip_change_to_be_saved(); end
 
-  def current_sign_in_ip_changed?(**options); end
-
   def current_sign_in_ip_for_database(); end
 
   def current_sign_in_ip_in_database(); end
 
   def current_sign_in_ip_previous_change(); end
-
-  def current_sign_in_ip_previously_changed?(**options); end
 
   def current_sign_in_ip_previously_was(); end
 
@@ -96865,15 +96756,11 @@ module User::GeneratedAttributeMethods
 
   def discourse_id_change_to_be_saved(); end
 
-  def discourse_id_changed?(**options); end
-
   def discourse_id_for_database(); end
 
   def discourse_id_in_database(); end
 
   def discourse_id_previous_change(); end
-
-  def discourse_id_previously_changed?(**options); end
 
   def discourse_id_previously_was(); end
 
@@ -96897,15 +96784,11 @@ module User::GeneratedAttributeMethods
 
   def email_change_to_be_saved(); end
 
-  def email_changed?(**options); end
-
   def email_for_database(); end
 
   def email_in_database(); end
 
   def email_previous_change(); end
-
-  def email_previously_changed?(**options); end
 
   def email_previously_was(); end
 
@@ -96929,15 +96812,11 @@ module User::GeneratedAttributeMethods
 
   def encrypted_password_change_to_be_saved(); end
 
-  def encrypted_password_changed?(**options); end
-
   def encrypted_password_for_database(); end
 
   def encrypted_password_in_database(); end
 
   def encrypted_password_previous_change(); end
-
-  def encrypted_password_previously_changed?(**options); end
 
   def encrypted_password_previously_was(); end
 
@@ -96961,15 +96840,11 @@ module User::GeneratedAttributeMethods
 
   def failed_attempts_change_to_be_saved(); end
 
-  def failed_attempts_changed?(**options); end
-
   def failed_attempts_for_database(); end
 
   def failed_attempts_in_database(); end
 
   def failed_attempts_previous_change(); end
-
-  def failed_attempts_previously_changed?(**options); end
 
   def failed_attempts_previously_was(); end
 
@@ -96985,11 +96860,7 @@ module User::GeneratedAttributeMethods
 
   def id_change_to_be_saved(); end
 
-  def id_changed?(**options); end
-
   def id_previous_change(); end
-
-  def id_previously_changed?(**options); end
 
   def id_previously_was(); end
 
@@ -97011,15 +96882,11 @@ module User::GeneratedAttributeMethods
 
   def last_sign_in_at_change_to_be_saved(); end
 
-  def last_sign_in_at_changed?(**options); end
-
   def last_sign_in_at_for_database(); end
 
   def last_sign_in_at_in_database(); end
 
   def last_sign_in_at_previous_change(); end
-
-  def last_sign_in_at_previously_changed?(**options); end
 
   def last_sign_in_at_previously_was(); end
 
@@ -97043,15 +96910,11 @@ module User::GeneratedAttributeMethods
 
   def last_sign_in_ip_change_to_be_saved(); end
 
-  def last_sign_in_ip_changed?(**options); end
-
   def last_sign_in_ip_for_database(); end
 
   def last_sign_in_ip_in_database(); end
 
   def last_sign_in_ip_previous_change(); end
-
-  def last_sign_in_ip_previously_changed?(**options); end
 
   def last_sign_in_ip_previously_was(); end
 
@@ -97075,15 +96938,11 @@ module User::GeneratedAttributeMethods
 
   def locked_at_change_to_be_saved(); end
 
-  def locked_at_changed?(**options); end
-
   def locked_at_for_database(); end
 
   def locked_at_in_database(); end
 
   def locked_at_previous_change(); end
-
-  def locked_at_previously_changed?(**options); end
 
   def locked_at_previously_was(); end
 
@@ -97107,15 +96966,11 @@ module User::GeneratedAttributeMethods
 
   def name_change_to_be_saved(); end
 
-  def name_changed?(**options); end
-
   def name_for_database(); end
 
   def name_in_database(); end
 
   def name_previous_change(); end
-
-  def name_previously_changed?(**options); end
 
   def name_previously_was(); end
 
@@ -97139,15 +96994,11 @@ module User::GeneratedAttributeMethods
 
   def remember_created_at_change_to_be_saved(); end
 
-  def remember_created_at_changed?(**options); end
-
   def remember_created_at_for_database(); end
 
   def remember_created_at_in_database(); end
 
   def remember_created_at_previous_change(); end
-
-  def remember_created_at_previously_changed?(**options); end
 
   def remember_created_at_previously_was(); end
 
@@ -97171,15 +97022,11 @@ module User::GeneratedAttributeMethods
 
   def reset_password_sent_at_change_to_be_saved(); end
 
-  def reset_password_sent_at_changed?(**options); end
-
   def reset_password_sent_at_for_database(); end
 
   def reset_password_sent_at_in_database(); end
 
   def reset_password_sent_at_previous_change(); end
-
-  def reset_password_sent_at_previously_changed?(**options); end
 
   def reset_password_sent_at_previously_was(); end
 
@@ -97203,15 +97050,11 @@ module User::GeneratedAttributeMethods
 
   def reset_password_token_change_to_be_saved(); end
 
-  def reset_password_token_changed?(**options); end
-
   def reset_password_token_for_database(); end
 
   def reset_password_token_in_database(); end
 
   def reset_password_token_previous_change(); end
-
-  def reset_password_token_previously_changed?(**options); end
 
   def reset_password_token_previously_was(); end
 
@@ -97273,107 +97116,55 @@ module User::GeneratedAttributeMethods
 
   def saved_change_to_admin(); end
 
-  def saved_change_to_admin?(**options); end
-
   def saved_change_to_confirmation_sent_at(); end
-
-  def saved_change_to_confirmation_sent_at?(**options); end
 
   def saved_change_to_confirmation_token(); end
 
-  def saved_change_to_confirmation_token?(**options); end
-
   def saved_change_to_confirmed_at(); end
-
-  def saved_change_to_confirmed_at?(**options); end
 
   def saved_change_to_created_at(); end
 
-  def saved_change_to_created_at?(**options); end
-
   def saved_change_to_current_sign_in_at(); end
-
-  def saved_change_to_current_sign_in_at?(**options); end
 
   def saved_change_to_current_sign_in_ip(); end
 
-  def saved_change_to_current_sign_in_ip?(**options); end
-
   def saved_change_to_discourse_id(); end
-
-  def saved_change_to_discourse_id?(**options); end
 
   def saved_change_to_email(); end
 
-  def saved_change_to_email?(**options); end
-
   def saved_change_to_encrypted_password(); end
-
-  def saved_change_to_encrypted_password?(**options); end
 
   def saved_change_to_failed_attempts(); end
 
-  def saved_change_to_failed_attempts?(**options); end
-
   def saved_change_to_id(); end
-
-  def saved_change_to_id?(**options); end
 
   def saved_change_to_last_sign_in_at(); end
 
-  def saved_change_to_last_sign_in_at?(**options); end
-
   def saved_change_to_last_sign_in_ip(); end
-
-  def saved_change_to_last_sign_in_ip?(**options); end
 
   def saved_change_to_locked_at(); end
 
-  def saved_change_to_locked_at?(**options); end
-
   def saved_change_to_name(); end
-
-  def saved_change_to_name?(**options); end
 
   def saved_change_to_remember_created_at(); end
 
-  def saved_change_to_remember_created_at?(**options); end
-
   def saved_change_to_reset_password_sent_at(); end
-
-  def saved_change_to_reset_password_sent_at?(**options); end
 
   def saved_change_to_reset_password_token(); end
 
-  def saved_change_to_reset_password_token?(**options); end
-
   def saved_change_to_sign_in_count(); end
-
-  def saved_change_to_sign_in_count?(**options); end
 
   def saved_change_to_slug(); end
 
-  def saved_change_to_slug?(**options); end
-
   def saved_change_to_status(); end
-
-  def saved_change_to_status?(**options); end
 
   def saved_change_to_unconfirmed_email(); end
 
-  def saved_change_to_unconfirmed_email?(**options); end
-
   def saved_change_to_unlock_token(); end
-
-  def saved_change_to_unlock_token?(**options); end
 
   def saved_change_to_updated_at(); end
 
-  def saved_change_to_updated_at?(**options); end
-
   def saved_change_to_username(); end
-
-  def saved_change_to_username?(**options); end
 
   def sign_in_count(); end
 
@@ -97391,15 +97182,11 @@ module User::GeneratedAttributeMethods
 
   def sign_in_count_change_to_be_saved(); end
 
-  def sign_in_count_changed?(**options); end
-
   def sign_in_count_for_database(); end
 
   def sign_in_count_in_database(); end
 
   def sign_in_count_previous_change(); end
-
-  def sign_in_count_previously_changed?(**options); end
 
   def sign_in_count_previously_was(); end
 
@@ -97423,15 +97210,11 @@ module User::GeneratedAttributeMethods
 
   def slug_change_to_be_saved(); end
 
-  def slug_changed?(**options); end
-
   def slug_for_database(); end
 
   def slug_in_database(); end
 
   def slug_previous_change(); end
-
-  def slug_previously_changed?(**options); end
 
   def slug_previously_was(); end
 
@@ -97455,15 +97238,11 @@ module User::GeneratedAttributeMethods
 
   def status_change_to_be_saved(); end
 
-  def status_changed?(**options); end
-
   def status_for_database(); end
 
   def status_in_database(); end
 
   def status_previous_change(); end
-
-  def status_previously_changed?(**options); end
 
   def status_previously_was(); end
 
@@ -97487,15 +97266,11 @@ module User::GeneratedAttributeMethods
 
   def unconfirmed_email_change_to_be_saved(); end
 
-  def unconfirmed_email_changed?(**options); end
-
   def unconfirmed_email_for_database(); end
 
   def unconfirmed_email_in_database(); end
 
   def unconfirmed_email_previous_change(); end
-
-  def unconfirmed_email_previously_changed?(**options); end
 
   def unconfirmed_email_previously_was(); end
 
@@ -97519,15 +97294,11 @@ module User::GeneratedAttributeMethods
 
   def unlock_token_change_to_be_saved(); end
 
-  def unlock_token_changed?(**options); end
-
   def unlock_token_for_database(); end
 
   def unlock_token_in_database(); end
 
   def unlock_token_previous_change(); end
-
-  def unlock_token_previously_changed?(**options); end
 
   def unlock_token_previously_was(); end
 
@@ -97551,15 +97322,11 @@ module User::GeneratedAttributeMethods
 
   def updated_at_change_to_be_saved(); end
 
-  def updated_at_changed?(**options); end
-
   def updated_at_for_database(); end
 
   def updated_at_in_database(); end
 
   def updated_at_previous_change(); end
-
-  def updated_at_previously_changed?(**options); end
 
   def updated_at_previously_was(); end
 
@@ -97583,73 +97350,15 @@ module User::GeneratedAttributeMethods
 
   def username_change_to_be_saved(); end
 
-  def username_changed?(**options); end
-
   def username_for_database(); end
 
   def username_in_database(); end
 
   def username_previous_change(); end
 
-  def username_previously_changed?(**options); end
-
   def username_previously_was(); end
 
   def username_was(); end
-
-  def username_will_change!(); end
-
-  def will_save_change_to_admin?(**options); end
-
-  def will_save_change_to_confirmation_sent_at?(**options); end
-
-  def will_save_change_to_confirmation_token?(**options); end
-
-  def will_save_change_to_confirmed_at?(**options); end
-
-  def will_save_change_to_created_at?(**options); end
-
-  def will_save_change_to_current_sign_in_at?(**options); end
-
-  def will_save_change_to_current_sign_in_ip?(**options); end
-
-  def will_save_change_to_discourse_id?(**options); end
-
-  def will_save_change_to_email?(**options); end
-
-  def will_save_change_to_encrypted_password?(**options); end
-
-  def will_save_change_to_failed_attempts?(**options); end
-
-  def will_save_change_to_id?(**options); end
-
-  def will_save_change_to_last_sign_in_at?(**options); end
-
-  def will_save_change_to_last_sign_in_ip?(**options); end
-
-  def will_save_change_to_locked_at?(**options); end
-
-  def will_save_change_to_name?(**options); end
-
-  def will_save_change_to_remember_created_at?(**options); end
-
-  def will_save_change_to_reset_password_sent_at?(**options); end
-
-  def will_save_change_to_reset_password_token?(**options); end
-
-  def will_save_change_to_sign_in_count?(**options); end
-
-  def will_save_change_to_slug?(**options); end
-
-  def will_save_change_to_status?(**options); end
-
-  def will_save_change_to_unconfirmed_email?(**options); end
-
-  def will_save_change_to_unlock_token?(**options); end
-
-  def will_save_change_to_updated_at?(**options); end
-
-  def will_save_change_to_username?(**options); end
 end
 
 module User::GeneratedAttributeMethods
@@ -97662,8 +97371,6 @@ module User::GeneratedRelationMethods
   def friendly_id_config(*arg, **arg1, &arg2); end
 
   def name(*arg, **arg1, &arg2); end
-
-  def ordered(*arg, **arg1, &arg2); end
 end
 
 module User::GeneratedRelationMethods
@@ -102782,43 +102489,32 @@ module YARDSorbet
 end
 
 module YARDSorbet::Directives
-  def self.add_directives(*args, **arg, &blk); end
-
-  def self.extract_directives(*args, **arg, &blk); end
 end
 
 class YARDSorbet::Handlers::AbstractDSLHandler
-  def process(*args, **arg, &blk); end
   CLASS_TAG_TEXT = ::T.let(nil, ::T.untyped)
   TAG_TEXT = ::T.let(nil, ::T.untyped)
 end
 
 class YARDSorbet::Handlers::EnumsHandler
-  def process(*args, **arg, &blk); end
 end
 
 class YARDSorbet::Handlers::IncludeHandler
-  def process(*args, **arg, &blk); end
 end
 
 class YARDSorbet::Handlers::MixesInClassMethodsHandler
-  def process(*args, **arg, &blk); end
 end
 
 class YARDSorbet::Handlers::MixesInClassMethodsHandler
-  def self.mixed_in_class_methods(*args, **arg, &blk); end
 end
 
 class YARDSorbet::Handlers::SigHandler
-  def process(*args, **arg, &blk); end
 end
 
 module YARDSorbet::Handlers::StructClassHandler
-  def process(*args, **arg, &blk); end
 end
 
 class YARDSorbet::Handlers::StructPropHandler
-  def process(*args, **arg, &blk); end
 end
 
 module YARDSorbet::NodeUtils
@@ -102826,15 +102522,9 @@ module YARDSorbet::NodeUtils
 end
 
 module YARDSorbet::NodeUtils
-  def self.bfs_traverse(*args, **arg, &blk); end
-
-  def self.get_method_node(*args, **arg, &blk); end
-
-  def self.sibling_node(*args, **arg, &blk); end
 end
 
 module YARDSorbet::SigToYARD
-  def self.convert(*args, **arg, &blk); end
 end
 
 class YARDSorbet::TStructProp
@@ -102854,9 +102544,6 @@ class YARDSorbet::TStructProp
 end
 
 module YARDSorbet::TagUtils
-  def self.find_tag(*args, **arg, &blk); end
-
-  def self.upsert_tag(*args, **arg, &blk); end
 end
 
 module Zeitwerk

@@ -45,16 +45,8 @@ class ActionController::Responder
   def initialize(controller, resources, options = T.unsafe(nil)); end
 
   def controller; end
-  def delete?(*_, &_); end
   def format; end
-  def get?(*_, &_); end
-  def head(*_, &_); end
   def options; end
-  def patch?(*_, &_); end
-  def post?(*_, &_); end
-  def put?(*_, &_); end
-  def redirect_to(*_, &_); end
-  def render(*_, &_); end
   def request; end
   def resource; end
   def resources; end

@@ -449,32 +449,6 @@ class Reline::LineEditor
 end
 module Reline::LineEditor::CompletionState
 end
-class Struct::CompletionJourneyData < Struct
-  def list; end
-  def list=(_); end
-  def pointer; end
-  def pointer=(_); end
-  def postposing; end
-  def postposing=(_); end
-  def preposing; end
-  def preposing=(_); end
-  def self.[](*arg0); end
-  def self.inspect; end
-  def self.keyword_init?; end
-  def self.members; end
-  def self.new(*arg0); end
-end
-class Struct::MenuInfo < Struct
-  def list; end
-  def list=(_); end
-  def self.[](*arg0); end
-  def self.inspect; end
-  def self.keyword_init?; end
-  def self.members; end
-  def self.new(*arg0); end
-  def target; end
-  def target=(_); end
-end
 class Reline::LineEditor::DialogProcScope
   def call; end
   def call_completion_proc_with_checking_args(pre, target, post); end
@@ -590,21 +564,6 @@ class Reline::ANSI
   def self.win?; end
 end
 class Reline::ConfigEncodingConversionError < StandardError
-end
-class Struct::Key < Struct
-  def ==(other); end
-  def char; end
-  def char=(_); end
-  def combined_char; end
-  def combined_char=(_); end
-  def match?(other); end
-  def self.[](*arg0); end
-  def self.inspect; end
-  def self.keyword_init?; end
-  def self.members; end
-  def self.new(*arg0); end
-  def with_meta; end
-  def with_meta=(_); end
 end
 class Reline::CursorPos < Struct
   def self.[](*arg0); end

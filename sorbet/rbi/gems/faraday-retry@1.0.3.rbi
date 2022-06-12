@@ -193,24 +193,6 @@ end
 Faraday::Retry::Middleware::DEFAULT_EXCEPTIONS = T.let(T.unsafe(nil), Array)
 Faraday::Retry::Middleware::IDEMPOTENT_METHODS = T.let(T.unsafe(nil), Array)
 
-# Options contains the configurable parameters for the Retry middleware.
-class Faraday::Retry::Middleware::Options < ::Faraday::Options
-  def backoff_factor; end
-  def exceptions; end
-  def interval; end
-  def interval_randomness; end
-  def max; end
-  def max_interval; end
-  def methods; end
-  def retry_block; end
-  def retry_if; end
-  def retry_statuses; end
-
-  class << self
-    def from(value); end
-  end
-end
-
 Faraday::Retry::Middleware::Options::DEFAULT_CHECK = T.let(T.unsafe(nil), Proc)
 Faraday::Retry::VERSION = T.let(T.unsafe(nil), String)
 Faraday::Timer = Timeout

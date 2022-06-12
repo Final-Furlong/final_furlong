@@ -57,19 +57,6 @@ class ActiveStorage::Attached::One
   # they are all available at the model level.
   sig { returns(T.nilable(ActiveStorage::Attachment)) }
   def attachment; end
-
-  # Deletes the attachment without purging it, leaving its blob in place.
-  sig { void }
-  def detach; end
-
-  # Directly purges the attachment (i.e. destroys the blob and
-  # attachment and deletes the file on the service).
-  sig { void }
-  def purge; end
-
-  # Purges the attachment through the queuing system.
-  sig { void }
-  def purge_later; end
 end
 
 class ActiveStorage::Attached::Many
@@ -113,19 +100,6 @@ class ActiveStorage::Attached::Many
   # All methods called on this proxy object that aren't listed here will automatically be delegated to `attachments`.
   sig { returns(T.nilable(T::Array[ActiveStorage::Attachment])) }
   def attachments; end
-
-  # Deletes associated attachments without purging them, leaving their respective blobs in place.
-  sig { void }
-  def detach; end
-
-  # Directly purges each associated attachment (i.e. destroys the blobs and
-  # attachments and deletes the files on the service).
-  sig { void }
-  def purge; end
-
-  # Purges each associated attachment through the queuing system.
-  sig { void }
-  def purge_later; end
 end
 
 module ActiveStorage::Blob::Representable

@@ -45,14 +45,6 @@ module ActiveStorage::Attached::Model::ClassMethods
   #   has_one_attached :avatar, service: :s3
   # end
   # ```
-  sig do
-    params(
-      name: Symbol,
-      dependent: Symbol,
-      service: T.untyped
-    ).void
-  end
-  def has_one_attached(name, dependent: :purge_later, service: nil); end
 
   # Specifies the relation between multiple attachments and the model.
   #
@@ -91,14 +83,6 @@ module ActiveStorage::Attached::Model::ClassMethods
   #   has_many_attached :photos, service: :s3
   # end
   # ```
-  sig do
-    params(
-      name: Symbol,
-      dependent: Symbol,
-      service: T.untyped
-    ).void
-  end
-  def has_many_attached(name, dependent: :purge_later, service: nil); end
 end
 
 module ActiveStorage::Attached::Model

@@ -55,22 +55,6 @@ module RSpec::Support::WithKeywordsWhenNeeded
 end
 module RSpec::Support::RecursiveConstMethods
 end
-class RSpec::Support::ObjectFormatter
-end
-class RSpec::Support::ObjectFormatter::TimeInspector < RSpec::Support::ObjectFormatter::BaseInspector
-end
-class RSpec::Support::ObjectFormatter::DateTimeInspector < RSpec::Support::ObjectFormatter::BaseInspector
-end
-class RSpec::Support::ObjectFormatter::BigDecimalInspector < RSpec::Support::ObjectFormatter::BaseInspector
-end
-class RSpec::Support::ObjectFormatter::DescribableMatcherInspector < RSpec::Support::ObjectFormatter::BaseInspector
-end
-class RSpec::Support::ObjectFormatter::UninspectableObjectInspector < RSpec::Support::ObjectFormatter::BaseInspector
-end
-class RSpec::Support::ObjectFormatter::DelegatorInspector < RSpec::Support::ObjectFormatter::BaseInspector
-end
-class RSpec::Support::ObjectFormatter::InspectableObjectInspector < RSpec::Support::ObjectFormatter::BaseInspector
-end
 module RSpec::Support::FuzzyMatcher
 end
 class RSpec::Support::HunkGenerator

@@ -879,41 +879,6 @@ class Nokogiri::HTML4::SAX::Parser < Nokogiri::XML::SAX::Parser
   def parse_io(io, encoding = nil); end
   def parse_memory(data, encoding = nil); end
 end
-class Struct::HTMLElementDescription < Struct
-  def attrs_depr; end
-  def attrs_depr=(_); end
-  def attrs_opt; end
-  def attrs_opt=(_); end
-  def attrs_req; end
-  def attrs_req=(_); end
-  def defaultsubelt; end
-  def defaultsubelt=(_); end
-  def depr; end
-  def depr=(_); end
-  def desc; end
-  def desc=(_); end
-  def dtd; end
-  def dtd=(_); end
-  def empty; end
-  def empty=(_); end
-  def endTag; end
-  def endTag=(_); end
-  def isinline; end
-  def isinline=(_); end
-  def name; end
-  def name=(_); end
-  def saveEndTag; end
-  def saveEndTag=(_); end
-  def self.[](*arg0); end
-  def self.inspect; end
-  def self.keyword_init?; end
-  def self.members; end
-  def self.new(*arg0); end
-  def startTag; end
-  def startTag=(_); end
-  def subelts; end
-  def subelts=(_); end
-end
 class Nokogiri::HTML4::Builder < Nokogiri::XML::Builder
   def to_html; end
 end

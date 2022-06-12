@@ -8543,7 +8543,7 @@ Octokit::RATE_LIMITED_ERRORS = T.let(T.unsafe(nil), Array)
 # Class for API Rate Limit info
 #
 # @see https://developer.github.com/v3/#rate-limiting
-class Octokit::RateLimit < ::Struct
+class Octokit::RateLimit < ::Anonymous_Struct_48
   class << self
     # Get rate limit info from HTTP response
     #

@@ -2327,7 +2327,7 @@ class Rails::SourceAnnotationExtractor
   end
 end
 
-class Rails::SourceAnnotationExtractor::Annotation < ::Struct
+class Rails::SourceAnnotationExtractor::Annotation < ::Anonymous_Struct_2
   # Returns a representation of the annotation that looks like this:
   #
   #   [126] [TODO] This algorithm is simple and clearly correct, make it faster.

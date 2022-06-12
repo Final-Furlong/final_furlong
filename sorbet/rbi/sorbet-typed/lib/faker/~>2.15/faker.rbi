@@ -9325,10 +9325,6 @@ module Faker
     sig { params(generator: T.untyped, max_retries: T.untyped).void }
     def initialize(generator, max_retries); end
 
-    # rubocop:disable Lint/MissingSuper
-    sig { params(name: T.untyped, arguments: T.untyped).returns(T.untyped) }
-    def method_missing(name, *arguments); end
-
     sig { params(method_name: T.untyped, include_private: T.untyped).returns(T::Boolean) }
     def respond_to_missing?(method_name, include_private = false); end
 
