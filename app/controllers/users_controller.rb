@@ -1,15 +1,18 @@
-# typed: false
+# typed: true
 class UsersController < AuthenticatedController
   before_action :set_user, only: %i[show edit update destroy]
 
+  sig { returns(User::ActiveRecord_Relation) }
   # @route GET /users (users)
   def index
     @users = User.ordered
   end
 
+  sig { returns(NilClass) }
   # @route GET /users/:id (user)
   def show; end
 
+  sig { returns(User) }
   # @route GET /users/new (new_user)
   def new
     @user = User.new
@@ -29,6 +32,7 @@ class UsersController < AuthenticatedController
     end
   end
 
+  sig { returns(NilClass) }
   # @route GET /users/:id/edit (edit_user)
   def edit; end
 

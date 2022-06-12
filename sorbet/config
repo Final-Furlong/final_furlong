@@ -2,3 +2,5 @@
 .
 --ignore=/vendor/bundle
 --ignore=.git-hooks/
+--ignore=config/
+--ignore=db/

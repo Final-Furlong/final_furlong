@@ -56,6 +56,11 @@ Metrics/BlockLength:
 Metrics/MethodLength:
   Exclude:
     - "db/migrate/**/*.rb"
+Sorbet/FalseSigil:
+  Exclude:
+    - 'config/**/*.rb'
+    - 'db/**/*.rb'
+
 Style/ClassAndModuleChildren:
   Exclude:
     - "app/controllers/users/devise_controller.rb"
