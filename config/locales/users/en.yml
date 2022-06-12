@@ -3,6 +3,8 @@ en:
   users:
     create:
       success: User was successfully created.
+    destroy:
+      success: User was successfully destroyed.
     index:
       new_user: New user
       title: Users
