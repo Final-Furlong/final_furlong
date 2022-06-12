@@ -56,11 +56,11 @@ blocks:
           commands:
             - 'bundle exec rake db:setup'
             - 'bundle exec rails db:test:prepare'
-            - bundle exec rspec --format RspecJunitFormatter --out report.xml --format progress --format json --out coverage/coverage.json
+            - bundle exec rspec --format RspecJunitFormatter --out report.xml --format progress
       epilogue:
         always:
           commands:
-            - artifact push report.json
+            - artifact job push coverage/.resultset.json
             - exitcode=$(if [ "$SEMAPHORE_JOB_RESULT" == "passed" ]; then echo 0; else echo 1; fi)
             - ./cc-test-reporter after-build --debug -t simplecov --exit-code $exitcode
         on_pass:
