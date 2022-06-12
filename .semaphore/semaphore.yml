@@ -60,7 +60,7 @@ blocks:
       epilogue:
         always:
           commands:
-            - exitcode=$(if [ "$SEMAPHORE_THREAD_RESULT" == "passed" ]; then echo 0; else echo 1; fi)
+            - exitcode=$(if [ "$SEMAPHORE_JOB_RESULT" == "passed" ]; then echo 0; else echo 1; fi)
             - ./cc-test-reporter after-build --exit-code $exitcode
         on_pass:
           commands:
