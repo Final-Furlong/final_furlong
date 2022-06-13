@@ -1,3 +1,4 @@
+# typed: false
 RSpec.describe Shared::ErrorMessagesComponent, type: :component do
   subject(:component) { described_class.new(object: user) }
 
