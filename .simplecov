@@ -19,7 +19,7 @@ SimpleCov.start "rails" do
     c.single_report_path = "coverage/lcov.info"
   end
 
-  if ENV['CI']
+  if ENV["CI"]
     SimpleCov.formatter = SimpleCov::Formatter::JSONFormatter
   else
     formatter SimpleCov::Formatter::MultiFormatter.new(
