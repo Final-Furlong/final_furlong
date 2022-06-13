@@ -59,8 +59,8 @@ blocks:
             - bundle exec rails db:setup
             - bundle exec rails db:test:prepare
             - bundle exec rspec --format RspecJunitFormatter --out report.xml --format progress
-            - exitcode=$(if [ "$SEMAPHORE_THREAD_RESULT" == "passed" ]; then echo 0; else echo 1; fi)
-            - ./cc-test-reporter after-build --coverage-input-type simplecov --debug --exit-code $exitcode
+            - RSPEC_EXIT_STATUS=$?
+            - ./cc-test-reporter after-build --coverage-input-type simplecov --debug --exit-code $RSPEC_EXIT_STATUS
       epilogue:
         on_pass:
           commands:
