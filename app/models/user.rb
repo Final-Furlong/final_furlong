@@ -1,3 +1,4 @@
+# typed: false
 class User < ApplicationRecord
   include Admin::UserAdmin
 
@@ -21,7 +22,6 @@ class User < ApplicationRecord
 
   validates :name, presence: true
   validates :email, presence: true, uniqueness: { case_sensitive: false }
-  validates :status, presence: true, inclusion: { in: statuses }
   validates :username, presence: true, length: { minimum: USERNAME_LENGTH }, uniqueness: { case_sensitive: false }
   validates :password, presence: true, length: { minimum: PASSWORD_LENGTH }, on: :create
   validates :admin, inclusion: { in: [true, false] }
