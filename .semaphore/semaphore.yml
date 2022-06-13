@@ -39,7 +39,9 @@ blocks:
           - cache restore
           - 'curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter'
           - chmod +x ./cc-test-reporter
-          - bundle install --deployment --path vendor/bundle
+          - bundle config set --local deployemtn 'true'
+          - bundle config set --local path 'vendor/bundle'
+          - bundle install
           - cache store
           - ./cc-test-reporter before-build
       env_vars:
@@ -54,10 +56,11 @@ blocks:
       jobs:
         - name: Test
           commands:
-            - 'bundle exec rake db:setup'
-            - 'bundle exec rails db:test:prepare'
+            - bundle exec rails db:setup
+            - bundle exec rails db:test:prepare
             - bundle exec rspec --format RspecJunitFormatter --out report.xml --format progress
-            - ./cc-test-reporter format-coverage --output "coverage/codeclimate.json"
+            - exitcode=$(if [ "$SEMAPHORE_JOB_RESULT" == "passed" ]; then echo 0; else echo 1; fi)
+            - ./cc-test-reporter after-build --coverage-input-type simplecov --debug --exit-code $exitcode
       epilogue:
         on_pass:
           commands:
@@ -72,7 +75,9 @@ blocks:
             - sem-version ruby 3.1.1
             - checkout --cache
             - cache restore
-            - bundle install --deployment --path vendor/bundle
+            - bundle config set --local deployemtn 'true'
+            - bundle config set --local path 'vendor/bundle'
+            - bundle install
             - bundle exec danger
       secrets:
         - name: Danger
