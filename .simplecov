@@ -1,5 +1,6 @@
 require "simplecov-json"
 require "simplecov-lcov"
+require "simplecov_json_formatter"
 
 SimpleCov.start "rails" do
   add_filter(%r{^/sorbet/})
@@ -18,12 +19,16 @@ SimpleCov.start "rails" do
     c.single_report_path = "coverage/lcov.info"
   end
 
-  formatter SimpleCov::Formatter::MultiFormatter.new(
-    [
-      SimpleCov::Formatter::SimpleFormatter,
-      SimpleCov::Formatter::HTMLFormatter,
-      SimpleCov::Formatter::JSONFormatter,
-      SimpleCov::Formatter::LcovFormatter
-    ]
-  )
+  if ENV['CI']
+    SimpleCov.formatter = SimpleCov::Formatter::JSONFormatter
+  else
+    formatter SimpleCov::Formatter::MultiFormatter.new(
+      [
+        SimpleCov::Formatter::SimpleFormatter,
+        SimpleCov::Formatter::HTMLFormatter,
+        SimpleCov::Formatter::JSONFormatter,
+        SimpleCov::Formatter::LcovFormatter
+      ]
+    )
+  end
 end
