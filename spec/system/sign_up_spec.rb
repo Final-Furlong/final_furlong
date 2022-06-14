@@ -1,3 +1,4 @@
+# typed: false
 RSpec.describe "Signing Up", js: true do
   include Devise::Test::IntegrationHelpers
 
@@ -19,8 +20,8 @@ RSpec.describe "Signing Up", js: true do
       click_on "Sign up"
 
       expect(page).to have_text "A message with a confirmation link " \
-        "has been sent to your email address. Please follow the link to " \
-        "activate your account."
+                                "has been sent to your email address. " \
+                                "Please follow the link to activate your account."
     end
   end
 

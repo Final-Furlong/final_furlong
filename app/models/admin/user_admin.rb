@@ -1,3 +1,4 @@
+# typed: false
 module Admin
   module UserAdmin
     extend ActiveSupport::Concern

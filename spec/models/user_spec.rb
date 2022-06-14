@@ -1,3 +1,4 @@
+# typed: false
 RSpec.describe User, type: :model do
   describe "callbacks" do
     describe "#before_validation" do
