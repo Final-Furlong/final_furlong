@@ -13,7 +13,7 @@ blocks:
       jobs:
         - name: bundle
           commands:
-            - sem-version ruby 3.1.1
+            - sem-version ruby 3.1.2
             - checkout -- use-cache
             - cache restore
             - bundle install --deployment -j 4 --path vendor/bundle
@@ -23,7 +23,7 @@ blocks:
       jobs:
         - name: check style + security
           commands:
-            - sem-version ruby 3.1.1
+            - sem-version ruby 3.1.2
             - checkout --cache
             - cache restore
             - bundle install --deployment --path vendor/bundle
@@ -35,7 +35,7 @@ blocks:
         commands:
           - checkout --cache
           - sem-service start postgres 13
-          - sem-version ruby 3.1.1
+          - sem-version ruby 3.1.2
           - cache restore
           - bundle config set --local deployemtn 'true'
           - bundle config set --local path 'vendor/bundle'
@@ -68,7 +68,7 @@ blocks:
       jobs:
         - name: danger
           commands:
-            - sem-version ruby 3.1.1
+            - sem-version ruby 3.1.2
             - checkout --cache
             - cache restore
             - bundle config set --local deployemtn 'true'
