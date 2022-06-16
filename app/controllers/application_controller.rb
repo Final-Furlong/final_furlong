@@ -1,4 +1,5 @@
 # typed: true
+
 class ApplicationController < ActionController::Base
   extend T::Sig
   include Pagy::Backend
