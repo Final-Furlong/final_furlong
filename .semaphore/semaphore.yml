@@ -16,7 +16,9 @@ blocks:
             - sem-version ruby 3.1.2
             - checkout -- use-cache
             - cache restore
-            - bundle install --deployment -j 4 --path vendor/bundle
+            - bundle config set --local deployemtn 'true'
+            - bundle config set --local path 'vendor/bundle'
+            - bundle install
             - cache store
   - name: Code checks
     task:
