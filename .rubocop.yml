@@ -1,29 +1,41 @@
 require:
   - rubocop-performance
-  - rubocop-rspec
   - rubocop-rails
   - rubocop-rake
+  - rubocop-rspec
+  - rubocop-sorbet
+
+inherit_gem:
+  rubocop-rails: config/default.yml
+  rubocop-sorbet: config/default.yml
 
 AllCops:
   DisplayCopNames: true
   Exclude:
-    - 'bin/**/*'
-    - 'db/**/schema.rb'
-    - 'node_modules/**/*'
-    - 'tmp/**/*'
-    - 'vendor/**/*'
-    - '.git/**/*'
-  NewCops: disable
+    - "bin/**/*"
+    - "db/**/schema.rb"
+    - "node_modules/**/*"
+    - "tmp/**/*"
+    - "vendor/**/*"
+    - ".git/**/*"
+  NewCops: enable
   TargetRubyVersion: 3.1
+
 Bundler/OrderedGems:
   Enabled: true
 Layout/LineLength:
   Max: 120
   Exclude:
-    - 'config/initializers/**/*.rb'
-    - 'config/routes.rb'
-    - 'db/migrate/**/*.rb'
-    - 'Gemfile'
+    - "config/initializers/**/*.rb"
+    - "config/routes.rb"
+    - "db/migrate/**/*.rb"
+    - "Gemfile"
+Layout/LineEndStringConcatenationIndentation:
+  Enabled: true
+  EnforcedStyle: aligned
+Lint/SymbolConversion:
+  Enabled: true
+  EnforcedStyle: strict
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
   EnforcedStyle: space
@@ -31,23 +43,34 @@ Lint/InterpolationCheck:
   Enabled: false
 Lint/SuppressedException:
   Exclude:
-    - 'Rakefile'
+    - "Rakefile"
 Metrics/AbcSize:
   Exclude:
-    - 'db/migrate/**/*.rb'
+    - "db/migrate/**/*.rb"
 Metrics/BlockLength:
   Exclude:
-    - 'config/**/*.rb'
-    - 'db/migrate/**/*.rb'
-    - 'lib/tasks/**/*.rake'
+    - "Gemfile*"
+    - "config/**/*.rb"
+    - "db/migrate/**/*.rb"
+    - "lib/tasks/**/*.rake"
 Metrics/MethodLength:
   Exclude:
-    - 'db/migrate/**/*.rb'
+    - "db/migrate/**/*.rb"
+Sorbet/FalseSigil:
+  Exclude:
+    - 'config/**/*.rb'
+    - 'db/**/*.rb'
+    - 'lib/**/*.rake'
+
+
 Style/ClassAndModuleChildren:
   Exclude:
-    - 'app/controllers/users/devise_controller.rb'
+    - "app/controllers/users/devise_controller.rb"
 Style/Documentation:
   Enabled: false
+Style/EndlessMethod:
+  Enabled: true
+  EnforcedStyle: allow_single_line
 Style/FrozenStringLiteralComment:
   EnforcedStyle: never
   AutoCorrect: true
@@ -60,3 +83,4 @@ Style/SignalException:
   Enabled: true
   Exclude:
     - Dangerfile
+

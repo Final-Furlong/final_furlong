@@ -31,8 +31,4 @@ end
 # Runs rails_best_practices on modified and added files in the PR
 rails_best_practices.lint
 
-# SimpleCov
-simplecov.report('coverage/coverage.json', sticky: false)
-simplecov.individual_report('coverage/coverage.json', Dir.pwd)
-
 missed_localizable_strings
