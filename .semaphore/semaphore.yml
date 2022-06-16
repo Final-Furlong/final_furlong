@@ -27,11 +27,8 @@ blocks:
             - checkout --cache
             - cache restore
             - bundle install --deployment --path vendor/bundle
-            - bundle exec danger
             - bundle exec rubocop
             - bundle exec brakeman
-      secrets:
-        - name: Danger
   - name: RSpec
     task:
       prologue:
@@ -40,37 +37,46 @@ blocks:
           - sem-service start postgres 13
           - sem-version ruby 3.1.1
           - cache restore
-          - 'curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter'
-          - chmod +x ./cc-test-reporter
-          - bundle install --deployment --path vendor/bundle
-          - cache store
-          - ./cc-test-reporter before-build
+          - bundle config set --local deployemtn 'true'
+          - bundle config set --local path 'vendor/bundle'
+          - bundle install
+- cache store
+
       env_vars:
         - name: DATABASE_URL
           value: 'postgresql://postgres:@0.0.0.0:5432/finalfurlong_test'
         - name: RAILS_ENV
           value: test
         - name: CI
-          value: "1"
+          value: '1'
+
       jobs:
         - name: Test
           commands:
-            - 'bundle exec rake db:setup'
-            - 'bundle exec rails db:test:prepare'
-            - bundle exec rspec --format RspecJunitFormatter --out report.xml --format progress --out report.json
+            - bundle exec rails db:setup
+            - bundle exec rails db:test:prepare
+- bundle exec rspec --format RspecJunitFormatter --out report.xml --format progress
+
       epilogue:
-        always:
-          commands:
-            - artifact push job log/test.log
-            - artifact push job report.json
-            - artifact push job report.xml
-            - exitcode=$(if [ "$SEMAPHORE_JOB_RESULT" == "passed" ]; then echo 0; else echo 1; fi)
-            - ./cc-test-reporter after-build --exit-code $exitcode
         on_pass:
           commands:
             - '[[ -f report.xml ]] && test-results publish report.xml'
       secrets:
         - name: Code Climate
+  - name: Danger
+    task:
+      jobs:
+        - name: danger
+          commands:
+            - sem-version ruby 3.1.1
+            - checkout --cache
+            - cache restore
+            - bundle config set --local deployemtn 'true'
+            - bundle config set --local path 'vendor/bundle'
+            - bundle install
+            - bundle exec danger
+      secrets:
+        - name: Danger
 after_pipeline:
   task:
     jobs:
