@@ -1,4 +1,5 @@
 # typed: false
+
 RSpec.describe "Users", js: true do
   include Devise::Test::IntegrationHelpers
 

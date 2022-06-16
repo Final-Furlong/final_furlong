@@ -1,4 +1,5 @@
 # typed: false
+
 RSpec.describe "Logging In", js: true do
   let(:user) { create(:user, password:) }
   let(:password) { "password1234" }

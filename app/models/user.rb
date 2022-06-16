@@ -1,4 +1,5 @@
 # typed: false
+
 class User < ApplicationRecord
   include Admin::UserAdmin
 

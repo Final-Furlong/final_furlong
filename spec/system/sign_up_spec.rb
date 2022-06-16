@@ -1,4 +1,5 @@
 # typed: false
+
 RSpec.describe "Signing Up", js: true do
   include Devise::Test::IntegrationHelpers
 
