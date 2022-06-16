@@ -60,6 +60,8 @@ Sorbet/FalseSigil:
   Exclude:
     - 'config/**/*.rb'
     - 'db/**/*.rb'
+    - 'lib/**/*.rake'
+
 
 Style/ClassAndModuleChildren:
   Exclude:

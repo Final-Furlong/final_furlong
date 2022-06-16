@@ -1,4 +1,3 @@
-# typed: false
 require "factory_bot-awesome_linter"
 require "faker"
 

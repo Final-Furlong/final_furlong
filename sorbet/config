@@ -4,3 +4,4 @@
 --ignore=.git-hooks/
 --ignore=config/
 --ignore=db/
+--ignore=lib/**/*.rake

@@ -1,4 +1,3 @@
-# typed: false
 class AddDeviseToUsers < ActiveRecord::Migration[7.0]
   def self.up
     remove_index :users, :email
