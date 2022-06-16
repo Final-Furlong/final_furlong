@@ -13,29 +13,40 @@ blocks:
       jobs:
         - name: bundle
           commands:
-            - sem-version ruby 3.1.1
+            - sem-version ruby 3.1.2
             - checkout -- use-cache
             - cache restore
-            - bundle install --deployment -j 4 --path vendor/bundle
+            - bundle config set --local deployemtn 'true'
+            - bundle config set --local path 'vendor/bundle'
+            - bundle install
             - cache store
   - name: Code checks
+    dependencies: ['Setup']
     task:
+      prologue:
+        commands:
+          - sem-version ruby 3.1.2
+          - checkout --cache
+          - cache restore
+          - bundle install --deployment --path vendor/bundle
       jobs:
-        - name: check style + security
+        - name: rubcoop
           commands:
-            - sem-version ruby 3.1.1
-            - checkout --cache
-            - cache restore
-            - bundle install --deployment --path vendor/bundle
             - bundle exec rubocop
+        - name: brakeman
+          commands:
             - bundle exec brakeman
+        - name: sorbet
+          commands:
+            - bundle exec srb tc
   - name: RSpec
+    dependencies: ['Setup']
     task:
       prologue:
         commands:
           - checkout --cache
           - sem-service start postgres 13
-          - sem-version ruby 3.1.1
+          - sem-version ruby 3.1.2
           - cache restore
           - bundle config set --local deployemtn 'true'
           - bundle config set --local path 'vendor/bundle'
@@ -68,7 +79,7 @@ blocks:
       jobs:
         - name: danger
           commands:
-            - sem-version ruby 3.1.1
+            - sem-version ruby 3.1.2
             - checkout --cache
             - cache restore
             - bundle config set --local deployemtn 'true'
