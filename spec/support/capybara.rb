@@ -1,4 +1,5 @@
 # typed: false
+
 require_relative "responsive_helpers"
 
 DEFAULT_MAX_WAIT_TIME = ENV["CI"] ? 5 : 3
