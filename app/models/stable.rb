@@ -1,4 +1,5 @@
 # typed: strict
+
 class Stable < ApplicationRecord
   belongs_to :user
 

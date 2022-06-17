@@ -1,4 +1,5 @@
 # typed: false
+
 FactoryBot.define do
   factory :user do
     username { Faker::Internet.username(specifier: User::USERNAME_LENGTH) }
