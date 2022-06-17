@@ -38,10 +38,23 @@ jobs:
         bundler:
           - latest
         ruby:
-          - "3.1"
+          - "3.1.2"
 
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.experimental || endsWith(matrix.ruby, 'head') }}
+    services:
+      db:
+        image: postgres:11
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis
+        ports: ['6379:6379']
+        options: --entrypoint redis-server
     steps:
       - uses: amancevice/setup-code-climate@v0
         name: CodeClimate Install
@@ -59,16 +72,9 @@ jobs:
           rubygems: ${{ matrix.rubygems }}
           bundler: ${{ matrix.bundler }}
           bundler-cache: true
-
-      - name: Setup PostgreSQL
-        # You may pin to the exact commit or the version.
-        # uses: Harmon758/postgresql-action@0be19fa37850b22cb4c9bbf28a03abbf44abd863
-        uses: Harmon758/postgresql-action@v1.0.0
+      - uses: borales/actions-yarn@v2.0.0
         with:
-          postgresql version: 14.3
-          postgresql db: final_furlong_test
-          postgresql user: shanthi
-          postgresql password: ""
+          cmd: install
 
       - name: CodeClimate Pre-build Notification
         run: cc-test-reporter before-build
@@ -76,6 +82,11 @@ jobs:
         continue-on-error: ${{ matrix.experimental != 'false' }}
 
       - name: Run tests
+        env:
+          TEST_DATABASE_URL: postgres://postgres:@localhost:5432/test
+          REDIS_URL: redis://localhost:6379/0
+          RAILS_ENV: test
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: bundle exec rspec
 
       - name: CodeClimate Post-build Notification
