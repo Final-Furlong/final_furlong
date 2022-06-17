@@ -67,10 +67,8 @@ jobs:
         with:
           postgresql version: 14.3
           postgresql db: final_furlong_test
-          # POSTGRES_USER - create the specified user with superuser power
-          # postgresql user: # optional, default is
-          # POSTGRES_PASSWORD - superuser password
-          # postgresql password: # optional, default is
+          postgres_user: shanthi
+          postgres_password: ""
 
       - name: CodeClimate Pre-build Notification
         run: cc-test-reporter before-build
