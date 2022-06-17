@@ -33,7 +33,6 @@
 .nvmrc
 .node-version
 .ruby-version
-/config/database.yml
 coverage/
 spec/examples.txt
 
