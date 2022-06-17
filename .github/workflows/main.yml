@@ -67,8 +67,8 @@ jobs:
         with:
           postgresql version: 14.3
           postgresql db: final_furlong_test
-          postgres_user: shanthi
-          postgres_password: ""
+          postgres user: shanthi
+          postgres password: ""
 
       - name: CodeClimate Pre-build Notification
         run: cc-test-reporter before-build
