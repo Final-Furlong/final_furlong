@@ -35,7 +35,7 @@ FileUtils.chdir APP_ROOT do
   # set ruby/node versions
   File.open(".tool-versions", "w") do |f|
     f.write "nodejs 17.7.2\n"
-    f.write "ruby 3.1.1\n"
+    f.write "ruby 3.1.2\n"
   end
 
   # copy database.yml sample
