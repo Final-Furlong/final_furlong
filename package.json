@@ -15,6 +15,7 @@
     "start": "node esbuild-dev.config.js"
   },
   "devDependencies": {
+    "eslint": "^8.18.0",
     "markdownlint": "^0.25.1",
     "stylelint": "^14.9.1",
     "stylelint-config-standard": "^26.0.0"
