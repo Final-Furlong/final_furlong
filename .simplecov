@@ -22,8 +22,10 @@ SimpleCov.start "rails" do
 
   if ENV["CI"]
     formatter SimpleCov::Formatter::MultiFormatter.new(
-      SimpleCov::Formatter::JSONFormatter,
-      SimpleCov::Formatter::CoberturaFormatter
+      [
+        SimpleCov::Formatter::JSONFormatter,
+        SimpleCov::Formatter::CoberturaFormatter
+      ]
     )
   else
     formatter SimpleCov::Formatter::MultiFormatter.new(
