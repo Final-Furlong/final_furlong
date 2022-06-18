@@ -1,5 +1,11 @@
-name: Test
-on: [push]
+name: CI
+on:
+  push:
+    branches:
+      - 'main'
+      - 'releases/**'
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   linters:
