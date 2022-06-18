@@ -41,14 +41,22 @@ jobs:
         run: |
           yarn install --pure-lockfile
 
-      - name: Run linters
+      - name: Sorbet
+        run: |
+          bin/srb tc
+
+      - name: EsLint
+        run: |
+          yarn run eslint app/javascript
+
+      - name: StyleLint
+        run: |
+          yarn run stylelint app/assets/stylesheets
+
+      - name: Danger
         env:
           DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
         run: |
-          bin/rubocop
-          bin/srb tc
-          yarn run eslint app/javascript
-          yarn run stylelint app/assets/stylesheets
           bin/danger
 
   security:
@@ -87,10 +95,6 @@ jobs:
       - name: Bundler Audit
         run: |
           bin/bundler-audit check --update
-
-      - name: Brakeman
-        run: |
-          bin/brakeman
 
       - name: Yarn Audit
         run: |
