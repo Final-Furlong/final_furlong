@@ -18,6 +18,8 @@ AllCops:
     - "tmp/**/*"
     - "vendor/**/*"
     - ".git/**/*"
+    - ".simplecov"
+
   NewCops: enable
   TargetRubyVersion: 3.1
 

@@ -41,12 +41,23 @@ jobs:
         run: |
           yarn install --pure-lockfile
 
-      - name: Run linters
+      - name: Sorbet
         run: |
-          bin/rubocop
           bin/srb tc
+
+      - name: EsLint
+        run: |
           yarn run eslint app/javascript
+
+      - name: StyleLint
+        run: |
           yarn run stylelint app/assets/stylesheets
+
+      - name: Danger
+        env:
+          DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
+        run: |
+          bin/danger
 
   security:
     name: Security
@@ -60,13 +71,38 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: Run security checks
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 17.7.2
+
+      - name: Find yarn cache location
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: JS package cache
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install packages
+        run: |
+          yarn install --pure-lockfile
+
+      - name: Bundler Audit
         run: |
           bin/bundler-audit check --update
-          bin/brakeman
+
+      - name: Yarn Audit
+        run: |
+          yarn audit
 
   tests:
     name: Tests
+    needs: ['linters', 'security']
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -125,12 +161,40 @@ jobs:
 
       - name: Run tests
         env:
+          CI: true
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/final_furlong_test
           REDIS_URL: redis://localhost:6379/0
           RAILS_ENV: test
         run: bin/rspec
 
-      - name: Publish code coverage
+      - name: Publish code coverage to Code Climate
         uses: paambaati/codeclimate-action@v3.0.0
         env:
+          CI: true
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+
+      - name: LCov Report
+        uses: manarbenkraouda/lcov-reporter-action@v0.3.5.3
+        with:
+          github-token: ${{ secrets.LCOV_GITHUB_TOKEN }}
+          lcov-file: ./coverage/lcov.info
+
+      - name: Code Coverage Summary Report
+        uses: irongut/CodeCoverageSummary@v1.2.0
+        with:
+          filename: coverage/coverage.xml
+          badge: true
+          fail_below_min: true
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: false
+          indicators: true
+          output: both
+          thresholds: '60 80'
+
+      - name: Add Coverage PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: github.event_name == 'pull_request'
+        with:
+          recreate: true
+          path: code-coverage-results.md

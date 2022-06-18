@@ -14,6 +14,9 @@ PreCommit:
       - 'node_modules/**/*'
       - 'sorbet/rbi/**/*'
       - 'vendor/**/*'
+  ActionLint:
+    enabled: true
+    command: ['actionlint']
   AnnotateControllers:
     enabled: true
   AuthorEmail:
@@ -26,7 +29,7 @@ PreCommit:
     enabled: true
   ForbiddenBranches:
     branches: ['main', 'staging', 'production']
-    enabled: tru
+    enabled: true
   I18nTasks:
     command: ['bundle', 'exec', 'i18n-tasks', 'health']
     enabled: true
