@@ -1,0 +1,11 @@
+name: Verify
+on: [push]
+
+jobs:
+  verify:
+    uses: andyw8/setup-rails/.github/workflows/verify.yml@main
+    with:
+      brakeman: true
+      bundler-audit: true
+      rspec: true
+      rubocop: true
