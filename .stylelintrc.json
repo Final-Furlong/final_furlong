@@ -1,3 +1,74 @@
 {
-  "extends": "stylelint-config-standard"
+  "extends": ["stylelint-config-standard", "stylelint-config-prettier", "stylelint-config-standard-scss"],
+  "plugins": [
+    "stylelint-scss",
+    "stylelint-order",
+    "stylelint-prettier"
+  ],
+  "ignoreFiles": [
+    "/**/assets/stylesheets/*.scss"
+  ],
+  "rules": {
+    "at-rule-name-space-after": "always-single-line",
+    "at-rule-no-unknown": null,
+    "media-feature-name-no-unknown": [
+      true,
+      {
+        "ignoreMediaFeatureNames": ["/min-/"]
+      }
+    ],
+    "scss/at-rule-no-unknown": [true],
+    "color-named": "never",
+    "color-hex-length": "long",
+    "max-nesting-depth": [
+      3,
+      {
+        "ignore": [
+          "pseudo-classes",
+          "blockless-at-rules"
+        ]
+      }
+    ],
+    "declaration-block-no-duplicate-properties": true,
+    "declaration-empty-line-before": null,
+    "function-no-unknown": null,
+    "max-empty-lines": 1,
+    "no-duplicate-selectors": true,
+    "scss/dollar-variable-pattern": "^[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d]))*$",
+    "scss/selector-no-redundant-nesting-selector": true,
+    "selector-max-compound-selectors": [
+      4,
+      {
+        "message": "Descendent selectors break encapsulation and are bad for performance. Please try class names instead of nesting/combining them with & or >.",
+        "severity": "warning"
+      }
+    ],
+    "selector-max-id": [1],
+    "string-quotes": "single",
+    "value-no-vendor-prefix": true,
+    "font-family-no-missing-generic-family-keyword": null,
+    "order/order": [
+      "custom-properties",
+      "declarations"
+    ],
+    "no-descending-specificity": null,
+    "string-no-newline": true,
+    "property-no-unknown": true,
+    "declaration-block-no-duplicate-custom-properties": true,
+    "declaration-block-no-shorthand-property-overrides": true,
+    "block-no-empty": true,
+    "comment-no-empty": true,
+    "no-extra-semicolons": true,
+    "shorthand-property-no-redundant-values": true,
+    "declaration-block-single-line-max-declarations": 1,
+    "selector-max-attribute": 2,
+    "selector-max-class": 3,
+    "selector-max-combinators": 2,
+    "selector-max-empty-lines": 0,
+    "prettier/prettier": true,
+    "color-function-notation": null,
+    "scss/no-global-function-names": null,
+    "scss/at-extend-no-missing-placeholder": null,
+    "selector-not-notation": "simple"
+  }
 }
