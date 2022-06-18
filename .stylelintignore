@@ -1,0 +1,14 @@
+# Ignore vendor assets
+**/vendor/assets
+
+# Ignore precompiled assets
+**/public/assets
+**/public/packs
+**/public/packs-test
+**/assets/builds
+
+# Ignore gems
+**/vendor/bundle
+
+# Ignore node modules
+node_modules/
