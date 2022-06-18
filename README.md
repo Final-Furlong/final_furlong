@@ -1,24 +1,18 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+[![CI](https://github.com/Final-Furlong/final_furlong/actions/workflows/test.yml/badge.svg)](https://github.com/Final-Furlong/final_furlong/actions/workflows/test.yml) | [![Maintainability](https://api.codeclimate.com/v1/badges/83d464b7f230d7c654c6/maintainability)](https://codeclimate.com/repos/6277f8245c68b90ca1004642/maintainability) | [![Test Coverage](https://api.codeclimate.com/v1/badges/83d464b7f230d7c654c6/test_coverage)](https://codeclimate.com/repos/6277f8245c68b90ca1004642/test_coverage)
 
-Things you may want to cover:
+Requirements:
+* Ruby
+* Postgres
+* Node
 
-* Ruby version
+Setup:
+```shell
+cp config/database.yml.sample config/database.yml # update settings accordingly
+bin/rails bundle
+bin/rails db:setup
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+bin/dev # run dev environment
+bin/rspec # run tests
+```

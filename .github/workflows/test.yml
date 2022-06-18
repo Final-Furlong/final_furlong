@@ -47,6 +47,7 @@ jobs:
           bin/srb tc
           yarn run eslint app/javascript
           yarn run stylelint app/assets/stylesheets
+          bin/danger
 
   security:
     name: Security
@@ -125,12 +126,34 @@ jobs:
 
       - name: Run tests
         env:
+          CI: true
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/final_furlong_test
           REDIS_URL: redis://localhost:6379/0
           RAILS_ENV: test
         run: bin/rspec
 
-      - name: Publish code coverage
+      - name: Publish code coverage to Code Climate
         uses: paambaati/codeclimate-action@v3.0.0
         env:
+          CI: true
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+
+      - name: Code Coverage Summary Report
+        uses: irongut/CodeCoverageSummary@v1.2.0
+        with:
+          filename: coverage/coverage.xml
+          badge: true
+          fail_below_min: true
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: false
+          indicators: true
+          output: both
+          thresholds: '60 80'
+
+      - name: Add Coverage PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: github.event_name == 'pull_request'
+        with:
+          recreate: true
+          path: code-coverage-results.md

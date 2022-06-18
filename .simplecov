@@ -1,3 +1,4 @@
+require "simplecov-cobertura"
 require "simplecov-json"
 require "simplecov-lcov"
 require "simplecov_json_formatter"
@@ -10,7 +11,7 @@ SimpleCov.start "rails" do
   add_group "View Components", "app/components"
 
   enable_coverage(:branch)
-  primary_coverage :branch
+  primary_coverage :line
 
   track_files "**/*.rb"
 
@@ -20,13 +21,15 @@ SimpleCov.start "rails" do
   end
 
   if ENV["CI"]
-    SimpleCov.formatter = SimpleCov::Formatter::JSONFormatter
+    formatter SimpleCov::Formatter::MultiFormatter.new(
+      SimpleCov::Formatter::JSONFormatter,
+      SimpleCov::Formatter::CoberturaFormatter
+    )
   else
     formatter SimpleCov::Formatter::MultiFormatter.new(
       [
         SimpleCov::Formatter::SimpleFormatter,
         SimpleCov::Formatter::HTMLFormatter,
-        SimpleCov::Formatter::JSONFormatter,
         SimpleCov::Formatter::LcovFormatter
       ]
     )
