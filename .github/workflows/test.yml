@@ -35,9 +35,9 @@ jobs:
       - name: Run linters
         run: |
           bin/rubocop --parallel
-          bin/stylelint
-          bin/prettier
           bin/eslint
+          # bin/stylelint
+          # bin/prettier
       - name: Run security checks
         run: |
           bin/bundler-audit --update
@@ -54,6 +54,11 @@ jobs:
           POSTGRES_DB: final_furlong_test
           POSTGRES_PASSWORD: ""
         ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout code
@@ -85,6 +90,7 @@ jobs:
       - name: Setup test database
         env:
           RAILS_ENV: test
+          PGHOST: 127.0.0.1
           PGHOST: localhost
           PGUSER: postgres
         run: |
