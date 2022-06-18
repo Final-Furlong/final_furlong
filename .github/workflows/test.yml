@@ -123,3 +123,8 @@ jobs:
           REDIS_URL: redis://localhost:6379/0
           RAILS_ENV: test
         run: bin/rspec
+
+      - name: Publish code coverage
+        uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
