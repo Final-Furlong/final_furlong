@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   linters:
-    name: Linters
+    name: linters
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -34,17 +34,10 @@ jobs:
 
       - name: Run linters
         run: |
-          bin/rubocop --parallel
           bin/eslint
-          # bin/stylelint
-          # bin/prettier
-      - name: Run security checks
-        run: |
-          bin/bundler-audit --update
-          bin/brakeman -q -w2
 
   tests:
-    name: Tests
+    name: tests
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -94,7 +87,8 @@ jobs:
           PGHOST: localhost
           PGUSER: postgres
         run: |
-          bin/rails db:setup
+          bin/rails db:create
+          bin/rails db:test:prepare
 
       - name: Run tests
         run: bin/rspec
