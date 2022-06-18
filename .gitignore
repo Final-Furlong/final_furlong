@@ -29,10 +29,8 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+/config/credentials/*.key
 .env
-.nvmrc
-.node-version
-.ruby-version
 coverage/
 spec/examples.txt
 
@@ -40,7 +38,5 @@ spec/examples.txt
 !/app/assets/builds/.keep
 
 /node_modules
-
-/config/credentials/staging.key
 
 .vscode/
