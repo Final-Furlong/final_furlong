@@ -38,6 +38,7 @@ jobs:
       - name: Run linters
         run: |
           bin/rubocop
+          bin/srb tc
           yarn run eslint app/javascript
           yarn run stylelint app/assets/stylesheets
 
