@@ -34,7 +34,11 @@ jobs:
 
       - name: Run linters
         run: |
-          bin/eslint
+          bin/rubocop
+          bin/bundler-audit --check
+          bin/brakeman
+          yarn run eslint app/javascript
+          yarn run stylelint app/assets/stylesheets
 
   tests:
     name: tests
