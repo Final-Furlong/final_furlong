@@ -88,7 +88,6 @@ jobs:
         env:
           RAILS_ENV: test
           PGHOST: 127.0.0.1
-          PGHOST: localhost
           PGUSER: postgres
         run: |
           bin/rails db:create
