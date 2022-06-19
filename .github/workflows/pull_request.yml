@@ -57,12 +57,12 @@ jobs:
         uses: manarbenkraouda/lcov-reporter-action@v0.3.5.3
         with:
           github-token: ${{ secrets.LCOV_GITHUB_TOKEN }}
-          lcov-file: coverage/lcov.info
+          lcov-file: ./lcov.info
 
       - name: Code Coverage Summary Report
         uses: irongut/CodeCoverageSummary@v1.2.0
         with:
-          filename: coverage/coverage.xml
+          filename: ./coverage.xml
           badge: true
           fail_below_min: true
           format: markdown
