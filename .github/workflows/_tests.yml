@@ -55,12 +55,6 @@ jobs:
       - name: Run tests
         run: bin/rspec
 
-  reports:
-    name: Reporting Tests
-    needs: tests
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-    steps:
       - name: Publish code coverage to Code Climate
         uses: paambaati/codeclimate-action@v3.0.0
         env:
