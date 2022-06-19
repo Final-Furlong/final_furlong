@@ -10,7 +10,7 @@ env:
 
 jobs:
   call-linters:
-    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@fix-actions
+    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@main-actions
 
   danger:
     name: Danger
@@ -32,10 +32,10 @@ jobs:
           bin/danger
 
   call-security:
-    uses: Final-Furlong/final_furlong/.github/workflows/_security.yml@fix-actions
+    uses: Final-Furlong/final_furlong/.github/workflows/_security.yml@main-actions
 
   call-tests:
-    uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@fix-actions
+    uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@main-actions
     needs: ['call-linters', 'call-security']
     secrets:
       lcov-token: ${{ secrets.LCOV_GITHUB_TOKEN }}
