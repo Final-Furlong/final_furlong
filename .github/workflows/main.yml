@@ -16,3 +16,6 @@ jobs:
   call-tests:
     uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@main
     needs: ['call-linters', 'call-security']
+    secrets:
+      lcov-token: ${{ secrets.LCOV_GITHUB_TOKEN }}
+      code-climate-token: ${{ secrets.CC_TEST_REPORTER_ID }}

@@ -3,7 +3,7 @@ on:
     secrets:
       lcov-token:
         description: 'Github token for ff-bot'
-        required: ${{ github.event.pull_request }}
+        required: true
       code-climate-token:
         description: 'API key to report to Code Climate'
         required: true
