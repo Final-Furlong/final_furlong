@@ -1,9 +1,5 @@
 name: CI
 on:
-  push:
-    branches:
-      - 'main'
-      - 'releases/**'
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -40,6 +36,19 @@ jobs:
       - name: Install packages
         run: |
           yarn install --pure-lockfile
+
+      - name: RuboCop
+        uses: reviewdog/action-rubocop@v2
+        with:
+          rubocop_version: gemfile
+          rubocop_extensions: rubocop-performance:gemfile rubocop-rails:gemfile rubocop-rake:gemfile rubocop-rspec:gemfile rubocop-sorbet:gemfile
+          reporter: github-pr-check
+
+      - name: Fasterer
+        uses: vk26/action-fasterer@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-check
 
       - name: Sorbet
         run: |
@@ -91,6 +100,12 @@ jobs:
       - name: Install packages
         run: |
           yarn install --pure-lockfile
+
+      - name: Brakeman
+        uses: reviewdog/action-brakeman@v2
+        with:
+          brakeman_version: gemfile
+          reporter: github-pr-check
 
       - name: Bundler Audit
         run: |

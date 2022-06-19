@@ -1,0 +1,176 @@
+name: CI
+on:
+  push:
+    branches:
+      - 'main'
+      - 'releases/**'
+
+jobs:
+  linters:
+    name: Linters
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 17.7.2
+
+      - name: Find yarn cache location
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: JS package cache
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install packages
+        run: |
+          yarn install --pure-lockfile
+
+      - name: Rubocop
+        if: ${{ github.ref_name == 'main' }}
+        run: |
+          bin/rubocop
+
+      - name: Sorbet
+        run: |
+          bin/srb tc
+
+      - name: EsLint
+        run: |
+          yarn run eslint app/javascript
+
+      - name: StyleLint
+        run: |
+          yarn run stylelint app/assets/stylesheets
+
+  security:
+    name: Security
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 17.7.2
+
+      - name: Find yarn cache location
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: JS package cache
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install packages
+        run: |
+          yarn install --pure-lockfile
+
+      - name: Bundler Audit
+        run: |
+          bin/bundler-audit check --update
+
+      - name: Brakeman
+        if: ${{ github.ref_name == 'main' }}
+        run: |
+          bin/brakeman
+
+      - name: Yarn Audit
+        run: |
+          yarn audit
+
+  tests:
+    name: Tests
+    needs: ['linters', 'security']
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_DB: final_furlong_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis
+        ports: ['6379:6379']
+        options: --entrypoint redis-server
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 17.7.2
+      - name: Find yarn cache location
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: JS package cache
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install packages
+        run: |
+          yarn install --pure-lockfile
+      - name: Setup test database
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/final_furlong_test
+          REDIS_URL: redis://localhost:6379/0
+          RAILS_ENV: test
+        run: |
+          cp config/database.yml.github_actions config/database.yml
+          bin/rails db:create
+          bin/rails db:test:prepare
+          # RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+
+      - name: Run tests
+        env:
+          CI: true
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/final_furlong_test
+          REDIS_URL: redis://localhost:6379/0
+          RAILS_ENV: test
+        run: bin/rspec
+
+      - name: Publish code coverage to Code Climate
+        uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CI: true
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
