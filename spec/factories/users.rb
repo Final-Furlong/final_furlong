@@ -2,13 +2,13 @@
 
 FactoryBot.define do
   factory :user do
-    username { Faker::Internet.username(specifier: User::USERNAME_LENGTH) }
+    sequence(:username) { |n| "#{Faker::Internet.username(specifier: User::USERNAME_LENGTH)}_#{n}" }
     password { Faker::Internet.password(min_length: User::PASSWORD_LENGTH) }
     status { "active" }
     name { Faker::Name.first_name }
     email { Faker::Internet.email }
     admin { false }
-    sequence(:discourse_id) { |n| n }
+    sequence(:discourse_id)
     confirmed_at { Time.current }
 
     factory :admin do
