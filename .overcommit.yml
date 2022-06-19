@@ -27,6 +27,9 @@ PreCommit:
     enabled: true
   BundleCheck:
     enabled: true
+  Fasterer:
+    command: ["bundle", "exec", "fasterer"]
+    enabled: true
   ForbiddenBranches:
     branches: ['main', 'staging', 'production']
     enabled: true

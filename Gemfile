@@ -86,6 +86,7 @@ group :development, :test do
   gem "factory_bot-awesome_linter"
   gem "factory_bot_rails"
   gem "faker", require: false
+  gem "fasterer", require: false
   gem "i18n-tasks"
   gem "letter_opener"
   gem "overcommit"
