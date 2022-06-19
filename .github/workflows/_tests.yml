@@ -1,6 +1,9 @@
 on:
   workflow_call:
     secrets:
+      lcov-token:
+        description: 'Github token for ff-bot'
+        required: ${{ github.event.pull_request }}
       code-climate-token:
         description: 'API key to report to Code Climate'
         required: true
@@ -52,20 +55,35 @@ jobs:
       - name: Run tests
         run: bin/rspec
 
+  reports:
+    name: Reporting Tests
+    needs: tests
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
       - name: Publish code coverage to Code Climate
         uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.code-climate-token }}
 
-      - name: Archive LCOV report
-        uses: actions/upload-artifact@v3
+      - name: LCov Report
+        if: github.event.pull_request
+        uses: manarbenkraouda/lcov-reporter-action@v0.3.5.3
         with:
-          name: lcov-coverage-report
-          path: coverage/lcov.info
+          github-token: ${{ secrets.lcov-token }}
+          lcov-file: coverage/lcov.info
 
-      - name: Archive XML report
-        uses: actions/upload-artifact@v3
+      - name: Code Coverage Summary Report
+        if: github.event.pull_request
+        uses: irongut/CodeCoverageSummary@v1.2.0
         with:
-          name: xml-coverage-rpoert
-          path: coverage/coverage.xml
+          filename: coverage/coverage.xml
+          badge: true
+          fail_below_min: true
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: false
+          indicators: true
+          output: both
+          thresholds: '60 80'
 

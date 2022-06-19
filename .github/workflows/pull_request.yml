@@ -38,36 +38,5 @@ jobs:
     uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@fix-actions
     needs: ['call-linters', 'call-security']
     secrets:
+      lcov-token: ${{ secrets.LCOV_GITHUB_TOKEN }}
       code-climate-token: ${{ secrets.CC_TEST_REPORTER_ID }}
-
-
-  reports:
-    name: Test reporting
-    needs: ['call-tests']
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v3
-
-      - name: Display structure of downloaded files
-        run: ls -R
-
-      - name: LCov Report
-        uses: manarbenkraouda/lcov-reporter-action@v0.3.5.3
-        with:
-          github-token: ${{ secrets.LCOV_GITHUB_TOKEN }}
-          lcov-file: ./lcov.info
-
-      - name: Code Coverage Summary Report
-        uses: irongut/CodeCoverageSummary@v1.2.0
-        with:
-          filename: ./coverage.xml
-          badge: true
-          fail_below_min: true
-          format: markdown
-          hide_branch_rate: false
-          hide_complexity: false
-          indicators: true
-          output: both
-          thresholds: '60 80'
