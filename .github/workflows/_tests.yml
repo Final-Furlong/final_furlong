@@ -1,0 +1,83 @@
+on:
+  workflow_call:
+    secrets:
+      lcov-token:
+        description: 'Github token for ff-bot'
+        required: true
+      code-climate-token:
+        description: 'API key to report to Code Climate'
+        required: true
+
+env:
+  CI: true
+  RAILS_ENV: test
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/final_furlong_test
+  REDIS_URL: redis://localhost:6379/0
+
+jobs:
+  tests:
+    name: Tests
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_DB: final_furlong_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis
+        ports: ['6379:6379']
+        options: --entrypoint redis-server
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Setup test database
+        run: |
+          cp config/database.yml.github_actions config/database.yml
+          bin/rails db:create
+          bin/rails db:test:prepare
+
+      - name: Run tests
+        run: bin/rspec
+
+      - name: Publish code coverage to Code Climate
+        uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.code-climate-token }}
+
+      - name: LCov Report
+        if: github.event.pull_request
+        uses: manarbenkraouda/lcov-reporter-action@v0.3.5.3
+        with:
+          github-token: ${{ secrets.lcov-token }}
+          lcov-file: coverage/lcov.info
+
+      - name: Code Coverage Summary Report
+        if: github.event.pull_request
+        uses: irongut/CodeCoverageSummary@v1.2.0
+        with:
+          filename: coverage/coverage.xml
+          badge: true
+          fail_below_min: true
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: false
+          indicators: true
+          output: both
+          thresholds: '60 80'
+

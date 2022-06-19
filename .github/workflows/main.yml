@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'releases/**'
+
+jobs:
+  call-linters:
+    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@main
+
+  call-security:
+    uses: Final-Furlong/final_furlong/.github/workflows/_security.yml@main
+
+  call-tests:
+    uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@main
+    needs: ['call-linters', 'call-security']
+    secrets:
+      lcov-token: ${{ secrets.LCOV_GITHUB_TOKEN }}
+      code-climate-token: ${{ secrets.CC_TEST_REPORTER_ID }}

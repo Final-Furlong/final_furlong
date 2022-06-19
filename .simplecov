@@ -24,7 +24,8 @@ SimpleCov.start "rails" do
     formatter SimpleCov::Formatter::MultiFormatter.new(
       [
         SimpleCov::Formatter::JSONFormatter,
-        SimpleCov::Formatter::CoberturaFormatter
+        SimpleCov::Formatter::CoberturaFormatter,
+        SimpleCov::Formatter::LcovFormatter
       ]
     )
   else
