@@ -1,16 +1,16 @@
 class CreateHorses < ActiveRecord::Migration[7.0]
   def change
-    status_list = [
-      'unborn',
-      'weanling',
-      'yearling',
-      'racehorse',
-      'broodmare',
-      'stallion',
-      'retired',
-      'retired_broodmare',
-      'retired_stallion',
-      'deceased',
+    status_list = %w[
+      unborn
+      weanling
+      yearling
+      racehorse
+      broodmare
+      stallion
+      retired
+      retired_broodmare
+      retired_stallion
+      deceased
     ]
     gender_list = %w[colt filly mare stallion gelding]
 
@@ -20,9 +20,9 @@ class CreateHorses < ActiveRecord::Migration[7.0]
     create_table :horses do |t|
       t.string :name
       t.string :gender, enum_type: "horse_gender", null: false,
-                      comment: gender_list.join(', ')
+                        comment: gender_list.join(", ")
       t.enum :status, enum_type: "horse_status", default: "unborn", null: false,
-                      index: true, comment: status_list.join(', ')
+                      index: true, comment: status_list.join(", ")
       t.date :date_of_birth, null: false, index: true
       t.date :date_of_death
       t.references :owner, foreign_key: { to_table: :stables }
@@ -33,11 +33,5 @@ class CreateHorses < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
-
-    add_foreign_key :horses, :stables, column: :owner_id
-    add_foreign_key :horses, :stables, column: :breeder_id
-    add_foreign_key :horses, :horses, column: :sire_id
-    add_foreign_key :horses, :horses, column: :dam_id
-    add_foreign_key :horses, :racetracks, column: :location_bred_id
   end
 end

@@ -1,8 +1,57 @@
 FactoryBot.define do
   factory :horse do
-    name { "MyString" }
-    gender { "MyString" }
-    status { "MyString" }
+    sequence(:name) { "MyString" }
+    gender { %w[colt filly gelding].sample }
+    status { "racehorse" }
+    date_of_birth { Date.current - 3.years }
+    owner factory: :stable
+    breeder { owner }
+    location_bred factory: :racetrack
+
+    trait :with_sire do
+      association :sire, factory(:horse, :stallion)
+    end
+
+    trait :with_dam do
+      association :dam, factory(:horse, :broodmare)
+    end
+
+    trait :weanling do
+      status { "weanling" }
+      date_of_birth { Date.current - (6 - Date.current.month).months }
+      gender { %w[colt filly].sample }
+    end
+
+    trait :yearling do
+      status { "yearling" }
+      date_of_birth { Date.current - 1.year }
+      gender { %w[colt filly].sample }
+    end
+
+    trait :stallion do
+      status { "stallion" }
+      date_of_birth { Date.current - 7.years }
+      gender { "stallion" }
+    end
+
+    trait :broodmare do
+      status { "broodmare" }
+      date_of_birth { Date.current - 6.years }
+      gender { "mare" }
+    end
+
+    trait :retired do
+      status { "retired" }
+      date_of_birth { Date.current - 5.years }
+      gender { %w[mare stallion gelding] }
+    end
+
+    trait :stillborn do
+      status { "deceased" }
+      date_of_birth { Date.current - (6 - Date.current.month).months }
+      date_of_death { date_of_birth }
+      gender { %w[colt filly].sample }
+    end
   end
 end
 
@@ -11,11 +60,11 @@ end
 # Table name: horses
 #
 #  id                                                                                                                         :bigint           not null, primary key
-#  date_of_birth                                                                                                              :date             not null
+#  date_of_birth                                                                                                              :date             not null, indexed
 #  date_of_death                                                                                                              :date
 #  gender(colt, filly, mare, stallion, gelding)                                                                               :string           not null
 #  name                                                                                                                       :string
-#  status(unborn, weanling, yearling, racehorse, broodmare, stallion, retired, retired_broodmare, retired_stallion, deceased) :enum             default("unborn"), not null
+#  status(unborn, weanling, yearling, racehorse, broodmare, stallion, retired, retired_broodmare, retired_stallion, deceased) :enum             default("unborn"), not null, indexed
 #  created_at                                                                                                                 :datetime         not null
 #  updated_at                                                                                                                 :datetime         not null
 #  breeder_id                                                                                                                 :bigint           indexed
@@ -28,9 +77,11 @@ end
 #
 #  index_horses_on_breeder_id        (breeder_id)
 #  index_horses_on_dam_id            (dam_id)
+#  index_horses_on_date_of_birth     (date_of_birth)
 #  index_horses_on_location_bred_id  (location_bred_id)
 #  index_horses_on_owner_id          (owner_id)
 #  index_horses_on_sire_id           (sire_id)
+#  index_horses_on_status            (status)
 #
 # Foreign Keys
 #

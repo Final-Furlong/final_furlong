@@ -10,13 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_19_160549) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_19_171138) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "horse_gender", ["colt", "filly", "mare", "stallion", "gelding"]
+  create_enum "horse_status", ["unborn", "weanling", "yearling", "racehorse", "broodmare", "stallion", "retired", "retired_broodmare", "retired_stallion", "deceased"]
   create_enum "user_status", ["pending", "active", "deleted", "banned"]
+
+  create_table "horses", force: :cascade do |t|
+    t.string "name"
+    t.string "gender", null: false, comment: "colt, filly, mare, stallion, gelding"
+    t.enum "status", default: "unborn", null: false, comment: "unborn, weanling, yearling, racehorse, broodmare, stallion, retired, retired_broodmare, retired_stallion, deceased", enum_type: "horse_status"
+    t.date "date_of_birth", null: false
+    t.date "date_of_death"
+    t.bigint "owner_id"
+    t.bigint "breeder_id"
+    t.bigint "location_bred_id"
+    t.bigint "sire_id"
+    t.bigint "dam_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["breeder_id"], name: "index_horses_on_breeder_id"
+    t.index ["dam_id"], name: "index_horses_on_dam_id"
+    t.index ["date_of_birth"], name: "index_horses_on_date_of_birth"
+    t.index ["location_bred_id"], name: "index_horses_on_location_bred_id"
+    t.index ["owner_id"], name: "index_horses_on_owner_id"
+    t.index ["sire_id"], name: "index_horses_on_sire_id"
+    t.index ["status"], name: "index_horses_on_status"
+  end
 
   create_table "racetracks", force: :cascade do |t|
     t.string "name"
@@ -75,5 +99,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_19_160549) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "horses", "horses", column: "dam_id"
+  add_foreign_key "horses", "horses", column: "sire_id"
+  add_foreign_key "horses", "racetracks", column: "location_bred_id"
+  add_foreign_key "horses", "stables", column: "breeder_id"
+  add_foreign_key "horses", "stables", column: "owner_id"
   add_foreign_key "stables", "users"
 end

@@ -1,6 +1,9 @@
 inherit_from:
   - '../.rubocop.yml'
 
+Layout/LineLength:
+  Enabled: false
+
 Lint/AmbiguousBlockAssociation:
   Enabled: false
 
@@ -24,6 +27,9 @@ RSpec/DescribedClassModuleWrapping:
 
 RSpec/EmptyLineAfterExample:
   AllowConsecutiveOneLiners: true
+
+RSpec/ExampleLength:
+  Max: 10
 
 RSpec/ExcessiveDocstringSpacing:
   Enabled: true
