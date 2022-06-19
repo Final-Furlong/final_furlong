@@ -39,10 +39,12 @@ jobs:
         run: |
           yarn install --pure-lockfile
 
-      - name: Rubocop
-        if: ${{ github.ref_name == 'main' }}
-        run: |
-          bin/rubocop
+      - name: RuboCop
+        uses: reviewdog/action-rubocop@v2
+        with:
+          rubocop_version: gemfile
+          rubocop_extensions: rubocop-performance:gemfile rubocop-rails:gemfile rubocop-rake:gemfile rubocop-rspec:gemfile rubocop-sorbet:gemfile
+          reporter: github-pr-chec
 
       - name: Sorbet
         run: |
@@ -94,9 +96,10 @@ jobs:
           bin/bundler-audit check --update
 
       - name: Brakeman
-        if: ${{ github.ref_name == 'main' }}
-        run: |
-          bin/brakeman
+        uses: reviewdog/action-brakeman@v2
+        with:
+          brakeman_version: gemfile
+          reporter: github-pr-chec
 
       - name: Yarn Audit
         run: |
