@@ -8,11 +8,11 @@ on:
 
 jobs:
   call-linters:
-    uses: Final-Furlong/final_furlong/.github/workflows/partials/linters.yml@main
+    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@main
 
   call-security:
-    uses: Final-Furlong/final_furlong/.github/workflows/partials/security.yml@main
+    uses: Final-Furlong/final_furlong/.github/workflows/_security.yml@main
 
   call-tests:
-    uses: Final-Furlong/final_furlong/.github/workflows/partials/tests.yml@main
+    uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@main
     needs: ['call-linters', 'call-security']
