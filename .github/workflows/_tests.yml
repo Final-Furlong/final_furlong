@@ -1,5 +1,9 @@
 on:
   workflow_call:
+    secrets:
+      code-climate-id:
+        description: 'API key to report to Code Climate'
+        required: true
 
 env:
   CI: true
@@ -44,7 +48,6 @@ jobs:
           cp config/database.yml.github_actions config/database.yml
           bin/rails db:create
           bin/rails db:test:prepare
-          # RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
 
       - name: Run tests
         run: bin/rspec
@@ -52,4 +55,4 @@ jobs:
       - name: Publish code coverage to Code Climate
         uses: paambaati/codeclimate-action@v3.0.0
         env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+          CC_TEST_REPORTER_ID: ${{ secrets.code-climate-id }}
