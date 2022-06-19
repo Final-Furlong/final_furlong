@@ -1,7 +1,7 @@
 on:
   workflow_call:
     secrets:
-      code-climate-id:
+      code-climate-token:
         description: 'API key to report to Code Climate'
         required: true
 
@@ -55,4 +55,4 @@ jobs:
       - name: Publish code coverage to Code Climate
         uses: paambaati/codeclimate-action@v3.0.0
         env:
-          CC_TEST_REPORTER_ID: ${{ secrets.code-climate-id }}
+          CC_TEST_REPORTER_ID: ${{ secrets.code-climate-token }}
