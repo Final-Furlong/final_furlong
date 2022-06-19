@@ -9,7 +9,6 @@ env:
   RAILS_ENV: test
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/final_furlong_test
   REDIS_URL: redis://localhost:6379/0
-  RUBY_VERSION: 3.1.2
 
 jobs:
   linters:
@@ -24,12 +23,11 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-          ruby-version: "$RUBY_VERSION"
 
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: 17.7.2
+          node-version-file: '.node-version'
 
       - name: Find yarn cache location
         id: yarn-cache
@@ -78,12 +76,11 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-          ruby-version: "$RUBY_VERSION"
 
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: 17.7.2
+          node-version-file: '.node-version'
 
       - name: Find yarn cache location
         id: yarn-cache
@@ -146,12 +143,11 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-          ruby-version: "$RUBY_VERSION"
 
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: 17.7.2
+          node-version-file: 1'.node-version'
       - name: Find yarn cache location
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
