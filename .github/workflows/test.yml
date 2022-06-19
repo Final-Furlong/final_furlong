@@ -177,7 +177,7 @@ jobs:
         uses: manarbenkraouda/lcov-reporter-action@v0.3.5.3
         with:
           github-token: ${{ secrets.LCOV_GITHUB_TOKEN }}
-          lcov-file: coverage/lcov.info
+          lcov-file: coverage/lcov/final_furlong.lcov
 
       - name: Code Coverage Summary Report
         uses: irongut/CodeCoverageSummary@v1.2.0
