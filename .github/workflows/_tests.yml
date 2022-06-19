@@ -56,3 +56,16 @@ jobs:
         uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.code-climate-token }}
+
+      - name: Archive LCOV report
+        uses: actions/upload-artifact@v3
+        with:
+          name: lcov-coverage-report
+          path: coverage/lcov.info
+
+      - name: Archive XML report
+        uses: actions/upload-artifact@v3
+        with:
+          name: xml-coverage-rpoert
+          path: coverage/coverage.xml
+
