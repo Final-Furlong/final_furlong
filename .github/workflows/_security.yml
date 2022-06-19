@@ -47,7 +47,7 @@ jobs:
         uses: reviewdog/action-brakeman@v2
         with:
           brakeman_version: gemfile
-          reporter: github-pr-chec
+          reporter: github-pr-check
 
       - name: Yarn Audit
         run: |

@@ -44,7 +44,7 @@ jobs:
         with:
           rubocop_version: gemfile
           rubocop_extensions: rubocop-performance:gemfile rubocop-rails:gemfile rubocop-rake:gemfile rubocop-rspec:gemfile rubocop-sorbet:gemfile
-          reporter: github-pr-chec
+          reporter: github-pr-check
 
       - name: Fasterer
         uses: vk26/action-fasterer@v1
