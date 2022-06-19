@@ -10,13 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_02_150518) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_19_160549) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "user_status", ["pending", "active", "deleted", "banned"]
+
+  create_table "racetracks", force: :cascade do |t|
+    t.string "name"
+    t.string "state"
+    t.string "country"
+    t.decimal "latitude"
+    t.decimal "longitude"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["country"], name: "index_racetracks_on_country"
+    t.index ["latitude"], name: "index_racetracks_on_latitude"
+    t.index ["longitude"], name: "index_racetracks_on_longitude"
+    t.index ["name"], name: "index_racetracks_on_name", unique: true
+  end
 
   create_table "stables", force: :cascade do |t|
     t.string "name", null: false
