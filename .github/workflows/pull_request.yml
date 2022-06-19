@@ -38,7 +38,7 @@ jobs:
     uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@fix-actions
     needs: ['call-linters', 'call-security']
     secrets:
-      code_climate_token: ${{ secrets.CC_TEST_REPORTER_ID }}
+      code-climate-token: ${{ secrets.CC_TEST_REPORTER_ID }}
 
 
   reports:
