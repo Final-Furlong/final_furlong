@@ -4,6 +4,11 @@ on:
     branches:
       - 'main'
       - 'releases/**'
+env:
+  CI: true
+  RAILS_ENV: test
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/final_furlong_test
+  REDIS_URL: redis://localhost:6379/0
 
 jobs:
   linters:
@@ -154,10 +159,6 @@ jobs:
         run: |
           yarn install --pure-lockfile
       - name: Setup test database
-        env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/final_furlong_test
-          REDIS_URL: redis://localhost:6379/0
-          RAILS_ENV: test
         run: |
           cp config/database.yml.github_actions config/database.yml
           bin/rails db:create
@@ -165,15 +166,9 @@ jobs:
           # RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
 
       - name: Run tests
-        env:
-          CI: true
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/final_furlong_test
-          REDIS_URL: redis://localhost:6379/0
-          RAILS_ENV: test
         run: bin/rspec
 
       - name: Publish code coverage to Code Climate
         uses: paambaati/codeclimate-action@v3.0.0
         env:
-          CI: true
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
