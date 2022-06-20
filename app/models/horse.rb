@@ -22,7 +22,7 @@ class Horse < ApplicationRecord
   end
 
   def age
-    max_date = [date_of_death, Date.current].max
+    max_date = status.living? ? Date.current : date_of_death
     max_date.year - date_of_birth.year
   end
 

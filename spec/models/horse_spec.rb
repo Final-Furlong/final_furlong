@@ -12,6 +12,50 @@ RSpec.describe Horse, type: :model do
     it { is_expected.to validate_presence_of(:date_of_birth) }
   end
 
+  describe "#status" do
+    let(:horse) { build_stubbed(:horse, :broodmare) }
+
+    it "returns HorseStatus" do
+      expect(horse.status).to be_a HorseStatus
+    end
+  end
+
+  describe "#gender" do
+    let(:horse) { build_stubbed(:horse, :broodmare) }
+
+    it "returns HorseGender" do
+      expect(horse.gender).to be_a HorseGender
+    end
+  end
+
+  describe "#age" do
+    context "when stillborn" do
+      let(:horse) { build_stubbed(:horse, :stillborn) }
+
+      it "returns 0" do
+        expect(horse.age).to eq 0
+      end
+    end
+
+    context "when alive" do
+      let(:horse) { build_stubbed(:horse, date_of_birth: Date.current - 3.years) }
+
+      it "returns current age" do
+        expect(horse.age).to eq 3
+      end
+    end
+
+    context "when deceased" do
+      let(:date_of_birth) { Date.current - 8.years }
+      let(:date_of_death) { Date.current - 1.year }
+      let(:horse) { build_stubbed(:horse, date_of_birth:, date_of_death:) }
+
+      it "returns age at death" do
+        expect(horse.age).to eq 8
+      end
+    end
+  end
+
   describe "#stillborn?" do
     context "when date of birth == date of death" do
       let(:horse) { build_stubbed(:horse, :stillborn) }

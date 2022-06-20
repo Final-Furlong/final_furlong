@@ -17,6 +17,8 @@ class HorseStatus
   ACTIVE_STATUSES = T.let(%w[racehorse broodmare stallion], T::Array[String])
   ACTIVE_BREEDING_STATUSES = T.let(%w[broodmare stallion], T::Array[String])
   BREEDING_STATUSES = T.let(%w[broodmare stallion retired_broodmare retired_stallion], T::Array[String])
+  MALE_BREEDING_STATUSES = T.let(%w[stallion retired_stallion], T::Array[String])
+  FEMALE_BREEDING_STATUSES = T.let(%w[broodmare retired_broodmare], T::Array[String])
 
   sig { params(status: T.any(String, Symbol)).void }
   def initialize(status)
