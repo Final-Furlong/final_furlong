@@ -11,13 +11,17 @@ class Horse < ApplicationRecord
   enum gender: HorseGender::VALUES
 
   validates :date_of_birth, presence: true
-  validates :date_of_death, comparison: { greater_than_or_equal_to: :date_of_birth }
+  validates :date_of_death, comparison: { greater_than_or_equal_to: :date_of_birth }, if: :date_of_death
 
   def status
+    return unless read_attribute(:status)
+
     HorseStatus.new(read_attribute(:status))
   end
 
   def gender
+    return unless read_attribute(:gender)
+
     HorseGender.new(read_attribute(:gender))
   end
 

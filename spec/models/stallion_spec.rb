@@ -1,6 +1,9 @@
 require "rails_helper"
+require_relative "../shared/horse_examples"
 
-RSpec.describe Stallion do
+RSpec.describe Stallion, type: :model do
+  it_behaves_like "a horse"
+
   describe "class" do
     it "is a horse" do
       expect(described_class.new).to be_a Horse
@@ -12,7 +15,32 @@ RSpec.describe Stallion do
   end
 
   describe "validations" do
-    it { is_expected.to validate_inclusion_of(:status).in_array(HorseStatus::MALE_BREEDING_STATUSES) }
-    it { is_expected.to validate_inclusion_of(:gender).in_array(%w[stallion gelding]) }
+    describe "status" do
+      it "is valid for stallion" do
+        horse = build_stubbed(:horse, :stallion)
+
+        expect(horse).to be_valid
+      end
+
+      it "is valid for retired_stallion" do
+        horse = build_stubbed(:horse, :stallion, status: "retired_stallion")
+
+        expect(horse).to be_valid
+      end
+    end
+
+    describe "gender" do
+      it "is valid for stallion" do
+        horse = build_stubbed(:horse, :stallion)
+
+        expect(horse).to be_valid
+      end
+
+      it "is valid for gelding" do
+        horse = build_stubbed(:horse, :stallion, gender: "gelding")
+
+        expect(horse).to be_valid
+      end
+    end
   end
 end

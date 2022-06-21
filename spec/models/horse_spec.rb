@@ -1,16 +1,8 @@
 require "rails_helper"
+require_relative "../shared/horse_examples"
 
 RSpec.describe Horse, type: :model do
-  describe "assocations" do
-    it { is_expected.to belong_to(:breeder).class_name("Stable") }
-    it { is_expected.to belong_to(:owner).class_name("Stable") }
-    it { is_expected.to belong_to(:sire).class_name("Horse").optional }
-    it { is_expected.to belong_to(:dam).class_name("Horse").optional }
-  end
-
-  describe "validations" do
-    it { is_expected.to validate_presence_of(:date_of_birth) }
-  end
+  it_behaves_like "a horse"
 
   describe "#status" do
     let(:horse) { build_stubbed(:horse, :broodmare) }
