@@ -1,6 +1,8 @@
-# typed: false
+# typed: strict
 
 class Horse < ApplicationRecord
+  extend T::Sig
+
   belongs_to :breeder, class_name: "Stable"
   belongs_to :owner, class_name: "Stable"
   belongs_to :sire, class_name: "Horse", optional: true
@@ -13,25 +15,38 @@ class Horse < ApplicationRecord
   validates :date_of_birth, presence: true
   validates :date_of_death, comparison: { greater_than_or_equal_to: :date_of_birth }, if: :date_of_death
 
+  sig { returns(T.nilable(HorseStatus)) }
   def status
-    return unless read_attribute(:status)
+    return unless self[:status]
 
-    HorseStatus.new(read_attribute(:status))
+    HorseStatus.new(self[:status])
   end
 
+  sig { returns(T.nilable(HorseGender)) }
   def gender
-    return unless read_attribute(:gender)
+    return unless self[:gender]
 
-    HorseGender.new(read_attribute(:gender))
+    HorseGender.new(self[:gender])
   end
 
+  sig { returns(Integer) }
   def age
-    max_date = status.living? ? Date.current : date_of_death
-    max_date.year - date_of_birth.year
+    max_date = dead? ? self[:date_of_death] : Date.current
+    max_date.year - self[:date_of_birth].year
   end
 
+  sig { returns(T::Boolean) }
   def stillborn?
-    date_of_birth == date_of_death
+    self[:date_of_birth] == self[:date_of_death]
+  end
+
+  private
+
+  sig { returns(T::Boolean) }
+  def dead?
+    return false unless self[:date_of_death]
+
+    self[:date_of_death] >= self[:date_of_birth]
   end
 end
 
