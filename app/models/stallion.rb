@@ -1,4 +1,4 @@
-# typed: false
+# typed: strict
 
 class Stallion < Horse
   validates :status, inclusion: { in: HorseStatus::MALE_BREEDING_STATUSES }
