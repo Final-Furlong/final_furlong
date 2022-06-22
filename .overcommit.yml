@@ -39,8 +39,8 @@ PreCommit:
     enabled: true
   RailsBestPractices:
     enabled: true
+    command: ["bundle", "exec", "rails_best_practices", "--config", "config/rails_best_practices.yml"]
   RailsSchemaUpToDate:
-    command: ['rails_best_practices', '--config', 'config/rails_best_practices.yml']
     enabled: true
   RuboCop:
     enabled: true

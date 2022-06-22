@@ -4,13 +4,17 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+concurrency:
+  group: ci-tests-${{ github.ref }}-1
+  cancel-in-progress: true
+
 env:
   CI: true
   RAILS_ENV: test
 
 jobs:
   call-linters:
-    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@main-actions
+    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@main
 
   danger:
     name: Danger
@@ -32,10 +36,10 @@ jobs:
           bin/danger
 
   call-security:
-    uses: Final-Furlong/final_furlong/.github/workflows/_security.yml@main-actions
+    uses: Final-Furlong/final_furlong/.github/workflows/_security.yml@main
 
   call-tests:
-    uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@main-actions
+    uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@main
     needs: ['call-linters', 'call-security']
     secrets:
       lcov-token: ${{ secrets.LCOV_GITHUB_TOKEN }}

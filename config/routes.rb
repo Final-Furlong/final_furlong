@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   root "pages#home"
 end
 
+#
 # == Route Map
 #
 #                                   Prefix Verb   URI Pattern                                                                                       Controller#Action
@@ -92,3 +93,4 @@ end
 #        edit GET|PUT     /:model_name/:id/edit(.:format)        rails_admin/main#edit
 #      delete GET|DELETE  /:model_name/:id/delete(.:format)      rails_admin/main#delete
 # show_in_app GET         /:model_name/:id/show_in_app(.:format) rails_admin/main#show_in_app
+#
