@@ -30,7 +30,9 @@ RSpec.describe Horse, type: :model do
     end
 
     context "when alive" do
-      let(:horse) { build_stubbed(:horse, date_of_birth: Date.current - 3.years) }
+      let(:date_of_birth) { Date.current - 3.years }
+      let(:date_of_death) { nil }
+      let(:horse) { build_stubbed(:horse, date_of_birth:, date_of_death:) }
 
       it "returns current age" do
         expect(horse.age).to eq 3
@@ -43,7 +45,7 @@ RSpec.describe Horse, type: :model do
       let(:horse) { build_stubbed(:horse, date_of_birth:, date_of_death:) }
 
       it "returns age at death" do
-        expect(horse.age).to eq 8
+        expect(horse.age).to eq 7
       end
     end
   end
