@@ -5,10 +5,21 @@ RSpec.describe Horse, type: :model do
   it_behaves_like "a horse"
 
   describe "#status" do
-    let(:horse) { build_stubbed(:horse, :broodmare) }
+    context "when horse has no status" do
+      it "returns nil" do
+        horse = described_class.new
+        horse.status = nil
 
-    it "returns HorseStatus" do
-      expect(horse.status).to be_a HorseStatus
+        expect(horse.status).to be_nil
+      end
+    end
+
+    context "when horse has status" do
+      let(:horse) { build_stubbed(:horse, :broodmare) }
+
+      it "returns HorseStatus" do
+        expect(horse.status).to be_a HorseStatus
+      end
     end
   end
 
@@ -73,21 +84,19 @@ end
 #
 # Table name: horses
 #
-#  id                                                                                                                         :bigint           not null, primary key
-#  date_of_birth                                                                                                              :date             not null, indexed
-#  date_of_death                                                                                                              :date
-#  gender(colt, filly, mare, stallion, gelding)                                                                               :string           not null
-#  name                                                                                                                       :string
-#  status(unborn, weanling, yearling, racehorse, broodmare,
-#    stallion, retired, retired_broodmare, retired_stallion,
-#    deceased) :enum  default("unborn"), not null, indexed
-#  created_at                                                                                                                 :datetime         not null
-#  updated_at                                                                                                                 :datetime         not null
-#  breeder_id                                                                                                                 :bigint           indexed
-#  dam_id                                                                                                                     :bigint           indexed
-#  location_bred_id                                                                                                           :bigint           indexed
-#  owner_id                                                                                                                   :bigint           indexed
-#  sire_id                                                                                                                    :bigint           indexed
+#  id               :bigint           not null, primary key
+#  date_of_birth    :date             not null, indexed
+#  date_of_death    :date
+#  gender           :string           not null
+#  name             :string
+#  status           :enum             default("unborn"), not null, indexed
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  breeder_id       :bigint           indexed
+#  dam_id           :bigint           indexed
+#  location_bred_id :bigint           indexed
+#  owner_id         :bigint           indexed
+#  sire_id          :bigint           indexed
 #
 # Indexes
 #

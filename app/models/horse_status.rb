@@ -5,19 +5,19 @@ class HorseStatus
 
   STATUSES = T.let({
                      unborn: "unborn", weanling: "weanling", yearling: "yearling",
-                     racehorse: "racehorse", broodmare: "broodmare", stallion: "stallion",
+                     racehorse: "racehorse", broodmare: "broodmare", stud: "stud",
                      retired: "retired", retired_broodmare: "retired_broodmare",
-                     retired_stallion: "retired_stallion", deceased: "deceased"
+                     retired_stud: "retired_stud", deceased: "deceased"
                    }, T::Hash[T.untyped, String])
 
   LIVING_STATUSES = T.let(
-    %w[weanling yearling racehorse broodmare stallion retired retired_broodmare retired_stallion],
+    %w[weanling yearling racehorse broodmare stud retired retired_broodmare retired_stud],
     T::Array[String]
   )
-  ACTIVE_STATUSES = T.let(%w[racehorse broodmare stallion], T::Array[String])
-  ACTIVE_BREEDING_STATUSES = T.let(%w[broodmare stallion], T::Array[String])
-  BREEDING_STATUSES = T.let(%w[broodmare stallion retired_broodmare retired_stallion], T::Array[String])
-  MALE_BREEDING_STATUSES = T.let(%w[stallion retired_stallion], T::Array[String])
+  ACTIVE_STATUSES = T.let(%w[racehorse broodmare stud], T::Array[String])
+  ACTIVE_BREEDING_STATUSES = T.let(%w[broodmare stud], T::Array[String])
+  BREEDING_STATUSES = T.let(%w[broodmare stud retired_broodmare retired_stud], T::Array[String])
+  MALE_BREEDING_STATUSES = T.let(%w[stud retired_stud], T::Array[String])
   FEMALE_BREEDING_STATUSES = T.let(%w[broodmare retired_broodmare], T::Array[String])
 
   sig { params(status: T.any(String, Symbol)).void }

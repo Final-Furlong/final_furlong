@@ -12,10 +12,6 @@ gem "devise-i18n"
 gem "responders", github: "heartcombo/responders" # https://github.com/heartcombo/responders/pull/223 not yet released
 
 gem "bulma-rails"
-gem "danger"
-gem "danger-missed_localizable_strings"
-gem "danger-rails_best_practices"
-gem "danger-simplecov_json"
 gem "dartsass-rails"
 gem "dotenv_validator"
 gem "friendly_id"
@@ -30,7 +26,6 @@ gem "puma", "~> 5.0"
 gem "rails_admin"
 gem "redis", "~> 4.0"
 gem "simple_form"
-gem "sorbet-rails"
 gem "sorbet-runtime"
 gem "sprockets-rails"
 gem "stimulus-rails"
@@ -65,6 +60,7 @@ group :development do
   gem "capistrano-rbenv", "~> 2.2", require: false
   gem "chusaku", require: false
   gem "hotwire-livereload"
+  gem "overcommit", require: false
   gem "pry"
   gem "sorbet", require: false
   gem "sorbet-progress", require: false
@@ -83,16 +79,15 @@ group :development, :test do
   gem "debug", platforms: %i[mri mingw x64_mingw]
   gem "dotenv-rails"
   gem "ed25519" # required for capistrano
-  gem "factory_bot-awesome_linter"
+  gem "factory_bot-awesome_linter", require: false
   gem "factory_bot_rails"
   gem "faker", require: false
   gem "fasterer", require: false
   gem "i18n-tasks"
   gem "letter_opener"
-  gem "overcommit"
-  gem "pry-rescue"
-  gem "pry-stack_explorer"
-  gem "reek"
+  gem "pry-rescue", require: false
+  gem "pry-stack_explorer", require: false
+  gem "reek", require: false
   gem "rubocop", require: false
   gem "rubocop-performance", require: false
   gem "rubocop-rails", require: false
@@ -107,12 +102,15 @@ end
 group :test do
   gem "capybara", ">= 2.15"
   gem "capybara-screenshot"
+  gem "danger", require: false
+  gem "danger-missed_localizable_strings", require: false
+  gem "danger-rails_best_practices", require: false
+  gem "danger-simplecov_json", require: false
   gem "fuubar"
   gem "i18n-spec"
   gem "rspec"
   gem "rspec_junit_formatter"
   gem "rspec-rails"
-
   gem "selenium-webdriver"
   gem "shoulda-matchers"
   gem "simplecov", require: false

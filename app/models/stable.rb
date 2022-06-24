@@ -3,6 +3,9 @@
 class Stable < ApplicationRecord
   belongs_to :user
 
+  has_many :bred_horses, class_name: "Horse", inverse_of: :breeder, dependent: :restrict_with_exception
+  has_many :horses, inverse_of: :owner, dependent: :restrict_with_exception
+
   validates :name, presence: true
   validates :name, length: { minimum: 3, maximum: 100 }
 end

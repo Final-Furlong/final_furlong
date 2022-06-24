@@ -33,32 +33,32 @@ end
 #
 # Table name: users
 #
-#  id                                         :bigint           not null, primary key
-#  admin                                      :boolean          default(FALSE), not null
-#  confirmation_sent_at                       :datetime
-#  confirmation_token                         :string           indexed
-#  confirmed_at                               :datetime
-#  current_sign_in_at                         :datetime
-#  current_sign_in_ip                         :string
-#  email                                      :string           default(""), not null, indexed
-#  encrypted_password                         :string           default(""), not null
-#  failed_attempts                            :integer          default(0), not null
-#  last_sign_in_at                            :datetime
-#  last_sign_in_ip                            :string
-#  locked_at                                  :datetime
-#  name(displayed on profile)                 :string           not null
-#  remember_created_at                        :datetime
-#  reset_password_sent_at                     :datetime
-#  reset_password_token                       :string           indexed
-#  sign_in_count                              :integer          default(0), not null
-#  slug                                       :string           indexed
-#  status(pending, active, deleted, banned)   :enum             default("pending"), not null
-#  unconfirmed_email                          :string
-#  unlock_token                               :string           indexed
-#  username                                   :string           not null, indexed
-#  created_at                                 :datetime         not null
-#  updated_at                                 :datetime         not null
-#  discourse_id(integer from Discourse forum) :integer          indexed
+#  id                     :bigint           not null, primary key
+#  admin                  :boolean          default(FALSE), not null
+#  confirmation_sent_at   :datetime
+#  confirmation_token     :string           indexed
+#  confirmed_at           :datetime
+#  current_sign_in_at     :datetime
+#  current_sign_in_ip     :string
+#  email                  :string           default(""), not null, indexed
+#  encrypted_password     :string           default(""), not null
+#  failed_attempts        :integer          default(0), not null
+#  last_sign_in_at        :datetime
+#  last_sign_in_ip        :string
+#  locked_at              :datetime
+#  name                   :string           not null
+#  remember_created_at    :datetime
+#  reset_password_sent_at :datetime
+#  reset_password_token   :string           indexed
+#  sign_in_count          :integer          default(0), not null
+#  slug                   :string           indexed
+#  status                 :enum             default("pending"), not null
+#  unconfirmed_email      :string
+#  unlock_token           :string           indexed
+#  username               :string           not null, indexed
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  discourse_id           :integer          indexed
 #
 # Indexes
 #

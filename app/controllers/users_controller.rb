@@ -3,7 +3,6 @@
 class UsersController < AuthenticatedController
   before_action :set_user, only: %i[show edit update destroy]
 
-  sig { returns(User::ActiveRecord_Relation) }
   # @route GET /users (users)
   def index
     @users = User.ordered

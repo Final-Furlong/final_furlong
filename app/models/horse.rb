@@ -50,24 +50,23 @@ class Horse < ApplicationRecord
   end
 end
 
-# rubocop:disable Metrics/LineLength
 # == Schema Information
 #
 # Table name: horses
 #
-#  id                                                                                                                         :bigint           not null, primary key
-#  date_of_birth                                                                                                              :date             not null, indexed
-#  date_of_death                                                                                                              :date
-#  gender(colt, filly, mare, stallion, gelding)                                                                               :string           not null
-#  name                                                                                                                       :string
-#  status(unborn, weanling, yearling, racehorse, broodmare, stallion, retired, retired_broodmare, retired_stallion, deceased) :enum             default("unborn"), not null, indexed
-#  created_at                                                                                                                 :datetime         not null
-#  updated_at                                                                                                                 :datetime         not null
-#  breeder_id                                                                                                                 :bigint           indexed
-#  dam_id                                                                                                                     :bigint           indexed
-#  location_bred_id                                                                                                           :bigint           indexed
-#  owner_id                                                                                                                   :bigint           indexed
-#  sire_id                                                                                                                    :bigint           indexed
+#  id               :bigint           not null, primary key
+#  date_of_birth    :date             not null, indexed
+#  date_of_death    :date
+#  gender           :string           not null
+#  name             :string
+#  status           :enum             default("unborn"), not null, indexed
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  breeder_id       :bigint           indexed
+#  dam_id           :bigint           indexed
+#  location_bred_id :bigint           indexed
+#  owner_id         :bigint           indexed
+#  sire_id          :bigint           indexed
 #
 # Indexes
 #
@@ -87,4 +86,3 @@ end
 #  fk_rails_...  (owner_id => stables.id)
 #  fk_rails_...  (sire_id => horses.id)
 #
-# rubocop:enable Metrics/LineLength

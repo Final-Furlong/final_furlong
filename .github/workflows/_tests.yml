@@ -59,6 +59,7 @@ jobs:
         uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.code-climate-token }}
+          COVERAGE: true
 
       - name: LCov Report
         if: github.event.pull_request

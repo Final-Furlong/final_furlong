@@ -5,29 +5,29 @@ RSpec.describe HorseStatus do
     it "defines statuses" do
       expect(described_class::STATUSES).to eq({
                                                 unborn: "unborn", weanling: "weanling", yearling: "yearling",
-                                                racehorse: "racehorse", broodmare: "broodmare", stallion: "stallion",
+                                                racehorse: "racehorse", broodmare: "broodmare", stud: "stud",
                                                 retired: "retired", retired_broodmare: "retired_broodmare",
-                                                retired_stallion: "retired_stallion", deceased: "deceased"
+                                                retired_stud: "retired_stud", deceased: "deceased"
                                               })
     end
 
     it "defines statuses that are alive" do
       expect(described_class::LIVING_STATUSES).to eq(
-        %w[weanling yearling racehorse broodmare stallion retired retired_broodmare retired_stallion]
+        %w[weanling yearling racehorse broodmare stud retired retired_broodmare retired_stud]
       )
     end
 
     it "defines statuses that are active (non-retired/non-foal)" do
-      expect(described_class::ACTIVE_STATUSES).to eq(%w[racehorse broodmare stallion])
+      expect(described_class::ACTIVE_STATUSES).to eq(%w[racehorse broodmare stud])
     end
 
     it "defines statuses that are active for breeding (non-retired)" do
-      expect(described_class::ACTIVE_BREEDING_STATUSES).to eq(%w[broodmare stallion])
+      expect(described_class::ACTIVE_BREEDING_STATUSES).to eq(%w[broodmare stud])
     end
 
     it "defines statuses that include breeding + retired" do
       expect(described_class::BREEDING_STATUSES).to eq(
-        %w[broodmare stallion retired_broodmare retired_stallion]
+        %w[broodmare stud retired_broodmare retired_stud]
       )
     end
   end
@@ -63,7 +63,7 @@ RSpec.describe HorseStatus do
 
     context "when status is retired" do
       it "returns false" do
-        option = %w[retired retired_stallion retired_broodmare].sample
+        option = %w[retired retired_stud retired_broodmare].sample
         expect(described_class.new(option).active?).to be false
       end
     end
@@ -79,7 +79,7 @@ RSpec.describe HorseStatus do
 
     context "when status is retired" do
       it "returns false" do
-        option = %w[retired_stallion retired_broodmare].sample
+        option = %w[retired_stud retired_broodmare].sample
         expect(described_class.new(option).active_breeding?).to be false
       end
     end
