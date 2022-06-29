@@ -54,6 +54,8 @@ jobs:
 
       - name: Run tests
         run: bin/rspec
+        env:
+          COVERAGE: true
 
       - name: Publish code coverage to Code Climate
         uses: paambaati/codeclimate-action@v3.0.0
@@ -81,4 +83,3 @@ jobs:
           indicators: true
           output: both
           thresholds: '60 80'
-
