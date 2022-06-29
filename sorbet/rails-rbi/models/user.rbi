@@ -293,10 +293,10 @@ class User < ApplicationRecord
 
   class Status < T::Enum
     enums do
-      pending = new("pending")
-      active = new("active")
-      deleted = new("deleted")
-      banned = new("banned")
+      pending = new('pending')
+      active = new('active')
+      deleted = new('deleted')
+      banned = new('banned')
     end
   end
 
