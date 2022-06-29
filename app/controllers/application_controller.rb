@@ -1,4 +1,4 @@
-# typed: true
+# typed: false
 
 class ApplicationController < ActionController::Base
   extend T::Sig
@@ -10,6 +10,11 @@ class ApplicationController < ActionController::Base
   before_action :set_locale
 
   protected
+
+  def current_stable
+    @current_stable ||= current_user.stable if signed_in?
+  end
+  helper_method :current_stable
 
   sig { returns(Symbol) }
   def set_locale

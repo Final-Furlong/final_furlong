@@ -18,7 +18,6 @@ gem "friendly_id"
 gem "gretel"
 gem "haml"
 gem "haml-rails"
-gem "jbuilder"
 gem "jsbundling-rails"
 gem "pagy"
 gem "pg", "~> 1.1"
@@ -51,7 +50,7 @@ group :development do
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   gem "rack-mini-profiler"
 
-  gem "annotate"
+  gem "annotate", require: false
   gem "bcrypt_pbkdf" # required for capistran
   gem "capistrano", "~> 3.17", require: false
   gem "capistrano-bundler", "~> 2.0", require: false
@@ -80,7 +79,7 @@ group :development, :test do
   gem "dotenv-rails"
   gem "ed25519" # required for capistrano
   gem "factory_bot-awesome_linter", require: false
-  gem "factory_bot_rails"
+  gem "factory_bot_rails", require: false
   gem "faker", require: false
   gem "fasterer", require: false
   gem "i18n-tasks"

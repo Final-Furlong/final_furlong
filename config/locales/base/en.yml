@@ -3,16 +3,19 @@ en:
   breadcrumbs:
     edit: Edit
     home: Home
+    horses: Horses
     new_user: New user
     users: Users
   forms:
     cancel: Cancel
   layouts:
     nav:
+      all_horses: Horses
       join: Join
       login: Login
       logout: Log out
       search_placeholder: Search...
+      stable_horses: My Horses
       users: Users
   pages:
     home:

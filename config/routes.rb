@@ -10,7 +10,12 @@ Rails.application.routes.draw do
   }
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  resources :horses, except: %i[new create destroy]
   resources :users
+  resource :stable
+  namespace :stable do
+    resources :horses, except: %i[new create destroy]
+  end
 
   # Defines the root path route ("/")
   root "pages#home"
@@ -41,6 +46,11 @@ end
 #                          new_user_unlock GET    /unlock/new(.:format)                                                                             devise/unlocks#new
 #                              user_unlock GET    /unlock(.:format)                                                                                 devise/unlocks#show
 #                                          POST   /unlock(.:format)                                                                                 devise/unlocks#create
+#                                   horses GET    /horses(.:format)                                                                                 horses#index
+#                               edit_horse GET    /horses/:id/edit(.:format)                                                                        horses#edit
+#                                    horse GET    /horses/:id(.:format)                                                                             horses#show
+#                                          PATCH  /horses/:id(.:format)                                                                             horses#update
+#                                          PUT    /horses/:id(.:format)                                                                             horses#update
 #                                    users GET    /users(.:format)                                                                                  users#index
 #                                          POST   /users(.:format)                                                                                  users#create
 #                                 new_user GET    /users/new(.:format)                                                                              users#new
@@ -49,6 +59,18 @@ end
 #                                          PATCH  /users/:id(.:format)                                                                              users#update
 #                                          PUT    /users/:id(.:format)                                                                              users#update
 #                                          DELETE /users/:id(.:format)                                                                              users#destroy
+#                               new_stable GET    /stable/new(.:format)                                                                             stables#new
+#                              edit_stable GET    /stable/edit(.:format)                                                                            stables#edit
+#                                   stable GET    /stable(.:format)                                                                                 stables#show
+#                                          PATCH  /stable(.:format)                                                                                 stables#update
+#                                          PUT    /stable(.:format)                                                                                 stables#update
+#                                          DELETE /stable(.:format)                                                                                 stables#destroy
+#                                          POST   /stable(.:format)                                                                                 stables#create
+#                            stable_horses GET    /stable/horses(.:format)                                                                          stable/horses#index
+#                        edit_stable_horse GET    /stable/horses/:id/edit(.:format)                                                                 stable/horses#edit
+#                             stable_horse GET    /stable/horses/:id(.:format)                                                                      stable/horses#show
+#                                          PATCH  /stable/horses/:id(.:format)                                                                      stable/horses#update
+#                                          PUT    /stable/horses/:id(.:format)                                                                      stable/horses#update
 #                                     root GET    /                                                                                                 pages#home
 #         turbo_recede_historical_location GET    /recede_historical_location(.:format)                                                             turbo/native/navigation#recede
 #         turbo_resume_historical_location GET    /resume_historical_location(.:format)                                                             turbo/native/navigation#resume

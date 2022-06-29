@@ -1,0 +1,6 @@
+= simple_form_for horse, html: { class: "horse form" } do |f|
+  = render(Shared::ErrorMessagesComponent.new(object: horse))
+  = f.input :name, input_html: { autofocus: true }
+  = f.input :date_of_birth
+  = link_to t('forms.cancel'), horses_path, class: "button is-light"
+  = f.submit class: "button is-primary"

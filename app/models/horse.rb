@@ -1,4 +1,4 @@
-# typed: strict
+# typed: false
 
 class Horse < ApplicationRecord
   extend T::Sig
@@ -14,6 +14,12 @@ class Horse < ApplicationRecord
 
   validates :date_of_birth, presence: true
   validates :date_of_death, comparison: { greater_than_or_equal_to: :date_of_birth }, if: :date_of_death
+  validate :name_required, on: :update
+
+  scope :living, -> { where(status: HorseStatus::LIVING_STATUSES) }
+  scope :ordered, -> { order(name: :asc) }
+
+  broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
 
   sig { returns(T.nilable(HorseStatus)) }
   def status
@@ -47,6 +53,12 @@ class Horse < ApplicationRecord
     return false unless self[:date_of_death]
 
     self[:date_of_death] >= self[:date_of_birth]
+  end
+
+  def name_required
+    return unless name_changed?
+
+    errors.add(:name, :blank) if name.blank?
   end
 end
 

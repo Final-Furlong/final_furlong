@@ -58,6 +58,10 @@ Metrics/BlockLength:
 Metrics/MethodLength:
   Exclude:
     - "db/migrate/**/*.rb"
+Rails/Output:
+  Exclude:
+    - "db/seeds.rb"
+
 Sorbet/FalseSigil:
   Exclude:
     - 'config/**/*.rb'
@@ -66,8 +70,8 @@ Sorbet/FalseSigil:
 
 
 Style/ClassAndModuleChildren:
-  Exclude:
-    - "app/controllers/users/devise_controller.rb"
+  EnforcedStyle: compact
+
 Style/Documentation:
   Enabled: false
 Style/EndlessMethod:

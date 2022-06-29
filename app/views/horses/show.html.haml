@@ -1,0 +1,12 @@
+- breadcrumb @horse
+.header
+  %h1= @horse.name
+
+.name
+  %strong= Horse.human_attribute_name(:name)
+  = @horse.name
+
+.status
+  %strong= Horse.human_attribute_name(:status)
+  = @horse.status
+

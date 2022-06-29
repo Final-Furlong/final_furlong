@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :horse do
-    sequence(:name) { "MyString" }
+    sequence(:name) { Faker::Creature::Horse.name }
     gender { %w[colt filly gelding].sample }
     status { "racehorse" }
     date_of_birth { Date.current - 3.years }

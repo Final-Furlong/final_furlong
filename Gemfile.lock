@@ -178,8 +178,6 @@ GEM
     coderay (1.1.3)
     colored2 (3.1.2)
     colorize (0.8.1)
-    commander (4.6.0)
-      highline (~> 2.0.0)
     concurrent-ruby (1.1.10)
     cork (0.3.0)
       colored2 (~> 3.1)
@@ -324,9 +322,6 @@ GEM
     iso (0.4.0)
       i18n
     jaro_winkler (1.5.4)
-    jbuilder (2.11.5)
-      actionview (>= 5.0.0)
-      activesupport (>= 5.0.0)
     jsbundling-rails (1.0.2)
       railties (>= 6.0.0)
     json (2.6.2)
@@ -403,15 +398,9 @@ GEM
     pagy (5.10.1)
       activesupport
     parallel (1.22.1)
-    parlour (8.0.0)
-      commander (~> 4.5)
-      parser
-      rainbow (~> 3.0)
-      sorbet-runtime (>= 0.5)
     parser (3.1.2.0)
       ast (~> 2.4.1)
     pg (1.3.5)
-    polyfill (1.9.0)
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -551,7 +540,6 @@ GEM
       sexp_processor (~> 4.16)
     rubyzip (2.3.2)
     rugged (1.2.0)
-    safe_type (1.1.1)
     sassc (2.4.0)
       ffi (~> 1.9)
     sawyer (0.9.2)
@@ -599,20 +587,10 @@ GEM
       yard (~> 0.9, >= 0.9.24)
     sorbet (0.5.10097)
       sorbet-static (= 0.5.10097)
-    sorbet-coerce (0.5.0)
-      polyfill (~> 1.8)
-      safe_type (~> 1.1, >= 1.1.1)
-      sorbet-runtime (>= 0.4.4704)
     sorbet-progress (0.3.0)
       rainbow (= 3.0)
       sorbet (>= 0.4.4314)
       sorbet-runtime (>= 0.4.4314)
-    sorbet-rails (0.7.33)
-      method_source (>= 0.9.2)
-      parlour (>= 4.0.1)
-      parser (>= 2.7)
-      sorbet-coerce (>= 0.2.6)
-      sorbet-runtime (>= 0.5.9892)
     sorbet-runtime (0.5.10097)
     sorbet-static (0.5.10097-universal-darwin-20)
     sorbet-static (0.5.10097-x86_64-linux)
@@ -742,7 +720,6 @@ DEPENDENCIES
   hotwire-livereload
   i18n-spec
   i18n-tasks
-  jbuilder
   jsbundling-rails
   letter_opener
   overcommit
@@ -778,7 +755,6 @@ DEPENDENCIES
   solargraph
   sorbet
   sorbet-progress
-  sorbet-rails
   sorbet-runtime
   sprockets-rails
   stimulus-rails

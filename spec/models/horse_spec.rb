@@ -4,6 +4,22 @@ require_relative "../shared/horse_examples"
 RSpec.describe Horse, type: :model do
   it_behaves_like "a horse"
 
+  describe "validations" do
+    describe "name" do
+      it "can be blank for a new horse" do
+        horse = build(:horse, name: nil)
+        expect(horse).to be_valid
+      end
+
+      it "cannot be blank for a horse who already has a name" do
+        horse = create(:horse, name: "Bob")
+        horse.name = nil
+        expect(horse).not_to be_valid
+        expect(horse.errors[:name]).to eq(["can't be blank"])
+      end
+    end
+  end
+
   describe "#status" do
     context "when horse has no status" do
       it "returns nil" do

@@ -1,0 +1,7 @@
+- breadcrumb :horses
+= turbo_stream_from "horses"
+.header.is-flex.flex-wrap-wrap.is-justify-content-space-between.is-vcentered.columns
+  %h1.is-size-1.column= t(".title")
+
+= turbo_frame_tag "horses" do
+  = render @horses

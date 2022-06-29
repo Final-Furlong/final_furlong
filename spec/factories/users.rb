@@ -1,15 +1,20 @@
 # typed: false
 
 FactoryBot.define do
+  sequence(:discourse_id)
+
   factory :user do
-    sequence(:username) { |n| "#{Faker::Internet.username(specifier: User::USERNAME_LENGTH)}_#{n}" }
+    sequence(:username) do |n|
+      "#{Faker::Internet.username(specifier: User::USERNAME_LENGTH - 1 - n.to_s.length)}_#{n}"
+    end
     password { Faker::Internet.password(min_length: User::PASSWORD_LENGTH) }
     status { "active" }
     name { Faker::Name.first_name }
     email { Faker::Internet.email }
     admin { false }
-    sequence(:discourse_id)
+    discourse_id
     confirmed_at { Time.current }
+    stable { association :stable, user: instance }
 
     factory :admin do
       admin { true }
