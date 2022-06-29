@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :horses, except: %i[new create destroy]
   resources :users
-  resource :stable
+  resource :stable, only: [:show]
   namespace :stable do
     resources :horses, except: %i[new create destroy]
   end
