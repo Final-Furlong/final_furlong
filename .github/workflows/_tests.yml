@@ -13,6 +13,7 @@ env:
   RAILS_ENV: test
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/final_furlong_test
   REDIS_URL: redis://localhost:6379/0
+  COVERAGE: true
 
 jobs:
   tests:
@@ -54,14 +55,11 @@ jobs:
 
       - name: Run tests
         run: bin/rspec
-        env:
-          COVERAGE: true
 
       - name: Publish code coverage to Code Climate
         uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.code-climate-token }}
-          COVERAGE: true
 
       - name: LCov Report
         if: github.event.pull_request
