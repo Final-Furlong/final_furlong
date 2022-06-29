@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 
 class Stable::HorsesController < AuthenticatedController
   before_action :set_horse, except: :index

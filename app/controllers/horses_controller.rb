@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 
 class HorsesController < ApplicationController
   before_action :set_horse, except: :index

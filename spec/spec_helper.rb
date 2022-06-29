@@ -1,4 +1,4 @@
-# typed: false
+# typed: strict
 
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 if ENV.fetch("COVERAGE", false) || ENV.fetch("CI", false)
