@@ -1,2 +1,2 @@
--l coverage/lcov/final_furlong.lcov
+-l coverage/lcov.info
 -c origin/main

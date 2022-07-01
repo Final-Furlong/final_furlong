@@ -5,7 +5,7 @@ class UsersController < AuthenticatedController
 
   # @route GET /users (users)
   def index
-    @users = User.ordered
+    @users = User.active.ordered
   end
 
   sig { returns(NilClass) }
@@ -23,8 +23,9 @@ class UsersController < AuthenticatedController
     @user = User.new(user_params)
 
     if @user.save
+      flash[:notice] = t(".success")
       respond_to do |format|
-        format.html { redirect_to users_path, notice: t(".success") }
+        format.html { redirect_to users_path }
         format.turbo_stream
       end
     else
@@ -48,7 +49,8 @@ class UsersController < AuthenticatedController
 
   # @route DELETE /users/:id (user)
   def destroy
-    @user.destroy
+    @user.deleted!
+    flash[:notice] = t(".success")
     respond_to do |format|
       format.html { redirect_to users_path, notice: t(".success") }
       format.turbo_stream

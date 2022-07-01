@@ -1,7 +1,7 @@
 # typed: false
 
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
-if ENV.fetch("COVERAGE", false)
+if ENV.fetch("COVERAGE", false) || ENV.fetch("CI", false)
   require "simplecov"
   require "undercover"
 end

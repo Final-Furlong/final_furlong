@@ -54,6 +54,7 @@ PreCommit:
   Undercover:
     command: ['bundle', 'exec', 'undercover']
     enabled: true
+    on_fail: warn
   YamlSyntax:
     enabled: true
     exclude:

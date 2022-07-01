@@ -32,6 +32,7 @@ class User < ApplicationRecord
 
   broadcasts_to ->(_user) { "users" }, inserts_by: :prepend
 
+  scope :active, -> { where(status: "active") }
   scope :ordered, -> { order(id: :desc) }
 
   attr_accessor :login
