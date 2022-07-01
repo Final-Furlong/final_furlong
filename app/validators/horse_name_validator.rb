@@ -1,4 +1,4 @@
-# typed: ignore
+# typed: false
 
 class HorseNameValidator < ActiveModel::EachValidator
   RESERVED_VALUES = ["Final Furlong"].freeze
