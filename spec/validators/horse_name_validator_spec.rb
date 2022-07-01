@@ -90,7 +90,6 @@ end
 
 class ModelWithHorseNameField
   include ActiveModel::Model
-  include HorseValidators::Validators
 
   attr_accessor :name
 end
