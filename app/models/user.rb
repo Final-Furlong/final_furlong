@@ -27,6 +27,8 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: PASSWORD_LENGTH }, on: :create
   validates :admin, inclusion: { in: [true, false] }
   validates :discourse_id, presence: true, uniqueness: true, on: :activate
+  # validates_email :email
+  # validates_password :password
 
   before_validation :set_defaults, on: :create
 

@@ -116,6 +116,7 @@ ignore_missing:
 ignore_unused:
 - 'activerecord.{attributes,models}.*'
 - 'breadcrumbs.*'
+- "errors.messages.*"
 - '{devise,kaminari,will_paginate,helpers}.*'
 - 'simple_form.{yes,no}'
 - 'simple_form.{placeholders,helpers,hints,labels}.*'

@@ -15,6 +15,7 @@ class Horse < ApplicationRecord
   validates :date_of_birth, presence: true
   validates :date_of_death, comparison: { greater_than_or_equal_to: :date_of_birth }, if: :date_of_death
   validate :name_required, on: :update
+  validates :name, horse_name: true, on: :update
 
   scope :living, -> { where(status: HorseStatus::LIVING_STATUSES) }
   scope :ordered, -> { order(name: :asc) }

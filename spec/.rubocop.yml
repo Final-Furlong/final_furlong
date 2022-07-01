@@ -38,4 +38,4 @@ RSpec/IdenticalEqualityAssertion:
   Enabled: true
 
 RSpec/MultipleExpectations:
-  Max: 2
+  Max: 4
