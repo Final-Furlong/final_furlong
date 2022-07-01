@@ -17,13 +17,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_19_171138) do
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "horse_gender", ["colt", "filly", "mare", "stallion", "gelding"]
-  create_enum "horse_status", ["unborn", "weanling", "yearling", "racehorse", "broodmare", "stallion", "retired", "retired_broodmare", "retired_stallion", "deceased"]
+  create_enum "horse_status", ["unborn", "weanling", "yearling", "racehorse", "broodmare", "stud", "retired", "retired_broodmare", "retired_stud", "deceased"]
   create_enum "user_status", ["pending", "active", "deleted", "banned"]
 
   create_table "horses", force: :cascade do |t|
     t.string "name"
     t.string "gender", null: false, comment: "colt, filly, mare, stallion, gelding"
-    t.enum "status", default: "unborn", null: false, comment: "unborn, weanling, yearling, racehorse, broodmare, stallion, retired, retired_broodmare, retired_stallion, deceased", enum_type: "horse_status"
+    t.enum "status", default: "unborn", null: false, comment: "unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased", enum_type: "horse_status"
     t.date "date_of_birth", null: false
     t.date "date_of_death"
     t.bigint "owner_id"
@@ -75,20 +75,20 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_19_171138) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
+    t.datetime "confirmed_at", precision: nil
+    t.datetime "confirmation_sent_at", precision: nil
     t.string "unconfirmed_email"
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
-    t.datetime "locked_at"
+    t.datetime "locked_at", precision: nil
     t.string "slug"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["discourse_id"], name: "index_users_on_discourse_id", unique: true

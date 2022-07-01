@@ -1,6 +1,4 @@
 # typed: strict
 
-module ApplicationCable
-  class Channel < ActionCable::Channel::Base
-  end
+class ApplicationCable::Channel < ActionCable::Channel::Base
 end

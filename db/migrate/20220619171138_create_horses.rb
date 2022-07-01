@@ -6,10 +6,10 @@ class CreateHorses < ActiveRecord::Migration[7.0]
       yearling
       racehorse
       broodmare
-      stallion
+      stud
       retired
       retired_broodmare
-      retired_stallion
+      retired_stud
       deceased
     ]
     gender_list = %w[colt filly mare stallion gelding]

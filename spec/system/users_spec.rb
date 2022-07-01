@@ -76,15 +76,6 @@ RSpec.describe "Users", js: true do
     end
   end
 
-  context "when a regular user" do
-    it "cannot create users"
-    it "can view users"
-    it "can update self"
-    it "cannot update others"
-    it "cannot destroy self"
-    it "cannot destroy others"
-  end
-
   def user
     @user ||= create(:user)
   end

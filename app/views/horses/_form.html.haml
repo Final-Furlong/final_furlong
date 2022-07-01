@@ -1,0 +1,11 @@
+= simple_form_for horse, html: { class: "horse form" } do |f|
+  = render(Shared::ErrorMessagesComponent.new(object: horse))
+  = f.input :name, input_html: { autofocus: true }
+  = f.input :date_of_birth, as: :text, disabled: true
+  = f.association :sire, value_method: :name, as: :text, disabled: true
+  = f.association :dam, value_method: :name, as: :text, disabled: true
+  = f.input :gender, as: :text, disabled: true
+  = f.association :owner, value_method: :name, as: :text, disabled: true
+  = f.association :breeder, value_method: :name, as: :text, disabled: true
+  = link_to t('forms.cancel'), horses_path, class: "button is-light"
+  = f.submit class: "button is-primary"

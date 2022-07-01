@@ -6,6 +6,10 @@ on:
       - 'main'
       - 'releases/**'
 
+env:
+  CI: true
+  RAILS_ENV: test
+
 jobs:
   call-linters:
     uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@main

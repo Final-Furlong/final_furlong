@@ -22,6 +22,21 @@ crumb :user do |user|
   parent :users
 end
 
+crumb :horses do
+  link t("breadcrumbs.horses"), horses_path
+end
+
+crumb :edit_horse do |horse|
+  link horse.name, horse_path(horse)
+  link t("breadcrumbs.edit")
+  parent :horses
+end
+
+crumb :horse do |horse|
+  link horse.name, horse_path(horse)
+  parent :horses
+end
+
 # crumb :projects do
 #   link "Projects", projects_path
 # end

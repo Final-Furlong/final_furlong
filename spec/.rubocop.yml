@@ -36,3 +36,6 @@ RSpec/ExcessiveDocstringSpacing:
 
 RSpec/IdenticalEqualityAssertion:
   Enabled: true
+
+RSpec/MultipleExpectations:
+  Max: 4

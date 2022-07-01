@@ -55,9 +55,9 @@ if Rails.env.development?
       "frozen" => "false",
       "classified_sort" => "true",
       "trace" => "false",
-      "wrapper_open" => "rubocop:disable Metrics/LineLength",
-      "wrapper_close" => "rubocop:enable Metrics/LineLength",
-      "with_comment" => "true"
+      "wrapper_open" => nil,
+      "wrapper_close" => nil,
+      "with_comment" => "false"
     )
   end
 

@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :horse do
-    sequence(:name) { "MyString" }
+    sequence(:name) { Faker::Creature::Horse.name }
     gender { %w[colt filly gelding].sample }
     status { "racehorse" }
     date_of_birth { Date.current - 3.years }
@@ -11,11 +11,19 @@ FactoryBot.define do
     location_bred factory: :racetrack
 
     trait :with_sire do
-      association :sire, factory(:horse, :stallion)
+      sire
     end
 
     trait :with_dam do
-      association :dam, factory(:horse, :broodmare)
+      dam
+    end
+
+    factory :sire do
+      stallion
+    end
+
+    factory :dam do
+      broodmare
     end
 
     trait :weanling do
@@ -31,7 +39,7 @@ FactoryBot.define do
     end
 
     trait :stallion do
-      status { "stallion" }
+      status { "stud" }
       date_of_birth { Date.current - 7.years }
       gender { "stallion" }
     end
@@ -45,7 +53,7 @@ FactoryBot.define do
     trait :retired do
       status { "retired" }
       date_of_birth { Date.current - 5.years }
-      gender { %w[mare stallion gelding] }
+      gender { %w[mare stallion gelding].sample }
     end
 
     trait :stillborn do
@@ -61,19 +69,19 @@ end
 #
 # Table name: horses
 #
-#  id                                                                                                                         :bigint           not null, primary key
-#  date_of_birth                                                                                                              :date             not null, indexed
-#  date_of_death                                                                                                              :date
-#  gender(colt, filly, mare, stallion, gelding)                                                                               :string           not null
-#  name                                                                                                                       :string
-#  status(unborn, weanling, yearling, racehorse, broodmare, stallion, retired, retired_broodmare, retired_stallion, deceased) :enum             default("unborn"), not null, indexed
-#  created_at                                                                                                                 :datetime         not null
-#  updated_at                                                                                                                 :datetime         not null
-#  breeder_id                                                                                                                 :bigint           indexed
-#  dam_id                                                                                                                     :bigint           indexed
-#  location_bred_id                                                                                                           :bigint           indexed
-#  owner_id                                                                                                                   :bigint           indexed
-#  sire_id                                                                                                                    :bigint           indexed
+#  id               :bigint           not null, primary key
+#  date_of_birth    :date             not null, indexed
+#  date_of_death    :date
+#  gender           :string           not null
+#  name             :string
+#  status           :enum             default("unborn"), not null, indexed
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  breeder_id       :bigint           indexed
+#  dam_id           :bigint           indexed
+#  location_bred_id :bigint           indexed
+#  owner_id         :bigint           indexed
+#  sire_id          :bigint           indexed
 #
 # Indexes
 #

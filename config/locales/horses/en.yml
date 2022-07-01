@@ -1,0 +1,13 @@
+---
+en:
+  horses:
+    index:
+      title: Horses
+    update:
+      success: "%{name} was successfully updated."
+  stable:
+    horses:
+      index:
+        title: Horses
+      update:
+        success: "%{name} was successfully updated."

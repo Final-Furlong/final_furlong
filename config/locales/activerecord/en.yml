@@ -1,5 +1,14 @@
 ---
 en:
+  activemodel:
+    errors:
+      messages:
+        date_invalid: must be a valid date. Format should be DD/MM/YYYY
+        datetime_invalid: must be a valid datetime. Format should be DD/MM/YYYY HH24:MM
+        dob_future: must not be in future
+        dob_in_far_past: must be no more than 150 years ago
+        phone_invalid_mobile: is invalid
+        weak: 'must be at least 8 characters long and contain: an upper case character, a lower case character, digit and a non-alphabet character.'
   activerecord:
     attributes:
       user:
@@ -25,3 +34,9 @@ en:
         unconfirmed_email: Email (unconfirmed)
         updated_at: Updated
         username: Username
+    errors:
+      models:
+        horse:
+          attributes:
+            name:
+              non_unique: has already been taken

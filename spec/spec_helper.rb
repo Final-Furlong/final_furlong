@@ -1,8 +1,10 @@
 # typed: false
 
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
-require "simplecov"
-require "undercover"
+if ENV.fetch("COVERAGE", false) || ENV.fetch("CI", false)
+  require "simplecov"
+  require "undercover"
+end
 
 require "capybara/rspec"
 require "faker"
