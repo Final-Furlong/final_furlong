@@ -22,9 +22,10 @@ class HorsesController < ApplicationController
   # @route PUT /horses/:id (horse)
   def update
     if @horse.update(horse_params)
+      @horse.reload
       respond_to do |format|
         format.html { redirect_to horses_path, notice: t(".success", name: @horse.name) }
-        format.turbo_stream
+        format.turbo_stream { flash.now[:notice] = t(".success", name: @horse.name) }
       end
     else
       render :edit, status: :unprocessable_entity
