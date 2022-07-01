@@ -67,6 +67,7 @@ Sorbet/FalseSigil:
     - 'config/**/*.rb'
     - 'db/**/*.rb'
     - 'lib/**/*.rake'
+    - 'app/validators/**/*.rb'
 
 
 Style/ClassAndModuleChildren:
@@ -92,4 +93,3 @@ Style/SignalException:
   Enabled: true
   Exclude:
     - Dangerfile
-

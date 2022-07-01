@@ -15,7 +15,7 @@ RSpec.describe Horse, type: :model do
         horse = create(:horse, name: "Bob")
         horse.name = nil
         expect(horse).not_to be_valid
-        expect(horse.errors[:name]).to eq(["can't be blank"])
+        expect(horse.errors[:name]).to eq(["can't be blank", "has already been taken"])
       end
     end
   end
