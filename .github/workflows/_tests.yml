@@ -62,14 +62,14 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.code-climate-token }}
 
       - name: LCov Report
-        if: github.event.pull_request
+        #        if: github.event.pull_request
         uses: manarbenkraouda/lcov-reporter-action@v0.3.5.3
         with:
           github-token: ${{ secrets.lcov-token }}
           lcov-file: coverage/lcov.info
 
       - name: Code Coverage Summary Report
-        if: github.event.pull_request
+        #if: github.event.pull_request
         uses: irongut/CodeCoverageSummary@v1.2.0
         with:
           filename: coverage/coverage.xml
