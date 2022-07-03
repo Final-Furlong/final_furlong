@@ -53,7 +53,7 @@ jobs:
           bin/rails db:create
           bin/rails db:test:prepare
 
-      - name: Run tests
+      - name: Test & Publish Coverage
         uses: paambaati/codeclimate-action@v2.2.4
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.code-climate-token }}
