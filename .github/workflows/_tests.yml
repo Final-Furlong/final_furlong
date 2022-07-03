@@ -60,17 +60,11 @@ jobs:
         with:
           coverageCommand: bin/rspec
 
-      - name: Coverage Badge
-        uses: greatwizard/coverage-diff-action@v1
+      - name: Coverage Report
+        uses: ewjoachim/coverage-comment-action@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          coverage-filename: coverage/coverage.json
-          base-summary-filename: base-summary.json
-          allowed-to-fail: false
-          badge-enabled: true
-          badge-filename: coverage-diff-badge.json
-          badge-threshold-green: 90
-          badge-threshold-orange: 70
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERAGE_FILE: "coverage/coverage.xml"
 
       - name: LCov Report
         #        if: github.event.pull_request
