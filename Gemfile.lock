@@ -361,6 +361,8 @@ GEM
     minitest (5.16.0)
     msgpack (1.5.2)
     multipart-post (2.2.3)
+    mutations (0.9.1)
+      activesupport
     nap (1.1.0)
     nested_form (0.3.2)
     net-imap (0.2.3)
@@ -716,6 +718,7 @@ DEPENDENCIES
   i18n-tasks
   jsbundling-rails
   letter_opener
+  mutations
   overcommit
   pagy
   pg (~> 1.1)
