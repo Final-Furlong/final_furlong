@@ -90,12 +90,6 @@ module ActionDispatch::RequestCookieMethods
   def commit_cookie_jar!(); end
 end
 
-class ActionDispatch::RequestEncoder::TurboStreamEncoder
-end
-
-class ActionDispatch::RequestEncoder::TurboStreamEncoder
-end
-
 module ActionDispatch::Routing::RouteSet::MountedHelpers
   def _main_app(); end
 
@@ -548,15 +542,6 @@ class ActionView::Base
   def self.unknown_asset_fallback?(); end
 end
 
-class ActionView::FixtureResolver
-  def data(); end
-
-  def initialize(hash=T.unsafe(nil)); end
-end
-
-class ActionView::FixtureResolver
-end
-
 module ActionView::Helpers::CaptureHelper
   def capture_with_haml(*args, &block); end
 
@@ -598,12 +583,6 @@ module ActionView::Helpers::TextHelper
   def safe_concat_with_haml_xss(string); end
 
   def safe_concat_without_haml_xss(string); end
-end
-
-class ActionView::NullResolver
-end
-
-class ActionView::NullResolver
 end
 
 module ActionView::RoutingUrlFor
@@ -1503,10 +1482,6 @@ module ActiveRecord::Enum
 
   def typed_enum_reflections(&blk); end
   SR_ENUM_KEYWORDS = ::T.let(nil, ::T.untyped)
-end
-
-class ActiveRecord::FixtureSet
-  extend ::GlobalID::FixtureSet
 end
 
 class ActiveRecord::InternalMetadata::ActiveRecord_AssociationRelation
@@ -6980,77 +6955,6 @@ class Capybara::ReadOnlySessionConfig
   RUBYGEMS_ACTIVATION_MONITOR = ::T.let(nil, ::T.untyped)
 end
 
-module Capybara::Screenshot::RSpec
-  REPORTERS = ::T.let(nil, ::T.untyped)
-end
-
-module Capybara::Screenshot::RSpec::BaseReporter
-  def enhance_with_screenshot(method); end
-end
-
-module Capybara::Screenshot::RSpec::BaseReporter
-end
-
-module Capybara::Screenshot::RSpec::HtmlEmbedReporter
-  def extra_failure_content_with_screenshot(exception); end
-end
-
-module Capybara::Screenshot::RSpec::HtmlEmbedReporter
-  extend ::Capybara::Screenshot::RSpec::BaseReporter
-  def self.included(mod); end
-end
-
-module Capybara::Screenshot::RSpec::HtmlLinkReporter
-  def attributes_for_screenshot_link(url); end
-
-  def extra_failure_content_with_screenshot(exception); end
-
-  def link_to_screenshot(title, path); end
-end
-
-module Capybara::Screenshot::RSpec::HtmlLinkReporter
-  extend ::Capybara::Screenshot::RSpec::BaseReporter
-  def self.included(mod); end
-end
-
-module Capybara::Screenshot::RSpec::JsonReporter
-  def format_example_with_screenshot(example); end
-end
-
-module Capybara::Screenshot::RSpec::JsonReporter
-  extend ::Capybara::Screenshot::RSpec::BaseReporter
-  def self.included(mod); end
-end
-
-module Capybara::Screenshot::RSpec::TextMateLinkReporter
-  include ::Capybara::Screenshot::RSpec::HtmlLinkReporter
-  def attributes_for_screenshot_link(url); end
-end
-
-module Capybara::Screenshot::RSpec::TextMateLinkReporter
-  extend ::Capybara::Screenshot::RSpec::BaseReporter
-  def self.included(mod); end
-end
-
-module Capybara::Screenshot::RSpec::TextReporter
-  def dump_failure_info_with_screenshot(example); end
-
-  def example_failed_with_screenshot(notification); end
-end
-
-module Capybara::Screenshot::RSpec::TextReporter
-  extend ::Capybara::Screenshot::RSpec::BaseReporter
-  def self.included(mod); end
-end
-
-module Capybara::Screenshot::RSpec
-  def self.add_link_to_screenshot_for_failed_examples(); end
-
-  def self.add_link_to_screenshot_for_failed_examples=(add_link_to_screenshot_for_failed_examples); end
-
-  def self.after_failed_example(example); end
-end
-
 class Capybara::Selector
   RUBYGEMS_ACTIVATION_MONITOR = ::T.let(nil, ::T.untyped)
 end
@@ -7075,14 +6979,8 @@ class Concurrent::SynchronizedDelegator
   RUBYGEMS_ACTIVATION_MONITOR = ::T.let(nil, ::T.untyped)
 end
 
-module Coverage
-  def self.resume(); end
-
-  def self.setup(*arg); end
-
-  def self.state(); end
-
-  def self.suspend(); end
+class CreateParams
+  def self.inherited(s); end
 end
 
 class DRb::DRbArray
@@ -11283,8 +11181,6 @@ end
 class Net::HTTPAlreadyReported
 end
 
-Net::HTTPClientError::EXCEPTION_TYPE = Net::HTTPServerException
-
 Net::HTTPClientErrorCode = Net::HTTPClientError
 
 class Net::HTTPEarlyHints
@@ -11296,9 +11192,13 @@ end
 
 Net::HTTPFatalErrorCode = Net::HTTPClientError
 
-Net::HTTPInformation::EXCEPTION_TYPE = Net::HTTPError
+class Net::HTTPInformation
+end
 
-Net::HTTPInformationCode = Net::HTTPInformation
+Net::HTTPInformationCode::EXCEPTION_TYPE = Net::HTTPError
+
+class Net::HTTPInformation
+end
 
 class Net::HTTPLoopDetected
   HAS_BODY = ::T.let(nil, ::T.untyped)
@@ -11356,11 +11256,11 @@ Net::HTTPResponseReceiver = Net::HTTPResponse
 
 Net::HTTPRetriableCode = Net::HTTPRedirection
 
-Net::HTTPServerError::EXCEPTION_TYPE = Net::HTTPFatalError
-
 Net::HTTPServerErrorCode = Net::HTTPServerError
 
 Net::HTTPSession = Net::HTTP
+
+Net::HTTPSuccess::EXCEPTION_TYPE = Net::HTTPError
 
 Net::HTTPSuccessCode = Net::HTTPSuccess
 
@@ -13489,6 +13389,134 @@ module Puma::MiniSSL
   OPENSSL_NO_TLS1_1 = ::T.let(nil, ::T.untyped)
 end
 
+module Pundit
+  SUFFIX = ::T.let(nil, ::T.untyped)
+  VERSION = ::T.let(nil, ::T.untyped)
+end
+
+module Pundit::Authorization
+  def authorize(record, query=T.unsafe(nil), policy_class: T.unsafe(nil)); end
+
+  def permitted_attributes(record, action=T.unsafe(nil)); end
+
+  def policies(); end
+
+  def policy(record); end
+
+  def policy_scope(scope, policy_scope_class: T.unsafe(nil)); end
+
+  def policy_scopes(); end
+
+  def pundit_params_for(record); end
+
+  def pundit_policy_authorized?(); end
+
+  def pundit_policy_scoped?(); end
+
+  def pundit_user(); end
+
+  def skip_authorization(); end
+
+  def skip_policy_scope(); end
+
+  def verify_authorized(); end
+
+  def verify_policy_scoped(); end
+end
+
+module Pundit::Authorization
+  extend ::ActiveSupport::Concern
+end
+
+class Pundit::AuthorizationNotPerformedError
+end
+
+class Pundit::AuthorizationNotPerformedError
+end
+
+class Pundit::Error
+end
+
+class Pundit::Error
+end
+
+module Pundit::Generators
+end
+
+module Pundit::Generators
+end
+
+module Pundit::Helper
+  def policy_scope(scope); end
+end
+
+module Pundit::Helper
+end
+
+class Pundit::InvalidConstructorError
+end
+
+class Pundit::InvalidConstructorError
+end
+
+class Pundit::NotAuthorizedError
+  def initialize(options=T.unsafe(nil)); end
+
+  def policy(); end
+
+  def query(); end
+
+  def record(); end
+end
+
+class Pundit::NotAuthorizedError
+end
+
+class Pundit::NotDefinedError
+end
+
+class Pundit::NotDefinedError
+end
+
+class Pundit::PolicyFinder
+  def initialize(object); end
+
+  def object(); end
+
+  def param_key(); end
+
+  def policy(); end
+
+  def policy!(); end
+
+  def scope(); end
+
+  def scope!(); end
+end
+
+class Pundit::PolicyFinder
+end
+
+class Pundit::PolicyScopingNotPerformedError
+end
+
+class Pundit::PolicyScopingNotPerformedError
+end
+
+module Pundit
+  def self.authorize(user, possibly_namespaced_record, query, policy_class: T.unsafe(nil), cache: T.unsafe(nil)); end
+
+  def self.included(base); end
+
+  def self.policy(user, record); end
+
+  def self.policy!(user, record); end
+
+  def self.policy_scope(user, scope); end
+
+  def self.policy_scope!(user, scope); end
+end
+
 class RDoc::Alias
   def initialize(text, old_name, new_name, comment, singleton=T.unsafe(nil)); end
 end
@@ -14080,24 +14108,6 @@ class REXML::XPathParser
   DEBUG = ::T.let(nil, ::T.untyped)
 end
 
-module RSpec::Core::Configuration::Readers
-  def file_fixture_path(); end
-
-  def fixture_path(); end
-
-  def global_fixtures(); end
-
-  def infer_base_class_for_anonymous_controllers(); end
-
-  def rendering_views(); end
-
-  def use_active_record(); end
-
-  def use_instantiated_fixtures(); end
-
-  def use_transactional_fixtures(); end
-end
-
 class RSpec::Core::ExampleGroup
   include ::RSpec::Core::MockingAdapters::RSpec
   include ::RSpec::Mocks::ExampleMethods
@@ -14149,917 +14159,6 @@ end
 
 module RSpec::Matchers
   extend ::Capybara::RSpecMatcherProxyInstaller::ClassMethods
-end
-
-module RSpec::Rails
-  DIRECTORY_MAPPINGS = ::T.let(nil, ::T.untyped)
-end
-
-class RSpec::Rails::ActiveRecordConfiguration
-end
-
-class RSpec::Rails::ActiveRecordConfiguration
-  def self.initialize_activerecord_configuration(config); end
-end
-
-class RSpec::Rails::AssertionDelegator
-  def initialize(*assertion_modules); end
-end
-
-class RSpec::Rails::AssertionDelegator
-end
-
-RSpec::Rails::Assertions = Minitest::Assertions
-
-module RSpec::Rails::ChannelExampleGroup
-  def have_rejected_connection(); end
-
-  def have_stream_for(object); end
-
-  def have_stream_from(stream); end
-
-  def have_streams(); end
-end
-
-module RSpec::Rails::ChannelExampleGroup::ClassMethods
-  def channel_class(); end
-
-  def connection_class(); end
-end
-
-module RSpec::Rails::ChannelExampleGroup::ClassMethods
-end
-
-module RSpec::Rails::ChannelExampleGroup
-  extend ::ActiveSupport::Concern
-end
-
-class RSpec::Rails::Configuration
-end
-
-class RSpec::Rails::Configuration
-end
-
-module RSpec::Rails::ControllerAssertionDelegator
-  def assert_generates(*args, &block); end
-
-  def assert_recognizes(*args, &block); end
-
-  def assert_routing(*args, &block); end
-
-  def assertion_instance(); end
-
-  def build_assertion_instance(); end
-
-  def setup(*args, &block); end
-
-  def with_routing(*args, &block); end
-end
-
-module RSpec::Rails::ControllerAssertionDelegator
-end
-
-module RSpec::Rails::ControllerExampleGroup
-  include ::RSpec::Rails::Matchers::RedirectTo
-  include ::RSpec::Rails::Matchers::RenderTemplate
-  include ::RSpec::Rails::Matchers::RoutingMatchers
-  include ::RSpec::Rails::ControllerAssertionDelegator
-  def bypass_rescue(); end
-
-  def controller(); end
-
-  def method_missing(method, *args, **arg, &block); end
-
-  def routes(); end
-
-  def routes=(routes); end
-end
-
-module RSpec::Rails::ControllerExampleGroup::BypassRescue
-  def rescue_with_handler(exception); end
-end
-
-module RSpec::Rails::ControllerExampleGroup::BypassRescue
-end
-
-module RSpec::Rails::ControllerExampleGroup::ClassMethods
-  def controller(base_class=T.unsafe(nil), &body); end
-
-  def controller_class(); end
-
-  def routes(); end
-end
-
-module RSpec::Rails::ControllerExampleGroup::ClassMethods
-end
-
-module RSpec::Rails::ControllerExampleGroup
-  extend ::ActiveSupport::Concern
-end
-
-module RSpec::Rails::FeatureExampleGroup
-  def visit(*arg); end
-  DEFAULT_HOST = ::T.let(nil, ::T.untyped)
-end
-
-module RSpec::Rails::FeatureExampleGroup
-  extend ::ActiveSupport::Concern
-end
-
-module RSpec::Rails::FileFixtureSupport
-end
-
-module RSpec::Rails::FileFixtureSupport
-  extend ::ActiveSupport::Concern
-end
-
-module RSpec::Rails::FixtureFileUploadSupport
-  def fixture_file_upload(*arg, **arg1, &arg2); end
-end
-
-class RSpec::Rails::FixtureFileUploadSupport::RailsFixtureFileWrapper
-  include ::ActionDispatch::TestProcess
-  include ::ActionDispatch::TestProcess::FixtureFile
-  include ::ActiveSupport::Testing::FileFixtures
-  def file_fixture_path(); end
-
-  def file_fixture_path?(); end
-end
-
-class RSpec::Rails::FixtureFileUploadSupport::RailsFixtureFileWrapper
-  def self.file_fixture_path(); end
-
-  def self.file_fixture_path=(value); end
-
-  def self.file_fixture_path?(); end
-
-  def self.fixture_path(); end
-
-  def self.fixture_path=(fixture_path); end
-
-  def self.instance(); end
-end
-
-module RSpec::Rails::FixtureFileUploadSupport
-end
-
-module RSpec::Rails::FixtureSupport
-  def run_in_transaction?(); end
-end
-
-module RSpec::Rails::FixtureSupport::Fixtures
-end
-
-module RSpec::Rails::FixtureSupport::Fixtures::ClassMethods
-  def fixtures(*args); end
-
-  def proxy_method_warning_if_called_in_before_context_scope(method_name); end
-end
-
-module RSpec::Rails::FixtureSupport::Fixtures::ClassMethods
-end
-
-module RSpec::Rails::FixtureSupport::Fixtures
-  extend ::ActiveSupport::Concern
-end
-
-module RSpec::Rails::FixtureSupport
-  extend ::ActiveSupport::Concern
-end
-
-module RSpec::Rails::HelperExampleGroup
-  include ::RSpec::Rails::ViewAssigns
-  def helper(); end
-end
-
-module RSpec::Rails::HelperExampleGroup::ClassMethods
-  def determine_constant_from_test_name(_ignore); end
-end
-
-module RSpec::Rails::HelperExampleGroup::ClassMethods
-end
-
-module RSpec::Rails::HelperExampleGroup
-  extend ::ActiveSupport::Concern
-end
-
-module RSpec::Rails::JobExampleGroup
-end
-
-module RSpec::Rails::JobExampleGroup
-  extend ::ActiveSupport::Concern
-end
-
-module RSpec::Rails::MailboxExampleGroup
-  def have_been_delivered(); end
-
-  def have_bounced(); end
-
-  def have_failed(); end
-
-  def process(message); end
-end
-
-module RSpec::Rails::MailboxExampleGroup::ClassMethods
-  def mailbox_class(); end
-end
-
-module RSpec::Rails::MailboxExampleGroup::ClassMethods
-end
-
-module RSpec::Rails::MailboxExampleGroup
-  extend ::ActiveSupport::Concern
-  extend ::ActionMailbox::TestHelper
-  def self.create_inbound_email(arg); end
-end
-
-module RSpec::Rails::MailerExampleGroup
-end
-
-module RSpec::Rails::MailerExampleGroup::ClassMethods
-  def mailer_class(); end
-end
-
-module RSpec::Rails::MailerExampleGroup::ClassMethods
-end
-
-module RSpec::Rails::MailerExampleGroup
-  extend ::ActiveSupport::Concern
-end
-
-module RSpec::Rails::Matchers
-  def be_a_new(model_class); end
-
-  def be_new_record(); end
-
-  def be_valid(*args); end
-
-  def broadcast_to(target=T.unsafe(nil)); end
-
-  def enqueue_email(mailer_class=T.unsafe(nil), mail_method_name=T.unsafe(nil)); end
-
-  def enqueue_job(job=T.unsafe(nil)); end
-
-  def enqueue_mail(mailer_class=T.unsafe(nil), mail_method_name=T.unsafe(nil)); end
-
-  def have_been_enqueued(); end
-
-  def have_been_performed(); end
-
-  def have_broadcasted_to(target=T.unsafe(nil)); end
-
-  def have_enqueued_email(mailer_class=T.unsafe(nil), mail_method_name=T.unsafe(nil)); end
-
-  def have_enqueued_job(job=T.unsafe(nil)); end
-
-  def have_enqueued_mail(mailer_class=T.unsafe(nil), mail_method_name=T.unsafe(nil)); end
-
-  def have_http_status(target); end
-
-  def have_performed_job(job=T.unsafe(nil)); end
-
-  def perform_job(job=T.unsafe(nil)); end
-
-  def receive_inbound_email(message); end
-end
-
-module RSpec::Rails::Matchers::ActionCable
-end
-
-class RSpec::Rails::Matchers::ActionCable::HaveBroadcastedTo
-  def at_least(count); end
-
-  def at_most(count); end
-
-  def exactly(count); end
-
-  def from_channel(channel); end
-
-  def initialize(target, channel:); end
-
-  def matches?(proc); end
-
-  def message_expectation_modifier(); end
-
-  def once(); end
-
-  def thrice(); end
-
-  def times(); end
-
-  def twice(); end
-
-  def with(data=T.unsafe(nil), &block); end
-end
-
-class RSpec::Rails::Matchers::ActionCable::HaveBroadcastedTo
-end
-
-class RSpec::Rails::Matchers::ActionCable::HaveStream
-  def does_not_match?(subscription); end
-
-  def matches?(subscription); end
-end
-
-class RSpec::Rails::Matchers::ActionCable::HaveStream
-end
-
-module RSpec::Rails::Matchers::ActionCable
-end
-
-module RSpec::Rails::Matchers::ActionMailbox
-end
-
-class RSpec::Rails::Matchers::ActionMailbox::Base
-end
-
-class RSpec::Rails::Matchers::ActionMailbox::Base
-end
-
-class RSpec::Rails::Matchers::ActionMailbox::ReceiveInboundEmail
-  def initialize(message); end
-
-  def matches?(mailbox); end
-end
-
-class RSpec::Rails::Matchers::ActionMailbox::ReceiveInboundEmail
-end
-
-module RSpec::Rails::Matchers::ActionMailbox
-end
-
-module RSpec::Rails::Matchers::ActiveJob
-end
-
-class RSpec::Rails::Matchers::ActiveJob::Base
-  def at(time_or_date); end
-
-  def at_least(count); end
-
-  def at_most(count); end
-
-  def exactly(count); end
-
-  def initialize(); end
-
-  def message_expectation_modifier(); end
-
-  def on_queue(queue); end
-
-  def once(); end
-
-  def thrice(); end
-
-  def times(); end
-
-  def twice(); end
-
-  def with(*args, &block); end
-end
-
-class RSpec::Rails::Matchers::ActiveJob::Base
-end
-
-class RSpec::Rails::Matchers::ActiveJob::HaveBeenEnqueued
-  def does_not_match?(proc); end
-
-  def matches?(job); end
-  FAILURE_MESSAGE_EXPECTATION_ACTION = ::T.let(nil, ::T.untyped)
-  MESSAGE_EXPECTATION_ACTION = ::T.let(nil, ::T.untyped)
-end
-
-class RSpec::Rails::Matchers::ActiveJob::HaveBeenEnqueued
-end
-
-class RSpec::Rails::Matchers::ActiveJob::HaveBeenPerformed
-  def matches?(job); end
-  FAILURE_MESSAGE_EXPECTATION_ACTION = ::T.let(nil, ::T.untyped)
-  MESSAGE_EXPECTATION_ACTION = ::T.let(nil, ::T.untyped)
-end
-
-class RSpec::Rails::Matchers::ActiveJob::HaveBeenPerformed
-end
-
-class RSpec::Rails::Matchers::ActiveJob::HaveEnqueuedJob
-  def does_not_match?(proc); end
-
-  def initialize(job); end
-
-  def matches?(proc); end
-  FAILURE_MESSAGE_EXPECTATION_ACTION = ::T.let(nil, ::T.untyped)
-  MESSAGE_EXPECTATION_ACTION = ::T.let(nil, ::T.untyped)
-end
-
-class RSpec::Rails::Matchers::ActiveJob::HaveEnqueuedJob
-end
-
-class RSpec::Rails::Matchers::ActiveJob::HavePerformedJob
-  def initialize(job); end
-
-  def matches?(proc); end
-  FAILURE_MESSAGE_EXPECTATION_ACTION = ::T.let(nil, ::T.untyped)
-  MESSAGE_EXPECTATION_ACTION = ::T.let(nil, ::T.untyped)
-end
-
-class RSpec::Rails::Matchers::ActiveJob::HavePerformedJob
-end
-
-module RSpec::Rails::Matchers::ActiveJob
-end
-
-class RSpec::Rails::Matchers::BaseMatcher
-  include ::RSpec::Matchers::Composable
-  include ::RSpec::Rails::Matchers::BaseMatcher::HashFormatting
-  include ::RSpec::Rails::Matchers::BaseMatcher::DefaultFailureMessages
-  def actual(); end
-
-  def actual_formatted(); end
-
-  def description(); end
-
-  def diffable?(); end
-
-  def expected(); end
-
-  def expected_formatted(); end
-
-  def expects_call_stack_jump?(); end
-
-  def initialize(expected=T.unsafe(nil)); end
-
-  def match_unless_raises(*exceptions); end
-
-  def matcher_name(); end
-
-  def matcher_name=(matcher_name); end
-
-  def matches?(actual); end
-
-  def present_ivars(); end
-
-  def rescued_exception(); end
-
-  def supports_block_expectations?(); end
-  UNDEFINED = ::T.let(nil, ::T.untyped)
-end
-
-module RSpec::Rails::Matchers::BaseMatcher::DefaultFailureMessages
-  def failure_message(); end
-
-  def failure_message_when_negated(); end
-end
-
-module RSpec::Rails::Matchers::BaseMatcher::DefaultFailureMessages
-  def self.has_default_failure_messages?(matcher); end
-end
-
-module RSpec::Rails::Matchers::BaseMatcher::HashFormatting
-end
-
-module RSpec::Rails::Matchers::BaseMatcher::HashFormatting
-  def self.improve_hash_formatting(inspect_string); end
-end
-
-class RSpec::Rails::Matchers::BaseMatcher
-  def self.matcher_name(); end
-end
-
-class RSpec::Rails::Matchers::BeANew
-  def initialize(expected); end
-
-  def with(expected_attributes); end
-end
-
-class RSpec::Rails::Matchers::BeANew
-end
-
-class RSpec::Rails::Matchers::BeANewRecord
-end
-
-class RSpec::Rails::Matchers::BeANewRecord
-end
-
-class RSpec::Rails::Matchers::BeValid
-end
-
-class RSpec::Rails::Matchers::BeValid
-end
-
-class RSpec::Rails::Matchers::HaveEnqueuedMail
-  include ::RSpec::Mocks::ArgumentMatchers
-  def initialize(mailer_class, method_name); end
-
-  def matches?(block); end
-  MAILER_JOB_METHOD = ::T.let(nil, ::T.untyped)
-end
-
-class RSpec::Rails::Matchers::HaveEnqueuedMail
-end
-
-module RSpec::Rails::Matchers::HaveHttpStatus
-  def invalid_response_type_message(); end
-end
-
-class RSpec::Rails::Matchers::HaveHttpStatus::GenericStatus
-  include ::RSpec::Rails::Matchers::HaveHttpStatus
-  def check_expected_status(test_response, expected); end
-
-  def initialize(type); end
-
-  def matches?(response); end
-  RESPONSE_METHODS = ::T.let(nil, ::T.untyped)
-end
-
-class RSpec::Rails::Matchers::HaveHttpStatus::GenericStatus
-  def self.valid_statuses(); end
-end
-
-class RSpec::Rails::Matchers::HaveHttpStatus::NumericCode
-  include ::RSpec::Rails::Matchers::HaveHttpStatus
-  def initialize(code); end
-
-  def matches?(response); end
-end
-
-class RSpec::Rails::Matchers::HaveHttpStatus::NumericCode
-end
-
-class RSpec::Rails::Matchers::HaveHttpStatus::SymbolicStatus
-  include ::RSpec::Rails::Matchers::HaveHttpStatus
-  def initialize(status); end
-
-  def matches?(response); end
-end
-
-class RSpec::Rails::Matchers::HaveHttpStatus::SymbolicStatus
-end
-
-module RSpec::Rails::Matchers::HaveHttpStatus
-  def self.as_test_response(obj); end
-
-  def self.matcher_for_status(target); end
-end
-
-module RSpec::Rails::Matchers::RedirectTo
-  def redirect_to(target); end
-end
-
-module RSpec::Rails::Matchers::RedirectTo
-end
-
-module RSpec::Rails::Matchers::RenderTemplate
-  def have_rendered(options, message=T.unsafe(nil)); end
-
-  def render_template(options, message=T.unsafe(nil)); end
-end
-
-module RSpec::Rails::Matchers::RenderTemplate
-end
-
-module RSpec::Rails::Matchers::RoutingMatchers
-  def be_routable(); end
-
-  def route_to(*expected); end
-end
-
-module RSpec::Rails::Matchers::RoutingMatchers::RouteHelpers
-  def delete(path); end
-
-  def get(path); end
-
-  def head(path); end
-
-  def options(path); end
-
-  def patch(path); end
-
-  def post(path); end
-
-  def put(path); end
-end
-
-module RSpec::Rails::Matchers::RoutingMatchers::RouteHelpers
-end
-
-module RSpec::Rails::Matchers::RoutingMatchers
-  extend ::RSpec::Matchers::DSL
-end
-
-module RSpec::Rails::Matchers
-end
-
-module RSpec::Rails::MinitestAssertionAdapter
-  def assertion_delegator(); end
-end
-
-class RSpec::Rails::MinitestAssertionAdapter::AssertionDelegator
-  include ::Minitest::Assertions
-  include ::RSpec::Rails::MinitestCounters
-end
-
-class RSpec::Rails::MinitestAssertionAdapter::AssertionDelegator
-end
-
-module RSpec::Rails::MinitestAssertionAdapter::ClassMethods
-  def assertion_method_names(); end
-
-  def define_assertion_delegators(); end
-end
-
-module RSpec::Rails::MinitestAssertionAdapter::ClassMethods
-end
-
-module RSpec::Rails::MinitestAssertionAdapter
-  extend ::ActiveSupport::Concern
-end
-
-module RSpec::Rails::MinitestCounters
-  def assertions(); end
-
-  def assertions=(assertions); end
-end
-
-module RSpec::Rails::MinitestCounters
-end
-
-module RSpec::Rails::MinitestLifecycleAdapter
-  def after_setup(); end
-
-  def after_teardown(); end
-
-  def before_setup(); end
-
-  def before_teardown(); end
-end
-
-module RSpec::Rails::MinitestLifecycleAdapter
-  extend ::ActiveSupport::Concern
-end
-
-module RSpec::Rails::ModelExampleGroup
-end
-
-module RSpec::Rails::ModelExampleGroup
-  extend ::ActiveSupport::Concern
-end
-
-module RSpec::Rails::RailsExampleGroup
-end
-
-module RSpec::Rails::RailsExampleGroup
-  extend ::ActiveSupport::Concern
-end
-
-module RSpec::Rails::RequestExampleGroup
-  include ::ActionDispatch::Integration::Runner
-  include ::ActionDispatch::Assertions
-  include ::ActionDispatch::Assertions::ResponseAssertions
-  include ::ActionDispatch::Assertions::RoutingAssertions
-  include ::Rails::Dom::Testing::Assertions
-  include ::Rails::Dom::Testing::Assertions::DomAssertions
-  include ::Rails::Dom::Testing::Assertions::SelectorAssertions
-  include ::Rails::Dom::Testing::Assertions::SelectorAssertions::CountDescribable
-  include ::RSpec::Rails::Matchers::RedirectTo
-  include ::RSpec::Rails::Matchers::RenderTemplate
-  include ::ActionController::TemplateAssertions
-  def app(); end
-end
-
-module RSpec::Rails::RequestExampleGroup
-  extend ::ActiveSupport::Concern
-end
-
-module RSpec::Rails::RoutingAssertionDelegator
-  def assert_generates(*args, &block); end
-
-  def assert_recognizes(*args, &block); end
-
-  def assert_routing(*args, &block); end
-
-  def assertion_instance(); end
-
-  def build_assertion_instance(); end
-
-  def setup(*args, &block); end
-
-  def with_routing(*args, &block); end
-end
-
-module RSpec::Rails::RoutingAssertionDelegator
-end
-
-module RSpec::Rails::RoutingExampleGroup
-  include ::RSpec::Rails::Matchers::RoutingMatchers
-  include ::RSpec::Rails::Matchers::RoutingMatchers::RouteHelpers
-  include ::RSpec::Rails::RoutingAssertionDelegator
-  def routes(); end
-
-  def routes=(routes); end
-end
-
-module RSpec::Rails::RoutingExampleGroup::ClassMethods
-  def routes(); end
-end
-
-module RSpec::Rails::RoutingExampleGroup::ClassMethods
-end
-
-module RSpec::Rails::RoutingExampleGroup
-  extend ::ActiveSupport::Concern
-end
-
-module RSpec::Rails::SetupAndTeardownAdapter
-  def initialize(*args); end
-
-  def method_name(); end
-end
-
-module RSpec::Rails::SetupAndTeardownAdapter::ClassMethods
-  def setup(*methods, &block); end
-
-  def teardown(*methods, &block); end
-end
-
-module RSpec::Rails::SetupAndTeardownAdapter::ClassMethods
-end
-
-module RSpec::Rails::SetupAndTeardownAdapter
-  extend ::ActiveSupport::Concern
-end
-
-module RSpec::Rails::SystemExampleGroup
-  include ::RSpec::Rails::Matchers::RedirectTo
-  include ::RSpec::Rails::Matchers::RenderTemplate
-  include ::ActionDispatch::Integration::Runner
-  include ::ActionDispatch::Assertions
-  include ::ActionDispatch::Assertions::ResponseAssertions
-  include ::ActionDispatch::Assertions::RoutingAssertions
-  include ::Rails::Dom::Testing::Assertions
-  include ::Rails::Dom::Testing::Assertions::DomAssertions
-  include ::Rails::Dom::Testing::Assertions::SelectorAssertions
-  include ::Rails::Dom::Testing::Assertions::SelectorAssertions::CountDescribable
-  include ::ActionController::TemplateAssertions
-  def app(); end
-
-  def method_name(); end
-
-  def passed?(); end
-  CHARS_TO_TRANSLATE = ::T.let(nil, ::T.untyped)
-end
-
-module RSpec::Rails::SystemExampleGroup::BlowAwayTeardownHooks
-  def after_teardown(); end
-
-  def before_teardown(); end
-end
-
-module RSpec::Rails::SystemExampleGroup::BlowAwayTeardownHooks
-end
-
-module RSpec::Rails::SystemExampleGroup
-  extend ::ActiveSupport::Concern
-end
-
-RSpec::Rails::TestUnitAssertionAdapter = RSpec::Rails::MinitestAssertionAdapter
-
-module RSpec::Rails::ViewAssigns
-  def _assigns(); end
-
-  def assign(key, value); end
-
-  def view_assigns(); end
-end
-
-module RSpec::Rails::ViewAssigns
-end
-
-module RSpec::Rails::ViewExampleGroup
-  include ::RSpec::Rails::ViewAssigns
-  include ::RSpec::Rails::Matchers::RenderTemplate
-end
-
-module RSpec::Rails::ViewExampleGroup::ClassMethods
-  def _default_helper(); end
-
-  def _default_helpers(); end
-end
-
-module RSpec::Rails::ViewExampleGroup::ClassMethods
-end
-
-module RSpec::Rails::ViewExampleGroup::ExampleMethods
-  def params(); end
-
-  def render(options=T.unsafe(nil), local_assigns=T.unsafe(nil), &block); end
-
-  def response(); end
-
-  def stub_template(hash); end
-
-  def template(); end
-
-  def view(); end
-end
-
-module RSpec::Rails::ViewExampleGroup::ExampleMethods
-  extend ::ActiveSupport::Concern
-end
-
-module RSpec::Rails::ViewExampleGroup::StubResolverCache
-end
-
-module RSpec::Rails::ViewExampleGroup::StubResolverCache
-  def self.resolver_for(hash); end
-end
-
-module RSpec::Rails::ViewExampleGroup
-  extend ::ActiveSupport::Concern
-end
-
-class RSpec::Rails::ViewPathBuilder
-  def initialize(route_set); end
-
-  def path_for(path_params); end
-end
-
-class RSpec::Rails::ViewPathBuilder
-end
-
-module RSpec::Rails::ViewRendering
-  def controller(); end
-
-  def render_views?(); end
-  RESOLVER_CACHE = ::T.let(nil, ::T.untyped)
-end
-
-module RSpec::Rails::ViewRendering::ClassMethods
-  def render_views(true_or_false=T.unsafe(nil)); end
-
-  def render_views?(); end
-end
-
-module RSpec::Rails::ViewRendering::ClassMethods
-end
-
-class RSpec::Rails::ViewRendering::EmptyTemplateHandler
-end
-
-class RSpec::Rails::ViewRendering::EmptyTemplateHandler
-  def self.call(_template, _source=T.unsafe(nil)); end
-end
-
-class RSpec::Rails::ViewRendering::EmptyTemplateResolver
-end
-
-class RSpec::Rails::ViewRendering::EmptyTemplateResolver::FileSystemResolver
-end
-
-class RSpec::Rails::ViewRendering::EmptyTemplateResolver::FileSystemResolver
-end
-
-class RSpec::Rails::ViewRendering::EmptyTemplateResolver::ResolverDecorator
-  def initialize(resolver); end
-
-  def method_missing(name, *args, &block); end
-end
-
-class RSpec::Rails::ViewRendering::EmptyTemplateResolver::ResolverDecorator
-end
-
-class RSpec::Rails::ViewRendering::EmptyTemplateResolver
-  def self.build(path); end
-
-  def self.nullify_template_rendering(templates); end
-
-  def self.template_format(template); end
-end
-
-module RSpec::Rails::ViewRendering::EmptyTemplates
-  def append_view_path(new_path); end
-
-  def prepend_view_path(new_path); end
-end
-
-module RSpec::Rails::ViewRendering::EmptyTemplates
-end
-
-module RSpec::Rails::ViewRendering
-  extend ::ActiveSupport::Concern
-end
-
-module RSpec::Rails::ViewSpecMethods
-end
-
-module RSpec::Rails::ViewSpecMethods
-  def self.add_to(klass); end
-
-  def self.remove_from(klass); end
-end
-
-module RSpec::Rails
-  def self.add_test_type_configurations(config); end
-
-  def self.initialize_configuration(config); end
 end
 
 module RSpec
@@ -26811,56 +25910,6 @@ class Shared::ErrorMessagesComponent
   def self.default_url_options?(); end
 end
 
-class SimpleCov::Formatter::CoberturaFormatter
-  def format(result); end
-
-  def initialize(result_file_name: T.unsafe(nil)); end
-  DTD_URL = ::T.let(nil, ::T.untyped)
-  RESULT_FILE_NAME = ::T.let(nil, ::T.untyped)
-  VERSION = ::T.let(nil, ::T.untyped)
-end
-
-class SimpleCov::Formatter::CoberturaFormatter
-end
-
-class SimpleCov::LinesClassifier
-  NOT_RELEVANT = ::T.let(nil, ::T.untyped)
-end
-
-module SimpleCovJSONFormatter
-end
-
-class SimpleCovJSONFormatter::ResultExporter
-  def export(); end
-
-  def initialize(result_hash); end
-  FILENAME = ::T.let(nil, ::T.untyped)
-end
-
-class SimpleCovJSONFormatter::ResultExporter
-end
-
-class SimpleCovJSONFormatter::ResultHashFormatter
-  def format(); end
-
-  def initialize(result); end
-end
-
-class SimpleCovJSONFormatter::ResultHashFormatter
-end
-
-class SimpleCovJSONFormatter::SourceFileFormatter
-  def format(); end
-
-  def initialize(source_file); end
-end
-
-class SimpleCovJSONFormatter::SourceFileFormatter
-end
-
-module SimpleCovJSONFormatter
-end
-
 class SimpleDelegator
   RUBYGEMS_ACTIVATION_MONITOR = ::T.let(nil, ::T.untyped)
 end
@@ -27958,6 +27007,10 @@ end
 module UnicodeNormalize
 end
 
+class UpdateParams
+  def self.inherited(s); end
+end
+
 class User
   include ::FriendlyId::Reserved
   include ::FriendlyId::Model
@@ -28007,6 +27060,10 @@ end
 
 module User::GeneratedAttributeMethods
   extend ::Mutex_m
+end
+
+module User::GeneratedRelationMethods
+  def active(*arg, **arg1, &arg2); end
 end
 
 module User::GeneratedRelationMethods

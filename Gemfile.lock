@@ -268,8 +268,6 @@ GEM
       colorize (~> 0.7)
       ruby_parser (>= 3.19.1)
     ffi (1.15.5)
-    friendly_id (5.4.2)
-      activerecord (>= 4.0.0)
     fuubar (2.5.1)
       rspec-core (~> 3.0)
       ruby-progressbar (~> 1.4)
@@ -421,6 +419,8 @@ GEM
     public_suffix (4.0.7)
     puma (5.6.4)
       nio4r (~> 2.0)
+    pundit (2.2.0)
+      activesupport (>= 3.0.0)
     racc (1.6.0)
     rack (2.2.3.1)
     rack-mini-profiler (3.0.0)
@@ -707,7 +707,6 @@ DEPENDENCIES
   factory_bot_rails
   faker
   fasterer
-  friendly_id
   fuubar
   gretel
   haml
@@ -724,6 +723,7 @@ DEPENDENCIES
   pry-rescue
   pry-stack_explorer
   puma (~> 5.0)
+  pundit
   rack-mini-profiler
   rails (= 7.0.3)
   rails_admin

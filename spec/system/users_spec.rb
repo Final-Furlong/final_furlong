@@ -53,15 +53,13 @@ RSpec.describe "Users", js: true do
 
       click_on("user-edit-#{user.id}")
       expect(page).to have_field "user[name]", with: user.name
-      fill_in "user[username]", with: " "
+      fill_in "user[name]", with: "Updated name"
       click_on "Update user"
-
-      expect(page).to have_text "Username can't be blank"
-      fill_in "user[username]", with: "Updated name"
-      click_on "Update user"
+      expect(page).to have_text "Updated name"
 
       expect(page).to have_selector "h1", text: "Users"
-      visit user_path(user.reload)
+      expect(user.reload.name).to eq "Updated name"
+      visit user_path(user.id)
       expect(page).to have_text "Updated name"
     end
 

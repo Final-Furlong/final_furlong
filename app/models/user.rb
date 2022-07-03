@@ -3,9 +3,6 @@
 class User < ApplicationRecord
   include Admin::UserAdmin
 
-  extend FriendlyId
-  friendly_id :slug_candidates, use: :slugged
-
   USERNAME_LENGTH = 4
   PASSWORD_LENGTH = 8
 
@@ -22,7 +19,7 @@ class User < ApplicationRecord
   enum status: { pending: "pending", active: "active", deleted: "deleted", banned: "banned" }
 
   validates :name, presence: true
-  validates :email, presence: true, uniqueness: { case_sensitive: false }
+  validates :email, presence: true, email: true, uniqueness: { case_sensitive: false }
   validates :username, presence: true, length: { minimum: USERNAME_LENGTH }, uniqueness: { case_sensitive: false }
   validates :password, presence: true, length: { minimum: PASSWORD_LENGTH }, on: :create
   validates :admin, inclusion: { in: [true, false] }
@@ -49,17 +46,6 @@ class User < ApplicationRecord
   end
 
   private
-
-  def slug_candidates
-    [
-      :name,
-      %i[name discourse_id]
-    ]
-  end
-
-  def should_generate_new_friendly_id?
-    name_changed? || discourse_id_changed? || super
-  end
 
   def set_defaults
     self.status ||= "pending"

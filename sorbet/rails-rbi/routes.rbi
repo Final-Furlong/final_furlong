@@ -180,20 +180,6 @@ module GeneratedUrlHelpers
   sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
   def user_url(*args, **kwargs); end
 
-  # Sigs for route /stable/new(.:format)
-  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
-  def new_stable_path(*args, **kwargs); end
-
-  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
-  def new_stable_url(*args, **kwargs); end
-
-  # Sigs for route /stable/edit(.:format)
-  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
-  def edit_stable_path(*args, **kwargs); end
-
-  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
-  def edit_stable_url(*args, **kwargs); end
-
   # Sigs for route /stable(.:format)
   sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
   def stable_path(*args, **kwargs); end

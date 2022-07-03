@@ -335,10 +335,6 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
 # wrong constant name _main_app
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -2253,18 +2249,6 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# wrong constant name data
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
 # wrong constant name capture_with_haml
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -2364,10 +2348,6 @@
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
 # wrong constant name safe_concat_without_haml_xss
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
@@ -3815,7 +3795,7 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# Did you mean?  SimpleCov
+# Did you mean?  SimpleForm
 # wrong constant name <Class:StatementPool>
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -6493,8 +6473,8 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# Did you mean?  BigDecimal::TERABYTE
-#                BigDecimal::MEGABYTE
+# Did you mean?  BigDecimal::MEGABYTE
+#                BigDecimal::TERABYTE
 # uninitialized constant BigDecimal::GIGABYTE
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -10615,6 +10595,7 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
+# Did you mean?  UserPolicy
 # uninitialized constant Bundler::URI::FTP::USE_REGISTRY
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -10750,6 +10731,7 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
+# Did you mean?  UserPolicy
 # uninitialized constant Bundler::URI::File::USE_REGISTRY
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -10897,6 +10879,7 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
+# Did you mean?  UserPolicy
 # uninitialized constant Bundler::URI::Generic::VERSION
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -11244,6 +11227,7 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
+# Did you mean?  UserPolicy
 # uninitialized constant Bundler::URI::HTTP::USE_REGISTRY
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -11372,6 +11356,7 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
+# Did you mean?  UserPolicy
 # uninitialized constant Bundler::URI::HTTPS::USE_REGISTRY
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -11499,6 +11484,7 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
+# Did you mean?  UserPolicy
 # uninitialized constant Bundler::URI::LDAP::USE_REGISTRY
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -11708,6 +11694,7 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
+# Did you mean?  UserPolicy
 # uninitialized constant Bundler::URI::LDAPS::USE_REGISTRY
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -11827,6 +11814,7 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
+# Did you mean?  UserPolicy
 # uninitialized constant Bundler::URI::MailTo::USE_REGISTRY
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -15692,126 +15680,6 @@
 # 
 #     ::Object.const_get(n)
 #             ^^^^^^^^^^
-# wrong constant name <Class:BaseReporter>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:HtmlEmbedReporter>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:HtmlLinkReporter>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:JsonReporter>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:TextMateLinkReporter>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:TextReporter>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name enhance_with_screenshot
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name extra_failure_content_with_screenshot
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name included
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name attributes_for_screenshot_link
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name extra_failure_content_with_screenshot
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name link_to_screenshot
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name included
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name format_example_with_screenshot
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name included
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name attributes_for_screenshot_link
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name included
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name dump_failure_info_with_screenshot
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name example_failed_with_screenshot
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name included
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name add_link_to_screenshot_for_failed_examples
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name add_link_to_screenshot_for_failed_examples=
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name after_failed_example
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
 # uninitialized constant VERSION
 # 
 #     ::Object.const_get(n)
@@ -15820,8 +15688,8 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# Did you mean?  Complex::TERABYTE
-#                Complex::MEGABYTE
+# Did you mean?  Complex::MEGABYTE
+#                Complex::TERABYTE
 # uninitialized constant Complex::GIGABYTE
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -15927,19 +15795,15 @@
 # 
 #       my_klass = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                       ^^^^^^^^^^
-# wrong constant name resume
+# uninitialized constant Coverage
 # 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name setup
+#       my_klass = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                       ^^^^^^^^^^
+# uninitialized constant Coverage
 # 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name state
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name suspend
+#       my_klass = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                       ^^^^^^^^^^
+# wrong constant name inherited
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
@@ -16281,8 +16145,8 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# Did you mean?  Date::Infinity::TERABYTE
-#                Date::Infinity::MEGABYTE
+# Did you mean?  Date::Infinity::MEGABYTE
+#                Date::Infinity::TERABYTE
 # uninitialized constant Date::Infinity::GIGABYTE
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -17943,10 +17807,10 @@
 #                         ^^^^^^^^^^
 # Did you mean?  Fiddle::ALIGN_INT64_T
 #                Fiddle::Importer::ALIGN_INT64_T
-#                Fiddle::ALIGN_INT8_T
 #                Fiddle::Importer::ALIGN_INT8_T
-#                Fiddle::Importer::ALIGN_INT32_T
+#                Fiddle::ALIGN_INT8_T
 #                Fiddle::ALIGN_INT32_T
+#                Fiddle::Importer::ALIGN_INT32_T
 #                Fiddle::Importer::ALIGN_INTPTR_T
 #                Fiddle::ALIGN_INTPTR_T
 #                Fiddle::Importer::ALIGN_UINTPTR_T
@@ -17960,12 +17824,12 @@
 #                Fiddle::Importer::ALIGN_INT8_T
 #                Fiddle::ALIGN_INT64_T
 #                Fiddle::Importer::ALIGN_INT64_T
-#                Fiddle::Importer::ALIGN_INT16_T
 #                Fiddle::ALIGN_INT16_T
-#                Fiddle::Importer::ALIGN_INTPTR_T
+#                Fiddle::Importer::ALIGN_INT16_T
 #                Fiddle::ALIGN_INTPTR_T
-#                Fiddle::ALIGN_UINTPTR_T
+#                Fiddle::Importer::ALIGN_INTPTR_T
 #                Fiddle::Importer::ALIGN_UINTPTR_T
+#                Fiddle::ALIGN_UINTPTR_T
 #                Fiddle::ALIGN_INT
 # uninitialized constant Fiddle::Importer::ALIGN_INT64_T
 # 
@@ -18004,11 +17868,11 @@
 #                Fiddle::ALIGN_INT64_T
 #                Fiddle::ALIGN_INT16_T
 #                Fiddle::Importer::ALIGN_INT64_T
-#                Fiddle::ALIGN_INT32_T
 #                Fiddle::Importer::ALIGN_INT32_T
 #                Fiddle::Importer::ALIGN_INT16_T
-#                Fiddle::ALIGN_UINTPTR_T
+#                Fiddle::ALIGN_INT32_T
 #                Fiddle::Importer::ALIGN_UINTPTR_T
+#                Fiddle::ALIGN_UINTPTR_T
 # uninitialized constant Fiddle::Importer::ALIGN_LONG
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -18039,8 +17903,8 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# Did you mean?  Fiddle::ALIGN_SSIZE_T
-#                Fiddle::Importer::ALIGN_SSIZE_T
+# Did you mean?  Fiddle::Importer::ALIGN_SSIZE_T
+#                Fiddle::ALIGN_SSIZE_T
 # uninitialized constant Fiddle::Importer::ALIGN_SSIZE_T
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -18051,12 +17915,12 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# Did you mean?  Fiddle::Importer::ALIGN_INT8_T
-#                Fiddle::ALIGN_INT8_T
-#                Fiddle::Importer::ALIGN_INT16_T
+# Did you mean?  Fiddle::ALIGN_INT8_T
+#                Fiddle::Importer::ALIGN_INT8_T
 #                Fiddle::ALIGN_INT16_T
 #                Fiddle::Importer::ALIGN_INT64_T
 #                Fiddle::Importer::ALIGN_INT32_T
+#                Fiddle::Importer::ALIGN_INT16_T
 #                Fiddle::ALIGN_INT64_T
 #                Fiddle::ALIGN_INT32_T
 #                Fiddle::Importer::ALIGN_INTPTR_T
@@ -18098,13 +17962,13 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# Did you mean?  Fiddle::Importer::SIZEOF_SHORT
-#                Fiddle::SIZEOF_SHORT
+# Did you mean?  Fiddle::SIZEOF_SHORT
+#                Fiddle::Importer::SIZEOF_SHORT
 # uninitialized constant Fiddle::Importer::SIZEOF_CONST_STRING
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# Did you mean?  Fiddle::SIZEOF_SIZE_T
+# Did you mean?  Fiddle::Importer::SIZEOF_SIZE_T
 # uninitialized constant Fiddle::Importer::SIZEOF_DOUBLE
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -18114,30 +17978,30 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# Did you mean?  Fiddle::SIZEOF_LONG
-#                Fiddle::Importer::SIZEOF_LONG
+# Did you mean?  Fiddle::Importer::SIZEOF_LONG
+#                Fiddle::SIZEOF_LONG
 #                Fiddle::Importer::SIZEOF_SHORT
 #                Fiddle::SIZEOF_SHORT
 # uninitialized constant Fiddle::Importer::SIZEOF_INT
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# Did you mean?  Fiddle::SIZEOF_LONG
-#                Fiddle::Importer::SIZEOF_LONG
-#                Fiddle::Importer::SIZEOF_INT8_T
+# Did you mean?  Fiddle::Importer::SIZEOF_LONG
+#                Fiddle::SIZEOF_LONG
 #                Fiddle::SIZEOF_INT8_T
+#                Fiddle::Importer::SIZEOF_INT8_T
 # uninitialized constant Fiddle::Importer::SIZEOF_INT16_T
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# Did you mean?  Fiddle::Importer::SIZEOF_INT64_T
-#                Fiddle::SIZEOF_INT64_T
-#                Fiddle::Importer::SIZEOF_INT8_T
+# Did you mean?  Fiddle::SIZEOF_INT64_T
+#                Fiddle::Importer::SIZEOF_INT64_T
 #                Fiddle::SIZEOF_INT8_T
+#                Fiddle::Importer::SIZEOF_INT8_T
 #                Fiddle::Importer::SIZEOF_INT32_T
 #                Fiddle::SIZEOF_INT32_T
-#                Fiddle::SIZEOF_INTPTR_T
 #                Fiddle::Importer::SIZEOF_INTPTR_T
+#                Fiddle::SIZEOF_INTPTR_T
 #                Fiddle::Importer::SIZEOF_UINTPTR_T
 #                Fiddle::SIZEOF_UINTPTR_T
 #                Fiddle::SIZEOF_INT
@@ -18147,14 +18011,14 @@
 #                         ^^^^^^^^^^
 # Did you mean?  Fiddle::SIZEOF_INT8_T
 #                Fiddle::Importer::SIZEOF_INT8_T
+#                Fiddle::SIZEOF_INT16_T
 #                Fiddle::Importer::SIZEOF_INT64_T
 #                Fiddle::Importer::SIZEOF_INT16_T
 #                Fiddle::SIZEOF_INT64_T
-#                Fiddle::SIZEOF_INT16_T
-#                Fiddle::SIZEOF_INTPTR_T
 #                Fiddle::Importer::SIZEOF_INTPTR_T
-#                Fiddle::Importer::SIZEOF_UINTPTR_T
+#                Fiddle::SIZEOF_INTPTR_T
 #                Fiddle::SIZEOF_UINTPTR_T
+#                Fiddle::Importer::SIZEOF_UINTPTR_T
 #                Fiddle::SIZEOF_INT
 # uninitialized constant Fiddle::Importer::SIZEOF_INT64_T
 # 
@@ -18162,12 +18026,12 @@
 #                         ^^^^^^^^^^
 # Did you mean?  Fiddle::SIZEOF_INT16_T
 #                Fiddle::Importer::SIZEOF_INT16_T
-#                Fiddle::Importer::SIZEOF_INT8_T
 #                Fiddle::SIZEOF_INT8_T
+#                Fiddle::Importer::SIZEOF_INT8_T
 #                Fiddle::Importer::SIZEOF_INT32_T
 #                Fiddle::SIZEOF_INT32_T
-#                Fiddle::SIZEOF_INTPTR_T
 #                Fiddle::Importer::SIZEOF_INTPTR_T
+#                Fiddle::SIZEOF_INTPTR_T
 #                Fiddle::Importer::SIZEOF_UINTPTR_T
 #                Fiddle::SIZEOF_UINTPTR_T
 #                Fiddle::SIZEOF_INT
@@ -18177,16 +18041,16 @@
 #                         ^^^^^^^^^^
 # Did you mean?  Fiddle::SIZEOF_SIZE_T
 #                Fiddle::Importer::SIZEOF_SIZE_T
-#                Fiddle::SIZEOF_INT64_T
-#                Fiddle::SIZEOF_INT16_T
-#                Fiddle::SIZEOF_INT32_T
 #                Fiddle::Importer::SIZEOF_INT64_T
 #                Fiddle::Importer::SIZEOF_INT32_T
+#                Fiddle::SIZEOF_INT16_T
+#                Fiddle::SIZEOF_INT64_T
+#                Fiddle::SIZEOF_INT32_T
 #                Fiddle::Importer::SIZEOF_INT16_T
-#                Fiddle::Importer::SIZEOF_INTPTR_T
 #                Fiddle::SIZEOF_INTPTR_T
-#                Fiddle::Importer::SIZEOF_UINTPTR_T
+#                Fiddle::Importer::SIZEOF_INTPTR_T
 #                Fiddle::SIZEOF_UINTPTR_T
+#                Fiddle::Importer::SIZEOF_UINTPTR_T
 #                Fiddle::SIZEOF_INT
 # uninitialized constant Fiddle::Importer::SIZEOF_INTPTR_T
 # 
@@ -18195,11 +18059,11 @@
 # Did you mean?  Fiddle::SIZEOF_INT8_T
 #                Fiddle::Importer::SIZEOF_INT8_T
 #                Fiddle::Importer::SIZEOF_INT64_T
-#                Fiddle::Importer::SIZEOF_INT32_T
 #                Fiddle::Importer::SIZEOF_INT16_T
-#                Fiddle::SIZEOF_INT64_T
 #                Fiddle::SIZEOF_INT32_T
+#                Fiddle::SIZEOF_INT64_T
 #                Fiddle::SIZEOF_INT16_T
+#                Fiddle::Importer::SIZEOF_INT32_T
 #                Fiddle::SIZEOF_UINTPTR_T
 #                Fiddle::Importer::SIZEOF_UINTPTR_T
 # uninitialized constant Fiddle::Importer::SIZEOF_LONG
@@ -18208,8 +18072,8 @@
 #                         ^^^^^^^^^^
 # Did you mean?  Fiddle::SIZEOF_INT
 #                Fiddle::Importer::SIZEOF_INT
-#                Fiddle::Importer::SIZEOF_FLOAT
 #                Fiddle::SIZEOF_FLOAT
+#                Fiddle::Importer::SIZEOF_FLOAT
 # uninitialized constant Fiddle::Importer::SIZEOF_LONG_LONG
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -18219,13 +18083,13 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# Did you mean?  Fiddle::Importer::SIZEOF_INT8_T
+# Did you mean?  Fiddle::Importer::SIZEOF_SIZE_T
 # uninitialized constant Fiddle::Importer::SIZEOF_SHORT
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# Did you mean?  Fiddle::SIZEOF_CHAR
-#                Fiddle::Importer::SIZEOF_CHAR
+# Did you mean?  Fiddle::Importer::SIZEOF_CHAR
+#                Fiddle::SIZEOF_CHAR
 #                Fiddle::Importer::SIZEOF_FLOAT
 #                Fiddle::SIZEOF_FLOAT
 # uninitialized constant Fiddle::Importer::SIZEOF_SIZE_T
@@ -18236,10 +18100,10 @@
 #                Fiddle::Importer::SIZEOF_INT8_T
 #                Fiddle::Importer::SIZEOF_SSIZE_T
 #                Fiddle::SIZEOF_SSIZE_T
-#                Fiddle::Importer::SIZEOF_INT
 #                Fiddle::SIZEOF_INT
-#                Fiddle::Importer::SIZEOF_SHORT
+#                Fiddle::Importer::SIZEOF_INT
 #                Fiddle::SIZEOF_SHORT
+#                Fiddle::Importer::SIZEOF_SHORT
 # uninitialized constant Fiddle::Importer::SIZEOF_SSIZE_T
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -18250,21 +18114,21 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# Did you mean?  Fiddle::Importer::SIZEOF_INT8_T
-#                Fiddle::SIZEOF_INT8_T
-#                Fiddle::Importer::SIZEOF_INT64_T
+# Did you mean?  Fiddle::SIZEOF_INT8_T
+#                Fiddle::Importer::SIZEOF_INT8_T
 #                Fiddle::Importer::SIZEOF_INT32_T
-#                Fiddle::Importer::SIZEOF_INT16_T
 #                Fiddle::SIZEOF_INT16_T
 #                Fiddle::SIZEOF_INT32_T
 #                Fiddle::SIZEOF_INT64_T
-#                Fiddle::SIZEOF_INTPTR_T
+#                Fiddle::Importer::SIZEOF_INT64_T
+#                Fiddle::Importer::SIZEOF_INT16_T
 #                Fiddle::Importer::SIZEOF_INTPTR_T
+#                Fiddle::SIZEOF_INTPTR_T
 # uninitialized constant Fiddle::Importer::SIZEOF_VOIDP
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# Did you mean?  Fiddle::SIZEOF_INT
+# Did you mean?  Fiddle::Importer::SIZEOF_INT
 # uninitialized constant Fiddle::Importer::TYPE_CHAR
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -24084,8 +23948,8 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# Did you mean?  Integer::TERABYTE
-#                Integer::MEGABYTE
+# Did you mean?  Integer::MEGABYTE
+#                Integer::TERABYTE
 # uninitialized constant Integer::GIGABYTE
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -28295,6 +28159,218 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
+# wrong constant name <Class:Authorization>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <Class:AuthorizationNotPerformedError>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <Class:Error>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <Class:Generators>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <Class:Helper>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <Class:InvalidConstructorError>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <Class:NotAuthorizedError>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <Class:NotDefinedError>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <Class:PolicyFinder>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <Class:PolicyScopingNotPerformedError>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name authorize
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name permitted_attributes
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name policies
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name policy
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name policy_scope
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name policy_scopes
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name pundit_params_for
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name pundit_policy_authorized?
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name pundit_policy_scoped?
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name pundit_user
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name skip_authorization
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name skip_policy_scope
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name verify_authorized
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name verify_policy_scoped
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <static-init>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <static-init>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <static-init>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <static-init>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name policy_scope
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <static-init>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <static-init>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name initialize
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name policy
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name query
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name record
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <static-init>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <static-init>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name initialize
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name object
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name param_key
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name policy
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name policy!
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name scope
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name scope!
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <static-init>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <static-init>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name <static-init>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name authorize
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name included
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name policy
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name policy!
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name policy_scope
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name policy_scope!
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
 # uninitialized constant RDoc::Alias::MARKUP_FORMAT
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -29543,38 +29619,6 @@
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
 # Did you mean?  REXML::ReferenceWriter
-# wrong constant name file_fixture_path
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name fixture_path
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name global_fixtures
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name infer_base_class_for_anonymous_controllers
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name rendering_views
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name use_active_record
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name use_instantiated_fixtures
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name use_transactional_fixtures
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
 # uninitialized constant RSpec::Core::ExampleGroup::BE_PREDICATE_REGEX
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -29648,1579 +29692,6 @@
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
 # uninitialized constant RSpec::Matchers::DSL::Matcher::HAS_REGEX
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ActiveRecordConfiguration>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:AssertionDelegator>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ChannelExampleGroup>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:Configuration>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ControllerAssertionDelegator>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ControllerExampleGroup>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:FeatureExampleGroup>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:FileFixtureSupport>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:FixtureFileUploadSupport>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:FixtureSupport>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:HelperExampleGroup>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:JobExampleGroup>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:MailboxExampleGroup>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:MailerExampleGroup>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:Matchers>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:MinitestAssertionAdapter>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:MinitestCounters>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:MinitestLifecycleAdapter>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ModelExampleGroup>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:RailsExampleGroup>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:RequestExampleGroup>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:RoutingAssertionDelegator>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:RoutingExampleGroup>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:SetupAndTeardownAdapter>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:SystemExampleGroup>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ViewAssigns>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ViewExampleGroup>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ViewPathBuilder>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ViewRendering>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ViewSpecMethods>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize_activerecord_configuration
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::AssertionDelegator::DELEGATION_RESERVED_KEYWORDS
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# Did you mean?  RSpec::Rails::AssertionDelegator::DelegationError
-# uninitialized constant RSpec::Rails::AssertionDelegator::DELEGATION_RESERVED_METHOD_NAMES
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# Did you mean?  RSpec::Rails::AssertionDelegator::DELEGATION_RESERVED_KEYWORDS
-# uninitialized constant RSpec::Rails::AssertionDelegator::RUBY_RESERVED_KEYWORDS
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# Did you mean?  RUBY_RELEASE_DATE
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ClassMethods>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name have_rejected_connection
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name have_stream_for
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name have_stream_from
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name have_streams
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name channel_class
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name connection_class
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name assert_generates
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name assert_recognizes
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name assert_routing
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name assertion_instance
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name build_assertion_instance
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name setup
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name with_routing
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:BypassRescue>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ClassMethods>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name bypass_rescue
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name controller
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name method_missing
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name routes
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name routes=
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name rescue_with_handler
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name controller
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name controller_class
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name routes
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name visit
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:RailsFixtureFileWrapper>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name fixture_file_upload
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name file_fixture_path
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name file_fixture_path?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name file_fixture_path
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name file_fixture_path=
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name file_fixture_path?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name fixture_path
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name fixture_path=
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name instance
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:Fixtures>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name run_in_transaction?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ClassMethods>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name fixtures
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name proxy_method_warning_if_called_in_before_context_scope
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ClassMethods>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name helper
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name determine_constant_from_test_name
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ClassMethods>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name have_been_delivered
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name have_bounced
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name have_failed
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name process
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name mailbox_class
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name create_inbound_email
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ClassMethods>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name mailer_class
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ActionCable>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ActionMailbox>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ActiveJob>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:BaseMatcher>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:BeANew>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:BeANewRecord>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:BeValid>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:HaveEnqueuedMail>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:HaveHttpStatus>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:RedirectTo>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:RenderTemplate>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:RoutingMatchers>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name be_a_new
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name be_new_record
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name be_valid
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name broadcast_to
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name enqueue_email
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name enqueue_job
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name enqueue_mail
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name have_been_enqueued
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name have_been_performed
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name have_broadcasted_to
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name have_enqueued_email
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name have_enqueued_job
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name have_enqueued_mail
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name have_http_status
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name have_performed_job
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name perform_job
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name receive_inbound_email
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:HaveBroadcastedTo>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:HaveStream>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::Matchers::ActionCable::HaveBroadcastedTo::UNDEFINED
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name at_least
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name at_most
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name exactly
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name from_channel
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name matches?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name message_expectation_modifier
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name once
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name thrice
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name times
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name twice
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name with
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::Matchers::ActionCable::HaveStream::UNDEFINED
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name does_not_match?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name matches?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:Base>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ReceiveInboundEmail>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::Matchers::ActionMailbox::Base::UNDEFINED
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::Matchers::ActionMailbox::ReceiveInboundEmail::UNDEFINED
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name matches?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:Base>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:HaveBeenEnqueued>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:HaveBeenPerformed>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:HaveEnqueuedJob>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:HavePerformedJob>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::Matchers::ActiveJob::Base::UNDEFINED
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name at
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name at_least
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name at_most
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name exactly
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name message_expectation_modifier
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name on_queue
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name once
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name thrice
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name times
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name twice
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name with
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::Matchers::ActiveJob::HaveBeenEnqueued::UNDEFINED
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name does_not_match?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name matches?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::Matchers::ActiveJob::HaveBeenPerformed::UNDEFINED
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name matches?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::Matchers::ActiveJob::HaveEnqueuedJob::UNDEFINED
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name does_not_match?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name matches?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::Matchers::ActiveJob::HavePerformedJob::UNDEFINED
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name matches?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:DefaultFailureMessages>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:HashFormatting>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name actual
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name actual_formatted
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name description
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name diffable?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name expected
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name expected_formatted
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name expects_call_stack_jump?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name match_unless_raises
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name matcher_name
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name matcher_name=
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name matches?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name present_ivars
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name rescued_exception
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name supports_block_expectations?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name failure_message
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name failure_message_when_negated
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name has_default_failure_messages?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name improve_hash_formatting
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name matcher_name
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::Matchers::BeANew::UNDEFINED
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name with
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::Matchers::BeANewRecord::UNDEFINED
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::Matchers::BeValid::UNDEFINED
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::Matchers::HaveEnqueuedMail::FAILURE_MESSAGE_EXPECTATION_ACTION
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::Matchers::HaveEnqueuedMail::MESSAGE_EXPECTATION_ACTION
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::Matchers::HaveEnqueuedMail::UNDEFINED
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name matches?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:GenericStatus>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:NumericCode>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:SymbolicStatus>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name invalid_response_type_message
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::Matchers::HaveHttpStatus::GenericStatus::UNDEFINED
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name check_expected_status
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name matches?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name valid_statuses
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::Matchers::HaveHttpStatus::NumericCode::UNDEFINED
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name matches?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::Matchers::HaveHttpStatus::SymbolicStatus::UNDEFINED
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name matches?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name as_test_response
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name matcher_for_status
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name redirect_to
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name have_rendered
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name render_template
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:RouteHelpers>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name be_routable
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name route_to
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name delete
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name get
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name head
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name options
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name patch
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name post
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name put
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:AssertionDelegator>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ClassMethods>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name assertion_delegator
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::MinitestAssertionAdapter::AssertionDelegator::E
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::MinitestAssertionAdapter::AssertionDelegator::UNDEFINED
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name assertion_method_names
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name define_assertion_delegators
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name assertions
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name assertions=
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name after_setup
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name after_teardown
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name before_setup
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name before_teardown
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::RequestExampleGroup::APP_SESSIONS
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::RequestExampleGroup::RESPONSE_PREDICATES
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# Did you mean?  ResponsiveHelpers
-# wrong constant name app
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name assert_generates
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name assert_recognizes
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name assert_routing
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name assertion_instance
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name build_assertion_instance
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name setup
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name with_routing
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ClassMethods>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name routes
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name routes=
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name routes
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ClassMethods>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name method_name
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name setup
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name teardown
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::SystemExampleGroup::APP_SESSIONS
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:BlowAwayTeardownHooks>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# uninitialized constant RSpec::Rails::SystemExampleGroup::RESPONSE_PREDICATES
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# Did you mean?  ResponsiveHelpers
-# wrong constant name app
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name method_name
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name passed?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name after_teardown
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name before_teardown
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name _assigns
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name assign
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name view_assigns
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ClassMethods>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ExampleMethods>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:StubResolverCache>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name _default_helper
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name _default_helpers
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name params
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name render
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name response
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name stub_template
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name template
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name view
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name resolver_for
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name path_for
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ClassMethods>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:EmptyTemplateHandler>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:EmptyTemplateResolver>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:EmptyTemplates>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name controller
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name render_views?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name render_views
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name render_views?
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name call
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:FileSystemResolver>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ResolverDecorator>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name method_missing
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name build
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name nullify_template_rendering
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name template_format
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name append_view_path
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name prepend_view_path
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name add_to
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name remove_from
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name add_test_type_configurations
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize_configuration
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
@@ -56670,8 +55141,8 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# Did you mean?  RubyLexer::STR_FUNC_LABEL
-#                RubyLexer::State::STR_FUNC_LABEL
+# Did you mean?  RubyLexer::State::STR_FUNC_LABEL
+#                RubyLexer::STR_FUNC_LABEL
 # uninitialized constant RubyLexer::State::STR_FUNC_TERM
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -56706,8 +55177,8 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
-# Did you mean?  RubyLexer::State::STR_DWORD
-#                RubyLexer::STR_DWORD
+# Did you mean?  RubyLexer::STR_DWORD
+#                RubyLexer::State::STR_DWORD
 # uninitialized constant RubyLexer::State::STR_XQUOTE
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -58763,70 +57234,6 @@
 # 
 #       my_klass = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                       ^^^^^^^^^^
-# wrong constant name format
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ResultExporter>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:ResultHashFormatter>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <Class:SourceFileFormatter>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name export
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name format
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name format
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name initialize
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
-# wrong constant name <static-init>
-# 
-#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
-#                         ^^^^^^^^^^
 # uninitialized constant VERSION
 # 
 #     ::Object.const_get(n)
@@ -60780,6 +59187,7 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
+# Did you mean?  UserPolicy
 # uninitialized constant URI::File::USE_REGISTRY
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -61013,6 +59421,7 @@
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
+# Did you mean?  UserPolicy
 # uninitialized constant URI::WS::USE_REGISTRY
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
@@ -61064,6 +59473,10 @@
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
 # wrong constant name <static-init>
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
+# wrong constant name inherited
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
@@ -61336,6 +59749,10 @@
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
 #                         ^^^^^^^^^^
 # Did you mean?  User::ActiveRecord_Relation::CLAUSE_METHODS
+# wrong constant name active
+# 
+#         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
+#                         ^^^^^^^^^^
 # wrong constant name devise_modules
 # 
 #         my_value = klass.const_get(name, false) # rubocop:disable PrisonGuard/NoDynamicConstAccess
