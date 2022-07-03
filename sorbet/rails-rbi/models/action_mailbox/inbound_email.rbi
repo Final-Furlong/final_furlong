@@ -34,7 +34,7 @@ class ActionMailbox::InboundEmail < ActionMailbox::Record
   extend ActionMailbox::InboundEmail::QueryMethodsReturningRelation
   RelationType = T.type_alias { T.any(ActionMailbox::InboundEmail::ActiveRecord_Relation, ActionMailbox::InboundEmail::ActiveRecord_Associations_CollectionProxy, ActionMailbox::InboundEmail::ActiveRecord_AssociationRelation) }
 
-  class Status < T::Struct
+  class Status < T::Enum
     enums do
       pending = new('pending')
       processing = new('processing')

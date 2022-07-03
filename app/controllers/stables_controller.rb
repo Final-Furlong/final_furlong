@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 
 class StablesController < AuthenticatedController
   # @route GET /stable (stable)

@@ -131,6 +131,27 @@ module GeneratedUrlHelpers
   sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
   def user_unlock_url(*args, **kwargs); end
 
+  # Sigs for route /horses(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def horses_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def horses_url(*args, **kwargs); end
+
+  # Sigs for route /horses/:id/edit(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def edit_horse_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def edit_horse_url(*args, **kwargs); end
+
+  # Sigs for route /horses/:id(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def horse_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def horse_url(*args, **kwargs); end
+
   # Sigs for route /users(.:format)
   sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
   def users_path(*args, **kwargs); end
@@ -158,6 +179,34 @@ module GeneratedUrlHelpers
 
   sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
   def user_url(*args, **kwargs); end
+
+  # Sigs for route /stable(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def stable_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def stable_url(*args, **kwargs); end
+
+  # Sigs for route /stable/horses(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def stable_horses_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def stable_horses_url(*args, **kwargs); end
+
+  # Sigs for route /stable/horses/:id/edit(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def edit_stable_horse_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def edit_stable_horse_url(*args, **kwargs); end
+
+  # Sigs for route /stable/horses/:id(.:format)
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def stable_horse_path(*args, **kwargs); end
+
+  sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }
+  def stable_horse_url(*args, **kwargs); end
 
   # Sigs for route /
   sig { params(args: T.untyped, kwargs: T.untyped).returns(String) }

@@ -51,25 +51,6 @@ RSpec.describe User, type: :model do
   describe "associations" do
     it { is_expected.to have_one :stable }
   end
-
-  describe "#slug_candidates" do
-    it "sets slug based on name" do
-      user = build(:user, name: "Bob User")
-
-      expect do
-        user.save
-      end.to change { user.slug }.from(nil).to("bob-user")
-    end
-
-    it "falls back to discourse id" do
-      create(:user, name: "Bob User", discourse_id: 1)
-      user = build(:user, name: "Bob User", discourse_id: 2)
-
-      expect do
-        user.save
-      end.to change { user.slug }.from(nil).to("bob-user-2")
-    end
-  end
 end
 
 # == Schema Information

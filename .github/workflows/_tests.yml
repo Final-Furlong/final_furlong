@@ -53,23 +53,29 @@ jobs:
           bin/rails db:create
           bin/rails db:test:prepare
 
-      - name: Run tests
-        run: bin/rspec
-
-      - name: Publish code coverage to Code Climate
+      - name: Test & Publish Coverage
         uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.code-climate-token }}
+        with:
+          coverageCommand: bin/rspec
+
+      - name: Coverage Report
+        uses: ewjoachim/coverage-comment-action@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERAGE_FILE: "coverage/coverage.xml"
 
       - name: LCov Report
+        uses: Nef10/lcov-reporter-action@v0.3.0
         if: github.event.pull_request
-        uses: manarbenkraouda/lcov-reporter-action@v0.3.5.3
         with:
           github-token: ${{ secrets.lcov-token }}
           lcov-file: coverage/lcov.info
+          pr_number: ${{ github.event.number }}
 
       - name: Code Coverage Summary Report
-        if: github.event.pull_request
+        #if: github.event.pull_request
         uses: irongut/CodeCoverageSummary@v1.2.0
         with:
           filename: coverage/coverage.xml

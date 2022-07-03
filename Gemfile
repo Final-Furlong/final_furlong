@@ -14,7 +14,6 @@ gem "responders", github: "heartcombo/responders" # https://github.com/heartcomb
 gem "bulma-rails"
 gem "dartsass-rails"
 gem "dotenv_validator"
-gem "friendly_id"
 gem "gretel"
 gem "haml"
 gem "haml-rails"
@@ -22,9 +21,11 @@ gem "jsbundling-rails"
 gem "pagy"
 gem "pg", "~> 1.1"
 gem "puma", "~> 5.0"
+gem "pundit"
 gem "rails_admin"
 gem "redis", "~> 4.0"
 gem "simple_form"
+gem "sorbet-rails"
 gem "sorbet-runtime"
 gem "sprockets-rails"
 gem "stimulus-rails"
@@ -63,7 +64,6 @@ group :development do
   gem "pry"
   gem "sorbet", require: false
   gem "sorbet-progress", require: false
-  gem "tapioca"
   gem "yalphabetize", require: false
 end
 

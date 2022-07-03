@@ -293,10 +293,10 @@ class User < ApplicationRecord
 
   class Status < T::Enum
     enums do
-      pending = new("pending")
-      active = new("active")
-      deleted = new("deleted")
-      banned = new("banned")
+      pending = new('pending')
+      active = new('active')
+      deleted = new('deleted')
+      banned = new('banned')
     end
   end
 
@@ -312,6 +312,21 @@ class User < ApplicationRecord
   sig { params(value: T.nilable(User::Status)).void }
   def typed_status=(value); end
 
+  sig { void }
+  def pending!; end
+
+  sig { void }
+  def active!; end
+
+  sig { void }
+  def deleted!; end
+
+  sig { void }
+  def banned!; end
+
+  sig { params(args: T.untyped).returns(User::ActiveRecord_Relation) }
+  def self.active(*args); end
+
   sig { params(args: T.untyped).returns(User::ActiveRecord_Relation) }
   def self.ordered(*args); end
 end
@@ -321,6 +336,9 @@ class User::ActiveRecord_Relation < ActiveRecord::Relation
   include User::CustomFinderMethods
   include User::QueryMethodsReturningRelation
   Elem = type_member {{fixed: User}}
+
+  sig { params(args: T.untyped).returns(User::ActiveRecord_Relation) }
+  def active(*args); end
 
   sig { params(args: T.untyped).returns(User::ActiveRecord_Relation) }
   def ordered(*args); end
@@ -333,6 +351,9 @@ class User::ActiveRecord_AssociationRelation < ActiveRecord::AssociationRelation
   Elem = type_member {{fixed: User}}
 
   sig { params(args: T.untyped).returns(User::ActiveRecord_AssociationRelation) }
+  def active(*args); end
+
+  sig { params(args: T.untyped).returns(User::ActiveRecord_AssociationRelation) }
   def ordered(*args); end
 end
 
@@ -340,6 +361,9 @@ class User::ActiveRecord_Associations_CollectionProxy < ActiveRecord::Associatio
   include User::CustomFinderMethods
   include User::QueryMethodsReturningAssociationRelation
   Elem = type_member {{fixed: User}}
+
+  sig { params(args: T.untyped).returns(User::ActiveRecord_AssociationRelation) }
+  def active(*args); end
 
   sig { params(args: T.untyped).returns(User::ActiveRecord_AssociationRelation) }
   def ordered(*args); end

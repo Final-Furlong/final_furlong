@@ -55,6 +55,24 @@ module Stable::GeneratedAttributeMethods
 end
 
 module Stable::GeneratedAssociationMethods
+  sig { returns(::Horse::ActiveRecord_Associations_CollectionProxy) }
+  def bred_horses; end
+
+  sig { returns(T::Array[Integer]) }
+  def bred_horse_ids; end
+
+  sig { params(value: T::Enumerable[::Horse]).void }
+  def bred_horses=(value); end
+
+  sig { returns(::Horse::ActiveRecord_Associations_CollectionProxy) }
+  def horses; end
+
+  sig { returns(T::Array[Integer]) }
+  def horse_ids; end
+
+  sig { params(value: T::Enumerable[::Horse]).void }
+  def horses=(value); end
+
   sig { returns(::User) }
   def user; end
 
