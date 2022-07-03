@@ -67,11 +67,12 @@ jobs:
           COVERAGE_FILE: "coverage/coverage.xml"
 
       - name: LCov Report
-        #        if: github.event.pull_request
-        uses: manarbenkraouda/lcov-reporter-action@v0.3.5.3
+        uses: Nef10/lcov-reporter-action@v0.3.0
+        if: github.event.pull_request
         with:
           github-token: ${{ secrets.lcov-token }}
           lcov-file: coverage/lcov.info
+          pr-number: ${{ github.event.number }}
 
       - name: Code Coverage Summary Report
         #if: github.event.pull_request
