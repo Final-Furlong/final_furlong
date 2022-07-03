@@ -72,7 +72,7 @@ jobs:
         with:
           github-token: ${{ secrets.lcov-token }}
           lcov-file: coverage/lcov.info
-          pr-number: ${{ github.event.number }}
+          pr_number: ${{ github.event.number }}
 
       - name: Code Coverage Summary Report
         #if: github.event.pull_request
