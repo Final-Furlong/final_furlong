@@ -38,7 +38,9 @@ module FinalFurlong # rubocop:disable Style/ClassAndModuleChildren
       g.test_framework :rspec
     end
 
-    config.logger = ActiveSupport::TaggedLogging.new(Logger.new($stdout))
+    logger = ActiveSupport::Logger.new($stdout)
+    logger.formatter = config.log_formatter
+    config.logger = ActiveSupport::TaggedLogging.new(logger)
     config.log_tags = [:request_id]
   end
 end
