@@ -80,6 +80,9 @@ Rails.application.configure do
   config.hotwire_livereload.listen_paths << Rails.root.join("app/assets/builds")
 
   config.log_level = :debug
+  logger = ActiveSupport::Logger.new(STDOUT)
+  logger.formatter = config.log_formatter
+  config.logger = ActiveSupport::TaggedLogging.new(logger)
 
   config.after_initialize do
     Bullet.enable = true
