@@ -1,5 +1,3 @@
-# typed: false
-
 FactoryBot.define do
   factory :stable do
     name { "#{Faker::Adjective.positive} #{Faker::Color.color_name} Stable" }

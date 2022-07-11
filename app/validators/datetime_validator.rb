@@ -1,5 +1,3 @@
-# typed: false
-
 class DatetimeValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value) # rubocop:disable Metrics/CyclomaticComplexity
     return if value.nil? && options[:allow_nil]

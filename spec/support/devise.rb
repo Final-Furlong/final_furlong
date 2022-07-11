@@ -1,5 +1,3 @@
-# typed: strict
-
 RSpec.configuration do |config|
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::ControllerHelpers, type: :view

@@ -1,5 +1,3 @@
-# typed: false
-
 require "rails_helper"
 require_relative "../shared/horse_examples"
 

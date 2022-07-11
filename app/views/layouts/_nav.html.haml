@@ -13,7 +13,7 @@
     .navbar-start
       - if user_signed_in?
         = link_to current_stable.name, stable_path, class: "navbar-item"
-        = link_to t(".stable_horses"), stable_horses_path, class: "navbar-item"
+        = link_to t(".stable_horses"), current_stable_horses_path, class: "navbar-item"
       - else
         = link_to t(".all_horses"), horses_path, class: "navbar-item"
       = link_to t(".users"), users_path, class: "navbar-item"

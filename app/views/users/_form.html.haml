@@ -1,10 +1,11 @@
-= simple_form_for user, html: { class: "user form" } do |f|
-  = render(Shared::ErrorMessagesComponent.new(object: user))
-  = f.input :username, input_html: { autofocus: true }
+= simple_form_for form, as: :user, url: url, html: { class: "user form" } do |f|
+  = render(Shared::ErrorMessagesComponent.new(object: form))
+  = f.input :username, input_html: { autofocus: true }, disabled: form.persisted?
   = f.input :email
   = f.input :name
-  - unless user.persisted?
+  - unless form.persisted?
     = f.input :password
     = f.input :password_confirmation
+    = f.input :stable_name
   = link_to t('forms.cancel'), users_path, class: "button is-light"
   = f.submit class: "button is-primary"

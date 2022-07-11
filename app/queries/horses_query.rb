@@ -1,5 +1,3 @@
-# typed: false
-
 class HorsesQuery
   module Scopes
     def name_matches(name)

@@ -130,6 +130,8 @@ GEM
       bundler (>= 1.2.0, < 3)
       thor (~> 1.0)
     byebug (11.1.3)
+    callee (0.3.5)
+      dry-initializer (>= 2.5, < 4.0)
     capistrano (3.17.0)
       airbrussh (>= 1.0.0)
       i18n
@@ -170,8 +172,6 @@ GEM
     coderay (1.1.3)
     colored2 (3.1.2)
     colorize (0.8.1)
-    commander (4.6.0)
-      highline (~> 2.0.0)
     concurrent-ruby (1.1.10)
     cork (0.3.0)
       colored2 (~> 3.1)
@@ -216,6 +216,7 @@ GEM
       railties (>= 3.2)
     dotenv_validator (1.2.0)
       fast_blank (~> 1.0.0)
+    dry-initializer (3.1.1)
     e2mmap (0.1.0)
     ed25519 (1.3.0)
     erubi (1.10.0)
@@ -390,15 +391,9 @@ GEM
     pagy (5.10.1)
       activesupport
     parallel (1.22.1)
-    parlour (8.0.0)
-      commander (~> 4.5)
-      parser
-      rainbow (~> 3.0)
-      sorbet-runtime (>= 0.5)
     parser (3.1.2.0)
       ast (~> 2.4.1)
     pg (1.4.1)
-    polyfill (1.9.0)
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -529,8 +524,6 @@ GEM
       rubocop (~> 1.0)
     rubocop-rspec (2.12.1)
       rubocop (~> 1.31)
-    rubocop-sorbet (0.6.11)
-      rubocop (>= 0.90.0)
     ruby-debug-ide (0.7.3)
       rake (>= 0.8.1)
     ruby-progressbar (1.11.0)
@@ -539,7 +532,6 @@ GEM
       sexp_processor (~> 4.16)
     rubyzip (2.3.2)
     rugged (1.2.0)
-    safe_type (1.1.1)
     sassc (2.4.0)
       ffi (~> 1.9)
     sawyer (0.9.2)
@@ -585,25 +577,6 @@ GEM
       thor (~> 1.0)
       tilt (~> 2.0)
       yard (~> 0.9, >= 0.9.24)
-    sorbet (0.5.10151)
-      sorbet-static (= 0.5.10151)
-    sorbet-coerce (0.5.0)
-      polyfill (~> 1.8)
-      safe_type (~> 1.1, >= 1.1.1)
-      sorbet-runtime (>= 0.4.4704)
-    sorbet-progress (0.3.0)
-      rainbow (= 3.0)
-      sorbet (>= 0.4.4314)
-      sorbet-runtime (>= 0.4.4314)
-    sorbet-rails (0.7.33)
-      method_source (>= 0.9.2)
-      parlour (>= 4.0.1)
-      parser (>= 2.7)
-      sorbet-coerce (>= 0.2.6)
-      sorbet-runtime (>= 0.5.9892)
-    sorbet-runtime (0.5.10151)
-    sorbet-static (0.5.10151-universal-darwin-20)
-    sorbet-static (0.5.10151-x86_64-linux)
     sprockets (4.1.1)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -635,9 +608,6 @@ GEM
       rugged (>= 0.27, < 1.3)
     unicode-display_width (2.2.0)
     uniform_notifier (1.16.0)
-    unparser (0.6.5)
-      diff-lcs (~> 1.3)
-      parser (>= 3.1.0)
     view_component (2.57.1)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
@@ -679,6 +649,7 @@ DEPENDENCIES
   bulma-rails
   bundler-audit
   byebug
+  callee
   capistrano (~> 3.17)
   capistrano-bundler (~> 2.0)
   capistrano-passenger
@@ -734,7 +705,6 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rake
   rubocop-rspec
-  rubocop-sorbet
   ruby-debug-ide
   selenium-webdriver
   shoulda-matchers
@@ -744,16 +714,11 @@ DEPENDENCIES
   simplecov-json
   simplecov-lcov
   solargraph
-  sorbet
-  sorbet-progress
-  sorbet-rails
-  sorbet-runtime
   sprockets-rails
   stimulus-rails
   turbo-rails
   tzinfo-data
   undercover
-  unparser
   view_component
   web-console
   webdrivers

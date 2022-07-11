@@ -1,5 +1,3 @@
-# typed: strict
-
 class Racetrack < ApplicationRecord
   validates :name, presence: true, length: { minimum: 4 }
   validates :name, uniqueness: { case_sensitive: false }

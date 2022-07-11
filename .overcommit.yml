@@ -12,7 +12,6 @@ PreCommit:
     on_warn: fail
     exclude:
       - 'node_modules/**/*'
-      - 'sorbet/rbi/**/*'
       - 'vendor/**/*'
   ActionLint:
     enabled: true
@@ -44,11 +43,6 @@ PreCommit:
     enabled: true
   RuboCop:
     enabled: true
-  SlimLint:
-    enabled: true
-  Sorbet:
-    enabled: true
-    command: ['bundle', 'exec', 'srb', 'tc']
   TrailingWhitespace:
     enabled: true
   Undercover:

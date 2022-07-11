@@ -1,5 +1,3 @@
-# typed: false
-
 class PasswordValidator < ActiveModel::EachValidator
   MIN_LENGTH = 8
 

@@ -44,16 +44,12 @@ jobs:
         uses: reviewdog/action-rubocop@v2
         with:
           rubocop_version: gemfile
-          rubocop_extensions: rubocop-performance:gemfile rubocop-rails:gemfile rubocop-rake:gemfile rubocop-rspec:gemfile rubocop-sorbet:gemfile
+          rubocop_extensions: rubocop-performance:gemfile rubocop-rails:gemfile rubocop-rake:gemfile rubocop-rspec:gemfile
           reporter: github-pr-check
 
       - name: Fasterer
         run: |
           bin/fasterer
-
-      - name: Sorbet
-        run: |
-          bin/srb tc
 
       - name: EsLint
         run: |

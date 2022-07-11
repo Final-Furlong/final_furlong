@@ -4,7 +4,6 @@ require "simplecov-lcov"
 require "simplecov_json_formatter"
 
 SimpleCov.start "rails" do
-  add_filter(%r{^/sorbet/})
   add_filter(%r{^/spec/})
   add_filter(%r{^/test/})
 

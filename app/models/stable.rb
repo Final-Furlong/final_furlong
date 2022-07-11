@@ -1,5 +1,3 @@
-# typed: strict
-
 class Stable < ApplicationRecord
   belongs_to :user
 
@@ -7,8 +5,9 @@ class Stable < ApplicationRecord
                          dependent: :restrict_with_exception
   has_many :horses, foreign_key: :owner_id, inverse_of: :owner, dependent: :restrict_with_exception
 
-  validates :name, presence: true
-  validates :name, length: { minimum: 3, maximum: 100 }
+  def policy_class
+    FooStablePolicy
+  end
 end
 
 # == Schema Information

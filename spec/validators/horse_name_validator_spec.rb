@@ -1,5 +1,3 @@
-# typed: ignore
-
 require "rails_helper"
 
 RSpec.describe HorseNameValidator do

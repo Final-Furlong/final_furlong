@@ -1,5 +1,3 @@
-# typed: false
-
 module ResponsiveHelpers
   def resize_window_to_mobile
     resize_window_by([640, 480])

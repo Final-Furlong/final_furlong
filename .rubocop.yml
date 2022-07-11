@@ -3,11 +3,9 @@ require:
   - rubocop-rails
   - rubocop-rake
   - rubocop-rspec
-  - rubocop-sorbet
 
 inherit_gem:
   rubocop-rails: config/default.yml
-  rubocop-sorbet: config/default.yml
 
 AllCops:
   DisplayCopNames: true
@@ -19,12 +17,16 @@ AllCops:
     - "vendor/**/*"
     - ".git/**/*"
     - ".simplecov"
-
   NewCops: enable
   TargetRubyVersion: 3.1
 
 Bundler/OrderedGems:
   Enabled: true
+Lint/InterpolationCheck:
+  Enabled: false
+Layout/LineEndStringConcatenationIndentation:
+  Enabled: true
+  EnforcedStyle: aligned
 Layout/LineLength:
   Max: 120
   Exclude:
@@ -32,20 +34,15 @@ Layout/LineLength:
     - "config/routes.rb"
     - "db/migrate/**/*.rb"
     - "Gemfile"
-Layout/LineEndStringConcatenationIndentation:
-  Enabled: true
-  EnforcedStyle: aligned
-Lint/SymbolConversion:
-  Enabled: true
-  EnforcedStyle: strict
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
   EnforcedStyle: space
-Lint/InterpolationCheck:
-  Enabled: false
 Lint/SuppressedException:
   Exclude:
     - "Rakefile"
+Lint/SymbolConversion:
+  Enabled: true
+  EnforcedStyle: strict
 Metrics/AbcSize:
   Exclude:
     - "db/migrate/**/*.rb"
@@ -61,18 +58,8 @@ Metrics/MethodLength:
 Rails/Output:
   Exclude:
     - "db/seeds.rb"
-
-Sorbet/FalseSigil:
-  Exclude:
-    - 'config/**/*.rb'
-    - 'db/**/*.rb'
-    - 'lib/**/*.rake'
-    - 'app/validators/**/*.rb'
-
-
 Style/ClassAndModuleChildren:
-  EnforcedStyle: compact
-
+  EnforcedStyle: nested
 Style/Documentation:
   Enabled: false
 Style/EndlessMethod:
@@ -83,13 +70,12 @@ Style/FrozenStringLiteralComment:
   AutoCorrect: true
 Style/MutableConstant:
   Enabled: false
-
+Style/SignalException:
+  Enabled: true
+  Exclude:
+    - Dangerfile
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: double_quotes
-  Exclude:
-    - Dangerfile
-Style/SignalException:
-  Enabled: true
   Exclude:
     - Dangerfile

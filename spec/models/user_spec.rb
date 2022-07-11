@@ -1,5 +1,3 @@
-# typed: false
-
 RSpec.describe User, type: :model do
   describe "callbacks" do
     describe "#before_validation" do
@@ -20,31 +18,6 @@ RSpec.describe User, type: :model do
 
         expect { user.valid? }.not_to change { user }
       end
-    end
-  end
-
-  describe "validations" do
-    it { is_expected.to validate_presence_of(:username) }
-    it { is_expected.to validate_presence_of(:email) }
-    it { is_expected.to validate_presence_of(:name) }
-    it { is_expected.to validate_presence_of(:discourse_id).on(:activate) }
-
-    it "validates unique username" do
-      user1 = create(:user)
-      user = build(:user, username: user1.username)
-      expect(user).to validate_uniqueness_of(:username).case_insensitive
-    end
-
-    it "validates unique email" do
-      user1 = create(:user)
-      user = build(:user, email: user1.email)
-      expect(user).to validate_uniqueness_of(:email).case_insensitive
-    end
-
-    it "validates unique discourse id" do
-      user1 = create(:user)
-      user = build(:user, discourse_id: user1.discourse_id)
-      expect(user).to validate_uniqueness_of(:discourse_id).on(:activate)
     end
   end
 

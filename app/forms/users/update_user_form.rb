@@ -1,0 +1,42 @@
+module Users
+  class UpdateUserForm < ApplicationForm
+    # include EmailValidator
+    # include PasswordValidator
+
+    attr_accessor :user, :username, :email, :name
+
+    validates :name, presence: true
+    validates :email, presence: true, email: true
+    # validates_email :email
+    validate :validate_unique_email
+
+    delegate :persisted?, to: :user
+
+    def initialize(user)
+      @user = user
+      super()
+    end
+
+    def submit(params)
+      assign_attributes(params)
+      return false if invalid?
+
+      user.update!(params)
+    rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
+      false
+    end
+
+    private
+
+    def initial_attributes
+      assign_attributes(@user.attributes.symbolize_keys.slice(:username, :email, :name))
+    end
+
+    def validate_unique_email
+      return unless email
+
+      user_exists = User.where.not(id: user.id).where("LOWER(email) = ?", email.downcase).exists? # rubocop:disable Rails/WhereExists
+      errors.add(:email, :taken) if user_exists
+    end
+  end
+end

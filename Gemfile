@@ -12,6 +12,7 @@ gem "devise-i18n"
 gem "responders"
 
 gem "bulma-rails"
+gem "callee"
 gem "dartsass-rails"
 gem "dotenv_validator"
 gem "gretel"
@@ -25,8 +26,6 @@ gem "pundit"
 gem "rails_admin"
 gem "redis", "~> 4.0"
 gem "simple_form"
-gem "sorbet-rails"
-gem "sorbet-runtime"
 gem "sprockets-rails"
 gem "stimulus-rails"
 gem "turbo-rails"
@@ -62,8 +61,6 @@ group :development do
   gem "hotwire-livereload"
   gem "overcommit", require: false
   gem "pry"
-  gem "sorbet", require: false
-  gem "sorbet-progress", require: false
   gem "yalphabetize", require: false
 end
 
@@ -92,10 +89,8 @@ group :development, :test do
   gem "rubocop-rails", require: false
   gem "rubocop-rake", require: false
   gem "rubocop-rspec", require: false
-  gem "rubocop-sorbet", require: false
   gem "ruby-debug-ide", require: false
   gem "solargraph", require: false
-  gem "unparser", require: false # required for rubocop-sorbet
 end
 
 group :test do

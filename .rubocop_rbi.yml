@@ -1,7 +1,0 @@
-inherit_from:
-  - .rubocop.yml
-
-AllCops:
-  DisplayCopNames: true
-  Include:
-    - '**/*'

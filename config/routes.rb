@@ -10,12 +10,15 @@ Rails.application.routes.draw do
   }
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  resources :horses, except: %i[new create destroy]
   resources :users
   resource :stable, only: [:show]
-  namespace :stable do
-    resources :horses, except: %i[new create destroy]
-  end
+  resources :horses, except: %i[new create destroy]
+
+  # stable horses
+  get "/stable/horses", to: "current_stable/horses#index", as: :current_stable_horses
+  get "/stable/horses/:id/edit", to: "current_stable/horses#edit", as: :edit_current_stable_horse
+  get "/stable/horses/:id", to: "current_stable/horses#show", as: :current_stable_horse
+  match "/stable/horses/:id", to: "current_stable/horses#update", as: :update_current_stable_horse, via: %i[put patch]
 
   # Defines the root path route ("/")
   root "pages#home"

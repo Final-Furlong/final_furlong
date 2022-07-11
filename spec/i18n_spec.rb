@@ -1,5 +1,3 @@
-# typed: false
-
 require "i18n/tasks"
 require "i18n-spec"
 

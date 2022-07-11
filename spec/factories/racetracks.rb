@@ -1,5 +1,3 @@
-# typed: false
-
 FactoryBot.define do
   factory :racetrack do
     sequence(:name) { |n| "#{Faker::Company.name}_#{n}" }

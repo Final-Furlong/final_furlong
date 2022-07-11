@@ -1,5 +1,3 @@
-# typed: false
-
 RSpec.describe "Users", js: true do
   include Devise::Test::IntegrationHelpers
 
@@ -21,11 +19,12 @@ RSpec.describe "Users", js: true do
       fill_in "user[name]", with: attrs[:name]
       fill_in "user[password]", with: "abc"
       fill_in "user[password_confirmation]", with: "abc"
+      fill_in "user[stable_name]", with: "Test Stable"
       click_on "Create user"
 
       expect(page).to have_text "Password is too short"
-      fill_in "user[password]", with: attrs[:password]
-      fill_in "user[password_confirmation]", with: attrs[:password]
+      fill_in "user[password]", with: "password123"
+      fill_in "user[password_confirmation]", with: "password123"
       click_on "Create user"
 
       expect(page).to have_selector "h1", text: "Users"
