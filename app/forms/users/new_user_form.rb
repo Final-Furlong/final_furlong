@@ -1,7 +1,6 @@
 module Users
   class NewUserForm < ApplicationForm
-    # include EmailValidator
-    # include PasswordValidator
+    include FinalFurlong::Internet::Validation
 
     attr_accessor :user, :stable, :email, :name, :password, :password_confirmation, :stable_name, :username, :params
 
@@ -9,8 +8,8 @@ module Users
     validates :email, presence: true, email: true
     validates :username, presence: true, length: { minimum: User::USERNAME_LENGTH }
     validates :password, presence: true, length: { minimum: User::PASSWORD_LENGTH }
-    # validates_email :email
-    # validates_password :password
+    validates_email :email
+    validates_password :password
     validate :validate_unique_email
     validate :validate_unique_username
 

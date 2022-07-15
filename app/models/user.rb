@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   include Admin::UserAdmin
+  include FinalFurlong::Internet::Validation
 
   USERNAME_LENGTH = 4
   PASSWORD_LENGTH = 8
