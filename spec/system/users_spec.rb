@@ -17,18 +17,36 @@ RSpec.describe "Users", js: true do
       fill_in "user[username]", with: attrs[:username]
       fill_in "user[email]", with: attrs[:email]
       fill_in "user[name]", with: attrs[:name]
+      fill_in "user[password]", with: "Password123!"
+      fill_in "user[password_confirmation]", with: "Password123!"
+      fill_in "user[stable_name]", with: "Test Stable"
+      click_on "Create user"
+
+      expect(page).to have_selector "h1", text: "Users"
+      expect(page).to have_text attrs[:name]
+    end
+
+    it "errors create on password" do
+      visit users_path
+      expect(page).to have_selector "h1", text: "Users"
+
+      click_on "New user"
+      expect(page).to have_field "user[username]"
+
+      attrs = attributes_for(:user)
+      fill_in "user[username]", with: attrs[:username]
+      fill_in "user[email]", with: attrs[:email]
+      fill_in "user[name]", with: attrs[:name]
       fill_in "user[password]", with: "abc"
       fill_in "user[password_confirmation]", with: "abc"
       fill_in "user[stable_name]", with: "Test Stable"
       click_on "Create user"
 
       expect(page).to have_text "Password is too short"
-      fill_in "user[password]", with: "password123"
-      fill_in "user[password_confirmation]", with: "password123"
+      fill_in "user[password]", with: "password"
+      fill_in "user[password_confirmation]", with: "password"
       click_on "Create user"
-
-      expect(page).to have_selector "h1", text: "Users"
-      expect(page).to have_text attrs[:name]
+      expect(page).to have_text "Password must be at least 8 characters long and contain: an upper case character, a lower case character, digit and a non-alphabet character."
     end
 
     it "can view users" do

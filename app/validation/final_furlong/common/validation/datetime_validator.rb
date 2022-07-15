@@ -7,11 +7,11 @@ module FinalFurlong
           return if value.blank? && options[:allow_blank]
 
           valid_time = case value
-                      when String
-                        DateTime.parse_safely(value)
-                      when Time, DateTime
-                        value
-                      end
+                       when String
+                         DateTime.parse_safely(value)
+                       when Time, DateTime
+                         value
+                       end
 
           return record.errors.add(attribute, :datetime_invalid, **{ value: }) unless valid_time
         end

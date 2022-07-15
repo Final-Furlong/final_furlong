@@ -1,6 +1,7 @@
 class ApplicationForm
   include ActiveModel::Model
   include ActiveModel::Validations
+  include ActiveModel::Validations::ClassMethods
 
   def initialize
     initial_attributes

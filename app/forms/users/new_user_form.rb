@@ -2,12 +2,12 @@ module Users
   class NewUserForm < ApplicationForm
     include FinalFurlong::Internet::Validation
 
-    attr_accessor :user, :stable, :email, :name, :password, :password_confirmation, :stable_name, :username, :params
+    attr_accessor :user, :stable, :name, :email, :password, :password_confirmation, :stable_name, :username, :params
 
-    validates :name, presence: true
-    validates :email, presence: true, email: true
-    validates :username, presence: true, length: { minimum: User::USERNAME_LENGTH }
-    validates :password, presence: true, length: { minimum: User::PASSWORD_LENGTH }
+    validates :name, :email, :username, :password, :password_confirmation, :stable_name, presence: true
+    validates :email, email: true
+    validates :username, length: { minimum: User::USERNAME_LENGTH }
+    validates :password, length: { minimum: User::PASSWORD_LENGTH }
     validates_email :email
     validates_password :password
     validate :validate_unique_email

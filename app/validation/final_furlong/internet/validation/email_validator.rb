@@ -10,7 +10,7 @@ module FinalFurlong
           super(options)
         end
 
-        def validate_each(record, attribute, value)
+        def validate_each(record, attribute, value) # rubocop:disable Metrics/CyclomaticComplexity
           return if value.nil? && options[:allow_nil]
           return if value.blank? && options[:allow_blank]
           return record.errors.add(attribute, :too_long, count: MAX_LENGTH) if value && value.length > MAX_LENGTH

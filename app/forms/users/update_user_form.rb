@@ -2,11 +2,13 @@ module Users
   class UpdateUserForm < ApplicationForm
     include FinalFurlong::Internet::Validation
 
-    attr_accessor :user, :username, :email, :name
+    attr_accessor :user, :username, :email, :name, :stable_name
 
     validates :name, presence: true
     validates :email, presence: true, email: true
     validates_email :email
+
+    delegate :persisted?, to: :user
 
     def initialize(user)
       @user = user
@@ -26,6 +28,7 @@ module Users
 
     def initial_attributes
       assign_attributes(@user.attributes.symbolize_keys.slice(:username, :email, :name))
+      @stable_name = @user.stable.name
     end
 
     def validate_unique_email
