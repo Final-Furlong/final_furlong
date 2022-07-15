@@ -1,8 +1,4 @@
-# typed: false
-
 class Horse < ApplicationRecord
-  extend T::Sig
-
   belongs_to :breeder, class_name: "Stable"
   belongs_to :owner, class_name: "Stable"
   belongs_to :sire, class_name: "Horse", optional: true
@@ -19,37 +15,33 @@ class Horse < ApplicationRecord
 
   scope :living, -> { where(status: HorseStatus::LIVING_STATUSES) }
   scope :ordered, -> { order(name: :asc) }
+  scope :owned_by, ->(stable) { where(owner: stable) }
 
   broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
 
-  sig { returns(T.nilable(HorseStatus)) }
   def status
     return unless self[:status]
 
     HorseStatus.new(self[:status])
   end
 
-  sig { returns(T.nilable(HorseGender)) }
   def gender
     return unless self[:gender]
 
     HorseGender.new(self[:gender])
   end
 
-  sig { returns(Integer) }
   def age
     max_date = dead? ? self[:date_of_death] : Date.current
     max_date.year - self[:date_of_birth].year
   end
 
-  sig { returns(T::Boolean) }
   def stillborn?
     self[:date_of_birth] == self[:date_of_death]
   end
 
   private
 
-  sig { returns(T::Boolean) }
   def dead?
     return false unless self[:date_of_death]
 

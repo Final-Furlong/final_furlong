@@ -1,20 +1,18 @@
-# typed: true
-
 class HorsesController < ApplicationController
   before_action :set_horse, except: :index
+  before_action :authorize_horse, except: :index
 
   # @route GET /horses (horses)
   def index
-    @horses = Horse.living.ordered
+    authorize Horse
+    @horses = policy_scope(Horse).ordered
     @controller = params[:controller]
     @action = params[:action]
   end
 
-  sig { returns(NilClass) }
   # @route GET /horses/:id (horse)
   def show; end
 
-  sig { returns(NilClass) }
   # @route GET /horses/:id/edit (edit_horse)
   def edit; end
 
@@ -33,6 +31,10 @@ class HorsesController < ApplicationController
   end
 
   private
+
+  def authorize_horse
+    authorize @horse
+  end
 
   def set_horse
     @horse = Horse.find(params[:id])

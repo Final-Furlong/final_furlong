@@ -1,5 +1,3 @@
-# typed: false
-
 class HorseNameValidator < ActiveModel::EachValidator
   RESERVED_VALUES = ["Final Furlong"].freeze
   UNNAMED = "Unnamed".freeze

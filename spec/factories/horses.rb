@@ -1,5 +1,3 @@
-# typed: false
-
 FactoryBot.define do
   factory :horse do
     sequence(:name) { Faker::Creature::Horse.name }

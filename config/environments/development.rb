@@ -1,5 +1,3 @@
-# typed: strict
-
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
@@ -79,6 +77,9 @@ Rails.application.configure do
 
   config.hotwire_livereload.listen_paths << Rails.root.join("app/assets/builds")
 
+  logger = ActiveSupport::Logger.new($stdout)
+  logger.formatter = config.log_formatter
+  config.logger = ActiveSupport::TaggedLogging.new(logger)
   config.log_level = :debug
   config.log_tags = []
 

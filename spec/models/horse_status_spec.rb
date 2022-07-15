@@ -1,5 +1,3 @@
-# typed: false
-
 require "spec_helper"
 
 RSpec.describe HorseStatus do

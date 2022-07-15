@@ -1,8 +1,4 @@
-# typed: false
-
 FactoryBot.define do
-  sequence(:discourse_id)
-
   factory :user do
     sequence(:username) do |n|
       "#{Faker::Internet.username(specifier: User::USERNAME_LENGTH - 1 - n.to_s.length)}_#{n}"
@@ -12,12 +8,16 @@ FactoryBot.define do
     name { Faker::Name.first_name }
     email { Faker::Internet.email }
     admin { false }
-    discourse_id
+    discourse_id { rand(1..999_999) }
     confirmed_at { Time.current }
     stable { association :stable, user: instance }
 
     factory :admin do
       admin { true }
+    end
+
+    trait :pending do
+      status { "pending" }
     end
 
     trait :unconfirmed do

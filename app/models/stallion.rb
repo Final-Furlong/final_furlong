@@ -1,5 +1,3 @@
-# typed: strict
-
 class Stallion < Horse
   validates :status, inclusion: { in: HorseStatus::MALE_BREEDING_STATUSES }
   validates :gender, inclusion: { in: %w[stallion gelding] }

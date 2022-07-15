@@ -3,4 +3,4 @@
   %h1= t(".title")
 
 = turbo_frame_tag @user do
-  = render "form", user: @user
+  = render "form", form: @user_form, url: users_path

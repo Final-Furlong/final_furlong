@@ -1,5 +1,3 @@
-# typed: false
-
 class EmailValidator < ActiveModel::EachValidator
   MAX_LENGTH = 254
 

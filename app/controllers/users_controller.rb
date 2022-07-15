@@ -1,61 +1,51 @@
-# typed: strict
-
 class UsersController < AuthenticatedController
-  before_action :set_user, only: %i[show edit update destroy]
+  before_action :load_user, only: %i[show edit update destroy]
+  before_action :new_user, only: %i[new create]
+  before_action :load_new_user_form, only: %i[new create]
+  before_action :load_edit_user_form, only: %i[edit update]
+  before_action :authorize_user, except: :index
 
-  sig { returns(User::ActiveRecord_Relation) }
   # @route GET /users (users)
   def index
-    @users = T.must(@users = T.let(User.active.ordered, T.nilable(User::ActiveRecord_Relation)))
+    authorize User
+    @users = policy_scope(User).ordered
   end
 
-  sig { returns(NilClass) }
   # @route GET /users/:id (user)
   def show; end
 
-  sig { returns(User) }
   # @route GET /users/new (new_user)
-  def new
-    @user = User.new
-  end
+  def new; end
 
-  sig { void }
   # @route POST /users (users)
   def create
-    @user = User.new(create_params)
-    if @user.save
+    if @user_form.submit(user_attributes)
       flash[:notice] = t(".success")
-      respond_to do |format|
-        format.html { redirect_to users_path }
-        format.turbo_stream
-      end
+      redirect_to users_path
     else
+      flash[:alert] = t(".failure")
       render :new, status: :unprocessable_entity
     end
   end
 
-  sig { returns(NilClass) }
   # @route GET /users/:id/edit (edit_user)
   def edit; end
 
-  sig { void }
   # @route PATCH /users/:id (user)
   # @route PUT /users/:id (user)
   def update
-    @user = T.must(@user)
-    if @user.update(update_params)
-      redirect_to users_path, notice: t(".success")
+    if @user_form.submit(user_attributes)
+      flash[:notice] = t(".success")
+      redirect_to users_path
     else
-      render :edit, status: :unprocessable_entity
+      flash[:alert] = t(".failure")
+      render :new, status: :unprocessable_entity
     end
   end
 
-  sig { void }
   # @route DELETE /users/:id (user)
   def destroy
-    # TODO: fix this when enum statuses work properly
-    # T.must(@user).deleted!
-    T.must(@user).update!(status: "deleted")
+    @user.deleted!
     flash[:notice] = t(".success")
     respond_to do |format|
       format.html { redirect_to users_path, notice: t(".success") }
@@ -65,23 +55,27 @@ class UsersController < AuthenticatedController
 
   private
 
-  sig { returns(T.nilable(User)) }
-  def set_user
-    @user = T.let(User.find_by(id: params[:id]), T.nilable(User))
+  def authorize_user
+    authorize @user
   end
 
-  sig { returns(T::Hash[String, T.untyped]) }
-  def create_params
-    user_policy.permitted_attributes_for_create(params[:user])
+  def load_user
+    @user = User.find_by(id: params[:id])
   end
 
-  sig { returns(T::Hash[String, T.untyped]) }
-  def update_params
-    user_policy.permitted_attributes_for_edit(params[:user])
+  def new_user
+    @user = User.new
   end
 
-  sig { returns(UserPolicy) }
-  def user_policy
-    Pundit.policy!(current_user, @user || User.new)
+  def load_new_user_form
+    @user_form = Users::NewUserForm.new(@user)
+  end
+
+  def load_edit_user_form
+    @user_form = Users::UpdateUserForm.new(@user)
+  end
+
+  def user_attributes
+    permitted_attributes(@user)
   end
 end

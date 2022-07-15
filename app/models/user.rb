@@ -1,5 +1,3 @@
-# typed: true
-
 class User < ApplicationRecord
   include Admin::UserAdmin
 
@@ -8,8 +6,6 @@ class User < ApplicationRecord
 
   has_one :stable, dependent: :destroy
 
-  accepts_nested_attributes_for :stable, allow_destroy: true
-
   # Include default devise modules. Others available are:
   # :omniauthable
   devise :database_authenticatable, :registerable,
@@ -17,15 +13,6 @@ class User < ApplicationRecord
          :confirmable, :lockable, :timeoutable, :trackable
 
   enum status: { pending: "pending", active: "active", deleted: "deleted", banned: "banned" }
-
-  validates :name, presence: true
-  validates :email, presence: true, email: true, uniqueness: { case_sensitive: false }
-  validates :username, presence: true, length: { minimum: USERNAME_LENGTH }, uniqueness: { case_sensitive: false }
-  validates :password, presence: true, length: { minimum: PASSWORD_LENGTH }, on: :create
-  validates :admin, inclusion: { in: [true, false] }
-  validates :discourse_id, presence: true, uniqueness: true, on: :activate
-  # validates_email :email
-  # validates_password :password
 
   before_validation :set_defaults, on: :create
 

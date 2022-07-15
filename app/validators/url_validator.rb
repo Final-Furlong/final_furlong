@@ -1,5 +1,3 @@
-# typed: false
-
 class UrlValidator < ActiveModel::EachValidator
   def initialize(options)
     options.reverse_merge!(schemes: %w[http https])
