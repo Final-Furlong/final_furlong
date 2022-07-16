@@ -13,4 +13,6 @@ install_plugin Capistrano::SCM::Git
 # require "capistrano/rails/assets"
 # require "capistrano/rails/migrations"
 
+require "capistrano/deploytags"
+
 Dir.glob("lib/capistrano/tasks/*.rake").each { |r| import r }

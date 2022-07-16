@@ -30,6 +30,10 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 /config/credentials/*.key
+
+.nvmrc
+.node-version
+.ruby-version
 /config/database.yml
 .env
 coverage/
