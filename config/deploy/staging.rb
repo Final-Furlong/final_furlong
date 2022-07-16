@@ -3,3 +3,5 @@ set :stage, :staging
 set :rails_env, :staging
 
 set :deploy_to, "/var/www/staging.finalfurlong"
+
+set :deploytag_time_format, "%Y.%m.%d-%H%M%S-utc"
