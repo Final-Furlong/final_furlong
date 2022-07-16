@@ -6,8 +6,16 @@ module FinalFurlong
           return if value.nil? && options[:allow_nil]
           return if value.blank? && options[:allow_blank]
 
-          date = value.is_a?(Date) ? value : Date.strptime_safely(value, "%d/%m/%Y")
-          return record.errors.add(attribute, :date_invalid, **{ value: }) unless date
+          valid_date = strptime_date(value)
+          return record.errors.add(attribute, :date_invalid, **{ value: }) unless valid_date
+        end
+
+        private
+
+        def strptime_date(value)
+          return value if value.is_a? Date
+
+          Date.parse_safely(value)
         end
       end
     end

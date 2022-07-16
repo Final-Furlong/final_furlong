@@ -1,6 +1,6 @@
-module FinalFurlong
-  module Common
-    class Exception
+module CoreExtensions
+  module Exception
+    module StackTrace
       def stack_trace
         backtrace&.join("\n\t")
       end
