@@ -71,8 +71,6 @@ group :development, :test do
   gem "bullet"
   gem "bundler-audit"
   gem "byebug", platform: :mri
-  gem "debase", github: "ruby-debug/debase", tag: "v0.2.5.beta2", require: false
-  gem "debug", platforms: %i[mri mingw x64_mingw]
   gem "dotenv-rails"
   gem "ed25519" # required for capistrano
   gem "factory_bot-awesome_linter", require: false
