@@ -15,7 +15,7 @@ env:
 
 jobs:
   call-linters:
-    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@dry-monads
+    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@main
 
   danger:
     name: Danger

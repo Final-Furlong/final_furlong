@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe HorseNameValidator do
+RSpec.describe FinalFurlong::Horses::Validation::NameValidator do
   describe "basic validator" do
     it "is valid when nil" do
       model = ModelWithDefaultHorseNameValidation.new
@@ -88,18 +88,19 @@ end
 
 class ModelWithHorseNameField
   include ActiveModel::Model
+  include FinalFurlong::Horses::Validation
 
   attr_accessor :name
 end
 
 class ModelWithDefaultHorseNameValidation < ModelWithHorseNameField
-  validates :name, horse_name: true
+  validates_horse_name :name
 end
 
 class ModelWithHorseNameValidationAllowingNil < ModelWithHorseNameField
-  validates :name, horse_name: true, allow_nil: true
+  validates_horse_name :name, allow_nil: true
 end
 
 class ModelWithHorseNameValidationAllowingBlank < ModelWithHorseNameField
-  validates :name, horse_name: true, allow_blank: true
+  validates_horse_name :name, allow_blank: true
 end

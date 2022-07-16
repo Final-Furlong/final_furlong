@@ -3,7 +3,7 @@ FactoryBot.define do
     sequence(:username) do |n|
       "#{Faker::Internet.username(specifier: User::USERNAME_LENGTH - 1 - n.to_s.length)}_#{n}"
     end
-    password { Faker::Internet.password(min_length: User::PASSWORD_LENGTH) }
+    password { "Password1!" }
     status { "active" }
     name { Faker::Name.first_name }
     email { Faker::Internet.email }

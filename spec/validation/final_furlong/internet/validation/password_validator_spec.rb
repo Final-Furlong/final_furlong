@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe PasswordValidator do
+RSpec.describe FinalFurlong::Internet::Validation::PasswordValidator do
   describe "validating password strength" do
     it "fails when nil" do
       model = set_model
@@ -100,18 +100,19 @@ end
 
 class ModelWithPasswordField
   include ActiveModel::Model
+  include FinalFurlong::Internet::Validation
 
   attr_accessor :password
 end
 
 class ModelWithDefaultPasswordValidation < ModelWithPasswordField
-  validates :password, password: true
+  validates_password :password
 end
 
 class ModelWithPasswordValidationAllowingNil < ModelWithPasswordField
-  validates :password, password: true, allow_nil: true
+  validates_password :password, allow_nil: true
 end
 
 class ModelWithPasswordValidationAllowingBlank < ModelWithPasswordField
-  validates :password, password: true, allow_blank: true
+  validates_password :password, allow_blank: true
 end

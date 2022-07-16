@@ -5,21 +5,53 @@ RSpec.describe Users::NewUserForm, type: :model do
     subject(:form) { described_class.new(User.new) }
 
     it { is_expected.to validate_presence_of(:username) }
-    it { is_expected.to validate_presence_of(:email) }
     it { is_expected.to validate_presence_of(:name) }
+    it { is_expected.to validate_presence_of(:email) }
+    it { is_expected.to validate_presence_of(:password) }
+    it { is_expected.to validate_presence_of(:password_confirmation) }
+    it { is_expected.to validate_presence_of(:stable_name) }
+    it { is_expected.to validate_length_of(:username).is_at_least(User::USERNAME_LENGTH) }
+    it { is_expected.to validate_length_of(:password).is_at_least(User::PASSWORD_LENGTH) }
 
     it "validates unique username" do
-      pending("hook this up")
       user1 = create(:user)
-      user = build(:user, username: user1.username)
-      expect(described_class.new(user)).to validate_uniqueness_of(:username).case_insensitive
+      form = described_class.new(User.new)
+      form.submit(user_attrs.merge(username: user1.username.upcase))
+
+      expect(form).not_to be_valid
+      expect(form.errors[:username]).to eq(["has already been taken"])
     end
 
     it "validates unique email" do
-      pending("hook this up")
       user1 = create(:user)
-      user = build(:user, email: user1.email)
-      expect(described_class.new(user)).to validate_uniqueness_of(:email).case_insensitive
+      form = described_class.new(User.new)
+      form.submit(user_attrs.merge(email: user1.email.upcase))
+
+      expect(form).not_to be_valid
+      expect(form.errors[:email]).to eq(["has already been taken"])
     end
+
+    it "validates weak password" do
+      form = described_class.new(User.new)
+      form.submit(user_attrs.merge(password: "password", password_confirmation: "password"))
+
+      expect(form).not_to be_valid
+      expect(form.errors[:password]).to eq(["must be at least 8 characters long and contain: " \
+                                            "an upper case character, a lower case character, digit and a non-alphabet character."])
+    end
+  end
+
+  private
+
+  def user_attrs
+    attrs = attributes_for(:user)
+    {
+      name: attrs[:name],
+      email: attrs[:email],
+      password: attrs[:password],
+      password_confirmation: attrs[:password],
+      username: attrs[:username],
+      stable_name: attributes_for(:stable)[:name]
+    }
   end
 end

@@ -1,4 +1,6 @@
 class Horse < ApplicationRecord
+  include FinalFurlong::Horses::Validation
+
   belongs_to :breeder, class_name: "Stable"
   belongs_to :owner, class_name: "Stable"
   belongs_to :sire, class_name: "Horse", optional: true
@@ -11,7 +13,7 @@ class Horse < ApplicationRecord
   validates :date_of_birth, presence: true
   validates :date_of_death, comparison: { greater_than_or_equal_to: :date_of_birth }, if: :date_of_death
   validate :name_required, on: :update
-  validates :name, horse_name: true, on: :update
+  validates_horse_name :name, on: :update
 
   scope :living, -> { where(status: HorseStatus::LIVING_STATUSES) }
   scope :ordered, -> { order(name: :asc) }
