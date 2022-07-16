@@ -1,7 +1,7 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.17.0"
 
-server "ff", user: "www", roles: %i[web app db], primary: true
+server "ffdeploy", user: "www", roles: %i[web app db], primary: true
 
 set :application, "final_furlong"
 set :repo_url, "git@github.com:pendletons/final_furlong.git"
@@ -9,7 +9,7 @@ set :repo_url, "git@github.com:pendletons/final_furlong.git"
 set :branch, ENV.fetch("REVISION", "main")
 
 set :rbenv_type, :user
-set :rbenv_ruby, "3.1.1"
+set :rbenv_ruby, "3.1.2"
 
 set :deploy_to, "/var/www/rails.finalfurlong"
 
@@ -24,7 +24,7 @@ set :keep_releases, 3
 set :passenger_restart_with_touch, true
 
 set :ssh_options, {
-  keys: %w[~/.ssh/ff_deploy],
+  keys: %w[~/.ssh/ff_capistrano],
   forward_agent: true,
   auth_methods: %w[publickey],
   verify_host_key: :always
