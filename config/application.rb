@@ -42,5 +42,13 @@ module FinalFurlong
     logger.formatter = config.log_formatter
     config.logger = ActiveSupport::TaggedLogging.new(logger)
     config.log_tags = [:request_id]
+
+    # API
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins "*"
+        resource "*", headers: :any, methods: %i[get post put delete options]
+      end
+    end
   end
 end

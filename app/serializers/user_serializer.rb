@@ -1,45 +1,5 @@
-class User < ApplicationRecord
-  include Admin::UserAdmin
-  include FinalFurlong::Internet::Validation
-
-  USERNAME_LENGTH = 4
-  PASSWORD_LENGTH = 8
-
-  has_one :stable, dependent: :destroy
-  has_one :activation, dependent: :destroy
-
-  # Include default devise modules. Others available are:
-  # :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable,
-         :confirmable, :lockable, :timeoutable, :trackable
-
-  enum status: { pending: "pending", active: "active", deleted: "deleted", banned: "banned" }
-
-  before_validation :set_defaults, on: :create
-
-  broadcasts_to ->(_user) { "users" }, inserts_by: :prepend
-
-  scope :active, -> { where(status: "active") }
-  scope :ordered, -> { order(id: :desc) }
-
-  attr_accessor :login
-
-  # allow login via username or e-mail
-  def self.find_for_database_authentication(warden_conditions)
-    conditions = warden_conditions.dup
-    login = conditions.delete(:login)
-    where(conditions).where(
-      ["LOWER(username) = :value OR LOWER(email) = :value", { value: login.strip.downcase }]
-    ).first
-  end
-
-  private
-
-  def set_defaults
-    self.status ||= "pending"
-    self.admin ||= false
-  end
+class UserSerializer < ActiveModel::Serializer
+  attributes :id, :email
 end
 
 # == Schema Information
