@@ -1,7 +1,12 @@
-require "rails_helper"
+require "spec_helper"
 
 # rubocop:disable RSpec/MultipleExpectations
 RSpec.describe Date do
+  before do
+    described_class.prepend(CoreExtensions::Date::ParseSafely)
+    described_class.prepend(CoreExtensions::Date::StrptimeSafely)
+  end
+
   it "parses date safely" do
     expect(described_class.parse_safely("2017-01-01")).to eq(described_class.parse("2017-01-01"))
     expect(described_class.parse_safely("abc")).to be_nil

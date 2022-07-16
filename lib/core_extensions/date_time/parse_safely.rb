@@ -1,13 +1,15 @@
 module CoreExtensions
   module DateTime
     module ParseSafely
-      def self.included(base)
-        base.instance_eval do
-          def parse_safely(value)
-            parse(value)
-          rescue StandardError
-            nil
-          end
+      def self.prepended(base)
+        base.singleton_class.prepend(ClassMethods)
+      end
+
+      module ClassMethods
+        def parse_safely(value)
+          parse(value&.to_s)
+        rescue StandardError
+          nil
         end
       end
     end

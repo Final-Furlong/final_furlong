@@ -2,10 +2,10 @@
 Dir[Rails.root.join("lib/core_extensions/**/*.rb")].each { |f| require f }
 
 # Apply the monkey patches
-Date.include CoreExtensions::Date::ParseSafely
-Date.include CoreExtensions::Date::StrptimeSafely
+Date.prepend CoreExtensions::Date::ParseSafely
+Date.prepend CoreExtensions::Date::StrptimeSafely
 
-DateTime.include CoreExtensions::DateTime::ParseSafely
+DateTime.prepend CoreExtensions::DateTime::ParseSafely
 
 Exception.include CoreExtensions::Exception::StackTrace
 
