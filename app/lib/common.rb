@@ -10,8 +10,6 @@ require "extensions/date_time_extensions"
 require "extensions/exception_extensions"
 require "extensions/string_extensions"
 
-module FinalFurlong
-  module Common
-    # Your code goes here...
-  end
+module Common
+  # Your code goes here...
 end
