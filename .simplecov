@@ -3,16 +3,29 @@ require "simplecov-json"
 require "simplecov-lcov"
 require "simplecov_json_formatter"
 
-SimpleCov.start "rails" do
+SimpleCov.start do
+  load_profile "test_frameworks"
+
+  add_filter %r{^/config/}
+  add_filter %r{^/db/}
   add_filter(%r{^/spec/})
   add_filter(%r{^/test/})
 
+  add_group "API", "app/controllers/api"
+  add_group "Controllers", "app/controllers"
+  add_group "Models", "app/models"
+  add_group "Policies", "app/policies"
+  add_group "Forms", "app/forms"
+  add_group "Jobs", %w[app/jobs app/workers]
+  add_group "Mailers", "app/mailers"
+  add_group "Helpers", "app/helpers"
+  add_group "Libraries", %w[lib/ app/validation/final_furlong]
   add_group "View Components", "app/components"
+
+  track_files "{app,lib}/**/*.rb"
 
   enable_coverage(:branch)
   primary_coverage :line
-
-  track_files "**/*.rb"
 
   SimpleCov::Formatter::LcovFormatter.config do |c|
     c.report_with_single_file = true

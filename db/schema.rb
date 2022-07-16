@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_19_171138) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_16_131503) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,6 +19,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_19_171138) do
   create_enum "horse_gender", ["colt", "filly", "mare", "stallion", "gelding"]
   create_enum "horse_status", ["unborn", "weanling", "yearling", "racehorse", "broodmare", "stud", "retired", "retired_broodmare", "retired_stud", "deceased"]
   create_enum "user_status", ["pending", "active", "deleted", "banned"]
+
+  create_table "activations", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "token", null: false
+    t.datetime "activated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_activations_on_user_id"
+  end
 
   create_table "horses", force: :cascade do |t|
     t.string "name"
@@ -99,6 +108,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_19_171138) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "activations", "users"
   add_foreign_key "horses", "horses", column: "dam_id"
   add_foreign_key "horses", "horses", column: "sire_id"
   add_foreign_key "horses", "racetracks", column: "location_bred_id"

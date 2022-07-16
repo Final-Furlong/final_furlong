@@ -51,4 +51,7 @@ RSpec.configure do |config|
 
   config.include ViewComponent::TestHelpers, type: :component
   config.include Capybara::RSpecMatchers, type: :component
+
+  config.include RSpec::Rails::RequestExampleGroup, type: :request, file_path: %r{spec/api}
+  config.include JSONHelpers, type: :request
 end

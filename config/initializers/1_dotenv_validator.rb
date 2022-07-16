@@ -1,3 +1,3 @@
-Rails.logger.debug "Validating environment... 🧐🧐🧐"
+Rails.logger.debug "Validating environment... 🧐"
 DotenvValidator.check!
-Rails.logger.debug "Your environment is in good shape! 🚀🚀🚀"
+Rails.logger.debug "Your environment is in good shape! 🚀"

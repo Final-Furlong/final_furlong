@@ -31,6 +31,14 @@ FactoryBot.define do
     trait :banned do
       status { "banned" }
     end
+
+    trait :unactivated do
+      activation { association :activation, :unactivated }
+    end
+
+    trait :activated do
+      activation { association :activation, :activated }
+    end
   end
 end
 
