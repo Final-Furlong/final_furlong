@@ -21,8 +21,10 @@ test:
     pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
     url: <%= ENV['DATABASE_URL'] %>
   legacy:
-    adapter: mysql2
-    encoding: utf8mb4
+    adapter: postgresql
+    encoding: unicode
+    username: postgres
+    password: postgres
+    database: legacy_test
     pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-    url: <%= ENV['LEGACY_DATABASE_URL'] %>
     migrations_paths: db/legacy_migrate
