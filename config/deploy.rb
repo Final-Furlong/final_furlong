@@ -15,7 +15,7 @@ set :deploy_to, "/var/www/rails.finalfurlong"
 
 append :linked_files, "config/database.yml", ".rbenv-vars"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpacker", "public/system", \
-       "vendor", "storage", ".bundle", "public/uploads", "config/credentials/"
+       "vendor", "storage", ".bundle", "public/uploads"
 
 after "deploy", "deploy:cleanup"
 
