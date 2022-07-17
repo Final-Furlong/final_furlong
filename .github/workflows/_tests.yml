@@ -24,7 +24,6 @@ jobs:
       postgres:
         image: postgres:14
         env:
-          POSTGRES_DB: final_furlong_test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         ports: ["5432:5432"]
@@ -52,6 +51,21 @@ jobs:
           cp config/database.yml.github_actions config/database.yml
           bin/rails db:create
           bin/rails db:test:prepare
+
+      - name: Set up primary database
+        env:
+          POSTGRES_DB: final_furlong_test
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
+        run: |
+          cp config/database.yml.github_actions config/database.yml
+          bin/rails db:create:primary db:migrate:primary
+      - name: Set up legacy database
+        env:
+          POSTGRES_DB: final_furlong_legacy_test
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_legacy_test"
+        run: |
+          cp config/database.yml.github_actions config/database.yml
+          bin/rails db:create:legacy db:migrate:legacy
 
       - name: Test & Publish Coverage
         uses: paambaati/codeclimate-action@v3.0.0
