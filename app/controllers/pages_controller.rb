@@ -4,4 +4,7 @@ class PagesController < ApplicationController
 
   # @route GET / (root)
   def home; end
+
+  # @route GET /activation
+  def activation; end
 end

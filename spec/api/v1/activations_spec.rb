@@ -14,32 +14,31 @@ RSpec.describe API::V1::Activations do
 
   describe "GET /api/v1/activations/:token" do
     context "when user matches unactivated token" do
-      it "returns activation" do
-        token = SecureRandom.uuid
-        activation = create(:activation, :unactivated)
-        activation.user.update!(confirmation_token: token)
+      it "returns ok status" do
+        user = create(:user, :pending, :without_stable)
+        token = Digest::MD5.hexdigest user.email
+        create(:activation, :unactivated, user:, token:)
 
         get "/api/v1/activations/#{token}"
         expect(response).to have_http_status :ok
-        expect(json_body).to eq(serialize(model: activation))
+        expect(json_body).to eq("status" => "ok")
       end
     end
 
     context "when user matches activated token" do
       it "returns error" do
-        token = SecureRandom.uuid
-        activation = create(:activation, :activated)
-        activation.user.update!(confirmation_token: token)
+        user = create(:user, :pending, :without_stable)
+        token = Digest::MD5.hexdigest user.email
+        create(:activation, :activated, user:)
 
         get "/api/v1/activations/#{token}"
         expect(response).to have_http_status :not_found
       end
     end
 
-    context "when user does not match user" do
+    context "when token does not match user" do
       it "returns error" do
         token = SecureRandom.uuid
-        create(:user, confirmation_token: SecureRandom.uuid)
 
         get "/api/v1/activations/#{token}"
         expect(response).to have_http_status :not_found
@@ -50,9 +49,10 @@ RSpec.describe API::V1::Activations do
   describe "POST /api/v1/activations/" do
     context "when stable matches unactivated activation" do
       it "returns URL to app" do
-        token = SecureRandom.uuid
-        activation = create(:activation, :unactivated, token:)
-        stable = create(:stable, user: activation.user)
+        user = create(:user, :pending, :without_stable)
+        token = Digest::MD5.hexdigest user.email
+        create(:activation, :unactivated, token:, user:)
+        stable = create(:stable, user:)
 
         post "/api/v1/activations/", params: { token:, stable_name: stable.name }
         expect(response).to have_http_status :created
@@ -60,21 +60,34 @@ RSpec.describe API::V1::Activations do
       end
 
       it "updates activation to be activated" do
-        token = SecureRandom.uuid
-        activation = create(:activation, :unactivated, token:)
-        stable = create(:stable, user: activation.user)
+        user = create(:user, :pending, :without_stable)
+        token = Digest::MD5.hexdigest user.email
+        activation = create(:activation, :unactivated, token:, user:)
+        stable = create(:stable, user:)
 
         expect do
           post "/api/v1/activations/", params: { token:, stable_name: stable.name }
         end.to change { activation.reload.activated_at }.from(nil)
       end
+
+      it "updates user to be active" do
+        user = create(:user, :pending, :without_stable)
+        token = Digest::MD5.hexdigest user.email
+        create(:activation, :unactivated, token:, user:)
+        stable = create(:stable, user:)
+
+        expect do
+          post "/api/v1/activations/", params: { token:, stable_name: stable.name }
+        end.to change { user.reload.status }.from("pending").to("active")
+      end
     end
 
     context "when stable matches activated activation" do
       it "returns error" do
-        token = SecureRandom.uuid
-        activation = create(:activation, :activated, token:)
-        stable = create(:stable, user: activation.user)
+        user = create(:user, :pending, :without_stable)
+        token = Digest::MD5.hexdigest user.email
+        create(:activation, :activated, token:, user:)
+        stable = create(:stable, user:)
 
         post "/api/v1/activations/", params: { token:, stable_name: stable.name }
         expect(response).to have_http_status :internal_server_error

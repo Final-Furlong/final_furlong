@@ -88,7 +88,7 @@ RSpec.describe MigrateLegacyUserService do
           last_sign_in_at: nil,
           last_sign_in_ip: legacy_user.ip,
           name: legacy_user.name,
-          status: User.statuses[:active],
+          status: User.statuses[:pending],
           unconfirmed_email: legacy_user.email,
           username: legacy_user.username,
           created_at: legacy_user.join_date.from_game_date,

@@ -19,7 +19,7 @@ class Horse < ApplicationRecord
   scope :ordered, -> { order(name: :asc) }
   scope :owned_by, ->(stable) { where(owner: stable) }
 
-  broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
+  # broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
 
   def status
     return unless self[:status]

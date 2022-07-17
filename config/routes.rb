@@ -11,6 +11,8 @@ Rails.application.routes.draw do
     unlock: "unlock"
   }
 
+  get "/activation_required", to: "pages#activation", as: :activation
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :users
   resource :stable, only: [:show]
@@ -55,6 +57,7 @@ end
 #                          new_user_unlock GET       /unlock/new(.:format)                                                                             devise/unlocks#new
 #                              user_unlock GET       /unlock(.:format)                                                                                 devise/unlocks#show
 #                                          POST      /unlock(.:format)                                                                                 devise/unlocks#create
+#                               activation GET       /activation_required(.:format)                                                                    pages#activation
 #                                    users GET       /users(.:format)                                                                                  users#index
 #                                          POST      /users(.:format)                                                                                  users#create
 #                                 new_user GET       /users/new(.:format)                                                                              users#new

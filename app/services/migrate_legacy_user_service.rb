@@ -58,14 +58,12 @@ class MigrateLegacyUserService
 
   def status(legacy_user)
     case legacy_user.status
-    when "A", "CW"
+    when "A"
+      User.statuses[:pending]
+    when "CW"
       User.statuses[:active]
     else
       User.statuses[:deleted]
     end
   end
 end
-
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  discourse_id           :integer          indexed

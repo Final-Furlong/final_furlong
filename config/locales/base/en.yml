@@ -18,5 +18,8 @@ en:
       stable_horses: My Horses
       users: Users
   pages:
+    activation:
+      error: Hold on, you need to be activated!
+      message: In the main game, click the button that says "Activate Beta". Then come back!
     home:
       hello: Hi!

@@ -14,8 +14,11 @@ module API
           requires :token, type: String, desc: "Unique token of the user"
         end
         get ":token" do
-          user = User.find_by!(confirmation_token: permitted_params[:token])
-          Activation.activated.invert_where.find_by!(user:)
+          activation = Activation.find_by!(token: permitted_params[:token])
+          error!({ error: "invalid", detail: "Already activated" }) if activation.activated_at
+          error!({ error: "invalid", detail: "Already active" }) if activation.user.active?
+
+          { status: :ok }
         end
 
         desc "Activate a user by token"
@@ -34,7 +37,10 @@ module API
             )
             error!({ error: "invalid", detail: "Activation and stable do not match" }, 500) unless matching
 
-            activation.update!(activated_at: Time.current)
+            Activation.transaction do
+              activation.user.active!
+              activation.update!(activated_at: Time.current)
+            end
             { url: rails_routes.new_user_password_path }
           end
         end
