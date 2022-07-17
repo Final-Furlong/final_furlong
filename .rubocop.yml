@@ -17,6 +17,7 @@ AllCops:
     - "vendor/**/*"
     - ".git/**/*"
     - ".simplecov"
+    - "app/models/legacy_*.rb"
   NewCops: enable
   TargetRubyVersion: 3.1
 

@@ -47,7 +47,17 @@ jobs:
         with:
           bundler-cache: true
 
+      - name: Setup legacy database
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql version: '8.0'
+          mysql database: 'legacy_test'
+          mysql user: 'developer'
+          mysql password: 'password'
+
       - name: Setup test database
+        env:
+          LEGACY_DATABASE_URL: "server=127.0.0.1;uid=developer;pwd=password;database=legacy_test"
         run: |
           cp config/database.yml.github_actions config/database.yml
           bin/rails db:create
