@@ -24,7 +24,6 @@ jobs:
       postgres:
         image: postgres:14
         env:
-          POSTGRES_DB: final_furlong_test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         ports: ["5432:5432"]
@@ -33,6 +32,20 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_USER: developer
+          MYSQL_DATABASE: final_furlong_legacy_test
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: mysql
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
       redis:
         image: redis
         ports: ['6379:6379']
@@ -47,16 +60,28 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: Setup test database
+      - name: Set up primary database
+        env:
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
         run: |
           cp config/database.yml.github_actions config/database.yml
-          bin/rails db:create
-          bin/rails db:test:prepare
+          bin/rails db:create:primary db:schema:load:primary
+
+      - name: Set up legacy database
+        env:
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
+        run: |
+          cp config/database.yml.github_actions config/database.yml
+          bin/rails db:create:legacy db:schema:load:legacy
+
+      - name: Precompile Assets
+        run: bin/rails assets:precompile
 
       - name: Test & Publish Coverage
         uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.code-climate-token }}
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
         with:
           coverageCommand: bin/rspec
 

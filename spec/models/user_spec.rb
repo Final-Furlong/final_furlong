@@ -2,19 +2,19 @@ RSpec.describe User, type: :model do
   describe "callbacks" do
     describe "#before_validation" do
       it "sets status to pending" do
-        user = build(:user, status: nil)
+        user = build(:user, :without_stable, status: nil)
 
         expect { user.valid? }.to change(user, :status).from(nil).to("pending")
       end
 
       it "sets admin to false" do
-        user = build(:user, admin: nil)
+        user = build(:user, :without_stable, admin: nil)
 
         expect { user.valid? }.to change(user, :admin).from(nil).to(false)
       end
 
       it "does not override pre-set values" do
-        user = build(:admin, status: "banned")
+        user = build(:admin, :without_stable, status: "banned")
 
         expect { user.valid? }.not_to change { user }
       end
@@ -37,6 +37,7 @@ end
 #  confirmed_at           :datetime
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :string
+#  discarded_at           :datetime         indexed
 #  email                  :string           default(""), not null, indexed
 #  encrypted_password     :string           default(""), not null
 #  failed_attempts        :integer          default(0), not null
@@ -60,6 +61,7 @@ end
 # Indexes
 #
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
+#  index_users_on_discarded_at          (discarded_at)
 #  index_users_on_discourse_id          (discourse_id) UNIQUE
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE

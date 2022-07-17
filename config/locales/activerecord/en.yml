@@ -8,7 +8,7 @@ en:
         dob_future: must not be in future
         dob_in_far_past: must be no more than 150 years ago
         phone_invalid_mobile: is invalid
-        weak: 'must be at least 8 characters long and contain: an upper case character, a lower case character, digit and a non-alphabet character.'
+        weak: 'must be at least 8 characters long and contain: an upper case character, a lower case character, a digit and a non-alphabet character.'
   activerecord:
     attributes:
       user:

@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include Discard::Model
   include Admin::UserAdmin
   include FinalFurlong::Internet::Validation
 
@@ -18,12 +19,16 @@ class User < ApplicationRecord
 
   before_validation :set_defaults, on: :create
 
-  broadcasts_to ->(_user) { "users" }, inserts_by: :prepend
+  # broadcasts_to ->(_user) { "users" }, inserts_by: :prepend
 
   scope :active, -> { where(status: "active") }
   scope :ordered, -> { order(id: :desc) }
 
   attr_accessor :login
+
+  def active_for_authentication?
+    super && !discarded?
+  end
 
   # allow login via username or e-mail
   def self.find_for_database_authentication(warden_conditions)
@@ -53,6 +58,7 @@ end
 #  confirmed_at           :datetime
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :string
+#  discarded_at           :datetime         indexed
 #  email                  :string           default(""), not null, indexed
 #  encrypted_password     :string           default(""), not null
 #  failed_attempts        :integer          default(0), not null
@@ -76,6 +82,7 @@ end
 # Indexes
 #
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
+#  index_users_on_discarded_at          (discarded_at)
 #  index_users_on_discourse_id          (discourse_id) UNIQUE
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE

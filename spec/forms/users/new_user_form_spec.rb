@@ -37,7 +37,8 @@ RSpec.describe Users::NewUserForm, type: :model do
 
       expect(form).not_to be_valid
       expect(form.errors[:password]).to eq(["must be at least 8 characters long and contain: " \
-                                            "an upper case character, a lower case character, digit and a non-alphabet character."])
+                                            "an upper case character, a lower case character, " \
+                                            "a digit and a non-alphabet character."])
     end
   end
 
