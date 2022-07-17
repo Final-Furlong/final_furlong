@@ -53,6 +53,9 @@ jobs:
           cp config/database.yml.github_actions config/database.yml
           bin/rails db:create:primary db:schema:load:primary
 
+      - name: Shutdown Ubuntu MySQL (SUDO)
+        run: sudo service mysql stop # Shutdown the Default MySQL
+
       - name: Set up mysql
         uses: mirromutth/mysql-action@v1.1
         with:
