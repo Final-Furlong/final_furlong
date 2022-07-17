@@ -35,10 +35,10 @@ jobs:
       mysql:
         image: mysql:latest
         env:
-          MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_ROOT_PASSWORD }}
-          MYSQL_DATABASE: ${{ env.MYSQL_DB }}
-          MYSQL_USER: ${{ env.MYSQL_USER }}
-          MYSQL_PASSWORD: ${{ env.MYSQL_PASSWORD }}
+          MYSQL_USER: developer
+          MYSQL_DATABASE: final_furlong_legacy_test
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: mysql
         ports:
           - 3306:3306
         options: >-
@@ -68,6 +68,11 @@ jobs:
           bin/rails db:create:primary db:schema:load:primary
 
       - name: Debug mysql
+        env:
+          MYSQL_USER: developer
+          MYSQL_DATABASE: final_furlong_legacy_test
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: mysql
         run: |
           mysql --host=127.0.0.1 --user=${{ env.MYSQL_USER }} --password=${{ env.MYSQL_PASSWORD }} ${{ env.MYSQL_DB }} <<MY_QUERY
           SHOW GRANTS;
