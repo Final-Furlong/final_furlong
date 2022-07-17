@@ -46,12 +46,6 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: Setup test database
-        run: |
-          cp config/database.yml.github_actions config/database.yml
-          bin/rails db:create
-          bin/rails db:test:prepare
-
       - name: Set up primary database
         env:
           POSTGRES_DB: final_furlong_test
@@ -59,10 +53,11 @@ jobs:
         run: |
           cp config/database.yml.github_actions config/database.yml
           bin/rails db:create:primary db:migrate:primary
+
       - name: Set up legacy database
         env:
           POSTGRES_DB: final_furlong_legacy_test
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_legacy_test"
+          LEGACY_DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_legacy_test"
         run: |
           cp config/database.yml.github_actions config/database.yml
           bin/rails db:create:legacy db:schema:load:legacy

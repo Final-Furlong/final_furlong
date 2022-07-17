@@ -18,15 +18,11 @@ test:
   primary:
     adapter: postgresql
     encoding: unicode
-    username: postgres
-    password: postgres
-    database: final_furlong_test
+    url: <%= ENV.fetch("DATABASE_URL") %>
     pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   legacy:
     adapter: postgresql
     encoding: unicode
-    username: postgres
-    password: postgres
-    database: final_furlong_legacy_test
+    url: <%= ENV.fetch("LEGACY_DATABASE_URL") %>
     pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
     migrations_paths: db/legacy_migrate
