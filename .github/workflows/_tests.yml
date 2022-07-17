@@ -65,7 +65,7 @@ jobs:
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_legacy_test"
         run: |
           cp config/database.yml.github_actions config/database.yml
-          bin/rails db:create:legacy db:migrate:legacy
+          bin/rails db:create:legacy db:schema:load:legacy
 
       - name: Test & Publish Coverage
         uses: paambaati/codeclimate-action@v3.0.0
