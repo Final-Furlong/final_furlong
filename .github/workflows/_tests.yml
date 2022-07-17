@@ -66,6 +66,8 @@ jobs:
         uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.code-climate-token }}
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
+          LEGACY_DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_legacy_test"
         with:
           coverageCommand: bin/rspec
 
