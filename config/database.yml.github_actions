@@ -21,7 +21,7 @@ test:
     pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
     url: <%= ENV['DATABASE_URL'] %>
   legacy:
-    adapter: mysql
+    adapter: mysql2
     encoding: utf8mb4
     pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
     url: <%= ENV['LEGACY_DATABASE_URL'] %>
