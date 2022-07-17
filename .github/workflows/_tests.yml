@@ -70,7 +70,7 @@ jobs:
       - name: Debug mysql
         env:
           MYSQL_USER: developer
-          MYSQL_DATABASE: final_furlong_legacy_test
+          MYSQL_DB: final_furlong_legacy_test
           MYSQL_PASSWORD: password
           MYSQL_ROOT_PASSWORD: mysql
         run: |
