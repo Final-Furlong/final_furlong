@@ -67,23 +67,15 @@ jobs:
           cp config/database.yml.github_actions config/database.yml
           bin/rails db:create:primary db:schema:load:primary
 
-      - name: Debug mysql
-        env:
-          MYSQL_USER: developer
-          MYSQL_DB: final_furlong_legacy_test
-          MYSQL_PASSWORD: password
-          MYSQL_ROOT_PASSWORD: mysql
-        run: |
-          mysql --host=127.0.0.1 --user=${{ env.MYSQL_USER }} --password=${{ env.MYSQL_PASSWORD }} ${{ env.MYSQL_DB }} <<MY_QUERY
-          SHOW GRANTS;
-          MY_QUERY
-
       - name: Set up legacy database
         env:
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
         run: |
           cp config/database.yml.github_actions config/database.yml
           bin/rails db:create:legacy db:schema:load:legacy
+
+      - name: Precompile Assets
+        run: bin/rails assets:precompile
 
       - name: Test & Publish Coverage
         uses: paambaati/codeclimate-action@v3.0.0
