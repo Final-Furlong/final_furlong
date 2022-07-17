@@ -12,6 +12,10 @@ FactoryBot.define do
     confirmed_at { Time.current }
     stable { association :stable, user: instance }
 
+    trait :without_stable do
+      stable { nil }
+    end
+
     factory :admin do
       admin { true }
     end
@@ -53,6 +57,7 @@ end
 #  confirmed_at           :datetime
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :string
+#  discarded_at           :datetime         indexed
 #  email                  :string           default(""), not null, indexed
 #  encrypted_password     :string           default(""), not null
 #  failed_attempts        :integer          default(0), not null
@@ -76,6 +81,7 @@ end
 # Indexes
 #
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
+#  index_users_on_discarded_at          (discarded_at)
 #  index_users_on_discourse_id          (discourse_id) UNIQUE
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE

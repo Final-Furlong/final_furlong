@@ -10,15 +10,15 @@ require "factory_bot_rails"
 max_users = 5
 user_count = max_users - User.count
 puts "Creating #{user_count} user(s)"
-FactoryBot.create_list(:user, user_count, :with_stable) if user_count.positive?
+FactoryBot.create_list(:user, user_count) if user_count.positive?
 if Rails.env.development?
   puts "Creating admin"
   admin_email = "admin@example.com"
   admin = if User.exists?(email: admin_email)
             User.find_by(email: admin_email)
           else
-            FactoryBot.create(:admin, :with_stable, email: admin_email,
-                                                    password: "password", password_confirmation: "password")
+            FactoryBot.create(:admin, email: admin_email,
+                                      password: "password", password_confirmation: "password")
           end
   FactoryBot.create(:stable, user: admin) unless admin.reload.stable
   puts "Creating horse"

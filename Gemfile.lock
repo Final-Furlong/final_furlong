@@ -201,11 +201,16 @@ GEM
       danger-plugin-api (~> 1.0)
     dartsass-rails (0.4.0)
       railties (>= 6.0.0)
+    data_migrate (8.0.0)
+      activerecord (>= 5.0)
+      railties (>= 5.0)
     debug_inspector (1.1.0)
     devise-i18n (1.10.2)
       devise (>= 4.8.0)
     diff-lcs (1.5.0)
     digest (3.1.0)
+    discard (1.2.1)
+      activerecord (>= 4.2, < 8)
     docile (1.4.0)
     dotenv (2.7.6)
     dotenv-rails (2.7.6)
@@ -383,6 +388,7 @@ GEM
       ruby2_keywords (~> 0.0.1)
     mustermann-grape (1.0.2)
       mustermann (>= 1.0.0)
+    mysql2 (0.5.4)
     nap (1.1.0)
     nested_form (0.3.2)
     net-imap (0.2.3)
@@ -695,8 +701,10 @@ DEPENDENCIES
   danger-rails_best_practices
   danger-simplecov_json
   dartsass-rails
+  data_migrate
   devise!
   devise-i18n
+  discard
   dotenv-rails
   dotenv_validator
   ed25519
@@ -717,6 +725,7 @@ DEPENDENCIES
   i18n-tasks
   jsbundling-rails
   letter_opener
+  mysql2
   overcommit
   pagy
   pg (~> 1.1)

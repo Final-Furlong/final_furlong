@@ -45,6 +45,7 @@ Lint/SymbolConversion:
   EnforcedStyle: strict
 Metrics/AbcSize:
   Exclude:
+    - "db/data/**/*.rb"
     - "db/migrate/**/*.rb"
 Metrics/BlockLength:
   Exclude:
@@ -54,6 +55,7 @@ Metrics/BlockLength:
     - "lib/tasks/**/*.rake"
 Metrics/MethodLength:
   Exclude:
+    - "db/data/**/*.rb"
     - "db/migrate/**/*.rb"
 Rails/Output:
   Exclude:

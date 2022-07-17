@@ -14,6 +14,9 @@ gem "responders"
 gem "bulma-rails"
 gem "callee"
 gem "dartsass-rails"
+gem "data_migrate"
+gem "discard"
+gem "dotenv-rails"
 gem "dotenv_validator"
 gem "grape"
 gem "grape-active_model_serializers"
@@ -23,6 +26,7 @@ gem "gretel"
 gem "haml"
 gem "haml-rails"
 gem "jsbundling-rails"
+gem "mysql2"
 gem "pagy"
 gem "pg", "~> 1.1"
 gem "puma", "~> 5.0"
@@ -77,7 +81,6 @@ group :development, :test do
   gem "bullet"
   gem "bundler-audit"
   gem "byebug", platform: :mri
-  gem "dotenv-rails"
   gem "ed25519" # required for capistrano
   gem "factory_bot-awesome_linter", require: false
   gem "factory_bot_rails", require: false

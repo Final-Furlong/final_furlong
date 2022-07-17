@@ -48,6 +48,10 @@ en:
       already_signed_out: Signed out successfully.
       signed_in: Signed in successfully.
       signed_out: Signed out successfully.
+    shared:
+      minimum_password_length:
+        one: 'Must be at least %{count} character long and contain: an upper case character, a lower case character, a digit and a non-alphabet character.'
+        other: 'Must be at least %{count} characters long and contain: an upper case character, a lower case character, a digit and a non-alphabet character.'
     unlocks:
       send_instructions: You will receive an email with instructions for how to unlock your account in a few minutes.
       send_paranoid_instructions: If your account exists, you will receive an email with instructions for how to unlock it in a few minutes.
