@@ -88,6 +88,16 @@ Rails.application.configure do
     config.logger = ActiveSupport::TaggedLogging.new(logger)
   end
 
+  config.action_mailer.default_options = { from: "no-reply@finalfurlong.org" }
+  config.action_mailer.smtp_settings = {
+    address: "smtp.sendgrid.net",
+    port: 587,
+    domain: "finalfurlong.org",
+    authentication: :plain,
+    user_name: Rails.application.credentials.staging.smtp.username,
+    password: Rails.application.credentials.staging.smtp.password
+  }
+
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 end

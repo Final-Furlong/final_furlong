@@ -45,3 +45,4 @@ spec/examples.txt
 /node_modules
 
 .vscode/
+/yarn-error.log
