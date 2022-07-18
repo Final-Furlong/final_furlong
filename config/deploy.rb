@@ -13,7 +13,7 @@ set :rbenv_ruby, "3.1.2"
 
 set :deploy_to, "/var/www/rails.finalfurlong"
 
-append :linked_files, "config/database.yml", ".rbenv-vars", "config/master.key"
+append :linked_files, "config/database.yml", ".rbenv-vars"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpacker", "public/system", \
        "vendor", "storage", ".bundle", "public/uploads"
 
