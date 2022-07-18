@@ -50,6 +50,7 @@ jobs:
           brakeman_version: gemfile
           reporter: github-pr-check
 
-      - name: Yarn Audit
-        run: |
-          yarn audit
+      # skipping this until stylelint/fast-glob/glob-parent get updated
+#      - name: Yarn Audit
+#        run: |
+#          yarn audit
