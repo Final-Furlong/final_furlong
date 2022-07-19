@@ -17,10 +17,15 @@ env:
   RAILS_ENV: test
 
 jobs:
+  setup:
+    uses: Final-Furlong/final_furlong/.github/workflows/_dependencies.yml@code-climate-tweak
+
   call-linters:
+    needs: ['setup']
     uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@main
 
   call-security:
+    needs: ['setup']
     uses: Final-Furlong/final_furlong/.github/workflows/_security.yml@main
 
   call-tests:

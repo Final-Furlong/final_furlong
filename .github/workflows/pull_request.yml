@@ -14,21 +14,21 @@ env:
   COVERAGE: true
 
 jobs:
+  setup:
+    uses: Final-Furlong/final_furlong/.github/workflows/_dependencies.yml@code-climate-tweak
+
   call-linters:
+    needs: ['setup']
     uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@main
 
   danger:
+    needs: ['setup']
     name: Danger
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Setup Ruby and install gems
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
 
       - name: Danger
         env:
@@ -37,6 +37,7 @@ jobs:
           bin/danger
 
   call-security:
+    needs: ['setup']
     uses: Final-Furlong/final_furlong/.github/workflows/_security.yml@main
 
   call-tests:
