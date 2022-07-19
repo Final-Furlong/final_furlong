@@ -55,6 +55,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
       - name: Set up primary database
         env:
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
