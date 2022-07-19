@@ -14,34 +14,20 @@ env:
   COVERAGE: true
 
 jobs:
+  setup:
+    uses: Final-Furlong/final_furlong/.github/workflows/_dependencies.yml@main
+
   call-linters:
+    needs: ['setup']
     uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@main
 
-  danger:
-    name: Danger
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup Ruby and install gems
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-
-      - name: Danger
-        env:
-          DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
-        run: |
-          bin/danger
-
   call-security:
+    needs: ['setup']
     uses: Final-Furlong/final_furlong/.github/workflows/_security.yml@main
 
   call-tests:
     if: "!contains(github.event.commits[0].message, '[ci skip]') && !contains(github.event.commits[0].message, '[skip ci]')"
-    uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@main
+    uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@code-climate-tweak
     needs: ['call-linters', 'call-security']
     secrets:
       lcov-token: ${{ secrets.LCOV_GITHUB_TOKEN }}

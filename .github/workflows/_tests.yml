@@ -77,13 +77,20 @@ jobs:
       - name: Precompile Assets
         run: bin/rails assets:precompile
 
-      - name: Test & Publish Coverage
+      - name: RSpec
+        env:
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
+        run: bin/rspec
+
+      - name: Publish Coverage
         uses: paambaati/codeclimate-action@v3.0.0
+        continue-on-error: true
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.code-climate-token }}
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
         with:
-          coverageCommand: bin/rspec
+          coverageLocations: |
+            ${{github.workspace}}/*.xml:simplecov
+            ${{github.workspace}}/*.lcov:lcov
 
       - name: Coverage Report
         uses: ewjoachim/coverage-comment-action@v1
