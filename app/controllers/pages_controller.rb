@@ -3,7 +3,9 @@ class PagesController < ApplicationController
   skip_after_action :verify_policy_scoped
 
   # @route GET / (root)
-  def home; end
+  def home
+    Sentry.capture_message("test message")
+  end
 
   # @route GET /activation
   def activation; end
