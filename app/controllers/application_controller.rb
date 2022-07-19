@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_locale
+  before_action :setup_sentry
 
   after_action :verify_authorized, except: :index, unless: :devise_controller?
   after_action :verify_policy_scoped, only: :index, unless: :devise_controller?
@@ -47,5 +48,11 @@ class ApplicationController < ActionController::Base
 
   def sign_up_keys
     [:username, :email, :name, :password, :password_confirmation, { stable_attributes: [:name] }]
+  end
+
+  def setup_sentry
+    return unless current_user
+
+    Sentry.set_user(username: current_user.username)
   end
 end
