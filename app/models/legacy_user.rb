@@ -61,7 +61,7 @@ end
 #  ForumID           :integer          indexed
 #  ID                :integer          not null, primary key
 #  IP                :string(255)      not null
-#  JoinDate          :date             default(NULL), not null, indexed
+#  JoinDate          :date             not null, indexed
 #  LastBought        :datetime         indexed
 #  LastEntry         :datetime         indexed
 #  LastLogin         :datetime         indexed
