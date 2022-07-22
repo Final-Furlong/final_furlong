@@ -22,13 +22,13 @@ admin = if User.exists?(email: admin_email)
                                     password: "password", password_confirmation: "password")
         end
 FactoryBot.create(:stable, user: admin) unless admin.reload.stable
-# puts "Creating horse"
-# FactoryBot.create(:horse)
-# puts "Creating stud"
-# stud = FactoryBot.create(:horse, :stallion)
-# puts "Creating mare"
-# mare = FactoryBot.create(:horse, :broodmare)
-# puts "Creating yearling"
-# FactoryBot.create(:horse, :weanling, sire: stud, dam: mare)
-# puts "Creating weanling"
-# FactoryBot.create(:horse, :yearling, dam: mare)
+puts "Creating horse"
+FactoryBot.create(:horse)
+puts "Creating stud"
+stud = FactoryBot.create(:horse, :stallion)
+puts "Creating mare"
+mare = FactoryBot.create(:horse, :broodmare)
+puts "Creating yearling"
+FactoryBot.create(:horse, :weanling, sire: stud, dam: mare)
+puts "Creating weanling"
+FactoryBot.create(:horse, :yearling, dam: mare)
