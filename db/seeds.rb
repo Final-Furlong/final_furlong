@@ -5,11 +5,11 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
-raise 'Can only run in development!' unless Rails.env.development?
+raise "Can only run in development!" unless Rails.env.development?
 
 require "faker"
 require "factory_bot_rails"
-max_stables = ENV.fetch('USERS', 5).to_i
+max_stables = ENV.fetch("USERS", 5).to_i
 stable_count = max_stables - Stable.count
 puts "Creating #{stable_count} stable(s)"
 FactoryBot.create_list(:stable, stable_count) if stable_count.positive?
@@ -19,7 +19,7 @@ admin = if User.exists?(email: admin_email)
           User.find_by(email: admin_email)
         else
           FactoryBot.create(:admin, :without_stable, email: admin_email,
-                                    password: "password", password_confirmation: "password")
+                                                     password: "password", password_confirmation: "password")
         end
 FactoryBot.create(:stable, user: admin) unless admin.reload.stable
 puts "Creating horse"

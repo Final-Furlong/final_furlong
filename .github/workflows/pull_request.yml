@@ -19,16 +19,16 @@ jobs:
 
   call-linters:
     needs: ['setup']
-    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@main
+    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@uuid-v2
 
   call-security:
     needs: ['setup']
-    uses: Final-Furlong/final_furlong/.github/workflows/_security.yml@main
+    uses: Final-Furlong/final_furlong/.github/workflows/_security.yml@uuid-v2
 
   call-tests:
     if: "!contains(github.event.commits[0].message, '[ci skip]') && !contains(github.event.commits[0].message, '[skip ci]')"
-    uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@code-climate-tweak
-    needs: ['call-linters', 'call-security']
+    uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@main
+    needs: ['call-linters']
     secrets:
       lcov-token: ${{ secrets.LCOV_GITHUB_TOKEN }}
       code-climate-token: ${{ secrets.CC_TEST_REPORTER_ID }}

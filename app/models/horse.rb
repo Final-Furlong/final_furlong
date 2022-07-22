@@ -61,23 +61,25 @@ end
 #
 # Table name: horses
 #
-#  id               :bigint           not null, primary key
+#  id               :uuid             not null, primary key
+#  age              :integer
 #  date_of_birth    :date             not null, indexed
 #  date_of_death    :date
-#  gender           :string           not null
+#  gender           :enum             not null
 #  name             :string
 #  status           :enum             default("unborn"), not null, indexed
-#  created_at       :datetime         not null
+#  created_at       :datetime         not null, indexed
 #  updated_at       :datetime         not null
-#  breeder_id       :bigint           indexed
-#  dam_id           :bigint           indexed
-#  location_bred_id :bigint           indexed
-#  owner_id         :bigint           indexed
-#  sire_id          :bigint           indexed
+#  breeder_id       :uuid             not null, indexed
+#  dam_id           :uuid             indexed
+#  location_bred_id :uuid             not null, indexed
+#  owner_id         :uuid             not null, indexed
+#  sire_id          :uuid             indexed
 #
 # Indexes
 #
 #  index_horses_on_breeder_id        (breeder_id)
+#  index_horses_on_created_at        (created_at)
 #  index_horses_on_dam_id            (dam_id)
 #  index_horses_on_date_of_birth     (date_of_birth)
 #  index_horses_on_location_bred_id  (location_bred_id)

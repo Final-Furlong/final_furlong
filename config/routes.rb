@@ -30,9 +30,6 @@ end
 
 # == Route Map
 #
-# Validating environment... 🧐
-# Your environment is in good shape! 🚀
-# Byebug server already running
 #                                   Prefix Verb      URI Pattern                                                                                       Controller#Action
 #                                 api_base           /                                                                                                 API::Base
 #                              rails_admin           /admin                                                                                            RailsAdmin::Engine

@@ -17,6 +17,11 @@ jobs:
         run: |
           yarn install --pure-lockfile
 
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
       - name: Bundler Audit
         run: |
           bin/bundler-audit check --update

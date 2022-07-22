@@ -70,11 +70,11 @@ RSpec.describe MigrateLegacyUserService do
         result = migrate.call
 
         expect(result.stable).to have_attributes(
-          id: legacy_user.id,
+          legacy_id: legacy_user.id,
           name: legacy_user.stable_name,
-          created_at: legacy_user.join_date.from_game_date,
-          user_id: result.id
+          user_id: anything
         )
+        expect(result.stable.created_at).to eq legacy_user.join_date.from_game_date
       end
 
       it "assigns correct attributes to user for active stable" do

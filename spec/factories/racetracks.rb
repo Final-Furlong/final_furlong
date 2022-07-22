@@ -12,19 +12,20 @@ end
 #
 # Table name: racetracks
 #
-#  id         :bigint           not null, primary key
-#  country    :string           indexed
-#  latitude   :decimal(, )      indexed
-#  longitude  :decimal(, )      indexed
-#  name       :string           indexed
+#  id         :uuid             not null, primary key
+#  country    :string           not null, indexed
+#  latitude   :decimal(, )      not null, indexed
+#  longitude  :decimal(, )      not null, indexed
+#  name       :string           not null, indexed
 #  state      :string
-#  created_at :datetime         not null
+#  created_at :datetime         not null, indexed
 #  updated_at :datetime         not null
 #
 # Indexes
 #
-#  index_racetracks_on_country    (country)
-#  index_racetracks_on_latitude   (latitude)
-#  index_racetracks_on_longitude  (longitude)
-#  index_racetracks_on_name       (name) UNIQUE
+#  index_racetracks_on_country     (country)
+#  index_racetracks_on_created_at  (created_at)
+#  index_racetracks_on_latitude    (latitude)
+#  index_racetracks_on_longitude   (longitude)
+#  index_racetracks_on_name        (name) UNIQUE
 #

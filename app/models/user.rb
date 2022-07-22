@@ -51,7 +51,7 @@ end
 #
 # Table name: users
 #
-#  id                     :bigint           not null, primary key
+#  id                     :uuid             not null, primary key
 #  admin                  :boolean          default(FALSE), not null
 #  confirmation_sent_at   :datetime
 #  confirmation_token     :string           indexed
@@ -75,13 +75,14 @@ end
 #  unconfirmed_email      :string
 #  unlock_token           :string           indexed
 #  username               :string           not null, indexed
-#  created_at             :datetime         not null
+#  created_at             :datetime         not null, indexed
 #  updated_at             :datetime         not null
 #  discourse_id           :integer          indexed
 #
 # Indexes
 #
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
+#  index_users_on_created_at            (created_at)
 #  index_users_on_discarded_at          (discarded_at)
 #  index_users_on_discourse_id          (discourse_id) UNIQUE
 #  index_users_on_email                 (email) UNIQUE

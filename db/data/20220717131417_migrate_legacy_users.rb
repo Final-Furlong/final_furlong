@@ -1,6 +1,7 @@
 class MigrateLegacyUsers < ActiveRecord::Migration[7.0]
   def up
-    if Rails.env.production?
+    return unless Rails.env.production?
+
     say_with_time "Deleting existing records" do
       ActiveRecord::Base.connection.execute("UPDATE horses SET owner_id = NULL, breeder_id = NULL;")
       ActiveRecord::Base.connection.execute("TRUNCATE TABLE stables CASCADE;")
@@ -35,17 +36,16 @@ class MigrateLegacyUsers < ActiveRecord::Migration[7.0]
       last_user = User.order(id: :desc).first
       ActiveRecord::Base.connection.execute("ALTER SEQUENCE public.users_id_seq RESTART #{last_user.id + 1};")
     end
-    end
   end
 
   def down
-    if Rails.env.production?
+    return unless Rails.env.production?
+
     say_with_time "Deleting existing users" do
       ActiveRecord::Base.connection.execute("TRUNCATE TABLE stables CASCADE;")
       ActiveRecord::Base.connection.execute("TRUNCATE TABLE users CASCADE;")
       ActiveRecord::Base.connection.execute("ALTER SEQUENCE public.stables_id_seq RESTART 1;")
       ActiveRecord::Base.connection.execute("ALTER SEQUENCE public.users_id_seq RESTART 1;")
-    end
     end
   end
 end

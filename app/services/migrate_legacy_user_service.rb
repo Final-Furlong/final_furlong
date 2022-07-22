@@ -30,7 +30,7 @@ class MigrateLegacyUserService
         discarded_at: user_status == User.statuses[:deleted] ? Time.current : nil
       )
       Stable.create!(
-        id: legacy_user.id,
+        legacy_id: legacy_user.id,
         name: legacy_user.stable_name,
         user:,
         created_at: user.created_at
