@@ -1,6 +1,6 @@
 class AddDatabaseIndexes < ActiveRecord::Migration[7.0]
   def change # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-    add_index :horses, :date_of_birth unless index.exists?(:horses, :date_of_birth)
+    add_index :horses, :date_of_birth unless index_exists?(:horses, :date_of_birth)
     add_index :horses, :status unless index_exists?(:horses, :status)
 
     add_index :racetracks, :name unless index_exists?(:racetracks, :name)
