@@ -16,9 +16,14 @@
    parallel: true
    commands:
      eslint:
+       tags: frontend style
        glob: "*.{js,ts,jsx,tsx}"
        run: yarn eslint {staged_files}
+     audit:
+       tags: backend security
+       run: brakeman --no-pager
      rubocop:
        tags: backend style
+       files: git diff --name-only --staged
        glob: "*.rb"
-       run: bundle exec rubocop --force-exclusion {all_files}
+       run: rubocop --force-exclusion {files}
