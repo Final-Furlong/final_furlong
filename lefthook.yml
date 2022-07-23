@@ -40,33 +40,6 @@ pre-commit:
     "banned_syntax.sh":
       runner: bash
 
-pre-push:
-  commands:
-    packages-audit:
-      tags: frontend security
-      run: yarn audit
-      skip:
-        - merge
-        - rebase
-    gems-audit:
-      tags: backend security
-      run: bundle audit
-      skip:
-        - merge
-        - rebase
-    brakeman:
-      tags: backend security
-      run: brakeman --summary --no-progress --quiet
-      skip:
-        - merge
-        - rebase
-    undercover:
-      tags: backend
-      run: undercover
-      skip:
-        - merge
-        - rebase
-
 post-checkout:
   piped: true
   bundle-install:
