@@ -105,10 +105,6 @@ end
 group :test do
   gem "capybara", ">= 2.15"
   gem "capybara-screenshot"
-  gem "danger", require: false
-  gem "danger-missed_localizable_strings", require: false
-  gem "danger-rails_best_practices", require: false
-  gem "danger-simplecov_json", require: false
   gem "fuubar"
   gem "i18n-spec"
   gem "rspec"

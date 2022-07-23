@@ -1,6 +1,7 @@
 class CreateUserActivations < ActiveRecord::Migration[7.0]
   def up
-    if Rails.env.production?
+    return unless Rails.env.production?
+
     say_with_time "Deleting existing records" do
       ActiveRecord::Base.connection.execute("TRUNCATE TABLE activations;")
     end
@@ -10,14 +11,13 @@ class CreateUserActivations < ActiveRecord::Migration[7.0]
         CreateActivationService.new(user.id).call
       end
     end
-    end
   end
 
   def down
-    if Rails.env.production?
+    return unless Rails.env.production?
+
     say_with_time "Deleting existing records" do
       ActiveRecord::Base.connection.execute("TRUNCATE TABLE activations;")
-    end
     end
   end
 end

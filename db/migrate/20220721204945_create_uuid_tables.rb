@@ -1,6 +1,6 @@
 class CreateUuidTables < ActiveRecord::Migration[7.0]
   def change
-    enable_extension 'pgcrypto'
+    enable_extension "pgcrypto"
 
     create_table "new_racetracks", id: :uuid, force: :cascade do |t|
       t.string :name, null: false, index: true
