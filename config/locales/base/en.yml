@@ -11,6 +11,8 @@ en:
   layouts:
     nav:
       all_horses: Horses
+      edit_profile: Edit profile
+      edit_stable: Edit stable
       join: Join
       login: Login
       logout: Log out

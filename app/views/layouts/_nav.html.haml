@@ -1,44 +1,100 @@
-%nav.navbar.is-light{ role: "navigation", aria: { label: "main navigation" } }
-  -# Navbar Brand containing the Heading
-  .navbar-brand
-    = link_to root_path, class: "navbar-item has-background-success" do
-      %h1.has-text-white Final Furlong
-    -# Burger icons for responsive navbar
-    %a.navbar-burger{ aria: { label: "menu", expanded: "false" }, data: { target: "navbarBasicExample" } }
-      %span{ area: { hidden: "true" } }
-      %span{ area: { hidden: "true" } }
-      %span{ area: { hidden: "true" } }
-  -# Navbar Menu containing a list of items
-  .navbar-menu#navbar-basic-example
-    .navbar-start
-      - if user_signed_in?
-        = link_to current_stable.name, stable_path, class: "navbar-item"
-        = link_to t(".stable_horses"), current_stable_horses_path, class: "navbar-item"
-      - else
-        = link_to t(".all_horses"), horses_path, class: "navbar-item"
-      = link_to t(".users"), users_path, class: "navbar-item"
-      .navbar-item.has-dropdown.is-hoverable
-        %a.navbar-link More
-        .navbar-dropdown
-          %a.navbar-item About us
-          %a.navbar-item Tutorials
-          %a.navbar-item Practice
-    -# Navbar End containing Sign Up and Sign In Buttons
-    .navbar-end
-      .navbar-item
-        .bd-search
-          %p.control.has-icons-left.mr-2
-            %span.is-flex-grow-1
-              %input.input.is-rounded{ type: "text", placeholder: t(".search_placeholder") }
-            %span.icon.is-small.is-left
-              %i.fas.fa-search
-        .buttons
-          - if user_signed_in?
-            = link_to edit_user_registration_path, class: "bd-tw-button button" do
-              %span.icon
-                %i.fa-solid.fa-user
-              %span= current_user.username
-            = button_to t(".logout"), destroy_user_session_path, method: :delete, class: "button is-primary"
-          - else
-            = link_to t(".login"), new_user_session_path, class: "button is-primary"
-            = link_to t(".join"), new_user_registration_path, class: "button is-primary is-light has-text-weight-bold"
+%header
+  -# Sidebar
+  %nav.collapse.d-lg-block.sidebar.collapse.bg-white#sidebar-menu
+    .position-sticky
+      .list-group.list-group-flush.mx-3.mt-4
+        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
+          %i.fas.fa-tachometer-alt.fa-fw.me-3
+          %span Main dashboard
+        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
+          %i.fas.fa-chart-area.fa-fw.me-3
+          %span Website traffic
+        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
+          %i.fas.fa-lock.fa-fw.me-3
+          %span Password
+        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
+          %i.fas.fa-chart-line.fa-fw.me-3
+          %span Analytics
+        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
+          %i.fas.fa-chart-pie.fa-fw.me-3
+          %span SEO
+        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
+          %i.fas.fa-chart-bar.fa-fw.me-3
+          %span Orders
+        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
+          %i.fas.fa-globe.fa-fw.me-3
+          %span International
+        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
+          %i.fas.fa-building.fa-fw.me-3
+          %span Partners
+        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
+          %i.fas.fa-calendar.fa-fw.me-3
+          %span Calendar
+        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
+          %i.fas.fa-users.fa-fw.me-3
+          %span Users
+        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
+          %i.fas.fa-money-bill.fa-fw.me-3
+          %span Sales
+  -# Navbar
+  %nav.navbar.navbar-expand-lg.navbar-light.bg-white.fixed-top#main-navbar
+    -# Container
+    .container-fluid
+      -# Toggle button
+      %button.navbar-toggler{ type: "button", data: { 'mdb-toggle' => 'collapse', 'mdb-target' => '#sidebarMenu' }, aria: { controls: 'sidabarMenu', expanded: false, label: 'Toggle navigation' } }
+        %i.fas.fas-bars
+      -# Brand
+      %a.navbar-brand{ href: '#' }
+        %img{ src: "https://mdbootstrap.com/img/logo/mdb-transaprent-noshadows.png", height: "25", alt: "foo", loading: "lazy" }
+      -# Search form
+      %form.d-none.d-md-flex.input-group.w-auto.my-auto
+        %input.form-control.rounded{ autocomplete: 'off', type: 'search', placeholder: 'Search (ctrl + "/" to focus)', style: 'min-width: 225px;' }
+        %span.input-group-text.border-0
+          %i.fas.fa-search
+      -# Right links
+      %ul.navbar-nav.ms-auto.d-flex.flex-row
+        -# Notification dropdown
+        %li.nav-item.dropdown
+          %a.nav-link.me-3.me-lg-0.dropdown-toggle.hidden-arrow#navbar-dropdown-menu-link{ href: '#', role: 'button', data: { 'mdb-toggle' => 'dropdown' }, aria: { expanded: false } }
+            %i.fas.fa-bell
+            %span.badge.rounded-pill.badge-notification.bg-danger= 1
+        %ul.dropdown-menu.dropdown-menu-end{ area: { labelledby: 'navbarDropdownMenuLink' } }
+          %li
+            %a.dropdown-item{ href: '#' }= "Some news"
+          %li
+            %a.dropdown-item{ href: '#' }= "Another news"
+          %li
+            %a.dropdown-item{ href: '#' }= "Something else here"
+        %li.nav-item
+          %a.nav-link.me-3.me-lg-0{ href: '#' }
+            %i.fas.fa-fill-drop
+        %li.nav-item.me-3.me-lg-0
+          %a.nav-link{ href: '#' }
+            %i.fas.fa-github
+        %li.nav-item.dropdown
+          %a.nav-link.me-3.me-lg-0.dropdown-toggle.hidden-arrow#navbar-dropdown{ href: '#', role: 'button', data: { 'mdb-toggle' => 'dropdown' }, aria: { expanded: false } }
+            %i.united.kingdom.flag.m-0
+          %ul.dropdown-menu.dropdown-menu-end{ aria: { labelledby: 'navbarDropdown' } }
+            %li
+              %a.dropdown-item{ href: '#' }
+                %i.united.kingdom.flag
+                %span
+                  %span English
+                  %i.fa.fa-check.text-success.ms-2
+            %li
+              %hr.dropdown-divider
+            %li
+              %a.dropdown-item{ href: "#" }
+                %i.poland.flag
+                %span Polski
+        -# Avatar
+        %li.nav-item.dropdown
+          %a.nav-link.dropdown-toggle.hidden-arrow.d-flex.align-items-center{ href:"#", role: "button", data: { 'mdb-toggle': "dropdown"}, aria: { expanded: "false" } }
+            %img.founded-circle{ src: "https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg", height: "22", alt: "foo", loading:"lazy" }
+          %ul.dropdown-menu.dropdown-menu-end{ aria: { labelledby:"navbarDropdownMenuLink" } }
+            %li
+              %a.dropdown-item{ href: "#" } My profile
+            %li
+              %a.dropdown-item{ href: "#" } Settings
+            %li
+              %a.dropdown-item{ href: "#" } Logout

@@ -4,14 +4,15 @@
   "dependencies": {
     "@hotwired/stimulus": "^3.0.1",
     "@hotwired/turbo-rails": "^7.1.1",
-    "bulma": "^0.9.3",
-    "esbuild": "^0.14.30",
-    "sass": "^1.50.1",
+    "@popperjs/core": "^2.11.0",
+    "bootstrap": "^5.2.0",
+    "esbuild": "^0.14.5",
+    "sass": "^1.45.0",
     "standard": "^17.0.0"
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds",
-    "build:css": "sass ./app/assets/stylesheets/application.bulma.scss ./app/assets/builds/application.css --no-source-map --load-path=node_modules",
+    "build:css": "sass ./app/assets/stylesheets/application.scss ./app/assets/builds/application.css --no-source-map --load-path=node_modules",
     "start": "node esbuild-dev.config.js"
   },
   "devDependencies": {

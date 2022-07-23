@@ -26,6 +26,11 @@ pre-commit:
       files: git diff --name-only --staged
       glob: "*.rb"
       run: fasterer {files}
+    haml-lint:
+      tags: frontend style
+      files: gid diff --name-only --staged
+      glob: "*.haml"
+      run: haml-lint {files}
     i18n-check:
       tags: backend style
       files: git diff --name-only --staged
@@ -88,6 +93,8 @@ lint:
       run: bundle exec chusaku --exit-with-error-on-annotation
     fasterer:
       run: fasterer
+    haml-lint:
+      run: haml-lint
     i18n-check:
       run: i18n-tasks health
     rails-best-practices:

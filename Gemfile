@@ -11,7 +11,6 @@ gem "devise", github: "ghiculescu/devise", branch: "error-code-422" # https://gi
 gem "devise-i18n"
 gem "responders"
 
-gem "bulma-rails"
 gem "callee"
 gem "dartsass-rails"
 gem "data_migrate"

@@ -19,7 +19,7 @@ admin = if User.exists?(email: admin_email)
           User.find_by(email: admin_email)
         else
           FactoryBot.create(:admin, :without_stable, email: admin_email,
-                                                     password: "password", password_confirmation: "password")
+                                                     password: "Password1!", password_confirmation: "Password1!")
         end
 FactoryBot.create(:stable, user: admin) unless admin.reload.stable
 puts "Creating horse"
