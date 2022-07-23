@@ -46,3 +46,4 @@ spec/examples.txt
 
 .vscode/
 /yarn-error.log
+.lefthook-local

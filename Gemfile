@@ -73,6 +73,7 @@ group :development do
   gem "hotwire-livereload"
   gem "overcommit", require: false
   gem "pry"
+  gem "rails_best_practices", require: false
   gem "yalphabetize", require: false
 end
 

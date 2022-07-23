@@ -3,92 +3,124 @@
 #   Refer for explanation to following link:
 #   https://github.com/evilmartians/lefthook/blob/master/docs/full_guide.md
 #
- pre-push:
-   commands:
-     packages-audit:
-       tags: frontend security
-       run: yarn audit
-       skip:
-         - merge
-         - rebase
-     gems-audit:
-       tags: backend security
-       run: bundle audit
-       skip:
-         - merge
-         - rebase
-     brakeman:
-       tags: backend security
-       run: brakeman --summary --no-progres --quiet
-       skip:
-         - merge
-         - rebase
-     undercover:
-       tags: backend
-       run: undercover
-       skip:
-         - merge
-         - rebase
-   scripts:
-     "protected_branches.sh":
-       runner: bash
+skip_output:
+  - meta
 
- pre-commit:
-   parallel: true
-   commands:
-     actionlint:
-       tags: linter
-       files: git diff --name-only --staged
-       run: actionlint
-     annotate-controllers:
-       tags: backend
-       files: git diff --name-only --staged
-       run: bundle exec chusaku --exit-with-error-on-annotation
-     eslint:
-       tags: frontend style
-       glob: "*.{js,ts,jsx,tsx}"
-       run: yarn eslint {staged_files}
-     fasterer:
-       tags: backend style
-       files: git diff --name-only --staged
-       glob: "*.rb"
-       run: fasterer {files}
-     i18n-check:
-       tags: backend style
-       files: git diff --name-only --staged
-       glob: "config/locales/**/*.yml"
-       run: i18n-tasks normalize
-     rubocop:
-       tags: backend style
-       files: git diff --name-only --staged
-       glob: "*.rb"
-       run: rubocop --force-exclusion {files}
-
-commit-msg:
+pre-commit:
+  parallel: true
+  commands:
+    actionlint:
+      tags: linter
+      files: git diff --name-only --staged
+      run: actionlint
+    annotate-controllers:
+      tags: backend
+      files: git diff --name-only --staged
+      run: bundle exec chusaku --exit-with-error-on-annotation
+    eslint:
+      tags: frontend style
+      glob: "*.{js,ts,jsx,tsx}"
+      run: yarn eslint {staged_files}
+    fasterer:
+      tags: backend style
+      files: git diff --name-only --staged
+      glob: "*.rb"
+      run: fasterer {files}
+    i18n-check:
+      tags: backend style
+      files: git diff --name-only --staged
+      glob: "config/locales/**/*.yml"
+      run: i18n-tasks normalize
+    rubocop:
+      tags: backend style
+      files: git diff --name-only --staged
+      glob: "*.rb"
+      run: rubocop --force-exclusion {files}
   scripts:
-    "commitlint.sh":
+    "banned_syntax.sh":
       runner: bash
 
+pre-push:
+  commands:
+    packages-audit:
+      tags: frontend security
+      run: yarn audit
+      skip:
+        - merge
+        - rebase
+    gems-audit:
+      tags: backend security
+      run: bundle audit
+      skip:
+        - merge
+        - rebase
+    brakeman:
+      tags: backend security
+      run: brakeman --summary --no-progres --quiet
+      skip:
+        - merge
+        - rebase
+    undercover:
+      tags: backend
+      run: undercover
+      skip:
+        - merge
+        - rebase
+  scripts:
+    "protected_branches.sh":
+      runner: bash
+
+post-checkout:
+  piped: true
+  bundle-install:
+    tags: backend
+    run: bundle install
+    skip:
+      - merge
+      - rebase
+  database-migrate:
+    tags: backend
+    run: rails db:migrate
+    skip:
+      - merge
+      - rebase
+  data-migrate:
+    tags: backend
+    run: rails db:migrate:with_data
+    skip:
+      - merge
+      - rebase
+
+post-merge:
+  piped: true
+  bundle-install:
+    tags: backend
+    run: bundle install
+    skip:
+      - merge
+      - rebase
+  database-migrate:
+    tags: backend
+    run: rails db:migrate
+    skip:
+      - merge
+      - rebase
+  data-migrate:
+    tags: backend
+    run: rails db:migrate:with_data
+    skip:
+      - merge
+      - rebase
+
 lint:
-  parallel: true
   commands:
     annotate-controllers:
       run: bundle exec chusaku --exit-with-error-on-annotation
-    eslint-assets:
-      run: yarn eslint --ext .es6 app/assets/javascripts
-    eslint-test:
-      run: yarn eslint --ext .es6 test/javascripts
-    eslint-plugins-assets:
-      run: yarn eslint --ext .es6 plugins/**/assets/javascripts
-    eslint-plugins-test:
-      run: yarn eslint --ext .es6 plugins/**/test/javascripts
-    eslint-assets-tests:
-      run: yarn eslint app/assets/javascripts test/javascripts
     fasterer:
       run: fasterer
     i18n-check:
       run: i18n-tasks health
     rails-best-practices:
-      run: bundle exec rails_best_practices --config config/rails_best_practices.yml
+      run: bundle exec rails_best_practices --config config/rails_best_practices.yml --silent --spec
     rubocop:
-      run: bundle exec rubocop --parallel
+      run: bundle exec rubocop --autocorrect
