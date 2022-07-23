@@ -1,62 +1,22 @@
-CommitMsg:
-  CapitalizedSubject:
-    enabled: false
-  EmptyMessage:
-    enabled: false
-  TextWidth:
-    enabled: false
-  TrailingPeriod:
-    enabled: true
+e
 PreCommit:
   ALL:
     on_warn: fail
     exclude:
       - 'node_modules/**/*'
       - 'vendor/**/*'
-  ActionLint:
-    enabled: true
-    command: ['actionlint']
-  AnnotateControllers:
-    enabled: true
-  AuthorEmail:
-    enabled: true
-  AuthorName:
-    enabled: true
-  BundleAudit:
-    enabled: true
+
   BundleCheck:
     enabled: true
-  Fasterer:
-    enabled: true
-  ForbiddenBranches:
-    branches: ['main', 'staging', 'production']
-    enabled: true
-  I18nTasks:
-    command: ['bundle', 'exec', 'i18n-tasks', 'health']
-    enabled: true
+
   MergeConflicts:
     enabled: true
-  RailsBestPractices:
-    enabled: true
-    command: ["bundle", "exec", "rails_best_practices", "--config", "config/rails_best_practices.yml"]
   RailsSchemaUpToDate:
-    enabled: true
-  RuboCop:
     enabled: true
   TrailingWhitespace:
     enabled: true
-  Undercover:
-    command: ['bundle', 'exec', 'undercover']
-    enabled: true
-    on_fail: warn
   YamlSyntax:
     enabled: true
     exclude:
       - .semaphore/semaphore.yml
 
-PrePush:
-  Brakeman:
-    enabled: true
-  ProtectedBranches:
-    branches: ['main', 'staging', 'production']
-    enabled: true

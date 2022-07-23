@@ -7,6 +7,6 @@ class PagesController < ApplicationController
     Sentry.capture_message("test message")
   end
 
-  # @route GET /activation
+  # @route GET /activation_required (activation)
   def activation; end
 end
