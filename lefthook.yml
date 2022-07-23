@@ -56,7 +56,7 @@ pre-push:
         - rebase
     brakeman:
       tags: backend security
-      run: brakeman --summary --no-progres --quiet
+      run: brakeman --summary --no-progress --quiet
       skip:
         - merge
         - rebase
