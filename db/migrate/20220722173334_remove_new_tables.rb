@@ -1,5 +1,5 @@
 class RemoveNewTables < ActiveRecord::Migration[7.0] # rubocop:disable Metrics/ClassLength
-  def up
+  def up # rubocop:disable Metrics/CyclomaticComplexity
     drop_table :new_racetracks
     drop_table :new_users
     drop_table :new_stables
@@ -250,13 +250,13 @@ class RemoveNewTables < ActiveRecord::Migration[7.0] # rubocop:disable Metrics/C
     rename_column :horses, :new_updated_at, :updated_at
 
     # Add indexes for associations
-    add_index :stables, :user_id
-    add_index :activations, :user_id
-    add_index :horses, :owner_id
-    add_index :horses, :breeder_id
-    add_index :horses, :location_bred_id
-    add_index :horses, :sire_id
-    add_index :horses, :dam_id
+    add_index :stables, :user_id unless index_exists?(:stables, :user_id)
+    add_index :activations, :user_id unless index_exists?(:activations, :user_id)
+    add_index :horses, :owner_id unless index_exists?(:horses, :owner_id)
+    add_index :horses, :breeder_id unless index_exists?(:horses, :breeder_id)
+    add_index :horses, :location_bred_id unless index_exists?(:horses, :location_bred_id)
+    add_index :horses, :sire_id unless index_exists?(:horses, :sire_id)
+    add_index :horses, :dam_id unless index_exists?(:horses, :dam_id)
 
     # Migrate primary keys from UUIDs to IDs
     remove_column :racetracks, :id
