@@ -66,9 +66,6 @@ pre-push:
       skip:
         - merge
         - rebase
-  scripts:
-    "protected_branches.sh":
-      runner: bash
 
 post-checkout:
   piped: true
