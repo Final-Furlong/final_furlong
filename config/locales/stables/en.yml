@@ -7,3 +7,4 @@ en:
         other: "%{count} Stables in Final Furlong"
     stable:
       last_online: 'Last online at: %{date}'
+      no_description: No description

@@ -14,7 +14,7 @@
     = hotwire_livereload_tags if Rails.env.development?
   %body
     = render partial: "layouts/nav"
-    %main.container.mt-8
+    %main.container
       = breadcrumbs separator: " &rsaquo; ", style: :inline, aria_current: "page"
       #flash
         = render partial: "layouts/flash"

@@ -1,6 +1,14 @@
-= simple_form_for stable, html: { class: "stable form" } do |f|
-  = render(Shared::ErrorMessagesComponent.new(object: stable))
-  = f.text_area :description, class: "textarea"
-  .actions
-    = link_to t('forms.cancel'), current_stable_path, class: "button is-light"
-    = f.submit class: "button is-primary"
+= turbo_frame_tag stable do
+  .stable.mb-2
+    .card
+      %h3.card-header= link_to stable.name, stable_path(stable), data: { turbo_frame: "_top" }
+      .card-body
+        .card-subtitle.mb-2
+          %span.text-muted= "@" + stable.user.username
+          %span.badge{ class: "bg-#{stable.online? ? "success" : "light text-dark"}" }= stable.online? ? "Online" : "Offline"
+        - if stable.description
+          %p.card-text.text-truncate= stable.description
+        - else
+          %p.card-text.text-muted= t('.no_description')
+        - if stable.user.last_sign_in_at
+          %p.text-end.text-muted= t('.last_online', date: l(stable.user.last_sign_in_at, format: :short))

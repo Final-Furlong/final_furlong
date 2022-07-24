@@ -3,12 +3,12 @@
     - flash.each do |name, messages|
       - case messages.class.name.to_s
       - when "String"
-        %div{ class: "notification is-#{name == 'notice' ? 'success' : 'danger'}" }
-          %button.delete{ "aria-hidden" => "true", "data-dismiss" => "alert", type: "button" }
+        %div{ class: "fade show alert alert-dismissible alert-#{name == 'alert' ? 'danger' : (name == 'notice' ? 'success' : name)}" }
           = content_tag :span, messages.html_safe, id: "flash_#{name}"
+          %button.btn-close{ type: "button", data: { 'bs-dismiss' => "alert" }, aria: { label: "Close" } }
       - when "Array"
         - messages.compact.each do |msg|
-          %div{ class: "notification is-#{name == 'notice' ? 'success' : 'danger'}" }
-            %button.delete{ "aria-hidden" => "true", "data-dismiss" => "alert", type: "button" }
+          %div{ class: "fade show alert alert-dismissible alert-#{name == 'alert' ? 'danger' : (name == 'notice' ? 'success' : name)}" }
             = content_tag :span, msg.html_safe, id: "flash_#{name}"
+            %button.btn-close{ type: "button", data: { 'bs-dismiss' => "alert" }, aria: { label: "Close" } }
 - flash.clear

@@ -23,7 +23,7 @@ class HorsesController < ApplicationController
       @horse.reload
       respond_to do |format|
         format.html { redirect_to horses_path, notice: t(".success", name: @horse.name) }
-        format.turbo_stream { flash.now[:notice] = t(".success", name: @horse.name) }
+        format.turbo_stream { flash.now[:success] = t(".success", name: @horse.name) }
       end
     else
       render :edit, status: :unprocessable_entity

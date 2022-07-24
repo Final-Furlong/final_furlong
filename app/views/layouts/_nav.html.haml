@@ -3,24 +3,29 @@
   %nav.collapse.d-lg-block.sidebar.collapse.bg-white#sidebar-menu
     .position-sticky
       .list-group.list-group-flush.mx-3.mt-4
-        = link_to stables_path, class: ["list-group-item list-group-item-action py-2 ripple", nav_link_class(stables_path)], aria: { current: nav_link_active?(stables_path) } do
+        .d-lg-none
+          = link_to root_path, data: { turbo: false }, class: ["list-group-item list-group-item-action py-2 ripple", nav_link_class(root_path)], aria: { current: nav_link_active?(root_path) } do
+            %i.fas.fa-house.fa-fw.me-3
+            %span= t('.home')
+        = link_to stables_path, data: { turbo: false }, class: ["list-group-item list-group-item-action py-2 ripple", nav_link_class(stables_path)], aria: { current: nav_link_active?(stables_path) } do
           %i.fas.fa-tractor.fa-fw.me-3
           %span= t('.stables')
-        = link_to horses_path, class: ["list-group-item list-group-item-action py-2 ripple", nav_link_class(horses_path)], aria: { current: nav_link_active?(horses_path) } do
+        = link_to horses_path, data: { turbo: false }, class: ["list-group-item list-group-item-action py-2 ripple", nav_link_class(horses_path)], aria: { current: nav_link_active?(horses_path) } do
           %i.fas.fa-horse-head.me-3
           %span= t('.all_horses')
         = link_to "https://www.finalfurlong.org/", class: "list-group-item list-group-item-action py-2 ripple", aria: { current: false } do
-          %i.fas.fa-house.me-3
+          %i.fas.fa-delete-left.me-3
           %span= t('.main_app')
   -# Navbar
   %nav.navbar.navbar-expand-lg.navbar-dark.bg-primary.fixed-top#main-navbar
     -# Container
     .container-fluid
       -# Toggle button
-      %button.navbar-toggler{ type: "button", data: { 'bs-toggle' => 'collapse', 'bs-target' => '#sidebar-menu' }, aria: { controls: 'sidabar-menu', expanded: false, label: 'Toggle navigation' } }
-        %i.fas.fas-bars
+      %button.navbar-toggler{ type: "button", data: { 'mdb-toggle' => 'collapse', 'mdb-target' => '#sidebar-menu' }, aria: { controls: 'sidabar-menu', expanded: false, label: 'Toggle navigation' } }
+        %i.fa-solid.fa-bars
+        -#%svg.bi.bi-list.text-white{ width: "32", height: "32", fill: "currentColor", viewBox: "0 0 16 16", xmlns: "http://www.w3.org/2000/svg" }
       -# Brand
-      %a.navbar-brand{ href: '#' } Final Furlong
+      = link_to t('.game_title'), root_path, class: 'navbar-brand', data: { turbo: false }
       -# Right links
       %ul.navbar-nav.ms-auto.d-flex.flex-row
         %form.d-flex{ role: "search" }
@@ -29,11 +34,11 @@
         -# Avatar
         - if user_signed_in?
           -# Notification dropdown
-          %li.nav-item.dropdown
-            %a.nav-link.me-3.me-lg-0.dropdown-toggle.hidden-arrow#navbar-dropdown-menu-link{ href: '#', role: 'button', data: { 'bs-toggle' => 'dropdown' }, aria: { expanded: false } }
+          %li.nav-item.dropdown.me-3.me-lg-0
+            %a.nav-link.dropdown-toggle.hidden-arrow#notification-dropdown-menu-link{ href: '#', role: 'button', data: { 'mdb-toggle' => 'dropdown' }, aria: { expanded: false } }
               %i.fas.fa-bell
               -# %span.badge.rounded-pill.badge-notification.bg-danger= 1
-            %ul.dropdown-menu.dropdown-menu-end{ area: { labelledby: 'navbar-dropdown-menu-link' } }
+            %ul.dropdown-menu.dropdown-menu-end{ area: { labelledby: 'notification-dropdown-menu-link' }, data: { 'popper-placement' => nil, 'mdb-popper' => 'none' } }
               %li
                 %a.dropdown-item{ href: '#' }= "Alerts"
               %li
@@ -41,27 +46,30 @@
               %li
                 %a.dropdown-item{ href: '#' }= "Here"
           %li.nav-item.dropdown
-            %a.nav-link.dropdown-toggle.hidden-arrow.d-flex.align-items-center{ href: "#", role: "button", data: { 'bs-toggle' => "dropdown" }, aria: { expanded: false } }
+            %a.nav-link.dropdown-toggle.hidden-arrow.d-flex.align-items-center#avatar-dropdown-menu-link{ href: "#", role: "button", data: { 'mdb-toggle' => "dropdown" }, aria: { expanded: false } }
               %span.icon
                 %i.fa-solid.fa-user
-            %ul.dropdown-menu.dropdown-menu-end{ aria: { labelledby: "navbar-dropdown-menu-link" } }
+            %ul.dropdown-menu.dropdown-menu-end{ aria: { labelledby: "avatar-dropdown-menu-link" }, data: { 'popper-placement' => nil, 'mdb-popper' => 'none' } }
               %li
-                = link_to edit_user_registration_path, class: 'dropdown-item' do
+                = link_to edit_user_registration_path, class: 'dropdown-item', data: { turbo: false } do
                   %i.fas.fa-gear.me-2
                   = t('.edit_profile')
               %li
-                = link_to '#', class: 'dropdown-item' do
+                = link_to '#', class: 'dropdown-item', data: { turbo: false } do
                   %i.fas.fa-tractor.me-2
                   = t('.edit_stable')
               %li
-                = link_to destroy_user_session_path, method: :delete, class: "dropdown-item" do
+                %hr.dropdown-divider
+              %li
+                = button_to destroy_user_session_path, method: :delete, class: "dropdown-item", data: { turbo: false } do
+                  %i.fas.fa-arrow-left-from-bracket.me-2
                   = t('.logout')
         - else
           %form.d-flex.ms-2{ role: "login" }
-            = link_to new_user_session_path, class: "btn btn-light" do
-              %i.box-arrow-in-left.me-2
+            = link_to new_user_session_path, class: "btn btn-light", data: { turbo: false } do
+              %i.fas.fa-arrow-right-from-bracket.me-2
               %strong= t('.login')
           %form.d-flex.ms-2{ role: "join" }
-            = link_to new_user_registration_path, class: "btn btn-outline-light" do
-              %i.box-arrow-in-right.me-2
+            = link_to new_user_registration_path, class: "btn btn-outline-light", data: { turbo: false } do
+              %i.fas.fa-user-plus.me-2
               %strong.text-light= t('.join')

@@ -1,12 +1,5 @@
-//@import 'bootstrap/scss/bootstrap';
-//@import 'bootstrap-icons/font/bootstrap-icons';
+@import 'mdbootstrap';
 
-@import 'custom';
-@import 'nav';
-@import 'variables';
-
-// MDBootstrap
-@import 'mixins/ripple';
-@import 'ripple';
-
-@import 'turbo';
+@import 'custom/styles';
+@import 'custom/variables';
+@import 'custom/turbo';
