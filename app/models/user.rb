@@ -3,6 +3,8 @@ class User < ApplicationRecord
   include Admin::UserAdmin
   include FinalFurlong::Internet::Validation
 
+  attr_accessor :login
+
   USERNAME_LENGTH = 4
   PASSWORD_LENGTH = 8
 
@@ -21,10 +23,13 @@ class User < ApplicationRecord
 
   # broadcasts_to ->(_user) { "users" }, inserts_by: :prepend
 
-  scope :active, -> { where(status: "active") }
   scope :ordered, -> { order(id: :desc) }
 
-  attr_accessor :login
+  def online?
+    return false unless last_sign_in_at
+
+    last_sign_in_at > 15.minutes.ago
+  end
 
   def active_for_authentication?
     super && !discarded?

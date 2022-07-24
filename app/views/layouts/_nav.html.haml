@@ -3,98 +3,65 @@
   %nav.collapse.d-lg-block.sidebar.collapse.bg-white#sidebar-menu
     .position-sticky
       .list-group.list-group-flush.mx-3.mt-4
-        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
-          %i.fas.fa-tachometer-alt.fa-fw.me-3
-          %span Main dashboard
-        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
-          %i.fas.fa-chart-area.fa-fw.me-3
-          %span Website traffic
-        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
-          %i.fas.fa-lock.fa-fw.me-3
-          %span Password
-        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
-          %i.fas.fa-chart-line.fa-fw.me-3
-          %span Analytics
-        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
-          %i.fas.fa-chart-pie.fa-fw.me-3
-          %span SEO
-        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
-          %i.fas.fa-chart-bar.fa-fw.me-3
-          %span Orders
-        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
-          %i.fas.fa-globe.fa-fw.me-3
-          %span International
-        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
-          %i.fas.fa-building.fa-fw.me-3
-          %span Partners
-        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
-          %i.fas.fa-calendar.fa-fw.me-3
-          %span Calendar
-        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
-          %i.fas.fa-users.fa-fw.me-3
-          %span Users
-        %a.list-group-item.list-group-item-action.py-2.ripple{ href: '#', aria: { current: true } }
-          %i.fas.fa-money-bill.fa-fw.me-3
-          %span Sales
+        = link_to stables_path, class: ["list-group-item list-group-item-action py-2 ripple", nav_link_class(stables_path)], aria: { current: nav_link_active?(stables_path) } do
+          %i.fas.fa-tractor.fa-fw.me-3
+          %span= t('.stables')
+        = link_to horses_path, class: ["list-group-item list-group-item-action py-2 ripple", nav_link_class(horses_path)], aria: { current: nav_link_active?(horses_path) } do
+          %i.fas.fa-horse-head.me-3
+          %span= t('.all_horses')
+        = link_to "https://www.finalfurlong.org/", class: "list-group-item list-group-item-action py-2 ripple", aria: { current: false } do
+          %i.fas.fa-house.me-3
+          %span= t('.main_app')
   -# Navbar
-  %nav.navbar.navbar-expand-lg.navbar-light.bg-white.fixed-top#main-navbar
+  %nav.navbar.navbar-expand-lg.navbar-dark.bg-primary.fixed-top#main-navbar
     -# Container
     .container-fluid
       -# Toggle button
-      %button.navbar-toggler{ type: "button", data: { 'mdb-toggle' => 'collapse', 'mdb-target' => '#sidebarMenu' }, aria: { controls: 'sidabarMenu', expanded: false, label: 'Toggle navigation' } }
+      %button.navbar-toggler{ type: "button", data: { 'bs-toggle' => 'collapse', 'bs-target' => '#sidebar-menu' }, aria: { controls: 'sidabar-menu', expanded: false, label: 'Toggle navigation' } }
         %i.fas.fas-bars
       -# Brand
-      %a.navbar-brand{ href: '#' }
-        %img{ src: "https://mdbootstrap.com/img/logo/mdb-transaprent-noshadows.png", height: "25", alt: "foo", loading: "lazy" }
-      -# Search form
-      %form.d-none.d-md-flex.input-group.w-auto.my-auto
-        %input.form-control.rounded{ autocomplete: 'off', type: 'search', placeholder: 'Search (ctrl + "/" to focus)', style: 'min-width: 225px;' }
-        %span.input-group-text.border-0
-          %i.fas.fa-search
+      %a.navbar-brand{ href: '#' } Final Furlong
       -# Right links
       %ul.navbar-nav.ms-auto.d-flex.flex-row
-        -# Notification dropdown
-        %li.nav-item.dropdown
-          %a.nav-link.me-3.me-lg-0.dropdown-toggle.hidden-arrow#navbar-dropdown-menu-link{ href: '#', role: 'button', data: { 'mdb-toggle' => 'dropdown' }, aria: { expanded: false } }
-            %i.fas.fa-bell
-            %span.badge.rounded-pill.badge-notification.bg-danger= 1
-        %ul.dropdown-menu.dropdown-menu-end{ area: { labelledby: 'navbarDropdownMenuLink' } }
-          %li
-            %a.dropdown-item{ href: '#' }= "Some news"
-          %li
-            %a.dropdown-item{ href: '#' }= "Another news"
-          %li
-            %a.dropdown-item{ href: '#' }= "Something else here"
-        %li.nav-item
-          %a.nav-link.me-3.me-lg-0{ href: '#' }
-            %i.fas.fa-fill-drop
-        %li.nav-item.me-3.me-lg-0
-          %a.nav-link{ href: '#' }
-            %i.fas.fa-github
-        %li.nav-item.dropdown
-          %a.nav-link.me-3.me-lg-0.dropdown-toggle.hidden-arrow#navbar-dropdown{ href: '#', role: 'button', data: { 'mdb-toggle' => 'dropdown' }, aria: { expanded: false } }
-            %i.united.kingdom.flag.m-0
-          %ul.dropdown-menu.dropdown-menu-end{ aria: { labelledby: 'navbarDropdown' } }
-            %li
-              %a.dropdown-item{ href: '#' }
-                %i.united.kingdom.flag
-                %span
-                  %span English
-                  %i.fa.fa-check.text-success.ms-2
-            %li
-              %hr.dropdown-divider
-            %li
-              %a.dropdown-item{ href: "#" }
-                %i.poland.flag
-                %span Polski
+        %form.d-flex{ role: "search" }
+          %input.form-control.me-2{ type: "search", disabled: true, placeholder: t('.search_placeholder'), aria: { label: t('.search_aria_label') } }
+
         -# Avatar
-        %li.nav-item.dropdown
-          %a.nav-link.dropdown-toggle.hidden-arrow.d-flex.align-items-center{ href:"#", role: "button", data: { 'mdb-toggle': "dropdown"}, aria: { expanded: "false" } }
-            %img.founded-circle{ src: "https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg", height: "22", alt: "foo", loading:"lazy" }
-          %ul.dropdown-menu.dropdown-menu-end{ aria: { labelledby:"navbarDropdownMenuLink" } }
-            %li
-              %a.dropdown-item{ href: "#" } My profile
-            %li
-              %a.dropdown-item{ href: "#" } Settings
-            %li
-              %a.dropdown-item{ href: "#" } Logout
+        - if user_signed_in?
+          -# Notification dropdown
+          %li.nav-item.dropdown
+            %a.nav-link.me-3.me-lg-0.dropdown-toggle.hidden-arrow#navbar-dropdown-menu-link{ href: '#', role: 'button', data: { 'bs-toggle' => 'dropdown' }, aria: { expanded: false } }
+              %i.fas.fa-bell
+              -# %span.badge.rounded-pill.badge-notification.bg-danger= 1
+            %ul.dropdown-menu.dropdown-menu-end{ area: { labelledby: 'navbar-dropdown-menu-link' } }
+              %li
+                %a.dropdown-item{ href: '#' }= "Alerts"
+              %li
+                %a.dropdown-item{ href: '#' }= "Will go"
+              %li
+                %a.dropdown-item{ href: '#' }= "Here"
+          %li.nav-item.dropdown
+            %a.nav-link.dropdown-toggle.hidden-arrow.d-flex.align-items-center{ href: "#", role: "button", data: { 'bs-toggle' => "dropdown" }, aria: { expanded: false } }
+              %span.icon
+                %i.fa-solid.fa-user
+            %ul.dropdown-menu.dropdown-menu-end{ aria: { labelledby: "navbar-dropdown-menu-link" } }
+              %li
+                = link_to edit_user_registration_path, class: 'dropdown-item' do
+                  %i.fas.fa-gear.me-2
+                  = t('.edit_profile')
+              %li
+                = link_to '#', class: 'dropdown-item' do
+                  %i.fas.fa-tractor.me-2
+                  = t('.edit_stable')
+              %li
+                = link_to destroy_user_session_path, method: :delete, class: "dropdown-item" do
+                  = t('.logout')
+        - else
+          %form.d-flex.ms-2{ role: "login" }
+            = link_to new_user_session_path, class: "btn btn-light" do
+              %i.box-arrow-in-left.me-2
+              %strong= t('.login')
+          %form.d-flex.ms-2{ role: "join" }
+            = link_to new_user_registration_path, class: "btn btn-outline-light" do
+              %i.box-arrow-in-right.me-2
+              %strong.text-light= t('.join')

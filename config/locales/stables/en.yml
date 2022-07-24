@@ -1,0 +1,9 @@
+---
+en:
+  stables:
+    index:
+      title:
+        one: 1 Stable in Final Furlong
+        other: "%{count} Stables in Final Furlong"
+    stable:
+      last_online: 'Last online at: %{date}'

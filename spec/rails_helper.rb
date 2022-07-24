@@ -34,7 +34,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
-  puts e.to_s.strip
+  Rails.logger.error e.to_s.strip
   exit 1
 end
 RSpec.configure do |config|
@@ -54,4 +54,8 @@ RSpec.configure do |config|
 
   config.include RSpec::Rails::RequestExampleGroup, type: :request, file_path: %r{spec/api}
   config.include JSONHelpers, type: :request
+
+  config.include Devise::Test::IntegrationHelpers, type: :system
+
+  config.include AbstractController::Translation # allow t() instead of I18n.t()
 end

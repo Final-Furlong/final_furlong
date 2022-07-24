@@ -30,6 +30,7 @@ FactoryBot.define do
 
     trait :deleted do
       status { "deleted" }
+      discarded_at { Time.current }
     end
 
     trait :banned do

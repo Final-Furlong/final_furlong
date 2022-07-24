@@ -5,6 +5,10 @@ class UserPolicy < ApplicationPolicy
     end
   end
 
+  def create?
+    user&.admin?
+  end
+
   def permitted_attributes
     %i[name email]
   end

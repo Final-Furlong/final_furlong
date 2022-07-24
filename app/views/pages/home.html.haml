@@ -1,3 +1,4 @@
-%h3= t(".hello")
-%p Environment: #{ENV['RAILS_ENV']}
-%p= "current user: #{current_user&.name}"
+.px-4.py-5.my-5.text-center
+  %h1.display-5.fw-bold Hi!
+  .col-lg-6.mx-auto
+    %p.lead.mb-4= "Current user: #{current_user&.name}"

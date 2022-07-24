@@ -14,14 +14,26 @@ en:
       edit_profile: Edit profile
       edit_stable: Edit stable
       join: Join
-      login: Login
+      login: Log in
       logout: Log out
+      main_app: Back to main app
+      my_horses: My horses
+      search_aria_label: Search
       search_placeholder: Search...
-      stable_horses: My Horses
-      users: Users
+      stables: Stables
+  number:
+    currency:
+      format:
+        delimiter: ","
+        format: "%u%n"
+        precision: 0
+        separator: "."
+        significant: false
+        strip_insignificant_zeros: false
+        unit: "$"
   pages:
     activation:
       error: Hold on, you need to be activated!
-      message: In the main game, click the button that says "Activate Beta". Then come back!
+      message: In the main game, click the link for activating your account here. Then come back!
     home:
       hello: Hi!
