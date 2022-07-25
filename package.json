@@ -4,15 +4,17 @@
   "dependencies": {
     "@hotwired/stimulus": "^3.0.1",
     "@hotwired/turbo-rails": "^7.1.1",
-    "bulma": "^0.9.3",
+    "@popperjs/core": "^2.11.5",
+    "bootstrap": "^5.2.0",
+    "bootstrap-icons": "^1.9.1",
     "esbuild": "^0.14.30",
-    "sass": "^1.50.1",
+    "mdb-ui-kit": "^4.3.0",
+    "sass": "^1.54.0",
     "standard": "^17.0.0"
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds",
-    "build:css": "sass ./app/assets/stylesheets/application.bulma.scss ./app/assets/builds/application.css --no-source-map --load-path=node_modules",
-    "start": "node esbuild-dev.config.js"
+    "build:css": "sass ./app/assets/stylesheets/application.bootstrap.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules"
   },
   "devDependencies": {
     "@babel/core": "^7.18.5",

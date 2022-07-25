@@ -1,0 +1,16 @@
+---
+en-US:
+  users:
+    create:
+      failure: User could not be created.
+      success: User was successfully created.
+    destroy:
+      success: User was successfully destroyed.
+    index:
+      new_user: New user
+      title: Users
+    new:
+      title: New user
+    update:
+      failure: User could not be updated.
+      success: User was successfully updated.

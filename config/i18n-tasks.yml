@@ -114,6 +114,7 @@ ignore_missing:
 # - 'simple_form.{placeholders,hints,labels}.*'
 # - 'simple_form.{error_notification,required}.:'
 ignore_unused:
+- '{date,time,number}.*'
 - 'activemodel.{attributes,errors}.*'
 - 'activerecord.{attributes,models,errors}.*'
 - 'breadcrumbs.*'

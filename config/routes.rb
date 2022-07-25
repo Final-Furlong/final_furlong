@@ -15,10 +15,11 @@ Rails.application.routes.draw do
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :users
-  resource :stable, only: [:show]
+  resources :stables, only: %i[index show edit update]
   resources :horses, except: %i[new create destroy]
 
   # stable horses
+  get "/stable", to: "stables#show", as: :current_stable
   get "/stable/horses", to: "current_stable/horses#index", as: :current_stable_horses
   get "/stable/horses/:id/edit", to: "current_stable/horses#edit", as: :edit_current_stable_horse
   get "/stable/horses/:id", to: "current_stable/horses#show", as: :current_stable_horse

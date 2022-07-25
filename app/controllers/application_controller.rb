@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_locale
   before_action :setup_sentry
+  before_action :enable_i18n_debug, if: -> { Rails.env.development? }
 
   after_action :verify_authorized, except: :index, unless: :devise_controller?
   after_action :verify_policy_scoped, only: :index, unless: :devise_controller?
@@ -54,5 +55,15 @@ class ApplicationController < ActionController::Base
     return unless current_user
 
     Sentry.set_user(username: current_user.username)
+  end
+
+  def enable_i18n_debug
+    return unless defined? I18n::Debug
+
+    I18n::Debug.logger = if params[:i18n_debug]
+                           Rails.logger
+                         else
+                           Logger.new("/dev/null")
+                         end
   end
 end

@@ -20,7 +20,7 @@ class UsersController < AuthenticatedController
   # @route POST /users (users)
   def create
     if @user_form.submit(user_attributes)
-      flash[:notice] = t(".success")
+      flash[:success] = t(".success")
       redirect_to users_path
     else
       flash[:alert] = t(".failure")
@@ -35,7 +35,7 @@ class UsersController < AuthenticatedController
   # @route PUT /users/:id (user)
   def update
     if @user_form.submit(user_attributes)
-      flash[:notice] = t(".success")
+      flash[:success] = t(".success")
       redirect_to users_path
     else
       flash[:alert] = t(".failure")
@@ -46,7 +46,7 @@ class UsersController < AuthenticatedController
   # @route DELETE /users/:id (user)
   def destroy
     @user.deleted!
-    flash[:notice] = t(".success")
+    flash[:success] = t(".success")
     respond_to do |format|
       format.html { redirect_to users_path, notice: t(".success") }
       format.turbo_stream
