@@ -1,6 +1,7 @@
 %h1= t(".sign_in")
 
-= simple_form_for(resource, as: resource_name, url: new_session_path(resource_name), html: { data: { turbo: false } }) do |f|
+= simple_form_for(resource, as: resource_name, url: new_session_path(resource_name),
+  html: { data: { turbo: false } }) do |f|
   .form-inputs
     = f.input :login, required: false, autofocus: true, input_html: { autocomplete: "email" }
 

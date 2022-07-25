@@ -1,0 +1,17 @@
+%head
+  %meta{ content: "text/html" }/
+  %meta{ charset: "utf-8" }/
+  %meta{ content: "IE=edge,chrome=1", "http-equiv" => "x-ua-compatible" }/
+  %meta{ content: "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0",
+    name: "viewport" }/
+  %meta{ content: "no-preview", name: "turbo-cache-control" }/
+
+  %title= content_for?(:title) ? yield(:title) : "Final Furlong"
+
+  = csrf_meta_tags
+  = csp_meta_tag
+
+  = stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.3.0/mdb.min.css"
+  = stylesheet_link_tag "application", "data-turbo-track": "reload"
+  = javascript_include_tag "application", "data-turbo-track": "reload", defer: true
+  %script{ src: "https://kit.fontawesome.com/a2bbd059ad.js", crossorigin: "anonymous" }

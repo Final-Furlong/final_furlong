@@ -26,6 +26,7 @@ gem "grape_on_rails_routes"
 gem "gretel"
 gem "haml"
 gem "haml-rails"
+gem "importmap-rails"
 gem "jsbundling-rails"
 gem "mysql2"
 gem "pagy"
@@ -35,10 +36,10 @@ gem "pundit"
 gem "rack-cors"
 gem "rails_admin"
 gem "redis", "~> 4.0"
+gem "sassc-rails"
 gem "sentry-rails"
 gem "sentry-ruby"
 gem "simple_form"
-gem "sprockets-rails"
 gem "stimulus-rails"
 gem "turbo-rails"
 gem "view_component"
@@ -71,10 +72,8 @@ group :development do
   gem "capistrano-rails", "~> 1.3", require: false
   gem "capistrano-rbenv", "~> 2.2", require: false
   gem "chusaku", require: false
-  gem "hotwire-livereload"
   gem "overcommit", require: false
   gem "pry"
-  gem "rails_best_practices", require: false
   gem "yalphabetize", require: false
 end
 

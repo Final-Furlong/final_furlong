@@ -1,0 +1,17 @@
+---
+en-US:
+  helpers:
+    submit:
+      user:
+        create: Create user
+        update: Update user
+  simple_form:
+    labels:
+      user:
+        name: Name
+    placeholders:
+      user:
+        email: Your e-mail
+        login: Username or e-mail
+        name: Your name
+        username: Username

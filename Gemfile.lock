@@ -262,9 +262,6 @@ GEM
       html2haml (>= 1.0.1)
       railties (>= 5.1)
     highline (2.0.3)
-    hotwire-livereload (1.2.0)
-      listen (>= 3.0.0)
-      rails (>= 6.0.0)
     html2haml (2.2.0)
       erubis (~> 2.7.0)
       haml (>= 4.0, < 6)
@@ -288,6 +285,9 @@ GEM
       terminal-table (>= 1.5.1)
     imagen (0.1.8)
       parser (>= 2.5, != 2.5.1.1)
+    importmap-rails (1.0.2)
+      actionpack (>= 6.0.0)
+      railties (>= 6.0.0)
     iniparse (1.5.0)
     interception (0.5)
     iso (0.4.0)
@@ -318,9 +318,6 @@ GEM
       addressable (~> 2.7)
     letter_opener (1.8.1)
       launchy (>= 2.2, < 3)
-    listen (3.7.1)
-      rb-fsevent (~> 0.10, >= 0.10.3)
-      rb-inotify (~> 0.9, >= 0.9.10)
     loofah (2.18.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -442,9 +439,6 @@ GEM
       zeitwerk (~> 2.5)
     rainbow (3.0.0)
     rake (13.0.6)
-    rb-fsevent (0.11.1)
-    rb-inotify (0.10.1)
-      ffi (~> 1.0)
     redis (4.7.1)
     reek (6.1.1)
       kwalify (~> 0.7.0)
@@ -671,9 +665,9 @@ DEPENDENCIES
   gretel
   haml
   haml-rails
-  hotwire-livereload
   i18n-spec
   i18n-tasks
+  importmap-rails
   jsbundling-rails
   letter_opener
   mysql2
@@ -702,6 +696,7 @@ DEPENDENCIES
   rubocop-rake
   rubocop-rspec
   ruby-debug-ide
+  sassc-rails
   selenium-webdriver
   sentry-rails
   sentry-ruby
@@ -712,7 +707,6 @@ DEPENDENCIES
   simplecov-json
   simplecov-lcov
   solargraph
-  sprockets-rails
   stimulus-rails
   turbo-rails
   tzinfo-data

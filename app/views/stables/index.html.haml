@@ -1,5 +1,5 @@
 .header.is-flex.flex-wrap-wrap.is-justify-content-space-between.is-vcentered.columns.has-text-centered
-  %h1.text-center= t('stables.index.title', count: stables.count)
+  %h1.text-center= t("stables.index.title", count: stables.count)
 
 = turbo_frame_tag "stables" do
   - stables.in_groups_of(4) do |list|

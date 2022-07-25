@@ -2,5 +2,5 @@
   = render(Shared::ErrorMessagesComponent.new(object: stable))
   = f.text_area :description, class: "textarea"
   .actions
-    = link_to t('forms.cancel'), current_stable_path, class: "button is-light"
+    = link_to t("forms.cancel"), current_stable_path, class: "button is-light"
     = f.submit class: "button is-primary"

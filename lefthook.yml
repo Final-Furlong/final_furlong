@@ -28,7 +28,7 @@ pre-commit:
       run: fasterer {files}
     haml-lint:
       tags: frontend style
-      files: gid diff --name-only --staged
+      files: git diff --name-only --staged
       glob: "*.haml"
       run: haml-lint {files}
     i18n-check:
@@ -91,13 +91,14 @@ lint:
   commands:
     annotate-controllers:
       run: bundle exec chusaku --exit-with-error-on-annotation
+    eslint:
+      glob: "*.{js,ts,jsx,tsx}"
+      run: yarn eslint {staged_files} --fix
     fasterer:
       run: fasterer
     haml-lint:
       run: haml-lint
     i18n-check:
       run: i18n-tasks health
-    rails-best-practices:
-      run: bundle exec rails_best_practices --config config/rails_best_practices.yml --silent --spec
     rubocop:
       run: bundle exec rubocop --autocorrect

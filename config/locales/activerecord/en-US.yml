@@ -1,0 +1,42 @@
+---
+en-US:
+  activemodel:
+    errors:
+      messages:
+        date_invalid: must be a valid date. Format should be MM/DD/YYYY
+        datetime_invalid: must be a valid datetime. Format should be MM/DD/YYYY HH24:MM
+        dob_future: must not be in future
+        dob_in_far_past: must be no more than 150 years ago
+        phone_invalid_mobile: is invalid
+        weak: 'must be at least 8 characters long and contain: an upper case character, a lower case character, a digit and a non-alphabet character.'
+  activerecord:
+    attributes:
+      user:
+        admin: Admin
+        confirmation_sent_at: Confirmation sent
+        confirmation_token: Confirmation token
+        confirmed_at: Confirmed
+        created_at: Created
+        current_sign_in_at: Current sign in
+        current_sign_in_ip: Current IP
+        discourse_id: Discourse Use
+        email: Email
+        failed_attempts: Failed attempts
+        last_sign_in_at: Last sign in
+        last_sign_in_ip: Last IP
+        locked_at: Locked
+        name: Name
+        remember_created_at: Remember Me
+        reset_password_sent_at: Reset password
+        sign_in_count: Sign in count
+        slug: Slug
+        status: Status
+        unconfirmed_email: Email (unconfirmed)
+        updated_at: Updated
+        username: Username
+    errors:
+      models:
+        horse:
+          attributes:
+            name:
+              non_unique: has already been taken

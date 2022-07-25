@@ -6,6 +6,11 @@ en:
     horses: Horses
     new_user: New user
     users: Users
+  date:
+    formats:
+      default: "%d-%m-%Y"
+      long: "%d %B, %Y"
+      short: "%d %b"
   forms:
     cancel: Cancel
   layouts:
@@ -20,6 +25,7 @@ en:
       logout: Log out
       main_app: Main app
       my_horses: My horses
+      my_stable: My stable
       search_aria_label: Search
       search_placeholder: Search...
       stables: Stables
@@ -39,3 +45,10 @@ en:
       message: In the main game, click the link for activating your account here. Then come back!
     home:
       hello: Hi!
+  time:
+    am: am
+    formats:
+      default: "%a, %d %b %Y %H:%M:%S %z"
+      long: "%d %B, %Y %H:%M"
+      short: "%d %b %H:%M"
+    pm: pm
