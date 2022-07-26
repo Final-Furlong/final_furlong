@@ -13,6 +13,13 @@
         = nav_link_generator path: current_stable_horses_path do
           %i.fas.fa-horse-head.me-3
           %span= t(".my_horses")
+      - else
+        = nav_link_generator path: new_user_session_path, classes: "d-block d-lg-none" do
+          %i.fas.fa-arrow-right-from-bracket.me-3
+          %span= t("layouts.nav.login")
+        = nav_link_generator path: new_user_registration_path, classes: "d-block d-lg-none" do
+          %i.fas.fa-user-plus.me-3
+          %span= t("layouts.nav.join")
       %a.list-group-item.list-group-item-action.py-2.dropdown-toggle.dropdown-item-text{ href: "#",
         data: { "bs-toggle" => "collapse", "bs-target" => "#game-links-list" }, aria: { expanded: false } }
         %i.fa-solid.fa-bars-staggered.me-3
