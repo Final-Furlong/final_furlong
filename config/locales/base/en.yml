@@ -15,20 +15,24 @@ en:
     cancel: Cancel
   layouts:
     nav:
-      all_horses: Horses
-      edit_profile: Edit profile
-      edit_stable: Edit stable
       game_title: Final Furlong
-      home: Home
       join: Join
       login: Log in
+      search_aria_label: Search
+      search_placeholder: Search...
+    sidenav:
+      all_horses: Horses
+      game_divider: Game Links
+      home: Home
       logout: Log out
       main_app: Main app
       my_horses: My horses
       my_stable: My stable
-      search_aria_label: Search
-      search_placeholder: Search...
       stables: Stables
+    user_nav:
+      edit_profile: Edit profile
+      edit_stable: Edit stable
+      logout: Log out
   number:
     currency:
       format:

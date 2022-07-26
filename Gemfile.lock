@@ -293,8 +293,6 @@ GEM
     iso (0.4.0)
       i18n
     jaro_winkler (1.5.4)
-    jsbundling-rails (1.0.3)
-      railties (>= 6.0.0)
     json (2.6.2)
     jsonapi-renderer (0.2.2)
     kaminari (1.2.2)
@@ -660,7 +658,6 @@ DEPENDENCIES
   i18n-spec
   i18n-tasks
   importmap-rails
-  jsbundling-rails
   letter_opener
   mysql2
   overcommit
@@ -687,7 +684,6 @@ DEPENDENCIES
   rubocop-rake
   rubocop-rspec
   ruby-debug-ide
-  sassc-rails
   selenium-webdriver
   sentry-rails
   sentry-ruby

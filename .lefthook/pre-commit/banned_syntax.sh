@@ -6,7 +6,7 @@
 FILE_PATTERN='\.(js|html|rb|yml)(\..+)?$'
 
 # Separate more forbidden strings with spaces here
-FORBIDDEN=( console.log puts byebug debugger binding.pry )
+FORBIDDEN=( byebug debugger binding.pry )
 
 for i in "${FORBIDDEN[@]}"
 do

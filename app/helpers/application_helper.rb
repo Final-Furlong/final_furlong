@@ -13,8 +13,8 @@ module ApplicationHelper
     current_page?(args)
   end
 
-  def nav_link_generator(path, &block)
-    link_to path, data: { turbo: false }, class: ["list-group-item list-group-item-action py-2 ripple",
+  def nav_link_generator(path:, classes: "", &block)
+    link_to path, data: { turbo: false }, class: ["list-group-item list-group-item-action py-2", classes,
                                                   nav_link_class(path)], aria: { current: nav_link_active?(path) } do
       yield block
     end

@@ -5,9 +5,9 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :username, required: true, autofocus: true, input_html: { autocomplete: "username" }
+    = f.input :username, required: true, disabled: true, input_html: { autocomplete: "username" }
 
-    = f.input :name, required: true, input_html: { autocomplete: "name" }
+    = f.input :name, required: true, autofocus: true, input_html: { autocomplete: "name" }
 
     = f.input :email, required: true, autofocus: true
 
@@ -24,5 +24,3 @@
 
   .form-actions
     = f.button :submit, t(".update")
-
-= link_to t("devise.shared.links.back"), :back

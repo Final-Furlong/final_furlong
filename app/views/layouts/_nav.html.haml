@@ -1,28 +1,5 @@
 %header
-  -# Sidebar
-  %nav.collapse.d-lg-block.sidebar.collapse.bg-white#sidebar-menu
-    .position-sticky
-      .list-group.list-group-flush
-        .d-lg-none
-          = nav_link_generator(root_path) do
-            %i.fas.fa-house.fa-fw.me-3
-            %span= t(".home")
-        - if user_signed_in?
-          = nav_link_generator(current_stable_path) do
-            %i.fas.fa-tractor.fa-fw.me-3
-            %span= t(".my_stable")
-          = nav_link_generator current_stable_horses_path do
-            %i.fas.fa-horse-head.me-3
-            %span= t(".my_horses")
-        = nav_link_generator stables_path do
-          %i.fas.fa-tractor.fa-fw.me-3
-          %span= t(".stables")
-        = nav_link_generator horses_path do
-          %i.fas.fa-horse-head.me-3
-          %span= t(".all_horses")
-        = nav_link_generator "https://www.finalfurlong.org/" do
-          %i.fas.fa-delete-left.me-3
-          %span= t(".main_app")
+  = render "layouts/sidenav"
   -# Navbar
   %nav.navbar.navbar-expand-lg.navbar-dark.bg-primary.fixed-top#main-navbar
     -# Container
@@ -30,53 +7,20 @@
       -# Toggle button
       %button.navbar-toggler{ type: "button", data: { "bs-toggle" => "collapse", "bs-target" => "#sidebar-menu" },
         aria: { controls: "sidabar-menu", expanded: false, label: "Toggle navigation" } }
-        %i.fa-solid.fa-bars
+        %i.fa-solid.fa-bars#icon-show-sidenav
+        %i.fa-solid.fa-xmark.d-none#icon-hide-sidenav
       -# Brand
       = link_to t(".game_title"), root_path, class: "navbar-brand", data: { turbo: false }
+
       -# Right links
-      %ul.navbar-nav.ms-auto.d-flex.flex-row
+      .navbar-nav.d-flex.flex-row
         %form.d-flex{ role: "search" }
           %input.form-control.me-2{ type: "search", disabled: true, placeholder: t(".search_placeholder"),
             aria: { label: t(".search_aria_label") } }
 
         -# Avatar
         - if user_signed_in?
-          -# Notification dropdown
-          %li.nav-item.dropdown.me-3.me-lg-0
-            %a.nav-link.dropdown-toggle.hidden-arrow#notification-dropdown-menu-link{ href: "#", role: "button",
-              data: { "bs-toggle" => "dropdown" }, aria: { expanded: false } }
-              %i.fas.fa-bell
-              -# %span.badge.rounded-pill.badge-notification.bg-danger= 1
-            %ul.dropdown-menu.dropdown-menu-end{ area: { labelledby: "notification-dropdown-menu-link" },
-              data: { "popper-placement" => nil, "bs-popper" => "none" } }
-              %li
-                %a.dropdown-item{ href: "#" }= "Alerts"
-              %li
-                %a.dropdown-item{ href: "#" }= "Will go"
-              %li
-                %a.dropdown-item{ href: "#" }= "Here"
-          %li.nav-item.dropdown
-            %a.nav-link.dropdown-toggle.hidden-arrow.d-flex.align-items-center#avatar-dropdown-menu-link{ href: "#",
-              role: "button", data: { "bs-toggle" => "dropdown" }, aria: { expanded: false } }
-              %span.icon
-                %i.fa-solid.fa-user
-            %ul.dropdown-menu.dropdown-menu-end{ aria: { labelledby: "avatar-dropdown-menu-link" },
-              data: { "popper-placement" => nil, "bs-popper" => "none" } }
-              %li
-                = link_to edit_user_registration_path, class: "dropdown-item", data: { turbo: false } do
-                  %i.fas.fa-gear.me-2
-                  = t(".edit_profile")
-              %li
-                = link_to "#", class: "dropdown-item", data: { turbo: false } do
-                  %i.fas.fa-tractor.me-2
-                  = t(".edit_stable")
-              %li
-                %hr.dropdown-divider
-              %li
-                = button_to destroy_user_session_path, method: :delete, class: "dropdown-item",
-                  data: { turbo: false } do
-                  %i.fas.fa-arrow-left-from-bracket.me-2
-                  = t(".logout")
+          = render "layouts/user_nav"
         - else
           %form.d-flex.ms-2{ role: "login" }
             = link_to new_user_session_path, class: "btn btn-light", data: { turbo: false } do
