@@ -47,7 +47,7 @@
               data: { "bs-toggle" => "dropdown" }, aria: { expanded: false } }
               %i.fas.fa-bell
               -# %span.badge.rounded-pill.badge-notification.bg-danger= 1
-            %ul.dropdown-menu.dropdown-menu-end{ area: { labelledby: "notification-dropdown-menu-link" },
+            %ul.dropdown-menu.dropdown-menu-end.mt-0{ area: { labelledby: "notification-dropdown-menu-link" },
               data: { "popper-placement" => nil, "bs-popper" => "none" } }
               %li
                 %a.dropdown-item{ href: "#" }= "Alerts"
@@ -56,11 +56,11 @@
               %li
                 %a.dropdown-item{ href: "#" }= "Here"
           %li.nav-item.dropdown
-            %a.nav-link.dropdown-toggle.hidden-arrow.d-flex.align-items-center#avatar-dropdown-menu-link{ href: "#",
+            %a.nav-link.dropdown-toggle.hidden-arrow.align-items-center#avatar-dropdown-menu-link{ href: "#",
               role: "button", data: { "bs-toggle" => "dropdown" }, aria: { expanded: false } }
               %span.icon
                 %i.fa-solid.fa-user
-            %ul.dropdown-menu.dropdown-menu-end{ aria: { labelledby: "avatar-dropdown-menu-link" },
+            %ul.dropdown-menu.dropdown-menu-end.mt-0{ aria: { labelledby: "avatar-dropdown-menu-link" },
               data: { "popper-placement" => nil, "bs-popper" => "none" } }
               %li
                 = link_to edit_user_registration_path, class: "dropdown-item", data: { turbo: false } do
