@@ -12,5 +12,9 @@
           %p.card-text.text-truncate= stable.description
         - else
           %p.card-text.text-muted= t(".no_description")
-        - if stable.user.last_sign_in_at
-          %p.text-end.text-muted= t(".last_online", date: l(stable.user.last_sign_in_at, format: :short))
+        - if policy(stable).impersonate?
+          %p.text-end.fs-6
+            %span.badge.text-bg-danger= link_to t(".impersonate"), impersonate_user_path(stable.user_id),
+            class: "text-decoration-none text-reset"
+        - if stable.user.current_sign_in_at
+          %p.text-end.text-muted= t(".last_online", date: l(stable.user.current_sign_in_at, format: :short))

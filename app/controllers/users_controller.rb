@@ -3,7 +3,7 @@ class UsersController < AuthenticatedController
   before_action :new_user, only: %i[new create]
   before_action :load_new_user_form, only: %i[new create]
   before_action :load_edit_user_form, only: %i[edit update]
-  before_action :authorize_user, except: :index
+  before_action :authorize_user, except: %i[index impersonate stop_impersonating]
 
   # @route GET /users (users)
   def index
@@ -51,6 +51,21 @@ class UsersController < AuthenticatedController
       format.html { redirect_to users_path, notice: t(".success") }
       format.turbo_stream
     end
+  end
+
+  def impersonate
+    user = User.find(params[:id])
+    authorize user
+
+    impersonate_user(user)
+    redirect_to root_path
+  end
+
+  def stop_impersonating
+    authorize User
+
+    stop_impersonating_user
+    redirect_to root_path
   end
 
   private

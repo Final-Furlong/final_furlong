@@ -6,6 +6,7 @@
     %main
       = yield :breadcrumbs
       .container
+        = render partial: "layouts/impersonation_alert"
         #flash
           = render partial: "layouts/flash"
         = yield

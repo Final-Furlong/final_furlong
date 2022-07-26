@@ -365,6 +365,8 @@ GEM
       ast (~> 2.4.1)
     pg (1.4.1)
     popper_js (2.11.5)
+    pretender (0.4.0)
+      actionpack (>= 5.2)
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -659,6 +661,7 @@ DEPENDENCIES
   overcommit
   pagy
   pg (~> 1.1)
+  pretender
   pry
   pry-rescue
   pry-stack_explorer

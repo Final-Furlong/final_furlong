@@ -9,5 +9,6 @@ en:
     show:
       joined: Joined on %{date}
     stable:
+      impersonate: Impersonate
       last_online: 'Last online at: %{date}'
       no_description: No description

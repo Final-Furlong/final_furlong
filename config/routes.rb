@@ -14,7 +14,10 @@ Rails.application.routes.draw do
   get "/activation_required", to: "pages#activation", as: :activation
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  resources :users
+  resources :users do
+    get :impersonate, on: :member
+    post :stop_impersonating, on: :collection
+  end
   resources :stables, only: %i[index show edit update]
   resources :horses, except: %i[new create destroy]
 
