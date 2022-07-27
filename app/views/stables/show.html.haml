@@ -1,3 +1,7 @@
-%h1= current_stable.name
+- content_for :breadcrumbs do
+  = render Shared::BreadcrumbsComponent.new(links: [{ name: t("stables.index.all"), href: stables_path },
+    { name: stable.name, href: "#" }])
 
-%p= current_stable.created_at
+%h1= stable.name
+
+%p= t(".joined", date: l(stable.created_at.to_date, format: :long))

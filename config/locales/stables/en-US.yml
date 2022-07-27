@@ -2,9 +2,12 @@
 en-US:
   stables:
     index:
+      all: All Stables
       title:
         one: 1 Stable in Final Furlong
         other: "%{count} Stables in Final Furlong"
+    show:
+      joined: Joined on %{date}
     stable:
       last_online: 'Last online at: %{date}'
       no_description: No description
