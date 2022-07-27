@@ -41,6 +41,11 @@ pre-commit:
       files: git diff --name-only --staged
       glob: "*.rb"
       run: rubocop --force-exclusion {files}
+    stylelint:
+      tags: frontend style
+      files: git diff --name-only --staged
+      glob: "*.scss"
+      run: yarn run stylelint {files}
   scripts:
     "banned_syntax.sh":
       runner: bash
@@ -102,3 +107,5 @@ lint:
       run: i18n-tasks health
     rubocop:
       run: bundle exec rubocop --autocorrect
+    stylelint:
+      run: yarn run stylelint app/assets/stylesheets
