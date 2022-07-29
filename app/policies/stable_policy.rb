@@ -14,6 +14,10 @@ class StablePolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    record.user == user
+  end
+
+  def impersonate?
+    user&.admin && record.user != user
   end
 end

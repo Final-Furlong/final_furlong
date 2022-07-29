@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   mount API::Base, at: "/"
 
+  namespace :admin do
+    resource :impersonate, only: %i[create show destroy]
+  end
+
   mount RailsAdmin::Engine => "/admin", as: "rails_admin"
   devise_for :users, path: "", path_names: {
     sign_up: "join",

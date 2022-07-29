@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   include Pagy::Backend
   include Devise::Controllers::Helpers
   include Pundit::Authorization
+  impersonates :user
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 

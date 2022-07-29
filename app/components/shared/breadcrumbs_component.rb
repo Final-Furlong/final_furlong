@@ -1,5 +1,5 @@
 module Shared
-  class BreadcrumbsComponent < ViewComponent::Base
+  class BreadcrumbsComponent < ApplicationComponent
     def initialize(links: [], title: nil, classes: "")
       @title = title
       @links = links
