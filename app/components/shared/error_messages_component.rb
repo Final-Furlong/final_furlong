@@ -1,5 +1,5 @@
 module Shared
-  class ErrorMessagesComponent < ViewComponent::Base
+  class ErrorMessagesComponent < ApplicationComponent
     def initialize(object:)
       super()
       @object = object

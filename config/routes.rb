@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   mount API::Base, at: "/"
 
+  namespace :admin do
+    resource :impersonate, only: %i[create show destroy]
+  end
+
   mount RailsAdmin::Engine => "/admin", as: "rails_admin"
   devise_for :users, path: "", path_names: {
     sign_up: "join",
@@ -14,10 +18,7 @@ Rails.application.routes.draw do
   get "/activation_required", to: "pages#activation", as: :activation
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  resources :users do
-    get :impersonate, on: :member
-    post :stop_impersonating, on: :collection
-  end
+  resources :users
   resources :stables, only: %i[index show edit update]
   resources :horses, except: %i[new create destroy]
 

@@ -13,10 +13,6 @@ class UserPolicy < ApplicationPolicy
     user&.admin? && user != record
   end
 
-  def stop_impersonating?
-    true
-  end
-
   def permitted_attributes
     %i[name email]
   end

@@ -1,5 +1,62 @@
 ---
 en:
+  activemodel:
+    errors:
+      messages:
+        date_invalid: must be a valid date. Format should be DD/MM/YYYY
+        datetime_invalid: must be a valid datetime. Format should be DD/MM/YYYY HH24:MM
+        dob_future: must not be in future
+        dob_in_far_past: must be no more than 150 years ago
+        phone_invalid_mobile: is invalid
+        weak: 'must be at least 8 characters long and contain: an upper case character, a lower case character, a digit and a non-alphabet character.'
+  activerecord:
+    attributes:
+      user:
+        admin: Admin
+        confirmation_sent_at: Confirmation sent
+        confirmation_token: Confirmation token
+        confirmed_at: Confirmed
+        created_at: Created
+        current_sign_in_at: Current sign in
+        current_sign_in_ip: Current IP
+        discourse_id: Discourse Use
+        email: Email
+        failed_attempts: Failed attempts
+        last_sign_in_at: Last sign in
+        last_sign_in_ip: Last IP
+        locked_at: Locked
+        name: Name
+        remember_created_at: Remember Me
+        reset_password_sent_at: Reset password
+        sign_in_count: Sign in count
+        slug: Slug
+        status: Status
+        unconfirmed_email: Email (unconfirmed)
+        updated_at: Updated
+        username: Username
+    errors:
+      models:
+        horse:
+          attributes:
+            name:
+              non_unique: has already been taken
+  breadcrumbs:
+    edit: Edit
+    home: Home
+    horses: Horses
+    new_user: New user
+    users: Users
+  current_stable:
+    horses:
+      index:
+        title: Horses
+      update:
+        success: "%{name} was successfully updated."
+  date:
+    formats:
+      default: "%d-%m-%Y"
+      long: "%d %B, %Y"
+      short: "%d %b"
   devise:
     confirmations:
       confirmed: Your email address has been successfully confirmed.
@@ -70,3 +127,95 @@ en:
       not_saved:
         one: '1 error prohibited this %{resource} from being saved:'
         other: "%{count} errors prohibited this %{resource} from being saved:"
+    not_authorized: You are not authorized to perform this action.
+  forms:
+    cancel: Cancel
+  helpers:
+    submit:
+      user:
+        create: Create user
+        update: Update user
+  horses:
+    index:
+      title: Horses
+    update:
+      success: "%{name} was successfully updated."
+  impersonating_banner_component:
+    success: You've stopped impersonating!
+    title: Signed in as %{stable} (%{username})
+  layouts:
+    nav:
+      game_title: Final Furlong
+      join: Join
+      login: Log in
+      search_aria_label: Search
+      search_placeholder: Search...
+    sidenav:
+      all_horses: Horses
+      game_divider: Game Links
+      home: Home
+      logout: Log out
+      main_app: Main app
+      my_horses: My horses
+      my_stable: My stable
+      stables: Stables
+    user_nav:
+      edit_profile: Edit profile
+      edit_stable: Edit stable
+      logout: Log out
+  number:
+    currency:
+      format:
+        delimiter: ","
+        format: "%u%n"
+        precision: 0
+        separator: "."
+        significant: false
+        strip_insignificant_zeros: false
+        unit: "$"
+  pages:
+    activation:
+      error: Hold on, you need to be activated!
+      message: In the main game, click the link for activating your account here. Then come back!
+    home:
+      hello: Hi!
+  simple_form:
+    labels:
+      user:
+        name: Name
+    placeholders:
+      user:
+        email: Your e-mail
+        login: Username or e-mail
+        name: Your name
+        username: Username
+  stables:
+    index:
+      all: All Stables
+    show:
+      joined: Joined on %{date}
+    stable:
+      impersonate: Impersonate
+      last_online: 'Last online at: %{date}'
+      no_description: No description
+  time:
+    am: am
+    formats:
+      default: "%a, %d %b %Y %H:%M:%S %z"
+      long: "%d %B, %Y %H:%M"
+      short: "%d %b %H:%M"
+    pm: pm
+  users:
+    create:
+      failure: User could not be created.
+      success: User was successfully created.
+    destroy:
+      success: User was successfully destroyed.
+    index:
+      new_user: New user
+      title: Users
+    new:
+      title: New user
+    update:
+      failure: User could not be updated.
+      success: User was successfully updated.

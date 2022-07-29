@@ -22,15 +22,15 @@ data:
   # `i18n-tasks normalize -p` will force move the keys according to these rules
   write:
     ## For example, write devise and simple form keys to their respective files:
-    - ['config/locales/simple_form.%{locale}.yml', 'config/locales/\1.%{locale}.yml', 'config/locales/%{locale}.yml']
+    #    - ['config/locales/simple_form.%{locale}.yml', 'config/locales/\1.%{locale}.yml', 'config/locales/%{locale}.yml']
     ## Catch-all default:
-    # - config/locales/%{locale}.yml
+    - config/locales/%{locale}.yml
 
   # External locale data (e.g. gems).
   # This data is not considered unused and is never written to.
   external:
-    ## Example (replace %#= with %=):
-    # - "<%#= %x[bundle info vagrant --path].chomp %>/templates/locales/%{locale}.yml"
+  ## Example (replace %#= with %=):
+  # - "<%#= %x[bundle info vagrant --path].chomp %>/templates/locales/%{locale}.yml"
 
   ## Specify the router (see Readme for details). Valid values: conservative_router, pattern_router, or a custom class.
   # router: conservative_router
@@ -55,12 +55,13 @@ search:
   #  - app/
 
   ## Root directories for relative keys resolution.
-  # relative_roots:
-  #   - app/controllers
-  #   - app/helpers
-  #   - app/mailers
-  #   - app/presenters
-  #   - app/views
+  relative_roots:
+    - app/controllers
+    - app/components
+    - app/helpers
+    - app/mailers
+    - app/presenters
+    - app/views
 
   ## Directories where method names which should not be part of a relative key resolution.
   # By default, if a relative translation is used inside a method, the name of the method will be considered part of the resolved key.

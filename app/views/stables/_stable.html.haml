@@ -13,8 +13,8 @@
         - else
           %p.card-text.text-muted= t(".no_description")
         - if policy(stable).impersonate?
-          %p.text-end.fs-6
-            %span.badge.text-bg-danger= link_to t(".impersonate"), impersonate_user_path(stable.user_id),
-            class: "text-decoration-none text-reset"
+          .text-end.fs-6.flex-row-reverse
+            = button_to t(".impersonate"), admin_impersonate_path(id: stable.user_id),
+              class: "badge text-bg-danger btn btn-link text-decoration-none"
         - if stable.user.current_sign_in_at
           %p.text-end.text-muted= t(".last_online", date: l(stable.user.current_sign_in_at, format: :short))
