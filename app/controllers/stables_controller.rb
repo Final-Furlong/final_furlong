@@ -1,7 +1,7 @@
 class StablesController < ApplicationController
-  attr_accessor :stables, :stable
+  attr_accessor :stables, :stable, :stable_form
 
-  helper_method :stables, :stable
+  helper_method :stables, :stable, :stable_form
 
   before_action :load_stable, except: :index
   before_action :authenticate_user!, only: :show, unless: :stable
@@ -22,6 +22,7 @@ class StablesController < ApplicationController
   # @route GET /stables/:id/edit (edit_stable)
   def edit
     authorize stable
+    @stable_form = Stables::UpdateForm.new(stable)
   end
 
   # @route PATCH /stables/:id (stable)

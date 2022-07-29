@@ -46,6 +46,8 @@ en:
     horses: Horses
     new_user: New user
     users: Users
+  common:
+    edit: Edit
   current_stable:
     horses:
       index:

@@ -1,5 +1,5 @@
-= simple_form_for stable, html: { class: "stable form" } do |f|
-  = render(Shared::ErrorMessagesComponent.new(object: stable))
+= simple_form_for form, url: url, html: { class: "stable form" } do |f|
+  = render(Shared::ErrorMessagesComponent.new(object: form))
   = f.text_area :description, class: "textarea"
   .actions
     = link_to t("forms.cancel"), current_stable_path, class: "button is-light"
