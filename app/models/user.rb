@@ -26,9 +26,9 @@ class User < ApplicationRecord
   scope :ordered, -> { order(id: :desc) }
 
   def online?
-    return false unless last_sign_in_at
+    return false unless current_sign_in_at
 
-    last_sign_in_at > 15.minutes.ago
+    current_sign_in_at > 15.minutes.ago
   end
 
   def active_for_authentication?
