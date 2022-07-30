@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :stable do
     name { "#{Faker::Adjective.positive} #{Faker::Color.color_name} Stable" }
-    user
+    user { association :user, stable: instance }
     legacy_id { rand(1..999_999) }
   end
 end
@@ -22,7 +22,7 @@ end
 #
 #  index_stables_on_created_at  (created_at)
 #  index_stables_on_legacy_id   (legacy_id)
-#  index_stables_on_user_id     (user_id)
+#  index_stables_on_user_id     (user_id) UNIQUE
 #
 # Foreign Keys
 #

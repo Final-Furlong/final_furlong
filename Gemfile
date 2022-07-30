@@ -11,6 +11,7 @@ gem "devise", github: "ghiculescu/devise", branch: "error-code-422" # https://gi
 gem "devise-i18n"
 gem "responders"
 
+gem "active_interaction"
 gem "bootstrap"
 gem "callee"
 gem "cssbundling-rails"
@@ -19,6 +20,7 @@ gem "data_migrate"
 gem "discard"
 gem "dotenv-rails"
 gem "dotenv_validator"
+gem "dry-validation"
 gem "grape"
 gem "grape-active_model_serializers"
 gem "grape-entity"
@@ -70,8 +72,16 @@ group :development do
   gem "capistrano-rails", "~> 1.3", require: false
   gem "capistrano-rbenv", "~> 2.2", require: false
   gem "chusaku", require: false
-  gem "overcommit", require: false
+  gem "consistency_fail", require: false
+  gem "guard", require: false
+  gem "guard-bundler", require: false
+  gem "guard-haml_lint", require: false
+  gem "guard-migrate", require: false
+  gem "guard-rspec", require: false
+  gem "guard-rubocop", require: false
   gem "pry"
+  gem "terminal-notifier"
+  gem "terminal-notifier-guard"
   gem "yalphabetize", require: false
 end
 

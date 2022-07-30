@@ -46,6 +46,8 @@ en-US:
     horses: Horses
     new_user: New user
     users: Users
+  common:
+    edit: Edit
   current_stable:
     horses:
       index:
@@ -94,6 +96,8 @@ en-US:
       updated_not_active: Your password has been changed successfully.
     registrations:
       destroyed: Bye! Your account has been successfully cancelled. We hope to see you again soon.
+      new:
+        sign_up: Join
       signed_up: Welcome! You have signed up successfully.
       signed_up_but_inactive: You have signed up successfully. However, we could not sign you in because your account is not yet activated.
       signed_up_but_locked: You have signed up successfully. However, we could not sign you in because your account is locked.
@@ -103,6 +107,8 @@ en-US:
       updated_but_not_signed_in: Your account has been updated successfully, but since your password was changed, you need to sign in again.
     sessions:
       already_signed_out: Signed out successfully.
+      new:
+        sign_in: Log In
       signed_in: Signed in successfully.
       signed_out: Signed out successfully.
     shared:
@@ -114,6 +120,9 @@ en-US:
       send_paranoid_instructions: If your account exists, you will receive an email with instructions for how to unlock it in a few minutes.
       unlocked: Your account has been unlocked successfully. Please sign in to continue.
   errors:
+    internal_error:
+      message: We're sorry, something went wrong.
+      title: 500 - Internal Server Error
     messages:
       already_confirmed: was already confirmed, please try signing in
       confirmation_period_expired: needs to be confirmed within %{period}, please request a new one
@@ -124,6 +133,13 @@ en-US:
         one: '1 error prohibited this %{resource} from being saved:'
         other: "%{count} errors prohibited this %{resource} from being saved:"
     not_authorized: You are not authorized to perform this action.
+    not_found:
+      message: We're sorry, the page you are looking for can't be found.
+      tips: You may want to check back in a little while, or return to the homepage.
+      title: Oops, the horse has left the barn!
+    unprocessable:
+      message: The change you wanted was rejected.
+      title: 422 - Unprocessable
   forms:
     cancel: Cancel
   helpers:
@@ -176,16 +192,25 @@ en-US:
     home:
       hello: Hi!
   simple_form:
+    hints:
+      stable:
+        edit:
+          description: 'Max length: 1000 characters. Allowed HTML tags: &lt;strong&gt;, &lt;em&gt;, &lt;u&gt; and &lt;br&gt;'
     labels:
       user:
         name: Name
     placeholders:
+      stable:
+        edit:
+          description: Stable Description
       user:
         email: Your e-mail
         login: Username or e-mail
         name: Your name
         username: Username
   stables:
+    form:
+      update: Update Stable
     index:
       all: All Stables
     show:
@@ -194,6 +219,8 @@ en-US:
       impersonate: Impersonate
       last_online: 'Last online at: %{date}'
       no_description: No description
+    update:
+      success: Stable successfully updated
   time:
     am: am
     formats:

@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   mount API::Base, at: "/"
 
+  match "/404", to: "errors#not_found", via: :all
+  match "/422", to: "errors#unprocessable", via: :all
+  match "/500", to: "errors#internal_error", via: :all
+
   namespace :admin do
     resource :impersonate, only: %i[create show destroy]
   end
@@ -19,24 +23,34 @@ Rails.application.routes.draw do
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :users
-  resources :stables, only: %i[index show edit update]
+  resources :stables, only: %i[index show]
   resources :horses, except: %i[new create destroy]
 
   # stable horses
   get "/stable", to: "stables#show", as: :current_stable
+  get "/stable/edit", to: "stables#edit", as: :edit_current_stable
+  match "/stable/edit", to: "stables#update", as: :update_current_stable, via: %i[put patch]
   get "/stable/horses", to: "current_stable/horses#index", as: :current_stable_horses
   get "/stable/horses/:id/edit", to: "current_stable/horses#edit", as: :edit_current_stable_horse
   get "/stable/horses/:id", to: "current_stable/horses#show", as: :current_stable_horse
   match "/stable/horses/:id", to: "current_stable/horses#update", as: :update_current_stable_horse, via: %i[put patch]
 
-  # Defines the root path route ("/")
-  root "pages#home"
+  unauthenticated do
+    root to: "pages#home"
+  end
+
+  authenticated :user do
+    root to: "stables#show", as: :authenticated_root
+  end
 end
 
 # == Route Map
 #
 #                                   Prefix Verb      URI Pattern                                                                                       Controller#Action
 #                                 api_base           /                                                                                                 API::Base
+#                        admin_impersonate GET       /admin/impersonate(.:format)                                                                      admin/impersonates#show
+#                                          DELETE    /admin/impersonate(.:format)                                                                      admin/impersonates#destroy
+#                                          POST      /admin/impersonate(.:format)                                                                      admin/impersonates#create
 #                              rails_admin           /admin                                                                                            RailsAdmin::Engine
 #                         new_user_session GET       /login(.:format)                                                                                  devise/sessions#new
 #                             user_session POST      /login(.:format)                                                                                  devise/sessions#create
@@ -68,12 +82,17 @@ end
 #                                          PATCH     /users/:id(.:format)                                                                              users#update
 #                                          PUT       /users/:id(.:format)                                                                              users#update
 #                                          DELETE    /users/:id(.:format)                                                                              users#destroy
-#                                   stable GET       /stable(.:format)                                                                                 stables#show
+#                                  stables GET       /stables(.:format)                                                                                stables#index
+#                              edit_stable GET       /stables/:id/edit(.:format)                                                                       stables#edit
+#                                   stable GET       /stables/:id(.:format)                                                                            stables#show
+#                                          PATCH     /stables/:id(.:format)                                                                            stables#update
+#                                          PUT       /stables/:id(.:format)                                                                            stables#update
 #                                   horses GET       /horses(.:format)                                                                                 horses#index
 #                               edit_horse GET       /horses/:id/edit(.:format)                                                                        horses#edit
 #                                    horse GET       /horses/:id(.:format)                                                                             horses#show
 #                                          PATCH     /horses/:id(.:format)                                                                             horses#update
 #                                          PUT       /horses/:id(.:format)                                                                             horses#update
+#                           current_stable GET       /stable(.:format)                                                                                 stables#show
 #                    current_stable_horses GET       /stable/horses(.:format)                                                                          current_stable/horses#index
 #                edit_current_stable_horse GET       /stable/horses/:id/edit(.:format)                                                                 current_stable/horses#edit
 #                     current_stable_horse GET       /stable/horses/:id(.:format)                                                                      current_stable/horses#show

@@ -42,6 +42,7 @@ module FinalFurlong
     logger.formatter = config.log_formatter
     config.logger = ActiveSupport::TaggedLogging.new(logger)
     config.log_tags = [:request_id]
+    config.exceptions_app = routes
 
     # API
     config.middleware.insert_before 0, Rack::Cors do

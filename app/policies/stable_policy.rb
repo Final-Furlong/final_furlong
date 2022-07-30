@@ -13,8 +13,12 @@ class StablePolicy < ApplicationPolicy
     record.user == user || user&.admin?
   end
 
+  def update?
+    edit?
+  end
+
   def show?
-    record.user == user
+    true
   end
 
   def impersonate?
