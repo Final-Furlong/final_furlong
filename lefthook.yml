@@ -95,7 +95,7 @@ post-merge:
 lint:
   commands:
     annotate-controllers:
-      run: bundle exec chusaku --exit-with-error-on-annotation
+      run: bundle exec chusaku
     eslint:
       glob: "*.{js,ts,jsx,tsx}"
       run: yarn eslint {staged_files} --fix
@@ -106,6 +106,6 @@ lint:
     i18n-check:
       run: i18n-tasks health
     rubocop:
-      run: bundle exec rubocop --autocorrect
+      run: bundle exec rubocop --server --autocorrect
     stylelint:
       run: yarn run stylelint app/assets/stylesheets

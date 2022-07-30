@@ -5,3 +5,7 @@
 %h1= stable.name
 
 %p= t(".joined", date: l(stable.created_at.to_date, format: :long))
+
+- if stable.description?
+  %blockquote.blockquote.border.border-secondary.rounded.p-2
+    %p= stable.description.html_safe # rubocop:disable Rails/OutputSafety

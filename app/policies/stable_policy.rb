@@ -13,6 +13,10 @@ class StablePolicy < ApplicationPolicy
     record.user == user || user&.admin?
   end
 
+  def update?
+    edit?
+  end
+
   def show?
     true
   end

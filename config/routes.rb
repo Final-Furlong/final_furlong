@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   mount API::Base, at: "/"
 
+  match "/404", to: "errors#not_found", via: :all
+  match "/422", to: "errors#unprocessable", via: :all
+  match "/500", to: "errors#internal_error", via: :all
+
   namespace :admin do
     resource :impersonate, only: %i[create show destroy]
   end
@@ -19,18 +23,25 @@ Rails.application.routes.draw do
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :users
-  resources :stables, only: %i[index show edit update]
+  resources :stables, only: %i[index show]
   resources :horses, except: %i[new create destroy]
 
   # stable horses
   get "/stable", to: "stables#show", as: :current_stable
+  get "/stable/edit", to: "stables#edit", as: :edit_current_stable
+  match "/stable/edit", to: "stables#update", as: :update_current_stable, via: %i[put patch]
   get "/stable/horses", to: "current_stable/horses#index", as: :current_stable_horses
   get "/stable/horses/:id/edit", to: "current_stable/horses#edit", as: :edit_current_stable_horse
   get "/stable/horses/:id", to: "current_stable/horses#show", as: :current_stable_horse
   match "/stable/horses/:id", to: "current_stable/horses#update", as: :update_current_stable_horse, via: %i[put patch]
 
-  # Defines the root path route ("/")
-  root "pages#home"
+  unauthenticated do
+    root to: "pages#home"
+  end
+
+  authenticated :user do
+    root to: "stables#show", as: :authenticated_root
+  end
 end
 
 # == Route Map

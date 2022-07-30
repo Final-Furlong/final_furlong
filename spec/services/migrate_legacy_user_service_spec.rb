@@ -31,7 +31,7 @@ RSpec.describe MigrateLegacyUserService do
     let(:id) { legacy_user.id }
 
     context "when user exists" do
-      let(:user) { create(:user, email: legacy_user.email) }
+      let(:user) { create(:user, email: legacy_user.email, stable: nil) }
       let(:stable) { create(:stable, user:) }
 
       before { stable }

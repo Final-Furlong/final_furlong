@@ -14,20 +14,20 @@ class ApplicationPolicy
     user&.admin?
   end
 
-  def create?
-    user&.admin?
-  end
-
   def new?
-    create?
+    user&.admin?
   end
 
-  def update?
-    user&.admin?
+  def create?
+    new?
   end
 
   def edit?
-    update?
+    user&.admin?
+  end
+
+  def update?
+    edit?
   end
 
   def destroy?
