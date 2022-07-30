@@ -18,6 +18,26 @@
           %input.form-control.me-2{ type: "search", disabled: true, placeholder: t(".search_placeholder"),
             aria: { label: t(".search_aria_label") } }
 
+        .dropdown
+          %button.btn.btn-light.dropdown-toggle.ms-2{ type: "button", data: { "bs-toggle" => "dropdown" },
+            aria: { expanded: false } }
+            %span.me-2.fi{ class: I18n.locale.to_s == "en" ? "fi-us" : "fi-gb" }
+          %ul.dropdown-menu.dropdown-menu-end
+            %li
+              = button_to settings_path, method: :patch, class: "dropdown-item" do
+                = hidden_field_tag "locale", "en"
+                %span.me-2{ class: "fi fi-us" }
+                English
+                - if I18n.locale.to_s == "en"
+                  %i.fas.fa-check.ms-2
+            %li
+              = button_to settings_path, method: :patch, class: "dropdown-item" do
+                = hidden_field_tag "locale", "en-GB"
+                %span.me-2{ class: "fi fi-gb" }
+                English
+                - if I18n.locale.to_s == "en-GB"
+                  %i.fas.fa-check.ms-2
+
         -# Avatar
         - if user_signed_in?
           = render "layouts/user_nav"

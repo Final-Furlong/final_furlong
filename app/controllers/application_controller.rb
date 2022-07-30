@@ -9,8 +9,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery prepend: true
 
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :set_locale
   before_action :setup_sentry
+
+  around_action :switch_locale
 
   after_action :verify_authorized, except: :index, unless: :devise_controller?
   after_action :verify_policy_scoped, only: :index, unless: :devise_controller?
@@ -18,7 +19,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def user_not_authorized
-    flash[:alert] = I18n.t("errors.not_authorized", locale: I18n.default_locale)
+    flash[:alert] = I18n.t("errors.not_authorized", locale: wanted_locale)
 
     redirect_to root_path
   end
@@ -26,11 +27,16 @@ class ApplicationController < ActionController::Base
   def current_stable
     @current_stable ||= current_user.stable if signed_in?
   end
+
   helper_method :current_stable
 
-  def set_locale
-    # TODO: set this per user
-    I18n.locale = :en
+  def switch_locale(&)
+    I18n.with_locale(wanted_locale, &)
+  end
+
+  def wanted_locale
+    Users::SyncLocale.run(user: current_user, cookies:)
+    cookies[:locale] || current_user.try(:locale) || I18n.default_locale
   end
 
   def configure_permitted_parameters

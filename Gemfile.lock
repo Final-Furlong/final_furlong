@@ -744,6 +744,7 @@ DEPENDENCIES
   rack-cors
   rack-mini-profiler
   rails (= 7.0.3.1)
+  rails-i18n
   rails_admin
   redis (~> 4.0)
   reek
