@@ -37,6 +37,7 @@ gem "rack-cors"
 gem "rails_admin"
 gem "redis", "~> 4.0"
 gem "reform", ">= 2.2.0"
+gem "reform-rails"
 gem "sentry-rails"
 gem "sentry-ruby"
 gem "simple_form"
@@ -72,8 +73,16 @@ group :development do
   gem "capistrano-rails", "~> 1.3", require: false
   gem "capistrano-rbenv", "~> 2.2", require: false
   gem "chusaku", require: false
-  gem "overcommit", require: false
+  gem "consistency_fail", require: false
+  gem "guard", require: false
+  gem "guard-bundler", require: false
+  gem "guard-haml_lint", require: false
+  gem "guard-migrate", require: false
+  gem "guard-rspec", require: false
+  gem "guard-rubocop", require: false
   gem "pry"
+  gem "terminal-notifier"
+  gem "terminal-notifier-guard"
   gem "yalphabetize", require: false
 end
 

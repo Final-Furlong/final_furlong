@@ -14,7 +14,7 @@ class StablePolicy < ApplicationPolicy
   end
 
   def show?
-    record.user == user
+    true
   end
 
   def impersonate?

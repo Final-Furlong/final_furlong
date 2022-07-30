@@ -30,7 +30,7 @@ end
 #
 #  index_stables_on_created_at  (created_at)
 #  index_stables_on_legacy_id   (legacy_id)
-#  index_stables_on_user_id     (user_id)
+#  index_stables_on_user_id     (user_id) UNIQUE
 #
 # Foreign Keys
 #

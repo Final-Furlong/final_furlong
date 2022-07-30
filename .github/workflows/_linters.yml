@@ -29,6 +29,9 @@ jobs:
           rubocop_extensions: rubocop-performance:gemfile rubocop-rails:gemfile rubocop-rake:gemfile rubocop-rspec:gemfile
           reporter: github-pr-check
 
+      - name: Database Consistency
+        run: bundle exec consistency_fail
+
       - name: Fasterer
         run: |
           bin/fasterer

@@ -37,6 +37,9 @@ end
 #
 #                                   Prefix Verb      URI Pattern                                                                                       Controller#Action
 #                                 api_base           /                                                                                                 API::Base
+#                        admin_impersonate GET       /admin/impersonate(.:format)                                                                      admin/impersonates#show
+#                                          DELETE    /admin/impersonate(.:format)                                                                      admin/impersonates#destroy
+#                                          POST      /admin/impersonate(.:format)                                                                      admin/impersonates#create
 #                              rails_admin           /admin                                                                                            RailsAdmin::Engine
 #                         new_user_session GET       /login(.:format)                                                                                  devise/sessions#new
 #                             user_session POST      /login(.:format)                                                                                  devise/sessions#create
@@ -68,12 +71,17 @@ end
 #                                          PATCH     /users/:id(.:format)                                                                              users#update
 #                                          PUT       /users/:id(.:format)                                                                              users#update
 #                                          DELETE    /users/:id(.:format)                                                                              users#destroy
-#                                   stable GET       /stable(.:format)                                                                                 stables#show
+#                                  stables GET       /stables(.:format)                                                                                stables#index
+#                              edit_stable GET       /stables/:id/edit(.:format)                                                                       stables#edit
+#                                   stable GET       /stables/:id(.:format)                                                                            stables#show
+#                                          PATCH     /stables/:id(.:format)                                                                            stables#update
+#                                          PUT       /stables/:id(.:format)                                                                            stables#update
 #                                   horses GET       /horses(.:format)                                                                                 horses#index
 #                               edit_horse GET       /horses/:id/edit(.:format)                                                                        horses#edit
 #                                    horse GET       /horses/:id(.:format)                                                                             horses#show
 #                                          PATCH     /horses/:id(.:format)                                                                             horses#update
 #                                          PUT       /horses/:id(.:format)                                                                             horses#update
+#                           current_stable GET       /stable(.:format)                                                                                 stables#show
 #                    current_stable_horses GET       /stable/horses(.:format)                                                                          current_stable/horses#index
 #                edit_current_stable_horse GET       /stable/horses/:id/edit(.:format)                                                                 current_stable/horses#edit
 #                     current_stable_horse GET       /stable/horses/:id(.:format)                                                                      current_stable/horses#show

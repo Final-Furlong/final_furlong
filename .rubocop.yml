@@ -51,6 +51,7 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Exclude:
     - "Gemfile*"
+    - "Guardfile"
     - "config/**/*.rb"
     - "db/migrate/**/*.rb"
     - "lib/tasks/**/*.rake"
