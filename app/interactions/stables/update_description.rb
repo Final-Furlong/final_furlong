@@ -35,7 +35,7 @@ module Stables
     end
 
     def legacy_stable_description
-      sanitize(description)
+      sanitize(description, tags: [])
     end
   end
 end
