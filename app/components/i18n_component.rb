@@ -1,20 +1,17 @@
 class I18nComponent < ApplicationComponent
-  with_collection_parameter :locale
-
   def initialize(locale:)
-    @locale = locale[:locale]
-    @current_locale = locale[:current].to_s
+    @locale = locale.to_s
     super
   end
 
   private
 
-  def locale_set_icon
-    content_tag(:span)
+  def american_locale?
+    @locale == "en"
   end
 
-  def current_locale?
-    @current_locale == @locale
+  def british_locale?
+    @locale == "en-GB"
   end
 
   def locale_language
@@ -22,11 +19,6 @@ class I18nComponent < ApplicationComponent
   end
 
   def icon_classes
-    case @locale
-    when "en-GB"
-      "fi fi-gb"
-    when "en"
-      "fi fi-us"
-    end
+    british_locale? ? "fi fi-gb" : "fi fi-us"
   end
 end

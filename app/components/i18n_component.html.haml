@@ -1,7 +1,19 @@
-%li
-  = button_to settings_path, method: :patch, class: "dropdown-item" do
-    = hidden_field_tag "locale", @locale
-    %span.me-2{ class: icon_classes }
-    = locale_language
-    - if current_locale?
-      %i.fas.fa-check.ms-2
+.dropdown
+  %button.btn.btn-light.dropdown-toggle.ms-2{ type: "button", data: { "bs-toggle" => "dropdown" },
+          aria: { expanded: false } }
+    %span.me-2.fi{ class: american_locale? ? "fi-us" : "fi-gb" }
+  %ul.dropdown-menu.dropdown-menu-end
+    %li
+      = button_to settings_path, method: :patch, class: "dropdown-item" do
+        = hidden_field_tag "locale", "en"
+        %span.me-2{ class: "fi fi-us" }
+        English
+        - if american_locale?
+          %i.fas.fa-check.ms-2
+    %li
+      = button_to settings_path, method: :patch, class: "dropdown-item" do
+        = hidden_field_tag "locale", "en-GB"
+        %span.me-2{ class: "fi fi-gb" }
+        English
+        - if british_locale?
+          %i.fas.fa-check.ms-
