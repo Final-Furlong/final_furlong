@@ -17,6 +17,8 @@ Rails.application.routes.draw do
     password: "forgot-password",
     confirmation: "confirm-account",
     unlock: "unlock"
+  }, controllers: {
+    registrations: "users/registrations"
   }
 
   get "/activation_required", to: "pages#activation", as: :activation

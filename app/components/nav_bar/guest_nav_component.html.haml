@@ -4,6 +4,7 @@
       %i.fas.fa-arrow-right-from-bracket.me-2
       %strong= t("layouts.nav.login")
   %form.d-flex.ms-2{ role: "join" }
-    = link_to new_user_registration_path, class: "btn btn-outline-light", data: { turbo: false } do
+    = link_to new_user_registration_path, class: "btn btn-outline-light disabled", disabled: true,
+      data: { turbo: false } do
       %i.fas.fa-user-plus.me-2
       %strong.text-light= t("layouts.nav.join")
