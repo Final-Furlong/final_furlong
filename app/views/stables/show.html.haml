@@ -10,7 +10,9 @@
 
 %h1= stable.name
 
-%p= t(".joined", date: l(stable.created_at.to_date, format: :long))
+%p
+  %span= t(".joined", date: l(stable.created_at.to_date, format: :long))
+  = render OnlineBadgeComponent.new(online: stable.online?)
 
 - if stable.description?
   %blockquote.blockquote.border.border-secondary.rounded.p-2
