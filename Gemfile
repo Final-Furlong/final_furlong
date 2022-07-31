@@ -42,11 +42,14 @@ gem "rails-i18n"
 gem "redis", "~> 4.0"
 gem "sentry-rails"
 gem "sentry-ruby"
+gem "sidekiq"
+gem "sidekiq-cron"
 gem "simple_form"
 gem "stimulus-rails"
 gem "strong_migrations"
 gem "turbo-rails"
 gem "view_component"
+gem "whenever", require: false
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -76,6 +79,7 @@ group :development do
   gem "capistrano-passenger", require: false
   gem "capistrano-rails", "~> 1.3", require: false
   gem "capistrano-rbenv", "~> 2.2", require: false
+  gem "capistrano-sidekiq", require: false
   gem "chusaku", require: false
   gem "consistency_fail", require: false
   gem "ed25519", require: false # required for capistrano
@@ -129,4 +133,5 @@ group :test do
   gem "simplecov-lcov", require: false
   gem "undercover", require: false
   gem "webdrivers"
+  gem "whenever-test"
 end

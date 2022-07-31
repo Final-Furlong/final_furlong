@@ -1,0 +1,26 @@
+require "spec_helper"
+
+# every 1.day, at: '2:00' do
+#   rake "db:sessions:trim"
+# end
+
+# every 6.minuets do
+#   rake "sidekiq:health"
+# end
+
+RSpec.describe "Whenever Schedule" do # rubocop:disable RSpec/DescribeClass
+  before do
+    load "Rakefile" # Makes sure rake tasks are loaded so you can assert in rake jobs
+  end
+
+  it "has a daily job for active store cleaning" do
+    schedule = Whenever::Test::Schedule.new(file: "config/schedule.rb")
+
+    assert_equal 2, schedule.jobs[:rake].count
+
+    schedule.jobs[:rake].each do |job|
+      # Makes sure the rake task is defined:
+      assert Rake::Task.task_defined?(job[:task])
+    end
+  end
+end

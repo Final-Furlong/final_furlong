@@ -1,0 +1,11 @@
+---
+:concurrency: 5
+staging:
+  :concurrency: 2
+production:
+  :concurrency: 10
+:queues:
+  - [ "critical", 6 ]
+  - [ "high", 4 ]
+  - [ "default", 2 ]
+  - [ "low", 1 ]

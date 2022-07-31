@@ -1,5 +1,11 @@
+require "sidekiq/web"
+
 Rails.application.routes.draw do
   mount API::Base, at: "/"
+
+  authenticate :user, ->(u) { u.admin? } do
+    mount Sidekiq::Web => "/sidekiq"
+  end
 
   match "/404", to: "errors#not_found", via: :all
   match "/422", to: "errors#unprocessable", via: :all
