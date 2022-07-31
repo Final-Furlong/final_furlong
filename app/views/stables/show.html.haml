@@ -3,10 +3,10 @@
     { name: stable.name, href: "#" }], actions: [{ name: "impersonate",
     link: admin_impersonate_path(id: stable.user_id), i18n_key: "components.stable.impersonate", object: stable,
     user: current_user, base_classes: "btn btn-light btn-sm border border-danger text-danger text-decoration-none",
-    classes: " d-none d-md-inline", responsive_classes: "w-100" },
+    classes: " d-none d-md-inline", responsive_classes: "w-100", type: :form },
     { name: "edit", link: edit_current_stable_path, i18n_key: "common.edit", user: current_user, object: stable,
     base_classes: "btn btn-light btn-sm border border-success text-success text-decoration-none",
-    classes: "ms-3 me-3", responsive_classes: "w-100" }])
+    classes: "ms-3 me-3", responsive_classes: "w-100", type: :link }])
 
 %h1= stable.name
 

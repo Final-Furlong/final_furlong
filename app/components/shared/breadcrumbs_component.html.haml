@@ -13,8 +13,8 @@
   .d-none.d-md-block
     - actions&.each do |action|
       - if allowed_action?(action)
-        = button_to t(action_i18n_key(action)), action[:link], class: regular_classes(action), form_class: "d-inline"
+        = render_action(action, regular_classes(action))
 .d-grid.gap-2.d-md-none.mb-2
   - actions&.each do |action|
     - if allowed_action?(action)
-      = button_to t(action_i18n_key(action)), action[:link], type: "button", class: responsive_classes(action)
+      = render_action(action, responsive_classes(action))

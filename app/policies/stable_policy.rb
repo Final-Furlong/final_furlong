@@ -10,7 +10,7 @@ class StablePolicy < ApplicationPolicy
   end
 
   def edit?
-    record.user == user || user&.admin?
+    record.user == user
   end
 
   def update?
