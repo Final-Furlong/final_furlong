@@ -12,6 +12,7 @@ gem "devise-i18n"
 gem "responders"
 
 gem "active_interaction"
+gem "activerecord-session_store"
 gem "bootstrap"
 gem "browser"
 gem "callee"
@@ -43,6 +44,7 @@ gem "sentry-rails"
 gem "sentry-ruby"
 gem "simple_form"
 gem "stimulus-rails"
+gem "strong_migrations"
 gem "turbo-rails"
 gem "view_component"
 
@@ -76,14 +78,14 @@ group :development do
   gem "capistrano-rbenv", "~> 2.2", require: false
   gem "chusaku", require: false
   gem "consistency_fail", require: false
+  gem "ed25519", require: false # required for capistrano
   gem "guard", require: false
   gem "guard-bundler", require: false
   gem "guard-haml_lint", require: false
   gem "guard-rspec", require: false
   gem "guard-rubocop", require: false
-  gem "pry"
-  gem "terminal-notifier"
-  gem "terminal-notifier-guard"
+  gem "terminal-notifier", require: false
+  gem "terminal-notifier-guard", require: false
   gem "yalphabetize", require: false
 end
 
@@ -92,9 +94,8 @@ group :development, :test do
   gem "binding_of_caller"
   gem "brakeman"
   gem "bullet"
-  gem "bundler-audit"
+  gem "bundler-audit", require: false
   gem "byebug", platform: :mri
-  gem "ed25519" # required for capistrano
   gem "factory_bot-awesome_linter", require: false
   gem "factory_bot_rails", require: false
   gem "faker", require: false
@@ -102,8 +103,6 @@ group :development, :test do
   gem "i18n-debug"
   gem "i18n-tasks"
   gem "letter_opener"
-  gem "pry-rescue", require: false
-  gem "pry-stack_explorer", require: false
   gem "reek", require: false
   gem "rubocop", require: false
   gem "rubocop-performance", require: false

@@ -55,3 +55,6 @@ module FinalFurlong
     end
   end
 end
+
+require Rails.root.join("app/lib/custom_session")
+ActionDispatch::Session::ActiveRecordStore.session_class = CustomSession
