@@ -17,6 +17,8 @@ Rails.application.routes.draw do
     password: "forgot-password",
     confirmation: "confirm-account",
     unlock: "unlock"
+  }, controllers: {
+    registrations: "users/registrations"
   }
 
   get "/activation_required", to: "pages#activation", as: :activation
@@ -25,6 +27,8 @@ Rails.application.routes.draw do
   resources :users
   resources :stables, only: %i[index show]
   resources :horses, except: %i[new create destroy]
+
+  match "/settings", to: "settings#update", as: :settings, via: %i[put patch]
 
   # stable horses
   get "/stable", to: "stables#show", as: :current_stable
@@ -92,6 +96,7 @@ end
 #                                    horse GET       /horses/:id(.:format)                                                                             horses#show
 #                                          PATCH     /horses/:id(.:format)                                                                             horses#update
 #                                          PUT       /horses/:id(.:format)                                                                             horses#update
+#                                 settings PUT|PATCH /settings(.:format)                                                                               settings#update
 #                           current_stable GET       /stable(.:format)                                                                                 stables#show
 #                      edit_current_stable GET       /stable/edit(.:format)                                                                            stables#edit
 #                    update_current_stable PUT|PATCH /stable/edit(.:format)                                                                            stables#update

@@ -29,11 +29,6 @@ guard :bundler do
   files.each { |file| watch(helper.real_path(file)) }
 end
 
-guard "migrate" do
-  watch(%r{^db/migrate/(\d+).+\.rb})
-  watch("db/seeds.rb")
-end
-
 group :spec, halt_on_fail: true do
   # NOTE: The cmd option is now required due to the increasing number of ways
   #       rspec may be run, below are examples of the most common uses.

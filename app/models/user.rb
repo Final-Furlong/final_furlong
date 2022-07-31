@@ -10,6 +10,7 @@ class User < ApplicationRecord
 
   has_one :stable, dependent: :destroy
   has_one :activation, dependent: :destroy
+  has_one :setting, dependent: :destroy
 
   # Include default devise modules. Others available are:
   # :omniauthable
@@ -20,6 +21,8 @@ class User < ApplicationRecord
   enum status: { pending: "pending", active: "active", deleted: "deleted", banned: "banned" }
 
   before_validation :set_defaults, on: :create
+
+  delegate :locale, to: :setting, allow_nil: true
 
   # broadcasts_to ->(_user) { "users" }, inserts_by: :prepend
 

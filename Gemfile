@@ -36,6 +36,7 @@ gem "puma", "~> 5.0"
 gem "pundit"
 gem "rack-cors"
 gem "rails_admin"
+gem "rails-i18n"
 gem "redis", "~> 4.0"
 gem "sentry-rails"
 gem "sentry-ruby"
@@ -76,7 +77,6 @@ group :development do
   gem "guard", require: false
   gem "guard-bundler", require: false
   gem "guard-haml_lint", require: false
-  gem "guard-migrate", require: false
   gem "guard-rspec", require: false
   gem "guard-rubocop", require: false
   gem "pry"

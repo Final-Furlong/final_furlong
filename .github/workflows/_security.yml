@@ -26,6 +26,9 @@ jobs:
         run: |
           bin/bundler-audit check --update
 
+      - name: Database Consistency
+        run: bundle exec consistency_fail
+
       - name: Brakeman
         uses: reviewdog/action-brakeman@v2
         with:

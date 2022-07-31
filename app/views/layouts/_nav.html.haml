@@ -18,16 +18,11 @@
           %input.form-control.me-2{ type: "search", disabled: true, placeholder: t(".search_placeholder"),
             aria: { label: t(".search_aria_label") } }
 
+        = render I18nComponent.new(locale: I18n.locale)
+
         -# Avatar
         - if user_signed_in?
           = render "layouts/user_nav"
         - else
-          .d-none.d-lg-flex
-            %form.d-flex.ms-2{ role: "login" }
-              = link_to new_user_session_path, class: "btn btn-light", data: { turbo: false } do
-                %i.fas.fa-arrow-right-from-bracket.me-2
-                %strong= t(".login")
-            %form.d-flex.ms-2{ role: "join" }
-              = link_to new_user_registration_path, class: "btn btn-outline-light", data: { turbo: false } do
-                %i.fas.fa-user-plus.me-2
-                %strong.text-light= t(".join")
+          = render NavBar::GuestNavComponent.new
+

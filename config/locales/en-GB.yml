@@ -1,10 +1,10 @@
 ---
-en-US:
+en-GB:
   activemodel:
     errors:
       messages:
-        date_invalid: must be a valid date. Format should be MM/DD/YYYY
-        datetime_invalid: must be a valid datetime. Format should be MM/DD/YYYY HH24:MM
+        date_invalid: must be a valid date. Format should be DD/MM/YYYY
+        datetime_invalid: must be a valid datetime. Format should be DD/MM/YYYY HH24:MM
         dob_future: must not be in future
         dob_in_far_past: must be no more than 150 years ago
         phone_invalid_mobile: is invalid
@@ -56,9 +56,9 @@ en-US:
         success: "%{name} was successfully updated."
   date:
     formats:
-      default: "%m-%d-%Y"
-      long: "%B %d, %Y"
-      short: "%b %d"
+      default: "%d-%m-%Y"
+      long: "%d %B, %Y"
+      short: "%d %b"
   devise:
     confirmations:
       confirmed: Your email address has been successfully confirmed.
@@ -135,7 +135,7 @@ en-US:
     not_authorized: You are not authorized to perform this action.
     not_found:
       message: We're sorry, the page you are looking for can't be found.
-      tips: You may want to check back in a little while, or return to the homepage.
+      tips_html: You may want to check back in a little while, or <a href="%{url}">return to the homepage</a>.
       title: Oops, the horse has left the barn!
     unprocessable:
       message: The change you wanted was rejected.
@@ -190,7 +190,13 @@ en-US:
       error: Hold on, you need to be activated!
       message: In the main game, click the link for activating your account here. Then come back!
     home:
+      bay_description: Bay is a colour.
       hello: Hi!
+  settings:
+    update:
+      success:
+        en: Your language is now American English
+        en-GB: Your language is now British English
   simple_form:
     hints:
       stable:
@@ -224,9 +230,9 @@ en-US:
   time:
     am: am
     formats:
-      default: "%a, %d %b %Y %I:%M:%S %p %Z"
-      long: "%B %d, %Y %I:%M %p"
-      short: "%d %b %I:%M %p"
+      default: "%a, %d %b %Y %H:%M:%S %z"
+      long: "%d %B, %Y %H:%M"
+      short: "%d %b %H:%M"
     pm: pm
   users:
     create:
