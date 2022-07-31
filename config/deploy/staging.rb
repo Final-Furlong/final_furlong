@@ -1,4 +1,4 @@
-set :nodeploytags, true
+set :no_deploytags, true
 set :branch, "staging"
 set :stage, :staging
 set :rails_env, :staging
