@@ -48,17 +48,18 @@ en:
     users: Users
   common:
     edit: Edit
+  components:
+    online_badge:
+      offline: Offline
+      online: Online
+    stable:
+      impersonate: Impersonate
   current_stable:
     horses:
       index:
         title: Horses
       update:
         success: "%{name} was successfully updated."
-  date:
-    formats:
-      default: "%m-%d-%Y"
-      long: "%B %d, %Y"
-      short: "%b %d"
   devise:
     confirmations:
       confirmed: Your email address has been successfully confirmed.
@@ -170,21 +171,12 @@ en:
       main_app: Main app
       my_horses: My horses
       my_stable: My stable
+      settings_divider: Game Settings
       stables: Stables
     user_nav:
       edit_profile: Edit profile
       edit_stable: Edit stable
       logout: Log out
-  number:
-    currency:
-      format:
-        delimiter: ","
-        format: "%u%n"
-        precision: 0
-        separator: "."
-        significant: false
-        strip_insignificant_zeros: false
-        unit: "$"
   pages:
     activation:
       error: Hold on, you need to be activated!
@@ -222,7 +214,6 @@ en:
     show:
       joined: Joined on %{date}
     stable:
-      impersonate: Impersonate
       last_online: 'Last online at: %{date}'
       no_description: No description
     update:

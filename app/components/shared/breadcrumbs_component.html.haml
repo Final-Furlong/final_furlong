@@ -1,5 +1,5 @@
-%nav#breadcrumbs{ aria: { label: "breadcrumb" } }
-  %ol.breadcrumb
+%nav.d-flex#breadcrumbs{ aria: { label: "breadcrumb" } }
+  %ol.breadcrumb.flex-grow-1
     - styled_links.each do |link|
       %li{ class: link[:breadcrumb_class], aria: { current: link[:aria_current] } }
         - if link[:last]
@@ -8,4 +8,13 @@
           = link_to link[:name], link[:href], class: link[:classes]
     - if styled_links.empty? && @title.present?
       %li.breadcrumb-item
-        %span.font-weight-bold= @title
+        %span.font-weight-bold
+          = @title
+  .d-none.d-md-block
+    - actions&.each do |action|
+      - if allowed_action?(action)
+        = button_to t(action_i18n_key(action)), action[:link], class: regular_classes(action), form_class: "d-inline"
+.d-grid.gap-2.d-md-none.mb-2
+  - actions&.each do |action|
+    - if allowed_action?(action)
+      = button_to t(action_i18n_key(action)), action[:link], type: "button", class: responsive_classes(action)

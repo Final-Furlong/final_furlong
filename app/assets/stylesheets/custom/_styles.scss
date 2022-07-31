@@ -6,21 +6,23 @@ body {
 
 main {
   margin-left: 10px;
+  margin-right: 10px;
   margin-top: 68px;
 }
 
 @media (min-width: 991.98px) {
   main {
     margin-left: 240px !important;
+    margin-right: 0;
   }
 }
 
 #breadcrumbs {
   width: 100%;
+  padding: 10px;
   padding-left: 20px;
+  padding-right: 20px;
   background-color: #d1e4ff;
-  padding-top: 10px;
-  padding-bottom: 10px;
   margin-bottom: 10px;
 }
 
@@ -31,6 +33,12 @@ ol.breadcrumb {
 .breadcrumb-item .active a {
   color: var(--bs-breadcrumb-item-active-color) !important;
   text-decoration: none !important;
+}
+
+@media (max-width: 767.98px) {
+  .breadcrumb-item {
+    --bs-breadcrumb-divider: "";
+  }
 }
 
 /* Sidebar */

@@ -115,17 +115,18 @@ ignore_missing:
 # - 'simple_form.{placeholders,hints,labels}.*'
 # - 'simple_form.{error_notification,required}.:'
 ignore_unused:
-- '{date,time,number}.*'
-- 'activemodel.{attributes,errors}.*'
-- 'activerecord.{attributes,models,errors}.*'
-- 'breadcrumbs.*'
-- "errors.messages.*"
-- '{devise,kaminari,will_paginate,helpers}.*'
-- 'simple_form.{yes,no}'
-- 'simple_form.{placeholders,helpers,hints,labels}.*'
-- 'simple_form.{error_notification,required}.:'
-- 'errors.messages.{already_confirmed,confirmation_period_expired,expired,not_found,not_locked}' # devise
-- 'errors.messages.not_saved.{one,other}' # devise
+  - '{date,time,number}.*'
+  - 'activemodel.{attributes,errors}.*'
+  - 'activerecord.{attributes,models,errors}.*'
+  - 'breadcrumbs.*'
+  - 'components.*'
+  - "errors.messages.*"
+  - '{devise,kaminari,will_paginate,helpers}.*'
+  - 'simple_form.{yes,no}'
+  - 'simple_form.{placeholders,helpers,hints,labels}.*'
+  - 'simple_form.{error_notification,required}.:'
+  - 'errors.messages.{already_confirmed,confirmation_period_expired,expired,not_found,not_locked}' # devise
+  - 'errors.messages.not_saved.{one,other}' # devise
 
 ## Exclude these keys from the `i18n-tasks eq-base' report:
 # ignore_eq_base:

@@ -1,13 +1,34 @@
 module Shared
   class BreadcrumbsComponent < ApplicationComponent
-    def initialize(links: [], title: nil, classes: "")
+    attr_reader :actions
+
+    def initialize(links: [], title: nil, classes: "", actions: [])
       @title = title
       @links = links
       @classes = classes
+      @actions = actions
       super
     end
 
     private
+
+    def responsive_classes(action)
+      "#{action[:base_classes]} #{action[:responsive_classes]}"
+    end
+
+    def regular_classes(action)
+      "#{action[:base_classes]} #{action[:classes]}"
+    end
+
+    def action_i18n_key(action)
+      action[:i18n_key]
+    end
+
+    def allowed_action?(action)
+      return false unless action[:user] && action[:object]
+
+      Pundit.policy!(action[:user], action[:object]).send("#{action[:name]}?")
+    end
 
     def styled_links
       @styled_links ||= @links.map do |link|
@@ -21,7 +42,7 @@ module Shared
     end
 
     def link_metadata(link)
-      link[:breadcrumb_class] = "breadcrumb-item"
+      link[:breadcrumb_class] = "breadcrumb-item d-none d-md-inline"
       link[:aria_current] = false
       link[:last] = false
       link

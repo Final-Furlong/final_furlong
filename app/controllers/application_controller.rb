@@ -1,3 +1,5 @@
+require "browser/aliases"
+
 class ApplicationController < ActionController::Base
   include Pagy::Backend
   include Devise::Controllers::Helpers
@@ -10,6 +12,7 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :setup_sentry
+  before_action :set_variant
 
   around_action :switch_locale
 
@@ -61,5 +64,18 @@ class ApplicationController < ActionController::Base
     return unless current_user
 
     Sentry.set_user(username: current_user.username)
+  end
+
+  def set_variant
+    Browser::Base.include(Browser::Aliases)
+
+    browser = Browser.new(request.user_agent)
+    request.variant = if browser.mobile?
+                        :phone
+                      elsif browser.tablet?
+                        :tablet
+                      else
+                        :desktop
+                      end
   end
 end

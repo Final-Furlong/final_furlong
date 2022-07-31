@@ -13,6 +13,7 @@ gem "responders"
 
 gem "active_interaction"
 gem "bootstrap"
+gem "browser"
 gem "callee"
 gem "cssbundling-rails"
 gem "dartsass-rails"

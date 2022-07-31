@@ -1,6 +1,6 @@
 -# Notification dropdown
 .nav-item.dropdown.ms-3.me-3.me-lg-0
-  %a.nav-link.dropdown-toggle.hidden-arrow#notification-dropdown-menu-link{ href: "#", role: "button",
+  %a.nav-link.hidden-arrow#notification-dropdown-menu-link{ href: "#", role: "button",
     data: { "bs-toggle" => "dropdown" }, aria: { expanded: false } }
     %i.fas.fa-bell
     -# %span.badge.rounded-pill.badge-notification.bg-danger= 1
@@ -12,7 +12,7 @@
     %li
       %a.dropdown-item{ href: "#" }= "Here"
 .nav-item.dropdown
-  %a.nav-link.dropdown-toggle.hidden-arrow.d-flex.align-items-center#avatar-dropdown-menu-link{ href: "#",
+  %a.nav-link.hidden-arrow.d-flex.align-items-center#avatar-dropdown-menu-link{ href: "#",
     role: "button", data: { "bs-toggle" => "dropdown" }, aria: { expanded: false } }
     %span.icon
       %i.fa-solid.fa-user

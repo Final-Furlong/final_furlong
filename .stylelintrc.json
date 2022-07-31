@@ -74,7 +74,7 @@
     "selector-not-notation": "simple",
     "shorthand-property-no-redundant-values": true,
     "string-no-newline": true,
-    "string-quotes": "single",
+    "string-quotes": "double",
     "value-no-vendor-prefix": null
   }
 }
