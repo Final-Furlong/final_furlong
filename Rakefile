@@ -10,6 +10,3 @@ rescue LoadError
 end
 
 Rails.application.load_tasks
-
-desc "Alphabetise database schema columns"
-task "db::dump": "strong_migrations:alphabetize_columns"

@@ -22,9 +22,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_31_171155) do
   create_enum "user_status", ["pending", "active", "deleted", "banned"]
 
   create_table "activations", force: :cascade do |t|
+    t.string "token", null: false
     t.datetime "activated_at"
     t.datetime "created_at", null: false
-    t.string "token", null: false
     t.datetime "updated_at", null: false
     t.uuid "user_id", null: false
     t.index ["user_id"], name: "index_activations_on_user_id", unique: true
@@ -34,18 +34,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_31_171155) do
   end
 
   create_table "horses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "age"
-    t.uuid "breeder_id", null: false
-    t.datetime "created_at", null: false
-    t.uuid "dam_id"
+    t.string "name"
+    t.enum "gender", null: false, comment: "colt, filly, stallion, mare, gelding", enum_type: "horse_gender"
+    t.enum "status", default: "unborn", null: false, comment: "unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased", enum_type: "horse_status"
     t.date "date_of_birth", null: false
     t.date "date_of_death"
-    t.enum "gender", null: false, comment: "colt, filly, stallion, mare, gelding", enum_type: "horse_gender"
-    t.uuid "location_bred_id", null: false
-    t.string "name"
+    t.integer "age"
     t.uuid "owner_id", null: false
+    t.uuid "breeder_id", null: false
+    t.uuid "location_bred_id", null: false
     t.uuid "sire_id"
-    t.enum "status", default: "unborn", null: false, comment: "unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased", enum_type: "horse_status"
+    t.uuid "dam_id"
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["breeder_id"], name: "index_horses_on_breeder_id"
     t.index ["created_at"], name: "index_horses_on_created_at"
@@ -58,12 +58,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_31_171155) do
   end
 
   create_table "racetracks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "country", null: false
-    t.datetime "created_at", null: false
-    t.decimal "latitude", null: false
-    t.decimal "longitude", null: false
     t.string "name", null: false
     t.string "state"
+    t.string "country", null: false
+    t.decimal "latitude", null: false
+    t.decimal "longitude", null: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["country"], name: "index_racetracks_on_country"
     t.index ["created_at"], name: "index_racetracks_on_created_at"
@@ -73,64 +73,64 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_31_171155) do
   end
 
   create_table "sessions", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.text "data"
     t.string "session_id", null: false
+    t.string "user_id"
+    t.text "data"
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "user_id", null: false
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
     t.index ["user_id"], name: "index_sessions_on_user_id", unique: true
   end
 
   create_table "settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.string "locale"
     t.string "theme"
-    t.datetime "updated_at", null: false
+    t.string "locale"
     t.uuid "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_settings_on_user_id", unique: true
   end
 
   create_table "stables", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.text "description"
-    t.integer "legacy_id"
     t.string "name", null: false
-    t.datetime "updated_at", null: false
     t.uuid "user_id", null: false
+    t.integer "legacy_id"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["created_at"], name: "index_stables_on_created_at"
     t.index ["legacy_id"], name: "index_stables_on_legacy_id"
     t.index ["user_id"], name: "index_stables_on_user_id", unique: true
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "slug"
+    t.string "username", null: false
+    t.enum "status", default: "pending", null: false, comment: "pending, active, deleted, banned", enum_type: "user_status"
+    t.string "name", null: false
     t.boolean "admin", default: false, null: false
-    t.datetime "confirmation_sent_at", precision: nil
-    t.string "confirmation_token"
-    t.datetime "confirmed_at", precision: nil
-    t.datetime "created_at", null: false
-    t.datetime "current_sign_in_at", precision: nil
-    t.string "current_sign_in_ip"
-    t.datetime "discarded_at"
     t.integer "discourse_id", comment: "integer from Discourse forum"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
-    t.integer "failed_attempts", default: 0, null: false
-    t.datetime "last_sign_in_at", precision: nil
-    t.string "last_sign_in_ip"
-    t.datetime "locked_at", precision: nil
-    t.string "name", null: false
-    t.datetime "remember_created_at", precision: nil
-    t.datetime "reset_password_sent_at", precision: nil
     t.string "reset_password_token"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
-    t.string "slug"
-    t.enum "status", default: "pending", null: false, comment: "pending, active, deleted, banned", enum_type: "user_status"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at", precision: nil
+    t.datetime "confirmation_sent_at", precision: nil
     t.string "unconfirmed_email"
+    t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
+    t.datetime "locked_at", precision: nil
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "username", null: false
+    t.datetime "discarded_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["created_at"], name: "index_users_on_created_at"
     t.index ["discarded_at"], name: "index_users_on_discarded_at"
