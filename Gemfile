@@ -65,6 +65,7 @@ group :development do
   gem "rack-mini-profiler"
 
   gem "annotate", require: false
+  gem "autoprefixer-rails"
   gem "bcrypt_pbkdf" # required for capistran
   gem "capistrano", "~> 3.17", require: false
   gem "capistrano-bundler", "~> 2.0", require: false

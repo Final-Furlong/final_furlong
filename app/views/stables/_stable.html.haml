@@ -1,20 +1,20 @@
 = turbo_frame_tag stable do
-  .stable.mb-2
-    .card
-      %h3.card-header
-        = link_to stable.name, stable_path(stable), data: { turbo_frame: "_top" }, class: "text-decoration-none"
-      .card-body
-        .card-subtitle.mb-2
-          %span.text-muted= "@#{stable.user.username}"
-          %span.badge{ class: "bg-#{stable.online? ? 'success' : 'light text-dark'}" }
-            = stable.online? ? "Online" : "Offline"
-        - if stable.description
-          %p.card-text.text-truncate= stable.description
-        - else
-          %p.card-text.text-muted= t(".no_description")
-        - if policy(stable).impersonate?
-          .text-end.fs-6.flex-row-reverse
-            = button_to t(".impersonate"), admin_impersonate_path(id: stable.user_id),
-              class: "badge text-bg-danger btn btn-link text-decoration-none"
-        - if stable.user.current_sign_in_at
-          %p.text-end.text-muted= t(".last_online", date: l(stable.user.current_sign_in_at, format: :short))
+  .stable.card.h-100
+    %h5.card-header
+      = link_to stable.name, stable_path(stable), data: { turbo_frame: "_top" }, class: "text-decoration-none"
+    .card-body
+      .card-subtitle.mb-2
+        %span.text-muted= "@#{stable.user.username}"
+        %span.badge{ class: "bg-#{stable.online? ? 'success' : 'light text-dark'}" }
+          = stable.online? ? "Online" : "Offline"
+      - if stable.description
+        .text-truncate-container
+          %p.card-text.text-break= stable.description.html_safe # rubocop:disable Rails/OutputSafety
+      - else
+        %p.card-text.text-muted.fs-6.fw-light.fst-italic= t(".no_description")
+      - if policy(stable).impersonate?
+        .text-end.fs-6.flex-row-reverse
+          = button_to t(".impersonate"), admin_impersonate_path(id: stable.user_id),
+            class: "badge text-bg-danger btn btn-link text-decoration-none"
+      - if stable.user.current_sign_in_at
+        %p.text-end.text-muted= t(".last_online", date: l(stable.user.current_sign_in_at, format: :short))
