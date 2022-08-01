@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_30_191849) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_31_171155) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -70,6 +70,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_30_191849) do
     t.index ["latitude"], name: "index_racetracks_on_latitude"
     t.index ["longitude"], name: "index_racetracks_on_longitude"
     t.index ["name"], name: "index_racetracks_on_name", unique: true
+  end
+
+  create_table "sessions", force: :cascade do |t|
+    t.string "session_id", null: false
+    t.string "user_id"
+    t.text "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
+    t.index ["updated_at"], name: "index_sessions_on_updated_at"
+    t.index ["user_id"], name: "index_sessions_on_user_id", unique: true
   end
 
   create_table "settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

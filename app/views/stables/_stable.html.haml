@@ -6,7 +6,7 @@
     .card-body
       .card-subtitle.mb-2
         %span.text-muted= "@#{stable.user.username}"
-        = render OnlineBadgeComponent.new(online: stable.online? || stable == current_stable)
+        = render OnlineBadgeComponent.new(online: SessionsRepository.online?(id: stable.user_id))
       - if stable.description
         .text-truncate-container
           %p.card-text.text-break= stable.description.html_safe # rubocop:disable Rails/OutputSafety

@@ -1,5 +1,11 @@
+require "sidekiq/web"
+
 Rails.application.routes.draw do
   mount API::Base, at: "/"
+
+  authenticate :user, ->(u) { u.admin? } do
+    mount Sidekiq::Web => "/sidekiq"
+  end
 
   match "/404", to: "errors#not_found", via: :all
   match "/422", to: "errors#unprocessable", via: :all
@@ -67,13 +73,13 @@ end
 #                            user_password PATCH     /forgot-password(.:format)                                                                        devise/passwords#update
 #                                          PUT       /forgot-password(.:format)                                                                        devise/passwords#update
 #                                          POST      /forgot-password(.:format)                                                                        devise/passwords#create
-#                 cancel_user_registration GET       /cancel(.:format)                                                                                 devise/registrations#cancel
-#                    new_user_registration GET       /join(.:format)                                                                                   devise/registrations#new
-#                   edit_user_registration GET       /edit(.:format)                                                                                   devise/registrations#edit
-#                        user_registration PATCH     /                                                                                                 devise/registrations#update
-#                                          PUT       /                                                                                                 devise/registrations#update
-#                                          DELETE    /                                                                                                 devise/registrations#destroy
-#                                          POST      /                                                                                                 devise/registrations#create
+#                 cancel_user_registration GET       /cancel(.:format)                                                                                 users/registrations#cancel
+#                    new_user_registration GET       /join(.:format)                                                                                   users/registrations#new
+#                   edit_user_registration GET       /edit(.:format)                                                                                   users/registrations#edit
+#                        user_registration PATCH     /                                                                                                 users/registrations#update
+#                                          PUT       /                                                                                                 users/registrations#update
+#                                          DELETE    /                                                                                                 users/registrations#destroy
+#                                          POST      /                                                                                                 users/registrations#create
 #                    new_user_confirmation GET       /confirm-account/new(.:format)                                                                    devise/confirmations#new
 #                        user_confirmation GET       /confirm-account(.:format)                                                                        devise/confirmations#show
 #                                          POST      /confirm-account(.:format)                                                                        devise/confirmations#create
