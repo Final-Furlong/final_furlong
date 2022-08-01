@@ -186,7 +186,6 @@ GEM
     colorize (0.8.1)
     concurrent-ruby (1.1.10)
     connection_pool (2.2.5)
-    consistency_fail (0.3.7)
     crass (1.0.6)
     cssbundling-rails (1.1.1)
       railties (>= 6.0.0)
@@ -724,7 +723,6 @@ DEPENDENCIES
   capybara (>= 2.15)
   capybara-screenshot
   chusaku
-  consistency_fail
   cssbundling-rails
   dartsass-rails
   data_migrate
