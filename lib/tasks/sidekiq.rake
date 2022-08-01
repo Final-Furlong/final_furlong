@@ -10,7 +10,6 @@ namespace :sidekiq do
     problems[:high] = high if high >= 5.minutes
     problems[:default] = default if default >= 10.minutes
 
-    puts problems.inspect
     next if problems.empty?
 
     messages = []

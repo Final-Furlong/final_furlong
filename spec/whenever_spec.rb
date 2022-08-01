@@ -1,13 +1,5 @@
 require "spec_helper"
 
-# every 1.day, at: '2:00' do
-#   rake "db:sessions:trim"
-# end
-
-# every 6.minuets do
-#   rake "sidekiq:health"
-# end
-
 RSpec.describe "Whenever Schedule" do # rubocop:disable RSpec/DescribeClass
   before do
     load "Rakefile" # Makes sure rake tasks are loaded so you can assert in rake jobs
