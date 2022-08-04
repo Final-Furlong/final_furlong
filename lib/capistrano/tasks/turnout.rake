@@ -2,7 +2,7 @@ namespace :maintenance do
   desc "Maintenance start (edit config/maintenance.yml to provide parameters)"
   task :start do
     on roles(:web) do
-      execute "rails maintenance:start reason='Updating the beta app'"
+      execute "touch #{current_path}/tmp/maintenance.yml"
     end
   end
 
