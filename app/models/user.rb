@@ -1,6 +1,5 @@
 class User < ApplicationRecord
   include Discard::Model
-  include Admin::UserAdmin
   include FinalFurlong::Internet::Validation
 
   attr_accessor :login

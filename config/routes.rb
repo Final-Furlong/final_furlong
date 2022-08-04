@@ -1,7 +1,8 @@
 require "sidekiq/web"
 
 Rails.application.routes.draw do
-  mount API::Base, at: "/"
+  mount Motor::Admin => "/motor_admin"
+  mount Api::Base, at: "/"
 
   authenticate :user, ->(u) { u.admin? } do
     mount Sidekiq::Web => "/sidekiq"
@@ -15,7 +16,6 @@ Rails.application.routes.draw do
     resource :impersonate, only: %i[create show destroy]
   end
 
-  mount RailsAdmin::Engine => "/admin", as: "rails_admin"
   devise_for :users, path: "", path_names: {
     sign_up: "join",
     sign_in: "login",
@@ -57,14 +57,15 @@ end
 # == Route Map
 #
 #                                   Prefix Verb      URI Pattern                                                                                       Controller#Action
-#                                 api_base           /                                                                                                 API::Base
+#                              motor_admin           /motor_admin                                                                                      Motor::Admin
+#                                 api_base           /                                                                                                 Api::Base
+#                              sidekiq_web           /sidekiq                                                                                          Sidekiq::Web
 #                                                    /404(.:format)                                                                                    errors#not_found
 #                                                    /422(.:format)                                                                                    errors#unprocessable
 #                                                    /500(.:format)                                                                                    errors#internal_error
 #                        admin_impersonate GET       /admin/impersonate(.:format)                                                                      admin/impersonates#show
 #                                          DELETE    /admin/impersonate(.:format)                                                                      admin/impersonates#destroy
 #                                          POST      /admin/impersonate(.:format)                                                                      admin/impersonates#create
-#                              rails_admin           /admin                                                                                            RailsAdmin::Engine
 #                         new_user_session GET       /login(.:format)                                                                                  devise/sessions#new
 #                             user_session POST      /login(.:format)                                                                                  devise/sessions#create
 #                     destroy_user_session DELETE    /logout(.:format)                                                                                 devise/sessions#destroy
@@ -143,14 +144,78 @@ end
 #                update_rails_disk_service PUT       /rails/active_storage/disk/:encoded_token(.:format)                                               active_storage/disk#update
 #                     rails_direct_uploads POST      /rails/active_storage/direct_uploads(.:format)                                                    active_storage/direct_uploads#create
 #
-# Routes for RailsAdmin::Engine:
-#   dashboard GET         /                                      rails_admin/main#dashboard
-#       index GET|POST    /:model_name(.:format)                 rails_admin/main#index
-#         new GET|POST    /:model_name/new(.:format)             rails_admin/main#new
-#      export GET|POST    /:model_name/export(.:format)          rails_admin/main#export
-# bulk_delete POST|DELETE /:model_name/bulk_delete(.:format)     rails_admin/main#bulk_delete
-# bulk_action POST        /:model_name/bulk_action(.:format)     rails_admin/main#bulk_action
-#        show GET         /:model_name/:id(.:format)             rails_admin/main#show
-#        edit GET|PUT     /:model_name/:id/edit(.:format)        rails_admin/main#edit
-#      delete GET|DELETE  /:model_name/:id/delete(.:format)      rails_admin/main#delete
-# show_in_app GET         /:model_name/:id/show_in_app(.:format) rails_admin/main#show_in_app
+# Routes for Motor::Admin:
+#                motor_api_run_queries POST   /api/run_queries(.:format)                              motor/run_queries#create
+#                  motor_api_run_query GET    /api/run_queries/:id(.:format)                          motor/run_queries#show
+#                motor_api_send_alerts POST   /api/send_alerts(.:format)                              motor/send_alerts#create
+#                motor_api_auth_tokens POST   /api/auth_tokens(.:format)                              motor/auth_tokens#create
+#                    motor_api_queries GET    /api/queries(.:format)                                  motor/queries#index
+#                                      POST   /api/queries(.:format)                                  motor/queries#create
+#                      motor_api_query GET    /api/queries/:id(.:format)                              motor/queries#show
+#                                      PATCH  /api/queries/:id(.:format)                              motor/queries#update
+#                                      PUT    /api/queries/:id(.:format)                              motor/queries#update
+#                                      DELETE /api/queries/:id(.:format)                              motor/queries#destroy
+#                       motor_api_tags GET    /api/tags(.:format)                                     motor/tags#index
+#                    motor_api_configs GET    /api/configs(.:format)                                  motor/configs#index
+#                                      POST   /api/configs(.:format)                                  motor/configs#create
+#                  motor_api_resources GET    /api/resources(.:format)                                motor/resources#index
+#                                      POST   /api/resources(.:format)                                motor/resources#create
+#            motor_api_resource_method GET    /api/resource_methods/:resource(.:format)               motor/resource_methods#show
+#     motor_api_resource_default_query GET    /api/resource_default_queries/:resource(.:format)       motor/resource_default_queries#show
+#               motor_api_schema_index GET    /api/schema(.:format)                                   motor/schema#index
+#                     motor_api_schema GET    /api/schema/:resource(.:format)                         motor/schema#show
+#                 motor_api_dashboards GET    /api/dashboards(.:format)                               motor/dashboards#index
+#                                      POST   /api/dashboards(.:format)                               motor/dashboards#create
+#                  motor_api_dashboard GET    /api/dashboards/:id(.:format)                           motor/dashboards#show
+#                                      PATCH  /api/dashboards/:id(.:format)                           motor/dashboards#update
+#                                      PUT    /api/dashboards/:id(.:format)                           motor/dashboards#update
+#                                      DELETE /api/dashboards/:id(.:format)                           motor/dashboards#destroy
+#            motor_api_run_api_request GET    /api/run_api_request(.:format)                          motor/run_api_requests#show
+#                                      POST   /api/run_api_request(.:format)                          motor/run_api_requests#create
+#        motor_api_run_graphql_request POST   /api/run_graphql_request(.:format)                      motor/run_graphql_requests#create
+#                motor_api_api_configs GET    /api/api_configs(.:format)                              motor/api_configs#index
+#                                      POST   /api/api_configs(.:format)                              motor/api_configs#create
+#                 motor_api_api_config DELETE /api/api_configs/:id(.:format)                          motor/api_configs#destroy
+#                      motor_api_forms GET    /api/forms(.:format)                                    motor/forms#index
+#                                      POST   /api/forms(.:format)                                    motor/forms#create
+#                       motor_api_form GET    /api/forms/:id(.:format)                                motor/forms#show
+#                                      PATCH  /api/forms/:id(.:format)                                motor/forms#update
+#                                      PUT    /api/forms/:id(.:format)                                motor/forms#update
+#                                      DELETE /api/forms/:id(.:format)                                motor/forms#destroy
+#                     motor_api_alerts GET    /api/alerts(.:format)                                   motor/alerts#index
+#                                      POST   /api/alerts(.:format)                                   motor/alerts#create
+#                      motor_api_alert GET    /api/alerts/:id(.:format)                               motor/alerts#show
+#                                      PATCH  /api/alerts/:id(.:format)                               motor/alerts#update
+#                                      PUT    /api/alerts/:id(.:format)                               motor/alerts#update
+#                                      DELETE /api/alerts/:id(.:format)                               motor/alerts#destroy
+#                      motor_api_icons GET    /api/icons(.:format)                                    motor/icons#index
+# motor_api_active_storage_attachments POST   /api/data/active_storage__attachments(.:format)         motor/active_storage_attachments#create
+#                     motor_api_audits GET    /api/audits(.:format)                                   motor/audits#index
+#                    motor_api_session GET    /api/session(.:format)                                  motor/sessions#show
+#                                      DELETE /api/session(.:format)                                  motor/sessions#destroy
+#                                      PUT    /api/data/:resource/:resource_id/:method(.:format)      motor/data#execute {:resource_id=>/[^\/]+/}
+# motor_api_resource_association_index GET    /api/data/:resource/:resource_id/:association(.:format) motor/data#index {:resource_id=>/[^\/]+/}
+#                                      POST   /api/data/:resource/:resource_id/:association(.:format) motor/data#create {:resource_id=>/[^\/]+/}
+#                                      GET    /api/data/:resource(.:format)                           motor/data#index
+#                                      POST   /api/data/:resource(.:format)                           motor/data#create
+#                   motor_api_resource GET    /api/data/:resource/:id(.:format)                       motor/data#show {:id=>/[^\/]+/}
+#                                      PATCH  /api/data/:resource/:id(.:format)                       motor/data#update {:id=>/[^\/]+/}
+#                                      PUT    /api/data/:resource/:id(.:format)                       motor/data#update {:id=>/[^\/]+/}
+#                                      DELETE /api/data/:resource/:id(.:format)                       motor/data#destroy {:id=>/[^\/]+/}
+#                          motor_asset GET    /assets/:filename                                       motor/assets#show {:filename=>/.+/}
+#                                motor GET    /                                                       motor/ui#show
+#                        motor_ui_data GET    /data(/*path)(.:format)                                 motor/ui#index
+#                     motor_ui_reports GET    /reports(.:format)                                      motor/ui#index
+#                      motor_ui_report GET    /reports/:id(.:format)                                  motor/ui#show
+#                     motor_ui_queries GET    /queries(.:format)                                      motor/ui#index
+#                   new_motor_ui_query GET    /queries/new(.:format)                                  motor/ui#new
+#                       motor_ui_query GET    /queries/:id(.:format)                                  motor/ui#show
+#                  motor_ui_dashboards GET    /dashboards(.:format)                                   motor/ui#index
+#               new_motor_ui_dashboard GET    /dashboards/new(.:format)                               motor/ui#new
+#                   motor_ui_dashboard GET    /dashboards/:id(.:format)                               motor/ui#show
+#                      motor_ui_alerts GET    /alerts(.:format)                                       motor/ui#index
+#                   new_motor_ui_alert GET    /alerts/new(.:format)                                   motor/ui#new
+#                       motor_ui_alert GET    /alerts/:id(.:format)                                   motor/ui#show
+#                       motor_ui_forms GET    /forms(.:format)                                        motor/ui#index
+#                    new_motor_ui_form GET    /forms/new(.:format)                                    motor/ui#new
+#                        motor_ui_form GET    /forms/:id(.:format)                                    motor/ui#show

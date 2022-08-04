@@ -55,6 +55,9 @@ Metrics/BlockLength:
     - "config/**/*.rb"
     - "db/migrate/**/*.rb"
     - "lib/tasks/**/*.rake"
+Metrics/ClassLength:
+  Exclude:
+    - "db/migrate/**/*.rb"
 Metrics/MethodLength:
   Exclude:
     - "db/data/**/*.rb"

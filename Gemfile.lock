@@ -71,13 +71,12 @@ GEM
       globalid (>= 0.3.6)
     activemodel (7.0.3.1)
       activesupport (= 7.0.3.1)
-    activemodel-serializers-xml (1.0.2)
-      activemodel (> 5.x)
-      activesupport (> 5.x)
-      builder (~> 3.1)
     activerecord (7.0.3.1)
       activemodel (= 7.0.3.1)
       activesupport (= 7.0.3.1)
+    activerecord-filter (6.1.0.2)
+      activerecord (>= 6.1.0)
+      arel-extensions (>= 6.1.0)
     activerecord-session_store (2.0.0)
       actionpack (>= 5.2.4.1)
       activerecord (>= 5.2.4.1)
@@ -103,7 +102,13 @@ GEM
     annotate (3.2.0)
       activerecord (>= 3.2, < 8.0)
       rake (>= 10.4, < 14.0)
+    ar_lazy_preload (1.0.0)
+      rails (>= 5.2)
+    arel-extensions (6.1.0)
+      activerecord (>= 6.1.0)
     ast (2.4.2)
+    audited (5.0.2)
+      activerecord (>= 5.0, < 7.1)
     autoprefixer-rails (10.4.7.0)
       execjs (~> 2)
     backport (1.2.0)
@@ -143,6 +148,7 @@ GEM
     byebug (11.1.3)
     callee (0.3.5)
       dry-initializer (>= 2.5, < 4.0)
+    cancancan (3.4.0)
     capistrano (3.17.0)
       airbrussh (>= 1.0.0)
       i18n
@@ -359,18 +365,6 @@ GEM
     jaro_winkler (1.5.4)
     json (2.6.2)
     jsonapi-renderer (0.2.2)
-    kaminari (1.2.2)
-      activesupport (>= 4.1.0)
-      kaminari-actionview (= 1.2.2)
-      kaminari-activerecord (= 1.2.2)
-      kaminari-core (= 1.2.2)
-    kaminari-actionview (1.2.2)
-      actionview
-      kaminari-core (= 1.2.2)
-    kaminari-activerecord (1.2.2)
-      activerecord
-      kaminari-core (= 1.2.2)
-    kaminari-core (1.2.2)
     kramdown (2.4.0)
       rexml
     kramdown-parser-gfm (1.1.0)
@@ -394,6 +388,13 @@ GEM
     method_source (1.0.0)
     mini_mime (1.1.2)
     minitest (5.16.2)
+    motor-admin (0.3.4)
+      activerecord-filter (>= 5.2)
+      ar_lazy_preload (~> 1.0)
+      audited (~> 5.0)
+      cancancan (~> 3.0)
+      fugit (~> 1.0)
+      rails (>= 5.2)
     msgpack (1.5.3)
     multi_json (1.15.0)
     mustermann (1.1.1)
@@ -402,7 +403,6 @@ GEM
       mustermann (>= 1.0.0)
     mysql2 (0.5.4)
     nenv (0.3.0)
-    nested_form (0.3.2)
     net-imap (0.2.3)
       digest
       net-protocol
@@ -479,12 +479,6 @@ GEM
     rails-i18n (7.0.5)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
-    rails_admin (3.0.0)
-      activemodel-serializers-xml (>= 1.0)
-      kaminari (>= 0.14, < 2.0)
-      nested_form (~> 0.3)
-      rails (>= 6.0, < 8)
-      turbo-rails (~> 1.0)
     railties (7.0.3.1)
       actionpack (= 7.0.3.1)
       activesupport (= 7.0.3.1)
@@ -655,6 +649,11 @@ GEM
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
       railties (>= 6.0.0)
+    turnout (2.5.0)
+      i18n (>= 0.7, < 2)
+      rack (>= 1.3, < 3)
+      rack-accept (~> 0.4)
+      tilt (>= 1.4, < 3)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     undercover (0.4.4)
@@ -754,6 +753,7 @@ DEPENDENCIES
   i18n-tasks
   importmap-rails
   letter_opener
+  motor-admin (~> 0.3.4)
   mysql2
   pagy
   pg (~> 1.1)
@@ -764,7 +764,6 @@ DEPENDENCIES
   rack-mini-profiler
   rails (= 7.0.3.1)
   rails-i18n
-  rails_admin
   redis (~> 4.0)
   reek
   responders
@@ -794,6 +793,7 @@ DEPENDENCIES
   terminal-notifier
   terminal-notifier-guard
   turbo-rails
+  turnout
   tzinfo-data
   undercover
   view_component
