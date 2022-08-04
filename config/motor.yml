@@ -1,0 +1,229 @@
+---
+engine_version: 0.3.4
+file_version: 2022-08-03 18:02:29.231692000 Z
+resources:
+- name: activation
+  preferences:
+    icon: bolt
+  updated_at: 2022-08-03 17:29:50.812555000 +00:00
+- name: active_record/session_store/session
+  preferences:
+    visible: false
+  updated_at: 2022-08-03 17:28:57.434823000 +00:00
+- name: custom_session
+  preferences:
+    icon: users
+    display_name: Login Sessions
+    columns:
+    - access_type: hidden
+      name: session_id
+    actions:
+    - visible: false
+      name: create
+    - visible: false
+      name: edit
+    - visible: false
+      name: remove
+  updated_at: 2022-08-03 17:41:22.850061000 +00:00
+- name: horse
+  preferences:
+    scopes:
+    - visible: false
+      name: colt
+    - visible: false
+      name: filly
+    - visible: false
+      name: gelding
+    - visible: false
+      name: mare
+    - visible: false
+      name: not_broodmare
+    - visible: false
+      name: not_colt
+    - visible: false
+      name: not_deceased
+    - visible: false
+      name: not_filly
+    - visible: false
+      name: not_gelding
+    - visible: false
+      name: not_mare
+    - visible: false
+      name: not_racehorse
+    - visible: false
+      name: not_retired
+    - visible: false
+      name: not_retired_broodmare
+    - visible: false
+      name: not_retired_stud
+    - visible: false
+      name: not_stallion
+    - visible: false
+      name: not_stud
+    - visible: false
+      name: not_unborn
+    - visible: false
+      name: not_weanling
+    - visible: false
+      name: not_yearling
+    - visible: false
+      name: ordered
+    - visible: false
+      name: retired
+    - visible: false
+      name: retired_broodmare
+    - visible: false
+      name: retired_stud
+    - visible: false
+      name: stallion
+    actions:
+    - visible: false
+      name: remove
+    - visible: false
+      name: create
+    associations:
+    - name: breeder
+      display_name: Breeder
+      model_name: stable
+      foreign_key: id
+      primary_key: breeder_id
+      virtual: true
+      polymorphic: false
+      slug: breeder
+    - name: owner
+      display_name: Owner
+      model_name: stable
+      foreign_key: id
+      primary_key: owner_id
+      virtual: true
+      polymorphic: false
+      slug: owner
+    - name: sire
+      display_name: Sire
+      model_name: horse
+      foreign_key: id
+      primary_key: sire_id
+      virtual: true
+      polymorphic: false
+      slug: sire
+    - name: dam
+      display_name: Dam
+      model_name: horse
+      foreign_key: id
+      primary_key: dam_id
+      virtual: true
+      polymorphic: false
+      slug: dam
+    - name: location_bred
+      display_name: Location Bred
+      model_name: racetrack
+      foreign_key: id
+      primary_key: location_bred_id
+      virtual: true
+      polymorphic: false
+      slug: location_bred
+    columns:
+    - access_type: hidden
+      reference:
+        name: location_bred
+        display_name: Location bred
+        model_name: racetrack
+        reference_type: belongs_to
+        foreign_key: location_bred_id
+        primary_key: id
+        options: {}
+        polymorphic:
+        virtual: false
+      name: location_bred_id
+    - access_type: hidden
+      name: date_of_birth
+    - access_type: hidden
+      name: date_of_death
+  updated_at: 2022-08-03 17:36:46.777281000 +00:00
+- name: legacy_horse
+  preferences:
+    visible: false
+  updated_at: 2022-08-03 17:31:38.403352000 +00:00
+- name: legacy_user
+  preferences:
+    visible: false
+  updated_at: 2022-08-03 17:31:39.611133000 +00:00
+- name: racetrack
+  preferences:
+    columns:
+    - access_type: hidden
+      name: latitude
+    - access_type: hidden
+      name: longitude
+  updated_at: 2022-08-03 17:40:38.381608000 +00:00
+- name: setting
+  preferences:
+    visible: false
+  updated_at: 2022-08-03 17:32:51.073382000 +00:00
+- name: stable
+  preferences:
+    columns:
+    - access_type: hidden
+      name: description
+    actions:
+    - visible: false
+      name: create
+    - visible: false
+      name: remove
+  updated_at: 2022-08-03 17:39:22.776118000 +00:00
+- name: stallion
+  preferences:
+    visible: false
+  updated_at: 2022-08-03 17:32:57.172683000 +00:00
+configs:
+- key: header.links
+  value:
+  - name: "⭐ Star on GitHub"
+    path: https://github.com/motor-admin/motor-admin-rails
+  - name: Home
+    path: "/"
+    link_type: header
+  updated_at: 2022-08-03 18:02:29.231692000 +00:00
+- key: resources.horse.columns.order
+  value:
+  - id
+  - name
+  - gender
+  - age
+  - status
+  - breeder_id
+  - owner_id
+  - sire_id
+  - dam_id
+  - location_bred_id
+  - date_of_birth
+  - date_of_death
+  - updated_at
+  - created_at
+  updated_at: 2022-08-03 17:36:52.883704000 +00:00
+- key: resources.order
+  value:
+  - horse
+  - stallion
+  - stable
+  - racetrack
+  - active_record/session_store/session
+  - custom_session
+  - user
+  - data_migrate/data_schema_migration
+  - activation
+  - legacy_horse
+  - legacy_user
+  - setting
+  updated_at: 2022-08-03 17:32:38.459568000 +00:00
+queries: []
+dashboards: []
+forms: []
+alerts: []
+api_configs:
+- id: 1
+  name: origin
+  url: "/"
+  preferences: {}
+  description:
+  updated_at: 2022-08-03 17:11:13.727494000 +00:00

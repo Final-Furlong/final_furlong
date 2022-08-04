@@ -31,3 +31,6 @@ set :ssh_options, {
   auth_methods: %w[publickey],
   verify_host_key: :always
 }
+
+before "deploy:migrate", "maintenance:start"
+after "deploy:migrate", "maintenance:end"

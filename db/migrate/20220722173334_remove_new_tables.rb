@@ -1,4 +1,4 @@
-class RemoveNewTables < ActiveRecord::Migration[7.0] # rubocop:disable Metrics/ClassLength
+class RemoveNewTables < ActiveRecord::Migration[7.0]
   def up # rubocop:disable Metrics/CyclomaticComplexity
     drop_table :new_racetracks
     drop_table :new_users

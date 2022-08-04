@@ -1,7 +1,7 @@
-module API
+module Api
   module V1
     class Activations < Grape::API
-      include API::V1::Defaults
+      include Api::V1::Defaults
 
       resource :activations do
         desc "Return all un-activated activation tokens"

@@ -1,7 +1,7 @@
-module API
+module Api
   module V1
     class Base < Grape::API
-      mount API::V1::Activations
+      mount Api::V1::Activations
     end
   end
 end
