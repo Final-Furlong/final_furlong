@@ -6,6 +6,7 @@ RSpec.shared_examples "a horse" do
     it { is_expected.to belong_to(:owner).class_name("Stable") }
     it { is_expected.to belong_to(:sire).class_name("Horse").optional }
     it { is_expected.to belong_to(:dam).class_name("Horse").optional }
+    it { is_expected.to belong_to(:location_bred).class_name("Location") }
   end
 
   describe "validations" do

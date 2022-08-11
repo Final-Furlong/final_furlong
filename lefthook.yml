@@ -3,10 +3,10 @@
 #   Refer for explanation to following link:
 #   https://github.com/evilmartians/lefthook/blob/master/docs/full_guide.md
 #
-skip_output:
-  - meta
-
 pre-commit:
+  skip:
+    - merge
+    - rebase
   parallel: true
   commands:
     actionlint:
@@ -16,11 +16,11 @@ pre-commit:
     annotate-controllers:
       tags: backend
       files: git diff --name-only --staged
-      run: bundle exec chusaku --exit-with-error-on-annotation
+      run: bundle exec chusaku && git add {staged_files}
     eslint:
       tags: frontend style
       glob: "*.{js,ts,jsx,tsx}"
-      run: yarn eslint {staged_files}
+      run: yarn eslint --fix {staged_files} && git add {staged_files}
     fasterer:
       tags: backend style
       files: git diff --name-only --staged
@@ -35,59 +35,47 @@ pre-commit:
       tags: backend style
       files: git diff --name-only --staged
       glob: "config/locales/**/*.yml"
-      run: i18n-tasks normalize
+      run: i18n-tasks normalize && git add {staged_files}
     rubocop:
       tags: backend style
       files: git diff --name-only --staged
       glob: "*.rb"
-      run: rubocop --force-exclusion {files}
+      run: rubocop --force-exclusion --autocorrect --server {files} && git add {staged_files}
     stylelint:
       tags: frontend style
       files: git diff --name-only --staged
       glob: "*.scss"
-      run: yarn run stylelint {files}
+      run: yarn run stylelint --fix {files} && git add {staged_files}
 
 post-checkout:
+  skip:
+    - merge
+    - rebase
   piped: true
   bundle-install:
     tags: backend
     run: bundle install
-    skip:
-      - merge
-      - rebase
   database-migrate:
     tags: backend
     run: rails db:migrate
-    skip:
-      - merge
-      - rebase
   data-migrate:
     tags: backend
     run: rails db:migrate:with_data
-    skip:
-      - merge
-      - rebase
 
 post-merge:
+  skip:
+    - merge
+    - rebase
   piped: true
   bundle-install:
     tags: backend
     run: bundle install
-    skip:
-      - merge
-      - rebase
   database-migrate:
     tags: backend
     run: rails db:migrate
-    skip:
-      - merge
-      - rebase
   data-migrate:
     tags: backend
     run: rails db:migrate:with_data
-    skip:
-      - merge
-      - rebase
 
 lint:
   commands:
@@ -105,4 +93,4 @@ lint:
     rubocop:
       run: bundle exec rubocop --server --autocorrect
     stylelint:
-      run: yarn run stylelint app/assets/stylesheets
+      run: yarn run stylelint --fix app/assets/stylesheets

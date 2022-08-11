@@ -34,7 +34,7 @@ end
 #  DefaultJock2        :integer
 #  DefaultJock3        :integer
 #  DefaultWorkoutTrack :integer
-#  Die                 :date             not null
+#  Die                 :date             default(NULL), not null
 #  Dirt                :integer
 #  DisplayEnergy       :string(1)        indexed, indexed => [EnergyCurrent]
 #  DisplayFitness      :string(1)        indexed, indexed => [Fitness]
@@ -91,7 +91,7 @@ end
 #  RacesCount          :integer
 #  Ratability          :integer
 #  RestDayCount        :integer
-#  Retire              :date             not null
+#  Retire              :date             default(NULL), not null
 #  SC                  :integer
 #  SPS                 :float(53)
 #  SalePrice           :integer          default(-1), indexed, indexed => [Owner]

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_03_170759) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_11_154600) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -19,6 +19,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_03_170759) do
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "horse_gender", ["colt", "filly", "mare", "stallion", "gelding"]
   create_enum "horse_status", ["unborn", "weanling", "yearling", "racehorse", "broodmare", "stud", "retired", "retired_broodmare", "retired_stud", "deceased"]
+  create_enum "track_condition", ["fast", "good", "slow", "wet"]
+  create_enum "track_surface", ["dirt", "turf", "steeplechase"]
   create_enum "user_status", ["pending", "active", "deleted", "banned"]
 
   create_table "activations", force: :cascade do |t|
@@ -42,11 +44,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_03_170759) do
     t.integer "age"
     t.uuid "owner_id", null: false
     t.uuid "breeder_id", null: false
-    t.uuid "location_bred_id", null: false
     t.uuid "sire_id"
     t.uuid "dam_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "location_bred_id"
     t.index ["breeder_id"], name: "index_horses_on_breeder_id"
     t.index ["created_at"], name: "index_horses_on_created_at"
     t.index ["dam_id"], name: "index_horses_on_dam_id"
@@ -55,6 +57,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_03_170759) do
     t.index ["owner_id"], name: "index_horses_on_owner_id"
     t.index ["sire_id"], name: "index_horses_on_sire_id"
     t.index ["status"], name: "index_horses_on_status"
+  end
+
+  create_table "locations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "state"
+    t.string "county"
+    t.string "country", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "motor_alert_locks", force: :cascade do |t|
@@ -198,15 +209,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_03_170759) do
 
   create_table "racetracks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
-    t.string "state"
-    t.string "country", null: false
     t.decimal "latitude", null: false
     t.decimal "longitude", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["country"], name: "index_racetracks_on_country"
+    t.uuid "location_id"
     t.index ["created_at"], name: "index_racetracks_on_created_at"
     t.index ["latitude"], name: "index_racetracks_on_latitude"
+    t.index ["location_id"], name: "index_racetracks_on_location_id"
     t.index ["longitude"], name: "index_racetracks_on_longitude"
     t.index ["name"], name: "index_racetracks_on_name", unique: true
   end
@@ -241,6 +251,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_03_170759) do
     t.index ["created_at"], name: "index_stables_on_created_at"
     t.index ["legacy_id"], name: "index_stables_on_legacy_id"
     t.index ["user_id"], name: "index_stables_on_user_id", unique: true
+  end
+
+  create_table "track_surfaces", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "racetrack_id"
+    t.enum "surface", default: "dirt", null: false, comment: "dirt, turf, steeplechase", enum_type: "track_surface"
+    t.enum "condition", default: "fast", null: false, comment: "fast, good, slow, wet", enum_type: "track_condition"
+    t.integer "width", null: false
+    t.integer "length", null: false
+    t.integer "turn_to_finish_length", null: false
+    t.integer "turn_distance", null: false
+    t.integer "banking", null: false
+    t.integer "jumps", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["racetrack_id"], name: "index_track_surfaces_on_racetrack_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -284,12 +309,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_03_170759) do
   add_foreign_key "activations", "users"
   add_foreign_key "horses", "horses", column: "dam_id"
   add_foreign_key "horses", "horses", column: "sire_id"
-  add_foreign_key "horses", "racetracks", column: "location_bred_id"
+  add_foreign_key "horses", "locations", column: "location_bred_id"
   add_foreign_key "horses", "stables", column: "breeder_id"
   add_foreign_key "horses", "stables", column: "owner_id"
   add_foreign_key "motor_alert_locks", "motor_alerts", column: "alert_id"
   add_foreign_key "motor_alerts", "motor_queries", column: "query_id"
   add_foreign_key "motor_taggable_tags", "motor_tags", column: "tag_id"
+  add_foreign_key "racetracks", "locations"
   add_foreign_key "settings", "users"
   add_foreign_key "stables", "users"
+  add_foreign_key "track_surfaces", "racetracks"
 end
