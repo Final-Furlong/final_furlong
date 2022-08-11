@@ -5,7 +5,7 @@ class Horse < ApplicationRecord
   belongs_to :owner, class_name: "Stable"
   belongs_to :sire, class_name: "Horse", optional: true
   belongs_to :dam, class_name: "Horse", optional: true
-  belongs_to :location_bred, class_name: "Racetrack"
+  belongs_to :location_bred, class_name: "Location"
 
   enum status: HorseStatus::STATUSES
   enum gender: HorseGender::VALUES
@@ -72,7 +72,7 @@ end
 #  updated_at       :datetime         not null
 #  breeder_id       :uuid             not null, indexed
 #  dam_id           :uuid             indexed
-#  location_bred_id :uuid             not null, indexed
+#  location_bred_id :uuid             indexed
 #  owner_id         :uuid             not null, indexed
 #  sire_id          :uuid             indexed
 #
@@ -91,7 +91,7 @@ end
 #
 #  fk_rails_...  (breeder_id => stables.id)
 #  fk_rails_...  (dam_id => horses.id)
-#  fk_rails_...  (location_bred_id => racetracks.id)
+#  fk_rails_...  (location_bred_id => locations.id)
 #  fk_rails_...  (owner_id => stables.id)
 #  fk_rails_...  (sire_id => horses.id)
 #
