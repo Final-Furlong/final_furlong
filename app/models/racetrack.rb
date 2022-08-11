@@ -1,7 +1,7 @@
 class Racetrack < ApplicationRecord
   belongs_to :location, inverse_of: :racetracks
 
-  has_many :surfaces, class_name: 'TrackSurface'
+  has_many :surfaces, class_name: "TrackSurface", dependent: :restrict_with_exception
 
   validates :name, presence: true, length: { minimum: 4 }
   validates :name, uniqueness: { case_sensitive: false }
