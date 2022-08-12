@@ -2,12 +2,8 @@ class MigrateLegacyHorseBasicInfo < ActiveRecord::Migration[7.0]
   disable_ddl_transaction!
 
   def up
-    return unless Rails.env.production?
+    # return unless Rails.env.production?
 
-    say_with_time "Deleting existing records" do
-      ActiveRecord::Base.connection.execute("UPDATE horses SET sire_id = NULL, dam_id = NULL;")
-      ActiveRecord::Base.connection.execute("TRUNCATE TABLE horses CASCADE;")
-    end
     say_with_time "Migrating legacy horses" do
       say "Legacy horse count: #{LegacyHorse.count}"
       max_id = Horse.maximum("legacy_id") || 0
