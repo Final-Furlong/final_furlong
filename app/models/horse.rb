@@ -13,7 +13,7 @@ class Horse < ApplicationRecord
   validates :date_of_birth, presence: true
   validates :date_of_death, comparison: { greater_than_or_equal_to: :date_of_birth }, if: :date_of_death
   validate :name_required, on: :update
-  validates_horse_name :name, on: :update
+  validates_horse_name :name, on: :update, if: :name_changed?
 
   scope :living, -> { where(status: HorseStatus::LIVING_STATUSES) }
   scope :ordered, -> { order(name: :asc) }
@@ -21,34 +21,17 @@ class Horse < ApplicationRecord
 
   # broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
 
-  def status
-    return unless self[:status]
-
-    HorseStatus.new(self[:status])
-  end
-
-  def gender
-    return unless self[:gender]
-
-    HorseGender.new(self[:gender])
-  end
-
-  def age
-    max_date = dead? ? self[:date_of_death] : Date.current
-    max_date.year - self[:date_of_birth].year
-  end
-
   def stillborn?
     self[:date_of_birth] == self[:date_of_death]
   end
 
+  def dead?
+    return false unless self[:date_of_death]
+
+    self[:date_of_death] >= self[:date_of_birth]
+  end
+
   private
-
-    def dead?
-      return false unless self[:date_of_death]
-
-      self[:date_of_death] >= self[:date_of_birth]
-    end
 
     def name_required
       return unless name_changed?
@@ -72,6 +55,7 @@ end
 #  updated_at       :datetime         not null
 #  breeder_id       :uuid             not null, indexed
 #  dam_id           :uuid             indexed
+#  legacy_id        :integer          indexed
 #  location_bred_id :uuid             indexed
 #  owner_id         :uuid             not null, indexed
 #  sire_id          :uuid             indexed
@@ -82,6 +66,7 @@ end
 #  index_horses_on_created_at        (created_at)
 #  index_horses_on_dam_id            (dam_id)
 #  index_horses_on_date_of_birth     (date_of_birth)
+#  index_horses_on_legacy_id         (legacy_id) UNIQUE
 #  index_horses_on_location_bred_id  (location_bred_id)
 #  index_horses_on_owner_id          (owner_id)
 #  index_horses_on_sire_id           (sire_id)

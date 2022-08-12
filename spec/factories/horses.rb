@@ -78,6 +78,7 @@ end
 #  updated_at       :datetime         not null
 #  breeder_id       :uuid             not null, indexed
 #  dam_id           :uuid             indexed
+#  legacy_id        :integer          indexed
 #  location_bred_id :uuid             indexed
 #  owner_id         :uuid             not null, indexed
 #  sire_id          :uuid             indexed
@@ -88,6 +89,7 @@ end
 #  index_horses_on_created_at        (created_at)
 #  index_horses_on_dam_id            (dam_id)
 #  index_horses_on_date_of_birth     (date_of_birth)
+#  index_horses_on_legacy_id         (legacy_id) UNIQUE
 #  index_horses_on_location_bred_id  (location_bred_id)
 #  index_horses_on_owner_id          (owner_id)
 #  index_horses_on_sire_id           (sire_id)

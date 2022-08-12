@@ -1,6 +1,6 @@
 class MigrateLegacyStableDescriptions < ActiveRecord::Migration[7.0]
   def up
-    return unless Rails.env.test? || Rails.env.production?
+    # return unless Rails.env.test? || Rails.env.production?
 
     say_with_time "Migrating legacy descriptions" do
       LegacyUser.where.not(Status: "D").find_each do |legacy_user|

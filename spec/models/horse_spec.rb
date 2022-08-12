@@ -14,83 +14,68 @@ RSpec.describe Horse, type: :model do
       it "cannot be blank for a horse who already has a name" do
         horse = create(:horse, name: "Bob")
         horse.name = nil
+
         expect(horse).not_to be_valid
         expect(horse.errors[:name]).to eq(["can't be blank", "has already been taken"])
       end
-    end
-  end
 
-  describe "#status" do
-    context "when horse has no status" do
-      it "returns nil" do
-        horse = described_class.new
-        horse.status = nil
+      it "can be blank for an unnamed horse whose name is not being edited" do
+        horse = create(:horse, name: nil)
+        horse.status = "racehorse"
 
-        expect(horse.status).to be_nil
+        expect(horse).to be_valid
       end
-    end
 
-    context "when horse has status" do
-      let(:horse) { build_stubbed(:horse, :broodmare) }
+      it "is valid for a horse whose name is not being edited" do
+        horse = create(:horse, name: "Bob", status: "yearling")
+        horse.status = "racehorse"
+        horse.name = "Bob2"
 
-      it "returns HorseStatus" do
-        expect(horse.status).to be_a HorseStatus
-      end
-    end
-  end
-
-  describe "#gender" do
-    let(:horse) { build_stubbed(:horse, :broodmare) }
-
-    it "returns HorseGender" do
-      expect(horse.gender).to be_a HorseGender
-    end
-  end
-
-  describe "#age" do
-    context "when stillborn" do
-      let(:horse) { build_stubbed(:horse, :stillborn) }
-
-      it "returns 0" do
-        expect(horse.age).to eq 0
-      end
-    end
-
-    context "when alive" do
-      let(:date_of_birth) { Date.current - 3.years }
-      let(:date_of_death) { nil }
-      let(:horse) { build_stubbed(:horse, date_of_birth:, date_of_death:) }
-
-      it "returns current age" do
-        expect(horse.age).to eq 3
-      end
-    end
-
-    context "when deceased" do
-      let(:date_of_birth) { Date.current - 8.years }
-      let(:date_of_death) { Date.current - 1.year }
-      let(:horse) { build_stubbed(:horse, date_of_birth:, date_of_death:) }
-
-      it "returns age at death" do
-        expect(horse.age).to eq 7
+        expect(horse).to be_valid
       end
     end
   end
 
   describe "#stillborn?" do
     context "when date of birth == date of death" do
-      let(:horse) { build_stubbed(:horse, :stillborn) }
-
       it "returns true" do
+        horse = build_stubbed(:horse, :stillborn)
+
         expect(horse.stillborn?).to be true
       end
     end
 
     context "when date of birth != date of death" do
-      let(:horse) { build_stubbed(:horse) }
-
       it "returns false" do
+        horse = build_stubbed(:horse)
+
         expect(horse.stillborn?).to be false
+      end
+    end
+  end
+
+  describe "#dead?" do
+    context "when date of birth == date of death" do
+      it "returns true" do
+        horse = described_class.new(date_of_birth: Date.current, date_of_death: Date.current)
+
+        expect(horse.dead?).to be true
+      end
+    end
+
+    context "when date of death is nil" do
+      it "returns false" do
+        horse = described_class.new(date_of_birth: Date.current, date_of_death: nil)
+
+        expect(horse.dead?).to be false
+      end
+    end
+
+    context "when date of death > date of birth" do
+      it "returns true" do
+        horse = described_class.new(date_of_birth: Date.current - 1.day, date_of_death: Date.current)
+
+        expect(horse.dead?).to be true
       end
     end
   end

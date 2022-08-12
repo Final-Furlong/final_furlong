@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_12_140110) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_12_155732) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -49,10 +49,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_12_140110) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "location_bred_id"
+    t.integer "legacy_id"
     t.index ["breeder_id"], name: "index_horses_on_breeder_id"
     t.index ["created_at"], name: "index_horses_on_created_at"
     t.index ["dam_id"], name: "index_horses_on_dam_id"
     t.index ["date_of_birth"], name: "index_horses_on_date_of_birth"
+    t.index ["legacy_id"], name: "index_horses_on_legacy_id", unique: true
     t.index ["location_bred_id"], name: "index_horses_on_location_bred_id"
     t.index ["owner_id"], name: "index_horses_on_owner_id"
     t.index ["sire_id"], name: "index_horses_on_sire_id"

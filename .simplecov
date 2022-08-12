@@ -8,17 +8,20 @@ SimpleCov.start do
 
   add_filter %r{^/config/}
   add_filter %r{^/db/}
+  add_filter "helpers"
+  add_filter "models/legacy_"
+  add_filter "services/migrate_legacy_"
   add_filter(%r{^/spec/})
   add_filter(%r{^/test/})
 
   add_group "API", "app/controllers/api"
   add_group "Controllers", "app/controllers"
-  add_group "Models", "app/models"
+  add_group "DB", %w[app/models app/repositories app/queries]
   add_group "Policies", "app/policies"
   add_group "Forms", "app/forms"
   add_group "Jobs", %w[app/jobs app/workers]
   add_group "Mailers", "app/mailers"
-  add_group "Helpers", "app/helpers"
+  add_group "Operations", %w[app/interactions app/services]
   add_group "Libraries", %w[lib/ app/validation/final_furlong]
   add_group "View Components", "app/components"
 

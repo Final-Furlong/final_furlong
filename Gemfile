@@ -39,6 +39,7 @@ gem "puma", "~> 5.0"
 gem "pundit"
 gem "rack-cors"
 gem "rails-i18n"
+gem "ransack"
 gem "redis", "~> 4.0"
 gem "sentry-rails"
 gem "sentry-ruby"
@@ -82,7 +83,6 @@ group :development do
   gem "capistrano-rbenv", "~> 2.2", require: false
   gem "capistrano-sidekiq", require: false
   gem "chusaku", require: false
-
   gem "ed25519", require: false # required for capistrano
   gem "guard", require: false
   gem "guard-bundler", require: false
@@ -97,10 +97,10 @@ end
 group :development, :test do
   gem "better_errors"
   gem "binding_of_caller"
-  gem "brakeman"
+  gem "brakeman", require: false
   gem "bullet"
   gem "bundler-audit", require: false
-  gem "byebug", platform: :mri
+  gem "debug"
   gem "factory_bot-awesome_linter", require: false
   gem "factory_bot_rails", require: false
   gem "faker", require: false
