@@ -1,6 +1,53 @@
 class LegacyHorse < LegacyRecord
   self.table_name = "ff_horses"
   self.primary_key = "ID"
+
+  def method_missing(method_name, *_args)
+    self[format_attribute(method_name)]
+  end
+
+  def respond_to_missing?(method_name, include_private = false)
+    lookup_methods.include?(method_name.to_s) || super
+  end
+
+  private
+
+  def format_attribute(value)
+    # rubocop:disable Metrics/MethodLength
+    value = value.to_s
+    case value
+    when "secondary_bloodline_power"
+      "BMBPF"
+    when "bloodline_power"
+      "BPF"
+    when "dosage"
+      "DC"
+    when "date_of_birth"
+      "DOB"
+    when "date_of_death"
+      "DOD"
+    when "game_mares_allowed"
+      "FFMares"
+    else
+      value.titleize.delete(" ")
+    end
+  end
+
+  def lookup_methods
+    %w[Acceleration Allele Approval Ave BMBPF BPF Boarded Break Breeder
+       Close Color Comments Consistency Courage CurrentHeight DC DOB Dam
+       DamDam DamSire DefaultEquip DefaultInstructions DefaultJock1 DefaultJock2
+       DefaultJock3 DefaultWorkoutTrack Die Dirt DisplayEnergy DisplayFitness
+       EnergyCurrent EnergyMin EnergyRegain Equipment FFMares Face FacePic
+       Fast Fitness FoalHeight GenSound Gender Good Hasbeen Height ID
+       Immature InTransit LFPic LFmarkings LHPic LHmarkings LastRaceFinishers
+       LastRaceId Lead Leased LoafPct LoafStride LoafThresh LocBred Location
+       MaresPerStable Max Midpack Min NEGain NELoss Name NaturalEnergy Outside
+       Owner OwnerComments Pace Pissy RFPic RFmarkings RHPic RHmarkings RacesCount
+       Ratability RestDayCount Retire SC SPS SalePrice SellTo Sire SireDam SireSire
+       Slow Soundness Stamina Status StudPrice Sustain Traffic Turf Turning Weight
+       Wet XPCurrent XPRate can_be_sold last_modified leaser slug]
+  end
 end
 
 # == Schema Information

@@ -139,7 +139,6 @@ GEM
     bundler-audit (0.9.1)
       bundler (>= 1.2.0, < 3)
       thor (~> 1.0)
-    byebug (11.1.3)
     callee (0.3.5)
       dry-initializer (>= 2.5, < 4.0)
     cancancan (3.4.0)
@@ -194,6 +193,9 @@ GEM
     data_migrate (8.0.0)
       activerecord (>= 5.0)
       railties (>= 5.0)
+    debug (1.6.2)
+      irb (>= 1.3.6)
+      reline (>= 0.3.1)
     debug_inspector (1.1.0)
     devise-i18n (1.10.2)
       devise (>= 4.8.0)
@@ -354,6 +356,9 @@ GEM
     importmap-rails (1.0.2)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
+    io-console (0.5.11)
+    irb (1.4.1)
+      reline (>= 0.3.0)
     iso (0.4.0)
       i18n
     jaro_winkler (1.5.4)
@@ -482,6 +487,10 @@ GEM
       zeitwerk (~> 2.5)
     rainbow (3.1.1)
     rake (13.0.6)
+    ransack (3.2.1)
+      activerecord (>= 6.1.5)
+      activesupport (>= 6.1.5)
+      i18n
     rb-fsevent (0.11.1)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
@@ -491,6 +500,8 @@ GEM
       parser (~> 3.1.0)
       rainbow (>= 2.0, < 4.0)
     regexp_parser (2.5.0)
+    reline (0.3.1)
+      io-console (~> 0.5)
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
@@ -704,7 +715,6 @@ DEPENDENCIES
   browser
   bullet
   bundler-audit
-  byebug
   callee
   capistrano (~> 3.17)
   capistrano-bundler (~> 2.0)
@@ -719,6 +729,7 @@ DEPENDENCIES
   cssbundling-rails
   dartsass-rails
   data_migrate
+  debug
   devise!
   devise-i18n
   discard
@@ -759,6 +770,7 @@ DEPENDENCIES
   rack-mini-profiler
   rails (= 7.0.3.1)
   rails-i18n
+  ransack
   redis (~> 4.0)
   reek
   responders
