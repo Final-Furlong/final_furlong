@@ -27,3 +27,4 @@ RSpec.describe Racetrack, type: :model do
     end
   end
 end
+

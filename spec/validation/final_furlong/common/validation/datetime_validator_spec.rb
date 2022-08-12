@@ -82,3 +82,4 @@ end
 class ModelWithDatetimeValidationAllowingBlank < ModelWithDatetimeField
   validates_datetime :start_time, allow_blank: true
 end
+

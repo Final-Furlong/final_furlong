@@ -6,11 +6,11 @@
     .card-body
       .card-subtitle.mb-2
         %span.text-muted= "@#{stable.user.username}"
-        = render OnlineBadgeComponent.new(online: SessionsRepository.online?(id: stable.user_id))
+        = render OnlineBadgeComponent.new(online: SessionsRepository.online?(resource: stable))
       - if stable.description
         .text-truncate-container
           %p.card-text.text-break= stable.description.html_safe # rubocop:disable Rails/OutputSafety
       - else
         %p.card-text.text-muted.fs-6.fw-light.fst-italic= t(".no_description")
       - if stable.user.current_sign_in_at
-        %p.text-end.text-muted.mt-2.mb-0= t(".last_online", date: l(stable.user.current_sign_in_at, format: :short))
+        %p.text-end.text-muted.mt-2.mb-0= t(".last_online", date: l(stable.last_online_at, format: :short))

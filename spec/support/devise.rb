@@ -4,3 +4,4 @@ RSpec.configuration do |config|
   config.include Devise::Test::IntegrationHelpers, type: :system
   config.include Warden::Test::Helper
 end
+

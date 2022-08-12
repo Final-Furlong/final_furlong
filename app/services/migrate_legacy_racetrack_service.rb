@@ -297,3 +297,4 @@ class MigrateLegacyRacetrackService # rubocop:disable Metrics/ClassLength
     )
   end
 end
+

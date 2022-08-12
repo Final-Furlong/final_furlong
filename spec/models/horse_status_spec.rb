@@ -101,3 +101,4 @@ RSpec.describe HorseStatus do
     end
   end
 end
+

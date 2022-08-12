@@ -91,3 +91,4 @@ end
 #  index_users_on_unlock_token          (unlock_token) UNIQUE
 #  index_users_on_username              (username) UNIQUE
 #
+

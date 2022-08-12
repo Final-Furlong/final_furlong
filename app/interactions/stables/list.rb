@@ -1,7 +1,8 @@
 module Stables
   class List < BaseInteraction
     def execute
-      Stable.ordered
+      StablesRepository.new.ordered_by_name
     end
   end
 end
+

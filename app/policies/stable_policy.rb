@@ -1,7 +1,7 @@
 class StablePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      scope.joins(:user).includes(:user).merge(User.active)
+      StablesRepository.new(scope:).active
     end
   end
 
@@ -25,3 +25,4 @@ class StablePolicy < ApplicationPolicy
     user&.admin && record.user != user
   end
 end
+

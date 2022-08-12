@@ -231,3 +231,4 @@ Rails.application.config.assets.paths << Pagy.root.join("javascripts")
 
 # When you are done setting your own default freeze it, so it will not get changed accidentally
 Pagy::DEFAULT.freeze
+

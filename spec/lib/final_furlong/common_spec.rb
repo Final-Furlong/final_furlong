@@ -5,3 +5,4 @@ RSpec.describe FinalFurlong::Common do
     expect(described_class).to be_a Module
   end
 end
+

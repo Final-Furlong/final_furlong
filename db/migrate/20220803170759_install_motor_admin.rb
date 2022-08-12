@@ -191,3 +191,4 @@ class InstallMotorAdmin < ActiveRecord::Migration[7.0]
     drop_table :motor_dashboards
   end
 end
+

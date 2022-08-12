@@ -44,28 +44,29 @@ class StablesController < ApplicationController
 
   private
 
-  def update_params
-    { stable: current_stable }.reverse_merge(stable_params)
-  end
+    def update_params
+      { stable: current_stable }.reverse_merge(stable_params)
+    end
 
-  def load_from_form(outcome)
-    self.stable_form = outcome
-    self.stable = outcome.stable
-  end
+    def load_from_form(outcome)
+      self.stable_form = outcome
+      self.stable = outcome.stable
+    end
 
-  def stable_params
-    params.require(:stable).permit(:description)
-  end
+    def stable_params
+      params.require(:stable).permit(:description)
+    end
 
-  def load_stable
-    self.stable = params[:id] ? find_stable! : current_stable
-  end
+    def load_stable
+      self.stable = params[:id] ? find_stable! : current_stable
+    end
 
-  def find_stable!
-    outcome = Stables::Find.run(params)
+    def find_stable!
+      outcome = Stables::Find.run(params)
 
-    raise ActiveRecord::RecordNotFound, outcome.errors.full_messages.to_sentence unless outcome.valid?
+      raise ActiveRecord::RecordNotFound, outcome.errors.full_messages.to_sentence unless outcome.valid?
 
-    outcome.result
-  end
+      outcome.result
+    end
 end
+

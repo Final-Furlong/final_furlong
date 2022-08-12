@@ -13,3 +13,4 @@ RSpec.shared_examples "a horse" do
     it { is_expected.to validate_presence_of(:date_of_birth) }
   end
 end
+

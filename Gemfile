@@ -12,7 +12,6 @@ gem "devise-i18n"
 gem "responders"
 
 gem "active_interaction"
-gem "activerecord-session_store"
 gem "bootstrap"
 gem "browser"
 gem "callee"
@@ -136,3 +135,4 @@ group :test do
   gem "webdrivers"
   gem "whenever-test"
 end
+

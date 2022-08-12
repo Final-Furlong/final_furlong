@@ -5,3 +5,4 @@ class BaseInteraction < ActiveInteraction::Base
     raise NotImplementedError, "#execute must be defined in #{self.class}"
   end
 end
+

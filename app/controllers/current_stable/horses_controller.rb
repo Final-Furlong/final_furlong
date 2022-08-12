@@ -25,12 +25,13 @@ module CurrentStable
 
     private
 
-    def set_horse
-      @horse = current_stable.horses.find(params[:id])
-    end
+      def set_horse
+        @horse = current_stable.horses.find(params[:id])
+      end
 
-    def horse_params
-      params.require(:horse).permit(:name)
-    end
+      def horse_params
+        params.require(:horse).permit(:name)
+      end
   end
 end
+

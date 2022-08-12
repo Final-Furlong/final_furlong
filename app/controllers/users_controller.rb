@@ -3,7 +3,7 @@ class UsersController < AuthenticatedController
   before_action :new_user, only: %i[new create]
   before_action :load_new_user_form, only: %i[new create]
   before_action :load_edit_user_form, only: %i[edit update]
-  before_action :authorize_user
+  before_action :authorize_user, except: :index
 
   # @route GET /users (users)
   def index
@@ -55,27 +55,28 @@ class UsersController < AuthenticatedController
 
   private
 
-  def authorize_user
-    authorize @user
-  end
+    def authorize_user
+      authorize @user
+    end
 
-  def load_user
-    @user = User.find_by(id: params[:id])
-  end
+    def load_user
+      @user = User.find_by(id: params[:id])
+    end
 
-  def new_user
-    @user = User.new
-  end
+    def new_user
+      @user = User.new
+    end
 
-  def load_new_user_form
-    @user_form = Users::NewUserForm.new(@user)
-  end
+    def load_new_user_form
+      @user_form = Users::NewUserForm.new(@user)
+    end
 
-  def load_edit_user_form
-    @user_form = Users::UpdateUserForm.new(@user)
-  end
+    def load_edit_user_form
+      @user_form = Users::UpdateUserForm.new(@user)
+    end
 
-  def user_attributes
-    permitted_attributes(@user)
-  end
+    def user_attributes
+      permitted_attributes(@user)
+    end
 end
+

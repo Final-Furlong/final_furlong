@@ -77,13 +77,13 @@ RSpec.describe FinalFurlong::Internet::Validation::EmailValidator do
 
   private
 
-  def set_model
-    ModelWithDefaultEmailValidation.new
-  end
+    def set_model
+      ModelWithDefaultEmailValidation.new
+    end
 
-  def email_errors(model)
-    model.errors.where(:email)
-  end
+    def email_errors(model)
+      model.errors.where(:email)
+    end
 end
 
 class ModelWithDefaultEmailField
@@ -104,3 +104,4 @@ end
 class ModelWithEmailValidationAllowingBlank < ModelWithDefaultEmailField
   validates_email :email, allow_blank: true
 end
+

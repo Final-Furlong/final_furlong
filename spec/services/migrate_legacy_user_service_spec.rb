@@ -155,3 +155,4 @@ RSpec.describe MigrateLegacyUserService do
   end
 end
 # rubocop:enable RSpec/ExampleLength
+

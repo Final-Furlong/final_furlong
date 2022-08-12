@@ -95,3 +95,4 @@ RSpec.describe Horse, type: :model do
     end
   end
 end
+

@@ -4,31 +4,30 @@ class Stable < ApplicationRecord
   has_many :bred_horses, class_name: "Horse", foreign_key: :breeder_id, inverse_of: :breeder,
                          dependent: :restrict_with_exception
   has_many :horses, foreign_key: :owner_id, inverse_of: :owner, dependent: :restrict_with_exception
-
-  scope :ordered, -> { order(name: :asc) }
-
-  delegate :online?, to: :user
 end
 
 # == Schema Information
 #
 # Table name: stables
 #
-#  id          :uuid             not null, primary key
-#  description :text
-#  name        :string           not null
-#  created_at  :datetime         not null, indexed
-#  updated_at  :datetime         not null
-#  legacy_id   :integer          indexed
-#  user_id     :uuid             not null, indexed
+#  id             :uuid             not null, primary key
+#  description    :text
+#  last_online_at :datetime         indexed
+#  name           :string           not null
+#  created_at     :datetime         not null, indexed
+#  updated_at     :datetime         not null
+#  legacy_id      :integer          indexed
+#  user_id        :uuid             not null, indexed
 #
 # Indexes
 #
-#  index_stables_on_created_at  (created_at)
-#  index_stables_on_legacy_id   (legacy_id)
-#  index_stables_on_user_id     (user_id) UNIQUE
+#  index_stables_on_created_at      (created_at)
+#  index_stables_on_last_online_at  (last_online_at)
+#  index_stables_on_legacy_id       (legacy_id)
+#  index_stables_on_user_id         (user_id) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (user_id => users.id)
 #
+

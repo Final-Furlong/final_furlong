@@ -82,3 +82,4 @@ end
 class ModelWithDateValidationAllowingBlank < ModelWithDateField
   validates_date :date, allow_blank: true
 end
+

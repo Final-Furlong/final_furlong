@@ -44,15 +44,16 @@ RSpec.describe Users::NewUserForm, type: :model do
 
   private
 
-  def user_attrs
-    attrs = attributes_for(:user)
-    {
-      name: attrs[:name],
-      email: attrs[:email],
-      password: attrs[:password],
-      password_confirmation: attrs[:password],
-      username: attrs[:username],
-      stable_name: attributes_for(:stable)[:name]
-    }
-  end
+    def user_attrs
+      attrs = attributes_for(:user)
+      {
+        name: attrs[:name],
+        email: attrs[:email],
+        password: attrs[:password],
+        password_confirmation: attrs[:password],
+        username: attrs[:username],
+        stable_name: attributes_for(:stable)[:name]
+      }
+    end
 end
+

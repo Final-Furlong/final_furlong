@@ -17,14 +17,10 @@
 #   runner "AnotherModel.prune_old_records"
 # end
 
-every 1.day, at: "2:00" do
-  # clear activestorage sessions >= 30 days
-  rake "db:sessions:trim"
-end
-
 every 6.minutes do
   # make sure sidekiq queues are healthy
   rake "sidekiq:health"
 end
 
 # Learn more: http://github.com/javan/whenever
+

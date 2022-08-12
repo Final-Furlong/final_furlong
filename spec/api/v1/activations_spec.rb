@@ -116,3 +116,4 @@ RSpec.describe Api::V1::Activations do
     end
   end
 end
+

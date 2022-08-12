@@ -9,3 +9,4 @@ module JSONHelpers
     attributes.stringify_keys if stringify
   end
 end
+

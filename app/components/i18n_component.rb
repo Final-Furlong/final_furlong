@@ -6,23 +6,24 @@ class I18nComponent < VariantComponent
 
   private
 
-  def render?
-    visible_on_desktop? || visible_on_tablet? || visible_on_phone?
-  end
+    def render?
+      visible_on_desktop? || visible_on_tablet? || visible_on_phone?
+    end
 
-  def american_locale?
-    @locale == "en"
-  end
+    def american_locale?
+      @locale == "en"
+    end
 
-  def british_locale?
-    @locale == "en-GB"
-  end
+    def british_locale?
+      @locale == "en-GB"
+    end
 
-  def locale_language
-    "English"
-  end
+    def locale_language
+      "English"
+    end
 
-  def icon_classes
-    british_locale? ? "fi fi-gb" : "fi fi-us"
-  end
+    def icon_classes
+      british_locale? ? "fi fi-gb" : "fi fi-us"
+    end
 end
+

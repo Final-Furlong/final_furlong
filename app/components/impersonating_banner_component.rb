@@ -3,3 +3,4 @@ class ImpersonatingBannerComponent < ApplicationComponent
     helpers.current_user != helpers.true_user
   end
 end
+

@@ -1,7 +1,10 @@
 class SessionsRepository < ApplicationRepository
   ONLINE_TIME = 15.minutes
 
-  def self.online?(id:)
-    CustomSession.where(user_id: id).exists?(["updated_at >= ?", ONLINE_TIME.ago])
+  def self.online?(resource:)
+    return false unless resource.last_online_at
+
+    resource.last_online_at >= ONLINE_TIME.ago
   end
 end
+

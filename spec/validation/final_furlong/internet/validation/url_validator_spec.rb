@@ -125,13 +125,13 @@ RSpec.describe FinalFurlong::Internet::Validation::UrlValidator do
 
   private
 
-  def set_model
-    ModelWithHttpValidation.new
-  end
+    def set_model
+      ModelWithHttpValidation.new
+    end
 
-  def url_errors(model)
-    model.errors.where(:url)
-  end
+    def url_errors(model)
+      model.errors.where(:url)
+    end
 end
 
 class SampleModel
@@ -156,3 +156,4 @@ end
 class ModelWithAllowingBlank < SampleModel
   validates_url :url, allow_blank: true
 end
+

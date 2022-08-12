@@ -25,3 +25,4 @@ RSpec.describe Shared::ErrorMessagesComponent, type: :component do
     end
   end
 end
+

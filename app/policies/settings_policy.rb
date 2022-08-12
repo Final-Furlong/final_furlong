@@ -3,3 +3,4 @@ class SettingsPolicy < ApplicationPolicy
     true
   end
 end
+

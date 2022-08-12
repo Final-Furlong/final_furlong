@@ -12,12 +12,13 @@ module FinalFurlong
 
         private
 
-        def strptime_date(value)
-          return value if value.is_a? Date
+          def strptime_date(value)
+            return value if value.is_a? Date
 
-          Date.parse_safely(value)
-        end
+            Date.parse_safely(value)
+          end
       end
     end
   end
 end
+

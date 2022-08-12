@@ -12,7 +12,7 @@
 
 %p
   %span= t(".joined", date: l(stable.created_at.to_date, format: :long))
-  = render OnlineBadgeComponent.new(online: SessionsRepository.online?(id: stable.user_id))
+  = render OnlineBadgeComponent.new(online: SessionsRepository.online?(resource: stable))
 
 - if stable.description?
   %blockquote.blockquote.border.border-secondary.rounded.p-2

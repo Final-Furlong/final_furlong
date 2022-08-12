@@ -13,3 +13,4 @@ RSpec.describe Stable, type: :model do
     end
   end
 end
+

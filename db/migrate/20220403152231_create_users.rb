@@ -19,3 +19,4 @@ class CreateUsers < ActiveRecord::Migration[7.0]
     add_index :users, :discourse_id, unique: true
   end
 end
+

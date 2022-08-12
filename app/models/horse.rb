@@ -44,17 +44,17 @@ class Horse < ApplicationRecord
 
   private
 
-  def dead?
-    return false unless self[:date_of_death]
+    def dead?
+      return false unless self[:date_of_death]
 
-    self[:date_of_death] >= self[:date_of_birth]
-  end
+      self[:date_of_death] >= self[:date_of_birth]
+    end
 
-  def name_required
-    return unless name_changed?
+    def name_required
+      return unless name_changed?
 
-    errors.add(:name, :blank) if name.blank?
-  end
+      errors.add(:name, :blank) if name.blank?
+    end
 end
 
 # == Schema Information
@@ -95,3 +95,4 @@ end
 #  fk_rails_...  (owner_id => stables.id)
 #  fk_rails_...  (sire_id => horses.id)
 #
+

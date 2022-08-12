@@ -32,15 +32,16 @@ class HorsesController < ApplicationController
 
   private
 
-  def authorize_horse
-    authorize @horse
-  end
+    def authorize_horse
+      authorize @horse
+    end
 
-  def set_horse
-    @horse = Horse.find(params[:id])
-  end
+    def set_horse
+      @horse = Horse.find(params[:id])
+    end
 
-  def horse_params
-    params.require(:horse).permit(:name, :date_of_birth)
-  end
+    def horse_params
+      params.require(:horse).permit(:name, :date_of_birth)
+    end
 end
+

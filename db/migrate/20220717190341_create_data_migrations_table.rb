@@ -14,3 +14,4 @@ class CreateDataMigrationsTable < ActiveRecord::Migration[7.0]
     drop_table "data_migrations" if migrations["count"].to_i.zero?
   end
 end
+

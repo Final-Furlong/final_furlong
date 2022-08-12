@@ -81,9 +81,9 @@ RSpec.describe FinalFurlong::Horses::Validation::NameValidator do
 
   private
 
-  def name_errors(model)
-    model.errors.where(:name)
-  end
+    def name_errors(model)
+      model.errors.where(:name)
+    end
 end
 
 class ModelWithHorseNameField
@@ -104,3 +104,4 @@ end
 class ModelWithHorseNameValidationAllowingBlank < ModelWithHorseNameField
   validates_horse_name :name, allow_blank: true
 end
+

@@ -56,3 +56,4 @@ RSpec.describe "Logging In", js: true do
     end
   end
 end
+
