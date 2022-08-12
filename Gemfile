@@ -12,7 +12,8 @@ gem "devise-i18n"
 gem "responders"
 
 gem "active_interaction"
-gem "activerecord-session_store"
+gem "anycable-rails"
+gem "anycable-rails-jwt", "~> 0.1.0"
 gem "bootstrap"
 gem "browser"
 gem "callee"
@@ -136,3 +137,4 @@ group :test do
   gem "webdrivers"
   gem "whenever-test"
 end
+

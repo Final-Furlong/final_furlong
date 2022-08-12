@@ -23,7 +23,7 @@ class User < ApplicationRecord
 
   delegate :locale, to: :setting, allow_nil: true
 
-  # broadcasts_to ->(_user) { "users" }, inserts_by: :prepend
+  broadcasts_to ->(_user) { "users" }, inserts_by: :prepend
 
   scope :ordered, -> { order(id: :desc) }
 

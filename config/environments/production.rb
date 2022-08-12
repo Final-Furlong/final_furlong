@@ -3,6 +3,13 @@ require "active_support/core_ext/integer/time"
 Rails.application.default_url_options = { host: "prod.finalfurlong.org" }
 
 Rails.application.configure do
+  # Specify AnyCable WebSocket server URL to use by JS client
+  config.after_initialize do
+    if AnyCable::Rails.enabled?
+      config.action_cable.url = ActionCable.server.config.url = ENV.fetch("CABLE_URL",
+                                                                          "/cable")
+    end
+  end
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.

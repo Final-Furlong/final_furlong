@@ -4,10 +4,6 @@
 = turbo_stream_from "users"
 .header.is-flex.flex-wrap-wrap.is-justify-content-space-between.is-vcentered.columns
   %h1.is-size-1.column= t(".title")
-  - if policy(User).create?
-    .has-text-right
-      = link_to t(".new_user"), new_user_path, class: "button is-primary", data: { turbo_frame: dom_id(User.new) }
-= turbo_frame_tag User.new
 
 = turbo_frame_tag "users" do
   = render @users

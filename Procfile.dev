@@ -1,3 +1,4 @@
 web: bin/rails server -p 3000
 css: bin/rails dartsass:watch
 sidekiq: bin/sidekiq -C config/sidekiq.yml
+anycable: anycable-go --port=8080 --jwt_id_key=67f17e18abafbf2cbd39d2bb0aa87240747ac4d986e16fca6365b8dfa8134fbc6edc62222c849ec6c3bd07d4b2cc7436fc2b27deeebe72c352533459ee8b2a88
