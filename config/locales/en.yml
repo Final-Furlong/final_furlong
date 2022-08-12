@@ -232,7 +232,6 @@ en:
     destroy:
       success: User was successfully destroyed.
     index:
-      new_user: New user
       title: Users
     new:
       title: New user
