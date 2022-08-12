@@ -26,16 +26,16 @@ module Users
 
     private
 
-    def initial_attributes
-      assign_attributes(@user.attributes.symbolize_keys.slice(:username, :email, :name))
-      @stable_name = @user.stable.name
-    end
+      def initial_attributes
+        assign_attributes(@user.attributes.symbolize_keys.slice(:username, :email, :name))
+        @stable_name = @user.stable.name
+      end
 
-    def validate_unique_email
-      return unless email
+      def validate_unique_email
+        return unless email
 
-      user_exists = User.where.not(id: user.id).where("LOWER(email) = ?", email.downcase).exists? # rubocop:disable Rails/WhereExists
-      errors.add(:email, :taken) if user_exists
-    end
+        user_exists = User.where.not(id: user.id).where("LOWER(email) = ?", email.downcase).exists? # rubocop:disable Rails/WhereExists
+        errors.add(:email, :taken) if user_exists
+      end
   end
 end

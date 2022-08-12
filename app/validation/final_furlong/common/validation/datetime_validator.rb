@@ -13,11 +13,11 @@ module FinalFurlong
 
         private
 
-        def parse_time(value)
-          return value if value.is_a?(Time) || value.is_a?(DateTime)
+          def parse_time(value)
+            return value if value.is_a?(Time) || value.is_a?(DateTime)
 
-          DateTime.parse_safely(value)
-        end
+            DateTime.parse_safely(value)
+          end
       end
     end
   end

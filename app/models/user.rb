@@ -42,10 +42,10 @@ class User < ApplicationRecord
 
   private
 
-  def set_defaults
-    self.status ||= "pending"
-    self.admin ||= false
-  end
+    def set_defaults
+      self.status ||= "pending"
+      self.admin ||= false
+    end
 end
 
 # == Schema Information

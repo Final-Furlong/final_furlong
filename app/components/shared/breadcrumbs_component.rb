@@ -12,59 +12,59 @@ module Shared
 
     private
 
-    def render_action(action, classes)
-      action[:type] == :form ? button_action(action, classes) : link_action(action, classes)
-    end
+      def render_action(action, classes)
+        action[:type] == :form ? button_action(action, classes) : link_action(action, classes)
+      end
 
-    def link_action(action, classes)
-      link_to t(action_i18n_key(action)), action[:link], type: "button", class: classes
-    end
+      def link_action(action, classes)
+        link_to t(action_i18n_key(action)), action[:link], type: "button", class: classes
+      end
 
-    def button_action(action, classes)
-      button_to t(action_i18n_key(action)), action[:link], type: "button", class: classes, form_class: "d-inline"
-    end
+      def button_action(action, classes)
+        button_to t(action_i18n_key(action)), action[:link], type: "button", class: classes, form_class: "d-inline"
+      end
 
-    def responsive_classes(action)
-      "#{action[:base_classes]} #{action[:responsive_classes]}"
-    end
+      def responsive_classes(action)
+        "#{action[:base_classes]} #{action[:responsive_classes]}"
+      end
 
-    def regular_classes(action)
-      "#{action[:base_classes]} #{action[:classes]}"
-    end
+      def regular_classes(action)
+        "#{action[:base_classes]} #{action[:classes]}"
+      end
 
-    def action_i18n_key(action)
-      action[:i18n_key]
-    end
+      def action_i18n_key(action)
+        action[:i18n_key]
+      end
 
-    def allowed_action?(action)
-      return false unless action[:user] && action[:object]
+      def allowed_action?(action)
+        return false unless action[:user] && action[:object]
 
-      Pundit.policy!(action[:user], action[:object]).send("#{action[:name]}?")
-    end
+        Pundit.policy!(action[:user], action[:object]).send("#{action[:name]}?")
+      end
 
-    def styled_links
-      @styled_links ||= @links.map do |link|
-        link[:classes] = @classes
-        if link == @links.last
-          last_link_metadata(link)
-        else
-          link_metadata(link)
+      def styled_links
+        @styled_links ||= @links.map do |link|
+          link[:classes] = @classes
+          if link == @links.last
+            last_link_metadata(link)
+          else
+            link_metadata(link)
+          end
         end
       end
-    end
 
-    def link_metadata(link)
-      link[:breadcrumb_class] = "breadcrumb-item d-none d-md-inline"
-      link[:aria_current] = false
-      link[:last] = false
-      link
-    end
+      def link_metadata(link)
+        link[:breadcrumb_class] = "breadcrumb-item d-none d-md-inline"
+        link[:aria_current] = false
+        link[:last] = false
+        link
+      end
 
-    def last_link_metadata(link)
-      link[:breadcrumb_class] = "breadcrumb-item active"
-      link[:aria_current] = "page"
-      link[:last] = true
-      link
-    end
+      def last_link_metadata(link)
+        link[:breadcrumb_class] = "breadcrumb-item active"
+        link[:aria_current] = "page"
+        link[:last] = true
+        link
+      end
   end
 end

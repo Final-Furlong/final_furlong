@@ -17,25 +17,25 @@ module Users
 
     private
 
-    def sync_user_locale_to_cookies
-      cookies.permanent[:locale] = valid_locale?(user.locale) ? user.locale.to_s : locale
-    end
+      def sync_user_locale_to_cookies
+        cookies.permanent[:locale] = valid_locale?(user.locale) ? user.locale.to_s : locale
+      end
 
-    def sync_cookie_locale_to_user
-      return unless valid_locale?(cookies[:locale])
+      def sync_cookie_locale_to_user
+        return unless valid_locale?(cookies[:locale])
 
-      setting = user.setting || user.build_setting
-      setting.update!(locale: cookies[:locale].to_s)
-    end
+        setting = user.setting || user.build_setting
+        setting.update!(locale: cookies[:locale].to_s)
+      end
 
-    def clear_cookie_locale
-      return if valid_locale?(cookies[:locale])
+      def clear_cookie_locale
+        return if valid_locale?(cookies[:locale])
 
-      cookies.delete :locale
-    end
+        cookies.delete :locale
+      end
 
-    def valid_locale?(locale)
-      I18n.available_locales.map(&:to_s).include?(locale)
-    end
+      def valid_locale?(locale)
+        I18n.available_locales.map(&:to_s).include?(locale)
+      end
   end
 end

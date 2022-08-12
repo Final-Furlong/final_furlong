@@ -23,8 +23,9 @@ AllCops:
 
 Bundler/OrderedGems:
   Enabled: true
-Lint/InterpolationCheck:
-  Enabled: false
+Layout/IndentationConsistency:
+  Enabled: true
+  EnforcedStyle: indented_internal_methods
 Layout/LineEndStringConcatenationIndentation:
   Enabled: true
   EnforcedStyle: aligned
@@ -38,6 +39,8 @@ Layout/LineLength:
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
   EnforcedStyle: space
+Lint/InterpolationCheck:
+  Enabled: false
 Lint/SuppressedException:
   Exclude:
     - "Rakefile"

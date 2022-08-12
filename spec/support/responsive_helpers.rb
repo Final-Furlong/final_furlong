@@ -17,14 +17,14 @@ module ResponsiveHelpers
 
   private
 
-  def resize_window_by(size)
-    return unless drive_manage?
+    def resize_window_by(size)
+      return unless drive_manage?
 
-    Capybara.current_session.driver.browser.manage.window.resize_to(size[0],
-                                                                    size[1])
-  end
+      Capybara.current_session.driver.browser.manage.window.resize_to(size[0],
+                                                                      size[1])
+    end
 
-  def driver_manage?
-    Capybara.current_session.driver.browser.respond_to? :manage
-  end
+    def driver_manage?
+      Capybara.current_session.driver.browser.respond_to? :manage
+    end
 end

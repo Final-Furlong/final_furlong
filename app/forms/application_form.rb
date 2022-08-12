@@ -9,7 +9,7 @@ class ApplicationForm
 
   private
 
-  def initial_attributes
-    raise NotImplementedError, "must be defined in #{self.class}"
-  end
+    def initial_attributes
+      raise NotImplementedError, "must be defined in #{self.class}"
+    end
 end

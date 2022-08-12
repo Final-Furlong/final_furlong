@@ -16,26 +16,26 @@ module Stables
 
     private
 
-    def update_stables
-      Stable.transaction do
-        stable.description = new_stable_description
+      def update_stables
+        Stable.transaction do
+          stable.description = new_stable_description
 
-        if !stable.save! || !legacy_stable&.update!("Description" => legacy_stable_description)
-          errors.merge!(stable.errors)
+          if !stable.save! || !legacy_stable&.update!("Description" => legacy_stable_description)
+            errors.merge!(stable.errors)
+          end
         end
       end
-    end
 
-    def legacy_stable
-      LegacyUser.find_by(id: stable.legacy_id)
-    end
+      def legacy_stable
+        LegacyUser.find_by(id: stable.legacy_id)
+      end
 
-    def new_stable_description
-      sanitize(description, tags: %w[strong em u br])
-    end
+      def new_stable_description
+        sanitize(description, tags: %w[strong em u br])
+      end
 
-    def legacy_stable_description
-      sanitize(description, tags: [])
-    end
+      def legacy_stable_description
+        sanitize(description, tags: [])
+      end
   end
 end
