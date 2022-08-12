@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :setup_sentry
   before_action :set_variant
+  before_action :update_stable_online
 
   around_action :switch_locale
 
@@ -77,5 +78,11 @@ class ApplicationController < ActionController::Base
                       else
                         :desktop
                       end
+  end
+
+  def update_stable_online
+    return unless current_stable
+
+    current_stable.update_columns(last_online_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
   end
 end

@@ -77,12 +77,6 @@ GEM
     activerecord-filter (6.1.0.2)
       activerecord (>= 6.1.0)
       arel-extensions (>= 6.1.0)
-    activerecord-session_store (2.0.0)
-      actionpack (>= 5.2.4.1)
-      activerecord (>= 5.2.4.1)
-      multi_json (~> 1.11, >= 1.11.2)
-      rack (>= 2.0.8, < 3)
-      railties (>= 5.2.4.1)
     activestorage (7.0.3.1)
       actionpack (= 7.0.3.1)
       activejob (= 7.0.3.1)
@@ -699,7 +693,6 @@ PLATFORMS
 
 DEPENDENCIES
   active_interaction
-  activerecord-session_store
   annotate
   autoprefixer-rails
   bcrypt_pbkdf

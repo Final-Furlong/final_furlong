@@ -3,7 +3,7 @@ class UsersController < AuthenticatedController
   before_action :new_user, only: %i[new create]
   before_action :load_new_user_form, only: %i[new create]
   before_action :load_edit_user_form, only: %i[edit update]
-  before_action :authorize_user
+  before_action :authorize_user, except: :index
 
   # @route GET /users (users)
   def index

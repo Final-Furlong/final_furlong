@@ -14,19 +14,21 @@ end
 #
 # Table name: stables
 #
-#  id          :uuid             not null, primary key
-#  description :text
-#  name        :string           not null
-#  created_at  :datetime         not null, indexed
-#  updated_at  :datetime         not null
-#  legacy_id   :integer          indexed
-#  user_id     :uuid             not null, indexed
+#  id             :uuid             not null, primary key
+#  description    :text
+#  last_online_at :datetime         indexed
+#  name           :string           not null
+#  created_at     :datetime         not null, indexed
+#  updated_at     :datetime         not null
+#  legacy_id      :integer          indexed
+#  user_id        :uuid             not null, indexed
 #
 # Indexes
 #
-#  index_stables_on_created_at  (created_at)
-#  index_stables_on_legacy_id   (legacy_id)
-#  index_stables_on_user_id     (user_id) UNIQUE
+#  index_stables_on_created_at      (created_at)
+#  index_stables_on_last_online_at  (last_online_at)
+#  index_stables_on_legacy_id       (legacy_id)
+#  index_stables_on_user_id         (user_id) UNIQUE
 #
 # Foreign Keys
 #
