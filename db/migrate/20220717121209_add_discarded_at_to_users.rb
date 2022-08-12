@@ -4,3 +4,4 @@ class AddDiscardedAtToUsers < ActiveRecord::Migration[7.0]
     add_index :users, :discarded_at
   end
 end
+

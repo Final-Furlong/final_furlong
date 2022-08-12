@@ -34,3 +34,4 @@ module CurrentStable
       end
   end
 end
+

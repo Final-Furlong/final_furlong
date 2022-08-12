@@ -44,3 +44,4 @@ RSpec.describe Stallion, type: :model do
     end
   end
 end
+

@@ -44,3 +44,4 @@ class HorsesController < ApplicationController
       params.require(:horse).permit(:name, :date_of_birth)
     end
 end
+

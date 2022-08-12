@@ -8,3 +8,4 @@ class PagesController < ApplicationController
   # @route GET /activation_required (activation)
   def activation; end
 end
+

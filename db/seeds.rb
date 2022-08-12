@@ -32,3 +32,4 @@ puts "Creating yearling"
 FactoryBot.create(:horse, :weanling, sire: stud, dam: mare)
 puts "Creating weanling"
 FactoryBot.create(:horse, :yearling, dam: mare)
+

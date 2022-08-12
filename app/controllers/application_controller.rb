@@ -86,3 +86,4 @@ class ApplicationController < ActionController::Base
       current_stable.update_columns(last_online_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
     end
 end
+

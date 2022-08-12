@@ -91,3 +91,4 @@ guard :haml_lint, cli: "--fail-fast" do
   watch(/.+\.html.*\.haml$/)
   watch(%r{(?:.+/)?\.haml-lint\.yml$}) { |m| File.dirname(m[0]) }
 end
+

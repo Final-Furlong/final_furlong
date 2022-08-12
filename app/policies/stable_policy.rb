@@ -25,3 +25,4 @@ class StablePolicy < ApplicationPolicy
     user&.admin && record.user != user
   end
 end
+

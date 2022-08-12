@@ -12,3 +12,4 @@ class CreateActivationService
     user
   end
 end
+

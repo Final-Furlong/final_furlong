@@ -34,3 +34,4 @@ set :ssh_options, {
 
 before "deploy:migrate", "maintenance:start"
 after "deploy:migrate", "maintenance:stop"
+

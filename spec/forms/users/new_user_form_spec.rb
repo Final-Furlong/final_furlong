@@ -56,3 +56,4 @@ RSpec.describe Users::NewUserForm, type: :model do
       }
     end
 end
+

@@ -10,3 +10,4 @@ class CreateStables < ActiveRecord::Migration[7.0]
     add_foreign_key :stables, :users
   end
 end
+

@@ -20,3 +20,4 @@ class AddDatabaseIndexes < ActiveRecord::Migration[7.0]
     add_index :users, :discourse_id unless index_exists?(:users, :discourse_id)
   end
 end
+

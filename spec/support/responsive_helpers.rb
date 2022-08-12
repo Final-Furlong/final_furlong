@@ -28,3 +28,4 @@ module ResponsiveHelpers
       Capybara.current_session.driver.browser.respond_to? :manage
     end
 end
+

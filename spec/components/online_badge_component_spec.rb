@@ -17,3 +17,4 @@ RSpec.describe OnlineBadgeComponent, type: :component do
     end
   end
 end
+

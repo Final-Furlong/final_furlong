@@ -116,3 +116,4 @@ end
 class ModelWithPasswordValidationAllowingBlank < ModelWithPasswordField
   validates_password :password, allow_blank: true
 end
+

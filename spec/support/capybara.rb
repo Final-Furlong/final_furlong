@@ -49,3 +49,4 @@ RSpec.configure do |config|
     resize_window_default
   end
 end
+

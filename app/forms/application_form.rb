@@ -13,3 +13,4 @@ class ApplicationForm
       raise NotImplementedError, "must be defined in #{self.class}"
     end
 end
+

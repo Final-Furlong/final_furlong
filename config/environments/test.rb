@@ -63,3 +63,4 @@ Rails.application.configure do
 
   config.log_level = :error
 end
+

@@ -5,3 +5,4 @@ class HorsePolicy < ApplicationPolicy
     end
   end
 end
+

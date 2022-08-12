@@ -45,3 +45,4 @@ class VariantComponent < ApplicationComponent
       version == :desktop || version_for_tablet?
     end
 end
+

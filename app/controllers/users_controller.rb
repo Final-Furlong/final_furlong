@@ -79,3 +79,4 @@ class UsersController < AuthenticatedController
       permitted_attributes(@user)
     end
 end
+

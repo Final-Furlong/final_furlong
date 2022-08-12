@@ -10,3 +10,4 @@ rescue LoadError
 end
 
 Rails.application.load_tasks
+

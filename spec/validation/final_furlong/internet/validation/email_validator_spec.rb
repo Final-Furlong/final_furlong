@@ -104,3 +104,4 @@ end
 class ModelWithEmailValidationAllowingBlank < ModelWithDefaultEmailField
   validates_email :email, allow_blank: true
 end
+

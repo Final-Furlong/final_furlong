@@ -13,3 +13,4 @@ unless Rails.env.development? || Rails.env.test?
     config.rails.report_rescued_exceptions = false
   end
 end
+

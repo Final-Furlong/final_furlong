@@ -39,6 +39,9 @@ Layout/LineLength:
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
   EnforcedStyle: space
+Layout/TrailingEmptyLines:
+  Enabled: true
+  EnforcedStyle: final_blank_line
 Lint/InterpolationCheck:
   Enabled: false
 Lint/SuppressedException:

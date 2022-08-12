@@ -6,3 +6,4 @@ RSpec.describe FactoryBot do
     expect { described_class.lint }.not_to raise_error
   end
 end
+

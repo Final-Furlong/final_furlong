@@ -21,3 +21,4 @@ namespace :sidekiq do
     raise StandardError, formatted_message
   end
 end
+

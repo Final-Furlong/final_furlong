@@ -14,3 +14,4 @@ namespace :factory_bot do
     end
   end
 end
+

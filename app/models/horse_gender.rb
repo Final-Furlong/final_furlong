@@ -25,3 +25,4 @@ class HorseGender
     BREEDABLE_GENDERS.include?(@gender)
   end
 end
+

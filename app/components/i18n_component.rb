@@ -26,3 +26,4 @@ class I18nComponent < VariantComponent
       british_locale? ? "fi fi-gb" : "fi fi-us"
     end
 end
+

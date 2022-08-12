@@ -13,3 +13,4 @@ class AddSessionsTable < ActiveRecord::Migration[7.0]
     add_index :sessions, :updated_at
   end
 end
+

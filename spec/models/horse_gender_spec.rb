@@ -74,3 +74,4 @@ RSpec.describe HorseGender do
     end
   end
 end
+

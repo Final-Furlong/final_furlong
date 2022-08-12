@@ -23,3 +23,4 @@ RSpec.describe Date do
   end
 end
 # rubocop:enable RSpec/MultipleExpectations
+

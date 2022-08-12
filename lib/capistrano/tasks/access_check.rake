@@ -8,3 +8,4 @@ task :check_write_permissions do
     end
   end
 end
+

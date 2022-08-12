@@ -21,3 +21,4 @@ class UserPolicy < ApplicationPolicy
     %i[username name email password password_confirmation stable_name]
   end
 end
+

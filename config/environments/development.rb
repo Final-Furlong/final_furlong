@@ -92,3 +92,4 @@ Rails.application.configure do
     Bullet.skip_html_injection = false
   end
 end
+

@@ -156,3 +156,4 @@ end
 class ModelWithAllowingBlank < SampleModel
   validates_url :url, allow_blank: true
 end
+

@@ -24,3 +24,4 @@ class OnlineBadgeComponent < ApplicationComponent
       "badge bg-light border border-secondary border-opacity-50 text-dark"
     end
 end
+

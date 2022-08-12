@@ -9,3 +9,4 @@ module Stables
     end
   end
 end
+

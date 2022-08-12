@@ -31,3 +31,4 @@ end
 #
 #  fk_rails_...  (location_id => locations.id)
 #
+

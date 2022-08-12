@@ -66,3 +66,4 @@ Turnout.configure do |config|
   config.default_response_code = 503
   config.default_retry_after = 7200
 end
+

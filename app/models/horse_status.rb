@@ -37,3 +37,4 @@ class HorseStatus
     BREEDING_STATUSES.include?(@status)
   end
 end
+

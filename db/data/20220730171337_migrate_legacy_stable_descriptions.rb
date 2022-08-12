@@ -15,3 +15,4 @@ class MigrateLegacyStableDescriptions < ActiveRecord::Migration[7.0]
     Stable.update_all(description: nil) # rubocop:disable Rails/SkipsModelValidations
   end
 end
+

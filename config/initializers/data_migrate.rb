@@ -14,3 +14,4 @@ DataMigrate::DatabaseTasks.extend DataMigrate::OnlyPrimaryDatabase
 DataMigrate.configure do |config|
   config.db_configuration = Rails.configuration.database_configuration[Rails.env]["primary"]
 end
+

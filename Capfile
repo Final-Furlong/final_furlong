@@ -23,3 +23,4 @@ require "capistrano/data_migrate"
 require "whenever/capistrano"
 
 Dir.glob("lib/capistrano/tasks/*.rake").each { |r| import r }
+

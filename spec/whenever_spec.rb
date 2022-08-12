@@ -16,3 +16,4 @@ RSpec.describe "Whenever Schedule" do # rubocop:disable RSpec/DescribeClass
     end
   end
 end
+

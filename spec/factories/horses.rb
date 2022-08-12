@@ -101,3 +101,4 @@ end
 #  fk_rails_...  (owner_id => stables.id)
 #  fk_rails_...  (sire_id => horses.id)
 #
+

@@ -36,3 +36,4 @@ class SettingsController < ApplicationController
       locale
     end
 end
+

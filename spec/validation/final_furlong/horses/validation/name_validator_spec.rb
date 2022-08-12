@@ -104,3 +104,4 @@ end
 class ModelWithHorseNameValidationAllowingBlank < ModelWithHorseNameField
   validates_horse_name :name, allow_blank: true
 end
+

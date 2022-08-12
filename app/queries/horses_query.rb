@@ -14,3 +14,4 @@ class HorsesQuery
       .name_matches(filters[:name])
   end
 end
+

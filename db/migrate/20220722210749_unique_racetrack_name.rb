@@ -5,3 +5,4 @@ class UniqueRacetrackName < ActiveRecord::Migration[7.0]
     add_index :racetracks, :name, unique: true
   end
 end
+

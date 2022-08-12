@@ -61,3 +61,4 @@ end
 # files there. All *.rb files (e.g. `frontend.rb` or `products.rb`) in that
 # folder are loaded and reloaded automatically when you change them, just like
 # this file (`config/breadcrumbs.rb`).
+

@@ -4,3 +4,4 @@ class AddOnlineTimestampToStable < ActiveRecord::Migration[7.0]
     add_index :stables, :last_online_at
   end
 end
+

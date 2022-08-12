@@ -15,3 +15,4 @@ class UniqueIndexes < ActiveRecord::Migration[7.0]
     add_index :users, :confirmation_token, unique: true
   end
 end
+

@@ -59,3 +59,4 @@ RSpec.configure do |config|
 
   config.include AbstractController::Translation # allow t() instead of I18n.t()
 end
+

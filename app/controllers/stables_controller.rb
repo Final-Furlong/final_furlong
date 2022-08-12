@@ -69,3 +69,4 @@ class StablesController < ApplicationController
       outcome.result
     end
 end
+

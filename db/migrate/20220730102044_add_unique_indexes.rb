@@ -7,3 +7,4 @@ class AddUniqueIndexes < ActiveRecord::Migration[7.0]
     add_index :activations, :user_id, unique: true
   end
 end
+

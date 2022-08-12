@@ -49,3 +49,4 @@ class ApplicationPolicy
       attr_reader :user, :scope
   end
 end
+

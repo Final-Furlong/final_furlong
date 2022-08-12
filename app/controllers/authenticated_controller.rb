@@ -8,3 +8,4 @@ class AuthenticatedController < ApplicationController
       redirect_to activation_path unless current_user.active?
     end
 end
+

@@ -7,3 +7,4 @@ class SessionsRepository < ApplicationRepository
     resource.last_online_at >= ONLINE_TIME.ago
   end
 end
+

@@ -67,3 +67,4 @@ class MigrateLegacyUserService
       end
     end
 end
+

@@ -6,3 +6,4 @@ if Rails.env.development? && ENV.fetch("DEBUG", false)
     nil
   end
 end
+

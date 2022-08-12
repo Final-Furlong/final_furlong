@@ -11,3 +11,4 @@ end
 
 # Register the component in Simple Form.
 SimpleForm.include_component(InputGroup)
+
