@@ -126,6 +126,7 @@ group :test do
   gem "rspec"
   gem "rspec_junit_formatter"
   gem "rspec-rails"
+  gem "pundit-matchers"
   gem "selenium-webdriver"
   gem "shoulda-matchers"
   gem "simplecov", require: false
