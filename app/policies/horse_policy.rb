@@ -1,7 +1,7 @@
 class HorsePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      scope.living
+      scope.born
     end
   end
 end

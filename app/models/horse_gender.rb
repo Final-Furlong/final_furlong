@@ -10,7 +10,7 @@ class HorseGender
   end
 
   def to_s
-    @gender
+    @gender.titleize
   end
 
   def male?

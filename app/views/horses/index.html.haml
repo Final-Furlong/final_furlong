@@ -1,6 +1,16 @@
-= turbo_stream_from "horses"
-.header.is-flex.flex-wrap-wrap.is-justify-content-space-between.is-vcentered.columns
-  %h1.is-size-1.column= t(".title")
+- content_for :breadcrumbs do
+  = render Shared::BreadcrumbsComponent.new(title: t("horses.index.title"))
 
-= turbo_frame_tag "horses" do
-  = render @horses
+.card
+  .card-title Search
+  .card-body Filters will go here
+
+.card.mt-2
+  = turbo_stream_from "horses"
+  .card-header
+    = render Horses::StatusListComponent.new(statuses:, active_status:, params:, path_name: "horses_path", query:)
+  .card-body
+    = turbo_frame_tag "horses" do
+      = render "table", horses: horses, query: query
+  .card-footer
+    = paginate horses, page: 1, theme: "bootstrap-5", pagination_class: "flex-wrap justify-content-end"

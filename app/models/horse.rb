@@ -15,9 +15,12 @@ class Horse < ApplicationRecord
   validate :name_required, on: :update
   validates_horse_name :name, on: :update, if: :name_changed?
 
+  scope :born, -> { not_unborn }
   scope :living, -> { where(status: HorseStatus::LIVING_STATUSES) }
+  scope :all_retired, -> { where(status: HorseStatus::RETIRED_STATUSES) }
   scope :ordered, -> { order(name: :asc) }
   scope :owned_by, ->(stable) { where(owner: stable) }
+  scope :sort_by_status_asc, -> { in_order_of(:status, status_array_order) }
 
   # broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
 
@@ -29,6 +32,14 @@ class Horse < ApplicationRecord
     return false unless self[:date_of_death]
 
     self[:date_of_death] >= self[:date_of_birth]
+  end
+
+  def self.status_array_order
+    localized_statuses.sort.map { |_key, value| value }
+  end
+
+  def self.localized_statuses
+    statuses.transform_keys { |key| human_attribute_name("status.#{key}") }
   end
 
   private

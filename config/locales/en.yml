@@ -47,6 +47,9 @@ en:
     new_user: New user
     users: Users
   common:
+    actions:
+      title: Actions
+      view: View
     edit: Edit
   components:
     online_badge:
@@ -149,8 +152,26 @@ en:
         create: Create user
         update: Update user
   horses:
+    default_name: Unnamed
+    genders:
+      colt: Colt
+      filly: Filly
+      gelding: Gelding
+      mare: Mare
+      stallion: Stallion
     index:
+      no_horses: We could not find any horses.
       title: Horses
+    statuses:
+      broodmare: Broodmare
+      deceased: Deceased
+      racehorse: Racehorse
+      retired: Retired
+      retired_broodmare: Retired
+      retired_stud: Retired
+      stud: Stud
+      weanling: Weanling
+      yearling: Yearling
     update:
       success: "%{name} was successfully updated."
   impersonating_banner_component:

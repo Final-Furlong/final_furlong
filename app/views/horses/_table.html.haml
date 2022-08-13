@@ -1,0 +1,28 @@
+= turbo_frame_tag "all-horses-search" do
+  .horses-search-results
+    - if horses.empty?
+      %h4.text-muted.text-center.my-2
+        %small= t("horses.index.no_horses")
+    - else
+      %table.table.table-responsive-md
+        %thead
+          %tr
+            %th= sort_link query, :name, Horse.human_attribute_name("name")
+            %th= sort_link query, :age, Horse.human_attribute_name("age")
+            %th= sort_link query, :gender, Horse.human_attribute_name("gender")
+            %th= sort_link query, :status, Horse.human_attribute_name("status")
+            %th= sort_link query, :owner, Horse.human_attribute_name("owner")
+            %th= t("common.actions.title")
+          %tbody
+            - horses.each do |horse|
+              %tr
+                %td.wb-break-all= horse.name ? raw(horse.name) : t("horses.default_name") # rubocop:disable Rails/OutputSafety
+                %td.wb-break-all= horse.age
+                %td= t("horses.genders.#{horse.gender}")
+                %td= t("horses.statuses.#{horse.status}")
+                %td= horse.owner.name
+                %td.actions-column.demo-navbar-user.nav-item.dropdown
+                  = link_to horse_path(horse), class: "btn btn-sm btn-primary", data: { turbo_frame: "_top"} do
+                    %i.fas.fa-eye
+                    = t("common.actions.view")
+
