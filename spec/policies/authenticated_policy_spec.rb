@@ -22,19 +22,17 @@ RSpec.describe AuthenticatedPolicy do
   end
 
   describe "::Scope" do
-    subject(:policy_scope) { described_class::Scope.new(user, User.all) }
-
     describe "#initialize" do
       it "does not raise error when user is set" do
-        policy_scope = described_class::Scope.new(user, User.all)
-
-        expect { policy_scope }.not_to raise_error
+        expect do
+          described_class::Scope.new(user, User.all)
+        end.not_to raise_error
       end
 
       it "raises error when user is not set" do
-        policy_scope = described_class::Scope.new(nil, User.all)
-
-        expect { policy_scope }.to raise_error Pundit::NotAuthorizedError
+        expect do
+          described_class::Scope.new(nil, User.all)
+        end.to raise_error Pundit::NotAuthorizedError
       end
     end
   end

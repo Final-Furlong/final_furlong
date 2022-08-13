@@ -16,15 +16,7 @@ RSpec.describe StablesRepository do
 
   describe "#ordered_by_name" do
     it "returns stables in ascending order" do
-      stable1 = create(:stable, name: "AA Stable")
-      stable2 = create(:stable, name: "A Stable")
-      stable3 = create(:stable, name: "A1 Stable")
-      stable4 = create(:stable, name: "a stable")
-
-      expect(described_class.new(model: Stable).ordered_by_name).to eq([
-                                                                         stable2, stable3, stable1, stable4
-
-                                                                       ])
+      expect(described_class.new(model: Stable).ordered_by_name).to eq(Stable.order(name: :asc))
     end
   end
 end
