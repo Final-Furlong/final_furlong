@@ -6,6 +6,7 @@ end
 
 require "capybara/rspec"
 require "faker"
+require "pundit/matchers"
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

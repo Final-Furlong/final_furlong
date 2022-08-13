@@ -123,6 +123,7 @@ group :test do
   gem "capybara-screenshot"
   gem "fuubar"
   gem "i18n-spec"
+  gem "pundit-matchers"
   gem "rspec"
   gem "rspec_junit_formatter"
   gem "rspec-rails"

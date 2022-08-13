@@ -68,6 +68,8 @@ Metrics/MethodLength:
   Exclude:
     - "db/data/**/*.rb"
     - "db/migrate/**/*.rb"
+Naming/InclusiveLanguage:
+  Enabled: true
 Rails/Output:
   Exclude:
     - "db/seeds.rb"

@@ -27,9 +27,11 @@ class User < ApplicationRecord
 
   scope :ordered, -> { order(id: :desc) }
 
+  # :nocov:
   def active_for_authentication?
     super && !discarded?
   end
+  # :nocov:
 
   # allow login via username or e-mail
   def self.find_for_database_authentication(warden_conditions)
