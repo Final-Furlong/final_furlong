@@ -256,7 +256,7 @@ SimpleForm.setup do |config|
   # inline forms
   #
   # inline default_wrapper
-  config.wrappers :inline_form, class: "col-12" do |b|
+  config.wrappers :inline_form do |b|
     b.use :html5
     b.use :placeholder
     b.optional :maxlength

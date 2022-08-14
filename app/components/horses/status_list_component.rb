@@ -1,16 +1,17 @@
 module Horses
-  class StatusListComponent < ApplicationComponent
-    attr_reader :statuses, :active_status, :params, :path_name, :query
+  class StatusListComponent < VariantComponent
+    attr_reader :statuses, :active_status, :params, :path_name
 
-    def initialize(statuses:, active_status: nil, params: {}, path_name: nil, query: nil)
-      @statuses = statuses
+    # rubocop:disable Metrics/ParameterLists
+    def initialize(version:, variants:, statuses:, active_status: nil, params: {}, path_name: nil)
+      @statuses = statuses.symbolize_keys
       @active_status = active_status
       @params = params
       @path_name = path_name
-      @query = query
       combine_statuses
-      super
+      super(version:, variants:)
     end
+    # rubocop:enable Metrics/ParameterLists
 
     private
 
@@ -19,10 +20,21 @@ module Horses
       end
 
       def combine_statuses
-        statuses.symbolize_keys!
         return statuses unless retired_statuses?
 
-        statuses[:retired] = statuses[:retired] + statuses.delete(:retired_broodmare) + statuses.delete(:retired_stud)
+        statuses[:retired] = retired_status + retired_broodmare_status + retired_stud_status
+      end
+
+      def retired_status
+        statuses[:retired].to_i
+      end
+
+      def retired_broodmare_status
+        statuses.delete(:retired_broodmare).to_i
+      end
+
+      def retired_stud_status
+        statuses.delete(:retired_stud).to_i
       end
 
       def retired_statuses?

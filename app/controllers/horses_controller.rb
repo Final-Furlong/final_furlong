@@ -1,22 +1,22 @@
 class HorsesController < ApplicationController
   before_action :set_horse, except: :index
   before_action :authorize_horse, except: :index
+  before_action :set_status_counts, only: :index
 
   attr_accessor :horses, :horse, :statuses, :active_status, :query
 
   helper_method :horses, :horse, :statuses, :active_status, :query, :params
 
   # @route GET /horses (horses)
-  def index
+  def index # rubocop:disable Metrics/AbcSize
     authorize Horse
 
-    # ActionController::Parameters.permit_all_parameters = true
     set_active_status
+    set_gender_select
     @query = policy_scope(Horse).includes(:owner).ransack(params[:q])
     query.sorts = "name asc" if query.sorts.blank?
 
     @horses = query.result.page(params[:page])
-    @statuses = Horse.where.not(status: "unborn").group(:status).count
   end
 
   # @route GET /horses/:id (horse)
@@ -59,10 +59,24 @@ class HorsesController < ApplicationController
       elsif params.dig(:q, :status_eq)
         @active_status = params.dig(:q, :status_eq).to_sym
       else
-        @active_status = :racehorse
+        @active_status = set_first_status
         params[:q] ||= {}
-        params[:q][:status_eq] = :racehorse
+        params[:q][:status_eq] = set_first_status
       end
+    end
+
+    def set_first_status
+      return :racehorse if statuses.fetch(:racehorse, 0).positive?
+
+      statuses.keys.first.to_sym || :racehorse
+    end
+
+    def set_gender_select
+      params[:q][:gender_in] = params[:q][:gender_in].split(",") if params.dig(:q, :gender_in)
+    end
+
+    def set_status_counts
+      @statuses = Horses::SearchStatusCount.run!(query: params[:q])
     end
 end
 

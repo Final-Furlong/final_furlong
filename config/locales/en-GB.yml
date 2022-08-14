@@ -51,6 +51,9 @@ en-GB:
       title: Actions
       view: View
     edit: Edit
+    search_form:
+      action: Search
+      reset_filters: Reset filters
   components:
     online_badge:
       offline: Offline
@@ -163,13 +166,23 @@ en-GB:
     default_name: Unnamed
     genders:
       colt: Colt
+      female: Filly / Mare
       filly: Filly
       gelding: Gelding
+      male: Colt / Stallion
       mare: Mare
       stallion: Stallion
     index:
       no_horses: We could not find any horses.
       title: Horses
+    search:
+      dam: Dam
+      gender: Gender
+      max_age: Age (Max)
+      min_age: Age (Min)
+      name: Horse Name
+      owner: Owner
+      sire: Sire
     statuses:
       broodmare: Broodmare
       deceased: Deceased

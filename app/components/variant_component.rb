@@ -1,5 +1,5 @@
 class VariantComponent < ApplicationComponent
-  def initialize(version: nil, variants: [])
+  def initialize(version: nil, variants: %i[phone tablet desktop])
     @version = version
     @variants = variants
     super
@@ -8,6 +8,10 @@ class VariantComponent < ApplicationComponent
   private
 
     attr_reader :version, :variants
+
+    def render?
+      visible_on_phone? || visible_on_tablet? || visible_on_desktop?
+    end
 
     def visible_on_phone?
       raise NotImplementedError, "#{self.class} does not define variants" if variants.blank?

@@ -18,7 +18,7 @@ require "action_cable/engine"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-# require 'lib/final_furlong/common'
+ENV["RANSACK_FORM_BUILDER"] = "::SimpleForm::FormBuilder"
 
 module FinalFurlong
   class Application < Rails::Application

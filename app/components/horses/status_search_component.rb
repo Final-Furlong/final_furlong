@@ -1,17 +1,19 @@
 module Horses
-  class StatusSearchComponent < ApplicationComponent
+  class StatusSearchComponent < VariantComponent
     include Ransack::Helpers::FormHelper
 
     attr_reader :statuses, :status, :active_status, :params, :path_name
 
-    def initialize(statuses:, status: nil, active_status: nil, params: {}, path_name: nil)
+    # rubocop:disable Metrics/ParameterLists
+    def initialize(version:, statuses:, status: nil, active_status: nil, params: {}, path_name: nil)
       @statuses = statuses
       @status = status
       @active_status = active_status
       @params = params
       @path_name = path_name
-      super
+      super(version:)
     end
+    # rubocop:enable Metrics/ParameterLists
 
     private
 

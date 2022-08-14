@@ -1,17 +1,11 @@
 module Horses
-  class StatusEmptyComponent < ApplicationComponent
+  class StatusEmptyComponent < VariantComponent
     attr_reader :status
 
-    def initialize(status: nil)
+    def initialize(version:, status: nil)
       @status = status
-      super
+      super(version:)
     end
-
-    private
-
-      def render?
-        statuses.key?(status)
-      end
   end
 end
 

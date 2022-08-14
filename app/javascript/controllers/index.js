@@ -4,5 +4,8 @@
 
 import { application } from "./application"
 
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
+import AbandonFormController from "./abandon_form_controller.js"
+application.register("abandon-form", AbandonFormController)
+
+import SearchController from "./search_controller.js"
+application.register("search", SearchController)

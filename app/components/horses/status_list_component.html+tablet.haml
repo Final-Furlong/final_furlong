@@ -1,5 +1,5 @@
 .card-header
-  %ul.nav.nav-tabs.nav-fill.card-header-tabs{ role: "navigation" }
+  %ul.nav.nav-pills.card-header-pills{ role: "navigation" }
     - status_order.each do |status_key|
       - if non_empty_status?(status_key)
         = render Horses::StatusSearchComponent.new(statuses:, status: status_key, active_status:, path_name:,

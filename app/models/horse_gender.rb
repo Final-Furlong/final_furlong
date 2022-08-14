@@ -4,6 +4,19 @@ class HorseGender
   MALE_GENDERS = %w[colt stallion gelding]
   FEMALE_GENDERS = %w[filly mare]
   BREEDABLE_GENDERS = %w[mare stallion]
+  FILTER_OPTIONS = {
+    male: "colt,stallion",
+    female: "filly,mare",
+    gelding: "gelding"
+  }
+
+  def self.localised_filter_options
+    result = []
+    FILTER_OPTIONS.each do |key, values|
+      result << [I18n.t("horses.genders.#{key}"), values]
+    end
+    result
+  end
 
   def initialize(gender)
     @gender = gender.to_s
