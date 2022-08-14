@@ -104,8 +104,8 @@ search:
 # - 'errors.messages.{accepted,blank,invalid,too_short,too_long}'
 # - '{devise,simple_form}.*'
 ignore_missing:
-- 'errors.messages.{accepted,blank,invalid,too_short,too_long}'
-- '{devise,simple_form}.*'
+  - 'errors.messages.{accepted,blank,invalid,too_short,too_long}'
+  - '{devise,simple_form}.*'
 
 ## Consider these keys used:
 # ignore_unused:
@@ -116,6 +116,7 @@ ignore_missing:
 # - 'simple_form.{error_notification,required}.:'
 ignore_unused:
   - '{date,time,number}.*'
+  - 'views.pagination.*'
   - 'activemodel.{attributes,errors}.*'
   - 'activerecord.{attributes,models,errors}.*'
   - 'breadcrumbs.*'

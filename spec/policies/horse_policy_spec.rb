@@ -6,8 +6,8 @@ RSpec.describe HorsePolicy do
       described_class::Scope.new(User.new, Horse.all).resolve
     end
 
-    it "includes living horses" do
-      expect(resolved_scope).to eq Horse.living
+    it "includes born horses" do
+      expect(resolved_scope).to eq Horse.born
     end
   end
 end
