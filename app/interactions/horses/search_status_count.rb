@@ -2,7 +2,7 @@ module Horses
   class SearchStatusCount < BaseInteraction
     object :query, class: ActionController::Parameters
 
-    attr_accessor :horse_query
+    attr_accessor :horse_query, :stable_repo
 
     def execute
       return default_status_list if query.empty?
@@ -14,12 +14,14 @@ module Horses
     private
 
       def build_query
+        @stable_repo = StablesRepository.new
         set_default_query
         set_name_query
         set_gender_query
         set_sire_name_query
         set_dam_name_query
         set_owner_name_query
+        set_breeder_name_query
         set_min_age_name_query
         set_max_age_name_query
       end
@@ -51,7 +53,15 @@ module Horses
       def set_owner_name_query
         return if query[:owner_name_i_cont_all].blank?
 
-        @horse_query = horse_query.joins(:owner).where("stables.name ILIKE ?", "%#{query[:owner_name_i_cont_all]}%")
+        stables = stable_repo.name_includes(query[:owner_name_i_cont_all])
+        @horse_query = horse_query.joins(:owner).where(owner: stables)
+      end
+
+      def set_breeder_name_query
+        return if query[:breeder_name_i_cont_all].blank?
+
+        stables = stable_repo.name_includes(query[:breeder_name_i_cont_all])
+        @horse_query = horse_query.joins(:breeder).where(breeder: stables)
       end
 
       def set_min_age_name_query

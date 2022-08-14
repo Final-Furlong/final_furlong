@@ -16,6 +16,7 @@ class HorsesController < ApplicationController
     @query = policy_scope(Horse).includes(:owner).ransack(params[:q])
     query.sorts = "name asc" if query.sorts.blank?
 
+    Rails.logger.error "Q: #{params[:q]}"
     @horses = query.result.page(params[:page])
   end
 
@@ -59,8 +60,16 @@ class HorsesController < ApplicationController
       elsif params.dig(:q, :status_eq)
         @active_status = params.dig(:q, :status_eq).to_sym
       else
-        @active_status = set_first_status
-        params[:q] ||= {}
+        starting_status
+      end
+    end
+
+    def starting_status
+      @active_status = set_first_status
+      params[:q] ||= {}
+      if set_first_status == :retired
+        params[:q][:status_in] = %i[retired retired_stud retired_broodmare]
+      else
         params[:q][:status_eq] = set_first_status
       end
     end
@@ -68,7 +77,7 @@ class HorsesController < ApplicationController
     def set_first_status
       return :racehorse if statuses.fetch(:racehorse, 0).positive?
 
-      statuses.keys.first.to_sym || :racehorse
+      statuses.keys.first&.to_sym || :racehorse
     end
 
     def set_gender_select

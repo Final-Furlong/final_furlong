@@ -11,5 +11,9 @@ class StablesRepository < ApplicationRepository
   def ordered_by_name
     model.order(name: :asc)
   end
+
+  def name_includes(string)
+    model.where("name ILIKE ?", "%#{string}%")
+  end
 end
 

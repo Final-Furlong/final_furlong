@@ -10,14 +10,17 @@ end
 #
 # Table name: stables
 #
-#  id             :uuid             not null, primary key
-#  description    :text
-#  last_online_at :datetime         indexed
-#  name           :string           not null
-#  created_at     :datetime         not null, indexed
-#  updated_at     :datetime         not null
-#  legacy_id      :integer          indexed
-#  user_id        :uuid             not null, indexed
+#  id                  :uuid             not null, primary key
+#  bred_horses_count   :integer          default(0), not null
+#  description         :text
+#  horses_count        :integer          default(0), not null
+#  last_online_at      :datetime         indexed
+#  name                :string           not null
+#  unborn_horses_count :integer          default(0), not null
+#  created_at          :datetime         not null, indexed
+#  updated_at          :datetime         not null
+#  legacy_id           :integer          indexed
+#  user_id             :uuid             not null, indexed
 #
 # Indexes
 #

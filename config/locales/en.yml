@@ -176,6 +176,7 @@ en:
       no_horses: We could not find any horses.
       title: Horses
     search:
+      breeder: Breeder
       dam: Dam
       gender: Gender
       max_age: Age (Max)
