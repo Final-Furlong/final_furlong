@@ -16,7 +16,6 @@ class HorsesController < ApplicationController
     @query = policy_scope(Horse).includes(:owner).ransack(params[:q])
     query.sorts = "name asc" if query.sorts.blank?
 
-    Rails.logger.error "Q: #{params[:q]}"
     @horses = query.result.page(params[:page])
   end
 
@@ -85,7 +84,8 @@ class HorsesController < ApplicationController
     end
 
     def set_status_counts
-      @statuses = Horses::SearchStatusCount.run!(query: params[:q])
+      query = params.to_unsafe_hash["q"].symbolize_keys if params[:q]
+      @statuses = Horses::SearchStatusCount.run(query:).result
     end
 end
 
