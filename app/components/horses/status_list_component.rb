@@ -15,6 +15,10 @@ module Horses
 
     private
 
+      def render?
+        version == :desktop
+      end
+
       def non_empty_status?(status)
         statuses.key?(status)
       end

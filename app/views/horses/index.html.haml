@@ -1,7 +1,8 @@
 - content_for :breadcrumbs do
   = render Shared::BreadcrumbsComponent.new(title: t("horses.index.title"))
 
-= render Horses::SearchFiltersComponent.new(version: request_variant, path_name: "horses_path", params:, query:)
+= render Horses::SearchFiltersComponent.new(version: request_variant, path_name: "horses_path", params:, query:,
+  active_status:)
 
 .card.mt-2
   = turbo_stream_from "horses"

@@ -184,6 +184,7 @@ en-GB:
       name: Horse Name
       owner: Owner
       sire: Sire
+      status: Status
     statuses:
       broodmare: Broodmare
       deceased: Deceased
