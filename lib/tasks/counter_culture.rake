@@ -4,3 +4,4 @@ namespace :counter_culture do
     Horse.counter_culture_fix_counts
   end
 end
+

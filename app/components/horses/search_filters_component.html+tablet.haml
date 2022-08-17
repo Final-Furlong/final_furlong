@@ -11,7 +11,7 @@
     %button.btn-close{ type: "button", data: { "bs-dismiss" => "offcanvas" }, aria: { label: "Close" } }
   .offcanvas-body
     = search_form_for query, url: horses_path, html: { class: "d-flex flex-column", autocomplete: "off" },
-      data: { controller: "search", search: { target: "form" }, turbo: { frame: "all-horses-search" } } do |f|
+      data: { controller: "search", "search-target" => "form", turbo: { frame: "all-horses-search" } } do |f|
       .filters-layout
         = f.input :status_eq, required: false, label: t("horses.search.status"), include_blank: true,
           collection: statuses, selected: active_status

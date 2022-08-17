@@ -14,10 +14,6 @@ export default class extends Controller {
     if (!this.valid(event)) return
     let thisRequestAt = (this.latestRequestAt = new Date().getTime())
     let searchField = $(event.currentTarget)
-    console.log(searchField)
-    let form = $(event.currentTarget).closest("form")
-    let submit = form.find('input[type="submit"]')
-    console.log(submit)
 
     setTimeout(() => {
       this.load(searchField, thisRequestAt)
@@ -38,11 +34,18 @@ export default class extends Controller {
     inputs.each(function (i, el) {
       let input = $(el)
 
-      if (input.attr("type") === "select") {
-        input.prop("selectedIndex", 0)
-      } else {
-        input.val("")
+      input.val("")
+
+      if (clearErrors) {
+        input.removeClass("is-invalid")
       }
+    })
+
+    inputs = form.find(".form-select")
+    inputs.each(function (i, el) {
+      let input = $(el)
+
+      input.prop("selectedIndex", 0)
 
       if (clearErrors) {
         input.removeClass("is-invalid")
