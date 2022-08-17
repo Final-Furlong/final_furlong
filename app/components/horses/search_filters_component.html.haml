@@ -1,7 +1,7 @@
 .card
   .card-body
     = search_form_for query, url: horses_path, html: { class: "d-flex flex-column", autocomplete: "off" },
-      data: { controller: "search", search: { target: "form" }, turbo: { frame: "all-horses-search" } },
+      data: { controller: "search", "search-target" => "form", turbo: { frame: "all-horses-search" } },
       wrapper: :inline_form do |f|
       .d-flex.flex-gap.flex-wrap.filters-layout
         %label.visually-hidden{ for: "q_name_i_cont_all" }= I18n.t("horses.search.name")
@@ -35,4 +35,4 @@
       .d-flex.mt-2.justify-content-end
         %button.btn.btn-outline-danger.btn-sm.me-2{ type: "button", data: { action: "search#reset" } }
           = t("common.search_form.reset_filters")
-        = f.submit t("common.search_form.action"), class: "btn btn-primary btn-sm"
+        = f.submit t("common.search_form.action"), class: "btn btn-primary btn-sm d-lg-none"

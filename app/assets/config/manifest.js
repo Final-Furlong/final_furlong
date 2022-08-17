@@ -1,3 +1,8 @@
 //= link_tree ../images
 //= link_tree ../builds
 //= link application.js
+//= link controllers/application.js
+//= link controllers/index.js
+//= link controllers/abandon_form_controller.js
+//= link controllers/hello_controller.js
+//= link controllers/search_controller.js

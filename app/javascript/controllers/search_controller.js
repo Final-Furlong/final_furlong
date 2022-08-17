@@ -1,20 +1,23 @@
 import { Controller } from "@hotwired/stimulus"
+import $ from "jquery"
 
 export default class extends Controller {
   static targets = ["form"]
 
   connect() {
-    console.log("start")
     this.formTarget.addEventListener("turbo:submit-start", this.onSearchStart)
     this.formTarget.addEventListener("turbo:submit-end", this.onSearchEnd)
     this.latestRequestAt = 0
   }
 
   search = event => {
-    console.log("search")
     if (!this.valid(event)) return
     let thisRequestAt = (this.latestRequestAt = new Date().getTime())
     let searchField = $(event.currentTarget)
+    console.log(searchField)
+    let form = $(event.currentTarget).closest("form")
+    let submit = form.find('input[type="submit"]')
+    console.log(submit)
 
     setTimeout(() => {
       this.load(searchField, thisRequestAt)
@@ -22,7 +25,6 @@ export default class extends Controller {
   }
 
   reset(event) {
-    console.log("reset")
     let form = $(event.currentTarget).closest("form")
     let preventSubmit = event.currentTarget.dataset.preventSubmit
     let clearErrors = event.currentTarget.dataset.clearErrors
@@ -83,10 +85,10 @@ export default class extends Controller {
   }
 
   onSearchStart = () => {
-    document.dispatchEvent(new Event("busy-start"))
+    document.dispatchEvent(new Event("nua-busy-start"))
   }
 
   onSearchEnd = () => {
-    document.dispatchEvent(new Event("busy-end"))
+    document.dispatchEvent(new Event("nua-busy-end"))
   }
 }
