@@ -23,7 +23,7 @@ RSpec.describe HorseGender do
 
   describe "#to_s" do
     it "returns gender" do
-      expect(described_class.new(:colt).to_s).to eq "colt"
+      expect(described_class.new(:colt).to_s).to eq "Colt"
     end
   end
 

@@ -7,6 +7,27 @@ class Horse < ApplicationRecord
   belongs_to :dam, class_name: "Horse", optional: true
   belongs_to :location_bred, class_name: "Location"
 
+  counter_culture :sire, column_name: proc { |model| model.unborn? ? "unborn_foals_count" : "foals_count" },
+                         column_names: {
+                           ["horses.status = ?", "unborn"] => "unborn_foals_count",
+                           ["horses.status != ?", "unborn"] => "foals_count"
+                         }
+  counter_culture :dam, column_name: proc { |model| model.unborn? ? "unborn_foals_count" : "foals_count" },
+                        column_names: {
+                          ["horses.status = ?", "unborn"] => "unborn_foals_count",
+                          ["horses.status != ?", "unborn"] => "foals_count"
+                        }
+  counter_culture :breeder, column_name: proc { |model| model.unborn? ? nil : "bred_horses_count" },
+                            column_names: {
+                              ["horses.status = ?", "unborn"] => nil,
+                              ["horses.status != ?", "unborn"] => "bred_horses_count"
+                            }
+  counter_culture :owner, column_name: proc { |model| model.unborn? ? "unborn_horses_count" : "horses_count" },
+                          column_names: {
+                            ["horses.status = ?", "unborn"] => "unborn_horses_count",
+                            ["horses.status != ?", "unborn"] => "horses_count"
+                          }
+
   enum status: HorseStatus::STATUSES
   enum gender: HorseGender::VALUES
 
@@ -15,9 +36,12 @@ class Horse < ApplicationRecord
   validate :name_required, on: :update
   validates_horse_name :name, on: :update, if: :name_changed?
 
+  scope :born, -> { not_unborn }
   scope :living, -> { where(status: HorseStatus::LIVING_STATUSES) }
+  scope :all_retired, -> { where(status: HorseStatus::RETIRED_STATUSES) }
   scope :ordered, -> { order(name: :asc) }
   scope :owned_by, ->(stable) { where(owner: stable) }
+  scope :sort_by_status_asc, -> { in_order_of(:status, status_array_order) }
 
   # broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
 
@@ -29,6 +53,14 @@ class Horse < ApplicationRecord
     return false unless self[:date_of_death]
 
     self[:date_of_death] >= self[:date_of_birth]
+  end
+
+  def self.status_array_order
+    localized_statuses.sort.map { |_key, value| value }
+  end
+
+  def self.localized_statuses
+    statuses.transform_keys { |key| human_attribute_name("status.#{key}") }
   end
 
   private
@@ -44,21 +76,23 @@ end
 #
 # Table name: horses
 #
-#  id               :uuid             not null, primary key
-#  age              :integer
-#  date_of_birth    :date             not null, indexed
-#  date_of_death    :date
-#  gender           :enum             not null
-#  name             :string
-#  status           :enum             default("unborn"), not null, indexed
-#  created_at       :datetime         not null, indexed
-#  updated_at       :datetime         not null
-#  breeder_id       :uuid             not null, indexed
-#  dam_id           :uuid             indexed
-#  legacy_id        :integer          indexed
-#  location_bred_id :uuid             indexed
-#  owner_id         :uuid             not null, indexed
-#  sire_id          :uuid             indexed
+#  id                 :uuid             not null, primary key
+#  age                :integer
+#  date_of_birth      :date             not null, indexed
+#  date_of_death      :date
+#  foals_count        :integer          default(0), not null
+#  gender             :enum             not null
+#  name               :string
+#  status             :enum             default("unborn"), not null, indexed
+#  unborn_foals_count :integer          default(0), not null
+#  created_at         :datetime         not null, indexed
+#  updated_at         :datetime         not null
+#  breeder_id         :uuid             not null, indexed
+#  dam_id             :uuid             indexed
+#  legacy_id          :integer          indexed
+#  location_bred_id   :uuid             indexed
+#  owner_id           :uuid             not null, indexed
+#  sire_id            :uuid             indexed
 #
 # Indexes
 #

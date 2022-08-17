@@ -5,6 +5,10 @@ module ApplicationHelper
     turbo_stream.replace "flash", partial: "layouts/flash"
   end
 
+  def request_variant
+    request.variant.first
+  end
+
   def nav_link_class(args)
     return "active" if current_page?(args)
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_12_155732) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_14_180246) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -50,6 +50,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_12_155732) do
     t.datetime "updated_at", null: false
     t.uuid "location_bred_id"
     t.integer "legacy_id"
+    t.integer "foals_count", default: 0, null: false
+    t.integer "unborn_foals_count", default: 0, null: false
     t.index ["breeder_id"], name: "index_horses_on_breeder_id"
     t.index ["created_at"], name: "index_horses_on_created_at"
     t.index ["dam_id"], name: "index_horses_on_dam_id"
@@ -251,6 +253,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_12_155732) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "last_online_at"
+    t.integer "horses_count", default: 0, null: false
+    t.integer "bred_horses_count", default: 0, null: false
+    t.integer "unborn_horses_count", default: 0, null: false
     t.index ["created_at"], name: "index_stables_on_created_at"
     t.index ["last_online_at"], name: "index_stables_on_last_online_at"
     t.index ["legacy_id"], name: "index_stables_on_legacy_id"

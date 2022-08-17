@@ -1,5 +1,7 @@
 require_relative "boot"
 
+ENV["RANSACK_FORM_BUILDER"] = "::SimpleForm::FormBuilder"
+
 require "rails"
 # Pick the frameworks you want:
 require "active_model/railtie"
@@ -17,8 +19,6 @@ require "action_cable/engine"
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
-
-# require 'lib/final_furlong/common'
 
 module FinalFurlong
   class Application < Rails::Application

@@ -47,7 +47,13 @@ en-GB:
     new_user: New user
     users: Users
   common:
+    actions:
+      title: Actions
+      view: View
     edit: Edit
+    search_form:
+      action: Search
+      reset_filters: Reset filters
   components:
     online_badge:
       offline: Offline
@@ -144,13 +150,51 @@ en-GB:
   forms:
     cancel: Cancel
   helpers:
+    page_entries_info:
+      more_pages:
+        display_entries: Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> in total
+      one_page:
+        display_entries:
+          one: Displaying <b>1</b> %{entry_name}
+          other: Displaying <b>all %{count}</b> %{entry_name}
+          zero: No %{entry_name} found
     submit:
       user:
         create: Create user
         update: Update user
   horses:
+    default_name: Unnamed
+    genders:
+      colt: Colt
+      female: Filly / Mare
+      filly: Filly
+      gelding: Gelding
+      male: Colt / Stallion
+      mare: Mare
+      stallion: Stallion
     index:
+      no_horses: We could not find any horses.
       title: Horses
+    search:
+      breeder: Breeder
+      dam: Dam
+      gender: Gender
+      max_age: Age (Max)
+      min_age: Age (Min)
+      name: Horse Name
+      owner: Owner
+      sire: Sire
+      status: Status
+    statuses:
+      broodmare: Broodmare
+      deceased: Deceased
+      racehorse: Racehorse
+      retired: Retired
+      retired_broodmare: Retired
+      retired_stud: Retired
+      stud: Stud
+      weanling: Weanling
+      yearling: Yearling
     update:
       success: "%{name} was successfully updated."
   impersonating_banner_component:
@@ -238,3 +282,10 @@ en-GB:
     update:
       failure: User could not be updated.
       success: User was successfully updated.
+  views:
+    pagination:
+      first: "&laquo; First"
+      last: Last &raquo;
+      next: Next &rsaquo;
+      previous: "&lsaquo; Prev"
+      truncate: "&hellip;"

@@ -1,9 +1,9 @@
 class HorseStatus
   STATUSES = {
-    unborn: "unborn", weanling: "weanling", yearling: "yearling",
     racehorse: "racehorse", broodmare: "broodmare", stud: "stud",
-    retired: "retired", retired_broodmare: "retired_broodmare",
-    retired_stud: "retired_stud", deceased: "deceased"
+    yearling: "yearling", weanling: "weanling", retired: "retired",
+    retired_broodmare: "retired_broodmare", retired_stud: "retired_stud",
+    deceased: "deceased", unborn: "unborn"
   }
 
   LIVING_STATUSES = %w[weanling yearling racehorse broodmare stud retired retired_broodmare retired_stud]
@@ -12,6 +12,8 @@ class HorseStatus
   BREEDING_STATUSES = %w[broodmare stud retired_broodmare retired_stud]
   MALE_BREEDING_STATUSES = %w[stud retired_stud]
   FEMALE_BREEDING_STATUSES = %w[broodmare retired_broodmare]
+  RETIRED_STATUSES = %w[retired retired_broodmare retired_stud]
+  SEARCH_STATUSES = %w[racehorse broodmare stud weanling yearling retired deceased]
 
   def initialize(status)
     @status = status.to_s

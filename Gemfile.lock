@@ -130,6 +130,9 @@ GEM
       autoprefixer-rails (>= 9.1.0)
       popper_js (>= 2.11.5, < 3)
       sassc-rails (>= 2.0.0)
+    bootstrap5-kaminari-views (0.0.1)
+      kaminari (>= 0.13)
+      rails (>= 3.1)
     brakeman (5.2.3)
     browser (5.3.1)
     builder (3.2.4)
@@ -185,6 +188,9 @@ GEM
     colorize (0.8.1)
     concurrent-ruby (1.1.10)
     connection_pool (2.2.5)
+    counter_culture (3.2.1)
+      activerecord (>= 4.2)
+      activesupport (>= 4.2)
     crass (1.0.6)
     cssbundling-rails (1.1.1)
       railties (>= 6.0.0)
@@ -364,6 +370,18 @@ GEM
     jaro_winkler (1.5.4)
     json (2.6.2)
     jsonapi-renderer (0.2.2)
+    kaminari (1.2.2)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
+      actionview
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
+      activerecord
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     kramdown (2.4.0)
       rexml
     kramdown-parser-gfm (1.1.0)
@@ -713,6 +731,7 @@ DEPENDENCIES
   binding_of_caller
   bootsnap
   bootstrap
+  bootstrap5-kaminari-views
   brakeman
   browser
   bullet
@@ -728,6 +747,7 @@ DEPENDENCIES
   capybara (>= 2.15)
   capybara-screenshot
   chusaku
+  counter_culture
   cssbundling-rails
   dartsass-rails
   data_migrate
@@ -759,6 +779,7 @@ DEPENDENCIES
   i18n-spec
   i18n-tasks
   importmap-rails
+  kaminari
   letter_opener
   motor-admin (~> 0.3.4)
   mysql2
