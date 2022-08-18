@@ -4,5 +4,13 @@ class HorsePolicy < ApplicationPolicy
       scope.born
     end
   end
+
+  def index?
+    true
+  end
+
+  def show?
+    !record.unborn?
+  end
 end
 
