@@ -1,5 +1,5 @@
 = simple_form_for horse, html: { class: "horse form" } do |f|
-  = render(Shared::ErrorMessagesComponent.new(object: horse))
+  = render Forms::ErrorMessages::Component.new(object: horse)
   = f.input :name, value: horse.name.html_safe, input_html: { autofocus: true } # rubocop:disable Rails/OutputSafety
   = f.input :date_of_birth, as: :text, disabled: true
   = f.association :sire, value_method: :name, as: :text, disabled: true

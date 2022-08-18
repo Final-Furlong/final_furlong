@@ -6,7 +6,7 @@
     %main
       = yield :breadcrumbs
       .container
-        = render ImpersonatingBannerComponent.new
+        = render Users::ImpersonatingBanner::Component.new
         #flash
           = render partial: "layouts/flash"
         = yield

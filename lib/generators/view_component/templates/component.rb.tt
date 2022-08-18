@@ -1,0 +1,5 @@
+class <%= class_name %>::Component < <%= parent_class %>
+<%- if initialize_signature -%>
+  <%= initialize_signature %>
+<%- end -%>
+end

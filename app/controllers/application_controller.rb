@@ -82,6 +82,7 @@ class ApplicationController < ActionController::Base
 
     def update_stable_online
       return unless current_stable
+      return if true_user # impersonating this stable
 
       current_stable.update_columns(last_online_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
     end

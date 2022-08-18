@@ -9,6 +9,8 @@ SimpleCov.start do
   add_filter %r{^/config/}
   add_filter %r{^/db/}
   add_filter "helpers"
+  add_filter "lib/generators"
+  add_filter "lib/tasks"
   add_filter "models/legacy_"
   add_filter "services/migrate_legacy_"
   add_filter(%r{^/spec/})
@@ -23,7 +25,7 @@ SimpleCov.start do
   add_group "Mailers", "app/mailers"
   add_group "Operations", %w[app/interactions app/services]
   add_group "Libraries", %w[lib/ app/validation/final_furlong]
-  add_group "View Components", "app/components"
+  add_group "View Components", "app/frontend/components"
 
   track_files "{app,lib}/**/*.rb"
 

@@ -35,7 +35,7 @@
             %i.fas.fa-delete-left.me-3
             %span= t(".main_app")
 
-      = render I18nComponent.new(locale: I18n.locale, version: :phone, variants: request.variant)
+      = render Nav::I18n::Component.new(locale: I18n.locale, version: :phone, variants: request.variant)
       - if user_signed_in?
         = button_to destroy_user_session_path, method: :delete, class: ["list-group-item list-group-item-action py-2",
           "border border-0"], data: { turbo: false } do

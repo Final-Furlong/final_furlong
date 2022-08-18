@@ -18,11 +18,11 @@
           %input.form-control.me-2{ type: "search", disabled: true, placeholder: t(".search_placeholder"),
             aria: { label: t(".search_aria_label") } }
 
-        = render I18nComponent.new(locale: I18n.locale, version: :tablet, variants: request.variant)
+        = render Nav::I18n::Component.new(locale: I18n.locale, version: :tablet, variants: request.variant)
 
         -# Avatar
         - if user_signed_in?
           = render "layouts/user_nav"
         - else
-          = render NavBar::GuestNavComponent.new
+          = render Nav::Guest::Component.new
 

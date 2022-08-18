@@ -1,5 +1,5 @@
 - content_for :breadcrumbs do
-  = render Shared::BreadcrumbsComponent.new(links: [{ name: t("horses.index.title"), href: horses_path },
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t("horses.index.title"), href: horses_path },
     { name: horse.name, href: "#" }], actions: [{ name: "edit", link: edit_horse_path(horse),
     i18n_key: "common.edit", user: current_user, object: horse,
     base_classes: "btn btn-light btn-sm border border-success text-success text-decoration-none",

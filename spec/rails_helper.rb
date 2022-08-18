@@ -38,6 +38,13 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 RSpec.configure do |config|
+  config.include ViewComponent::TestHelpers, type: :view_component
+  config.include Capybara::RSpecMatchers, type: :view_component
+
+  config.define_derived_metadata(file_path: %r{/spec/frontend/components}) do |metadata|
+    metadata[:type] = :view_component
+  end
+
   config.use_transactional_fixtures = true
 
   # The different available types are documented in the features, such as in

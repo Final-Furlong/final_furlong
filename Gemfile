@@ -53,7 +53,8 @@ gem "stimulus-rails"
 gem "strong_migrations"
 gem "turbo-rails"
 gem "turnout"
-gem "view_component"
+gem "view_component", "~> 2.69"
+gem "view_component-contrib"
 gem "whenever", require: false
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
