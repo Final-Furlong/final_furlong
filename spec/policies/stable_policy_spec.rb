@@ -32,15 +32,16 @@ RSpec.describe StablePolicy do
   context "when user is an admin" do
     let(:user) { create(:user, admin: true) }
 
-    it { is_expected.to permit_actions(%i[show destroy impersonate]) }
-    it { is_expected.to forbid_actions(%i[edit update]) }
+    it { is_expected.to permit_actions(%i[show impersonate]) }
+    it { is_expected.to forbid_actions(%i[edit update destroy]) }
 
     context "when dealing with own stable" do
       let(:user) { stable.user }
 
       before { user.update!(admin: true) }
 
-      it { is_expected.to forbid_action(:impersonate) }
+      it { is_expected.to permit_actions(%i[show edit update]) }
+      it { is_expected.to forbid_actions(%i[destroy impersonate]) }
     end
   end
 end

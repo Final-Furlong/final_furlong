@@ -30,7 +30,7 @@ RSpec.describe ApplicationPolicy do
   context "when user is an admin" do
     let(:user) { build_stubbed(:admin) }
 
-    it { is_expected.to permit_actions(%i[index show new create edit update destroy]) }
+    it { is_expected.to forbid_actions(%i[index show new create edit update destroy]) }
   end
 end
 
