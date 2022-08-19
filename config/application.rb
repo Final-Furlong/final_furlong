@@ -17,7 +17,8 @@ require "action_cable/engine"
 # require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
-# you've limited to :test, :development, or :production.
+# you've limited to :test, :development, or :production.require "view_component/engine"
+
 Bundler.require(*Rails.groups)
 
 module FinalFurlong
@@ -53,6 +54,10 @@ module FinalFurlong
         resource "*", headers: :any, methods: %i[get post put delete options]
       end
     end
+
+    # View Components
+    config.autoload_paths << Rails.root.join("app/frontend/components")
+    config.view_component.preview_paths << Rails.root.join("app/frontend/components")
   end
 end
 

@@ -1,5 +1,5 @@
 = simple_form_for form, as: :stable, method: :patch, url: url, html: { class: "stable form" } do |f|
-  = render(Shared::ErrorMessagesComponent.new(object: form))
+  = render Forms::ErrorMessages::Component.new(object: form)
   = f.input :description, as: :text, class: "textarea", input_html: { rows: 10 }, required: false
   .actions
     = link_to t("forms.cancel"), current_stable_path, class: "btn btn-outline-secondary"

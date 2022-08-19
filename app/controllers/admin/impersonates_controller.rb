@@ -17,7 +17,7 @@ module Admin
     # @route DELETE /admin/impersonate (admin_impersonate)
     def destroy
       stop_impersonating_user
-      flash[:notice] = t("impersonating_banner_component.success")
+      flash[:notice] = t("users.stop_impersonating.success")
       redirect_to root_path
     end
   end

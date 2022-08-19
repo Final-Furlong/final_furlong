@@ -54,12 +54,6 @@ en:
     search_form:
       action: Search
       reset_filters: Reset filters
-  components:
-    online_badge:
-      offline: Offline
-      online: Online
-    stable:
-      impersonate: Impersonate
   current_stable:
     horses:
       index:
@@ -197,9 +191,6 @@ en:
       yearling: Yearling
     update:
       success: "%{name} was successfully updated."
-  impersonating_banner_component:
-    success: You've stopped impersonating!
-    title: Signed in as %{stable} (%{username})
   layouts:
     nav:
       game_title: Final Furlong
@@ -279,9 +270,22 @@ en:
       title: Users
     new:
       title: New user
+    stop_impersonating:
+      success: You've stopped impersonating!
     update:
       failure: User could not be updated.
       success: User was successfully updated.
+  view_components:
+    nav:
+      breadcrumbs:
+        impersonate: Impersonate
+    users:
+      impersonating_banner:
+        sign_out: "(Sign Out)"
+        title: Signed in as %{stable} (%{username})
+      online_badge:
+        offline: Offline
+        online: Online
   views:
     pagination:
       first: "&laquo; First"

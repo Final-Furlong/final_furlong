@@ -1,0 +1,56 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "242286f9e2968ebf7a4374fc6847a97105eedfa8a3a020d2240921097c6a037d",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/frontend/components/horses/status_list/status_list_component.html.haml",
+      "line": 5,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => , {})",
+      "render_path": null,
+      "location": {
+        "type": "template",
+        "template": "app/frontend/components/horses/status_list/status_list_component"
+      },
+      "user_input": "params.to_unsafe_hash",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "38909c758b145bf43a32760e173f4056722c81c19f9849379f37d8243cb42249",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/views/horses/index.html.haml",
+      "line": 14,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => Nav::Pagination::Component.new(:collection => horses, :page => params[:page], :div_class => \"card-footer\"), {})",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "HorsesController",
+          "method": "index",
+          "line": 20,
+          "file": "app/controllers/horses_controller.rb",
+          "rendered": {
+            "name": "horses/index",
+            "file": "app/views/horses/index.html.haml"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "horses/index"
+      },
+      "user_input": "params[:page]",
+      "confidence": "Weak",
+      "note": ""
+    }
+  ],
+  "updated": "2022-08-18 20:06:22 +0100",
+  "brakeman_version": "5.2.3"
+}

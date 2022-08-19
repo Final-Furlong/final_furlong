@@ -1,7 +1,7 @@
 - content_for :breadcrumbs do
-  = render Shared::BreadcrumbsComponent.new(links: [{ name: t("stables.index.all"), href: stables_path },
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t("stables.index.all"), href: stables_path },
     { name: stable.name, href: "#" }], actions: [{ name: "impersonate",
-    link: admin_impersonate_path(id: stable.user_id), i18n_key: "components.stable.impersonate", object: stable,
+    link: admin_impersonate_path(id: stable.user_id), i18n_key: ".impersonate", object: stable,
     user: current_user, base_classes: "btn btn-light btn-sm border border-danger text-danger text-decoration-none",
     classes: " d-none d-md-inline", responsive_classes: "w-100", type: :form },
     { name: "edit", link: edit_current_stable_path, i18n_key: "common.edit", user: current_user, object: stable,
@@ -12,7 +12,7 @@
 
 %p
   %span= t(".joined", date: l(stable.created_at.to_date, format: :long))
-  = render OnlineBadgeComponent.new(online: SessionsRepository.online?(resource: stable))
+  = render Users::OnlineBadge::Component.new(online: SessionsRepository.online?(resource: stable))
 
 - if stable.description?
   %blockquote.blockquote.border.border-secondary.rounded.p-2

@@ -1,5 +1,5 @@
 - content_for :breadcrumbs do
-  = render Shared::BreadcrumbsComponent.new(title: t("stables.index.all"))
+  = render Nav::Breadcrumbs::Component.new(title: t("stables.index.all"))
 
 = turbo_frame_tag "stables" do
   - stables.in_groups_of(4) do |list|
