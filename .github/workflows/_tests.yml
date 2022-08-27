@@ -127,6 +127,8 @@ jobs:
         with:
           path: coverage_unit/coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
+          report_name: "Code Coverage (Unit)"
+          only_changed_files: true
           minimum_coverage: 42
 
       - name: Cobertura Coverage Report (Feature)
@@ -134,4 +136,6 @@ jobs:
         with:
           path: coverage_feature/coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
+          report_name: "Code Coverage (Feature)"
+          only_changed_files: true
           minimum_coverage: 47
