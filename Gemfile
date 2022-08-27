@@ -104,6 +104,7 @@ group :development, :test do
   gem "brakeman", require: false
   gem "bullet"
   gem "bundler-audit", require: false
+  gem "cypress-rails"
   gem "debug"
   gem "factory_bot-awesome_linter", require: false
   gem "factory_bot_rails", require: false
