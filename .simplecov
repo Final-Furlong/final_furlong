@@ -113,7 +113,7 @@ SimpleCov.start do
   load_profile "test_frameworks"
 
   env_test_type = ENV.fetch('TEST_TYPE', nil)
-  arg_test_types = ARGV.select { |arg| arg.start_with?('type:') }.map { |arg| arg.gsub('type:', '') }
+  arg_test_types = ARGV.select { |arg| arg.start_with?(/~?type:/) }.map { |arg| arg.gsub('type:', '') }
   if env_test_type == 'unit' || arg_test_types.include?('~system')
     load_profile "unit"
   elsif env_test_type == 'system' || arg_test_types.include?('system')
