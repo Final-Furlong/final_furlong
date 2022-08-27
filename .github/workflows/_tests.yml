@@ -87,10 +87,10 @@ jobs:
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
         run: bin/rspec --tag type:system
 
-      - name: RSpec (All)
+      - name: Combine Code Coverage
         env:
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
-        run: bin/rspec
+        run: bin/rails coverage:report
 
       - name: Publish Coverage
         uses: paambaati/codeclimate-action@v3.0.0
