@@ -131,11 +131,11 @@ jobs:
           only_changed_files: true
           minimum_coverage: 42
 
-      - name: Cobertura Coverage Report (Feature)
+      - name: Cobertura Coverage Report (System)
         uses: 5monkeys/cobertura-action@master
         with:
-          path: coverage_feature/coverage.xml
+          path: coverage_system/coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          report_name: "Code Coverage (Feature)"
+          report_name: "Code Coverage (System)"
           only_changed_files: true
           minimum_coverage: 47
