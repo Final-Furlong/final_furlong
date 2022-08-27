@@ -125,6 +125,8 @@ end
 group :test do
   gem "capybara", ">= 2.15"
   gem "capybara-screenshot"
+  gem "cypress-on-rails"
+  gem "database_cleaner-active_record", require: false
   gem "fuubar"
   gem "i18n-spec"
   gem "pundit-matchers"
