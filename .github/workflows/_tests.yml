@@ -26,7 +26,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-        ports: ["5432:5432"]
+        ports: [ "5432:5432" ]
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -48,7 +48,7 @@ jobs:
           --health-retries=3
       redis:
         image: redis
-        ports: ['6379:6379']
+        ports: [ '6379:6379' ]
         options: --entrypoint redis-server
 
     steps:
@@ -77,10 +77,20 @@ jobs:
       - name: Precompile Assets
         run: bin/rails assets:precompile
 
-      - name: RSpec
+      - name: RSpec (Unit)
         env:
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
-        run: bin/rspec
+        run: bin/rspec --tag ~type:system
+
+      - name: RSpec (System)
+        env:
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
+        run: bin/rspec --tag type:system
+
+      - name: Combine Code Coverage
+        env:
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
+        run: bin/rails coverage:report
 
       - name: Publish Coverage
         uses: paambaati/codeclimate-action@v3.0.0
@@ -112,9 +122,20 @@ jobs:
           output: both
           thresholds: '60 80'
 
-      - name: Cobertura Coverage Report
+      - name: Cobertura Coverage Report (Unit)
         uses: 5monkeys/cobertura-action@master
         with:
-          path: coverage/coverage.xml
+          path: coverage_unit/coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          minimum_coverage: 85
+          report_name: "Code Coverage (Unit)"
+          only_changed_files: true
+          minimum_coverage: 42
+
+      - name: Cobertura Coverage Report (System)
+        uses: 5monkeys/cobertura-action@master
+        with:
+          path: coverage_system/coverage.xml
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          report_name: "Code Coverage (System)"
+          only_changed_files: true
+          minimum_coverage: 47

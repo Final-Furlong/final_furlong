@@ -38,6 +38,8 @@
 !config/database.yml.sample
 .env
 coverage/
+coverage_system/
+coverage_unit/
 spec/examples.txt
 
 /app/assets/builds/*
