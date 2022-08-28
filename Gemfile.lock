@@ -194,6 +194,8 @@ GEM
     crass (1.0.6)
     cssbundling-rails (1.1.1)
       railties (>= 6.0.0)
+    cypress-on-rails (1.13.1)
+      rack
     dartsass-rails (0.4.0)
       railties (>= 6.0.0)
     data_migrate (8.0.0)
@@ -754,6 +756,7 @@ DEPENDENCIES
   chusaku
   counter_culture
   cssbundling-rails
+  cypress-on-rails
   dartsass-rails
   data_migrate
   debug
