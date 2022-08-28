@@ -60,6 +60,22 @@ jobs:
         with:
           bundler-cache: true
 
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Yarn Install
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn --prefer-offline
+
       - name: Set up primary database
         env:
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
@@ -77,15 +93,13 @@ jobs:
       - name: Precompile Assets
         run: bin/rails assets:precompile
 
-      - name: RSpec (Unit)
+      - name: RSpec
         env:
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
         run: bin/rspec --tag ~type:system
 
-      - name: RSpec (System)
-        env:
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
-        run: bin/rspec --tag type:system
+      - name: Cypress
+        run: bin/rails cypress:run
 
       - name: Combine Code Coverage
         env:
@@ -120,7 +134,7 @@ jobs:
           hide_complexity: false
           indicators: true
           output: both
-          thresholds: '60 80'
+          thresholds: '45 60'
 
       - name: Cobertura Coverage Report (Unit)
         uses: 5monkeys/cobertura-action@master
@@ -128,8 +142,7 @@ jobs:
           path: coverage_unit/coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           report_name: "Code Coverage (Unit)"
-          only_changed_files: true
-          minimum_coverage: 42
+          minimum_coverage: 60
 
       - name: Cobertura Coverage Report (System)
         uses: 5monkeys/cobertura-action@master
@@ -137,5 +150,4 @@ jobs:
           path: coverage_system/coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           report_name: "Code Coverage (System)"
-          only_changed_files: true
-          minimum_coverage: 47
+          minimum_coverage: 7

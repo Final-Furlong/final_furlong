@@ -45,6 +45,13 @@ Rails.application.routes.draw do
   get "/stable/horses/:id", to: "current_stable/horses#show", as: :current_stable_horse
   match "/stable/horses/:id", to: "current_stable/horses#update", as: :update_current_stable_horse, via: %i[put patch]
 
+  if Rails.env.test?
+    namespace :test do
+      resources :factories, only: :create
+      resources :sessions, only: :create
+    end
+  end
+
   unauthenticated do
     root to: "pages#home"
   end

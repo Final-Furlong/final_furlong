@@ -18,9 +18,8 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: Install packages
-        run: |
-          yarn install --pure-lockfile
+      - name: Yarn install
+        run: yarn --prefer-offline
 
       - name: RuboCop
         uses: reviewdog/action-rubocop@v2
