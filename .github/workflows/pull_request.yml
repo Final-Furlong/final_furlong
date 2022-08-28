@@ -15,15 +15,15 @@ env:
 
 jobs:
   setup:
-    uses: Final-Furlong/final_furlong/.github/workflows/_dependencies.yml@main
+    uses: Final-Furlong/final_furlong/.github/workflows/_dependencies.yml@cypress-rails-gem
 
   call-linters:
     needs: [ 'setup' ]
-    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@main
+    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@cypress-rails-gem
 
   call-security:
     needs: [ 'setup' ]
-    uses: Final-Furlong/final_furlong/.github/workflows/_security.yml@main
+    uses: Final-Furlong/final_furlong/.github/workflows/_security.yml@cypress-rails-gem
 
   call-tests:
     if: "!contains(github.event.commits[0].message, '[ci skip]') && !contains(github.event.commits[0].message, '[skip ci]')"
