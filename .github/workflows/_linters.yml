@@ -32,7 +32,7 @@ jobs:
 
       - name: Yarn install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn install
+        run: yarn --prefer-offline
 
       - name: RuboCop
         uses: reviewdog/action-rubocop@v2

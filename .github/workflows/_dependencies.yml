@@ -41,4 +41,4 @@ jobs:
 
       - name: Yarn Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn install
+        run: yarn --prefer-offline
