@@ -131,7 +131,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           report_name: "Code Coverage (Unit)"
           only_changed_files: true
-          minimum_coverage: 42
+          minimum_coverage: 60
 
       - name: Cobertura Coverage Report (System)
         uses: 5monkeys/cobertura-action@master
@@ -140,4 +140,4 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           report_name: "Code Coverage (System)"
           only_changed_files: true
-          minimum_coverage: 47
+          minimum_coverage: 50
