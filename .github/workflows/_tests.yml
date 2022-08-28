@@ -122,7 +122,7 @@ jobs:
           hide_complexity: false
           indicators: true
           output: both
-          thresholds: '60 80'
+          thresholds: '45 60'
 
       - name: Cobertura Coverage Report (Unit)
         uses: 5monkeys/cobertura-action@master
@@ -130,8 +130,7 @@ jobs:
           path: coverage_unit/coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           report_name: "Code Coverage (Unit)"
-          only_changed_files: true
-          # minimum_coverage: 42
+          minimum_coverage: 60
 
       - name: Cobertura Coverage Report (System)
         uses: 5monkeys/cobertura-action@master
@@ -139,5 +138,4 @@ jobs:
           path: coverage_system/coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           report_name: "Code Coverage (System)"
-          only_changed_files: true
-          # minimum_coverage: 47
+          minimum_coverage: 7
