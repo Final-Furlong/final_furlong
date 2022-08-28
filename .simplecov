@@ -54,7 +54,6 @@ SimpleCov.profiles.define 'unit' do
 
   add_filter "app/controllers"
 
-  add_group "API", "app/controllers/api"
   add_group "DB", %w[app/models app/repositories app/queries]
   add_group "Policies", "app/policies"
   add_group "Forms", "app/forms"
@@ -68,10 +67,14 @@ end
 SimpleCov.profiles.define 'system' do
   coverage_dir 'coverage_system'
 
-  minimum_coverage line: 42.2, branch: 14
+  minimum_coverage line: 24, branch: 14
   # minimum_coverage_by_file line: 10, branch: 10
 
-  add_group "API", "app/controllers/api"
+  add_filter "app/controllers/api"
+  add_filter "app/lib/url_helpers_with_default_url_options.rb"
+  add_filter "app/validation"
+  add_filter "lib/core_extensions"
+
   add_group "Controllers", "app/controllers"
   add_group "DB", %w[app/models app/repositories app/queries]
   add_group "Policies", "app/policies"

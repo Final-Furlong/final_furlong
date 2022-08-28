@@ -1,5 +1,9 @@
 {
-  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "plugin:cypress/recommended"
+  ],
   "parser": "@babel/eslint-parser",
   "parserOptions": {
     "sourceType": "module",
@@ -14,7 +18,9 @@
     "jquery": true
   },
   "globals": {},
-  "ignorePatterns": ["/**/test/**/*.js"],
+  "ignorePatterns": [
+    "/**/test/**/*.js"
+  ],
   "rules": {
     "prettier/prettier": "error"
   }

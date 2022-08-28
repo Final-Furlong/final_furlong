@@ -60,6 +60,10 @@ jobs:
         with:
           bundler-cache: true
 
+      - name: Install packages
+        run: |
+          yarn install --pure-lockfile
+
       - name: Set up primary database
         env:
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
@@ -77,15 +81,13 @@ jobs:
       - name: Precompile Assets
         run: bin/rails assets:precompile
 
-      - name: RSpec (Unit)
+      - name: RSpec
         env:
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
         run: bin/rspec --tag ~type:system
 
-      - name: RSpec (System)
-        env:
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
-        run: bin/rspec --tag type:system
+      - name: Cypress
+        run: bin/rails cypress:run
 
       - name: Combine Code Coverage
         env:

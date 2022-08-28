@@ -18,3 +18,9 @@ import "./commands"
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+// hooks
+beforeEach(() => {
+  cy.log("Resetting Rails state")
+  cy.request("/cypress_rails_reset_state")
+})
