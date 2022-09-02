@@ -46,10 +46,8 @@ Rails.application.routes.draw do
   match "/stable/horses/:id", to: "current_stable/horses#update", as: :update_current_stable_horse, via: %i[put patch]
 
   if Rails.env.test?
-    namespace :test do
-      resources :factories, only: :create
-      resources :sessions, only: :create
-    end
+    require "test_routes"
+    define_test_routes
   end
 
   unauthenticated do

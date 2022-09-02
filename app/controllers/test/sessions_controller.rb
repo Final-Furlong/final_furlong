@@ -9,6 +9,14 @@ module Test
       render json: { user:, stable: }.to_json, status: :created
     end
 
+    def destroy
+      return unless current_user
+
+      sign_out
+
+      render json: :ok, status: :deleted
+    end
+
     private
 
       def user

@@ -26,4 +26,10 @@ beforeEach(() => {
     displayName: "Reset DB"
   })
   cy.request("/cypress_rails_reset_state")
+  cy.request({
+    url: "/test/session",
+    method: "delete",
+    form: true,
+    failOnStatusCode: true
+  })
 })

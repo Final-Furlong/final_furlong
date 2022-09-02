@@ -4,7 +4,7 @@ class StablesController < ApplicationController
   helper_method :stables, :stable, :stable_form
 
   before_action :load_stable, except: :index
-  before_action :authenticate_user!, only: :show, unless: :stable
+  before_action :authenticate_user!, only: %i[show edit], unless: :stable
   before_action :verify_active_user!, only: :show, unless: :stable
 
   # @route GET /stables (stables)
