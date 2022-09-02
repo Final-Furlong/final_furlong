@@ -41,7 +41,7 @@ pre-commit:
       tags: backend performance
       files: git diff --name-only --staged
       glob: "*.{jpg,jpeg,gif,png,svg"
-      run: image_optim && git add {staged_files}
+      run: image_optim {staged_files} && git add {staged_files}
     rubocop:
       tags: backend style
       files: git diff --name-only --staged
