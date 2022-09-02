@@ -9,7 +9,15 @@ module.exports = defineConfig({
 
   e2e: {
     specPattern: "spec/cypress/integration/**/*.cy.{js,jsx,ts,tsx}",
-    supportFile: "spec/cypress/support/integration.{js,jsx,ts,tsx}"
-    // setupNodeEvents(on, config) {}
+    excludeSpecPattern: process.env.CI ? ["cypress/integration/**/all.cy.js"] : [],
+    supportFile: "spec/cypress/support/integration.{js,jsx,ts,tsx}",
+    setupNodeEvents(_on, config) {
+      if (config.isTextTerminal) {
+        // skip the all.cy.js specs in "cypress run" mode
+        return {
+          excludeSpecPattern: ["spec/cypress/integration/**/all.cy.js"]
+        }
+      }
+    }
   }
 })

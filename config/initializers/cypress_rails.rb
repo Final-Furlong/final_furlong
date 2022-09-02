@@ -64,7 +64,7 @@ CypressRails.hooks.before_server_stop do
   # Purge and reload the test database
   Rails.logger.error "Clearing database"
   Rails.application.load_tasks
-  Rake::Task["db:test:prepare"].invoke
+  Rake::Task["db:truncate_all"].invoke
 end
 # rubocop:enable Metrics/MethodLength
 
