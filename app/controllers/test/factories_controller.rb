@@ -3,6 +3,8 @@ require "faker"
 
 module Test
   class FactoriesController < BaseController
+    before_action :permit_all_params
+
     def create
       result = case strategy
                when :create
@@ -22,15 +24,23 @@ module Test
       end
 
       def traits
-        params[:traits].map { |_key, trait| trait.to_sym } if params[:traits].present?
+        return [] unless params[:traits].present?
+
+        params[:traits].map { |_key, trait| trait.to_sym }
       end
 
       def factory
+        raise StandardError, "factory name is required" unless params[:factory]
+
         params[:factory].to_sym
       end
 
       def attributes
-        params.except(:factory, :strategy, :traits, :controller, :action, :number).symbolize_keys
+        params.to_h.symbolize_keys.except(:factory, :strategy, :traits, :controller, :action, :number)
+      end
+
+      def permit_all_params
+        ActionController::Parameters.permit_all_parameters = true
       end
   end
 end

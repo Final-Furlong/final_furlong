@@ -47,6 +47,10 @@ Cypress.Commands.add("factoryBotCreate", args => {
     failOnStatusCode: true,
     body: args
   })
+  // .its('body').then((body) => {
+  // const stable = body
+  // cy.log(stable)
+  // })
 
   // cy.factoryBotCreate({
   //   factory: 'user',

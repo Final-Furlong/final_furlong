@@ -21,6 +21,9 @@ import "./commands"
 
 // hooks
 beforeEach(() => {
-  cy.log("Resetting Rails state")
+  Cypress.log({
+    name: "reset state",
+    displayName: "Reset DB"
+  })
   cy.request("/cypress_rails_reset_state")
 })

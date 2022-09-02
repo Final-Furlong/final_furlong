@@ -1,13 +1,29 @@
 describe("Update Stable Description", () => {
   it("does not allow updating as anonymous user", () => {
-    cy.visit("/stables")
+    cy.factoryBotCreate({ factory: "stable" })
 
-    cy.get("#breadcrumbs").within(() => {
-      cy.contains("All Stables")
+    cy.request({
+      url: "/stables/edit",
+      failOnStatusCode: false
+    }).then(resp => {
+      expect(resp.status).to.eq(404)
+      expect(resp.redirectedToUrl).to.eq(undefined)
     })
   })
 
-  it("allows viewing as authenticated user", () => {
+  it("does allow updating as matching user", () => {
+    cy.factoryBotCreate({ factory: "stable" })
+      .its("body")
+      .then(stable => {
+        cy.login({ id: stable.user_id }).then(() => {
+          cy.visit("/stables/edit")
+
+          cy.get('input[name="stable[description]"]').should("exist")
+        })
+      })
+  })
+
+  xit("allows viewing as authenticated user", () => {
     cy.login({ username: "admin123" })
 
     cy.visit("/stables")
@@ -20,7 +36,7 @@ describe("Update Stable Description", () => {
     })
   })
 
-  it("shows all stables", () => {
+  xit("shows all stables", () => {
     cy.visit("/stables")
 
     cy.get("#breadcrumbs").within(() => {
