@@ -24,6 +24,24 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+function terminalLog(violations) {
+  cy.task(
+    "log",
+    `${violations.length} accessibility violation${violations.length === 1 ? "" : "s"} ${
+      violations.length === 1 ? "was" : "were"
+    } detected`
+  )
+  // pluck specific keys to keep the table readable
+  const violationData = violations.map(({ id, impact, description, nodes }) => ({
+    id,
+    impact,
+    description,
+    nodes: nodes.length
+  }))
+
+  cy.task("table", violationData)
+}
+
 Cypress.Commands.add("factoryBotCreate", args => {
   Cypress.log({
     name: "create factory",
@@ -47,10 +65,6 @@ Cypress.Commands.add("factoryBotCreate", args => {
     failOnStatusCode: true,
     body: args
   })
-  // .its('body').then((body) => {
-  // const stable = body
-  // cy.log(stable)
-  // })
 
   // cy.factoryBotCreate({
   //   factory: 'user',
@@ -78,4 +92,14 @@ Cypress.Commands.add("getBySel", (selector, ...args) => {
 
 Cypress.Commands.add("getBySelLike", (selector, ...args) => {
   return cy.get(`[data-test*=${selector}]`, ...args)
+})
+
+Cypress.Commands.add("printA11y", (context = null, ...options) => {
+  return cy.checkA11y(context, options || {}, terminalLog)
+})
+
+Cypress.Commands.add("testA11y", (url, context = null, ...options) => {
+  cy.visit(url)
+  cy.injectAxe()
+  cy.printA11y(context, options || {})
 })

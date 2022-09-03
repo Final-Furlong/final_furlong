@@ -242,6 +242,8 @@ en:
         name: Your name
         username: Username
   stables:
+    edit:
+      header: Edit Stable
     form:
       update: Update Stable
     index:

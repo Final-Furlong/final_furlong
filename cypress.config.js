@@ -21,6 +21,19 @@ module.exports = defineConfig({
       require("cypress-fail-fast/plugin")(on, config)
       require("cypress-watch-and-reload/plugins")(on, config)
 
+      on("task", {
+        log(message) {
+          console.log(message)
+
+          return null
+        },
+        table(message) {
+          console.table(message)
+
+          return null
+        }
+      })
+
       if (config.isTextTerminal) {
         // skip the all.cy.js specs in "cypress run" mode
         config.excludeSpecPattern = ["spec/cypress/integration/**/all.cy.js"]

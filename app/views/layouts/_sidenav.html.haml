@@ -1,5 +1,5 @@
 -# Sidebar
-%nav.collapse.d-lg-block.sidebar.collapse.bg-white#sidebar-menu
+%nav.collapse.d-lg-block.sidebar.collapse.bg-white#sidebar-menu{ aria: { label: "sidebar navigation" } }
   .position-sticky
     .list-group.list-group-flush
       .d-lg-none
@@ -18,7 +18,7 @@
           %i.fas.fa-arrow-right-from-bracket.me-3
           %span= t("layouts.nav.login")
       %a.list-group-item.list-group-item-action.py-2.dropdown-toggle.dropdown-item-text{ href: "#",
-        data: { "bs-toggle" => "collapse", "bs-target" => "#game-links-list" }, aria: { expanded: false } }
+        data: { bs_toggle: "collapse", bs_target: "#game-links-list" }, aria: { expanded: false } }
         %i.fa-solid.fa-bars-staggered.me-3
         %span= t(".game_divider")
       %ul.list-unstyled.mb-0.show#game-links-list

@@ -1,17 +1,17 @@
 .d-flex.flex-row-reverse.mb-3
-  %button.btn.btn-outline-primary{ type: "button", data: { "bs-toggle" => "offcanvas",
-    "bs-target" => "#offcanvas-search-filters" }, aria: { controls: "offcanvas-search-filters" } }
+  %button.btn.btn-outline-primary{ type: "button", data: { bs_toggle: "offcanvas",
+    bs_target: "#offcanvas-search-filters" }, aria: { controls: "offcanvas-search-filters" } }
     %i.fas.fa-search
     = t("common.search_form.action")
 
-.offcanvas.offcanvas-end#offcanvas-search-filters{ data: { "bs-scroll" => "true", "bs-backdrop" => "false" },
+.offcanvas.offcanvas-end#offcanvas-search-filters{ data: { bs_scroll: "true", bs_backdrop: "false" },
   tabindex: "-1", aria: { labelledby: "search-filters-label" } }
   .offcanvas-header
     %h5.offcanvas-title#search-filters-label= t("common.search_form.action")
-    %button.btn-close{ type: "button", data: { "bs-dismiss" => "offcanvas" }, aria: { label: "Close" } }
+    %button.btn-close{ type: "button", data: { bs_dismiss: "offcanvas" }, aria: { label: "Close" } }
   .offcanvas-body
     = search_form_for query, url: horses_path, html: { class: "d-flex flex-column", autocomplete: "off" },
-      data: { controller: "search", "search-target" => "form", turbo: { frame: "all-horses-search" } } do |f|
+      data: { controller: "search", search_target: "form", turbo_frame: "all-horses-search" } do |f|
       .filters-layout
         = f.input :status_eq, required: false, label: t("horses.search.status"), include_blank: true,
           collection: statuses, selected: active_status

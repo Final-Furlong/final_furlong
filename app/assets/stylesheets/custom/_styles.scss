@@ -30,8 +30,16 @@ ol.breadcrumb {
   margin-bottom: 0 !important;
 }
 
+.breadcrumb-item a {
+  color: shade-color($primary, 40%);
+}
+
+.breadcrumb-item.active {
+  color: shade-color($primary, 40%) !important;
+}
+
 .breadcrumb-item .active a {
-  color: var(--bs-breadcrumb-item-active-color) !important;
+  color: shade-color($primary, 40%);
   text-decoration: none !important;
 }
 
