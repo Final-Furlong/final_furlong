@@ -5,7 +5,7 @@ describe("Update Stable Description", () => {
     cy.url().should("eq", Cypress.config().baseUrl + "login")
   })
 
-  it("does allow updating as matching user", () => {
+  it("allows updating as matching user", () => {
     cy.factoryBotCreate({ factory: "stable" })
       .its("body")
       .then(stable => {

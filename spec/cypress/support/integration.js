@@ -12,12 +12,12 @@
 // You can read more here:
 // https://on.cypress.io/configuration
 // ***********************************************************
-
-// Import commands.js using ES2015 syntax:
+import "cypress-watch-and-reload/support"
+import "cypress-fail-fast"
+import { commandTimings } from "cypress-timings"
 import "./commands"
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+commandTimings()
 
 // hooks
 beforeEach(() => {
