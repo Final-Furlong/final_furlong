@@ -66,7 +66,7 @@ Cypress.Commands.add("factory", args => {
     body: args
   })
 
-  // cy.factoryBotCreate({
+  // cy.factory({
   //   factory: 'user',
   //   traits: ['admin','has_posts'],
   //   name: 'tbconroy',
@@ -96,12 +96,31 @@ Cypress.Commands.add("updateRecord", args => {
     body: args
   })
 
-  // cy.factoryBotCreate({
-  //   factory: 'user',
-  //   traits: ['admin','has_posts'],
-  //   name: 'tbconroy',
-  //   email: 'tbconroy@example.com'
-  // })
+  // cy.updateRecord({ model: 'user', id: 'abc123', email: 'updated_email@example.com' })
+})
+
+Cypress.Commands.add("findRecord", args => {
+  Cypress.log({
+    name: "find model",
+    displayName: "Find Record",
+    message: `${args}`,
+    consoleProps: () => {
+      return {
+        ID: args.id,
+        Model: args.model
+      }
+    }
+  })
+
+  cy.request({
+    url: "/test/factory",
+    method: "get",
+    form: false,
+    failOnStatusCode: true,
+    body: args
+  })
+
+  // cy.findRecord({ model: 'user', id: 'abc123' })
 })
 
 Cypress.Commands.add("login", args => {
@@ -142,7 +161,12 @@ Cypress.Commands.add("assertUrl", (basePath = "", chainer = "eq") => {
   } else {
     path = basePath
   }
-  const url = Cypress.config().baseUrl + path
+  let url
+  if (chainer == "contains") {
+    url = path
+  } else {
+    url = Cypress.config().baseUrl + path
+  }
   Cypress.log({
     name: "Match URL",
     message: `${path}`,

@@ -11,6 +11,7 @@ def define_test_routes # rubocop:disable Metrics/MethodLength
     resources :factories, only: :create
 
     resource :factory, only: [] do
+      match :show, via: :get
       match :update, as: "update", via: %i[put patch]
     end
   end

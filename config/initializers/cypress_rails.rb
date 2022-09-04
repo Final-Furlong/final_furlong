@@ -2,7 +2,7 @@ return unless Rails.env.test?
 
 ENV["TEST_TYPE"] = "system"
 ENV["COVERAGE"] = "true"
-ENV["SKIP_TRUE_USER"] = "true"
+ENV["CYPRESS"] = "true"
 
 # rubocop:disable Metrics/MethodLength
 def create_admin

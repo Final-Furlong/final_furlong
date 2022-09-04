@@ -18,12 +18,43 @@ module Test
     end
 
     def update
-      result = model_name.find(params[:id]).update!(attributes)
+      instance = model_name.find(params[:id])
+      instance.update!(attributes)
 
-      render json: result.to_json, status: :created
+      render json: instance.reload.to_json, status: :ok
+    end
+
+    def show
+      result = model_name.find_by(search_params)
+
+      render json: result.to_json, status: :ok
     end
 
     private
+
+      def search_params
+        case model_name
+        when Stable
+          stable_params
+        when User
+          user_params
+        end
+      end
+
+      def user_params
+        user_keys = %i[id username email]
+        params.select { |key, value| user_keys.include?(key.to_sym) && value.present? }
+      end
+
+      def stable_params
+        stable_keys = %i[id user_id]
+        attrs = params.select { |key, value| stable_keys.include?(key.to_sym) && value.present? }
+        if params[:email]
+          user = User.find_by(email: params[:email])
+          attrs[:user_id] = user.id
+        end
+        attrs
+      end
 
       def strategy
         params[:strategy] || :create
