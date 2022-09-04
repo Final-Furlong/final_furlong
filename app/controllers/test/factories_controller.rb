@@ -3,6 +3,8 @@ require "faker"
 
 module Test
   class FactoriesController < BaseController
+    before_action :permit_all_params
+
     def create
       result = case strategy
                when :create
@@ -15,22 +17,73 @@ module Test
       render json: result.to_json, status: :created
     end
 
+    def update
+      instance = model_name.find(params[:id])
+      instance.update!(attributes)
+
+      render json: instance.reload.to_json, status: :ok
+    end
+
+    def show
+      result = model_name.find_by(search_params)
+
+      render json: result.to_json, status: :ok
+    end
+
     private
+
+      def search_params
+        case model_name
+        when Stable
+          stable_params
+        when User
+          user_params
+        end
+      end
+
+      def user_params
+        user_keys = %i[id username email]
+        params.select { |key, value| user_keys.include?(key.to_sym) && value.present? }
+      end
+
+      def stable_params
+        stable_keys = %i[id user_id]
+        attrs = params.select { |key, value| stable_keys.include?(key.to_sym) && value.present? }
+        if params[:email]
+          user = User.find_by(email: params[:email])
+          attrs[:user_id] = user.id
+        end
+        attrs
+      end
 
       def strategy
         params[:strategy] || :create
       end
 
       def traits
-        params[:traits].map { |_key, trait| trait.to_sym } if params[:traits].present?
+        return [] if params[:traits].blank?
+
+        params[:traits].map { |_key, trait| trait.to_sym }
       end
 
       def factory
+        raise StandardError, "factory name is required" unless params[:factory]
+
         params[:factory].to_sym
       end
 
+      def model_name
+        raise StandardError, "model is required" unless params[:model]
+
+        params[:model].classify.constantize
+      end
+
       def attributes
-        params.except(:factory, :strategy, :traits, :controller, :action, :number).symbolize_keys
+        params.to_h.symbolize_keys.except(:factory, :strategy, :traits, :controller, :action, :number, :model, :id)
+      end
+
+      def permit_all_params
+        ActionController::Parameters.permit_all_parameters = true
       end
   end
 end

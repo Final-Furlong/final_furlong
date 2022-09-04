@@ -10,7 +10,7 @@ Rails.application.default_url_options = { host: "www.example.com" }
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  config.cache_classes = false
+  config.cache_classes = !ENV.fetch("CYPRESS", false)
 
   # Eager loading loads your whole application. When running a single test locally,
   # this probably isn't necessary. It's a good idea to do in a continuous integration
@@ -24,8 +24,8 @@ Rails.application.configure do
   }
 
   # Show full error reports and disable caching.
-  config.consider_all_requests_local = true
-  config.action_controller.perform_caching = false
+  config.consider_all_requests_local = !ENV.fetch("CYPRESS", false)
+  config.action_controller.perform_caching = !ENV.fetch("CYPRESS", false)
   config.cache_store = :null_store
 
   # Raise exceptions instead of rendering exception templates.

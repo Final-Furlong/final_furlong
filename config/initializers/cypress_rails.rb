@@ -2,7 +2,7 @@ return unless Rails.env.test?
 
 ENV["TEST_TYPE"] = "system"
 ENV["COVERAGE"] = "true"
-ENV["SKIP_TRUE_USER"] = "true"
+ENV["CYPRESS"] = "true"
 
 # rubocop:disable Metrics/MethodLength
 def create_admin
@@ -64,7 +64,7 @@ CypressRails.hooks.before_server_stop do
   # Purge and reload the test database
   Rails.logger.error "Clearing database"
   Rails.application.load_tasks
-  Rake::Task["db:test:prepare"].invoke
+  Rake::Task["db:truncate_all"].invoke
 end
 # rubocop:enable Metrics/MethodLength
 

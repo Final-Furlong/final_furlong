@@ -44,8 +44,9 @@ module FinalFurlong
     config.logger = ActiveSupport::TaggedLogging.new(logger)
     config.log_tags = [:request_id]
     config.exceptions_app = routes
-    config.i18n.available_locales = %i[en en-GB]
+    config.i18n.available_locales = [:en, "en-GB"]
     config.i18n.default_locale = :en
+    config.i18n.fallbacks = { "en-GB" => :en }
 
     # API
     config.middleware.insert_before 0, Rack::Cors do

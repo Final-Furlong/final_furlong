@@ -1,18 +1,18 @@
 .dropdown.d-none.d-sm-block
-  %button.btn.btn-light.ms-2.px-2.py-1{ type: "button", data: { "bs-toggle" => "dropdown" },
-          aria: { expanded: false } }
+  %button.btn.btn-light.ms-2.px-2.py-1{ type: "button", data: { bs_toggle: "dropdown" },
+          aria: { expanded: false, label: american_locale? ? "US language" : "UK language" } }
     %span.fi{ class: american_locale? ? "fi-us" : "fi-gb" }
   %ul.dropdown-menu.dropdown-menu-end
     %li
       = button_to settings_path, method: :patch, class: "dropdown-item" do
-        = hidden_field_tag "locale", "en"
+        = hidden_field_tag "locale", "en", id: "locale-en-US"
         %span.me-2{ class: "fi fi-us" }
         English
         - if american_locale?
           %i.fas.fa-check.ms-2
     %li
       = button_to settings_path, method: :patch, class: "dropdown-item" do
-        = hidden_field_tag "locale", "en-GB"
+        = hidden_field_tag "locale", "en-GB", id: "locale-en-gb"
         %span.me-2{ class: "fi fi-gb" }
         English
         - if british_locale?

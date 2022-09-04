@@ -5,10 +5,10 @@
       - when "String"
         %div{ class: "fade show alert alert-dismissible alert-#{flash_message_type_to_html_class(name)}" }
           = content_tag :span, messages.html_safe, id: "flash_#{name}"
-          %button.btn-close{ type: "button", data: { "bs-dismiss" => "alert" }, aria: { label: "Close" } }
+          %button.btn-close{ type: "button", data: { bs_dismiss: "alert" }, aria: { label: "Close" } }
       - when "Array"
         - messages.compact.each do |msg|
           %div{ class: "fade show alert alert-dismissible alert-#{flash_message_type_to_html_class(name)}" }
             = content_tag :span, msg.html_safe, id: "flash_#{name}"
-            %button.btn-close{ type: "button", data: { "bs-dismiss" => "alert" }, aria: { label: "Close" } }
+            %button.btn-close{ type: "button", data: { bs_dismiss: "alert" }, aria: { label: "Close" } }
 - flash.clear

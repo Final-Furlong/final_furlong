@@ -12,15 +12,24 @@
 // You can read more here:
 // https://on.cypress.io/configuration
 // ***********************************************************
-
-// Import commands.js using ES2015 syntax:
+import "cypress-watch-and-reload/support"
+import "cypress-axe"
+import { commandTimings } from "cypress-timings"
 import "./commands"
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+commandTimings()
 
 // hooks
 beforeEach(() => {
-  cy.log("Resetting Rails state")
+  Cypress.log({
+    name: "reset state",
+    displayName: "Reset DB"
+  })
   cy.request("/cypress_rails_reset_state")
+  cy.request({
+    url: "/test/session",
+    method: "delete",
+    form: true,
+    failOnStatusCode: true
+  })
 })

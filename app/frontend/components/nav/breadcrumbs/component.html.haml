@@ -10,7 +10,7 @@
       %li.breadcrumb-item
         %span.font-weight-bold
           = @title
-  .d-none.d-md-block
+  .d-none.d-md-block#breadcrumb-actions
     - actions&.each do |action|
       - if allowed_action?(action)
         = render_action(action, regular_classes(action))
