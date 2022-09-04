@@ -67,7 +67,7 @@ end
 SimpleCov.profiles.define 'system' do
   coverage_dir 'coverage_system'
 
-  minimum_coverage line: 33, branch: 57
+  minimum_coverage line: 8, branch: 66
   # minimum_coverage_by_file line: 10, branch: 10
 
   add_filter "app/controllers/api"
