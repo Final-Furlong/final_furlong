@@ -37,6 +37,7 @@ module.exports = defineConfig({
       if (config.isTextTerminal) {
         // skip the all.cy.js specs in "cypress run" mode
         config.excludeSpecPattern = ["spec/cypress/integration/**/all.cy.js"]
+        config.video = true
       }
       return config
     }

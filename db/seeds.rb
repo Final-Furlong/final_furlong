@@ -11,29 +11,27 @@ require "faker"
 require "factory_bot_rails"
 max_stables = ENV.fetch("USERS", 5).to_i
 stable_count = max_stables - Stable.count
-puts "Creating #{stable_count} stable(s)"
+Rails.logger.info "Creating #{stable_count} stable(s)"
 FactoryBot.create_list(:stable, stable_count) if stable_count.positive?
-unless User.exists?(username: "Shanthi")
-  puts "Creating admin"
-  admin_email = "admin@example.com"
-  admin = if User.exists?(email: admin_email)
-            User.find_by(email: admin_email)
-          else
-            FactoryBot.create(:admin, :without_stable, email: admin_email,
-                                                       password: "Password1!", password_confirmation: "Password1!")
-          end
-  FactoryBot.create(:stable, user: admin) unless admin.reload.stable
-end
+Rails.logger.info "Creating admin"
+admin_email = "admin@example.com"
+admin = if User.exists?(email: admin_email)
+          User.find_by(email: admin_email)
+        else
+          FactoryBot.create(:admin, :without_stable, email: admin_email,
+                                                     password: "Password1!", password_confirmation: "Password1!")
+        end
+FactoryBot.create(:stable, user: admin) unless admin.reload.stable
 unless Horse.count.zero?
-  puts "Creating horse"
+  Rails.logger.info "Creating horse"
   FactoryBot.create(:horse)
-  puts "Creating stud"
+  Rails.logger.info "Creating stud"
   stud = FactoryBot.create(:horse, :stallion)
-  puts "Creating mare"
+  Rails.logger.info "Creating mare"
   mare = FactoryBot.create(:horse, :broodmare)
-  puts "Creating yearling"
+  Rails.logger.info "Creating yearling"
   FactoryBot.create(:horse, :weanling, sire: stud, dam: mare)
-  puts "Creating weanling"
+  Rails.logger.info "Creating weanling"
   FactoryBot.create(:horse, :yearling, dam: mare)
 end
 

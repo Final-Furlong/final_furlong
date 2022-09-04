@@ -19,11 +19,11 @@ module Users
         end
 
         def online_classes
-          "badge bg-success"
+          "badge bg-success badge-online"
         end
 
         def offline_classes
-          "badge bg-light border border-secondary border-opacity-50 text-dark"
+          "badge bg-light border border-secondary border-opacity-50 text-dark badge-offline"
         end
     end
   end

@@ -13,7 +13,6 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 import "cypress-watch-and-reload/support"
-import "cypress-fail-fast"
 import "cypress-axe"
 import { commandTimings } from "cypress-timings"
 import "./commands"

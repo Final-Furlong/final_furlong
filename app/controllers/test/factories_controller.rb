@@ -17,6 +17,12 @@ module Test
       render json: result.to_json, status: :created
     end
 
+    def update
+      result = model_name.find(params[:id]).update!(attributes)
+
+      render json: result.to_json, status: :created
+    end
+
     private
 
       def strategy
@@ -24,7 +30,7 @@ module Test
       end
 
       def traits
-        return [] unless params[:traits].present?
+        return [] if params[:traits].blank?
 
         params[:traits].map { |_key, trait| trait.to_sym }
       end
@@ -35,8 +41,14 @@ module Test
         params[:factory].to_sym
       end
 
+      def model_name
+        raise StandardError, "model is required" unless params[:model]
+
+        params[:model].classify.constantize
+      end
+
       def attributes
-        params.to_h.symbolize_keys.except(:factory, :strategy, :traits, :controller, :action, :number)
+        params.to_h.symbolize_keys.except(:factory, :strategy, :traits, :controller, :action, :number, :model, :id)
       end
 
       def permit_all_params
