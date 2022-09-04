@@ -6,28 +6,26 @@ describe("Update Stable Description", () => {
   })
 
   context("when user is logged in", () => {
-    before(() => {
-      cy.factoryBotCreate({ factory: "stable" }).its("body").as("stable")
-    })
-
     it("allows updating as matching user", () => {
-      cy.get(this.stable).then(stable => {
-        cy.login({ id: stable.user_id }).then(() => {
-          cy.visit("/stable/edit")
+      cy.factoryBotCreate({ factory: "stable" })
+        .its("body")
+        .then(stable => {
+          cy.login({ id: stable.user_id }).then(() => {
+            cy.visit("/stable/edit")
 
-          cy.get('textarea[name="stable[description]"]').should("exist")
+            cy.get('textarea[name="stable[description]"]').should("exist")
+          })
         })
-      })
     })
 
     it("follows accessibility rules", () => {
-      cy.get(this.stable).then(stable => {
-        cy.login({ id: stable.user_id }).then(() => {
-          cy.visit("/stable/edit")
-          cy.injectAxe()
-          cy.printA11y()
+      cy.factoryBotCreate({ factory: "stable" })
+        .its("body")
+        .then(stable => {
+          cy.login({ id: stable.user_id }).then(() => {
+            cy.testA11y("/stable/edit")
+          })
         })
-      })
     })
   })
 })

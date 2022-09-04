@@ -17,6 +17,10 @@ main {
   }
 }
 
+a {
+  color: $blue-600;
+}
+
 #breadcrumbs {
   width: 100%;
   padding: 10px;
@@ -73,7 +77,7 @@ ol.breadcrumb {
 }
 
 .list-group-item-action.active {
-  color: var(--bs-list-group-active-bg) !important;
+  color: $blue-600 !important;
   background-color: #fbfbfb !important;
   border-left: 1px solid var(--bs-list-group-active-border-color);
   border-right: 1px solid var(--bs-list-group-active-border-color);

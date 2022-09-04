@@ -72,4 +72,8 @@ describe("Login Spec", () => {
 
     cy.getCookie("_final_furlong_session").should("not.exist")
   })
+
+  it("follows accessibility rules", () => {
+    cy.testA11y("/login")
+  })
 })

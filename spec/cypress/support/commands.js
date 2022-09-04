@@ -95,7 +95,12 @@ Cypress.Commands.add("getBySelLike", (selector, ...args) => {
 })
 
 Cypress.Commands.add("printA11y", (context = null, ...options) => {
-  return cy.checkA11y(context, options || {}, terminalLog)
+  var opts = options || {}
+  opts.runOnly = {
+    type: "tag",
+    values: ["wcag2a", "wcag2aa"]
+  }
+  return cy.checkA11y(context, opts, terminalLog)
 })
 
 Cypress.Commands.add("testA11y", (url, context = null, ...options) => {
