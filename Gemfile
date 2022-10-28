@@ -48,6 +48,7 @@ gem "sentry-rails"
 gem "sentry-ruby"
 gem "sidekiq"
 gem "sidekiq-cron"
+gem "silencer", require: false
 gem "simple_form"
 gem "stimulus-rails"
 gem "strong_migrations"
