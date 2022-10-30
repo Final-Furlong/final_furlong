@@ -30,6 +30,7 @@ class Horse < ApplicationRecord
 
   enum status: HorseStatus::STATUSES
   enum gender: HorseGender::VALUES
+  enum colour: HorseColour::COLOURS
 
   validates :date_of_birth, presence: true
   validates :date_of_death, comparison: { greater_than_or_equal_to: :date_of_birth }, if: :date_of_death
@@ -78,6 +79,7 @@ end
 #
 #  id                 :uuid             not null, primary key
 #  age                :integer
+#  colour             :string           default("bay"), not null
 #  date_of_birth      :date             not null, indexed
 #  date_of_death      :date
 #  foals_count        :integer          default(0), not null

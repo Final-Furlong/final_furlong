@@ -5,6 +5,12 @@ module Test
   class FactoriesController < BaseController
     before_action :permit_all_params
 
+    def show
+      result = model_name.find_by(search_params)
+
+      render json: result.to_json, status: :ok
+    end
+
     def create
       result = case strategy
                when :create
@@ -22,12 +28,6 @@ module Test
       instance.update!(attributes)
 
       render json: instance.reload.to_json, status: :ok
-    end
-
-    def show
-      result = model_name.find_by(search_params)
-
-      render json: result.to_json, status: :ok
     end
 
     private

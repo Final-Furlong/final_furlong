@@ -12,6 +12,7 @@ end
 #
 #  id                 :uuid             not null, primary key
 #  age                :integer
+#  colour             :string           default("bay"), not null
 #  date_of_birth      :date             not null, indexed
 #  date_of_death      :date
 #  foals_count        :integer          default(0), not null

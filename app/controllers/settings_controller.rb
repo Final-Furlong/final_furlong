@@ -6,6 +6,7 @@ class SettingsController < ApplicationController
   def update
     authorize :settings
 
+    # rubocop:disable Rails/ActionControllerFlashBeforeRender
     if outcome.valid?
       locale = save_locale_cookie(outcome)
 
@@ -14,6 +15,7 @@ class SettingsController < ApplicationController
       flash[:alert] = errors
     end
     redirect_to root_path
+    # rubocop:enable Rails/ActionControllerFlashBeforeRender
   end
 
   private

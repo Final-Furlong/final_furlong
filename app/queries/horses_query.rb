@@ -3,7 +3,7 @@ class HorsesQuery
     def name_matches(name)
       return self if name.blank?
 
-      formatted_name = name.downcase.tr(" ", "").tr(".", "").tr("\-", "").tr("&", "")
+      formatted_name = name.downcase.tr(" ", "").tr(".", "").tr("-", "").tr("&", "")
       where("LOWER(TRANSLATE(\"name\", ' .-&''', '')) = ?", formatted_name)
     end
   end

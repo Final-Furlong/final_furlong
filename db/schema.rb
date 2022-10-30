@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_14_180246) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_28_160510) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "horse_colour", ["bay", "black", "blood bay", "blue roan", "brown", "chestnut", "dapple grey", "dark bay", "dark grey", "flea-bitten grey", "grey", "light bay", "light chestnut", "light grey", "liver chestnut", "mahogany bay", "red chestnut", "strawberry roan"]
   create_enum "horse_gender", ["colt", "filly", "mare", "stallion", "gelding"]
   create_enum "horse_status", ["unborn", "weanling", "yearling", "racehorse", "broodmare", "stud", "retired", "retired_broodmare", "retired_stud", "deceased"]
   create_enum "track_condition", ["fast", "good", "slow", "wet"]
@@ -52,6 +53,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_14_180246) do
     t.integer "legacy_id"
     t.integer "foals_count", default: 0, null: false
     t.integer "unborn_foals_count", default: 0, null: false
+    t.string "colour", default: "bay", null: false
     t.index ["breeder_id"], name: "index_horses_on_breeder_id"
     t.index ["created_at"], name: "index_horses_on_created_at"
     t.index ["dam_id"], name: "index_horses_on_dam_id"
