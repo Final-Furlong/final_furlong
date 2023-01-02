@@ -5,6 +5,7 @@ require_relative "config/application"
 
 begin
   require "rspec/core/rake_task"
+  # require 'rom/sql/rake_task'
   RSpec::Core::RakeTask.new(:spec)
 rescue LoadError
 end

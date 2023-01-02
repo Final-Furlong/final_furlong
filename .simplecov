@@ -54,7 +54,7 @@ SimpleCov.profiles.define 'unit' do
 
   add_filter "app/controllers"
 
-  add_group "DB", %w[app/models app/repositories app/queries]
+  add_group "DB", %w[app/models app/relations app/repositories app/queries]
   add_group "Policies", "app/policies"
   add_group "Forms", "app/forms"
   add_group "Jobs", %w[app/jobs app/workers]
@@ -76,7 +76,7 @@ SimpleCov.profiles.define 'system' do
   add_filter "lib/core_extensions"
 
   add_group "Controllers", "app/controllers"
-  add_group "DB", %w[app/models app/repositories app/queries]
+  add_group "DB", %w[app/models app/relations app/repositories app/queries]
   add_group "Policies", "app/policies"
   add_group "Forms", "app/forms"
   add_group "Jobs", %w[app/jobs app/workers]
@@ -101,7 +101,7 @@ SimpleCov.profiles.define "default" do
 
   add_group "API", "app/controllers/api"
   add_group "Controllers", "app/controllers"
-  add_group "DB", %w[app/models app/repositories app/queries]
+  add_group "DB", %w[app/models app/relations app/repositories app/queries]
   add_group "Policies", "app/policies"
   add_group "Forms", "app/forms"
   add_group "Jobs", %w[app/jobs app/workers]

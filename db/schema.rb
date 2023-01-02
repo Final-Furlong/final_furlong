@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_14_180246) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "horse_colour", ["bay", "black", "blood bay", "blue roan", "brown", "chestnut", "dapple grey", "dark bay", "dark grey", "flea-bitten grey", "grey", "light bay", "light chestnut", "light grey", "liver chestnut", "mahogany bay", "red chestnut", "strawberry roan"]
   create_enum "horse_gender", ["colt", "filly", "mare", "stallion", "gelding"]
   create_enum "horse_status", ["unborn", "weanling", "yearling", "racehorse", "broodmare", "stud", "retired", "retired_broodmare", "retired_stud", "deceased"]
   create_enum "track_condition", ["fast", "good", "slow", "wet"]
@@ -209,6 +210,59 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_14_180246) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "motor_tags_name_unique_index", unique: true
+  end
+
+  create_table "racehorses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "break", null: false
+    t.integer "min_speed", null: false
+    t.integer "ave_speed", null: false
+    t.integer "max_speed", null: false
+    t.integer "stamina", null: false
+    t.integer "sustain", null: false
+    t.integer "consistency", null: false
+    t.integer "fast", null: false
+    t.integer "good", null: false
+    t.integer "wet", null: false
+    t.integer "slow", null: false
+    t.integer "dirt", null: false
+    t.integer "turf", null: false
+    t.integer "steeplechase", null: false
+    t.integer "courage", null: false
+    t.date "immature_date", null: false
+    t.date "hasbeen_date", null: false
+    t.integer "lead", null: false
+    t.integer "pace", null: false
+    t.integer "midpack", null: false
+    t.integer "close", null: false
+    t.integer "soundness", null: false
+    t.integer "fitness", null: false
+    t.string "fitness_grade", null: false
+    t.integer "energy", null: false
+    t.string "energy_grade", null: false
+    t.integer "energy_minimum", null: false
+    t.integer "enery_regain", null: false
+    t.decimal "morale", precision: 4, scale: 1, null: false
+    t.integer "morale_loss", null: false
+    t.integer "morale_gain", null: false
+    t.integer "pissy", null: false
+    t.integer "ratability", null: false
+    t.integer "equipment", null: false
+    t.integer "default_equipment", null: false
+    t.decimal "strides_per_second", precision: 5, scale: 3, null: false
+    t.integer "loaf_threshold", null: false
+    t.integer "loaf_percent", null: false
+    t.integer "acceleration", null: false
+    t.integer "traffic", null: false
+    t.integer "xp_rate", null: false
+    t.integer "xp_current", null: false
+    t.integer "turning", null: false
+    t.integer "weight", null: false
+    t.uuid "last_race_id"
+    t.integer "last_race_finishers"
+    t.integer "races_count", default: 0, null: false
+    t.integer "rest_day_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "racetracks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

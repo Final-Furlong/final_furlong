@@ -44,7 +44,7 @@ gem "rack-cors"
 gem "rails-i18n"
 gem "ransack"
 gem "redis", "~> 4.0"
-gem "rom-rails"
+gem "rom-rails", github: 'pendletons/rom-rails', branch: 'rails7'
 gem "rom-sql"
 gem "sentry-rails"
 gem "sentry-ruby"

@@ -61,6 +61,30 @@ end
 
 # == Route Map
 #
+#   [1m[36mROM[postgres] (0.2ms)[0m  [1mSET standard_conforming_strings = ON[0m
+#   [1m[35mROM[postgres] (0.1ms)[0m  SET client_min_messages = 'WARNING'
+#   [1m[36mROM[postgres] (0.1ms)[0m  [1mSET DateStyle = 'ISO'[0m
+#   [1m[35mROM[postgres] (22.9ms)[0m  SELECT CAST(current_setting('server_version_num') AS integer) AS v
+#   [1m[36mROM[postgres] (4.1ms)[0m  [1mSELECT CAST("enumtypid" AS integer) AS "v", "enumlabel" FROM "pg_enum" ORDER BY "enumtypid", "enumsortorder"[0m
+#   [1m[35mROM[postgres] (1.8ms)[0m  SELECT "typname", CAST("typarray" AS integer) AS "v" FROM "pg_type" WHERE (("oid" IN (54318, 54330, 54352, 54362, 54370, 55143)) AND ("typarray" != 0))
+#   [1m[36mROM[postgres] (0.4ms)[0m  [1mSELECT "typarray", "oid" FROM "pg_type" WHERE ("typname" = 'horse_gender') LIMIT 1[0m
+#   [1m[35mROM[postgres] (0.6ms)[0m  SELECT "typarray", "oid" FROM "pg_type" WHERE ("typname" = 'horse_status') LIMIT 1
+#   [1m[36mROM[postgres] (0.3ms)[0m  [1mSELECT "typarray", "oid" FROM "pg_type" WHERE ("typname" = 'track_condition') LIMIT 1[0m
+#   [1m[35mROM[postgres] (0.2ms)[0m  SELECT "typarray", "oid" FROM "pg_type" WHERE ("typname" = 'track_surface') LIMIT 1
+#   [1m[36mROM[postgres] (0.2ms)[0m  [1mSELECT "typarray", "oid" FROM "pg_type" WHERE ("typname" = 'user_status') LIMIT 1[0m
+#   [1m[35mROM[postgres] (0.6ms)[0m  SELECT "typarray", "oid" FROM "pg_type" WHERE ("typname" = 'horse_colour') LIMIT 1
+#   [1m[36mROM[postgres] (0.2ms)[0m  [1mSET standard_conforming_strings = ON[0m
+#   [1m[35mROM[postgres] (0.2ms)[0m  SET client_min_messages = 'WARNING'
+#   [1m[36mROM[postgres] (0.2ms)[0m  [1mSET DateStyle = 'ISO'[0m
+#   [1m[35mROM[postgres] (1.2ms)[0m  SELECT CAST(current_setting('server_version_num') AS integer) AS v
+#   [1m[36mROM[postgres] (2.6ms)[0m  [1mSELECT CAST("enumtypid" AS integer) AS "v", "enumlabel" FROM "pg_enum" ORDER BY "enumtypid", "enumsortorder"[0m
+#   [1m[35mROM[postgres] (2.4ms)[0m  SELECT "typname", CAST("typarray" AS integer) AS "v" FROM "pg_type" WHERE (("oid" IN (54318, 54330, 54352, 54362, 54370, 55143)) AND ("typarray" != 0))
+#   [1m[36mROM[postgres] (0.8ms)[0m  [1mSELECT "typarray", "oid" FROM "pg_type" WHERE ("typname" = 'horse_gender') LIMIT 1[0m
+#   [1m[35mROM[postgres] (23.0ms)[0m  SELECT "typarray", "oid" FROM "pg_type" WHERE ("typname" = 'horse_status') LIMIT 1
+#   [1m[36mROM[postgres] (1.2ms)[0m  [1mSELECT "typarray", "oid" FROM "pg_type" WHERE ("typname" = 'track_condition') LIMIT 1[0m
+#   [1m[35mROM[postgres] (0.6ms)[0m  SELECT "typarray", "oid" FROM "pg_type" WHERE ("typname" = 'track_surface') LIMIT 1
+#   [1m[36mROM[postgres] (0.7ms)[0m  [1mSELECT "typarray", "oid" FROM "pg_type" WHERE ("typname" = 'user_status') LIMIT 1[0m
+#   [1m[35mROM[postgres] (0.6ms)[0m  SELECT "typarray", "oid" FROM "pg_type" WHERE ("typname" = 'horse_colour') LIMIT 1
 #                                   Prefix Verb      URI Pattern                                                                                       Controller#Action
 #                              motor_admin           /motor_admin                                                                                      Motor::Admin
 #                                 api_base           /                                                                                                 Api::Base
