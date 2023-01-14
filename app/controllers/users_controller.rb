@@ -17,6 +17,9 @@ class UsersController < AuthenticatedController
   # @route GET /users/new (new_user)
   def new; end
 
+  # @route GET /users/:id/edit (edit_user)
+  def edit; end
+
   # @route POST /users (users)
   def create
     if @user_form.submit(user_attributes)
@@ -27,9 +30,6 @@ class UsersController < AuthenticatedController
       render :new, status: :unprocessable_entity
     end
   end
-
-  # @route GET /users/:id/edit (edit_user)
-  def edit; end
 
   # @route PATCH /users/:id (user)
   # @route PUT /users/:id (user)

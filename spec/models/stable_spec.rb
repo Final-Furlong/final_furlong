@@ -1,4 +1,4 @@
-RSpec.describe Stable, type: :model do
+RSpec.describe Stable do
   describe "associations" do
     subject(:stable) { described_class.new }
 

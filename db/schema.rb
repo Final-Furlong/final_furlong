@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_14_131933) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -27,8 +27,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
   create_table "activations", force: :cascade do |t|
     t.string "token", null: false
     t.datetime "activated_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.uuid "user_id", null: false
     t.index ["user_id"], name: "index_activations_on_user_id", unique: true
   end
@@ -47,8 +47,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
     t.uuid "breeder_id", null: false
     t.uuid "sire_id"
     t.uuid "dam_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.uuid "location_bred_id"
     t.integer "legacy_id"
     t.integer "foals_count", default: 0, null: false
@@ -69,15 +69,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
     t.string "state"
     t.string "county"
     t.string "country", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
   end
 
   create_table "motor_alert_locks", force: :cascade do |t|
     t.bigint "alert_id", null: false
     t.string "lock_timestamp", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.index ["alert_id", "lock_timestamp"], name: "index_motor_alert_locks_on_alert_id_and_lock_timestamp", unique: true
     t.index ["alert_id"], name: "index_motor_alert_locks_on_alert_id"
   end
@@ -92,8 +92,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
     t.bigint "author_id"
     t.string "author_type"
     t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.index ["name"], name: "motor_alerts_name_unique_index", unique: true, where: "(deleted_at IS NULL)"
     t.index ["query_id"], name: "index_motor_alerts_on_query_id"
     t.index ["updated_at"], name: "index_motor_alerts_on_updated_at"
@@ -106,8 +106,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
     t.text "credentials", null: false
     t.text "description"
     t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.index ["name"], name: "motor_api_configs_name_unique_index", unique: true, where: "(deleted_at IS NULL)"
   end
 
@@ -125,8 +125,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
     t.text "comment"
     t.string "remote_address"
     t.string "request_uuid"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.index ["associated_type", "associated_id"], name: "motor_auditable_associated_index"
     t.index ["auditable_type", "auditable_id", "version"], name: "motor_auditable_index"
     t.index ["created_at"], name: "index_motor_audits_on_created_at"
@@ -137,8 +137,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
   create_table "motor_configs", force: :cascade do |t|
     t.string "key", null: false
     t.text "value", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.index ["key"], name: "index_motor_configs_on_key", unique: true
     t.index ["updated_at"], name: "index_motor_configs_on_updated_at"
   end
@@ -150,8 +150,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
     t.bigint "author_id"
     t.string "author_type"
     t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.index ["title"], name: "motor_dashboards_title_unique_index", unique: true, where: "(deleted_at IS NULL)"
     t.index ["updated_at"], name: "index_motor_dashboards_on_updated_at"
   end
@@ -166,8 +166,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
     t.string "author_type"
     t.datetime "deleted_at"
     t.string "api_config_name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.index ["name"], name: "motor_forms_name_unique_index", unique: true, where: "(deleted_at IS NULL)"
     t.index ["updated_at"], name: "index_motor_forms_on_updated_at"
   end
@@ -180,8 +180,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
     t.bigint "author_id"
     t.string "author_type"
     t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.index ["name"], name: "motor_queries_name_unique_index", unique: true, where: "(deleted_at IS NULL)"
     t.index ["updated_at"], name: "index_motor_queries_on_updated_at"
   end
@@ -189,8 +189,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
   create_table "motor_resources", force: :cascade do |t|
     t.string "name", null: false
     t.text "preferences", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.index ["name"], name: "index_motor_resources_on_name", unique: true
     t.index ["updated_at"], name: "index_motor_resources_on_updated_at"
   end
@@ -199,16 +199,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
     t.bigint "tag_id", null: false
     t.bigint "taggable_id", null: false
     t.string "taggable_type", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.index ["tag_id"], name: "index_motor_taggable_tags_on_tag_id"
     t.index ["taggable_id", "taggable_type", "tag_id"], name: "motor_polymorphic_association_tag_index", unique: true
   end
 
   create_table "motor_tags", force: :cascade do |t|
     t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.index ["name"], name: "motor_tags_name_unique_index", unique: true
   end
 
@@ -269,8 +269,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
     t.string "name", null: false
     t.decimal "latitude", null: false
     t.decimal "longitude", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.uuid "location_id"
     t.index ["created_at"], name: "index_racetracks_on_created_at"
     t.index ["latitude"], name: "index_racetracks_on_latitude"
@@ -283,8 +283,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
     t.string "session_id", null: false
     t.string "user_id"
     t.text "data"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
     t.index ["user_id"], name: "index_sessions_on_user_id", unique: true
@@ -304,8 +304,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
     t.uuid "user_id", null: false
     t.integer "legacy_id"
     t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.datetime "last_online_at"
     t.integer "horses_count", default: 0, null: false
     t.integer "bred_horses_count", default: 0, null: false
@@ -326,8 +326,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
     t.integer "turn_distance", null: false
     t.integer "banking", null: false
     t.integer "jumps", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.index ["racetrack_id"], name: "index_track_surfaces_on_racetrack_id"
   end
 
@@ -355,8 +355,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_181051) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at", precision: nil
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.datetime "discarded_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["created_at"], name: "index_users_on_created_at"

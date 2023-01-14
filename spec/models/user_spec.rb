@@ -1,4 +1,4 @@
-RSpec.describe User, type: :model do
+RSpec.describe User do
   describe "callbacks" do
     describe "#before_validation" do
       it "sets status to pending" do

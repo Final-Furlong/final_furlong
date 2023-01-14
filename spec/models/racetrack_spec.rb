@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Racetrack, type: :model do
+RSpec.describe Racetrack do
   describe "associations" do
     it { is_expected.to belong_to(:location) }
     it { is_expected.to have_many(:surfaces).class_name("TrackSurface") }

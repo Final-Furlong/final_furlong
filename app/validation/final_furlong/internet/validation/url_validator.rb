@@ -22,9 +22,9 @@ module FinalFurlong
           valid_url_regexp = scheme && value =~ /\A#{URI::DEFAULT_PARSER.make_regexp([scheme])}\z/
           valid_scheme = host && scheme && options[:schemes].include?(scheme)
 
-          record.errors.add(attribute, options[:message], **{ value: }) unless valid_url_regexp && valid_scheme
+          record.errors.add(attribute, options[:message], value:) unless valid_url_regexp && valid_scheme
         rescue URI::InvalidURIError
-          record.errors.add(attribute, options[:message], **{ value: })
+          record.errors.add(attribute, options[:message], value:)
         end
       end
     end

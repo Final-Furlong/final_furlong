@@ -7,8 +7,8 @@ module ROM
       def create_container
         create_container!
       rescue StandardError => e
-        puts "Container failed to initialize because of #{e.inspect}"
-        puts "This message comes from the monkey patch in #{__FILE__}, if you are using rake, then this is fine"
+        Rails.logger.error "Container failed to initialize because of #{e.inspect}"
+        Rails.logger.error "This message comes from the monkey patch in #{__FILE__}, if you are using rake, then this is fine"
       end
     end
   end

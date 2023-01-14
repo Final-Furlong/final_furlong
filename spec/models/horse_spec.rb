@@ -1,7 +1,7 @@
 require "rails_helper"
 require_relative "../shared/horse_examples"
 
-RSpec.describe Horse, type: :model do
+RSpec.describe Horse do
   it_behaves_like "a horse"
 
   describe "validations" do

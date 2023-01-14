@@ -18,3 +18,4 @@ namespace :coverage do
     end
   end
 end
+

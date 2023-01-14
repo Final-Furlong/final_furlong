@@ -1,7 +1,5 @@
 module Racing
   class Racehorse < ApplicationModel
-    attribute :id, Types::String
-
     attribute :acceleration, Types::Integer
     attribute :ave_speed, Types::Integer
     attribute :break, Types::Integer
