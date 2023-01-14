@@ -1,7 +1,7 @@
 class RacehorsesRelation < ROM::Relation[:sql]
   gateway :default
 
-  schema(:raceoorses, infer: true)
+  schema(:racehorses, infer: true)
 
   def all
     select(:id, :acceleration).order(:id)
