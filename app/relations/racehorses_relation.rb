@@ -1,12 +1,8 @@
-class RacehorsesRelation < ROM::Relation[:sql]
-  gateway :default
+class RacehorsesRelation < BaseRelation
+  schema(:raceoorses, infer: true)
 
-  schema(:racehorses, infer: true)
-
-  # define your methods here ie:
-  #
-  # def all
-  #   select(:id, :name).order(:id)
-  # end
+  def all
+    select(:id, :acceleration).order(:id)
+  end
 end
 
