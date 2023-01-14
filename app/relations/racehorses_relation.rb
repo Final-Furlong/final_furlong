@@ -1,4 +1,6 @@
-class RacehorsesRelation < BaseRelation
+class RacehorsesRelation < ROM::Relation[:sql]
+  gateway :default
+
   schema(:raceoorses, infer: true)
 
   def all
