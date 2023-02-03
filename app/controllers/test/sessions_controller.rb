@@ -20,9 +20,9 @@ module Test
     private
 
       def user
-        return Accounts::User.find(params[:id]) if params[:id]
+        return Account::User.find(params[:id]) if params[:id]
 
-        Accounts::User.find_by!(username: params[:username])
+        Account::User.find_by!(username: params[:username])
       end
   end
 end

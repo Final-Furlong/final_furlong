@@ -9,7 +9,7 @@ class StablesController < ApplicationController
 
   # @route GET /stables (stables)
   def index
-    authorize Stable
+    authorize Account::Stable
     self.stables = policy_scope(Stables::List.run!)
   end
 

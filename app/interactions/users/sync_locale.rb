@@ -1,6 +1,6 @@
 module Users
   class SyncLocale < BaseInteraction
-    object :user, default: nil
+    object :user, class: Account::User, default: nil
     object :cookies, class: ActionDispatch::Cookies::CookieJar
 
     string :locale, default: I18n.default_locale.to_s

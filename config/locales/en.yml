@@ -1,5 +1,10 @@
 ---
 en:
+  account:
+    stables:
+      stable:
+        last_online: 'Last online at: %{date}'
+        no_description: No description
   activemodel:
     errors:
       messages:
@@ -250,9 +255,6 @@ en:
       all: All Stables
     show:
       joined: Joined on %{date}
-    stable:
-      last_online: 'Last online at: %{date}'
-      no_description: No description
     update:
       success: Stable successfully updated
   time:

@@ -1,6 +1,6 @@
 module Users
   class UpdateLocale < BaseInteraction
-    object :user, default: nil
+    object :user, class: Account::User, default: nil
 
     string :locale, default: I18n.default_locale.to_s
 

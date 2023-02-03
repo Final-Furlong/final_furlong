@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   include Pagy::Backend
   include Devise::Controllers::Helpers
   include Pundit::Authorization
-  impersonates :user
+  impersonates :user, method: :current_user, with: ->(id) { Account::User.find_by(id:) }
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 

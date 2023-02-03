@@ -7,7 +7,7 @@ module Admin
 
     # @route POST /admin/impersonate (admin_impersonate)
     def create
-      user = Accounts::User.find(params[:id])
+      user = Account::User.find(params[:id])
       authorize user
 
       impersonate_user(user)

@@ -2,7 +2,7 @@ module Stables
   class UpdateDescription < BaseInteraction
     include ActionView::Helpers::SanitizeHelper
 
-    object :stable
+    object :stable, class: Account::Stable
 
     string :description, default: nil
 
@@ -17,7 +17,7 @@ module Stables
     private
 
       def update_stables
-        Stable.transaction do
+        Account::Stable.transaction do
           stable.description = new_stable_description
 
           if !stable.save! || !legacy_stable&.update!("Description" => legacy_stable_description)
@@ -27,7 +27,7 @@ module Stables
       end
 
       def legacy_stable
-        LegacyUser.find_by(id: stable.legacy_id)
+        Legacy::User.find_by(id: stable.legacy_id)
       end
 
       def new_stable_description
