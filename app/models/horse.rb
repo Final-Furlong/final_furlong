@@ -1,47 +1,31 @@
 class Horse < ApplicationRecord
   include FinalFurlong::Horses::Validation
 
-  belongs_to :breeder, class_name: "Stable"
-  belongs_to :owner, class_name: "Stable"
-  belongs_to :sire, class_name: "Horse", optional: true
-  belongs_to :dam, class_name: "Horse", optional: true
-  belongs_to :location_bred, class_name: "Location"
-
   counter_culture :sire, column_name: proc { |model| model.unborn? ? "unborn_foals_count" : "foals_count" },
-                         column_names: {
-                           ["horses.status = ?", "unborn"] => "unborn_foals_count",
-                           ["horses.status != ?", "unborn"] => "foals_count"
-                         }
+                  column_names: {
+                    ["horses.status = ?", "unborn"] => "unborn_foals_count",
+                    ["horses.status != ?", "unborn"] => "foals_count"
+                  }
   counter_culture :dam, column_name: proc { |model| model.unborn? ? "unborn_foals_count" : "foals_count" },
-                        column_names: {
-                          ["horses.status = ?", "unborn"] => "unborn_foals_count",
-                          ["horses.status != ?", "unborn"] => "foals_count"
-                        }
+                  column_names: {
+                    ["horses.status = ?", "unborn"] => "unborn_foals_count",
+                    ["horses.status != ?", "unborn"] => "foals_count"
+                  }
   counter_culture :breeder, column_name: proc { |model| model.unborn? ? nil : "bred_horses_count" },
-                            column_names: {
-                              ["horses.status = ?", "unborn"] => nil,
-                              ["horses.status != ?", "unborn"] => "bred_horses_count"
-                            }
+                  column_names: {
+                    ["horses.status = ?", "unborn"] => nil,
+                    ["horses.status != ?", "unborn"] => "bred_horses_count"
+                  }
   counter_culture :owner, column_name: proc { |model| model.unborn? ? "unborn_horses_count" : "horses_count" },
-                          column_names: {
-                            ["horses.status = ?", "unborn"] => "unborn_horses_count",
-                            ["horses.status != ?", "unborn"] => "horses_count"
-                          }
-
-  enum status: HorseStatus::STATUSES
-  enum gender: HorseGender::VALUES
+                  column_names: {
+                    ["horses.status = ?", "unborn"] => "unborn_horses_count",
+                    ["horses.status != ?", "unborn"] => "horses_count"
+                  }
 
   validates :date_of_birth, presence: true
   validates :date_of_death, comparison: { greater_than_or_equal_to: :date_of_birth }, if: :date_of_death
   validate :name_required, on: :update
   validates_horse_name :name, on: :update, if: :name_changed?
-
-  scope :born, -> { not_unborn }
-  scope :living, -> { where(status: HorseStatus::LIVING_STATUSES) }
-  scope :all_retired, -> { where(status: HorseStatus::RETIRED_STATUSES) }
-  scope :ordered, -> { order(name: :asc) }
-  scope :owned_by, ->(stable) { where(owner: stable) }
-  scope :sort_by_status_asc, -> { in_order_of(:status, status_array_order) }
 
   # broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
 
