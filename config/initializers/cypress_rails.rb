@@ -6,7 +6,7 @@ ENV["CYPRESS"] = "true"
 
 # rubocop:disable Metrics/MethodLength
 def create_admin
-  return if User.exists?(email: "admin@example.com")
+  return if Account::User.exists?(email: "admin@example.com")
 
   Rails.logger.error "Creating admin: admin@example.com"
   admin = FactoryBot.create(:admin, :without_stable, email: "admin@example.com", username: "admin123")
@@ -14,7 +14,7 @@ def create_admin
 end
 
 def create_user
-  return if User.exists?(email: "user@example.com")
+  return if Account::User.exists?(email: "user@example.com")
 
   Rails.logger.error "Creating admin: user@example.com"
   user = FactoryBot.create(:user, :without_stable, email: "user@example.com", username: "user123")
@@ -22,7 +22,7 @@ def create_user
 end
 
 def create_horses
-  return if Horse.count >= 5
+  return if Horses::Horse.count >= 5
 
   Rails.logger.error "Creating horse"
   FactoryBot.create(:horse)

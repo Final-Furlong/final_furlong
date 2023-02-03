@@ -6,9 +6,9 @@ class CreateActivationService
   end
 
   def call
-    return if Activation.exists?(user:)
+    return if Account::Activation.exists?(user:)
 
-    Activation.create!(user:, token: Digest::MD5.hexdigest(user.email), activated_at: nil)
+    Account::Activation.create!(user:, token: Digest::MD5.hexdigest(user.email), activated_at: nil)
     user
   end
 end

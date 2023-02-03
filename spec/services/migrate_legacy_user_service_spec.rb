@@ -8,17 +8,17 @@ RSpec.describe MigrateLegacyUserService do
     let(:id) { 1 }
 
     it "does not create a user" do
-      user_count = User.count
+      user_count = Account::User.count
       expect { migrate.call }.to raise_error ActiveRecord::RecordNotFound
 
-      expect(user_count).to eq User.count
+      expect(user_count).to eq Account::User.count
     end
 
     it "does not create a stable" do
-      stable_count = Stable.count
+      stable_count = Account::Stable.count
       expect { migrate.call }.to raise_error ActiveRecord::RecordNotFound
 
-      expect(stable_count).to eq Stable.count
+      expect(stable_count).to eq Account::Stable.count
     end
 
     it "returns error" do
@@ -37,11 +37,11 @@ RSpec.describe MigrateLegacyUserService do
       before { stable }
 
       it "does not create user" do
-        expect { migrate.call }.not_to change(User, :count)
+        expect { migrate.call }.not_to change(Account::User, :count)
       end
 
       it "does not create stable" do
-        expect { migrate.call }.not_to change(Stable, :count)
+        expect { migrate.call }.not_to change(Account::Stable, :count)
       end
 
       it "does not change user" do
@@ -59,11 +59,11 @@ RSpec.describe MigrateLegacyUserService do
 
     context "when user does not exist" do
       it "creates user" do
-        expect { migrate.call }.to change(User, :count).by(1)
+        expect { migrate.call }.to change(Account::User, :count).by(1)
       end
 
       it "creates stable" do
-        expect { migrate.call }.to change(Stable, :count).by(1)
+        expect { migrate.call }.to change(Account::Stable, :count).by(1)
       end
 
       it "assigns correct attributes to stable" do
@@ -88,7 +88,7 @@ RSpec.describe MigrateLegacyUserService do
           last_sign_in_at: nil,
           last_sign_in_ip: legacy_user.ip,
           name: legacy_user.name,
-          status: User.statuses[:pending],
+          status: Account::User.statuses[:pending],
           unconfirmed_email: legacy_user.email,
           username: legacy_user.username,
           created_at: legacy_user.join_date.from_game_date,
@@ -111,7 +111,7 @@ RSpec.describe MigrateLegacyUserService do
           last_sign_in_at: legacy_user.last_login,
           last_sign_in_ip: legacy_user.ip,
           name: legacy_user.name,
-          status: User.statuses[:active],
+          status: Account::User.statuses[:active],
           unconfirmed_email: legacy_user.email,
           username: legacy_user.username,
           created_at: legacy_user.join_date.from_game_date,
@@ -134,7 +134,7 @@ RSpec.describe MigrateLegacyUserService do
           last_sign_in_at: legacy_user.last_login,
           last_sign_in_ip: legacy_user.ip,
           name: legacy_user.name,
-          status: User.statuses[:deleted],
+          status: Account::User.statuses[:deleted],
           unconfirmed_email: legacy_user.email,
           username: legacy_user.username,
           created_at: legacy_user.join_date.from_game_date,
@@ -149,7 +149,7 @@ RSpec.describe MigrateLegacyUserService do
       it "returns user" do
         result = migrate.call
 
-        expect(result).to be_a User
+        expect(result).to be_a Account::User
       end
     end
   end

@@ -1,5 +1,10 @@
 ---
 en:
+  account:
+    stables:
+      stable:
+        last_online: 'Last online at: %{date}'
+        no_description: No description
   activemodel:
     errors:
       messages:
@@ -36,7 +41,7 @@ en:
         username: Username
     errors:
       models:
-        horse:
+        horses/horse:
           attributes:
             name:
               non_unique: has already been taken
@@ -250,9 +255,6 @@ en:
       all: All Stables
     show:
       joined: Joined on %{date}
-    stable:
-      last_online: 'Last online at: %{date}'
-      no_description: No description
     update:
       success: Stable successfully updated
   time:

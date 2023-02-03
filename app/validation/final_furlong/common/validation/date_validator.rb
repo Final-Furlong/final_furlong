@@ -7,7 +7,7 @@ module FinalFurlong
           return if value.blank? && options[:allow_blank]
 
           valid_date = strptime_date(value)
-          return record.errors.add(attribute, :date_invalid, **{ value: }) unless valid_date
+          return record.errors.add(attribute, :date_invalid, value:) unless valid_date
         end
 
         private

@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Users::NewUserForm, type: :model do
   describe "validation" do
-    subject(:form) { described_class.new(User.new) }
+    subject(:form) { described_class.new(Account::User.new) }
 
     it { is_expected.to validate_presence_of(:username) }
     it { is_expected.to validate_presence_of(:name) }
@@ -10,12 +10,12 @@ RSpec.describe Users::NewUserForm, type: :model do
     it { is_expected.to validate_presence_of(:password) }
     it { is_expected.to validate_presence_of(:password_confirmation) }
     it { is_expected.to validate_presence_of(:stable_name) }
-    it { is_expected.to validate_length_of(:username).is_at_least(User::USERNAME_LENGTH) }
-    it { is_expected.to validate_length_of(:password).is_at_least(User::PASSWORD_LENGTH) }
+    it { is_expected.to validate_length_of(:username).is_at_least(Account::User::USERNAME_LENGTH) }
+    it { is_expected.to validate_length_of(:password).is_at_least(Account::User::PASSWORD_LENGTH) }
 
     it "validates unique username" do
       user1 = create(:user)
-      form = described_class.new(User.new)
+      form = described_class.new(Account::User.new)
       form.submit(user_attrs.merge(username: user1.username.upcase))
 
       expect(form).not_to be_valid
@@ -24,7 +24,7 @@ RSpec.describe Users::NewUserForm, type: :model do
 
     it "validates unique email" do
       user1 = create(:user)
-      form = described_class.new(User.new)
+      form = described_class.new(Account::User.new)
       form.submit(user_attrs.merge(email: user1.email.upcase))
 
       expect(form).not_to be_valid
@@ -32,7 +32,7 @@ RSpec.describe Users::NewUserForm, type: :model do
     end
 
     it "validates weak password" do
-      form = described_class.new(User.new)
+      form = described_class.new(Account::User.new)
       form.submit(user_attrs.merge(password: "password", password_confirmation: "password"))
 
       expect(form).not_to be_valid

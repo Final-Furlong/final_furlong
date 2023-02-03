@@ -34,7 +34,7 @@ module Users
       def validate_unique_email
         return unless email
 
-        user_exists = User.where.not(id: user.id).where("LOWER(email) = ?", email.downcase).exists? # rubocop:disable Rails/WhereExists
+        user_exists = Account::User.where.not(id: user.id).where("LOWER(email) = ?", email.downcase).exists? # rubocop:disable Rails/WhereExists
         errors.add(:email, :taken) if user_exists
       end
   end

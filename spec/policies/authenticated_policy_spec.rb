@@ -1,9 +1,9 @@
 require "rails_helper"
 
 RSpec.describe AuthenticatedPolicy do
-  subject(:policy) { described_class.new(user, User.new) }
+  subject(:policy) { described_class.new(user, Account::User.new) }
 
-  let(:user) { User.new }
+  let(:user) { Account::User.new }
 
   describe "#initialize" do
     context "when user is set" do
@@ -25,13 +25,13 @@ RSpec.describe AuthenticatedPolicy do
     describe "#initialize" do
       it "does not raise error when user is set" do
         expect do
-          described_class::Scope.new(user, User.all)
+          described_class::Scope.new(user, Account::User.all)
         end.not_to raise_error
       end
 
       it "raises error when user is not set" do
         expect do
-          described_class::Scope.new(nil, User.all)
+          described_class::Scope.new(nil, Account::User.all)
         end.to raise_error Pundit::NotAuthorizedError
       end
     end
