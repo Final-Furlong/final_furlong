@@ -2,17 +2,17 @@ class MigrateLegacyUserService
   attr_reader :legacy_user
 
   def initialize(legacy_user_id)
-    @legacy_user = LegacyUser.find(legacy_user_id)
+    @legacy_user = Legacy::User.find(legacy_user_id)
   end
 
   def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-    return if User.exists?(email: legacy_user.email)
+    return if Account::User.exists?(email: legacy_user.email)
 
     password = generate_password
     user_status = status(legacy_user)
     user = nil
-    User.transaction do
-      user = User.create!(
+    Account::User.transaction do
+      user = Account::User.create!(
         admin: %w[Shanthi FFadmin].include?(legacy_user.username),
         confirmed_at: Time.current,
         email: legacy_user.email,
@@ -27,9 +27,9 @@ class MigrateLegacyUserService
         discourse_id: legacy_user.discourse_id,
         password:,
         password_confirmation: password,
-        discarded_at: user_status == User.statuses[:deleted] ? Time.current : nil
+        discarded_at: user_status == Account::User.statuses[:deleted] ? Time.current : nil
       )
-      Stable.create!(
+      Account::Stable.create!(
         legacy_id: legacy_user.id,
         name: legacy_user.stable_name,
         user:,
@@ -59,11 +59,11 @@ class MigrateLegacyUserService
     def status(legacy_user)
       case legacy_user.status
       when "A"
-        User.statuses[:pending]
+        Account::User.statuses[:pending]
       when "CW"
-        User.statuses[:active]
+        Account::User.statuses[:active]
       else
-        User.statuses[:deleted]
+        Account::User.statuses[:deleted]
       end
     end
 end

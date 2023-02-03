@@ -5,6 +5,12 @@ module Test
   class FactoriesController < BaseController
     before_action :permit_all_params
 
+    def show
+      result = model_name.find_by(search_params)
+
+      render json: result.to_json, status: :ok
+    end
+
     def create
       result = case strategy
                when :create
@@ -24,19 +30,13 @@ module Test
       render json: instance.reload.to_json, status: :ok
     end
 
-    def show
-      result = model_name.find_by(search_params)
-
-      render json: result.to_json, status: :ok
-    end
-
     private
 
       def search_params
         case model_name
-        when Stable
+        when Account::Stable
           stable_params
-        when User
+        when Account::User
           user_params
         end
       end
@@ -50,7 +50,7 @@ module Test
         stable_keys = %i[id user_id]
         attrs = params.select { |key, value| stable_keys.include?(key.to_sym) && value.present? }
         if params[:email]
-          user = User.find_by(email: params[:email])
+          user = Accounts::User.find_by(email: params[:email])
           attrs[:user_id] = user.id
         end
         attrs

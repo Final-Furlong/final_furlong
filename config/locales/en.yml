@@ -36,7 +36,7 @@ en:
         username: Username
     errors:
       models:
-        horse:
+        horses/horse:
           attributes:
             name:
               non_unique: has already been taken

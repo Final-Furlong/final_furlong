@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :legacy_user do
+  factory :legacy_user, class: "Legacy::User" do
     Username { Faker::Internet.username }
     Password { Faker::Internet.password }
     Status { "A" }

@@ -1,5 +1,5 @@
 class Location < ApplicationRecord
-  has_many :racetracks, dependent: :restrict_with_exception
+  has_many :racetracks, class_name: "Racing::Racetrack", dependent: :restrict_with_exception
 end
 
 # == Schema Information

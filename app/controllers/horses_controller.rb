@@ -9,11 +9,11 @@ class HorsesController < ApplicationController
 
   # @route GET /horses (horses)
   def index # rubocop:disable Metrics/AbcSize
-    authorize Horse
+    authorize Horses::Horse
 
     set_active_status
     set_gender_select
-    @query = policy_scope(Horse).includes(:owner).ransack(params[:q])
+    @query = policy_scope(Horses::Horse).includes(:owner).ransack(params[:q])
     query.sorts = "name asc" if query.sorts.blank?
 
     @horses = query.result.page(params[:page])
@@ -46,7 +46,7 @@ class HorsesController < ApplicationController
     end
 
     def set_horse
-      @horse = Horse.find(params[:id])
+      @horse = Horses::Horse.find(params[:id])
     end
 
     def horse_params

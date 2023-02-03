@@ -1,12 +1,12 @@
 require "rails_helper"
 
 RSpec.describe ApplicationPolicy do
-  subject { described_class.new(user, User.new) }
+  subject { described_class.new(user, Account::User.new) }
 
   let(:user) { build_stubbed(:user) }
 
   describe "::Scope" do
-    let(:scope) { described_class::Scope.new(user, User.new) }
+    let(:scope) { described_class::Scope.new(user, Account::User.new) }
 
     describe "#resolve" do
       it "raises error" do

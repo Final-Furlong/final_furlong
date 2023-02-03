@@ -36,6 +36,8 @@ Layout/LineLength:
     - "config/routes.rb"
     - "db/migrate/**/*.rb"
     - "Gemfile"
+    - "app/models/legacy/*.rb"
+    - "app/services/migrate_legacy_*.rb"
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
   EnforcedStyle: space
@@ -68,6 +70,7 @@ Metrics/MethodLength:
   Exclude:
     - "db/data/**/*.rb"
     - "db/migrate/**/*.rb"
+    - "app/models/legacy/*.rb"
 Naming/InclusiveLanguage:
   Enabled: true
 Rails/Output:
