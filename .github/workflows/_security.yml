@@ -13,17 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "yarn-cache-dir=$(yarn cache dir)" >> $GITHUB_STATE
-
-      - uses: actions/cache@v3
+      - name: Yarn Cache
+        uses: actions/cache@v3
         id: yarn-cache
         with:
-          path: ${{ env.yarn-cache-dir }}
+          path: yarn-cache
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
 
       - name: Yarn Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
