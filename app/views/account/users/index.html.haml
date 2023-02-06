@@ -1,9 +1,9 @@
 - content_for :breadcrumbs do
-  = render Nav::Breadcrumbs::Component.new(title: t(".title"))
+  = render Nav::Breadcrumbs::Component.new(title: t("users.index.title"))
 
 = turbo_stream_from "users"
 .header.is-flex.flex-wrap-wrap.is-justify-content-space-between.is-vcentered.columns
-  %h1.is-size-1.column= t(".title")
+  %h1.is-size-1.column= t("users.index.title")
 
 = turbo_frame_tag "users" do
   = render @users

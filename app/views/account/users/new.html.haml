@@ -1,9 +1,9 @@
 - content_for :breadcrumbs do
-  = render Nav::Breadcrumbs::Component.new(links: [{ name: t("users.index.title"), href: users_path },
-    { name: t(".title"), href: "#" }])
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t("users.new.title"), href: users_path },
+    { name: t("users.new.title"), href: "#" }])
 
 .header
-  %h1= t(".title")
+  %h1= t("users.new.title")
 
 = turbo_frame_tag @user do
   = render "form", form: @user_form, url: users_path

@@ -224,6 +224,10 @@ GEM
       concurrent-ruby (~> 1.0)
       dry-core (~> 1.0, < 2)
       zeitwerk (~> 2.6)
+    dry-monads (1.6.0)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 1.0, < 2)
+      zeitwerk (~> 2.6)
     dry-schema (1.13.0)
       concurrent-ruby (~> 1.0)
       dry-configurable (~> 1.0, >= 1.0.1)
@@ -753,6 +757,7 @@ DEPENDENCIES
   discard
   dotenv-rails
   dotenv_validator
+  dry-monads
   dry-validation
   ed25519
   factory_bot-awesome_linter
