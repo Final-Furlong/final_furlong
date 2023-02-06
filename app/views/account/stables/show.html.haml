@@ -1,17 +1,17 @@
 - content_for :breadcrumbs do
-  = render Nav::Breadcrumbs::Component.new(links: [{ name: t("stables.index.all"), href: stables_path },
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t("stables.index.all"), href: account_stables_path },
     { name: stable.name, href: "#" }], actions: [{ name: "impersonate",
     link: admin_impersonate_path(id: stable.user_id), i18n_key: ".impersonate", object: stable,
     user: current_user, base_classes: "btn btn-light btn-sm border border-danger text-danger text-decoration-none",
     classes: " d-none d-md-inline", responsive_classes: "w-100", type: :form },
-    { name: "edit", link: edit_current_stable_path, i18n_key: "common.edit", user: current_user, object: stable,
+    { name: "edit", link: account_edit_current_stable_path, i18n_key: "common.edit", user: current_user, object: stable,
     base_classes: "btn btn-light btn-sm border border-success text-success text-decoration-none",
     classes: "ms-3 me-3", responsive_classes: "w-100", type: :link }])
 
 %h1= stable.name
 
 %p
-  %span= t(".joined", date: l(stable.created_at.to_date, format: :long))
+  %span= t("stables.show.joined", date: l(stable.created_at.to_date, format: :long))
   = render Users::OnlineBadge::Component.new(online: SessionsRepository.online?(resource: stable))
 
 - if stable.description?

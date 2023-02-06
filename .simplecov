@@ -10,7 +10,7 @@ SimpleCov.profiles.define 'common' do
   add_filter %r{^/db/}
   add_filter "lib/generators"
   add_filter "lib/tasks"
-  add_filter "models/legacy_"
+  add_filter "app/models/legacy/"
   add_filter "services/migrate_legacy_"
   add_filter(%r{^/spec/})
   add_filter(%r{^/test/})

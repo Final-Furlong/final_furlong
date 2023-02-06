@@ -1,7 +1,7 @@
 = turbo_frame_tag stable do
   .stable.card.h-100{ data: { test: "stable-#{stable.id}" } }
     %h5.card-header
-      = link_to stable.name, stable_path(stable), data: { turbo_frame: "_top" },
+      = link_to stable.name, account_stable_path(stable), data: { turbo_frame: "_top" },
         class: "text-decoration-none stretched-link"
     .card-body
       .card-subtitle.mb-2

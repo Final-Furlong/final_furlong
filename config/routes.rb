@@ -30,16 +30,20 @@ Rails.application.routes.draw do
   get "/activation_required", to: "pages#activation", as: :activation
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  resources :users
-  resources :stables, only: %i[index show]
-  resources :horses, except: %i[new create destroy]
+  scope module: :account, as: :account do
+    resources :users
+    resources :stables, only: %i[index show]
+    match "/settings", to: "settings#update", as: :settings, via: %i[put patch]
+    get "/stable", to: "stables#show", as: :current_stable
+    get "/stable/edit", to: "stables#edit", as: :edit_current_stable
+    match "/stable/edit", to: "stables#update", as: :update_current_stable, via: %i[put patch]
+  end
 
-  match "/settings", to: "settings#update", as: :settings, via: %i[put patch]
+  scope module: :horses, as: :horses do
+    resources :horses, except: %i[new create destroy]
+  end
 
   # stable horses
-  get "/stable", to: "stables#show", as: :current_stable
-  get "/stable/edit", to: "stables#edit", as: :edit_current_stable
-  match "/stable/edit", to: "stables#update", as: :update_current_stable, via: %i[put patch]
   get "/stable/horses", to: "current_stable/horses#index", as: :current_stable_horses
   get "/stable/horses/:id/edit", to: "current_stable/horses#edit", as: :edit_current_stable_horse
   get "/stable/horses/:id", to: "current_stable/horses#show", as: :current_stable_horse
@@ -55,7 +59,7 @@ Rails.application.routes.draw do
   end
 
   authenticated :user do
-    root to: "stables#show", as: :authenticated_root
+    root to: "account/stables#show", as: :authenticated_root
   end
 end
 
