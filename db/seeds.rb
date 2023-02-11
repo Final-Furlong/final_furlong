@@ -10,19 +10,19 @@ raise "Can only run in development!" unless Rails.env.development?
 require "faker"
 require "factory_bot_rails"
 max_stables = ENV.fetch("USERS", 5).to_i
-stable_count = max_stables - Stable.count
+stable_count = max_stables - Account::Stable.count
 Rails.logger.info "Creating #{stable_count} stable(s)"
 FactoryBot.create_list(:stable, stable_count) if stable_count.positive?
 Rails.logger.info "Creating admin"
 admin_email = "admin@example.com"
-admin = if User.exists?(email: admin_email)
-          User.find_by(email: admin_email)
+admin = if Account::User.exists?(email: admin_email)
+          Account::User.find_by(email: admin_email)
         else
           FactoryBot.create(:admin, :without_stable, email: admin_email,
                                                      password: "Password1!", password_confirmation: "Password1!")
         end
 FactoryBot.create(:stable, user: admin) unless admin.reload.stable
-unless Horse.count.zero?
+unless Horses::Horse.count.zero?
   Rails.logger.info "Creating horse"
   FactoryBot.create(:horse)
   Rails.logger.info "Creating stud"

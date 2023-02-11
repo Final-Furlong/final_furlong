@@ -10,8 +10,11 @@ module Account
 
     # @route GET /stables (account_stables)
     def index
-      authorize Account::Stable
-      self.stables = policy_scope(Stables::List.run!)
+      result = StablesList.new(user: current_user).call
+      return unless result.success?
+
+      stable_scope = result.value!
+      @stables = policy_scope(stable_scope)
     end
 
     # @route GET /stables/:id (account_stable)
