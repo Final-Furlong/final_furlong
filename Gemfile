@@ -94,6 +94,7 @@ group :development do
   gem "guard-haml_lint", require: false
   gem "guard-rspec", require: false
   gem "guard-rubocop", require: false
+  gem "rubycritic", require: false
   gem "terminal-notifier", require: false
   gem "terminal-notifier-guard", require: false
   gem "yalphabetize", require: false
