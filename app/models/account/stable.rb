@@ -3,14 +3,14 @@ module Account
     belongs_to :user
 
     has_many :bred_horses, class_name: "Horses::Horse", foreign_key: :breeder_id, inverse_of: :breeder,
-             dependent: :restrict_with_exception
+                           dependent: :restrict_with_exception
     has_many :horses, class_name: "Horses::Horse", foreign_key: :owner_id, inverse_of: :owner,
-             dependent: :restrict_with_exception
+                      dependent: :restrict_with_exception
 
     before_validation :dry_validation
 
     def dry_validation
-      contract = ModelValidations::Account.stable.(attributes)
+      contract = ModelValidations::Account.stable.call(attributes)
       contract.errors.to_h.each do |field, message|
         errors.add(field, message)
       end

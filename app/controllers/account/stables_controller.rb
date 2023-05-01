@@ -33,7 +33,7 @@ module Account
 
     # @route PUT /stable/edit (account_update_current_stable)
     # @route PATCH /stable/edit (account_update_current_stable)
-    def update # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    def update
       authorize stable
       outcome = Stables::UpdateDescription.run(update_params)
       if outcome.valid?
