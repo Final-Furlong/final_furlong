@@ -6,7 +6,7 @@ module Stables
 
     string :description, default: nil
 
-    validates :description, length: { maximum: 1000 }
+    # validates :description, length: { minimum: 5, maximum: 1000 }
 
     def execute
       update_stables

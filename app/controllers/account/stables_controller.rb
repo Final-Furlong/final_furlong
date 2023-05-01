@@ -35,16 +35,10 @@ module Account
     # @route PATCH /stable/edit (account_update_current_stable)
     def update # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       authorize stable
-      validation = Account::StableDescriptionContract.call(update_params)
-      if validation.success?
-        outcome = Stables::UpdateDescription.run(update_params)
-        if outcome.valid?
-          flash[:notice] = t("stables.update.success")
-          redirect_to account_current_stable_path
-        else
-          load_from_form(outcome)
-          render :edit, status: :unprocessable_entity
-        end
+      outcome = Stables::UpdateDescription.run(update_params)
+      if outcome.valid?
+        flash[:notice] = t("stables.update.success")
+        redirect_to account_current_stable_path
       else
         load_from_form(outcome)
         render :edit, status: :unprocessable_entity
