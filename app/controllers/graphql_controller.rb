@@ -1,4 +1,5 @@
 class GraphqlController < ApplicationController
+  # before_action :authenticate_jwt_request!
   skip_after_action :verify_authorized
 
   # If accessing from outside this domain, nullify the session
@@ -11,10 +12,6 @@ class GraphqlController < ApplicationController
     variables = prepare_variables(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
-    context = {
-      # Query context goes here, for example:
-      # current_user: current_user,
-    }
     result = FinalFurlongSchema.execute(query, variables:, context:, operation_name:)
     render json: result
   rescue StandardError => e
@@ -25,16 +22,18 @@ class GraphqlController < ApplicationController
 
   private
 
+    def context
+      {
+        current_user:
+      }
+    end
+
     # Handle variables in form data, JSON body, or a blank value
     # rubocop:disable Metrics/MethodLength
     def prepare_variables(variables_param)
       case variables_param
       when String
-        if variables_param.present?
-          JSON.parse(variables_param) || {}
-        else
-          {}
-        end
+        variables_from_json(variables_param)
       when Hash
         variables_param
       when ActionController::Parameters
@@ -46,6 +45,14 @@ class GraphqlController < ApplicationController
       end
     end
     # rubocop:enable Metrics/MethodLength
+
+    def variables_from_json(variables)
+      if variables
+        JSON.parse(variables) || {}
+      else
+        {}
+      end
+    end
 
     def handle_error_in_development(error)
       logger.error error.message

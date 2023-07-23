@@ -9,13 +9,13 @@ module Types
 
     description "The query root of this schema"
 
-    # First describe the field signature:
     field :account, AccountType, "Find an account by username" do
-      argument :username, String
+      argument :username, String, required: true
     end
 
     def account(username:)
-      Account::User.find_by(username:)
+      resolver = Account::UsersResolver.new(context, { username: })
+      resolver.user
     end
   end
 end

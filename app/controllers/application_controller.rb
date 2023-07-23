@@ -22,6 +22,16 @@ class ApplicationController < ActionController::Base
 
   protected
 
+    def authenticate_jwt_request!
+      unless user_id_in_token?
+        render json: { errors: ["Not Authenticated"] }, status: :unauthorized
+        return
+      end
+      @current_user = User.find(auth_token[:user_id])
+    rescue JWT::VerificationError, JWT::DecodeError
+      render json: { errors: ["Not Authenticated"] }, status: :unauthorized
+    end
+
     def user_not_authorized
       flash[:alert] = I18n.t("errors.not_authorized", locale: wanted_locale)
 
@@ -85,6 +95,20 @@ class ApplicationController < ActionController::Base
       return if true_user != current_user # impersonating this stable
 
       current_stable.update_columns(last_online_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
+    end
+
+  private
+
+    def http_token
+      @http_token ||= (request.headers["Authorization"].split.last if request.headers["Authorization"].present?)
+    end
+
+    def auth_token
+      @auth_token ||= JWT.decode(http_token)
+    end
+
+    def user_id_in_token?
+      http_token && auth_token && auth_token[:user_id].to_s
     end
 end
 

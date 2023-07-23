@@ -62,6 +62,7 @@ RSpec.configure do |config|
   config.include JSONHelpers, type: :request
 
   config.include Devise::Test::IntegrationHelpers, type: :system
+  config.include Devise::Test::IntegrationHelpers, type: :graphql
 
   config.include AbstractController::Translation # allow t() instead of I18n.t()
 end

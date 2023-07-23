@@ -33,6 +33,7 @@ gem 'graphql-schema_comparator'
 gem "haml"
 gem "haml-rails"
 gem "importmap-rails"
+gem "jwt"
 gem "kaminari"
 gem "motor-admin", "~> 0.3.4"
 gem "mysql2"
