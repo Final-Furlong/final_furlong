@@ -20,10 +20,12 @@ class HorsesController < ApplicationController
   end
 
   # @route GET /horses/:id (horse)
-  def show; end
+  def show
+  end
 
   # @route GET /horses/:id/edit (edit_horse)
-  def edit; end
+  def edit
+  end
 
   # @route PATCH /horses/:id (horse)
   # @route PUT /horses/:id (horse)

@@ -21,7 +21,7 @@ module ResponsiveHelpers
       return unless drive_manage?
 
       Capybara.current_session.driver.browser.manage.window.resize_to(size[0],
-                                                                      size[1])
+        size[1])
     end
 
     def driver_manage?

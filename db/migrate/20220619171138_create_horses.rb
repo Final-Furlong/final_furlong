@@ -20,9 +20,9 @@ class CreateHorses < ActiveRecord::Migration[7.0]
     create_table :horses do |t|
       t.string :name
       t.string :gender, enum_type: "horse_gender", null: false,
-                        comment: gender_list.join(", ")
+        comment: gender_list.join(", ")
       t.enum :status, enum_type: "horse_status", default: "unborn", null: false,
-                      index: true, comment: status_list.join(", ")
+        index: true, comment: status_list.join(", ")
       t.date :date_of_birth, null: false, index: true
       t.date :date_of_death
       t.references :owner, foreign_key: { to_table: :stables }

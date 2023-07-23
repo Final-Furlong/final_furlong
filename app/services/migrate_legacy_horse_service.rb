@@ -25,7 +25,7 @@ class MigrateLegacyHorseService # rubocop:disable Metrics/ClassLength
       sire_id: find_sire,
       dam_id: find_dam
     )
-  rescue StandardError => e
+  rescue => e
     Rails.logger.error "Info: #{legacy_horse.inspect}"
     raise e
   end
@@ -119,10 +119,10 @@ class MigrateLegacyHorseService # rubocop:disable Metrics/ClassLength
 
     def calculate_age
       max_date = if dead?
-                   from_game_date(legacy_horse.date_of_death || legacy_horse.die)
-                 else
-                   Date.current
-                 end
+        from_game_date(legacy_horse.date_of_death || legacy_horse.die)
+      else
+        Date.current
+      end
 
       max_date.year - from_game_date(legacy_horse.date_of_birth).year
     end

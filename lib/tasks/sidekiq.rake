@@ -17,7 +17,7 @@ namespace :sidekiq do
       messages << "#{key.capitalize} queue latency: #{value}"
     end
 
-    formatted_message = "Sidekiq is sad! #{messages.join(', ')}"
+    formatted_message = "Sidekiq is sad! #{messages.join(", ")}"
     raise StandardError, formatted_message
   end
 end

@@ -43,7 +43,7 @@ RSpec.describe FinalFurlong::Internet::Validation::EmailValidator do
 
     it "fails when too long" do
       model = set_model
-      model.email = "#{'a' * 64}@#{'a' * 186}.com"
+      model.email = "#{"a" * 64}@#{"a" * 186}.com"
       expect(model).not_to be_valid
       errors = email_errors(model)
 

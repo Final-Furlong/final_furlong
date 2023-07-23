@@ -8,7 +8,7 @@ module CoreExtensions
       module ClassMethods
         def strptime_safely(value, format)
           strptime(value, format)
-        rescue StandardError
+        rescue
           nil
         end
       end

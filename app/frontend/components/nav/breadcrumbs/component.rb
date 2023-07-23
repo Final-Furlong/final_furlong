@@ -14,7 +14,7 @@ module Nav
       private
 
         def render_action(action, classes)
-          action[:type] == :form ? button_action(action, classes) : link_action(action, classes)
+          (action[:type] == :form) ? button_action(action, classes) : link_action(action, classes)
         end
 
         def link_action(action, classes)

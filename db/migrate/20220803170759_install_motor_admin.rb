@@ -13,9 +13,9 @@ class InstallMotorAdmin < ActiveRecord::Migration[7.0]
 
       t.index :updated_at
       t.index "name",
-              name: "motor_queries_name_unique_index",
-              unique: true,
-              where: "deleted_at IS NULL"
+        name: "motor_queries_name_unique_index",
+        unique: true,
+        where: "deleted_at IS NULL"
     end
 
     create_table :motor_dashboards do |t|
@@ -30,9 +30,9 @@ class InstallMotorAdmin < ActiveRecord::Migration[7.0]
 
       t.index :updated_at
       t.index "title",
-              name: "motor_dashboards_title_unique_index",
-              unique: true,
-              where: "deleted_at IS NULL"
+        name: "motor_dashboards_title_unique_index",
+        unique: true,
+        where: "deleted_at IS NULL"
     end
 
     create_table :motor_forms do |t|
@@ -50,9 +50,9 @@ class InstallMotorAdmin < ActiveRecord::Migration[7.0]
 
       t.index :updated_at
       t.index "name",
-              name: "motor_forms_name_unique_index",
-              unique: true,
-              where: "deleted_at IS NULL"
+        name: "motor_forms_name_unique_index",
+        unique: true,
+        where: "deleted_at IS NULL"
     end
 
     create_table :motor_resources do |t|
@@ -88,9 +88,9 @@ class InstallMotorAdmin < ActiveRecord::Migration[7.0]
 
       t.index :updated_at
       t.index "name",
-              name: "motor_alerts_name_unique_index",
-              unique: true,
-              where: "deleted_at IS NULL"
+        name: "motor_alerts_name_unique_index",
+        unique: true,
+        where: "deleted_at IS NULL"
     end
 
     create_table :motor_alert_locks do |t|
@@ -108,8 +108,8 @@ class InstallMotorAdmin < ActiveRecord::Migration[7.0]
       t.timestamps
 
       t.index "name",
-              name: "motor_tags_name_unique_index",
-              unique: true
+        name: "motor_tags_name_unique_index",
+        unique: true
     end
 
     create_table :motor_taggable_tags do |t|
@@ -118,8 +118,8 @@ class InstallMotorAdmin < ActiveRecord::Migration[7.0]
       t.column :taggable_type, :string, null: false
 
       t.index %i[taggable_id taggable_type tag_id],
-              name: "motor_polymorphic_association_tag_index",
-              unique: true
+        name: "motor_polymorphic_association_tag_index",
+        unique: true
 
       t.timestamps
     end
@@ -153,9 +153,9 @@ class InstallMotorAdmin < ActiveRecord::Migration[7.0]
       t.timestamps
 
       t.index "name",
-              name: "motor_api_configs_name_unique_index",
-              unique: true,
-              where: "deleted_at IS NULL"
+        name: "motor_api_configs_name_unique_index",
+        unique: true,
+        where: "deleted_at IS NULL"
     end
 
     add_index :motor_audits, %i[auditable_type auditable_id version], name: "motor_auditable_index"

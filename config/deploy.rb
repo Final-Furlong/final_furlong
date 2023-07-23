@@ -15,7 +15,7 @@ set :deploy_to, "/var/www/rails.finalfurlong"
 
 append :linked_files, "config/database.yml", ".rbenv-vars", "config/initializers/sidekiq.rb"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpacker", "public/system", \
-       "vendor", "storage", ".bundle", "public/uploads"
+  "vendor", "storage", ".bundle", "public/uploads"
 
 set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:stage)}" }
 

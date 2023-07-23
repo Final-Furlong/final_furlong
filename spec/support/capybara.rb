@@ -6,7 +6,7 @@ Capybara.server = :puma, { Silent: true }
 Capybara.default_max_wait_time = DEFAULT_MAX_WAIT_TIME
 Capybara.asset_host = "http://localhost:3000"
 Capybara::Screenshot.register_filename_prefix_formatter(:rspec) do |example|
-  "screenshot_#{example.description.tr(' ', '-').gsub(%r{^.*/spec/}, '')}"
+  "screenshot_#{example.description.tr(" ", "-").gsub(%r{^.*/spec/}, "")}"
 end
 Capybara::Screenshot.prune_strategy = :keep_last_run
 Capybara.register_driver :selenium_chrome_headless do |app|

@@ -23,7 +23,7 @@ class RemoveNewTables < ActiveRecord::Migration[7.0]
     add_column :users, :new_username, :string
     add_index :users, :new_username, unique: true
     add_column :users, :new_status, :enum, enum_type: "user_status", default: "pending",
-                                           comment: "pending, active, deleted, banned"
+      comment: "pending, active, deleted, banned"
     add_column :users, :new_name, :string
     add_column :users, :new_admin, :boolean, default: false
     add_column :users, :new_discourse_id, :integer, comment: "integer from Discourse forum"
@@ -69,9 +69,9 @@ class RemoveNewTables < ActiveRecord::Migration[7.0]
     add_column :horses, :new_name, :string
     add_index :horses, :new_name
     add_column :horses, :new_gender, :enum, enum_type: "horse_gender",
-                                            comment: "colt, filly, stallion, mare, gelding"
+      comment: "colt, filly, stallion, mare, gelding"
     add_column :horses, :new_status, :enum, enum_type: "horse_status", default: "unborn",
-                                            comment: "unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased"
+      comment: "unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased"
     add_column :horses, :new_date_of_birth, :date
     add_index :horses, :new_date_of_birth
     add_column :horses, :new_date_of_death, :date
@@ -265,7 +265,7 @@ class RemoveNewTables < ActiveRecord::Migration[7.0]
     remove_column :horses, :id
 
     rename_column :racetracks, :uuid, :id
-    rename_column :stables,    :uuid, :id
+    rename_column :stables, :uuid, :id
     rename_column :users, :uuid, :id
     rename_column :horses, :uuid, :id
     execute "ALTER TABLE racetracks ADD PRIMARY KEY (id);"

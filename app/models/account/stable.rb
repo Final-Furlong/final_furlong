@@ -3,9 +3,9 @@ module Account
     belongs_to :user
 
     has_many :bred_horses, class_name: "Horses::Horse", foreign_key: :breeder_id, inverse_of: :breeder,
-                           dependent: :restrict_with_exception
+      dependent: :restrict_with_exception
     has_many :horses, class_name: "Horses::Horse", foreign_key: :owner_id, inverse_of: :owner,
-                      dependent: :restrict_with_exception
+      dependent: :restrict_with_exception
   end
 end
 

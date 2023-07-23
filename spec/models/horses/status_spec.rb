@@ -4,11 +4,11 @@ RSpec.describe Horses::Status do
   describe "constants" do
     it "defines statuses" do
       expect(described_class::STATUSES).to eq({
-                                                unborn: "unborn", weanling: "weanling", yearling: "yearling",
-                                                racehorse: "racehorse", broodmare: "broodmare", stud: "stud",
-                                                retired: "retired", retired_broodmare: "retired_broodmare",
-                                                retired_stud: "retired_stud", deceased: "deceased"
-                                              })
+        unborn: "unborn", weanling: "weanling", yearling: "yearling",
+        racehorse: "racehorse", broodmare: "broodmare", stud: "stud",
+        retired: "retired", retired_broodmare: "retired_broodmare",
+        retired_stud: "retired_stud", deceased: "deceased"
+      })
     end
 
     it "defines statuses that are alive" do

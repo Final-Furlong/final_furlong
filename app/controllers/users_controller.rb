@@ -12,13 +12,16 @@ class UsersController < AuthenticatedController
   end
 
   # @route GET /users/:id (user)
-  def show; end
+  def show
+  end
 
   # @route GET /users/new (new_user)
-  def new; end
+  def new
+  end
 
   # @route GET /users/:id/edit (edit_user)
-  def edit; end
+  def edit
+  end
 
   # @route POST /users (users)
   def create

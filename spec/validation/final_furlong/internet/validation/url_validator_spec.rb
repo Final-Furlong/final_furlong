@@ -58,13 +58,13 @@ RSpec.describe FinalFurlong::Internet::Validation::UrlValidator do
 
   it "passes when url is at max length" do
     model = set_model
-    model.url = "https://www.finalfurlong.org?param=#{'a' * 1965}" # this is exactly 2000 characters
+    model.url = "https://www.finalfurlong.org?param=#{"a" * 1965}" # this is exactly 2000 characters
     expect(model).to be_valid
   end
 
   it "fails when url is over max length" do
     model = set_model
-    model.url = "https://www.finalfurlong.org?param=#{'a' * 1966}"
+    model.url = "https://www.finalfurlong.org?param=#{"a" * 1966}"
     expect(model).not_to be_valid
     errors = url_errors(model)
 

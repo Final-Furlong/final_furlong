@@ -115,12 +115,16 @@ group :development, :test do
   gem "letter_opener"
   gem "reek", require: false
   gem "rubocop", require: false
+  gem "rubocop-graphql", require: false
   gem "rubocop-performance", require: false
   gem "rubocop-rails", require: false
   gem "rubocop-rake", require: false
   gem "rubocop-rspec", require: false
   gem "ruby-debug-ide", require: false
   gem "solargraph", require: false
+  gem "standard"
+  gem "standard-performance"
+  gem "standard-rails"
 end
 
 group :test do
