@@ -73,7 +73,7 @@ end
 #  date_of_death      :date
 #  foals_count        :integer          default(0), not null
 #  gender             :enum             not null
-#  name               :string
+#  name               :string           indexed
 #  status             :enum             default("unborn"), not null, indexed
 #  unborn_foals_count :integer          default(0), not null
 #  created_at         :datetime         not null, indexed
@@ -93,6 +93,7 @@ end
 #  index_horses_on_date_of_birth     (date_of_birth)
 #  index_horses_on_legacy_id         (legacy_id) UNIQUE
 #  index_horses_on_location_bred_id  (location_bred_id)
+#  index_horses_on_name              (name)
 #  index_horses_on_owner_id          (owner_id)
 #  index_horses_on_sire_id           (sire_id)
 #  index_horses_on_status            (status)

@@ -100,6 +100,7 @@ SimpleCov.profiles.define "default" do
   add_filter(%r{^/test/})
 
   add_group "API", "app/controllers/api"
+  add_group "GraphQL", %w[app/graphql]
   add_group "Controllers", "app/controllers"
   add_group "DB", %w[app/models app/repositories app/queries]
   add_group "Policies", "app/policies"

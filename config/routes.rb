@@ -1,6 +1,9 @@
 require "sidekiq/web"
 
 Rails.application.routes.draw do
+  mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql" if Rails.env.development?
+  post "/graphql", to: "graphql#execute"
+
   mount Motor::Admin => "/motor_admin"
   mount Api::Base, at: "/"
 
@@ -62,6 +65,8 @@ end
 # == Route Map
 #
 #                                   Prefix Verb      URI Pattern                                                                                       Controller#Action
+#                           graphiql_rails           /graphiql                                                                                         GraphiQL::Rails::Engine {:graphql_path=>"/graphql"}
+#                                  graphql POST      /graphql(.:format)                                                                                graphql#execute
 #                              motor_admin           /motor_admin                                                                                      Motor::Admin
 #                                 api_base           /                                                                                                 Api::Base
 #                              sidekiq_web           /sidekiq                                                                                          Sidekiq::Web
@@ -148,6 +153,9 @@ end
 #                       rails_disk_service GET       /rails/active_storage/disk/:encoded_key/*filename(.:format)                                       active_storage/disk#show
 #                update_rails_disk_service PUT       /rails/active_storage/disk/:encoded_token(.:format)                                               active_storage/disk#update
 #                     rails_direct_uploads POST      /rails/active_storage/direct_uploads(.:format)                                                    active_storage/direct_uploads#create
+#
+# Routes for GraphiQL::Rails::Engine:
+#        GET  /           graphiql/rails/editors#show
 #
 # Routes for Motor::Admin:
 #                motor_api_run_queries POST   /api/run_queries(.:format)                              motor/run_queries#create

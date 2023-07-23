@@ -28,6 +28,8 @@ gem "grape"
 gem "grape-active_model_serializers"
 gem "grape-entity"
 gem "grape_on_rails_routes"
+gem 'graphql'
+gem 'graphql-schema_comparator'
 gem "haml"
 gem "haml-rails"
 gem "importmap-rails"
@@ -88,6 +90,7 @@ group :development do
   gem "capistrano-sidekiq", require: false
   gem "chusaku", require: false
   gem "ed25519", require: false # required for capistrano
+  gem "graphiql-rails"
   gem "guard", require: false
   gem "guard-bundler", require: false
   gem "guard-haml_lint", require: false
@@ -142,4 +145,3 @@ group :test do
   gem "webdrivers"
   gem "whenever-test"
 end
-
