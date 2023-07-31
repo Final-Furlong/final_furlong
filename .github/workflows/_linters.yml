@@ -25,7 +25,7 @@ jobs:
         uses: reviewdog/action-rubocop@v2
         with:
           rubocop_version: gemfile
-          rubocop_extensions: rubocop-performance:gemfile rubocop-rails:gemfile rubocop-rake:gemfile rubocop-rspec:gemfile
+          rubocop_extensions: rubocop-performance:gemfile rubocop-rails:gemfile rubocop-rake:gemfile rubocop-rspec:gemfile standard:gemfile
           reporter: github-pr-check
 
       - name: Fasterer

@@ -3,11 +3,11 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.2.2"
 
-gem "rails", "7.0.4.2"
+gem "rails", "7.0.6"
 
 gem "bootsnap", require: false
 
-gem "devise", github: "ghiculescu/devise", branch: "error-code-422" # https://github.com/heartcombo/devise/pull/5340 not yet merged
+gem "devise"
 gem "devise-i18n"
 gem "responders"
 
