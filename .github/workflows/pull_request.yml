@@ -19,7 +19,7 @@ jobs:
 
   call-linters:
     needs: [ 'setup' ]
-    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@main
+    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@standard
 
   call-security:
     needs: [ 'setup' ]
