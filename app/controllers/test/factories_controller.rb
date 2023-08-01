@@ -13,13 +13,13 @@ module Test
 
     def create
       result = case strategy
-               when :create
-                 FactoryBot.create(factory, *traits, attributes)
-               when :attributes
-                 FactoryBot.attributes_for(factory, *traits, attributes)
-               else
-                 raise "Unknown strategy: #{strategy}"
-               end
+      when :create
+        FactoryBot.create(factory, *traits, attributes)
+      when :attributes
+        FactoryBot.attributes_for(factory, *traits, attributes)
+      else
+        raise "Unknown strategy: #{strategy}"
+      end
       render json: result.to_json, status: :created
     end
 

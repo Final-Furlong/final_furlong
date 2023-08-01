@@ -8,10 +8,12 @@ module CurrentStable
     end
 
     # @route GET /stable/horses/:id (current_stable_horse)
-    def show; end
+    def show
+    end
 
     # @route GET /stable/horses/:id/edit (edit_current_stable_horse)
-    def edit; end
+    def edit
+    end
 
     # @route PUT /stable/horses/:id (update_current_stable_horse)
     # @route PATCH /stable/horses/:id (update_current_stable_horse)

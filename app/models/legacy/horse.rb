@@ -27,18 +27,18 @@ module Legacy
 
       def lookup_methods
         %w[Acceleration Allele Approval Ave BMBPF BPF Boarded Break Breeder
-           Close Color Comments Consistency Courage CurrentHeight DC DOB Dam
-           DamDam DamSire DefaultEquip DefaultInstructions DefaultJock1 DefaultJock2
-           DefaultJock3 DefaultWorkoutTrack Die Dirt DisplayEnergy DisplayFitness
-           EnergyCurrent EnergyMin EnergyRegain Equipment FFMares Face FacePic
-           Fast Fitness FoalHeight GenSound Gender Good Hasbeen Height ID
-           Immature InTransit LFPic LFmarkings LHPic LHmarkings LastRaceFinishers
-           LastRaceId Lead Leased LoafPct LoafStride LoafThresh LocBred Location
-           MaresPerStable Max Midpack Min NEGain NELoss Name NaturalEnergy Outside
-           Owner OwnerComments Pace Pissy RFPic RFmarkings RHPic RHmarkings RacesCount
-           Ratability RestDayCount Retire SC SPS SalePrice SellTo Sire SireDam SireSire
-           Slow Soundness Stamina Status StudPrice Sustain Traffic Turf Turning Weight
-           Wet XPCurrent XPRate can_be_sold last_modified leaser slug]
+          Close Color Comments Consistency Courage CurrentHeight DC DOB Dam
+          DamDam DamSire DefaultEquip DefaultInstructions DefaultJock1 DefaultJock2
+          DefaultJock3 DefaultWorkoutTrack Die Dirt DisplayEnergy DisplayFitness
+          EnergyCurrent EnergyMin EnergyRegain Equipment FFMares Face FacePic
+          Fast Fitness FoalHeight GenSound Gender Good Hasbeen Height ID
+          Immature InTransit LFPic LFmarkings LHPic LHmarkings LastRaceFinishers
+          LastRaceId Lead Leased LoafPct LoafStride LoafThresh LocBred Location
+          MaresPerStable Max Midpack Min NEGain NELoss Name NaturalEnergy Outside
+          Owner OwnerComments Pace Pissy RFPic RFmarkings RHPic RHmarkings RacesCount
+          Ratability RestDayCount Retire SC SPS SalePrice SellTo Sire SireDam SireSire
+          Slow Soundness Stamina Status StudPrice Sustain Traffic Turf Turning Weight
+          Wet XPCurrent XPRate can_be_sold last_modified leaser slug]
       end
   end
 end

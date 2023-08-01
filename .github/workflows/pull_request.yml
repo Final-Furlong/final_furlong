@@ -15,19 +15,19 @@ env:
 
 jobs:
   setup:
-    uses: Final-Furlong/final_furlong/.github/workflows/_dependencies.yml@add-concepts
+    uses: Final-Furlong/final_furlong/.github/workflows/_dependencies.yml@main
 
   call-linters:
     needs: [ 'setup' ]
-    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@add-concepts
+    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@standard
 
   call-security:
     needs: [ 'setup' ]
-    uses: Final-Furlong/final_furlong/.github/workflows/_security.yml@add-concepts
+    uses: Final-Furlong/final_furlong/.github/workflows/_security.yml@main
 
   call-tests:
     if: "!contains(github.event.commits[0].message, '[ci skip]') && !contains(github.event.commits[0].message, '[skip ci]')"
-    uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@add-concepts
+    uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@main
     needs: [ 'call-linters' ]
     secrets:
       lcov-token: ${{ secrets.LCOV_GITHUB_TOKEN }}

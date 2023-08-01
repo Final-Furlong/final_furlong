@@ -38,7 +38,7 @@ module Horses
       def set_name_query
         return if query["name_i_cont_all"].blank?
 
-        @horse_query = horse_query.where("horses.name ILIKE ?", "%#{query['name_i_cont_all']}%")
+        @horse_query = horse_query.where("horses.name ILIKE ?", "%#{query["name_i_cont_all"]}%")
       end
 
       def set_gender_query
@@ -51,14 +51,14 @@ module Horses
         return if query["sire_name_i_cont_all"].blank?
 
         @horse_query = horse_query.joins(:sire)
-                                  .where("sires_horses.name ILIKE ?", "%#{query['sire_name_i_cont_all']}%")
+          .where("sires_horses.name ILIKE ?", "%#{query["sire_name_i_cont_all"]}%")
       end
 
       def set_dam_name_query
         return if query["dam_name_i_cont_all"].blank?
 
         @horse_query = horse_query.joins(:dam)
-                                  .where("dams_horses.name ILIKE ?", "%#{query['dam_name_i_cont_all']}%")
+          .where("dams_horses.name ILIKE ?", "%#{query["dam_name_i_cont_all"]}%")
       end
 
       def set_owner_name_query

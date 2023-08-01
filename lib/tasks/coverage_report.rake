@@ -11,10 +11,10 @@ namespace :coverage do
       coverage_dir "coverage"
 
       formatter SimpleCov::Formatter::MultiFormatter.new([
-                                                           SimpleCov::Formatter::JSONFormatter,
-                                                           SimpleCov::Formatter::CoberturaFormatter,
-                                                           SimpleCov::Formatter::LcovFormatter
-                                                         ])
+        SimpleCov::Formatter::JSONFormatter,
+        SimpleCov::Formatter::CoberturaFormatter,
+        SimpleCov::Formatter::LcovFormatter
+      ])
     end
   end
 end

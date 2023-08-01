@@ -3,7 +3,8 @@ module Admin
     skip_after_action :verify_authorized, only: :destroy
 
     # @route GET /admin/impersonate (admin_impersonate)
-    def show; end
+    def show
+    end
 
     # @route POST /admin/impersonate (admin_impersonate)
     def create

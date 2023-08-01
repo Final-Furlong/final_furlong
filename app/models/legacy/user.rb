@@ -24,13 +24,13 @@ module Legacy
 
       def lookup_methods
         %w[Admin Approval Description Email ID IP JoinDate LastBought
-           LastEntry LastLogin LastMareBred LastSold LastStudBred Name
-           Password PrevLogin RefID StableName Status TrackID TrackMiles
-           Username discourse_api_key discourse_name discourse_id
-           admin approval description email id ip join_date last_bought
-           last_entry last_login last_mare_bred last_sold last_stud_bred
-           name password prev_login ref_id stable_name status track_id
-           track_miles username]
+          LastEntry LastLogin LastMareBred LastSold LastStudBred Name
+          Password PrevLogin RefID StableName Status TrackID TrackMiles
+          Username discourse_api_key discourse_name discourse_id
+          admin approval description email id ip join_date last_bought
+          last_entry last_login last_mare_bred last_sold last_stud_bred
+          name password prev_login ref_id stable_name status track_id
+          track_miles username]
       end
   end
 end

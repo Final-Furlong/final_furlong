@@ -1,4 +1,10 @@
+inherit_mode:
+  merge:
+    - Exclude
+
 require:
+  - standard
+  - rubocop-graphql
   - rubocop-performance
   - rubocop-rails
   - rubocop-rake
@@ -6,6 +12,12 @@ require:
 
 inherit_gem:
   rubocop-rails: config/default.yml
+  standard: config/base.yml
+  standard-performance: config/base.yml
+  standard-rails: config/base.yml
+
+inherit_from:
+  - .rubocop_strict.yml
 
 AllCops:
   DisplayCopNames: true
@@ -19,7 +31,7 @@ AllCops:
     - ".simplecov"
     - "app/models/legacy_*.rb"
   NewCops: enable
-  TargetRubyVersion: 3.1
+  TargetRubyVersion: 3.2
 
 Bundler/OrderedGems:
   Enabled: true

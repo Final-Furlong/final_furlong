@@ -72,12 +72,12 @@ class ApplicationController < ActionController::Base
 
       browser = Browser.new(request.user_agent)
       request.variant = if browser.mobile?
-                          :phone
-                        elsif browser.tablet?
-                          :tablet
-                        else
-                          :desktop
-                        end
+        :phone
+      elsif browser.tablet?
+        :tablet
+      else
+        :desktop
+      end
     end
 
     def update_stable_online

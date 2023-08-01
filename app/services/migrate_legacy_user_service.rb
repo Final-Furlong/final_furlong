@@ -27,7 +27,7 @@ class MigrateLegacyUserService
         discourse_id: legacy_user.discourse_id,
         password:,
         password_confirmation: password,
-        discarded_at: user_status == Account::User.statuses[:deleted] ? Time.current : nil
+        discarded_at: (user_status == Account::User.statuses[:deleted]) ? Time.current : nil
       )
       Account::Stable.create!(
         legacy_id: legacy_user.id,

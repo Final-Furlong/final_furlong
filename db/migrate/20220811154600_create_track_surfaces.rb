@@ -6,9 +6,9 @@ class CreateTrackSurfaces < ActiveRecord::Migration[7.0]
     create_table :track_surfaces, id: :uuid do |t|
       t.references :racetrack, type: :uuid, index: true, foreign_key: true
       t.enum :surface, enum_type: "track_surface", default: "dirt", null: false,
-                       comment: "dirt, turf, steeplechase"
+        comment: "dirt, turf, steeplechase"
       t.enum :condition, enum_type: "track_condition", default: "fast", null: false,
-                         comment: "fast, good, slow, wet"
+        comment: "fast, good, slow, wet"
       t.integer :width, null: false
       t.integer :length, null: false
       t.integer :turn_to_finish_length, null: false

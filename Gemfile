@@ -3,11 +3,11 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.2.2"
 
-gem "rails", "7.0.4.2"
+gem "rails", "7.0.6"
 
 gem "bootsnap", require: false
 
-gem "devise", github: "ghiculescu/devise", branch: "error-code-422" # https://github.com/heartcombo/devise/pull/5340 not yet merged
+gem "devise"
 gem "devise-i18n"
 gem "responders"
 
@@ -115,12 +115,16 @@ group :development, :test do
   gem "letter_opener"
   gem "reek", require: false
   gem "rubocop", require: false
+  gem "rubocop-graphql", require: false
   gem "rubocop-performance", require: false
   gem "rubocop-rails", require: false
   gem "rubocop-rake", require: false
   gem "rubocop-rspec", require: false
   gem "ruby-debug-ide", require: false
   gem "solargraph", require: false
+  gem "standard"
+  gem "standard-performance"
+  gem "standard-rails"
 end
 
 group :test do

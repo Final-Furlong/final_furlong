@@ -8,7 +8,7 @@ module CoreExtensions
       module ClassMethods
         def parse_safely(value)
           parse(value&.to_s)
-        rescue StandardError
+        rescue
           nil
         end
       end

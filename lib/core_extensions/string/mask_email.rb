@@ -6,7 +6,7 @@ module CoreExtensions
         tld = rpartition("@").last.rpartition(".").last
         domain_name_length = rpartition("@").last.rpartition(".").first.size
 
-        "#{'*' * account_name_length}@#{'*' * domain_name_length}.#{tld}"
+        "#{"*" * account_name_length}@#{"*" * domain_name_length}.#{tld}"
       end
     end
   end
