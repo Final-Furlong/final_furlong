@@ -8,7 +8,7 @@ class UsersController < AuthenticatedController
   # @route GET /users (users)
   def index
     authorize User
-    @users = policy_scope(User).ordered
+    @users = authorized_scope(User).ordered
   end
 
   # @route GET /users/:id (user)

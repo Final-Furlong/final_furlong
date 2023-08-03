@@ -1,8 +1,12 @@
 require "rails_helper"
 
 RSpec.describe Account::SettingsPolicy do
-  subject { described_class.new(Account::User.new, Account::User.new) }
+  subject(:policy) { described_class.new(Account::User.new, user: Account::User.new) }
 
-  it { is_expected.to permit_action(:update) }
+  describe "#update?" do
+    subject { policy.apply(:update?) }
+
+    it { is_expected.to be true }
+  end
 end
 

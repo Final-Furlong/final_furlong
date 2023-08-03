@@ -96,8 +96,8 @@ Rails.application.configure do
     port: 587,
     domain: "finalfurlong.org",
     authentication: :plain,
-    user_name: Rails.application.credentials.staging.smtp.username,
-    password: Rails.application.credentials.staging.smtp.password
+    user_name: Rails.application.credentials.dig(:smtp, :username),
+    password: Rails.application.credentials.dig(:smtp, :password)
   }
 
   # Do not dump schema after migrations.

@@ -41,6 +41,10 @@ module Account
       ).first
     end
 
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[username status name email]
+    end
+
     private
 
       def set_defaults

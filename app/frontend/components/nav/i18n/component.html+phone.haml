@@ -1,19 +1,21 @@
-%a.d-block.d-md-none.list-group-item.list-group-item-action.py-2.dropdown-toggle.dropdown-item-text{ href: "#",
-      data: { bs_toggle: "collapse", bs_target: "#settings-links-list" }, aria: { expanded: false } }
+-# haml-lint:disable LineLength
+- settings_button_classes = "list-group-item list-group-item-action py-2 border border-top-0 border-start-0 border-end-0"
+-# haml-lint:enable LineLength
+%a{ href: "#",
+    class: "d-block d-md-none list-group-item list-group-item-action py-2 dropdown-toggle dropdown-item-text",
+    data: { bs_toggle: "collapse", bs_target: "#settings-links-list" }, aria: { expanded: false } }
   %i.fa-solid.fa-gears.me-3
   %span= t("layouts.sidenav.settings_divider")
 %ul.list-unstyled.mb-0.collapse#settings-links-list
   %li
-    = button_to settings_path, method: :patch,
-        class: "list-group-item list-group-item-action py-2 border border-top-0 border-start-0 border-end-0" do
+    = button_to settings_path, method: :patch, class: settings_button_classes do
       = hidden_field_tag "locale", "en"
       %span.me-2{ class: "fi fi-us" }
       English
       - if american_locale?
         %i.fas.fa-check.ms-2
   %li
-    = button_to settings_path, method: :patch,
-        class: "list-group-item list-group-item-action py-2 border border-top-0 border-start-0 border-end-0" do
+    = button_to settings_path, method: :patch, class: settings_button_classes do
       = hidden_field_tag "locale", "en-GB"
       %span.me-2{ class: "fi fi-gb" }
       English

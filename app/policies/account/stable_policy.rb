@@ -1,9 +1,7 @@
 module Account
   class StablePolicy < ApplicationPolicy
-    class Scope < Scope
-      def resolve
-        Account::StablesRepository.new(scope:).active
-      end
+    scope_for :active_record_relation do |relation|
+      Account::StablesRepository.new(scope: relation).active
     end
 
     def index?

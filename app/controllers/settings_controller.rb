@@ -1,6 +1,4 @@
 class SettingsController < ApplicationController
-  skip_after_action :verify_policy_scoped
-
   # @route PUT /settings (settings)
   # @route PATCH /settings (settings)
   def update

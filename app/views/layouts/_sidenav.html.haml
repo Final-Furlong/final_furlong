@@ -17,8 +17,11 @@
         = nav_link_generator path: new_user_session_path, classes: "d-block d-lg-none" do
           %i.fas.fa-arrow-right-from-bracket.me-3
           %span= t("layouts.nav.login")
+      - game_links_data = { bs_toggle: "collapse", bs_target: "#game-links-list" }
       %a.list-group-item.list-group-item-action.py-2.dropdown-toggle.dropdown-item-text{ href: "#",
-        data: { bs_toggle: "collapse", bs_target: "#game-links-list" }, aria: { expanded: false } }
+                                                                                         data: game_links_data,
+                                                                                         aria: { expanded: false }
+          }
         %i.fa-solid.fa-bars-staggered.me-3
         %span= t(".game_divider")
       %ul.list-unstyled.mb-0.show#game-links-list
@@ -38,6 +41,6 @@
       = render Nav::I18n::Component.new(locale: I18n.locale, version: :phone, variants: request.variant)
       - if user_signed_in?
         = button_to destroy_user_session_path, method: :delete, class: ["list-group-item list-group-item-action py-2",
-          "border border-0"], data: { turbo: false } do
+                                                                        "border border-0"], data: { turbo: false } do
           %i.fas.fa-arrow-right-from-bracket.me-3.fa-flip-horizontal
           = t(".logout")

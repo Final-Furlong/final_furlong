@@ -23,7 +23,7 @@ module Horses
     private
 
       def build_query
-        @stable_repo = StablesRepository.new
+        @stable_repo = ::Account::StablesRepository.new
         set_default_query
         set_name_query
         set_gender_query

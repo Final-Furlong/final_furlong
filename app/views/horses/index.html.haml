@@ -2,14 +2,13 @@
   = render Nav::Breadcrumbs::Component.new(title: t("horses.index.title"))
 
 = render Horses::SearchFilters::Component.new(version: request_variant, path_name: "horses_path", params:, query:,
-  active_status:)
+                                              active_status:)
 
 .card.mt-2
   = turbo_stream_from "horses"
   = render Horses::StatusList::Component.new(version: request_variant, variants: [:desktop], statuses:, active_status:,
-    params:, path_name: "horses_path")
+                                             params:, path_name: "horses_path")
   .card-body
     = turbo_frame_tag "horses" do
       = render "table", horses:, query:
   = render Nav::Pagination::Component.new(collection: horses, page: params[:page], div_class: "card-footer")
-

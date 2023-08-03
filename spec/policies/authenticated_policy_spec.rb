@@ -1,14 +1,20 @@
 require "rails_helper"
 
+class FakePolicy < AuthenticatedPolicy
+  def show?
+    true
+  end
+end
+
 RSpec.describe AuthenticatedPolicy do
-  subject(:policy) { described_class.new(user, Account::User.new) }
+  subject(:policy) { FakePolicy.new(Account::User.new, user: user) }
 
   let(:user) { Account::User.new }
 
-  describe "#initialize" do
+  describe "#show?" do
     context "when user is set" do
       it "does not raise error" do
-        expect { policy }.not_to raise_error
+        expect(policy.apply(:show?)).to be true
       end
     end
 
@@ -16,23 +22,7 @@ RSpec.describe AuthenticatedPolicy do
       let(:user) { nil }
 
       it "raises error" do
-        expect { policy }.to raise_error Pundit::NotAuthorizedError
-      end
-    end
-  end
-
-  describe "::Scope" do
-    describe "#initialize" do
-      it "does not raise error when user is set" do
-        expect do
-          described_class::Scope.new(user, Account::User.all)
-        end.not_to raise_error
-      end
-
-      it "raises error when user is not set" do
-        expect do
-          described_class::Scope.new(nil, Account::User.all)
-        end.to raise_error Pundit::NotAuthorizedError
+        expect(policy.apply(:show?)).to be false
       end
     end
   end

@@ -1,16 +1,10 @@
 class AuthenticatedPolicy < ApplicationPolicy
-  def initialize(user, record)
-    raise Pundit::NotAuthorizedError, "must be logged in" unless user
+  pre_check :disallow_guests
 
-    super
-  end
+  private
 
-  class Scope < ApplicationPolicy::Scope
-    def initialize(user, scope)
-      raise Pundit::NotAuthorizedError, "must be logged in" unless user
-
-      super
+    def disallow_guests
+      deny! unless user
     end
-  end
 end
 
