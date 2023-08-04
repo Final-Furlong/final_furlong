@@ -14,7 +14,7 @@ install_plugin Capistrano::SCM::Git
 # require "capistrano/rails/migrations"
 
 require "capistrano/deploytags"
-require "capistrano/data_migrate"
+# require "capistrano/data_migrate"
 
 # # # require "capistrano/sidekiq"
 # # install_plugin Capistrano::Sidekiq
