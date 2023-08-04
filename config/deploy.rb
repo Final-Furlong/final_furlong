@@ -9,7 +9,7 @@ set :repo_url, "git@github.com:pendletons/final_furlong.git"
 set :branch, ENV.fetch("REVISION", "main")
 
 set :rbenv_type, :user
-set :rbenv_ruby, "3.1.2"
+set :rbenv_ruby, "3.2.2"
 
 set :deploy_to, "/var/www/rails.finalfurlong"
 
