@@ -37,7 +37,7 @@ class MigrateLegacyHorseBasicInfo < ActiveRecord::Migration[7.0]
       ids = [1, 4, 7, 10, 13, 16, 19, 22, 28, 31, 34, 37, 40, 43, 48, 51, 55, 57]
       results = {}
       ids.each do |legacy_track_id|
-        lrt = LegacyRacetrack.find(legacy_track_id)
+        lrt = Legacy::Racetrack.find(legacy_track_id)
         name = (lrt.send(:Name) == "Lone Star") ? "Lone Star Park" : lrt.send(:Name)
         location_id = Racetrack.where(name:).pick(:location_id)
         results[legacy_track_id] = location_id
