@@ -1,4 +1,8 @@
+require 'sendgrid-ruby'
+
 class PagesController < ApplicationController
+  include SendGrid
+
   skip_after_action :verify_authorized
 
   # @route GET / (root)
@@ -10,9 +14,6 @@ class PagesController < ApplicationController
   end
 
   def test_email
-    require 'sendgrid-ruby'
-    include SendGrid
-
     from = Email.new(email: 'no-reply@finalfurlong.org')
     to = Email.new(email: 'equestrianerd@gmail.com')
     subject = 'Sending with SendGrid is Fun'
