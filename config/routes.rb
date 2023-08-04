@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   }
 
   get "/activation_required", to: "pages#activation", as: :activation
+  get "/test_email", to: "pages#test_email", as: :test_email
 
   resources :users
   resources :stables, only: %i[index show]
