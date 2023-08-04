@@ -8,10 +8,10 @@
         %table.table.table-responsive.table-striped
           %thead
             %tr
-              %th= sort_link query, :name, Horse.human_attribute_name("name")
-              %th= sort_link query, :age, Horse.human_attribute_name("age")
-              %th= sort_link query, :gender, Horse.human_attribute_name("gender")
-              %th= sort_link query, :owner, Horse.human_attribute_name("owner")
+              %th= sort_link query, :name, Horses::Horse.human_attribute_name("name")
+              %th= sort_link query, :age, Horses::Horse.human_attribute_name("age")
+              %th= sort_link query, :gender, Horses::Horse.human_attribute_name("gender")
+              %th= sort_link query, :owner, Horses::Horse.human_attribute_name("owner")
               %th= t("common.actions.title")
             %tbody.table-group-divider
               - horses.each do |horse|
