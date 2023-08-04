@@ -5,8 +5,8 @@ class MigrateLegacyRacetracks < ActiveRecord::Migration[7.0]
     say_with_time "Migrating legacy tracks" do
       MigrateLegacyRacetrackService.new.call
       say "Legacy racetrack count: #{Legacy::Racetrack.count}"
-      say "Racetrack count: #{Racetrack.count}"
-      say "Track surface count: #{TrackSurface.count}"
+      say "Racetrack count: #{Racing::Racetrack.count}"
+      say "Track surface count: #{Racing::TrackSurface.count}"
       say "Location count: #{Location.count}"
     end
   end
