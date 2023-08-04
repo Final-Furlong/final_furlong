@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   }
 
   get "/activation_required", to: "pages#activation", as: :activation
+  get "/test_email", to: "pages#test_email", as: :test_email
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :users

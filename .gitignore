@@ -54,3 +54,4 @@ spec/examples.txt
 /config/credentials/staging.key
 
 /config/credentials/production.key
+sendgrid.env
