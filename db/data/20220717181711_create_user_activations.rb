@@ -6,8 +6,8 @@ class CreateUserActivations < ActiveRecord::Migration[7.0]
       ActiveRecord::Base.connection.execute("TRUNCATE TABLE activations;")
     end
     say_with_time "Creating user activations" do
-      say "User count: #{User.pending.count}"
-      User.pending.find_each do |user|
+      say "User count: #{Account::User.pending.count}"
+      Account::User.pending.find_each do |user|
         CreateActivationService.new(user.id).call
       end
     end

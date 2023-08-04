@@ -5,18 +5,18 @@ class MigrateLegacyHorseBasicInfo < ActiveRecord::Migration[7.0]
     # return unless Rails.env.production?
 
     say_with_time "Migrating legacy horses" do
-      say "Legacy horse count: #{LegacyHorse.count}"
-      max_id = Horse.maximum("legacy_id") || 0
+      say "Legacy horse count: #{Legacy::Horse.count}"
+      max_id = Horses::Horse.maximum("legacy_id") || 0
       say "Starting with id: #{max_id + 1}"
-      LegacyHorse.where("id > ?", max_id).find_each do |legacy_horse|
+      Legacy::Horse.where("id > ?", max_id).find_each do |legacy_horse|
         MigrateLegacyHorseService.new(horse: legacy_horse, locations: racetrack_locations).call
       end
 
-      last_legacy_horse = LegacyHorse.order(id: :desc).first
-      sleep(0.1) until Horse.exists?(legacy_id: last_legacy_horse.id)
-      say "Horse count: #{Horse.count}"
-      say "Sire count: #{Horse.where.not(sire: nil).count}"
-      say "Dam count: #{Horse.where.not(dam: nil).count}"
+      last_legacy_horse = Legacy::Horse.order(id: :desc).first
+      sleep(0.1) until Horses::Horse.exists?(legacy_id: last_legacy_horse.id)
+      say "Horse count: #{Horses::Horse.count}"
+      say "Sire count: #{Horses::Horse.where.not(sire: nil).count}"
+      say "Dam count: #{Horses::Horse.where.not(dam: nil).count}"
     end
   end
 
