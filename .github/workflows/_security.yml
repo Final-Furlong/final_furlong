@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Yarn Cache
         uses: actions/cache@v3
@@ -41,4 +41,4 @@ jobs:
 
       - name: Yarn Audit
         run: |
-          yarn audit
+          sh .github/scripts/yarn_audit.sh

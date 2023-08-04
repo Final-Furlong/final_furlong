@@ -1,6 +1,8 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    action_policy (0.6.5)
+      ruby-next-core (>= 0.14.0)
     actioncable (7.0.6)
       actionpack (= 7.0.6)
       activesupport (= 7.0.6)
@@ -451,8 +453,6 @@ GEM
     public_suffix (5.0.3)
     puma (5.6.6)
       nio4r (~> 2.0)
-    pundit (2.3.1)
-      activesupport (>= 3.0.0)
     pundit-matchers (3.1.2)
       rspec-core (~> 3.12)
       rspec-expectations (~> 3.12)
@@ -765,6 +765,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  action_policy
   active_interaction
   annotate
   autoprefixer-rails
@@ -831,7 +832,6 @@ DEPENDENCIES
   pg (~> 1.1)
   pretender
   puma (~> 5.0)
-  pundit
   pundit-matchers
   rack-cors
   rack-mini-profiler

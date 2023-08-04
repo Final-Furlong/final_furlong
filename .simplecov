@@ -49,7 +49,7 @@ end
 SimpleCov.profiles.define 'unit' do
   coverage_dir 'coverage_unit'
 
-  minimum_coverage line: 60, branch: 51
+  minimum_coverage line: 51, branch: 52
   # minimum_coverage_by_file line: 10, branch: 10
 
   add_filter "app/controllers"

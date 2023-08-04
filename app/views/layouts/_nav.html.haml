@@ -6,7 +6,7 @@
     .container-fluid
       -# Toggle button
       %button.navbar-toggler{ type: "button", data: { bs_toggle: "collapse", bs_target: "#sidebar-menu" },
-        aria: { controls: "sidabar-menu", expanded: false, label: "Toggle navigation" } }
+                              aria: { controls: "sidabar-menu", expanded: false, label: "Toggle navigation" } }
         %i.fa-solid.fa-bars#icon-show-sidenav
         %i.fa-solid.fa-xmark.d-none#icon-hide-sidenav
       -# Brand
@@ -16,7 +16,7 @@
       .navbar-nav.d-flex.flex-row
         %form.d-none.d-lg-block.d-flex{ role: "search" }
           %input.form-control.me-2{ type: "search", disabled: true, placeholder: t(".search_placeholder"),
-            aria: { label: t(".search_aria_label") } }
+                                    aria: { label: t(".search_aria_label") } }
 
         = render Nav::I18n::Component.new(locale: I18n.locale, version: :tablet, variants: request.variant)
 
@@ -25,4 +25,3 @@
           = render "layouts/user_nav"
         - else
           = render Nav::Guest::Component.new
-

@@ -13,7 +13,7 @@ class HorsesController < ApplicationController
 
     set_active_status
     set_gender_select
-    @query = policy_scope(Horses::Horse).includes(:owner).ransack(params[:q])
+    @query = authorized_scope(Horses::Horse.all).includes(:owner).ransack(params[:q])
     query.sorts = "name asc" if query.sorts.blank?
 
     @horses = query.result.page(params[:page])

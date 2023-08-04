@@ -1,6 +1,6 @@
 - content_for :breadcrumbs do
   = render Nav::Breadcrumbs::Component.new(links: [{ name: t("users.index.title"), href: users_path },
-    { name: t(".title"), href: "#" }])
+                                                   { name: t(".title"), href: "#" }])
 
 .header
   %h1= t(".title")

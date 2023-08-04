@@ -17,6 +17,7 @@
   "devDependencies": {
     "@babel/core": "^7.18.5",
     "@babel/eslint-parser": "^7.18.2",
+    "@cloudstek/yarn-audit-junit": "^1.0.0",
     "axe-core": "^4.4.3",
     "commitlint": "^17.0.3",
     "cypress": "^10.6.0",

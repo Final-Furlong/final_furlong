@@ -1,30 +1,33 @@
 require "rails_helper"
 
 RSpec.describe Horses::HorsePolicy do
-  subject { described_class.new(user, horse) }
+  subject(:policy) { described_class.new(horse, user: user) }
 
+  let(:user) { build_stubbed(:user) }
   let(:horse) { build_stubbed(:horse) }
 
-  describe "::Scope" do
-    let(:resolved_scope) do
-      described_class::Scope.new(Account::User.new, Horses::Horse.all).resolve
-    end
+  describe "relation scope" do
+    subject(:scope) { policy.apply_scope(Horses::Horse.all, type: :active_record_relation) }
 
     it "includes born horses" do
-      expect(resolved_scope).to eq Horses::HorsesRepository.new.born
+      expect(scope).to eq Horses::HorsesRepository.new.born
     end
   end
 
   shared_examples "not permitting anything for an unborn horse" do
     let(:horse) { build_stubbed(:horse, :unborn) }
 
-    it { is_expected.to forbid_action(:show) }
+    it "does not allow show" do
+      expect(policy).not_to allow_actions(:show)
+    end
   end
 
   context "when user is a visitor" do
     let(:user) { nil }
 
-    it { is_expected.to permit_actions(%i[index show]) }
+    it "allows public actions" do
+      expect(policy).to allow_actions(:index, :show)
+    end
 
     it_behaves_like "not permitting anything for an unborn horse"
   end
@@ -32,7 +35,9 @@ RSpec.describe Horses::HorsePolicy do
   context "when user is logged in and matches stable" do
     let(:user) { create(:user) }
 
-    it { is_expected.to permit_actions(%i[index show]) }
+    it "allows public actions" do
+      expect(policy).to allow_actions(:index, :show)
+    end
 
     it_behaves_like "not permitting anything for an unborn horse"
   end
@@ -40,7 +45,9 @@ RSpec.describe Horses::HorsePolicy do
   context "when user is an admin" do
     let(:user) { create(:user, admin: true) }
 
-    it { is_expected.to permit_actions(%i[index show]) }
+    it "allows public actions" do
+      expect(policy).to allow_actions(:index, :show)
+    end
 
     it_behaves_like "not permitting anything for an unborn horse"
   end

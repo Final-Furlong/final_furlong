@@ -22,7 +22,6 @@
                   %td= horse.owner.name
                   %td.actions-column.demo-navbar-user.nav-item.dropdown
                     = link_to horse_path(horse), class: "btn btn-sm btn-outline-primary",
-                      data: { turbo_frame: "_top" } do
+                                                 data: { turbo_frame: "_top" } do
                       %i.fas.fa-eye
                       = t("common.actions.view")
-

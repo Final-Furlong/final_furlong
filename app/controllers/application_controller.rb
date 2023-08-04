@@ -3,14 +3,14 @@ require "browser/aliases"
 class ApplicationController < ActionController::Base
   include Pagy::Backend
   include Devise::Controllers::Helpers
-  include Pundit::Authorization
+  include DeviseHooks
+
   impersonates :user, method: :current_user, with: ->(id) { Account::User.find_by(id:) }
 
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from ActionPolicy::Unauthorized, with: :user_not_authorized
 
   protect_from_forgery prepend: true
 
-  before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :setup_sentry
   before_action :set_variant
   before_action :update_stable_online
@@ -18,9 +18,15 @@ class ApplicationController < ActionController::Base
   around_action :switch_locale
 
   after_action :verify_authorized, except: :index, unless: :devise_controller?
-  after_action :verify_policy_scoped, only: :index, unless: :devise_controller?
 
   protected
+
+    def authorize(record, rule = nil)
+      options = {}
+      options[:to] = rule unless rule.nil?
+
+      authorize! record, **options
+    end
 
     def user_not_authorized
       flash[:alert] = I18n.t("errors.not_authorized", locale: wanted_locale)
@@ -41,24 +47,6 @@ class ApplicationController < ActionController::Base
     def wanted_locale
       Users::SyncLocale.run(user: current_user, cookies:)
       cookies[:locale] || current_user.try(:locale) || I18n.default_locale
-    end
-
-    def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:sign_up, keys: sign_up_keys)
-      devise_parameter_sanitizer.permit(:sign_in, keys: sign_in_keys)
-      devise_parameter_sanitizer.permit(:account_update, keys: account_update_keys)
-    end
-
-    def sign_in_keys
-      %i[login password password_confirmation]
-    end
-
-    def account_update_keys
-      %i[username name email password password_confirmation current_password]
-    end
-
-    def sign_up_keys
-      [:username, :email, :name, :password, :password_confirmation, { stable_attributes: [:name] }]
     end
 
     def setup_sentry

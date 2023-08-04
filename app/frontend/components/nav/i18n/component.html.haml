@@ -1,6 +1,7 @@
 .dropdown.d-none.d-sm-block
   %button.btn.btn-light.ms-2.px-2.py-1{ type: "button", data: { bs_toggle: "dropdown" },
-          aria: { expanded: false, label: american_locale? ? "US language" : "UK language" } }
+                                        aria: { expanded: false,
+                                                label: american_locale? ? "US language" : "UK language" } }
     %span.fi{ class: american_locale? ? "fi-us" : "fi-gb" }
   %ul.dropdown-menu.dropdown-menu-end
     %li

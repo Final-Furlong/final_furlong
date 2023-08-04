@@ -4,7 +4,7 @@ module CurrentStable
 
     # @route GET /stable/horses (current_stable_horses)
     def index
-      @horses = policy_scope(Horses::Horse)
+      @horses = authorized_scope(Horses::Horse)
     end
 
     # @route GET /stable/horses/:id (current_stable_horse)

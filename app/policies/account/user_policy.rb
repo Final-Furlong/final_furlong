@@ -1,9 +1,7 @@
 module Account
   class UserPolicy < ApplicationPolicy
-    class Scope < Scope
-      def resolve
-        scope.active
-      end
+    scope_for :relation do |relation|
+      relation.active
     end
 
     def create?

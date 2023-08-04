@@ -20,10 +20,14 @@ module Stables
         Account::Stable.transaction do
           stable.description = new_stable_description
 
-          if !stable.save! || !legacy_stable&.update!("Description" => legacy_stable_description)
+          if !stable.save! || !update_legacy_description
             errors.merge!(stable.errors)
           end
         end
+      end
+
+      def update_legacy_description
+        legacy_stable&.update_column("Description", legacy_stable_description) # rubocop:disable Rails/SkipsModelValidations
       end
 
       def legacy_stable
