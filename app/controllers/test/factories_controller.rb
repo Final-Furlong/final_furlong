@@ -1,4 +1,4 @@
-unless Rails.env.test?
+if Rails.env.test?
   require "factory_bot_rails"
   require "faker"
 end
