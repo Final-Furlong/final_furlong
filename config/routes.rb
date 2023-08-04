@@ -46,8 +46,7 @@ Rails.application.routes.draw do
   match "/stable/horses/:id", to: "current_stable/horses#update", as: :update_current_stable_horse, via: %i[put patch]
 
   if Rails.env.test?
-    require "test_routes"
-    define_test_routes
+    draw(:test)
   end
 
   unauthenticated do

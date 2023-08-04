@@ -58,6 +58,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_14_180246) do
     t.index ["date_of_birth"], name: "index_horses_on_date_of_birth"
     t.index ["legacy_id"], name: "index_horses_on_legacy_id", unique: true
     t.index ["location_bred_id"], name: "index_horses_on_location_bred_id"
+    t.index ["name"], name: "index_horses_on_name"
     t.index ["owner_id"], name: "index_horses_on_owner_id"
     t.index ["sire_id"], name: "index_horses_on_sire_id"
     t.index ["status"], name: "index_horses_on_status"
@@ -209,6 +210,102 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_14_180246) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "motor_tags_name_unique_index", unique: true
+  end
+
+  create_table "new_activations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.string "token", null: false
+    t.datetime "activated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_new_activations_on_user_id", unique: true
+  end
+
+  create_table "new_horses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "gender", null: false, comment: "colt, filly, mare, stallion, gelding"
+    t.enum "status", default: "unborn", null: false, comment: "unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased", enum_type: "horse_status"
+    t.date "date_of_birth", null: false
+    t.date "date_of_death"
+    t.uuid "owner_id"
+    t.uuid "breeder_id"
+    t.uuid "location_bred_id"
+    t.uuid "sire_id"
+    t.uuid "dam_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "old_id"
+    t.integer "old_sire_id"
+    t.integer "old_dam_id"
+    t.index ["breeder_id"], name: "index_new_horses_on_breeder_id"
+    t.index ["dam_id"], name: "index_new_horses_on_dam_id"
+    t.index ["date_of_birth"], name: "index_new_horses_on_date_of_birth"
+    t.index ["location_bred_id"], name: "index_new_horses_on_location_bred_id"
+    t.index ["name"], name: "index_new_horses_on_name", unique: true
+    t.index ["owner_id"], name: "index_new_horses_on_owner_id"
+    t.index ["sire_id"], name: "index_new_horses_on_sire_id"
+    t.index ["status"], name: "index_new_horses_on_status"
+  end
+
+  create_table "new_racetracks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "state", null: false
+    t.string "country", null: false
+    t.decimal "latitude", null: false
+    t.decimal "longitude", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["country"], name: "index_new_racetracks_on_country"
+    t.index ["name"], name: "index_new_racetracks_on_name"
+    t.index ["state"], name: "index_new_racetracks_on_state"
+  end
+
+  create_table "new_stables", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.uuid "user_id"
+    t.integer "legacy_id"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["legacy_id"], name: "index_new_stables_on_legacy_id", unique: true
+    t.index ["name"], name: "index_new_stables_on_name", unique: true
+    t.index ["user_id"], name: "index_new_stables_on_user_id"
+  end
+
+  create_table "new_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "username", null: false
+    t.enum "status", default: "pending", null: false, comment: "pending, active, deleted, banned", enum_type: "user_status"
+    t.string "name", null: false, comment: "displayed on profile"
+    t.boolean "admin", default: false, null: false
+    t.integer "discourse_id", comment: "integer from Discourse forum"
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at", precision: nil
+    t.datetime "confirmation_sent_at", precision: nil
+    t.string "unconfirmed_email"
+    t.integer "failed_attempts", default: 0, null: false
+    t.string "unlock_token"
+    t.datetime "locked_at", precision: nil
+    t.datetime "discarded_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["confirmation_token"], name: "index_new_users_on_confirmation_token", unique: true
+    t.index ["discarded_at"], name: "index_new_users_on_discarded_at"
+    t.index ["discourse_id"], name: "index_new_users_on_discourse_id", unique: true
+    t.index ["email"], name: "index_new_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_new_users_on_reset_password_token", unique: true
+    t.index ["status"], name: "index_new_users_on_status"
+    t.index ["unlock_token"], name: "index_new_users_on_unlock_token", unique: true
+    t.index ["username"], name: "index_new_users_on_username", unique: true
   end
 
   create_table "racetracks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
