@@ -29,21 +29,21 @@ Rails.application.routes.draw do
 
   get "/activation_required", to: "pages#activation", as: :activation
 
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :users
   resources :stables, only: %i[index show]
   resources :horses, except: %i[new create destroy]
 
   match "/settings", to: "settings#update", as: :settings, via: %i[put patch]
 
-  # stable horses
-  get "/stable", to: "stables#show", as: :current_stable
-  get "/stable/edit", to: "stables#edit", as: :edit_current_stable
-  match "/stable/edit", to: "stables#update", as: :update_current_stable, via: %i[put patch]
-  get "/stable/horses", to: "current_stable/horses#index", as: :current_stable_horses
-  get "/stable/horses/:id/edit", to: "current_stable/horses#edit", as: :edit_current_stable_horse
-  get "/stable/horses/:id", to: "current_stable/horses#show", as: :current_stable_horse
-  match "/stable/horses/:id", to: "current_stable/horses#update", as: :update_current_stable_horse, via: %i[put patch]
+  # current stable
+  resource :stable, only: %i[show edit update], controller: "stables", as: :current_stable
+  namespace :stable, module: "current_stable" do
+    resources :horses, only: %i[index edit show update]
+    resources :training_schedules do
+      resources :horses, controller: "training_schedule_horses", only: %i[index new create destroy]
+    end
+    resources :workouts, only: %i[create]
+  end
 
   if Rails.env.test?
     draw(:test)
@@ -108,13 +108,26 @@ end
 #                                          PATCH     /horses/:id(.:format)                                                                             horses#update
 #                                          PUT       /horses/:id(.:format)                                                                             horses#update
 #                                 settings PUT|PATCH /settings(.:format)                                                                               settings#update
-#                           current_stable GET       /stable(.:format)                                                                                 stables#show
 #                      edit_current_stable GET       /stable/edit(.:format)                                                                            stables#edit
-#                    update_current_stable PUT|PATCH /stable/edit(.:format)                                                                            stables#update
-#                    current_stable_horses GET       /stable/horses(.:format)                                                                          current_stable/horses#index
-#                edit_current_stable_horse GET       /stable/horses/:id/edit(.:format)                                                                 current_stable/horses#edit
-#                     current_stable_horse GET       /stable/horses/:id(.:format)                                                                      current_stable/horses#show
-#              update_current_stable_horse PUT|PATCH /stable/horses/:id(.:format)                                                                      current_stable/horses#update
+#                           current_stable GET       /stable(.:format)                                                                                 stables#show
+#                                          PATCH     /stable(.:format)                                                                                 stables#update
+#                                          PUT       /stable(.:format)                                                                                 stables#update
+#                            stable_horses GET       /stable/horses(.:format)                                                                          current_stable/horses#index
+#                        edit_stable_horse GET       /stable/horses/:id/edit(.:format)                                                                 current_stable/horses#edit
+#                             stable_horse GET       /stable/horses/:id(.:format)                                                                      current_stable/horses#show
+#                                          PATCH     /stable/horses/:id(.:format)                                                                      current_stable/horses#update
+#                                          PUT       /stable/horses/:id(.:format)                                                                      current_stable/horses#update
+#          stable_training_schedule_horses POST      /stable/training_schedules/:training_schedule_id/horses(.:format)                                 current_stable/training_schedule_horses#create
+#       new_stable_training_schedule_horse GET       /stable/training_schedules/:training_schedule_id/horses/new(.:format)                             current_stable/training_schedule_horses#new
+#           stable_training_schedule_horse DELETE    /stable/training_schedules/:training_schedule_id/horses/:id(.:format)                             current_stable/training_schedule_horses#destroy
+#                stable_training_schedules GET       /stable/training_schedules(.:format)                                                              current_stable/training_schedules#index
+#                                          POST      /stable/training_schedules(.:format)                                                              current_stable/training_schedules#create
+#             new_stable_training_schedule GET       /stable/training_schedules/new(.:format)                                                          current_stable/training_schedules#new
+#            edit_stable_training_schedule GET       /stable/training_schedules/:id/edit(.:format)                                                     current_stable/training_schedules#edit
+#                 stable_training_schedule GET       /stable/training_schedules/:id(.:format)                                                          current_stable/training_schedules#show
+#                                          PATCH     /stable/training_schedules/:id(.:format)                                                          current_stable/training_schedules#update
+#                                          PUT       /stable/training_schedules/:id(.:format)                                                          current_stable/training_schedules#update
+#                                          DELETE    /stable/training_schedules/:id(.:format)                                                          current_stable/training_schedules#destroy
 #                                     root GET       /                                                                                                 pages#home
 #                       authenticated_root GET       /                                                                                                 stables#show
 #         turbo_recede_historical_location GET       /recede_historical_location(.:format)                                                             turbo/native/navigation#recede

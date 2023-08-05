@@ -12,15 +12,28 @@
           %span= t(".my_stable")
         = nav_link_generator path: "#" do
           %i.fas.fa-horse-head.me-3
-          %span= t(".my_horses")
+          %span= t(".stable.horses")
+        - racing_links_data = { bs_toggle: "collapse", bs_target: "#stable-racing-links-list" }
+        %a.nav-list-item.py-2.collapsed{ href: "#",
+                                         data: racing_links_data,
+                                         aria: { expanded: false, label: "Racing Links Subnavigation" }
+          }
+          %i.fa-solid.fa-bars-staggered.me-3
+          %span= t(".stable.racing_divider")
+        %ul.list-unstyled.mb-0.collapse#stable-racing-links-list
+          %li
+            = nav_link_generator path: stable_training_schedules_path do
+              %i.fas.fa-stopwatch.me-3
+              %span= t(".stable.training_schedules")
       - else
         = nav_link_generator path: new_user_session_path, classes: "d-block d-lg-none" do
           %i.fas.fa-arrow-right-from-bracket.me-3
           %span= t("layouts.nav.login")
+
       - game_links_data = { bs_toggle: "collapse", bs_target: "#game-links-list" }
-      %a.list-group-item.list-group-item-action.py-2.dropdown-toggle.dropdown-item-text{ href: "#",
-                                                                                         data: game_links_data,
-                                                                                         aria: { expanded: false }
+      %a.nav-list-item.py-2{ href: "#",
+                             data: game_links_data,
+                             aria: { expanded: true }
           }
         %i.fa-solid.fa-bars-staggered.me-3
         %span= t(".game_divider")

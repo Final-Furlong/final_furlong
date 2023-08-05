@@ -1,5 +1,8 @@
-// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
+// // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 import "controllers"
+import "@hotwired/turbo-rails"
+
+import "bootstrap"
 
 const navMenu = document.getElementById("sidebar-menu")
 const hideIcon = document.getElementById("icon-hide-sidenav")

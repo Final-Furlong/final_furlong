@@ -8,6 +8,9 @@ module Horses
     belongs_to :dam, class_name: "Horse", optional: true
     belongs_to :location_bred, class_name: "Location"
 
+    has_one :training_schedules_horse, class_name: "Racing::TrainingScheduleHorse", dependent: :destroy
+    has_one :training_schedule, class_name: "Racing::TrainingSchedule", through: :training_schedules_horse
+
     counter_culture :sire, column_name: proc { |model| model.unborn? ? "unborn_foals_count" : "foals_count" },
       column_names: {
         ["horses.status = ?", "unborn"] => "unborn_foals_count",
@@ -28,7 +31,6 @@ module Horses
         ["horses.status = ?", "unborn"] => "unborn_horses_count",
         ["horses.status != ?", "unborn"] => "horses_count"
       }
-
     enum status: Status::STATUSES
     enum gender: Gender::VALUES
 
@@ -61,12 +63,12 @@ module Horses
 
     def name_required
       return unless name_changed?
+      return if name.present?
 
-      errors.add(:name, :blank) if name.blank?
+      errors.add(:name, :blank)
     end
   end
 end
-
 # == Schema Information
 #
 # Table name: horses

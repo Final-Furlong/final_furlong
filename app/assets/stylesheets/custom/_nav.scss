@@ -1,0 +1,6 @@
+.nav-list-item {
+  @extend .list-group-item;
+  @extend .list-group-item-action;
+  @extend .dropdown-toggle;
+  @extend .dropdown-item-text;
+}

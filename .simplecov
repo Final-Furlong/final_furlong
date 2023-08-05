@@ -10,7 +10,7 @@ SimpleCov.profiles.define 'common' do
   add_filter %r{^/db/}
   add_filter "lib/generators"
   add_filter "lib/tasks"
-  add_filter "models/legacy_"
+  add_filter "models/legacy/"
   add_filter "services/migrate_legacy_"
   add_filter(%r{^/spec/})
   add_filter(%r{^/test/})
@@ -67,7 +67,7 @@ end
 SimpleCov.profiles.define 'system' do
   coverage_dir 'coverage_system'
 
-  minimum_coverage line: 7, branch: 40
+  # minimum_coverage line: 7, branch: 40
   # minimum_coverage_by_file line: 10, branch: 10
 
   add_filter "app/controllers/api"

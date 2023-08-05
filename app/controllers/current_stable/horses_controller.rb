@@ -1,22 +1,22 @@
 module CurrentStable
-  class HorsesController < BaseController
+  class HorsesController < ApplicationController
     before_action :set_horse, except: :index
 
-    # @route GET /stable/horses (current_stable_horses)
+    # @route GET /stable/horses (stable_horses)
     def index
       @horses = authorized_scope(Horses::Horse)
     end
 
-    # @route GET /stable/horses/:id (current_stable_horse)
+    # @route GET /stable/horses/:id (stable_horse)
     def show
     end
 
-    # @route GET /stable/horses/:id/edit (edit_current_stable_horse)
+    # @route GET /stable/horses/:id/edit (edit_stable_horse)
     def edit
     end
 
-    # @route PUT /stable/horses/:id (update_current_stable_horse)
-    # @route PATCH /stable/horses/:id (update_current_stable_horse)
+    # @route PATCH /stable/horses/:id (stable_horse)
+    # @route PUT /stable/horses/:id (stable_horse)
     def update
       if @horse.update(horse_params)
         redirect_to stable_horses_path, notice: t(".success", name: @horse.name)
