@@ -1,5 +1,7 @@
-require "factory_bot_rails"
-require "faker"
+if Rails.env.test?
+  require "factory_bot_rails"
+  require "faker"
+end
 
 module Test
   class FactoriesController < BaseController

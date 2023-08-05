@@ -46,8 +46,7 @@ Rails.application.routes.draw do
   match "/stable/horses/:id", to: "current_stable/horses#update", as: :update_current_stable_horse, via: %i[put patch]
 
   if Rails.env.test?
-    require "test_routes"
-    define_test_routes
+    draw(:test)
   end
 
   unauthenticated do
@@ -93,6 +92,7 @@ end
 #                              user_unlock GET       /unlock(.:format)                                                                                 devise/unlocks#show
 #                                          POST      /unlock(.:format)                                                                                 devise/unlocks#create
 #                               activation GET       /activation_required(.:format)                                                                    pages#activation
+#                               test_email GET       /test_email(.:format)                                                                             pages#test_email
 #                                    users GET       /users(.:format)                                                                                  users#index
 #                                          POST      /users(.:format)                                                                                  users#create
 #                                 new_user GET       /users/new(.:format)                                                                              users#new
@@ -224,4 +224,3 @@ end
 #                       motor_ui_forms GET    /forms(.:format)                                        motor/ui#index
 #                    new_motor_ui_form GET    /forms/new(.:format)                                    motor/ui#new
 #                        motor_ui_form GET    /forms/:id(.:format)                                    motor/ui#show
-

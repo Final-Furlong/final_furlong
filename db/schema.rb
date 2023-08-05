@@ -58,6 +58,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_14_180246) do
     t.index ["date_of_birth"], name: "index_horses_on_date_of_birth"
     t.index ["legacy_id"], name: "index_horses_on_legacy_id", unique: true
     t.index ["location_bred_id"], name: "index_horses_on_location_bred_id"
+    t.index ["name"], name: "index_horses_on_name"
     t.index ["owner_id"], name: "index_horses_on_owner_id"
     t.index ["sire_id"], name: "index_horses_on_sire_id"
     t.index ["status"], name: "index_horses_on_status"

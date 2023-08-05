@@ -36,7 +36,7 @@
 .ruby-version
 /config/database.yml
 !config/database.yml.sample
-.env
+.env*
 coverage/
 coverage_system/
 coverage_unit/
@@ -54,3 +54,4 @@ spec/examples.txt
 /config/credentials/staging.key
 
 /config/credentials/production.key
+sendgrid.env

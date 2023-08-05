@@ -2,7 +2,7 @@ class CreateActivationService
   attr_reader :user
 
   def initialize(user_id)
-    @user = User.find(user_id)
+    @user = Account::User.find(user_id)
   end
 
   def call
