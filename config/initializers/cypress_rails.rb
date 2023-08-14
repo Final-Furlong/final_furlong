@@ -6,7 +6,7 @@ ENV["CYPRESS"] = "true"
 
 # rubocop:disable Metrics/MethodLength
 def create_admin
-  return if Account::User.exists?(email: "admin@example.com")
+  return if Account::User.exists?(email: "admin@example.com", username: "admin123")
 
   Rails.logger.error "Creating admin: admin@example.com"
   admin = FactoryBot.create(:admin, :without_stable, email: "admin@example.com", username: "admin123")
@@ -14,7 +14,7 @@ def create_admin
 end
 
 def create_user
-  return if Account::User.exists?(email: "user@example.com")
+  return if Account::User.exists?(email: "user@example.com", username: "user123")
 
   Rails.logger.error "Creating admin: user@example.com"
   user = FactoryBot.create(:user, :without_stable, email: "user@example.com", username: "user123")
@@ -25,15 +25,16 @@ def create_horses
   return if Horses::Horse.count >= 5
 
   Rails.logger.error "Creating horse"
-  FactoryBot.create(:horse)
+  stable = Account::Stable.first
+  FactoryBot.create(:horse, owner: stable, breeder: stable)
   Rails.logger.error "Creating stallion"
-  stud = FactoryBot.create(:horse, :stallion)
+  stud = FactoryBot.create(:horse, :stallion, owner: stable, breeder: stable)
   Rails.logger.error "Creating broodmare"
-  mare = FactoryBot.create(:horse, :broodmare)
+  mare = FactoryBot.create(:horse, :broodmare, owner: stable, breeder: stable)
   Rails.logger.error "Creating yearling"
-  FactoryBot.create(:horse, :weanling, sire: stud, dam: mare)
+  FactoryBot.create(:horse, :weanling, sire: stud, dam: mare, owner: stable, breeder: stable)
   Rails.logger.error "Creating weanling"
-  FactoryBot.create(:horse, :yearling, dam: mare)
+  FactoryBot.create(:horse, :yearling, dam: mare, owner: stable, breeder: stable)
 end
 
 CypressRails.hooks.before_server_start do
