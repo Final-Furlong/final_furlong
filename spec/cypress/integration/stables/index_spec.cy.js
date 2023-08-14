@@ -20,7 +20,7 @@ describe("Stable Index", () => {
     cy.visit("/stables")
 
     cy.contains("All Stables")
-    cy.getBySelLike("stable-").should("have.length", 7)
+    cy.getBySelLike("stable-").should("have.length", 2)
   })
 
   it("shows online status", () => {
@@ -31,7 +31,7 @@ describe("Stable Index", () => {
           cy.visit("/stables")
 
           cy.contains("All Stables")
-          cy.get(".badge-offline").should("have.length", 7)
+          cy.get(".badge-offline").should("have.length", 2)
           cy.get(".badge-online").should("have.length", 1)
         })
       })
