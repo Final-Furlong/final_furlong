@@ -16,22 +16,22 @@ class SettingsController < ApplicationController
 
   private
 
-    def errors
-      outcome.errors.full_messages.to_sentence
-    end
+  def errors
+    outcome.errors.full_messages.to_sentence
+  end
 
-    def outcome
-      @outcome ||= Users::UpdateLocale.run(update_params)
-    end
+  def outcome
+    @outcome ||= Users::UpdateLocale.run(update_params)
+  end
 
-    def update_params
-      params.merge(user: current_user)
-    end
+  def update_params
+    params.merge(user: current_user)
+  end
 
-    def save_locale_cookie(outcome)
-      locale = outcome.result
-      cookies.permanent[:locale] = locale
-      locale
-    end
+  def save_locale_cookie(outcome)
+    locale = outcome.result
+    cookies.permanent[:locale] = locale
+    locale
+  end
 end
 

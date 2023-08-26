@@ -4,8 +4,8 @@ class AuthenticatedController < ApplicationController
 
   private
 
-    def verify_active_user!
-      redirect_to activation_path unless current_user.active?
-    end
+  def verify_active_user!
+    redirect_to activation_path unless current_user.active?
+  end
 end
 

@@ -7,14 +7,14 @@ module Test
 
     private
 
-      def show_errors(exception)
-        error = {
-          error: "#{exception.class}: #{exception}",
-          backtrace: exception.backtrace.join("\n")
-        }
+    def show_errors(exception)
+      error = {
+        error: "#{exception.class}: #{exception}",
+        backtrace: exception.backtrace.join("\n")
+      }
 
-        render(json: error, status: :bad_request) and return
-      end
+      render(json: error, status: :bad_request) and return
+    end
   end
 end
 

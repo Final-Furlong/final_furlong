@@ -41,30 +41,30 @@ class MigrateLegacyUserService
 
   private
 
-    def from_game_date(value)
-      case value
-      when Date
-        value.from_game_date
-      when DateTime
-        value.from_game_time
-      else
-        Date.parse_safely(value)&.from_game_date
-      end
+  def from_game_date(value)
+    case value
+    when Date
+      value.from_game_date
+    when DateTime
+      value.from_game_time
+    else
+      Date.parse_safely(value)&.from_game_date
     end
+  end
 
-    def generate_password
-      SecureRandom.base64
-    end
+  def generate_password
+    SecureRandom.base64
+  end
 
-    def status(legacy_user)
-      case legacy_user.status
-      when "A"
-        Account::User.statuses[:pending]
-      when "CW"
-        Account::User.statuses[:active]
-      else
-        Account::User.statuses[:deleted]
-      end
+  def status(legacy_user)
+    case legacy_user.status
+    when "A"
+      Account::User.statuses[:pending]
+    when "CW"
+      Account::User.statuses[:active]
+    else
+      Account::User.statuses[:deleted]
     end
+  end
 end
 

@@ -9,3 +9,4 @@ class PagesController < ApplicationController
   def activation
   end
 end
+

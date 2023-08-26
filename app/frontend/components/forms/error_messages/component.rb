@@ -10,9 +10,9 @@ module Forms
 
       private
 
-        def render?
-          object.errors.any?
-        end
+      def render?
+        object.errors.any?
+      end
     end
   end
 end

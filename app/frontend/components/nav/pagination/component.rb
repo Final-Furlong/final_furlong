@@ -12,9 +12,9 @@ module Nav
 
       private
 
-        def render?
-          collection.total_pages > 1
-        end
+      def render?
+        collection.total_pages > 1
+      end
     end
   end
 end

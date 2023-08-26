@@ -3,8 +3,8 @@ class AuthenticatedPolicy < ApplicationPolicy
 
   private
 
-    def disallow_guests
-      deny! unless user
-    end
+  def disallow_guests
+    deny! unless user
+  end
 end
 
