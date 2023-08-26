@@ -59,11 +59,11 @@ module Horses
 
     private
 
-      def name_required
-        return unless name_changed?
+    def name_required
+      return unless name_changed?
 
-        errors.add(:name, :blank) if name.blank?
-      end
+      errors.add(:name, :blank) if name.blank?
+    end
   end
 end
 

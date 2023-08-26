@@ -89,13 +89,13 @@ RSpec.describe FinalFurlong::Internet::Validation::PasswordValidator do
 
   private
 
-    def set_model
-      ModelWithDefaultPasswordValidation.new
-    end
+  def set_model
+    ModelWithDefaultPasswordValidation.new
+  end
 
-    def password_errors(model)
-      model.errors.where(:password)
-    end
+  def password_errors(model)
+    model.errors.where(:password)
+  end
 end
 
 class ModelWithPasswordField

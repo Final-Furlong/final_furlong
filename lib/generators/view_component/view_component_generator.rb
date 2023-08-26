@@ -29,18 +29,18 @@ class ViewComponentGenerator < Rails::Generators::NamedBase
 
   private
 
-    def parent_class
-      "ApplicationViewComponent"
-    end
+  def parent_class
+    "ApplicationViewComponent"
+  end
 
-    def preview_parent_class
-      "ApplicationViewComponentPreview"
-    end
+  def preview_parent_class
+    "ApplicationViewComponentPreview"
+  end
 
-    def initialize_signature
-      return if attributes.blank?
+  def initialize_signature
+    return if attributes.blank?
 
-      attributes.map { |attr| "option :#{attr.name}" }.join("\n  ")
-    end
+    attributes.map { |attr| "option :#{attr.name}" }.join("\n  ")
+  end
 end
 

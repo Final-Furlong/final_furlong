@@ -76,13 +76,7 @@ RSpec.describe Horses::Gender do
 
   describe ".localised_filter_options" do
     it "returns correct values" do
-      expect(described_class.localised_filter_options).to match_array(
-        [
-          ["Colt / Stallion", "colt,stallion"],
-          ["Filly / Mare", "filly,mare"],
-          ["Gelding", "gelding"]
-        ]
-      )
+      expect(described_class.localised_filter_options).to contain_exactly(["Colt / Stallion", "colt,stallion"], ["Filly / Mare", "filly,mare"], ["Gelding", "gelding"])
     end
   end
 end

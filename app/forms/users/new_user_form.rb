@@ -39,30 +39,30 @@ module Users
 
     private
 
-      def stable_params
-        { name: params[:stable_name] }
-      end
+    def stable_params
+      { name: params[:stable_name] }
+    end
 
-      def user_params
-        params.except(:stable_name)
-      end
+    def user_params
+      params.except(:stable_name)
+    end
 
-      def initial_attributes
-        assign_attributes(@user.attributes.slice(:email, :name, :password, :password_confirmation, :username, :status))
-        @stable = @user.stable || @user.build_stable
-      end
+    def initial_attributes
+      assign_attributes(@user.attributes.slice(:email, :name, :password, :password_confirmation, :username, :status))
+      @stable = @user.stable || @user.build_stable
+    end
 
-      def validate_unique_email
-        return unless email
+    def validate_unique_email
+      return unless email
 
-        errors.add(:email, :taken) if Account::User.exists?(["LOWER(email) = ?", email.downcase])
-      end
+      errors.add(:email, :taken) if Account::User.exists?(["LOWER(email) = ?", email.downcase])
+    end
 
-      def validate_unique_username
-        return unless username
+    def validate_unique_username
+      return unless username
 
-        errors.add(:username, :taken) if Account::User.exists?(["LOWER(username) = ?", username.downcase])
-      end
+      errors.add(:username, :taken) if Account::User.exists?(["LOWER(username) = ?", username.downcase])
+    end
   end
 end
 

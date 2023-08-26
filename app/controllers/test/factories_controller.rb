@@ -34,59 +34,59 @@ module Test
 
     private
 
-      def search_params
-        case model_name
-        when Account::Stable
-          stable_params
-        when Account::User
-          user_params
-        end
+    def search_params
+      case model_name
+      when Account::Stable
+        stable_params
+      when Account::User
+        user_params
       end
+    end
 
-      def user_params
-        user_keys = %i[id username email]
-        params.select { |key, value| user_keys.include?(key.to_sym) && value.present? }
+    def user_params
+      user_keys = %i[id username email]
+      params.select { |key, value| user_keys.include?(key.to_sym) && value.present? }
+    end
+
+    def stable_params
+      stable_keys = %i[id user_id]
+      attrs = params.select { |key, value| stable_keys.include?(key.to_sym) && value.present? }
+      if params[:email]
+        user = Accounts::User.find_by(email: params[:email])
+        attrs[:user_id] = user.id
       end
+      attrs
+    end
 
-      def stable_params
-        stable_keys = %i[id user_id]
-        attrs = params.select { |key, value| stable_keys.include?(key.to_sym) && value.present? }
-        if params[:email]
-          user = Accounts::User.find_by(email: params[:email])
-          attrs[:user_id] = user.id
-        end
-        attrs
-      end
+    def strategy
+      params[:strategy] || :create
+    end
 
-      def strategy
-        params[:strategy] || :create
-      end
+    def traits
+      return [] if params[:traits].blank?
 
-      def traits
-        return [] if params[:traits].blank?
+      params[:traits].map { |_key, trait| trait.to_sym }
+    end
 
-        params[:traits].map { |_key, trait| trait.to_sym }
-      end
+    def factory
+      raise StandardError, "factory name is required" unless params[:factory]
 
-      def factory
-        raise StandardError, "factory name is required" unless params[:factory]
+      params[:factory].to_sym
+    end
 
-        params[:factory].to_sym
-      end
+    def model_name
+      raise StandardError, "model is required" unless params[:model]
 
-      def model_name
-        raise StandardError, "model is required" unless params[:model]
+      params[:model].classify.constantize
+    end
 
-        params[:model].classify.constantize
-      end
+    def attributes
+      params.to_h.symbolize_keys.except(:factory, :strategy, :traits, :controller, :action, :number, :model, :id)
+    end
 
-      def attributes
-        params.to_h.symbolize_keys.except(:factory, :strategy, :traits, :controller, :action, :number, :model, :id)
-      end
-
-      def permit_all_params
-        ActionController::Parameters.permit_all_parameters = true
-      end
+    def permit_all_params
+      ActionController::Parameters.permit_all_parameters = true
+    end
   end
 end
 

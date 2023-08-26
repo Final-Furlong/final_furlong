@@ -31,13 +31,13 @@ module Horses
 
     private
 
-      def status_array_order
-        localized_statuses.sort.map { |_key, value| value }
-      end
+    def status_array_order
+      localized_statuses.sort.map { |_key, value| value }
+    end
 
-      def localized_statuses
-        Horse.statuses.transform_keys { |key| Horse.human_attribute_name("status.#{key}") }
-      end
+    def localized_statuses
+      Horse.statuses.transform_keys { |key| Horse.human_attribute_name("status.#{key}") }
+    end
   end
 end
 
