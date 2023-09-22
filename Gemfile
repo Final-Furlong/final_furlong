@@ -35,7 +35,7 @@ gem "importmap-rails"
 gem "kaminari"
 gem "motor-admin", "~> 0.3.4"
 gem "mysql2"
-gem "net-ssh", "7.0.0.beta1" # https://github.com/net-ssh/net-ssh/issues/874
+gem "net-ssh"
 gem "pagy"
 gem "pg", "~> 1.1"
 gem "pretender"

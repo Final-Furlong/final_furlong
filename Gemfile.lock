@@ -830,7 +830,7 @@ DEPENDENCIES
   letter_opener
   motor-admin (~> 0.3.4)
   mysql2
-  net-ssh (= 7.0.0.beta1)
+  net-ssh
   pagy
   pg (~> 1.1)
   pretender
