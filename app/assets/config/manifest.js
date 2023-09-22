@@ -6,3 +6,4 @@
 //= link controllers/abandon_form_controller.js
 //= link controllers/hello_controller.js
 //= link controllers/search_controller.js
+//= link controllers/removals_controller.js

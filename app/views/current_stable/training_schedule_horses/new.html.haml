@@ -1,0 +1,6 @@
+- content_for :breadcrumbs do
+  - schedule_name = t("current_stable.training_schedules.show.title", name: schedule.name)
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: current_stable.name, href: current_stable_path },
+                                                   { name: schedule_name, href: stable_training_schedules_path },
+                                                   { name: t(".title"), href: "#" }])
+= render "form", url: stable_training_schedule_horses_path

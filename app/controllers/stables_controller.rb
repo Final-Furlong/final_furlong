@@ -27,18 +27,18 @@ class StablesController < ApplicationController
     @stable_form = Stables::UpdateDescription.new(stable:, description: stable.description)
   end
 
-  # @route PUT /stable/edit (update_current_stable)
-  # @route PATCH /stable/edit (update_current_stable)
+  # @route PATCH /stable (current_stable)
+  # @route PUT /stable (current_stable)
   def update
     authorize stable
     outcome = Stables::UpdateDescription.run(update_params)
 
     if outcome.valid?
-      flash[:notice] = t(".success")
-      redirect_to current_stable_path
+      success_message = t(".success")
+      redirect_to current_stable_path, notice: success_message
     else
       load_from_form(outcome)
-      render :edit, status: :unprocessable_entity
+      render :edit
     end
   end
 

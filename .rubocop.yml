@@ -90,6 +90,9 @@ Naming/InclusiveLanguage:
 Rails/Output:
   Exclude:
     - "db/seeds.rb"
+Rails/WhereEquals:
+  Exclude:
+    - 'app/services/migrate_legacy_*.rb'
 Style/ClassAndModuleChildren:
   EnforcedStyle: nested
 Style/Documentation:

@@ -19,6 +19,8 @@ class ApplicationController < ActionController::Base
 
   after_action :verify_authorized, except: :index, unless: :devise_controller?
 
+  helper_method :current_stable
+
   protected
 
   def authorize(record, rule = nil)
@@ -28,17 +30,25 @@ class ApplicationController < ActionController::Base
     authorize! record, **options
   end
 
-  def user_not_authorized
-    flash[:alert] = I18n.t("errors.not_authorized", locale: wanted_locale)
+  def user_not_authorized(exception)
+    flash[:alert] = if exception.result.reasons.full_messages
+      exception.result.reasons.full_messages.join(", ")
+    else
+      I18n.t("errors.not_authorized", locale: wanted_locale)
+    end
 
-    redirect_to root_path
+    redirect_to unauthorized_path
+  end
+
+  def unauthorized_path
+    root_path
   end
 
   def current_stable
-    @current_stable ||= current_user.stable if signed_in?
-  end
+    return unless signed_in?
 
-  helper_method :current_stable
+    @current_stable ||= current_user.stable
+  end
 
   def switch_locale(&)
     I18n.with_locale(wanted_locale, &)
@@ -71,6 +81,7 @@ class ApplicationController < ActionController::Base
   def update_stable_online
     return unless current_stable
     return if true_user != current_user # impersonating this stable
+    return if current_stable.last_online_at && current_stable.last_online_at > 15.minutes.ago
 
     current_stable.update_columns(last_online_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_14_180246) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_11_184526) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -278,6 +278,39 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_14_180246) do
     t.index ["racetrack_id"], name: "index_track_surfaces_on_racetrack_id"
   end
 
+  create_table "training_schedules", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "stable_id", null: false
+    t.string "name", null: false
+    t.text "description"
+    t.jsonb "sunday_activities", default: {}, null: false
+    t.jsonb "monday_activities", default: {}, null: false
+    t.jsonb "tuesday_activities", default: {}, null: false
+    t.jsonb "wednesday_activities", default: {}, null: false
+    t.jsonb "thursday_activities", default: {}, null: false
+    t.jsonb "friday_activities", default: {}, null: false
+    t.jsonb "saturday_activities", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "horses_count", default: 0, null: false
+    t.index ["friday_activities"], name: "index_training_schedules_on_friday_activities", using: :gin
+    t.index ["monday_activities"], name: "index_training_schedules_on_monday_activities", using: :gin
+    t.index ["saturday_activities"], name: "index_training_schedules_on_saturday_activities", using: :gin
+    t.index ["stable_id"], name: "index_training_schedules_on_stable_id"
+    t.index ["sunday_activities"], name: "index_training_schedules_on_sunday_activities", using: :gin
+    t.index ["thursday_activities"], name: "index_training_schedules_on_thursday_activities", using: :gin
+    t.index ["tuesday_activities"], name: "index_training_schedules_on_tuesday_activities", using: :gin
+    t.index ["wednesday_activities"], name: "index_training_schedules_on_wednesday_activities", using: :gin
+  end
+
+  create_table "training_schedules_horses", force: :cascade do |t|
+    t.uuid "training_schedule_id"
+    t.uuid "horse_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["horse_id"], name: "index_training_schedules_horses_on_horse_id", unique: true
+    t.index ["training_schedule_id"], name: "index_training_schedules_horses_on_training_schedule_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "slug"
     t.string "username", null: false
@@ -329,4 +362,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_14_180246) do
   add_foreign_key "settings", "users"
   add_foreign_key "stables", "users"
   add_foreign_key "track_surfaces", "racetracks"
+  add_foreign_key "training_schedules_horses", "horses"
+  add_foreign_key "training_schedules_horses", "training_schedules"
 end

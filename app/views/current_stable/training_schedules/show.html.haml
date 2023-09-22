@@ -1,0 +1,15 @@
+- content_for :breadcrumbs do
+  - index_title = t("current_stable.training_schedules.index.title")
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: current_stable.name, href: current_stable_path },
+                                                   { name: index_title, href: stable_training_schedules_path },
+                                                   { name: @scheudle.name, href: "#" }])
+.header
+  %h1= @schedule.name
+
+.description
+  %strong= Racing::TrainingSchedule.human_attribute_name(:description)
+  = @schedule.name
+
+.activities
+  %strong= Racing::TrainingSchedule.human_attribute_name(:activities)
+  = @schedule.activities

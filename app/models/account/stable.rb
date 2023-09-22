@@ -6,6 +6,8 @@ module Account
       dependent: :restrict_with_exception
     has_many :horses, class_name: "Horses::Horse", foreign_key: :owner_id, inverse_of: :owner,
       dependent: :restrict_with_exception
+    has_many :training_schedules, class_name: "Racing::TrainingSchedule", inverse_of: :stable,
+      dependent: :restrict_with_exception
 
     def self.ransackable_attributes(_auth_object = nil)
       %w[bred_horses_count description horses_count name unborn_horses_count]

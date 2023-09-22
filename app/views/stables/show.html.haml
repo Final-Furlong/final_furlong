@@ -1,6 +1,4 @@
 - content_for :breadcrumbs do
-  - danger_classes = "btn btn-light btn-sm border border-danger text-danger text-decoration-none"
-  - success_classes = "btn btn-light btn-sm border border-success text-success text-decoration-none"
   = render Nav::Breadcrumbs::Component.new(links: [{ name: t("stables.index.all"), href: stables_path },
                                                    { name: stable.name, href: "#" }],
                                            actions: [{ name: "impersonate",
@@ -8,7 +6,7 @@
                                                        i18n_key: ".impersonate",
                                                        object: stable,
                                                        user: current_user,
-                                                       base_classes: danger_classes,
+                                                       base_classes: "button-danger-outline btn-sm",
                                                        classes: " d-none d-md-inline",
                                                        responsive_classes: "w-100",
                                                        type: :form },
@@ -17,17 +15,9 @@
                                                        i18n_key: "common.edit",
                                                        user: current_user,
                                                        object: stable,
-                                                       base_classes: success_classes,
+                                                       base_classes: "button-success-outline btn-sm",
                                                        classes: "ms-3 me-3",
                                                        responsive_classes: "w-100",
                                                        type: :link }])
-
-%h1= stable.name
-
-%p
-  %span= t(".joined", date: l(stable.created_at.to_date, format: :long))
-  = render Users::OnlineBadge::Component.new(online: SessionsRepository.online?(resource: stable))
-
-- if stable.description?
-  %blockquote.blockquote.border.border-secondary.rounded.p-2
-    %p= stable.description.html_safe # rubocop:disable Rails/OutputSafety
+= turbo_frame_tag stable do
+  = render "stable"

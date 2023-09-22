@@ -18,3 +18,4 @@
 
 .status
   %strong= Horses::Horse.human_attribute_name(:status)
+  = I18n.t("horses.statuses.#{@horse.status}")

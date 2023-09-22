@@ -5,6 +5,11 @@ en:
       stable:
         last_online: 'Last online at: %{date}'
         no_description: No description
+  action_policy:
+    policy:
+      racing/training_schedule_horse:
+        already_exists: This horse is already assigned to the training schedule
+        not_owner: You do not own this horse
   activemodel:
     errors:
       messages:
@@ -45,6 +50,10 @@ en:
           attributes:
             name:
               non_unique: has already been taken
+        racing/training_schedule:
+          attributes:
+            base:
+              missing_activities: At least one activity must be selected
   breadcrumbs:
     edit: Edit
     home: Home
@@ -53,9 +62,32 @@ en:
     users: Users
   common:
     actions:
+      delete: Delete
+      edit: Edit
+      save: Save
       title: Actions
       view: View
+    confirmation:
+      delete_with_name: Are you sure you want to delete %{name}?
+    create: Create
+    distances:
+      12_furlongs: 1 1/2 Miles
+      16_furlongs: 2 Miles
+      1_furlongs: 1 Furlong
+      20_furlongs: 2 1/2 Miles
+      24_furlongs: 3 Miles
+      28_furlongs: 3 1/2 Miles
+      2_furlongs: 2 Furlongs
+      32_furlongs: 4 Miles
+      36_furlongs: 4 1/2 Miles
+      3_furlongs: 3 Furlongs
+      40_furlongs: 5 Miles
+      4_furlongs: 1/2 Mile
+      5_furlongs: 5 Furlongs
+      6_furlongs: 6 Furlongs
+      8_furlongs: 1 Mile
     edit: Edit
+    none: None
     search_form:
       action: Search
       reset_filters: Reset filters
@@ -65,6 +97,39 @@ en:
         title: Horses
       update:
         success: "%{name} was successfully updated."
+    training_schedule_horses:
+      create:
+        success: "%{name} was assigned to %{schedule}"
+      index:
+        title: Horses Assigned to Training Schedule %{schedule}
+      new:
+        title: Assign Horse to Training Schedule
+    training_schedules:
+      activities:
+        breeze: Breeze
+        canter: Canter
+        gallop: Gallop
+        jog: Jog
+        walk: Walk
+      create:
+        success: Training Schedule was successfully created.
+      deleted: Training Schedule %{name} was successfully deleted.
+      horse:
+        confirm: Are you sure you want to delete the schedule for %{name}?
+        deleted: "%{name} was successfully removed from this training schedule"
+        remove: Remove Schedule
+      index:
+        add_new: Create Schedule
+        title: Training Schedules
+      new:
+        title: New Training Schedule
+      show:
+        title: 'Training Schedule: %{name}'
+      update:
+        success: Training Schedule was successfully updated.
+    workouts:
+      create:
+        success: Workout for %{horse} ran successfully
   devise:
     confirmations:
       confirmed: Your email address has been successfully confirmed.
@@ -209,9 +274,12 @@ en:
       home: Home
       logout: Log out
       main_app: Main app
-      my_horses: My horses
       my_stable: My stable
       settings_divider: Game Settings
+      stable:
+        horses: My horses
+        racing_divider: Racing
+        training_schedules: Training Schedules
       stables: Stables
     user_nav:
       edit_profile: Edit profile
@@ -224,6 +292,10 @@ en:
     home:
       bay_description: Bay is a color.
       hello: Hi!
+  racing:
+    training_schedules:
+      activity_with_distance: "%{activity} for %{distance}"
+      maximum_allowed_text: You have the maximum number of schedules for your stable
   settings:
     update:
       success:
