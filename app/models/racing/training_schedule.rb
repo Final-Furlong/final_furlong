@@ -43,6 +43,10 @@ module Racing
 
       errors.add(:base, :missing_activities)
     end
+
+    # 2yo schedule
+    # Max gallop	1 mile
+    # Max workout (all activities)	2 miles
   end
 end
 
