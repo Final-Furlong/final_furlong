@@ -11,9 +11,7 @@ module CurrentStable
     # @route GET /stable/training_schedules/:training_schedule_id/horses (stable_training_schedule_horses)
     def index
       authorize schedule, :view_horses?
-      racehorses = Horses::HorsesRepository.new.racehorse
-      racehorses_with_schedule = Horses::HorsesRepository.new(scope: racehorses).with_training_schedule(schedule)
-      @horses = Horses::HorsesRepository.new(scope: racehorses_with_schedule).owned_by(current_stable)
+      @horses = Horses::HorsesQuery.with_training_schedule(schedule).owned_by(current_stable)
     end
 
     # @route GET /stable/training_schedules/:training_schedule_id/horses/new (new_stable_training_schedule_horse)
@@ -63,9 +61,7 @@ module CurrentStable
     end
 
     def set_stable_horses
-      racehorses = Horses::HorsesRepository.new.racehorse
-      racehorses_without_schedules = Horses::HorsesRepository.new(scope: racehorses).without_training_schedules
-      @horses = Horses::HorsesRepository.new(scope: racehorses_without_schedules).owned_by(current_stable)
+      @horses = Horses::HorsesQuery.without_training_schedules.owned_by(current_stable)
     end
 
     def schedule_params

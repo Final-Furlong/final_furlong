@@ -20,7 +20,7 @@ module Account
 
     enum status: { pending: "pending", active: "active", deleted: "deleted", banned: "banned" }
 
-    before_validation :set_defaults, on: :create
+    validates :username, presence: true
 
     delegate :locale, to: :setting, allow_nil: true
 
@@ -30,6 +30,7 @@ module Account
     def active_for_authentication?
       super && !discarded?
     end
+
     # :nocov:
 
     # allow login via username or e-mail
@@ -43,13 +44,6 @@ module Account
 
     def self.ransackable_attributes(_auth_object = nil)
       %w[username status name email]
-    end
-
-    private
-
-    def set_defaults
-      self.status ||= "pending"
-      self.admin ||= false
     end
   end
 end
