@@ -20,8 +20,12 @@ class ApplicationRepository
     raise RecordNotFoundError, e
   end
 
+  def find_by!(args)
+    model.find_by!(**args)
+  end
+
   def create(attributes)
-    entity.create(**attributues)
+    model.create(**attributes)
   end
 
   def update(id:, attributes:)
@@ -30,12 +34,6 @@ class ApplicationRepository
 
   def destroy(id)
     find(id).destroy
-  end
-
-  private
-
-  def entity
-    raise NotImplementedError
   end
 end
 

@@ -39,3 +39,6 @@ RSpec/IdenticalEqualityAssertion:
 
 RSpec/MultipleExpectations:
   Max: 4
+
+RSpec/NestedGroups:
+  AllowedGroups: [ describe ]

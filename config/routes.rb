@@ -1,20 +1,15 @@
 require "sidekiq/web"
 
 Rails.application.routes.draw do
-  mount Motor::Admin => "/motor_admin"
   mount Api::Base, at: "/"
 
   authenticate :user, ->(u) { u.admin? } do
-    mount Sidekiq::Web => "/sidekiq"
+    draw(:admin)
   end
 
   match "/404", to: "errors#not_found", via: :all
   match "/422", to: "errors#unprocessable", via: :all
   match "/500", to: "errors#internal_error", via: :all
-
-  namespace :admin do
-    resource :impersonate, only: %i[create show destroy]
-  end
 
   devise_for :users, class_name: "Account::User", path: "", path_names: {
     sign_up: "join",

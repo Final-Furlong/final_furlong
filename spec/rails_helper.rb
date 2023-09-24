@@ -56,7 +56,7 @@ RSpec.configure do |config|
   config.include ViewComponent::TestHelpers, type: :component
   config.include Capybara::RSpecMatchers, type: :component
   config.include ViewComponent::TestHelpers, type: :view_component
-  config.include Capybara::RSpecMatchers, type: :view_componentk
+  config.include Capybara::RSpecMatchers, type: :view_component
 
   config.include RSpec::Rails::RequestExampleGroup, type: :request, file_path: %r{spec/api}
   config.include JSONHelpers, type: :request
@@ -64,5 +64,6 @@ RSpec.configure do |config|
   config.include Devise::Test::IntegrationHelpers, type: :system
 
   config.include AbstractController::Translation # allow t() instead of I18n.t()
+  config.include ActiveSupport::Testing::TimeHelpers
 end
 
