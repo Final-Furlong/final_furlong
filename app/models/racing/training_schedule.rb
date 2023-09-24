@@ -22,13 +22,13 @@ module Racing
       :saturday_activities, allow_destroy: true
 
     validates :name, presence: true, uniqueness: { scope: :stable_id, case_sensitive: false }
-    validates :sunday_activities, store_model: true
-    validates :monday_activities, store_model: true
-    validates :tuesday_activities, store_model: true
-    validates :wednesday_activities, store_model: true
-    validates :thursday_activities, store_model: true
-    validates :friday_activities, store_model: true
-    validates :saturday_activities, store_model: true
+    validates :sunday_activities, presence: true, store_model: true
+    validates :monday_activities, presence: true, store_model: true
+    validates :tuesday_activities, presence: true, store_model: true
+    validates :wednesday_activities, presence: true, store_model: true
+    validates :thursday_activities, presence: true, store_model: true
+    validates :friday_activities, presence: true, store_model: true
+    validates :saturday_activities, presence: true, store_model: true
     validate :minimum_activities
 
     private
@@ -72,6 +72,7 @@ end
 # Indexes
 #
 #  index_training_schedules_on_friday_activities     (friday_activities) USING gin
+#  index_training_schedules_on_lowercase_name        (stable_id, lower((name)::text)) UNIQUE
 #  index_training_schedules_on_monday_activities     (monday_activities) USING gin
 #  index_training_schedules_on_saturday_activities   (saturday_activities) USING gin
 #  index_training_schedules_on_stable_id             (stable_id)
@@ -79,5 +80,9 @@ end
 #  index_training_schedules_on_thursday_activities   (thursday_activities) USING gin
 #  index_training_schedules_on_tuesday_activities    (tuesday_activities) USING gin
 #  index_training_schedules_on_wednesday_activities  (wednesday_activities) USING gin
+#
+# Foreign Keys
+#
+#  fk_rails_...  (stable_id => stables.id)
 #
 

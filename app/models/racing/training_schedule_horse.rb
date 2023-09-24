@@ -18,8 +18,8 @@ end
 #  id                   :bigint           not null, primary key
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
-#  horse_id             :uuid             indexed
-#  training_schedule_id :uuid             indexed
+#  horse_id             :uuid             not null, indexed
+#  training_schedule_id :uuid             not null, indexed
 #
 # Indexes
 #

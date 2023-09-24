@@ -18,7 +18,7 @@ end
 #  date_of_death      :date
 #  foals_count        :integer          default(0), not null
 #  gender             :enum             not null
-#  name               :string           indexed
+#  name               :string(18)       indexed
 #  status             :enum             default("unborn"), not null, indexed
 #  unborn_foals_count :integer          default(0), not null
 #  created_at         :datetime         not null, indexed
@@ -26,7 +26,7 @@ end
 #  breeder_id         :uuid             not null, indexed
 #  dam_id             :uuid             indexed
 #  legacy_id          :integer          indexed
-#  location_bred_id   :uuid             indexed
+#  location_bred_id   :uuid             not null, indexed
 #  owner_id           :uuid             not null, indexed
 #  sire_id            :uuid             indexed
 #

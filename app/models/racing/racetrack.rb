@@ -21,18 +21,18 @@ end
 #  id          :uuid             not null, primary key
 #  latitude    :decimal(, )      not null, indexed
 #  longitude   :decimal(, )      not null, indexed
-#  name        :string           not null, indexed
+#  name        :string           not null
 #  created_at  :datetime         not null, indexed
 #  updated_at  :datetime         not null
-#  location_id :uuid             indexed
+#  location_id :uuid             not null, indexed
 #
 # Indexes
 #
-#  index_racetracks_on_created_at   (created_at)
-#  index_racetracks_on_latitude     (latitude)
-#  index_racetracks_on_location_id  (location_id)
-#  index_racetracks_on_longitude    (longitude)
-#  index_racetracks_on_name         (name) UNIQUE
+#  index_racetracks_on_created_at      (created_at)
+#  index_racetracks_on_latitude        (latitude)
+#  index_racetracks_on_location_id     (location_id)
+#  index_racetracks_on_longitude       (longitude)
+#  index_racetracks_on_lowercase_name  (lower((name)::text)) UNIQUE
 #
 # Foreign Keys
 #

@@ -11,32 +11,10 @@ module Horses
     has_one :training_schedules_horse, class_name: "Racing::TrainingScheduleHorse", dependent: :destroy
     has_one :training_schedule, class_name: "Racing::TrainingSchedule", through: :training_schedules_horse
 
-    # :nocov:
-    counter_culture :sire, column_name: proc { |model| model.unborn? ? "unborn_foals_count" : "foals_count" },
-      column_names: {
-        ["horses.status = ?", "unborn"] => "unborn_foals_count",
-        ["horses.status != ?", "unborn"] => "foals_count"
-      }
-    counter_culture :dam, column_name: proc { |model| model.unborn? ? "unborn_foals_count" : "foals_count" },
-      column_names: {
-        ["horses.status = ?", "unborn"] => "unborn_foals_count",
-        ["horses.status != ?", "unborn"] => "foals_count"
-      }
-    counter_culture :breeder, column_name: proc { |model| model.unborn? ? nil : "bred_horses_count" },
-      column_names: {
-        ["horses.status = ?", "unborn"] => nil,
-        ["horses.status != ?", "unborn"] => "bred_horses_count"
-      }
-    counter_culture :owner, column_name: proc { |model| model.unborn? ? "unborn_horses_count" : "horses_count" },
-      column_names: {
-        ["horses.status = ?", "unborn"] => "unborn_horses_count",
-        ["horses.status != ?", "unborn"] => "horses_count"
-      }
-    # :nocov:
     enum status: Status::STATUSES
     enum gender: Gender::VALUES
 
-    validates :date_of_birth, presence: true
+    validates :date_of_birth, :gender, :status, presence: true
     validates :date_of_death, comparison: { greater_than_or_equal_to: :date_of_birth }, if: :date_of_death
     validate :name_required, on: :update
     validates_horse_name :name, on: :update, if: :name_changed?
@@ -61,6 +39,29 @@ module Horses
       %w[breeder dam location_bred owner sire]
     end
 
+    # :nocov:
+    counter_culture :sire, column_name: proc { |model| model.unborn? ? "unborn_foals_count" : "foals_count" },
+      column_names: {
+        ["horses.status = ?", "unborn"] => "unborn_foals_count",
+        ["horses.status != ?", "unborn"] => "foals_count"
+      }
+    counter_culture :dam, column_name: proc { |model| model.unborn? ? "unborn_foals_count" : "foals_count" },
+      column_names: {
+        ["horses.status = ?", "unborn"] => "unborn_foals_count",
+        ["horses.status != ?", "unborn"] => "foals_count"
+      }
+    counter_culture :breeder, column_name: proc { |model| model.unborn? ? nil : "bred_horses_count" },
+      column_names: {
+        ["horses.status = ?", "unborn"] => nil,
+        ["horses.status != ?", "unborn"] => "bred_horses_count"
+      }
+    counter_culture :owner, column_name: proc { |model| model.unborn? ? "unborn_horses_count" : "horses_count" },
+      column_names: {
+        ["horses.status = ?", "unborn"] => "unborn_horses_count",
+        ["horses.status != ?", "unborn"] => "horses_count"
+      }
+    # :nocov:
+
     private
 
     def name_required
@@ -81,7 +82,7 @@ end
 #  date_of_death      :date
 #  foals_count        :integer          default(0), not null
 #  gender             :enum             not null
-#  name               :string           indexed
+#  name               :string(18)       indexed
 #  status             :enum             default("unborn"), not null, indexed
 #  unborn_foals_count :integer          default(0), not null
 #  created_at         :datetime         not null, indexed
@@ -89,7 +90,7 @@ end
 #  breeder_id         :uuid             not null, indexed
 #  dam_id             :uuid             indexed
 #  legacy_id          :integer          indexed
-#  location_bred_id   :uuid             indexed
+#  location_bred_id   :uuid             not null, indexed
 #  owner_id           :uuid             not null, indexed
 #  sire_id            :uuid             indexed
 #
