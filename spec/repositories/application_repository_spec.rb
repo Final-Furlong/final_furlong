@@ -103,6 +103,8 @@ RSpec.describe ApplicationRepository do
   describe "#update!" do
     let(:user) { create(:user) }
 
+    before { user }
+
     context "when record cannot be found" do
       it "raises error" do
         attrs = attributes_for(:user)

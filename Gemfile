@@ -58,6 +58,7 @@ gem "turnout"
 gem "view_component", "~> 2.69"
 gem "view_component-contrib"
 gem "whenever", require: false
+gem "yaaf"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"

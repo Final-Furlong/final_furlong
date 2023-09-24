@@ -774,6 +774,9 @@ GEM
       whenever
     xpath (3.2.0)
       nokogiri (~> 1.8)
+    yaaf (2.2.0)
+      activemodel (>= 5.2)
+      activerecord (>= 5.2)
     yalphabetize (0.7.0)
     yard (0.9.34)
     zeitwerk (2.6.11)
@@ -903,6 +906,7 @@ DEPENDENCIES
   webdrivers
   whenever
   whenever-test
+  yaaf
   yalphabetize
 
 RUBY VERSION

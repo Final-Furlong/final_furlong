@@ -2,66 +2,36 @@ module Users
   class NewUserForm < ApplicationForm
     include FinalFurlong::Internet::Validation
 
-    attr_accessor :user, :stable, :name, :email, :password, :password_confirmation, :stable_name, :username, :params
+    attr_accessor :name, :email, :password, :password_confirmation, :stable_name, :username, :params
 
-    validates :name, :email, :username, :password, :password_confirmation, :stable_name, presence: true
-    validates :email, email: true
-    validates :username, length: { minimum: Account::User::USERNAME_LENGTH }
-    validates :password, length: { minimum: Account::User::PASSWORD_LENGTH }
-    validates_email :email
+    validates :stable_name, presence: true
     validates_password :password
-    validate :validate_unique_email
-    validate :validate_unique_username
 
-    delegate :persisted?, to: :user
+    before_validation :set_stable_name
 
-    def initialize(user)
-      @user = user
-      super()
+    def initialize(attributes)
+      super(attributes)
+      @models = [user, stable]
     end
-
-    # rubocop:disable Metrics/MethodLength
-    def submit(params)
-      @params = params
-      assign_attributes(params)
-      return false if invalid?
-
-      user.assign_attributes(user_params)
-      stable.assign_attributes(stable_params)
-      Account::User.transaction do
-        user.save!
-        stable.save!
-      end
-    rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
-      false
-    end
-    # rubocop:enable Metrics/MethodLength
 
     private
 
-    def stable_params
-      { name: params[:stable_name] }
+    def set_stable_name
+      stable.name = stable_name
     end
 
-    def user_params
-      params.except(:stable_name)
+    def user
+      @user ||= Account::User.new(
+        name: name,
+        email: email,
+        password: password,
+        password_confirmation: password_confirmation,
+        username: username
+      )
     end
 
-    def initial_attributes
-      assign_attributes(@user.attributes.slice(:email, :name, :password, :password_confirmation, :username, :status))
-      @stable = @user.stable || @user.build_stable
-    end
-
-    def validate_unique_email
-      return unless email
-
-      errors.add(:email, :taken) if Account::User.exists?(["LOWER(email) = ?", email.downcase])
-    end
-
-    def validate_unique_username
-      return unless username
-
-      errors.add(:username, :taken) if Account::User.exists?(["LOWER(username) = ?", username.downcase])
+    def stable
+      @stable ||= Account::Stable.new(name: stable_name, user: user)
     end
   end
 end

@@ -25,7 +25,7 @@ class UsersController < AuthenticatedController
 
   # @route POST /users (users)
   def create
-    if @user_form.submit(user_attributes)
+    if @user_form.save(user_attributes)
       flash[:success] = t(".success")
       redirect_to users_path
     else
@@ -71,7 +71,7 @@ class UsersController < AuthenticatedController
   end
 
   def load_new_user_form
-    @user_form = Users::NewUserForm.new(@user)
+    @user_form = Users::NewUserForm.new(user_attributes)
   end
 
   def load_edit_user_form

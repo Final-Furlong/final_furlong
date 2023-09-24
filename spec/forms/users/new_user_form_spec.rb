@@ -1,58 +1,72 @@
 require "rails_helper"
 
 RSpec.describe Users::NewUserForm, type: :model do
+  subject(:form) { described_class.new(args) }
+
   describe "validation" do
-    subject(:form) { described_class.new(Account::User.new) }
-
-    it { is_expected.to validate_presence_of(:username) }
-    it { is_expected.to validate_presence_of(:name) }
-    it { is_expected.to validate_presence_of(:email) }
-    it { is_expected.to validate_presence_of(:password) }
-    it { is_expected.to validate_presence_of(:password_confirmation) }
-    it { is_expected.to validate_presence_of(:stable_name) }
-    it { is_expected.to validate_length_of(:username).is_at_least(Account::User::USERNAME_LENGTH) }
-    it { is_expected.to validate_length_of(:password).is_at_least(Account::User::PASSWORD_LENGTH) }
-
-    it "validates unique username" do
-      user1 = create(:user)
-      form = described_class.new(Account::User.new)
-      form.submit(user_attrs.merge(username: user1.username.upcase))
-
-      expect(form).not_to be_valid
-      expect(form.errors[:username]).to eq(["has already been taken"])
-    end
-
-    it "validates unique email" do
-      user1 = create(:user)
-      form = described_class.new(Account::User.new)
-      form.submit(user_attrs.merge(email: user1.email.upcase))
-
-      expect(form).not_to be_valid
-      expect(form.errors[:email]).to eq(["has already been taken"])
-    end
-
     it "validates weak password" do
-      form = described_class.new(Account::User.new)
-      form.submit(user_attrs.merge(password: "password", password_confirmation: "password"))
+      form = described_class.new(args.merge(password: "password", password_confirmation: "password"))
 
       expect(form).not_to be_valid
       expect(form.errors[:password]).to eq(["must be at least 8 characters long and contain: " \
                                             "an upper case character, a lower case character, " \
                                             "a digit and a non-alphabet character."])
     end
+
+    it "uses user validations" do
+      form = described_class.new(args.merge(username: ""))
+
+      expect(form).not_to be_valid
+      expect(form.errors[:username]).to eq(["can't be blank"])
+    end
+
+    it "uses stable validations" do
+      form = described_class.new(args.merge(stable_name: ""))
+
+      expect(form).not_to be_valid
+      expect(form.errors[:stable_name]).to eq(["can't be blank"])
+    end
+  end
+
+  it "saves user" do
+    form = described_class.new(args)
+
+    expect { form.save }.to change(Account::User, :count).by(1)
+  end
+
+  it "saves stable" do
+    form = described_class.new(args)
+
+    expect { form.save }.to change(Account::Stable, :count).by(1)
   end
 
   private
 
+  def args
+    user_attrs.merge(stable_attrs)
+  end
+
+  def user_attributes
+    attributes_for(:user)
+  end
+
+  def stable_attributes
+    attributes_for(:stable)
+  end
+
   def user_attrs
-    attrs = attributes_for(:user)
     {
-      name: attrs[:name],
-      email: attrs[:email],
-      password: attrs[:password],
-      password_confirmation: attrs[:password],
-      username: attrs[:username],
-      stable_name: attributes_for(:stable)[:name]
+      username: user_attributes[:username],
+      name: user_attributes[:name],
+      email: user_attributes[:email],
+      password: user_attributes[:password],
+      password_confirmation: user_attributes[:password]
+    }
+  end
+
+  def stable_attrs
+    {
+      stable_name: stable_attributes[:name]
     }
   end
 end

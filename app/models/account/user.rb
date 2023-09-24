@@ -1,7 +1,6 @@
 module Account
   class User < ApplicationRecord
     include Discard::Model
-    include FinalFurlong::Internet::Validation
 
     attr_accessor :login
 
@@ -21,6 +20,7 @@ module Account
     enum status: { pending: "pending", active: "active", deleted: "deleted", banned: "banned" }
 
     validates :username, presence: true
+    validates :username, uniqueness: { case_sensitive: false }
 
     delegate :locale, to: :setting, allow_nil: true
 
