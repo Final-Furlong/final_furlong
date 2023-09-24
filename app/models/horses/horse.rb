@@ -11,6 +11,7 @@ module Horses
     has_one :training_schedules_horse, class_name: "Racing::TrainingScheduleHorse", dependent: :destroy
     has_one :training_schedule, class_name: "Racing::TrainingSchedule", through: :training_schedules_horse
 
+    # :nocov:
     counter_culture :sire, column_name: proc { |model| model.unborn? ? "unborn_foals_count" : "foals_count" },
       column_names: {
         ["horses.status = ?", "unborn"] => "unborn_foals_count",
@@ -31,6 +32,7 @@ module Horses
         ["horses.status = ?", "unborn"] => "unborn_horses_count",
         ["horses.status != ?", "unborn"] => "horses_count"
       }
+    # :nocov:
     enum status: Status::STATUSES
     enum gender: Gender::VALUES
 

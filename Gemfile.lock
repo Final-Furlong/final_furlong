@@ -130,8 +130,6 @@ GEM
     bundler-audit (0.9.1)
       bundler (>= 1.2.0, < 3)
       thor (~> 1.0)
-    callee (0.3.6)
-      dry-initializer (>= 2.5)
     cancancan (3.5.0)
     capistrano (3.17.3)
       airbrussh (>= 1.0.0)
@@ -803,7 +801,6 @@ DEPENDENCIES
   browser
   bullet
   bundler-audit
-  callee
   capistrano (~> 3.17)
   capistrano-bundler (~> 2.0)
   capistrano-deploytags (~> 1.0.0)

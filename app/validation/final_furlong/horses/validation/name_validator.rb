@@ -15,7 +15,7 @@ module FinalFurlong
           reserved_names = RESERVED_VALUES.any? { |string| value.to_s.include?(string) }
           record.errors.add(attribute, :invalid, value:) if reserved_names
 
-          matching_name = ::Horses::HorsesQuery.call(name: value).exists?
+          matching_name = ::Horses::HorsesQuery.new.name_matches(name: value).exists?
           record.errors.add(attribute, :non_unique, value:) if matching_name
         end
 

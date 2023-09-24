@@ -21,7 +21,7 @@ module Racing
       :wednesday_activities, :thursday_activities, :friday_activities,
       :saturday_activities, allow_destroy: true
 
-    validates :name, uniqueness: { scope: :stable_id, case_sensitive: false }
+    validates :name, presence: true, uniqueness: { scope: :stable_id, case_sensitive: false }
     validates :sunday_activities, store_model: true
     validates :monday_activities, store_model: true
     validates :tuesday_activities, store_model: true

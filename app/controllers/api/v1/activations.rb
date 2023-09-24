@@ -6,7 +6,7 @@ module Api
       resource :activations do
         desc "Return all un-activated activation tokens"
         get do
-          Account::ActivationRepository.new.activated.invert_where
+          Account::ActivationQuery.new.unactivated
         end
 
         desc "Return a user token"

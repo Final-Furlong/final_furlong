@@ -4,7 +4,7 @@ RSpec.describe Stables::List do
       create(:stable)
 
       outcome = described_class.run
-      expect(outcome.result).to eq Account::StablesRepository.new.ordered_by_name
+      expect(outcome.result).to eq Account::StablesQuery.new.ordered_by_name
     end
   end
 end

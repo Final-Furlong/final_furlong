@@ -10,7 +10,7 @@ RSpec.describe Horses::HorsePolicy do
     subject(:scope) { policy.apply_scope(Horses::Horse.all, type: :active_record_relation) }
 
     it "includes born horses" do
-      expect(scope).to eq Horses::HorsesRepository.new.born
+      expect(scope).to eq Horses::HorsesQuery.new.born
     end
   end
 

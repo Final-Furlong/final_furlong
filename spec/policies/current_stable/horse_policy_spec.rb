@@ -13,10 +13,7 @@ RSpec.describe CurrentStable::HorsePolicy do
     let(:unowned_horse) { create(:horse, owner: create(:stable)) }
 
     it "includes owned living horses" do
-      relation = Horses::HorsesRepository.new.owned_by(stable)
-      expected_scope = Horses::HorsesRepository.new(scope: relation).living
-
-      expect(scope).to eq expected_scope
+      expect(scope).to eq Horses::HorsesQuery.new.owned_by(stable).living
     end
   end
 end

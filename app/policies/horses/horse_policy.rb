@@ -1,7 +1,7 @@
 module Horses
   class HorsePolicy < ::ApplicationPolicy
-    scope_for :active_record_relation do |relation|
-      Horses::HorsesRepository.new(scope: relation).born
+    scope_for :active_record_relation do |_relation|
+      Horses::HorsesQuery.new.born
     end
 
     def index?
