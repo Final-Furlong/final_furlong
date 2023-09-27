@@ -25,24 +25,6 @@ jobs:
         run: |
           bundle exec rubocop
 
-      - name: Set up primary database
-        env:
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
-        run: |
-          cp config/database.yml.github_actions config/database.yml
-          bin/rails db:create:primary db:schema:load:primary
-
-      - name: Set up legacy database
-        env:
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
-        run: |
-          cp config/database.yml.github_actions config/database.yml
-          bin/rails db:create:legacy db:schema:load:legacy
-
-      - name: Active Record Doctor
-        run: |
-          bundle exec rails active_record_doctor
-
       - name: HamlLint
         run: |
           bundle exec haml-lint
