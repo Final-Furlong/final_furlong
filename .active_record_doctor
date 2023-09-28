@@ -81,7 +81,14 @@ ActiveRecordDoctor.configure do
       "Horses::Horse.unborn_foals_count",
       "Horses::Stallion.foals_count",
       "Horses::Stallion.unborn_foals_count",
-      "Racing::TrainingSchedule.horses_count"
+      "Racing::TrainingSchedule.horses_count",
+      "Racing::TrainingSchedule.sunday_activities",
+      "Racing::TrainingSchedule.monday_activities",
+      "Racing::TrainingSchedule.tuesday_activities",
+      "Racing::TrainingSchedule.wednesday_activities",
+      "Racing::TrainingSchedule.thursday_activities",
+      "Racing::TrainingSchedule.friday_activities",
+      "Racing::TrainingSchedule.saturday_activities",
     ]
 
   detector :missing_unique_indexes,

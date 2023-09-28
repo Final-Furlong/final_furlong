@@ -22,13 +22,13 @@ module Racing
       :saturday_activities, allow_destroy: true
 
     validates :name, presence: true, uniqueness: { scope: :stable_id, case_sensitive: false }
-    validates :sunday_activities, presence: true, store_model: true
-    validates :monday_activities, presence: true, store_model: true
-    validates :tuesday_activities, presence: true, store_model: true
-    validates :wednesday_activities, presence: true, store_model: true
-    validates :thursday_activities, presence: true, store_model: true
-    validates :friday_activities, presence: true, store_model: true
-    validates :saturday_activities, presence: true, store_model: true
+    validates :sunday_activities, store_model: true
+    validates :monday_activities, store_model: true
+    validates :tuesday_activities, store_model: true
+    validates :wednesday_activities, store_model: true
+    validates :thursday_activities, store_model: true
+    validates :friday_activities, store_model: true
+    validates :saturday_activities, store_model: true
     validate :minimum_activities
 
     private
