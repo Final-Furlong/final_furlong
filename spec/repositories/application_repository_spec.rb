@@ -117,9 +117,9 @@ RSpec.describe ApplicationRepository do
       it "raises error" do
         attrs = { username: "" }
 
-        original_attrs = user.attributes
+        original_attrs = user.attributes.symbolize_keys!
         expect { repo.update!(id: user.id, attributes: attrs) }.to raise_error ActiveRecord::RecordInvalid
-        expect(user.reload).to have_attributes(original_attrs)
+        expect(user.reload).to have_attributes(original_attrs.except(:created_at, :confirmed_at, :updated_at))
       end
     end
 
