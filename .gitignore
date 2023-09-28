@@ -55,3 +55,6 @@ spec/examples.txt
 
 /config/credentials/production.key
 sendgrid.env
+
+.env
+.env.*.local

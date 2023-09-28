@@ -1,7 +1,7 @@
 module Racing
   class TrainingSchedulePolicy < ApplicationPolicy
     scope_for :active_record_relation do |relation|
-      Racing::TrainingScheduleQuery.with_stable(user.stable).ordered
+      Racing::TrainingSchedulesQuery.new.with_stable(user.stable).ordered
     end
 
     def new?

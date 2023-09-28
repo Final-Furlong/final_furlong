@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -e
+
+YELLOW='\033[1;33m'
+NOCOLOR='\033[0m'
+
+echo "[ bin/ci ] Running unit tests"
+bin/rspec
+
+echo "[ bin/ci ] Running integration tests"
+bin/rails cypress:run
+
+echo "[ bin/ci ] Running security scripts"
+system(`cd ..`)
+system(`sh .github/scripts/security.sh`)
+
+echo "[ bin/ci ] Done"

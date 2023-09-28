@@ -29,16 +29,6 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: Bundler Audit
+      - name: Security Checks
         run: |
-          bin/bundler-audit check --update
-
-      - name: Brakeman
-        uses: reviewdog/action-brakeman@v2
-        with:
-          brakeman_version: gemfile
-          reporter: github-pr-check
-
-      - name: Yarn Audit
-        run: |
-          sh .github/scripts/yarn_audit.sh
+          sh .github/scripts/security.sh
