@@ -1,27 +1,50 @@
 #!/usr/bin/env ruby
-require "fileutils"
+require "colorize"
 
-# path to your application root.
-APP_ROOT = File.expand_path("..", __dir__)
+def update
+  log "Updating gems"
+  # Only do bundle install if the much-faster
+  # bundle check indicates we need to
+  system! "bundle check || bundle install"
 
-def system!(*args)
-  system(*args) || abort("\n== Command #{args} failed ==")
-end
+  log "Updating node_modules"
+  system!("yarn install")
 
-FileUtils.chdir APP_ROOT do
-  # This script is a way to update your development environment automatically.
-  # This script is idempotent, so that you can run it at any time and get an expectable outcome.
-  # Add necessary setup steps to this file.
-
-  puts "== Updating dependencies =="
-  system("bundle check") || system!("bundle install")
-
-  puts "\n== Running migrations =="
-  system! "bin/rails db:migrate"
-
-  puts "\n== Running data migrations =="
+  log "Updating the development database"
+  # Note that the very first time this runs, db:reset
+  # will fail, but this failure is fixed by
+  # doing a db:migrate
   system! "bin/rails db:migrate:with_data"
 
-  puts "\n== Yarn update =="
-  system! "yarn install"
+  log "Updating the test database"
+  system!("bin/rails db:test:prepare")
+
+  log "All updated.", color: :green
 end
+
+# We don't want the setup method to have to do all this error
+# checking, and we also want to explicitly log what we are
+# executing. Thus, we use this method instead of Kernel#system
+def system!(*args)
+  log "Executing #{args}"
+  if system(*args)
+    log "#{args} succeeded", color: :green
+  else
+    log "#{args} failed", color: :red
+    abort
+  end
+end
+
+# It's helpful to know what messages came from this
+# script, so we'll use log instead of `puts`
+def log(message, color: :yellow)
+  if color == false
+    puts "[ bin/update ] #{message}".uncolorize
+  else
+    puts "[ bin/update ] #{message}".colorize(color)
+  end
+end
+
+# end of helpers
+
+update

@@ -7,6 +7,7 @@ class MigrateLegacyTrainingScheduleService
 
   def call
     stable = stable_for(legacy_schedule)
+    return unless stable
 
     return if Racing::TrainingSchedule.exists?(stable: stable, name: legacy_schedule.Name)
     return if Legacy::TrainingScheduleDetail.where("Schedule" => legacy_schedule.ID).empty?

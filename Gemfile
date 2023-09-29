@@ -152,3 +152,6 @@ group :test do
   gem "whenever-test"
 end
 
+group :tools do
+  gem "colorize", require: false
+end

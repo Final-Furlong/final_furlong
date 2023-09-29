@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'colorize'
 
 def setup
   log "Installing gems"
@@ -6,35 +7,40 @@ def setup
   # bundle check indicates we need to
   system! "bundle check || bundle install"
 
+  log "Installing node modules"
+  system! "yarn install"
+
   log "Dropping & recreating the development database"
   # Note that the very first time this runs, db:reset
   # will fail, but this failure is fixed by
   # doing a db:migrate
-  system! "bin/rails db:reset || bin/rails db:migrate"
+  system! "bin/rails db:reset || bin/rails db:migrate:with_data && bin/rails db:seed"
 
   log "Dropping & recreating the test database"
   # Setting the RAILS_ENV explicitly to be sure
   # we actually reset the dev database
   system!({ "RAILS_ENV" => "test" }, "bin/rails db:reset")
 
-  log "All set up."
-  log ""
-  log "To see commonly-needed commands, run:"
-  log ""
-  log "    bin/setup help"
-  log ""
+  log "All set up.", color: :green
+  log "", color: false
+  log "To see commonly-needed commands, run:", color: false
+  log "", color: false
+  log "    bin/setup help", color: false
+  log "", color: false
 end
 
 def help
   log "Useful commands:"
   log ""
-  log "  overmind start"
+  log "  bin/dev"
   log "     # run app locally"
   log ""
-  log "  LOGRAGE_IN_DEVELOPMENT=true overmind start"
-  log "     # run app locally using"
-  log "     # production-like logging"
+  log "  overmind connect <x>"
+  log "     # connect to a running process (see the list in Procfile.dev)"
+  log "     # more info on overmind: https://github.com/DarthSim/overmind"
   log ""
+  log "  USE_LOGRAGE=true bin/dev"
+  log "     # run app locally using production-like logging"
   log ""
   log "  bin/ci"
   log "     # runs all tests and checks as CI would"
@@ -58,17 +64,21 @@ end
 def system!(*args)
   log "Executing #{args}"
   if system(*args)
-    log "#{args} succeeded"
+    log "#{args} succeeded", color: :green
   else
-    log "#{args} failed"
+    log "#{args} failed", color: :red
     abort
   end
 end
 
 # It's helpful to know what messages came from this
 # script, so we'll use log instead of `puts`
-def log(message)
-  puts "[ bin/setup ] #{message}"
+def log(message, color: :yellow)
+  if color == false
+    puts "[ bin/setup ] #{message}".uncolorize
+  else
+    puts "[ bin/setup ] #{message}".colorize(color)
+  end
 end
 
 # end of helpers

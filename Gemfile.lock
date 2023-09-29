@@ -822,6 +822,7 @@ DEPENDENCIES
   capybara (>= 2.15)
   capybara-screenshot
   chusaku
+  colorize
   counter_culture
   cssbundling-rails
   cypress-rails
