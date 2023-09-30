@@ -52,8 +52,6 @@ SimpleCov.profiles.define 'unit' do
   minimum_coverage line: 51, branch: 52
   # minimum_coverage_by_file line: 10, branch: 10
 
-  add_filter "app/controllers"
-
   add_group "DB", %w[app/models app/repositories app/queries]
   add_group "Policies", "app/policies"
   add_group "Forms", "app/forms"

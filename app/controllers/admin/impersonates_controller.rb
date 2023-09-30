@@ -2,10 +2,6 @@ module Admin
   class ImpersonatesController < ApplicationController
     skip_after_action :verify_authorized, only: :destroy
 
-    # @route GET /admin/impersonate (admin_impersonate)
-    def show
-    end
-
     # @route POST /admin/impersonate (admin_impersonate)
     def create
       user = Account::User.find(params[:id])

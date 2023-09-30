@@ -83,6 +83,7 @@ group :development do
   gem "annotate", require: false
   gem "autoprefixer-rails"
   gem "bcrypt_pbkdf" # required for capistran
+  gem "better_errors"
   gem "capistrano", "~> 3.17", require: false
   gem "capistrano-bundler", "~> 2.0", require: false
   gem "capistrano-deploytags", "~> 1.0.0", require: false
@@ -104,7 +105,6 @@ end
 
 group :development, :test do
   gem "active_record_doctor"
-  gem "better_errors"
   gem "binding_of_caller"
   gem "brakeman", require: false
   gem "bullet"

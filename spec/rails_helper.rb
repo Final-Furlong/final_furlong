@@ -58,10 +58,10 @@ RSpec.configure do |config|
   config.include ViewComponent::TestHelpers, type: :view_component
   config.include Capybara::RSpecMatchers, type: :view_component
 
+  config.include Devise::Test::IntegrationHelpers, type: :request
   config.include RSpec::Rails::RequestExampleGroup, type: :request, file_path: %r{spec/api}
+  config.include Rails.application.routes.url_helpers, type: :request
   config.include JSONHelpers, type: :request
-
-  config.include Devise::Test::IntegrationHelpers, type: :system
 
   config.include AbstractController::Translation # allow t() instead of I18n.t()
   config.include ActiveSupport::Testing::TimeHelpers

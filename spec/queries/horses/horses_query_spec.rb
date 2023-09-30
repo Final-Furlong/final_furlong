@@ -99,7 +99,7 @@ RSpec.describe Horses::HorsesQuery do
       horse2 = create(:horse, :racehorse, name: "Def")
       horse3 = create(:horse, :racehorse, name: "Ghi")
 
-      expect(query.ordered).to eq([horse1, horse2, horse3])
+      expect(query.ordered.to_a).to eq([horse1, horse2, horse3])
     end
   end
 
@@ -128,7 +128,7 @@ RSpec.describe Horses::HorsesQuery do
       weanling = create(:horse, :weanling)
       yearling = create(:horse, :yearling)
 
-      result = query.sort_by_status_asc
+      result = query.sort_by_status_asc.to_a
       expect(result).to eq([
         broodmare,
         dead,

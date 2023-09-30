@@ -7,8 +7,8 @@ class UsersController < AuthenticatedController
 
   # @route GET /users (users)
   def index
-    authorize User
-    @users = authorized_scope(User).ordered
+    authorize Account::User
+    @users = authorized_scope(Account::User, type: :relation)
   end
 
   # @route GET /users/:id (user)

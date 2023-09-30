@@ -1,7 +1,11 @@
 module Account
   class UserPolicy < ApplicationPolicy
     scope_for :relation do |relation|
-      relation.active
+      Account::UsersQuery.new.active.ordered
+    end
+
+    def index?
+      user&.admin?
     end
 
     def create?

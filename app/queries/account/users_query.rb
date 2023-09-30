@@ -10,11 +10,7 @@ module Account
       @query ||= User.extending(Scopes)
     end
 
-    def active
-      User.active
-    end
-
-    delegate :ordered, to: :query
+    delegate :ordered, :active, to: :query
   end
 end
 
