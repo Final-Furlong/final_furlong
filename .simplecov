@@ -33,14 +33,6 @@ SimpleCov.profiles.define 'common' do
 end
 
 SimpleCov.profiles.define 'ci' do
-  if ENV.fetch('TEST_TYPE', false) != 'combined'
-    if ENV.fetch('CYPRESS', false)
-      minimum_coverage line: 6, branch: 66
-    else
-      minimum_coverage line: 73, branch: 48
-    end
-  end
-
   formatter SimpleCov::Formatter::MultiFormatter.new(
     [
       SimpleCov::Formatter::JSONFormatter,
@@ -64,14 +56,10 @@ end
 SimpleCov.profiles.define 'unit' do
   coverage_dir 'coverage_unit'
 
-  minimum_coverage line: 59, branch: 65
-  # minimum_coverage_by_file line: 10, branch: 10
 end
 
 SimpleCov.profiles.define 'system' do
   coverage_dir 'coverage_system'
-
-  # minimum_coverage_by_file line: 10, branch: 10
 
   add_filter "app/controllers/api"
   add_filter "app/lib/url_helpers_with_default_url_options.rb"

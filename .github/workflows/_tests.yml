@@ -110,7 +110,6 @@ jobs:
         run: bin/rails coverage:report
         env:
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
-          TEST_TYPE: 'combined'
 
       - name: Publish Coverage
         uses: paambaati/codeclimate-action@v5.0.0
