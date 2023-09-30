@@ -5,14 +5,13 @@ set -e
 YELLOW='\033[1;33m'
 NOCOLOR='\033[0m'
 
-echo "[ bin/ci ] Running unit tests"
-bin/rspec
+echo -e "${YELLOW}[ bin/ci ] Running unit tests${NOCOLOR}"
+CI=true bin/rspec
 
-echo "[ bin/ci ] Running integration tests"
+echo -e "${YELLOW}[ bin/ci ] Running integration tests${NOCOLOR}"
 bin/rails cypress:run
 
-echo "[ bin/ci ] Running security scripts"
-system(`cd ..`)
-system(`sh .github/scripts/security.sh`)
+echo -e "${YELLOW}[ bin/ci ] Running security scripts${NOCOLOR}"
+sh .github/scripts/security.sh
 
-echo "[ bin/ci ] Done"
+echo -e "${YELLOW}[ bin/ci ] Done"
