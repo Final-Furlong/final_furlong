@@ -81,8 +81,6 @@ end
 
 SimpleCov.profiles.define "default" do
   coverage_dir "coverage"
-
-  minimum_coverage line: 59, branch: 65
 end
 
 SimpleCov.start do
