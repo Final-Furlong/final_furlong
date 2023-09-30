@@ -99,6 +99,7 @@ jobs:
       - name: Cypress
         run: bin/rails cypress:run
         env:
+          CYPRESS_RAILS_CYPRESS_OPTS: --record
           CYPRESS_RECORD_KEY: ${{ secrets.cypress-record-key }}
           CYPRESS_VIDEO: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
