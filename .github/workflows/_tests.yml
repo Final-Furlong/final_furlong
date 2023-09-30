@@ -110,6 +110,7 @@ jobs:
         run: bin/rails coverage:report
         env:
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
+          TEST_TYPE: 'combined'
 
       - name: Publish Coverage
         uses: paambaati/codeclimate-action@v5.0.0
@@ -139,7 +140,7 @@ jobs:
           hide_complexity: false
           indicators: true
           output: both
-          thresholds: '42 60'
+          thresholds: '38 66'
 
       - name: Cobertura Coverage Report (Unit)
         uses: 5monkeys/cobertura-action@master
@@ -147,7 +148,7 @@ jobs:
           path: coverage_unit/coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           report_name: "Code Coverage (Unit)"
-          minimum_coverage: 60
+          minimum_coverage: 73
 
       - name: Cobertura Coverage Report (System)
         uses: 5monkeys/cobertura-action@master
