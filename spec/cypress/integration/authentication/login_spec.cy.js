@@ -5,7 +5,7 @@ describe("Login Spec", () => {
 
     cy.assertUrl("/login")
     cy.get('input[name="user[login]"]').type("admin@example.com")
-    cy.get('input[name="user[password]"]').type("Password1!")
+    cy.get('input[name="user[password]"]').type("abc1A$ab")
     cy.get('.form-actions input[type="submit"]').click()
 
     cy.contains("Signed in successfully.")
@@ -21,7 +21,7 @@ describe("Login Spec", () => {
 
     cy.assertUrl("/login")
     cy.get('input[name="user[login]"]').type("admin123")
-    cy.get('input[name="user[password]"]').type("Password1!")
+    cy.get('input[name="user[password]"]').type("abc1A$ab")
     cy.get('.form-actions input[type="submit"]').click()
 
     cy.contains("Signed in successfully.")
@@ -36,7 +36,7 @@ describe("Login Spec", () => {
 
     cy.assertUrl("/login")
     cy.get('input[name="user[login]"]').type("admin@example.com")
-    cy.get('input[name="user[password]"]').type("Password1!")
+    cy.get('input[name="user[password]"]').type("abc1A$ab")
     cy.get('input[id="user_remember_me"]').check()
     cy.get('.form-actions input[type="submit"]').click()
 
@@ -74,7 +74,7 @@ describe("Login Spec", () => {
     cy.getCookie("_final_furlong_session").should("not.exist")
   })
 
-  // it("follows accessibility rules", () => {
-  //   cy.testA11y("/login")
-  // })
+  it("follows accessibility rules", () => {
+    cy.testA11y("/login")
+  })
 })

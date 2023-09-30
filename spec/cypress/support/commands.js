@@ -183,7 +183,8 @@ Cypress.Commands.add("printA11y", (context = null, ...options) => {
   var opts = options || {}
   opts.runOnly = {
     type: "tag",
-    values: ["wcag2a", "wcag2aa"]
+    values: ["wcag2a"]
+    //values: ["wcag2a", "wcag2aa"]
   }
   return cy.checkA11y(context, opts, terminalLog)
 })

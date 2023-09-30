@@ -32,3 +32,4 @@ jobs:
     secrets:
       lcov-token: ${{ secrets.LCOV_GITHUB_TOKEN }}
       code-climate-token: ${{ secrets.CC_TEST_REPORTER_ID }}
+      cypress-record-key: ${{ secrets.CYPRESS_RECORD_KEY }}

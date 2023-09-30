@@ -7,6 +7,9 @@ on:
       code-climate-token:
         description: 'API key to report to Code Climate'
         required: true
+      cypress-record-key:
+        description: 'API key to report to Cypress Cloud'
+        required: true
 
 env:
   CI: true
@@ -95,6 +98,10 @@ jobs:
 
       - name: Cypress
         run: bin/rails cypress:run
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.cypress-record-key }}
+          CYPRESS_VIDEO: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Combine Code Coverage
         env:
