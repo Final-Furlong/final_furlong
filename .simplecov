@@ -33,7 +33,11 @@ SimpleCov.profiles.define 'common' do
 end
 
 SimpleCov.profiles.define 'ci' do
-  minimum_coverage line: 73, branch: 48
+  if ENV.fetch('CYPRESS')
+    minimum_coverage line: 6, branch: 66
+  else
+    minimum_coverage line: 73, branch: 48
+  end
 
   formatter SimpleCov::Formatter::MultiFormatter.new(
     [
@@ -65,7 +69,6 @@ end
 SimpleCov.profiles.define 'system' do
   coverage_dir 'coverage_system'
 
-  minimum_coverage line: 6, branch: 66
   # minimum_coverage_by_file line: 10, branch: 10
 
   add_filter "app/controllers/api"
