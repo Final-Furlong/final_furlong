@@ -33,7 +33,7 @@ SimpleCov.profiles.define 'common' do
 end
 
 SimpleCov.profiles.define 'ci' do
-  if ENV.fetch('CYPRESS')
+  if ENV.fetch('CYPRESS', false)
     minimum_coverage line: 6, branch: 66
   else
     minimum_coverage line: 73, branch: 48
