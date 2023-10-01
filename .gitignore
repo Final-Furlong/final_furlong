@@ -51,9 +51,7 @@ spec/examples.txt
 /yarn-error.log
 .lefthook-local
 
-/config/credentials/staging.key
-
-/config/credentials/production.key
+/config/credentials/*.key
 sendgrid.env
 
 .env
