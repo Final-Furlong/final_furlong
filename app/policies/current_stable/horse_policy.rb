@@ -1,8 +1,7 @@
 module CurrentStable
   class HorsePolicy < ApplicationPolicy
-    scope_for :relation do |relation|
-      relation = Horses::HorsesRepository.new(scope: relation).owned_by(user.stable)
-      Horses::HorsesRepository.new(scope: relation).living
+    scope_for :relation do |_relation|
+      Horses::HorsesQuery.new.owned_by(user.stable).living
     end
   end
 end

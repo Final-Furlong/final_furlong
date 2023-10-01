@@ -3,9 +3,12 @@ module Racing
     include StoreModel::Model
 
     VALID_ACTIVITIES = %w[walk jog canter gallop breeze].freeze
-    VALID_DISTANCES = [
-      1, 2, 3, 4, 5, 6, 8, 12, 16, 20, 24, 28, 32, 36, 40
-    ].freeze
+    VALID_DISTANCES = [1, 2, 3, 4, 5, 6, 8, 12, 16, 20, 24, 28, 32, 36, 40].freeze
+    WALK_DISTANCES = [4, 5, 6, 8, 12, 16].freeze
+    JOG_DISTANCES = [4, 5, 6, 8, 12, 16, 20, 24, 28, 32, 36, 40].freeze
+    CANTER_DISTANCES = [4, 5, 6, 8, 12, 16, 20, 24, 28, 32, 36, 40].freeze
+    GALLOP_DISTANCES = [4, 5, 6, 8, 12, 16, 20, 24].freeze
+    BREEZE_DISTANCES = [1, 2, 3, 4, 5, 6].freeze
 
     attribute :activity1, :string
     attribute :activity2, :string
@@ -17,6 +20,24 @@ module Racing
 
     validates :activity1, :activity2, :activity3, inclusion: { in: VALID_ACTIVITIES }, allow_blank: true
     validates :distance1, :distance2, :distance3, inclusion: { in: VALID_DISTANCES }, allow_blank: true
+
+    validates :distance1, inclusion: { in: WALK_DISTANCES, message: I18n.t("activerecord.errors.models.racing/training_schedule_activity.attributes.activity1.invalid_walk") }, if: :walking_activity1?
+    validates :distance1, inclusion: { in: JOG_DISTANCES, message: I18n.t("activerecord.errors.models.racing/training_schedule_activity.attributes.activity1.invalid_jog") }, if: :jogging_activity1?
+    validates :distance1, inclusion: { in: CANTER_DISTANCES, message: I18n.t("activerecord.errors.models.racing/training_schedule_activity.attributes.activity1.invalid_canter") }, if: :cantering_activity1?
+    validates :distance1, inclusion: { in: GALLOP_DISTANCES, message: I18n.t("activerecord.errors.models.racing/training_schedule_activity.attributes.activity1.invalid_gallop") }, if: :galloping_activity1?
+    validates :distance1, inclusion: { in: BREEZE_DISTANCES, message: I18n.t("activerecord.errors.models.racing/training_schedule_activity.attributes.activity1.invalid_breeze") }, if: :breezing_activity1?
+
+    validates :distance2, inclusion: { in: WALK_DISTANCES, message: I18n.t("activerecord.errors.models.racing/training_schedule_activity.attributes.activity1.invalid_walk") }, if: :walking_activity2?
+    validates :distance2, inclusion: { in: JOG_DISTANCES, message: I18n.t("activerecord.errors.models.racing/training_schedule_activity.attributes.activity1.invalid_jog") }, if: :jogging_activity2?
+    validates :distance2, inclusion: { in: CANTER_DISTANCES, message: I18n.t("activerecord.errors.models.racing/training_schedule_activity.attributes.activity1.invalid_canter") }, if: :cantering_activity2?
+    validates :distance2, inclusion: { in: GALLOP_DISTANCES, message: I18n.t("activerecord.errors.models.racing/training_schedule_activity.attributes.activity1.invalid_gallop") }, if: :galloping_activity2?
+    validates :distance2, inclusion: { in: BREEZE_DISTANCES, message: I18n.t("activerecord.errors.models.racing/training_schedule_activity.attributes.activity1.invalid_breeze") }, if: :breezing_activity2?
+
+    validates :distance3, inclusion: { in: WALK_DISTANCES, message: I18n.t("activerecord.errors.models.racing/training_schedule_activity.attributes.activity1.invalid_walk") }, if: :walking_activity3?
+    validates :distance3, inclusion: { in: JOG_DISTANCES, message: I18n.t("activerecord.errors.models.racing/training_schedule_activity.attributes.activity1.invalid_jog") }, if: :jogging_activity3?
+    validates :distance3, inclusion: { in: CANTER_DISTANCES, message: I18n.t("activerecord.errors.models.racing/training_schedule_activity.attributes.activity1.invalid_canter") }, if: :cantering_activity3?
+    validates :distance3, inclusion: { in: GALLOP_DISTANCES, message: I18n.t("activerecord.errors.models.racing/training_schedule_activity.attributes.activity1.invalid_gallop") }, if: :galloping_activity3?
+    validates :distance3, inclusion: { in: BREEZE_DISTANCES, message: I18n.t("activerecord.errors.models.racing/training_schedule_activity.attributes.activity1.invalid_breeze") }, if: :breezing_activity3?
 
     def self.localised_activities
       VALID_ACTIVITIES.map do |activity|
@@ -40,6 +61,23 @@ module Racing
 
       distance = I18n.t("common.distances.#{send("distance#{index}")}_furlongs")
       I18n.t("racing.training_schedules.activity_with_distance", activity:, distance:)
+    end
+
+    def method_missing(name, *args, &block)
+      if (match = name.match(/(walking|jogging|cantering|galloping|breezing)_activity(1|2|3)\?/))
+        activity = match.captures.first.gsub(/g?ing\z/, "")
+        send("activity#{match.captures.last}") == activity
+      else
+        super
+      end
+    end
+
+    def respond_to_missing?(name, *args, &block)
+      if /(walking|jogging|cantering|galloping|breezing)_activity(1|2|3)\?/.match?(name)
+        true
+      else
+        super
+      end
     end
   end
 end

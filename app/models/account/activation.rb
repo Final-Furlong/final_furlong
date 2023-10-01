@@ -1,6 +1,8 @@
 module Account
   class Activation < ApplicationRecord
     belongs_to :user
+
+    validates :token, presence: true
   end
 end
 

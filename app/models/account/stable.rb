@@ -9,6 +9,8 @@ module Account
     has_many :training_schedules, class_name: "Racing::TrainingSchedule", inverse_of: :stable,
       dependent: :restrict_with_exception
 
+    validates :name, presence: true
+
     def self.ransackable_attributes(_auth_object = nil)
       %w[bred_horses_count description horses_count name unborn_horses_count]
     end

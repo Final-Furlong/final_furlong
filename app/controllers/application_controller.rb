@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   before_action :setup_sentry
   before_action :set_variant
-  before_action :update_stable_online
+  before_action :update_stable_online, unless: :impersonating?
 
   around_action :switch_locale
 
@@ -78,12 +78,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def update_stable_online
-    return unless current_stable
-    return if true_user != current_user # impersonating this stable
-    return if current_stable.last_online_at && current_stable.last_online_at > 15.minutes.ago
+  def impersonating?
+    true_user != current_user
+  end
 
-    current_stable.update_columns(last_online_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
+  def update_stable_online
+    SessionsRepository.update_last_online(stable: current_stable)
   end
 end
 

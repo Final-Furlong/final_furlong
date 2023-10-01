@@ -11,7 +11,7 @@ module Horses
       string :age_lteq, default: nil
     end
 
-    attr_accessor :horse_query, :stable_repo
+    attr_accessor :horse_query, :stable_query
 
     def execute
       return default_status_list if query.empty?
@@ -23,7 +23,7 @@ module Horses
     private
 
     def build_query
-      @stable_repo = ::Account::StablesRepository.new
+      @stable_query = ::Account::StablesQuery
       set_default_query
       set_name_query
       set_gender_query
@@ -64,14 +64,14 @@ module Horses
     def set_owner_name_query
       return if query["owner_name_i_cont_all"].blank?
 
-      stables = stable_repo.name_includes(query["owner_name_i_cont_all"])
+      stables = stable_query.name_includes(query["owner_name_i_cont_all"])
       @horse_query = horse_query.joins(:owner).where(owner: stables)
     end
 
     def set_breeder_name_query
       return if query["breeder_name_i_cont_all"].blank?
 
-      stables = stable_repo.name_includes(query["breeder_name_i_cont_all"])
+      stables = stable_query.name_includes(query["breeder_name_i_cont_all"])
       @horse_query = horse_query.joins(:breeder).where(breeder: stables)
     end
 
@@ -97,7 +97,7 @@ module Horses
     end
 
     def set_default_query
-      @horse_query = HorsesRepository.new.born
+      @horse_query = HorsesQuery.born
     end
   end
 end

@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
-if ! command -v foreman &> /dev/null
-then
-  echo "Installing foreman..."
-  gem install foreman
-fi
+echo "Using Overmind..."
+if ! command -v overmind &> /dev/null; then
+  echo "Overmind is not installed!"
+  echo "Installation instructions: https://github.com/DarthSim/overmind"
 
-foreman start -f Procfile.dev
+  exit 1
+else
+  exec overmind start
+fi

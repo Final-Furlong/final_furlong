@@ -1,0 +1,103 @@
+ActiveRecordDoctor.configure do
+  # Global settings affect all detectors.
+  global :ignore_tables, [
+    # Ignore internal Rails-related tables.
+    "ar_internal_metadata",
+    "schema_migrations",
+    "action_text_rich_texts",
+    "active_storage_attachments",
+    "active_storage_blobs",
+
+    # Add project-specific tables here.
+    /\Aff_/,
+    /\Amotor_/,
+  ]
+
+  global :ignore_models, [
+    "ActionMailbox::InboundEmail",
+    "ActionText::EncryptedRichText",
+    "ActionText::RichText",
+    "ActiveStorage::Attachment",
+    "ActiveStorage::Blob",
+    "ActiveStorage::VariantRecord",
+    "Audited::Audit",
+    "Legacy::Horse",
+    "Legacy::Racetrack",
+    "Legacy::Record",
+    "Legacy::TrainingSchedule",
+    "Legacy::TrainingScheduleDetail",
+    "Legacy::TrainingScheduleHorse",
+    "Legacy::User",
+    "Motor::Alert",
+    "Motor::AlertLock",
+    "Motor::ApiConfig",
+    "Motor::Config",
+    "Motor::Dashboard",
+    "Motor::Form",
+    "Motor::Query",
+    "Motor::Resource",
+    "Motor::Tag",
+    "Motor::Taggable",
+    "Motor::TaggableTag",
+  ]
+
+  detector :incorrect_dependent_option,
+    ignore_models: [
+      "Motor::Alert",
+      "Motor::Dashboard",
+      "Motor::Form",
+      "Motor::Query",
+      "Motor::Tag",
+    ]
+
+  detector :missing_foreign_keys,
+    ignore_columns: [
+      "horses.legacy_id",
+      "sessions.session_id",
+      "sessions.user_id",
+      "stables.legacy_id",
+      "users.discourse_id",
+    ]
+
+  detector :missing_non_null_constraint,
+    ignore_tables: [
+      "ff_horses",
+      "ff_trackdata",
+      "ff_training_schedules",
+      "ff_training_schedule_details",
+      "ff_training_schedule_horses",
+      "ff_users"
+    ]
+
+  detector :missing_presence_validation,
+    ignore_attributes: [
+      "Account::Stable.bred_horses_count",
+      "Account::Stable.horses_count",
+      "Account::Stable.unborn_horses_count",
+      "Account::User.encrypted_password",
+      "Account::User.failed_attempts",
+      "Account::User.sign_in_count",
+      "Horses::Horse.foals_count",
+      "Horses::Horse.unborn_foals_count",
+      "Horses::Stallion.foals_count",
+      "Horses::Stallion.unborn_foals_count",
+      "Racing::TrainingSchedule.horses_count",
+      "Racing::TrainingSchedule.sunday_activities",
+      "Racing::TrainingSchedule.monday_activities",
+      "Racing::TrainingSchedule.tuesday_activities",
+      "Racing::TrainingSchedule.wednesday_activities",
+      "Racing::TrainingSchedule.thursday_activities",
+      "Racing::TrainingSchedule.friday_activities",
+      "Racing::TrainingSchedule.saturday_activities",
+    ]
+
+  detector :missing_unique_indexes,
+    ignore_columns: [
+      "Account::User(username)" # includes discarded_at WHERE
+    ]
+
+  detector :unindexed_deleted_at,
+    ignore_indexes: [
+      "index_users_on_lowercase_username" # includes lowercase username
+    ]
+end

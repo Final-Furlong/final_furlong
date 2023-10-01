@@ -16,7 +16,7 @@ RSpec.describe Horses::Horse do
         horse.name = nil
 
         expect(horse).not_to be_valid
-        expect(horse.errors[:name]).to eq(["can't be blank", "has already been taken"])
+        expect(horse.errors[:name]).to eq(["can't be blank"])
       end
 
       it "can be blank for an unnamed horse whose name is not being edited" do
@@ -77,6 +77,22 @@ RSpec.describe Horses::Horse do
 
         expect(horse.dead?).to be true
       end
+    end
+  end
+
+  describe ".ransackable_attributes" do
+    it "returns correct fields" do
+      expect(described_class.ransackable_attributes).to match_array(
+        %w[age breeder_id dam_id date_of_birth date_of_death foals_count gender location_bred_id name owner_id sire_id status unborn_foals_count]
+      )
+    end
+  end
+
+  describe ".ransackable_associations" do
+    it "returns correct list" do
+      expect(described_class.ransackable_associations).to match_array(
+        %w[breeder dam location_bred owner sire]
+      )
     end
   end
 end

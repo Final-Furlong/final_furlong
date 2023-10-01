@@ -3,7 +3,7 @@ FactoryBot.define do
     sequence(:username) do |n|
       "#{Faker::Internet.username(specifier: Account::User::USERNAME_LENGTH - 1 - n.to_s.length)}_#{n}"
     end
-    password { "Password1!" }
+    password { "abc1A$ab" }
     status { "active" }
     name { Faker::Name.first_name }
     email { Faker::Internet.email }
@@ -39,10 +39,12 @@ FactoryBot.define do
 
     trait :unactivated do
       activation { association :activation, :unactivated }
+      status { "pending" }
     end
 
     trait :activated do
       activation { association :activation, :activated }
+      status { "active" }
     end
   end
 end
@@ -74,21 +76,21 @@ end
 #  status                 :enum             default("pending"), not null
 #  unconfirmed_email      :string
 #  unlock_token           :string           indexed
-#  username               :string           not null, indexed
+#  username               :string           not null
 #  created_at             :datetime         not null, indexed
 #  updated_at             :datetime         not null
 #  discourse_id           :integer          indexed
 #
 # Indexes
 #
-#  index_users_on_confirmation_token    (confirmation_token) UNIQUE
-#  index_users_on_created_at            (created_at)
-#  index_users_on_discarded_at          (discarded_at)
-#  index_users_on_discourse_id          (discourse_id) UNIQUE
-#  index_users_on_email                 (email) UNIQUE
-#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
-#  index_users_on_slug                  (slug) UNIQUE
-#  index_users_on_unlock_token          (unlock_token) UNIQUE
-#  index_users_on_username              (username) UNIQUE
+#  index_users_on_confirmation_token    (confirmation_token) UNIQUE WHERE (discarded_at IS NULL)
+#  index_users_on_created_at            (created_at) WHERE (discarded_at IS NULL)
+#  index_users_on_discarded_at          (discarded_at) WHERE (discarded_at IS NULL)
+#  index_users_on_discourse_id          (discourse_id) UNIQUE WHERE (discarded_at IS NULL)
+#  index_users_on_email                 (email) UNIQUE WHERE (discarded_at IS NULL)
+#  index_users_on_lowercase_username    (lower((username)::text)) UNIQUE WHERE (discarded_at IS NULL)
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE WHERE (discarded_at IS NULL)
+#  index_users_on_slug                  (slug) UNIQUE WHERE (discarded_at IS NULL)
+#  index_users_on_unlock_token          (unlock_token) UNIQUE WHERE (discarded_at IS NULL)
 #
 

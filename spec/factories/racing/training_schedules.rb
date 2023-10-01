@@ -35,6 +35,7 @@ end
 # Indexes
 #
 #  index_training_schedules_on_friday_activities     (friday_activities) USING gin
+#  index_training_schedules_on_lowercase_name        (stable_id, lower((name)::text)) UNIQUE
 #  index_training_schedules_on_monday_activities     (monday_activities) USING gin
 #  index_training_schedules_on_saturday_activities   (saturday_activities) USING gin
 #  index_training_schedules_on_stable_id             (stable_id)
@@ -42,5 +43,9 @@ end
 #  index_training_schedules_on_thursday_activities   (thursday_activities) USING gin
 #  index_training_schedules_on_tuesday_activities    (tuesday_activities) USING gin
 #  index_training_schedules_on_wednesday_activities  (wednesday_activities) USING gin
+#
+# Foreign Keys
+#
+#  fk_rails_...  (stable_id => stables.id)
 #
 

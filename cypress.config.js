@@ -1,10 +1,14 @@
 const { defineConfig } = require("cypress")
+const fs = require("fs")
 
 module.exports = defineConfig({
+  projectId: "v7dgho",
+  downloadsFolder: "tmp/cypress_downloads",
   screenshotsFolder: "tmp/cypress_screenshots",
   videosFolder: "tmp/cypress_videos",
   trashAssetsBeforeRuns: false,
-  video: false,
+  video: true,
+  videoCompression: 32,
   fixturesFolder: "spec/cypress/fixtures",
 
   e2e: {
@@ -34,10 +38,20 @@ module.exports = defineConfig({
         }
       })
 
+      on("after:spec", (spec, results) => {
+        if (results && results.video) {
+          // Do we have failures for any retry attempts?
+          const failures = results.tests.some(test => test.attempts.some(attempt => attempt.state === "failed"))
+          if (!failures) {
+            // delete the video if the spec passed and no tests retried
+            fs.unlinkSync(results.video)
+          }
+        }
+      })
+
       if (config.isTextTerminal) {
         // skip the all.cy.js specs in "cypress run" mode
         config.excludeSpecPattern = ["spec/cypress/integration/**/all.cy.js"]
-        config.video = true
       }
       return config
     }

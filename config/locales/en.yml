@@ -54,6 +54,26 @@ en:
           attributes:
             base:
               missing_activities: At least one activity must be selected
+        racing/training_schedule_activity:
+          attributes:
+            activity1:
+              invalid_breeze: must be between 1 and 6 furlongs
+              invalid_canter: must be between 1/2 mile and 5 miles
+              invalid_gallop: must be between 1/2 mile and 3 miles
+              invalid_jog: must be between 1/2 mile and 5 miles
+              invalid_walk: must be between 1/2 mile and 2 miles
+            activity2:
+              invalid_breeze: must be between 1 and 6 furlongs
+              invalid_canter: must be between 1/2 mile and 5 miles
+              invalid_gallop: must be between 1/2 mile and 3 miles
+              invalid_jog: must be between 1/2 mile and 5 miles
+              invalid_walk: must be between 1/2 mile and 2 miles
+            activity3:
+              invalid_breeze: must be between 1 and 6 furlongs
+              invalid_canter: must be between 1/2 mile and 5 miles
+              invalid_gallop: must be between 1/2 mile and 3 miles
+              invalid_jog: must be between 1/2 mile and 5 miles
+              invalid_walk: must be between 1/2 mile and 2 miles
   breadcrumbs:
     edit: Edit
     home: Home

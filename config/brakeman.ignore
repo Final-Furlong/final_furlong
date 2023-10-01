@@ -3,20 +3,23 @@
     {
       "warning_type": "Dynamic Render Path",
       "warning_code": 15,
-      "fingerprint": "242286f9e2968ebf7a4374fc6847a97105eedfa8a3a020d2240921097c6a037d",
+      "fingerprint": "13ab8592a85be2d2937a579880b0d6eb42d526cd9f50268dc5698894d5f0a96a",
       "check_name": "Render",
       "message": "Render path contains parameter value",
-      "file": "app/frontend/components/horses/status_list/status_list_component.html.haml",
+      "file": "app/frontend/components/horses/status_list/component.html.haml",
       "line": 5,
       "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
       "code": "render(action => , {})",
       "render_path": null,
       "location": {
         "type": "template",
-        "template": "app/frontend/components/horses/status_list/status_list_component"
+        "template": "app/frontend/components/horses/status_list/component"
       },
       "user_input": "params.to_unsafe_hash",
       "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
       "note": ""
     },
     {
@@ -48,9 +51,12 @@
       },
       "user_input": "params[:page]",
       "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
       "note": ""
     }
   ],
-  "updated": "2022-08-18 20:06:22 +0100",
-  "brakeman_version": "5.2.3"
+  "updated": "2023-09-28 18:43:22 +0100",
+  "brakeman_version": "6.0.1"
 }

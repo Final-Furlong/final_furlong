@@ -1,10 +1,10 @@
 module CurrentStable
-  class HorsesController < ApplicationController
+  class HorsesController < AuthenticatedController
     before_action :set_horse, except: :index
 
     # @route GET /stable/horses (stable_horses)
     def index
-      @horses = authorized_scope(Horses::Horse)
+      @horses = authorized_scope(Horses::Horse, type: :relation, with: CurrentStable::HorsePolicy)
     end
 
     # @route GET /stable/horses/:id (stable_horse)

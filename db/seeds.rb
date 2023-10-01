@@ -5,7 +5,7 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
-raise "Can only run in development!" unless Rails.env.development?
+return unless Rails.env.development?
 
 require "faker"
 require "factory_bot_rails"

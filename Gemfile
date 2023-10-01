@@ -17,7 +17,6 @@ gem "activerecord_json_validator"
 gem "bootstrap"
 gem "bootstrap5-kaminari-views"
 gem "browser"
-gem "callee"
 gem "counter_culture"
 gem "cssbundling-rails"
 gem "dartsass-rails"
@@ -34,6 +33,7 @@ gem "haml"
 gem "haml-rails"
 gem "importmap-rails"
 gem "kaminari"
+gem "lograge"
 gem "motor-admin", "~> 0.3.4"
 gem "mysql2"
 gem "net-ssh"
@@ -59,6 +59,7 @@ gem "turnout"
 gem "view_component", "~> 2.69"
 gem "view_component-contrib"
 gem "whenever", require: false
+gem "yaaf"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -82,6 +83,7 @@ group :development do
   gem "annotate", require: false
   gem "autoprefixer-rails"
   gem "bcrypt_pbkdf" # required for capistran
+  gem "better_errors"
   gem "capistrano", "~> 3.17", require: false
   gem "capistrano-bundler", "~> 2.0", require: false
   gem "capistrano-deploytags", "~> 1.0.0", require: false
@@ -102,7 +104,7 @@ group :development do
 end
 
 group :development, :test do
-  gem "better_errors"
+  gem "active_record_doctor"
   gem "binding_of_caller"
   gem "brakeman", require: false
   gem "bullet"
@@ -150,3 +152,6 @@ group :test do
   gem "whenever-test"
 end
 
+group :tools do
+  gem "colorize", require: false
+end

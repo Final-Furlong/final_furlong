@@ -1,20 +1,15 @@
 require "sidekiq/web"
 
 Rails.application.routes.draw do
-  mount Motor::Admin => "/motor_admin"
   mount Api::Base, at: "/"
 
   authenticate :user, ->(u) { u.admin? } do
-    mount Sidekiq::Web => "/sidekiq"
+    draw(:admin)
   end
 
   match "/404", to: "errors#not_found", via: :all
   match "/422", to: "errors#unprocessable", via: :all
   match "/500", to: "errors#internal_error", via: :all
-
-  namespace :admin do
-    resource :impersonate, only: %i[create show destroy]
-  end
 
   devise_for :users, class_name: "Account::User", path: "", path_names: {
     sign_up: "join",
@@ -61,15 +56,15 @@ end
 # == Route Map
 #
 #                                   Prefix Verb      URI Pattern                                                                                       Controller#Action
-#                              motor_admin           /motor_admin                                                                                      Motor::Admin
 #                                 api_base           /                                                                                                 Api::Base
+#                              motor_admin           /motor_admin                                                                                      Motor::Admin
 #                              sidekiq_web           /sidekiq                                                                                          Sidekiq::Web
-#                                                    /404(.:format)                                                                                    errors#not_found
-#                                                    /422(.:format)                                                                                    errors#unprocessable
-#                                                    /500(.:format)                                                                                    errors#internal_error
 #                        admin_impersonate GET       /admin/impersonate(.:format)                                                                      admin/impersonates#show
 #                                          DELETE    /admin/impersonate(.:format)                                                                      admin/impersonates#destroy
 #                                          POST      /admin/impersonate(.:format)                                                                      admin/impersonates#create
+#                                                    /404(.:format)                                                                                    errors#not_found
+#                                                    /422(.:format)                                                                                    errors#unprocessable
+#                                                    /500(.:format)                                                                                    errors#internal_error
 #                         new_user_session GET       /login(.:format)                                                                                  devise/sessions#new
 #                             user_session POST      /login(.:format)                                                                                  devise/sessions#create
 #                     destroy_user_session DELETE    /logout(.:format)                                                                                 devise/sessions#destroy
@@ -117,7 +112,8 @@ end
 #                             stable_horse GET       /stable/horses/:id(.:format)                                                                      current_stable/horses#show
 #                                          PATCH     /stable/horses/:id(.:format)                                                                      current_stable/horses#update
 #                                          PUT       /stable/horses/:id(.:format)                                                                      current_stable/horses#update
-#          stable_training_schedule_horses POST      /stable/training_schedules/:training_schedule_id/horses(.:format)                                 current_stable/training_schedule_horses#create
+#          stable_training_schedule_horses GET       /stable/training_schedules/:training_schedule_id/horses(.:format)                                 current_stable/training_schedule_horses#index
+#                                          POST      /stable/training_schedules/:training_schedule_id/horses(.:format)                                 current_stable/training_schedule_horses#create
 #       new_stable_training_schedule_horse GET       /stable/training_schedules/:training_schedule_id/horses/new(.:format)                             current_stable/training_schedule_horses#new
 #           stable_training_schedule_horse DELETE    /stable/training_schedules/:training_schedule_id/horses/:id(.:format)                             current_stable/training_schedule_horses#destroy
 #                stable_training_schedules GET       /stable/training_schedules(.:format)                                                              current_stable/training_schedules#index
@@ -128,6 +124,7 @@ end
 #                                          PATCH     /stable/training_schedules/:id(.:format)                                                          current_stable/training_schedules#update
 #                                          PUT       /stable/training_schedules/:id(.:format)                                                          current_stable/training_schedules#update
 #                                          DELETE    /stable/training_schedules/:id(.:format)                                                          current_stable/training_schedules#destroy
+#                          stable_workouts POST      /stable/workouts(.:format)                                                                        current_stable/workouts#create
 #                                     root GET       /                                                                                                 pages#home
 #                       authenticated_root GET       /                                                                                                 stables#show
 #         turbo_recede_historical_location GET       /recede_historical_location(.:format)                                                             turbo/native/navigation#recede

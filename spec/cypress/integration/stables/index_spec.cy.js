@@ -37,7 +37,7 @@ describe("Stable Index", () => {
       })
   })
 
-  // it("follows accessibility rules", () => {
-  //   cy.testA11y("/stables")
-  // })
+  it("follows accessibility rules", () => {
+    cy.testA11y("/stables")
+  })
 })

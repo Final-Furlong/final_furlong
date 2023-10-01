@@ -1,7 +1,6 @@
 module Account
   class User < ApplicationRecord
     include Discard::Model
-    include FinalFurlong::Internet::Validation
 
     attr_accessor :login
 
@@ -9,8 +8,8 @@ module Account
     PASSWORD_LENGTH = 8
 
     has_one :stable, dependent: :destroy
-    has_one :activation, class_name: "Account::Activation", dependent: :destroy
-    has_one :setting, dependent: :destroy
+    has_one :activation, class_name: "Account::Activation", dependent: :delete
+    has_one :setting, dependent: :delete
 
     # Include default devise modules. Others available are:
     # :omniauthable
@@ -20,7 +19,9 @@ module Account
 
     enum status: { pending: "pending", active: "active", deleted: "deleted", banned: "banned" }
 
-    before_validation :set_defaults, on: :create
+    validates :username, :status, :name, presence: true
+    validates :admin, inclusion: { in: [true, false] }
+    validates :username, uniqueness: { case_sensitive: false }
 
     delegate :locale, to: :setting, allow_nil: true
 
@@ -30,6 +31,7 @@ module Account
     def active_for_authentication?
       super && !discarded?
     end
+
     # :nocov:
 
     # allow login via username or e-mail
@@ -43,13 +45,6 @@ module Account
 
     def self.ransackable_attributes(_auth_object = nil)
       %w[username status name email]
-    end
-
-    private
-
-    def set_defaults
-      self.status ||= "pending"
-      self.admin ||= false
     end
   end
 end
@@ -81,21 +76,21 @@ end
 #  status                 :enum             default("pending"), not null
 #  unconfirmed_email      :string
 #  unlock_token           :string           indexed
-#  username               :string           not null, indexed
+#  username               :string           not null
 #  created_at             :datetime         not null, indexed
 #  updated_at             :datetime         not null
 #  discourse_id           :integer          indexed
 #
 # Indexes
 #
-#  index_users_on_confirmation_token    (confirmation_token) UNIQUE
-#  index_users_on_created_at            (created_at)
-#  index_users_on_discarded_at          (discarded_at)
-#  index_users_on_discourse_id          (discourse_id) UNIQUE
-#  index_users_on_email                 (email) UNIQUE
-#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
-#  index_users_on_slug                  (slug) UNIQUE
-#  index_users_on_unlock_token          (unlock_token) UNIQUE
-#  index_users_on_username              (username) UNIQUE
+#  index_users_on_confirmation_token    (confirmation_token) UNIQUE WHERE (discarded_at IS NULL)
+#  index_users_on_created_at            (created_at) WHERE (discarded_at IS NULL)
+#  index_users_on_discarded_at          (discarded_at) WHERE (discarded_at IS NULL)
+#  index_users_on_discourse_id          (discourse_id) UNIQUE WHERE (discarded_at IS NULL)
+#  index_users_on_email                 (email) UNIQUE WHERE (discarded_at IS NULL)
+#  index_users_on_lowercase_username    (lower((username)::text)) UNIQUE WHERE (discarded_at IS NULL)
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE WHERE (discarded_at IS NULL)
+#  index_users_on_slug                  (slug) UNIQUE WHERE (discarded_at IS NULL)
+#  index_users_on_unlock_token          (unlock_token) UNIQUE WHERE (discarded_at IS NULL)
 #
 

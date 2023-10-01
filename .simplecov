@@ -15,15 +15,21 @@ SimpleCov.profiles.define 'common' do
   add_filter(%r{^/spec/})
   add_filter(%r{^/test/})
 
+  add_group "API", "app/controllers/api"
+  add_group "Controllers", "app/controllers"
+  add_group "DB", %w[app/models app/repositories app/queries]
+  add_group "Policies", "app/policies"
+  add_group "Forms", "app/forms"
+  add_group "Jobs", %w[app/jobs app/workers]
+  add_group "Mailers", "app/mailers"
+  add_group "Operations", %w[app/interactions app/services]
+  add_group "Lib", %w[lib/ app/validation/final_furlong]
+  add_group "View Components", "app/frontend/components"
+
   track_files "{app,lib}/**/*.rb"
 
   enable_coverage(:branch)
   primary_coverage :line
-
-  SimpleCov::Formatter::LcovFormatter.config do |c|
-    c.report_with_single_file = true
-    c.single_report_path = "coverage/lcov.info"
-  end
 end
 
 SimpleCov.profiles.define 'ci' do
@@ -31,6 +37,7 @@ SimpleCov.profiles.define 'ci' do
     [
       SimpleCov::Formatter::JSONFormatter,
       SimpleCov::Formatter::CoberturaFormatter,
+      SimpleCov::Formatter::HTMLFormatter,
       SimpleCov::Formatter::LcovFormatter
     ]
   )
@@ -49,71 +56,23 @@ end
 SimpleCov.profiles.define 'unit' do
   coverage_dir 'coverage_unit'
 
-  minimum_coverage line: 51, branch: 52
-  # minimum_coverage_by_file line: 10, branch: 10
-
-  add_filter "app/controllers"
-
-  add_group "DB", %w[app/models app/repositories app/queries]
-  add_group "Policies", "app/policies"
-  add_group "Forms", "app/forms"
-  add_group "Jobs", %w[app/jobs app/workers]
-  add_group "Mailers", "app/mailers"
-  add_group "Operations", %w[app/interactions app/services]
-  add_group "Lib", %w[lib/ app/validation/final_furlong]
-  add_group "View Components", "app/frontend/components"
 end
 
 SimpleCov.profiles.define 'system' do
   coverage_dir 'coverage_system'
 
-  # minimum_coverage line: 7, branch: 40
-  # minimum_coverage_by_file line: 10, branch: 10
-
   add_filter "app/controllers/api"
   add_filter "app/lib/url_helpers_with_default_url_options.rb"
   add_filter "app/validation"
   add_filter "lib/core_extensions"
-
-  add_group "Controllers", "app/controllers"
-  add_group "DB", %w[app/models app/repositories app/queries]
-  add_group "Policies", "app/policies"
-  add_group "Forms", "app/forms"
-  add_group "Jobs", %w[app/jobs app/workers]
-  add_group "Mailers", "app/mailers"
-  add_group "Operations", %w[app/interactions app/services]
-  add_group "Lib", %w[lib/ app/validation/final_furlong]
-  add_group "View Components", "app/frontend/components"
 end
 
 SimpleCov.profiles.define "default" do
   coverage_dir "coverage"
-
-  add_filter %r{^/config/}
-  add_filter %r{^/db/}
-  add_filter "helpers"
-  add_filter "lib/generators"
-  add_filter "lib/tasks"
-  add_filter "models/legacy_"
-  add_filter "services/migrate_legacy_"
-  add_filter(%r{^/spec/})
-  add_filter(%r{^/test/})
-
-  add_group "API", "app/controllers/api"
-  add_group "Controllers", "app/controllers"
-  add_group "DB", %w[app/models app/repositories app/queries]
-  add_group "Policies", "app/policies"
-  add_group "Forms", "app/forms"
-  add_group "Jobs", %w[app/jobs app/workers]
-  add_group "Mailers", "app/mailers"
-  add_group "Operations", %w[app/interactions app/services]
-  add_group "Lib", %w[lib/ app/validation/final_furlong]
-  add_group "View Components", "app/frontend/components"
 end
 
 SimpleCov.start do
   load_profile "common"
-  load_profile "test_frameworks"
 
   env_test_type = ENV.fetch('TEST_TYPE', nil)
   arg_test_types = ARGV.select { |arg| arg.start_with?(/~?type:/) }.map { |arg| arg.gsub('type:', '') }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_11_184526) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_24_132918) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -36,7 +36,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_11_184526) do
   end
 
   create_table "horses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
+    t.string "name", limit: 18
     t.enum "gender", null: false, comment: "colt, filly, stallion, mare, gelding", enum_type: "horse_gender"
     t.enum "status", default: "unborn", null: false, comment: "unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased", enum_type: "horse_status"
     t.date "date_of_birth", null: false
@@ -48,7 +48,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_11_184526) do
     t.uuid "dam_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "location_bred_id"
+    t.uuid "location_bred_id", null: false
     t.integer "legacy_id"
     t.integer "foals_count", default: 0, null: false
     t.integer "unborn_foals_count", default: 0, null: false
@@ -79,7 +79,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_11_184526) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["alert_id", "lock_timestamp"], name: "index_motor_alert_locks_on_alert_id_and_lock_timestamp", unique: true
-    t.index ["alert_id"], name: "index_motor_alert_locks_on_alert_id"
   end
 
   create_table "motor_alerts", force: :cascade do |t|
@@ -94,9 +93,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_11_184526) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["author_type", "author_id"], name: "index_motor_alerts_on_author_type_and_author_id", where: "(deleted_at IS NULL)"
     t.index ["name"], name: "motor_alerts_name_unique_index", unique: true, where: "(deleted_at IS NULL)"
-    t.index ["query_id"], name: "index_motor_alerts_on_query_id"
-    t.index ["updated_at"], name: "index_motor_alerts_on_updated_at"
+    t.index ["query_id"], name: "index_motor_alerts_on_query_id", where: "(deleted_at IS NULL)"
+    t.index ["updated_at"], name: "index_motor_alerts_on_updated_at", where: "(deleted_at IS NULL)"
   end
 
   create_table "motor_api_configs", force: :cascade do |t|
@@ -152,8 +152,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_11_184526) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["author_type", "author_id"], name: "index_motor_dashboards_on_author_type_and_author_id", where: "(deleted_at IS NULL)"
     t.index ["title"], name: "motor_dashboards_title_unique_index", unique: true, where: "(deleted_at IS NULL)"
-    t.index ["updated_at"], name: "index_motor_dashboards_on_updated_at"
+    t.index ["updated_at"], name: "index_motor_dashboards_on_updated_at", where: "(deleted_at IS NULL)"
   end
 
   create_table "motor_forms", force: :cascade do |t|
@@ -168,8 +169,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_11_184526) do
     t.string "api_config_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["api_config_name"], name: "index_motor_forms_on_api_config_name", where: "(deleted_at IS NULL)"
+    t.index ["author_type", "author_id"], name: "index_motor_forms_on_author_type_and_author_id", where: "(deleted_at IS NULL)"
     t.index ["name"], name: "motor_forms_name_unique_index", unique: true, where: "(deleted_at IS NULL)"
-    t.index ["updated_at"], name: "index_motor_forms_on_updated_at"
+    t.index ["updated_at"], name: "index_motor_forms_on_updated_at", where: "(deleted_at IS NULL)"
   end
 
   create_table "motor_queries", force: :cascade do |t|
@@ -182,8 +185,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_11_184526) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["author_type", "author_id"], name: "index_motor_queries_on_author_type_and_author_id", where: "(deleted_at IS NULL)"
     t.index ["name"], name: "motor_queries_name_unique_index", unique: true, where: "(deleted_at IS NULL)"
-    t.index ["updated_at"], name: "index_motor_queries_on_updated_at"
+    t.index ["updated_at"], name: "index_motor_queries_on_updated_at", where: "(deleted_at IS NULL)"
   end
 
   create_table "motor_resources", force: :cascade do |t|
@@ -218,12 +222,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_11_184526) do
     t.decimal "longitude", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "location_id"
+    t.uuid "location_id", null: false
+    t.index "lower((name)::text)", name: "index_racetracks_on_lowercase_name", unique: true
     t.index ["created_at"], name: "index_racetracks_on_created_at"
     t.index ["latitude"], name: "index_racetracks_on_latitude"
     t.index ["location_id"], name: "index_racetracks_on_location_id"
     t.index ["longitude"], name: "index_racetracks_on_longitude"
-    t.index ["name"], name: "index_racetracks_on_name", unique: true
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -240,7 +244,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_11_184526) do
   create_table "settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "theme"
     t.string "locale"
-    t.uuid "user_id"
+    t.uuid "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_settings_on_user_id", unique: true
@@ -264,7 +268,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_11_184526) do
   end
 
   create_table "track_surfaces", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "racetrack_id"
+    t.uuid "racetrack_id", null: false
     t.enum "surface", default: "dirt", null: false, comment: "dirt, turf, steeplechase", enum_type: "track_surface"
     t.enum "condition", default: "fast", null: false, comment: "fast, good, slow, wet", enum_type: "track_condition"
     t.integer "width", null: false
@@ -292,6 +296,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_11_184526) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "horses_count", default: 0, null: false
+    t.index "stable_id, lower((name)::text)", name: "index_training_schedules_on_lowercase_name", unique: true
     t.index ["friday_activities"], name: "index_training_schedules_on_friday_activities", using: :gin
     t.index ["monday_activities"], name: "index_training_schedules_on_monday_activities", using: :gin
     t.index ["saturday_activities"], name: "index_training_schedules_on_saturday_activities", using: :gin
@@ -303,8 +308,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_11_184526) do
   end
 
   create_table "training_schedules_horses", force: :cascade do |t|
-    t.uuid "training_schedule_id"
-    t.uuid "horse_id"
+    t.uuid "training_schedule_id", null: false
+    t.uuid "horse_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["horse_id"], name: "index_training_schedules_horses_on_horse_id", unique: true
@@ -338,15 +343,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_11_184526) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "discarded_at"
-    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
-    t.index ["created_at"], name: "index_users_on_created_at"
-    t.index ["discarded_at"], name: "index_users_on_discarded_at"
-    t.index ["discourse_id"], name: "index_users_on_discourse_id", unique: true
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["slug"], name: "index_users_on_slug", unique: true
-    t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
-    t.index ["username"], name: "index_users_on_username", unique: true
+    t.index "lower((username)::text)", name: "index_users_on_lowercase_username", unique: true, where: "(discarded_at IS NULL)"
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, where: "(discarded_at IS NULL)"
+    t.index ["created_at"], name: "index_users_on_created_at", where: "(discarded_at IS NULL)"
+    t.index ["discarded_at"], name: "index_users_on_discarded_at", where: "(discarded_at IS NULL)"
+    t.index ["discourse_id"], name: "index_users_on_discourse_id", unique: true, where: "(discarded_at IS NULL)"
+    t.index ["email"], name: "index_users_on_email", unique: true, where: "(discarded_at IS NULL)"
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, where: "(discarded_at IS NULL)"
+    t.index ["slug"], name: "index_users_on_slug", unique: true, where: "(discarded_at IS NULL)"
+    t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true, where: "(discarded_at IS NULL)"
   end
 
   add_foreign_key "activations", "users"
@@ -362,6 +367,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_11_184526) do
   add_foreign_key "settings", "users"
   add_foreign_key "stables", "users"
   add_foreign_key "track_surfaces", "racetracks"
+  add_foreign_key "training_schedules", "stables"
   add_foreign_key "training_schedules_horses", "horses"
   add_foreign_key "training_schedules_horses", "training_schedules"
 end

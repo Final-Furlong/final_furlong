@@ -40,3 +40,7 @@ jobs:
       - name: StyleLint
         run: |
           yarn run stylelint app/assets/stylesheets
+
+      - name: Locales
+        run: |
+          i18n-tasks health

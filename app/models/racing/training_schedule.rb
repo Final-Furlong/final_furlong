@@ -21,7 +21,7 @@ module Racing
       :wednesday_activities, :thursday_activities, :friday_activities,
       :saturday_activities, allow_destroy: true
 
-    validates :name, uniqueness: { scope: :stable_id, case_sensitive: false }
+    validates :name, presence: true, uniqueness: { scope: :stable_id, case_sensitive: false }
     validates :sunday_activities, store_model: true
     validates :monday_activities, store_model: true
     validates :tuesday_activities, store_model: true
@@ -43,6 +43,10 @@ module Racing
 
       errors.add(:base, :missing_activities)
     end
+
+    # 2yo schedule
+    # Max gallop	1 mile
+    # Max workout (all activities)	2 miles
   end
 end
 
@@ -68,6 +72,7 @@ end
 # Indexes
 #
 #  index_training_schedules_on_friday_activities     (friday_activities) USING gin
+#  index_training_schedules_on_lowercase_name        (stable_id, lower((name)::text)) UNIQUE
 #  index_training_schedules_on_monday_activities     (monday_activities) USING gin
 #  index_training_schedules_on_saturday_activities   (saturday_activities) USING gin
 #  index_training_schedules_on_stable_id             (stable_id)
@@ -75,5 +80,9 @@ end
 #  index_training_schedules_on_thursday_activities   (thursday_activities) USING gin
 #  index_training_schedules_on_tuesday_activities    (tuesday_activities) USING gin
 #  index_training_schedules_on_wednesday_activities  (wednesday_activities) USING gin
+#
+# Foreign Keys
+#
+#  fk_rails_...  (stable_id => stables.id)
 #
 

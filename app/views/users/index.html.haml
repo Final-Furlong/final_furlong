@@ -6,4 +6,4 @@
   %h1.is-size-1.column= t(".title")
 
 = turbo_frame_tag "users" do
-  = render @users
+  = render partial: "user", collection: @users

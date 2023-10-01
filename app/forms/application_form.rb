@@ -1,16 +1,3 @@
-class ApplicationForm
-  include ActiveModel::Model
-  include ActiveModel::Validations
-  include ActiveModel::Validations::ClassMethods
-
-  def initialize
-    initial_attributes
-  end
-
-  private
-
-  def initial_attributes
-    raise NotImplementedError, "must be defined in #{self.class}"
-  end
+class ApplicationForm < YAAF::Form
 end
 

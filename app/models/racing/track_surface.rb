@@ -1,6 +1,9 @@
 module Racing
   class TrackSurface < ApplicationRecord
     belongs_to :racetrack
+
+    validates :surface, :condition, :width, :length, :turn_to_finish_length,
+      :turn_distance, :banking, :jumps, presence: true
   end
 end
 
@@ -19,7 +22,7 @@ end
 #  width                 :integer          not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
-#  racetrack_id          :uuid             indexed
+#  racetrack_id          :uuid             not null, indexed
 #
 # Indexes
 #
