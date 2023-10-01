@@ -140,19 +140,3 @@ jobs:
           indicators: true
           output: both
           thresholds: '38 66'
-
-      - name: Cobertura Coverage Report (Unit)
-        uses: 5monkeys/cobertura-action@master
-        with:
-          path: coverage_unit/coverage.xml
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          report_name: "Code Coverage (Unit)"
-          minimum_coverage: 73
-
-      - name: Cobertura Coverage Report (System)
-        uses: 5monkeys/cobertura-action@master
-        with:
-          path: coverage_system/coverage.xml
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          report_name: "Code Coverage (System)"
-          minimum_coverage: 7
