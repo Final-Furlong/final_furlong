@@ -43,4 +43,4 @@ jobs:
 
       - name: Locales
         run: |
-          i18n-tasks health
+          bin/i18n-tasks health
