@@ -8,7 +8,7 @@ module FinalFurlong
 
           valid_time = parse_time(value)
 
-          return record.errors.add(attribute, :datetime_invalid, value:) unless valid_time
+          record.errors.add(attribute, :datetime_invalid, value:) unless valid_time
         end
 
         private

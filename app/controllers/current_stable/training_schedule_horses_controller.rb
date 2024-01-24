@@ -11,7 +11,7 @@ module CurrentStable
     # @route GET /stable/training_schedules/:training_schedule_id/horses (stable_training_schedule_horses)
     def index
       authorize schedule, :view_horses?
-      @horses = Horses::HorsesQuery.with_training_schedule(schedule).owned_by(current_stable)
+      @horses = Horses::Horse.joins(:training_schedule).where(training_schedules: { id: schedule }, owner: current_stable)
     end
 
     # @route GET /stable/training_schedules/:training_schedule_id/horses/new (new_stable_training_schedule_horse)
@@ -52,7 +52,7 @@ module CurrentStable
     def set_schedule
       @schedule = current_stable.training_schedules.find(params[:training_schedule_id])
       weekday = Time.zone.today.strftime("%A")
-      @daily_activities = schedule.send("#{weekday.downcase}_activities")
+      @daily_activities = schedule.send(:"#{weekday.downcase}_activities")
       @schedule
     end
 
@@ -61,7 +61,7 @@ module CurrentStable
     end
 
     def set_stable_horses
-      @horses = Horses::HorsesQuery.without_training_schedules.owned_by(current_stable)
+      @horses = Horses::Horse.where.missing(:training_schedule).where(owner: current_stable)
     end
 
     def schedule_params

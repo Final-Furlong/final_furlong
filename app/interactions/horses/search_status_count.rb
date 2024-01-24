@@ -97,7 +97,7 @@ module Horses
     end
 
     def set_default_query
-      @horse_query = HorsesQuery.born
+      @horse_query = HorsesQuery.new.born
     end
   end
 end
