@@ -5,6 +5,7 @@ plugins:
     enabled: true
 exclude_patterns:
   - ".git-hooks/"
+  - "app/services/migrate_*_service.rb "
   - "config/"
   - "db/"
   - "**/node_modules/"
