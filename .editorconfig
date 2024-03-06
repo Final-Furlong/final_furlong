@@ -8,9 +8,13 @@ insert_final_newline = true
 tab_width = 8
 trim_trailing_whitespace = true
 
-[*.png]
-indent_style = tab
-insert_final_newline = false
+[{*.png,*.jpg,*.gif,*.ico,*.svg,*.eot,*.ttf,*.woff,*.woff2}]
+end_of_line = unset
+indent_size = unset
+indent_style = unset
+insert_final_newline = unset
+tab_width = unset
+trim_trailing_whitespace = unset
 
 [{*[Mm]akefile*,*.mak,*.mk,depend}]
 indent_style = tab
