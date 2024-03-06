@@ -122,6 +122,7 @@ jobs:
             ${{github.workspace}}/*.lcov:lcov
 
       - name: Coverage Report
+        if: github.event.pull_request
         uses: ewjoachim/coverage-comment-action@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
