@@ -13,8 +13,6 @@ plugins:
     enabled: true
   shellcheck:
     enabled: true
-  stylelint:
-    enabled: true
 exclude_patterns:
   - ".git-hooks/"
   - "app/services/migrate_*_service.rb"
