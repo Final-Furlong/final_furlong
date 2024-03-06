@@ -36,7 +36,6 @@
 .ruby-version
 /config/database.yml
 !config/database.yml.sample
-.env*
 coverage/
 coverage_system/
 coverage_unit/
@@ -55,6 +54,8 @@ spec/examples.txt
 
 .env
 .env.*.local
+.env.staging
+.env.production
 
 /config/credentials/production.key
 
