@@ -422,6 +422,7 @@ GEM
       net-imap
       net-pop
       net-smtp
+    mailtrap (1.2.2)
     marcel (1.0.4)
     matrix (0.4.2)
     method_source (1.0.0)
@@ -622,7 +623,6 @@ GEM
     ruby-next-core (1.0.2)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
-    ruby_http_client (3.5.5)
     ruby_parser (3.21.0)
       racc (~> 1.5)
       sexp_processor (~> 4.16)
@@ -640,8 +640,6 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    sendgrid-ruby (6.7.0)
-      ruby_http_client (~> 3.4)
     sentry-rails (5.16.1)
       railties (>= 5.0)
       sentry-ruby (~> 5.16.1)
@@ -861,6 +859,7 @@ DEPENDENCIES
   kaminari
   letter_opener
   lograge
+  mailtrap
   motor-admin
   mysql2
   net-ssh
@@ -888,7 +887,6 @@ DEPENDENCIES
   rubocop-rspec
   ruby-debug-ide
   selenium-webdriver
-  sendgrid-ruby
   sentry-rails
   sentry-ruby
   shoulda-matchers
