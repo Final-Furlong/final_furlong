@@ -155,6 +155,8 @@ GEM
       capistrano (>= 3.9.0)
       capistrano-bundler
       sidekiq (>= 6.0)
+    capistrano-yarn (2.0.2)
+      capistrano (~> 3.0)
     capybara (3.40.0)
       addressable
       matrix
@@ -818,6 +820,7 @@ DEPENDENCIES
   capistrano-rails (~> 1.3)
   capistrano-rbenv (~> 2.2)
   capistrano-sidekiq
+  capistrano-yarn
   capybara (>= 2.15)
   capybara-screenshot
   chusaku
