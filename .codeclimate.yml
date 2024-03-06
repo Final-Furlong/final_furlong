@@ -9,8 +9,6 @@ plugins:
     enabled: true
   haml-lint:
     enabled: true
-  reek:
-    enabled: true
   shellcheck:
     enabled: true
 exclude_patterns:
