@@ -28,9 +28,9 @@ module CurrentStable
     # @route POST /stable/training_schedules (stable_training_schedules)
     def create
       if schedule.update(schedule_params)
-        redirect_to stable_training_schedules_path, notice: t(".success", name: @schedule.name)
+        redirect_success
       else
-        flash[:alert] = schedule.errors.full_messages.to_sentence
+        flash[:alert] = schedule_errors
         render :new, status: :unprocessable_entity
       end
     end
@@ -39,9 +39,9 @@ module CurrentStable
     # @route PUT /stable/training_schedules/:id (stable_training_schedule)
     def update
       if schedule.update(schedule_params)
-        redirect_to stable_training_schedules_path, notice: t(".success", name: @schedule.name)
+        redirect_success
       else
-        flash[:alert] = schedule.errors.full_messages.to_sentence
+        flash[:alert] = schedule_errors
         render :edit, status: :unprocessable_entity
       end
     end
@@ -80,6 +80,14 @@ module CurrentStable
         thursday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3],
         friday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3],
         saturday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3]).merge(stable: current_stable)
+    end
+
+    def schedule_errors
+      schedule.errors.full_messages.to_sentence
+    end
+
+    def redirect_success
+      redirect_to stable_training_schedules_path, notice: t(".success", name: @schedule.name)
     end
   end
 end
