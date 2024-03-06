@@ -17,6 +17,7 @@ env:
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/final_furlong_test
   REDIS_URL: redis://localhost:6379/0
   COVERAGE: true
+  MAILTRAP_API_KEY: foo
 
 jobs:
   tests:
