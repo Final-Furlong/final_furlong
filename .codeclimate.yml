@@ -4,8 +4,6 @@ plugins:
     enabled: true
   bundler-audit:
     enabled: true
-  editorconfig:
-    enabled: true
   fixme:
     enabled: true
   haml-lint:
