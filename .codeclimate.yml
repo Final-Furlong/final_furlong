@@ -1,7 +1,19 @@
 plugins:
+  brakeman:
+    enabled: true
   bundler-audit:
     enabled: true
+  editorconfig:
+    enabled: true
+  fixme:
+    enabled: true
   haml-lint:
+    enabled: true
+  reek:
+    enabled: true
+  shellcheck:
+    enabled: true
+  stylelint:
     enabled: true
 exclude_patterns:
   - ".git-hooks/"
