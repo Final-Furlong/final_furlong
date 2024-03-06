@@ -19,3 +19,6 @@ indent_size = 2
 
 [{*[Mm]akefile*,*.mak,*.mk,depend}]
 indent_style = tab
+
+[yarn.lock]
+indent_size = 4
