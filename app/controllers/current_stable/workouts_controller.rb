@@ -4,7 +4,7 @@ module CurrentStable
 
     # @route POST /stable/workouts (stable_workouts)
     def create
-      workout = Racing::Workout.new(**workout_params.merge(horse: horse))
+      workout = Racing::Workout.new(**workout_params.merge(horse:))
       if workout.valid?
         flash[:notice] = t(".success", horse: horse.name)
       else

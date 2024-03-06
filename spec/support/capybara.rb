@@ -25,7 +25,7 @@ end
 Capybara.javascript_driver = :selenium_chrome_headless
 
 RSpec.configure do |config|
-  config.around(:each, mobile: true, type: :system) do |example|
+  config.around(:each, :mobile, type: :system) do |example|
     resize_window_to_mobile
 
     example.run
@@ -33,7 +33,7 @@ RSpec.configure do |config|
     resize_window_default
   end
 
-  config.around(:each, tablet: true, type: :system) do |example|
+  config.around(:each, :tablet, type: :system) do |example|
     resize_window_to_tablet
 
     example.run
@@ -41,7 +41,7 @@ RSpec.configure do |config|
     resize_window_default
   end
 
-  config.around(:each, type: :system, widescreen: true) do |example|
+  config.around(:each, :widescreen, type: :system) do |example|
     resize_window_to_widescreen
 
     example.run

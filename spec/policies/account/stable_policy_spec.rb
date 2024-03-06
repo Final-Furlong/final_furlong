@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Account::StablePolicy do
-  subject(:policy) { described_class.new(stable, user: user) }
+  subject(:policy) { described_class.new(stable, user:) }
 
   let(:stable) { build(:stable) }
 

@@ -12,7 +12,7 @@ module Account
       def exists_with_token?(stable_name:, token:)
         Account::Stable.joins(user: :activation).exists?(
           name: stable_name,
-          user: { activations: { token: token } }
+          user: { activations: { token: } }
         )
       end
     end

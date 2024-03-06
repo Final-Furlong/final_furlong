@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Horses::HorsePolicy do
-  subject(:policy) { described_class.new(horse, user: user) }
+  subject(:policy) { described_class.new(horse, user:) }
 
   let(:user) { build_stubbed(:user) }
   let(:horse) { build_stubbed(:horse) }

@@ -1,4 +1,4 @@
-= simple_form_for form, as: :stable, method: :patch, url: url,
+= simple_form_for form, as: :stable, method: :patch, url:,
                         html: { class: "stable form" }, data: { turbo: false } do |f|
   = render Forms::ErrorMessages::Component.new(object: form)
   = f.input :description, as: :text, class: "textarea", input_html: { rows: 10 }, required: false

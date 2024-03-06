@@ -12,7 +12,7 @@
           - data = { turbo_confirm: t("common.confirmation.delete_with_name", name: training_schedule.name) }
           = button_to stable_training_schedule_path(training_schedule), class: "button-action-danger is-light ms-2",
                                                                         form_class: "d-inline", method: :delete,
-                                                                        form: { data: data } do
+                                                                        form: { data: } do
             %span.icon
               %i.fa-solid.fa-trash
               = t("common.actions.delete")
@@ -26,12 +26,12 @@
             %td Activity
         %tbody.table-group-divider
           - Date::DAYNAMES.each do |day|
-            - if training_schedule.send("#{day.downcase}_activities").present?
+            - if training_schedule.send(:"#{day.downcase}_activities").present?
               %tr
                 %td= day
-                %td= training_schedule.send("#{day.downcase}_activities").activity_with_distance(1)
-                %td= training_schedule.send("#{day.downcase}_activities").activity_with_distance(2)
-                %td= training_schedule.send("#{day.downcase}_activities").activity_with_distance(3)
+                %td= training_schedule.send(:"#{day.downcase}_activities").activity_with_distance(1)
+                %td= training_schedule.send(:"#{day.downcase}_activities").activity_with_distance(2)
+                %td= training_schedule.send(:"#{day.downcase}_activities").activity_with_distance(3)
 
       - horses_count = pluralize(training_schedule.horses_count, "horse")
       %p

@@ -10,7 +10,7 @@ module ApplicationHelper
   end
 
   def nav_link_class(args)
-    return "active" if current_page?(args)
+    "active" if current_page?(args)
   end
 
   def nav_link_active?(args)

@@ -1,4 +1,4 @@
-= simple_form_for schedule, as: :training_schedule, url: url, html: { class: "training-schedule form" } do |f|
+= simple_form_for schedule, as: :training_schedule, url:, html: { class: "training-schedule form" } do |f|
   = f.input :name, required: true
   = f.input :description, required: false
   %table.table.table-bordered.w-100
@@ -14,7 +14,7 @@
       - Date::DAYNAMES.each do |day|
         %tr
           %td= day
-          = f.fields_for "#{day.downcase}_activities", schedule.send("#{day.downcase}_activities") do |af|
+          = f.fields_for "#{day.downcase}_activities", schedule.send(:"#{day.downcase}_activities") do |af|
             %td= af.input :activity1, collection: activities_collection, label: false, required: false
             %td= af.input :distance1, collection: distances_collection, label: false, required: false
             %td= af.input :activity2, collection: activities_collection, label: false, required: false

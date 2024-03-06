@@ -3,7 +3,7 @@ class MigrateLegacyTrainingSchedules < ActiveRecord::Migration[7.0]
     say_with_time "Migrating legacy training schedules" do
       say "Legacy schedule count: #{Legacy::TrainingSchedule.count}"
       Legacy::TrainingSchedule.find_each do |legacy_schedule|
-        MigrateLegacyTrainingScheduleService.new(legacy_schedule: legacy_schedule).call
+        MigrateLegacyTrainingScheduleService.new(legacy_schedule:).call
       end
     end
   end

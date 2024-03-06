@@ -37,7 +37,7 @@ module CurrentStable
       authorize schedule
 
       @horse = current_stable.horses.find(params[:id])
-      training_schedule_horse = Racing::TrainingScheduleHorse.find_by!(training_schedule: schedule, horse: horse)
+      training_schedule_horse = Racing::TrainingScheduleHorse.find_by!(training_schedule: schedule, horse:)
       if training_schedule_horse.destroy!
         delete_message = t("current_stable.training_schedules.horse.deleted", name: horse.name)
         respond_to do |format|
@@ -52,7 +52,7 @@ module CurrentStable
     def set_schedule
       @schedule = current_stable.training_schedules.find(params[:training_schedule_id])
       weekday = Time.zone.today.strftime("%A")
-      @daily_activities = schedule.send("#{weekday.downcase}_activities")
+      @daily_activities = schedule.send(:"#{weekday.downcase}_activities")
       @schedule
     end
 
