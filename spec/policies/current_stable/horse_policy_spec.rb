@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe CurrentStable::HorsePolicy do
-  subject(:policy) { described_class.new(Horses::Horse.new, user: user) }
+  subject(:policy) { described_class.new(Horses::Horse.new, user:) }
 
   let(:user) { create(:user) }
 

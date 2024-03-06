@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe ApplicationRepository do
-  subject(:repo) { described_class.new(model: model) }
+  subject(:repo) { described_class.new(model:) }
 
   let(:model) { Account::User }
 

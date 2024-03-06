@@ -20,6 +20,7 @@ gem "browser"
 gem "counter_culture"
 gem "cssbundling-rails"
 gem "dartsass-rails"
+gem "dartsass-sprockets"
 gem "data_migrate"
 gem "discard"
 gem "dotenv-rails"
@@ -34,17 +35,17 @@ gem "haml-rails"
 gem "importmap-rails"
 gem "kaminari"
 gem "lograge"
-gem "motor-admin", "~> 0.3.4"
+gem "motor-admin"
 gem "mysql2"
 gem "net-ssh"
 gem "pagy"
-gem "pg", "~> 1.1"
+gem "pg"
 gem "pretender"
-gem "puma", "~> 5.0"
+gem "puma"
 gem "rack-cors"
 gem "rails-i18n"
 gem "ransack"
-gem "redis", "~> 4.0"
+gem "redis"
 gem "sendgrid-ruby"
 gem "sentry-rails"
 gem "sentry-ruby"
@@ -56,7 +57,7 @@ gem "store_model"
 gem "strong_migrations"
 gem "turbo-rails"
 gem "turnout"
-gem "view_component", "~> 2.69"
+gem "view_component"
 gem "view_component-contrib"
 gem "whenever", require: false
 gem "yaaf"
@@ -148,10 +149,10 @@ group :test do
   gem "simplecov-json", require: false
   gem "simplecov-lcov", require: false
   gem "undercover", require: false
-  gem "webdrivers"
   gem "whenever-test"
 end
 
 group :tools do
   gem "colorize", require: false
 end
+

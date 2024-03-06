@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe Account::UserPolicy do
-  subject(:policy) { described_class.new(subject_user, user: user) }
+  subject(:policy) { described_class.new(subject_user, user:) }
 
   let(:user) { build_stubbed(:user) }
   let(:subject_user) { build_stubbed(:user) }

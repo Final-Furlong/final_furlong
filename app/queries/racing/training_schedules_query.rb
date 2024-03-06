@@ -2,7 +2,7 @@ module Racing
   class TrainingSchedulesQuery
     module Scopes
       def with_stable(stable)
-        where(stable: stable)
+        where(stable:)
       end
 
       def ordered

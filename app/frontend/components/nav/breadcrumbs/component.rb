@@ -40,7 +40,7 @@ module Nav
       def allowed_action?(action)
         return false unless action[:user] && action[:object]
 
-        ActionPolicy.lookup(action[:object]).new(action[:object], user: action[:user]).apply("#{action[:name]}?".to_sym)
+        ActionPolicy.lookup(action[:object]).new(action[:object], user: action[:user]).apply(:"#{action[:name]}?")
       end
 
       def styled_links

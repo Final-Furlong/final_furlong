@@ -31,7 +31,7 @@ RSpec.describe Stables::UpdateDescription do
       it "strips invalid html" do
         stable = create(:stable, description: "")
         expect do
-          outcome = described_class.run(stable: stable, description: 'hi, <a href="#">click here</a>')
+          outcome = described_class.run(stable:, description: 'hi, <a href="#">click here</a>')
           expect(outcome).to be_valid
         end.to change(stable.reload, :description).to("hi, click here")
       end
@@ -41,7 +41,7 @@ RSpec.describe Stables::UpdateDescription do
       it "updates stable description" do
         stable = create(:stable, description: "")
         expect do
-          outcome = described_class.run(stable: stable, description: "hi, <em>cool stable</em>")
+          outcome = described_class.run(stable:, description: "hi, <em>cool stable</em>")
           expect(outcome).to be_valid
         end.to change(stable.reload, :description).to("hi, <em>cool stable</em>")
       end
@@ -50,7 +50,7 @@ RSpec.describe Stables::UpdateDescription do
         legacy_user = create(:legacy_user)
         stable = create(:stable, description: "", legacy_id: legacy_user.id)
         expect do
-          outcome = described_class.run(stable: stable, description: "hi, <em>cool stable</em>")
+          outcome = described_class.run(stable:, description: "hi, <em>cool stable</em>")
           expect(outcome).to be_valid
         end.to change { legacy_user.reload.description }.to("hi, cool stable")
       end

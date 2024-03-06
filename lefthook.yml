@@ -30,7 +30,7 @@ pre-commit:
       tags: frontend style
       files: git diff --name-only --staged
       glob: "*.haml"
-      run: haml-lint {files}
+      run: HAML_LINT_RUBOCOP_CONF=.rubocop_haml.yml haml-lint {files}
     i18n-check:
       tags: backend style
       files: git diff --name-only --staged

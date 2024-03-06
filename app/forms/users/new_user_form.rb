@@ -22,16 +22,16 @@ module Users
 
     def user
       @user ||= Account::User.new(
-        name: name,
-        email: email,
-        password: password,
-        password_confirmation: password_confirmation,
-        username: username
+        name:,
+        email:,
+        password:,
+        password_confirmation:,
+        username:
       )
     end
 
     def stable
-      @stable ||= Account::Stable.new(name: stable_name, user: user)
+      @stable ||= Account::Stable.new(name: stable_name, user:)
     end
   end
 end

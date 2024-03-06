@@ -10,7 +10,7 @@ RSpec::Matchers.define :allow_actions do |*actions|
   end
 
   def check?(actual, action)
-    actual.apply("#{action}?".to_sym)
+    actual.apply(:"#{action}?")
   end
 
   failure_message do |actual|

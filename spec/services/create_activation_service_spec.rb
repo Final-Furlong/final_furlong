@@ -6,7 +6,7 @@ RSpec.describe CreateActivationService do
   let(:user) { create(:user, :pending) }
 
   context "when activation exists" do
-    before { create(:activation, user: user) }
+    before { create(:activation, user:) }
 
     it "does not create an activation" do
       expect { migrate.call }.not_to change(Account::Activation, :count)
@@ -28,7 +28,7 @@ RSpec.describe CreateActivationService do
       migrate.call
 
       expect(Account::Activation.last).to have_attributes(
-        user: user,
+        user:,
         token: fake_token,
         activated_at: nil
       )

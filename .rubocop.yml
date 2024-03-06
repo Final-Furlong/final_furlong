@@ -26,6 +26,8 @@ AllCops:
   Exclude:
     - "bin/**/*"
     - "db/**/schema.rb"
+    - "db/migrate/20220722173334_remove_new_tables.rb"
+    - "db/migrate/20220814180246_add_counter_culture_columns.rb"
     - "node_modules/**/*"
     - "tmp/**/*"
     - "vendor/**/*"
@@ -103,6 +105,8 @@ Style/EndlessMethod:
 Style/FrozenStringLiteralComment:
   EnforcedStyle: never
   AutoCorrect: true
+Style/HashSyntax:
+  EnforcedShorthandSyntax: always
 Style/MutableConstant:
   Enabled: false
 Style/SignalException:

@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe ApplicationPolicy do
-  subject(:policy) { described_class.new(Account::User.new, user: user) }
+  subject(:policy) { described_class.new(Account::User.new, user:) }
 
   let(:user) { build_stubbed(:user) }
 

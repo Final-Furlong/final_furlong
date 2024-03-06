@@ -1,4 +1,4 @@
-= simple_form_for form, as: :user, url: url, html: { class: "user form" } do |f|
+= simple_form_for form, as: :user, url:, html: { class: "user form" } do |f|
   = render Forms::ErrorMessages::Component.new(object: form)
   = f.input :username, input_html: { autofocus: true }, disabled: form.persisted?
   = f.input :email

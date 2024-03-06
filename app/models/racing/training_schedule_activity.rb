@@ -56,17 +56,17 @@ module Racing
     end
 
     def activity_with_distance(index)
-      activity = send("activity#{index}").titleize
+      activity = send(:"activity#{index}").titleize
       return I18n.t("common.none") if activity.blank?
 
-      distance = I18n.t("common.distances.#{send("distance#{index}")}_furlongs")
+      distance = I18n.t("common.distances.#{send(:"distance#{index}")}_furlongs")
       I18n.t("racing.training_schedules.activity_with_distance", activity:, distance:)
     end
 
     def method_missing(name, *args, &block)
       if (match = name.match(/(walking|jogging|cantering|galloping|breezing)_activity(1|2|3)\?/))
         activity = match.captures.first.gsub(/g?ing\z/, "")
-        send("activity#{match.captures.last}") == activity
+        send(:"activity#{match.captures.last}") == activity
       else
         super
       end

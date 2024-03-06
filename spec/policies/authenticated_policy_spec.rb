@@ -7,7 +7,7 @@ class FakePolicy < AuthenticatedPolicy
 end
 
 RSpec.describe AuthenticatedPolicy do
-  subject(:policy) { FakePolicy.new(Account::User.new, user: user) }
+  subject(:policy) { FakePolicy.new(Account::User.new, user:) }
 
   let(:user) { Account::User.new }
 

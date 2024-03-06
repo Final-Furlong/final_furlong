@@ -12,7 +12,7 @@
     = f.input :email, required: true, input_html: { autocomplete: "email" }
 
     - hint = (t("devise.shared.minimum_password_length", count: @minimum_password_length) if @minimum_password_length)
-    = f.input :password, required: true, input_html: { autocomplete: "new-password" }, hint: hint
+    = f.input(:password, required: true, input_html: { autocomplete: "new-password" }, hint:)
 
     = f.input :password_confirmation, required: true, input_html: { autocomplete: "new-password" }
 
