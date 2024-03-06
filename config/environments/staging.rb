@@ -91,13 +91,9 @@ Rails.application.configure do
   end
 
   config.action_mailer.default_options = { from: "no-reply@finalfurlong.org" }
-  config.action_mailer.smtp_settings = {
-    address: "smtp.sendgrid.net",
-    port: 587,
-    domain: "finalfurlong.org",
-    authentication: :plain,
-    user_name: Rails.application.credentials.dig(:smtp, :username),
-    password: Rails.application.credentials.dig(:smtp, :password)
+  config.action_mailer.delivery_method = :mailtrap
+  config.action_mailer.mailtrap_settings = {
+    api_key: ENV.fetch("MAILTRAP_API_KEY")
   }
 
   # Do not dump schema after migrations.

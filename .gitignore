@@ -52,7 +52,6 @@ spec/examples.txt
 .lefthook-local
 
 /config/credentials/*.key
-sendgrid.env
 
 .env
 .env.*.local
