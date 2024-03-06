@@ -1,62 +1,7 @@
 {
   "ignored_warnings": [
-    {
-      "warning_type": "Dynamic Render Path",
-      "warning_code": 15,
-      "fingerprint": "13ab8592a85be2d2937a579880b0d6eb42d526cd9f50268dc5698894d5f0a96a",
-      "check_name": "Render",
-      "message": "Render path contains parameter value",
-      "file": "app/frontend/components/horses/status_list/component.html.haml",
-      "line": 5,
-      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
-      "code": "render(action => , {})",
-      "render_path": null,
-      "location": {
-        "type": "template",
-        "template": "app/frontend/components/horses/status_list/component"
-      },
-      "user_input": "params.to_unsafe_hash",
-      "confidence": "Weak",
-      "cwe_id": [
-        22
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "Dynamic Render Path",
-      "warning_code": 15,
-      "fingerprint": "38909c758b145bf43a32760e173f4056722c81c19f9849379f37d8243cb42249",
-      "check_name": "Render",
-      "message": "Render path contains parameter value",
-      "file": "app/views/horses/index.html.haml",
-      "line": 14,
-      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
-      "code": "render(action => Nav::Pagination::Component.new(:collection => horses, :page => params[:page], :div_class => \"card-footer\"), {})",
-      "render_path": [
-        {
-          "type": "controller",
-          "class": "HorsesController",
-          "method": "index",
-          "line": 20,
-          "file": "app/controllers/horses_controller.rb",
-          "rendered": {
-            "name": "horses/index",
-            "file": "app/views/horses/index.html.haml"
-          }
-        }
-      ],
-      "location": {
-        "type": "template",
-        "template": "horses/index"
-      },
-      "user_input": "params[:page]",
-      "confidence": "Weak",
-      "cwe_id": [
-        22
-      ],
-      "note": ""
-    }
+
   ],
-  "updated": "2023-09-28 18:43:22 +0100",
-  "brakeman_version": "6.0.1"
+  "updated": "2024-03-06 19:29:10 +0000",
+  "brakeman_version": "6.1.2"
 }

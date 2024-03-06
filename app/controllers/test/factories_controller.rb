@@ -76,6 +76,7 @@ module Test
 
     def model_name
       raise StandardError, "model is required" unless params[:model]
+      raise StandardError, "unknown model" unless defined?(params[:model].classify.to_s)
 
       params[:model].classify.constantize
     end
