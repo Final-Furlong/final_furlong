@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 echo "Killing servers..."
-lsof -P -i TCP -s TCP:LISTEN -w | egrep 'localhost:3000' | awk '{print $2}' | uniq | xargs kill -9
+lsof -P -i TCP -s TCP:LISTEN -w | grep -E 'localhost:3000' | awk '{print $2}' | uniq | xargs kill -9
 
 echo "Deleting server.pid files..."
 find . -regex '\.\/tmp/pids/server.pid' -type f -print0 | xargs -0 rm
-find . -regex '\.\/\.overmind\.sock' | xargs rm
+find . -regex '\.\/\.overmind\.sock' | xargs -0 rm
 
 echo "Done."
