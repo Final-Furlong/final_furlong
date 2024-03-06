@@ -6,5 +6,5 @@ set :deploy_to, "/var/www/prod.finalfurlong"
 
 set :deploytag_time_format, "%Y.%m.%d-%H%M%S-utc"
 
-append :linked_files, ".env.production"
+append :linked_files, "config/credentials/production.key", ".env.production"
 
