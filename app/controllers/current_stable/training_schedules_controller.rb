@@ -2,6 +2,7 @@ module CurrentStable
   class TrainingSchedulesController < ::AuthenticatedController
     before_action :set_schedule, except: %i[index new create]
     before_action :new_schedule, only: %i[new create]
+    before_action :authorize_schedule, except: :index
 
     attr_reader :schedule
 
@@ -18,18 +19,14 @@ module CurrentStable
 
     # @route GET /stable/training_schedules/new (new_stable_training_schedule)
     def new
-      authorize schedule
     end
 
     # @route GET /stable/training_schedules/:id/edit (edit_stable_training_schedule)
     def edit
-      authorize schedule
     end
 
     # @route POST /stable/training_schedules (stable_training_schedules)
     def create
-      authorize schedule
-
       if schedule.update(schedule_params)
         redirect_to stable_training_schedules_path, notice: t(".success", name: @schedule.name)
       else
@@ -41,8 +38,6 @@ module CurrentStable
     # @route PATCH /stable/training_schedules/:id (stable_training_schedule)
     # @route PUT /stable/training_schedules/:id (stable_training_schedule)
     def update
-      authorize schedule
-
       if schedule.update(schedule_params)
         redirect_to stable_training_schedules_path, notice: t(".success", name: @schedule.name)
       else
@@ -53,8 +48,6 @@ module CurrentStable
 
     # @route DELETE /stable/training_schedules/:id (stable_training_schedule)
     def destroy
-      authorize schedule
-
       schedule.destroy!
 
       delete_message = t("current_stable.training_schedules.deleted", name: schedule.name)
@@ -65,6 +58,10 @@ module CurrentStable
     end
 
     private
+
+    def authorize_schedule
+      authorize schedule
+    end
 
     def set_schedule
       @schedule = current_stable.training_schedules.find(params[:id])
