@@ -2,3 +2,4 @@ pngout: false
 optipng: false
 pngquant: false
 advpng: false
+svgo: false
