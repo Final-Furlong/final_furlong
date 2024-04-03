@@ -4,7 +4,7 @@ FactoryBot.define do
     birth_height { rand(10.0..20.0).round(2) }
     current_height { birth_height + 1.0 }
     max_height { current_height + 1.0 }
-    color { "chestnut" }
+    color { "dapple_grey" }
     face_marking { Horses::FaceMarking::VALUES.keys.sample }
     rf_leg_marking { Horses::LegMarking::VALUES.keys.sample.to_s }
     lf_leg_marking { Horses::LegMarking::VALUES.keys.sample.to_s }
