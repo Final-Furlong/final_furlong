@@ -9,6 +9,10 @@ FactoryBot.define do
     location_bred factory: :location
     appearance { association :horse_appearance, horse: instance }
 
+    trait :plain do
+      appearance { association :horse_appearance, :plain, horse: instance }
+    end
+
     trait :with_sire do
       sire
     end

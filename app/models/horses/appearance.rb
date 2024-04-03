@@ -14,27 +14,32 @@ module Horses
     validates :max_height, comparison: { greater_than_or_equal_to: :current_height }
     validates :color, inclusion: { in: Color::VALUES.keys.map(&:to_s) }
 
-    validates :face_marking, inclusion: { in: FaceMarking::VALUES.keys.map(&:to_s) }
+    validates :face_marking, inclusion: { in: FaceMarking::VALUES.keys.map(&:to_s) }, allow_blank: true
     validates :face_image, absence: true, unless: :face_marking
     validates :face_image, presence: true, if: :face_marking
 
-    validates :rf_leg_marking, inclusion: { in: LegMarking::VALUES.keys.map(&:to_s) }, if: :rf_leg_marking
+    validates :rf_leg_marking, inclusion: { in: LegMarking::VALUES.keys.map(&:to_s) }, allow_blank: true
     validates :rf_leg_image, presence: true, if: :rf_leg_marking
     validates :rf_leg_image, absence: true, unless: :rf_leg_marking
 
-    validates :lf_leg_marking, inclusion: { in: LegMarking::VALUES.keys.map(&:to_s) }, if: :lf_leg_marking
+    validates :lf_leg_marking, inclusion: { in: LegMarking::VALUES.keys.map(&:to_s) }, allow_blank: true
     validates :lf_leg_image, presence: true, if: :lf_leg_marking
     validates :lf_leg_image, absence: true, unless: :lf_leg_marking
 
-    validates :rh_leg_marking, inclusion: { in: LegMarking::VALUES.keys.map(&:to_s) }, if: :rh_leg_marking
+    validates :rh_leg_marking, inclusion: { in: LegMarking::VALUES.keys.map(&:to_s) }, allow_blank: true
     validates :rh_leg_image, presence: true, if: :rh_leg_marking
     validates :rh_leg_image, absence: true, unless: :rh_leg_marking
 
-    validates :lh_leg_marking, inclusion: { in: LegMarking::VALUES.keys.map(&:to_s) }, if: :lh_leg_marking
+    validates :lh_leg_marking, inclusion: { in: LegMarking::VALUES.keys.map(&:to_s) }, allow_blank: true
     validates :lh_leg_image, presence: true, if: :lh_leg_marking
     validates :lh_leg_image, absence: true, unless: :lh_leg_marking
 
-    after_commit :create_image
+    validates :image, attached: true, content_type: ["image/png", "image/jpeg"],
+      dimension: { width: { min: 800, max: 2400 }, height: { min: 600, max: 1800 } },
+      size: { between: 1.kilobyte..100.megabytes },
+      on: :image_creation
+
+    after_commit :create_image, on: :create
 
     delegate :gender, to: :horse
 

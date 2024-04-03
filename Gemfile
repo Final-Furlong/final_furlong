@@ -14,6 +14,7 @@ gem "responders"
 gem "action_policy"
 gem "active_interaction"
 gem "activerecord_json_validator"
+gem "active_storage_validations"
 gem "bootstrap"
 gem "bootstrap5-kaminari-views"
 gem "browser"
@@ -95,6 +96,7 @@ group :development do
   gem "capistrano-sidekiq", require: false
   gem "chusaku", require: false
   gem "ed25519", require: false # required for capistrano
+  gem "fastimage"
   gem "guard", require: false
   gem "guard-bundler", require: false
   gem "guard-haml_lint", require: false
@@ -159,3 +161,4 @@ end
 group :tools do
   gem "colorize", require: false
 end
+

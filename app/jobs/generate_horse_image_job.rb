@@ -1,3 +1,5 @@
+require "fastimage"
+
 class GenerateHorseImageJob < ApplicationJob
   include ActionView::Helpers::AssetUrlHelper
 
@@ -8,17 +10,20 @@ class GenerateHorseImageJob < ApplicationJob
     @appearance = horse.appearance
 
     raise "background missing!" unless File.exist?(background_image)
+    raise "background wrong!" unless FastImage.size(background_image).first == 1000
     raise "body missing!" unless File.exist?(body_image)
+    raise "body wrong!" unless FastImage.size(body_image).first == 1000
     horse_image = ImageProcessing::Vips
       .source(background_image)
       .composite(body_image, mode: "over")
     all_markings.each do |body_part, image|
       raise leg_marking_image(body_part, image).inspect unless File.exist?(leg_marking_image(body_part, image))
+      raise "leg #{appearance.gender} #{appearance.color} #{body_part} #{image} wrong!" unless FastImage.size(leg_marking_image(body_part, image)).first == 1000
       horse_image = horse_image.composite(leg_marking_image(body_part, image), mode: "over")
     end
     appearance.image.attach(io: horse_image.call, filename: "#{horse.id}.png")
-    appearance.valid?(:image_creation)
-    appearance.save!
+    raise apperance.errors.full_messages.inspect unless appearance.valid?(:image_creation)
+    appearance.save
   end
 
   private
