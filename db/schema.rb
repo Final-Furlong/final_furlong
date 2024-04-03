@@ -10,14 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_24_132918) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_03_140532) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "horse_color", ["bay", "black", "blood_bay", "blue_roan", "brown", "chestnut", "dapple_grey", "dark_bay", "dark_grey", "flea_bitten_grey", "grey", "light_bay", "light_chestnut", "light_grey", "liver_chestnut", "mahogany_bay", "red_chestnut", "strawberry_roan"]
+  create_enum "horse_face_marking", ["bald_face", "blaze", "snip", "star", "star_snip", "star_stripe", "star_stripe_snip"]
   create_enum "horse_gender", ["colt", "filly", "mare", "stallion", "gelding"]
+  create_enum "horse_leg_marking", ["coronet", "ermine", "sock", "stocking"]
   create_enum "horse_status", ["unborn", "weanling", "yearling", "racehorse", "broodmare", "stud", "retired", "retired_broodmare", "retired_stud", "deceased"]
   create_enum "track_condition", ["fast", "good", "slow", "wet"]
   create_enum "track_surface", ["dirt", "turf", "steeplechase"]
@@ -32,7 +35,56 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_24_132918) do
     t.index ["user_id"], name: "index_activations_on_user_id", unique: true
   end
 
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
   create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
+  end
+
+  create_table "horse_appearances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "horse_id"
+    t.enum "color", default: "bay", null: false, comment: "bay, black, blood_bay, blue_roan, brown, chestnut, dapple_grey, dark_bay, dark_grey, flea_bitten_grey, grey, light_bay, light_chestnut, light_grey, liver_chestnut, mahogany_bay, red_chestnut, strawberry_roan", enum_type: "horse_color"
+    t.enum "rf_leg_marking", comment: "coronet, ermine, sock, stocking", enum_type: "horse_leg_marking"
+    t.enum "lf_leg_marking", comment: "coronet, ermine, sock, stocking", enum_type: "horse_leg_marking"
+    t.enum "rh_leg_marking", comment: "coronet, ermine, sock, stocking", enum_type: "horse_leg_marking"
+    t.enum "lh_leg_marking", comment: "coronet, ermine, sock, stocking", enum_type: "horse_leg_marking"
+    t.enum "face_marking", comment: "bald_face, blaze, snip, star, star_snip, star_stripe, star_stripe_snip", enum_type: "horse_face_marking"
+    t.string "rf_leg_image"
+    t.string "lf_leg_image"
+    t.string "rh_leg_image"
+    t.string "lh_leg_image"
+    t.string "face_image"
+    t.decimal "birth_height", precision: 4, scale: 2, default: "0.0"
+    t.decimal "current_height", precision: 4, scale: 2, default: "0.0"
+    t.decimal "max_height", precision: 4, scale: 2, default: "0.0"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["horse_id"], name: "index_horse_appearances_on_horse_id"
   end
 
   create_table "horses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -355,6 +407,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_24_132918) do
   end
 
   add_foreign_key "activations", "users"
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "horse_appearances", "horses"
   add_foreign_key "horses", "horses", column: "dam_id"
   add_foreign_key "horses", "horses", column: "sire_id"
   add_foreign_key "horses", "locations", column: "location_bred_id"

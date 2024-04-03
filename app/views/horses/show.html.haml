@@ -19,3 +19,7 @@
 .status
   %strong= Horses::Horse.human_attribute_name(:status)
   = I18n.t("horses.statuses.#{@horse.status}")
+
+.pre= @horse.appearance.attributes.to_s
+- if @horse.appearance.image.present?
+  = image_tag url_for(@horse.appearance.image), alt: @horse.name

@@ -32,9 +32,7 @@ gem "grape-entity"
 gem "grape_on_rails_routes"
 gem "haml"
 gem "haml-rails"
-gem "image_optim"
-gem "image_optim_pack"
-gem "image_optim_rails"
+gem "image_processing"
 gem "importmap-rails"
 gem "kaminari"
 gem "lograge"
@@ -102,6 +100,9 @@ group :development do
   gem "guard-haml_lint", require: false
   gem "guard-rspec", require: false
   gem "guard-rubocop", require: false
+  gem "image_optim", require: false
+  gem "image_optim_pack", require: false
+  gem "image_optim_rails", require: false
   gem "terminal-notifier", require: false
   gem "terminal-notifier-guard", require: false
   gem "yalphabetize", require: false
@@ -158,4 +159,3 @@ end
 group :tools do
   gem "colorize", require: false
 end
-

@@ -377,6 +377,9 @@ GEM
       image_optim (~> 0.24)
       railties
       sprockets
+    image_processing (1.12.2)
+      mini_magick (>= 4.9.5, < 5)
+      ruby-vips (>= 2.0.17, < 3)
     image_size (3.4.0)
     imagen (0.1.8)
       parser (>= 2.5, != 2.5.1.1)
@@ -444,6 +447,7 @@ GEM
     marcel (1.0.4)
     matrix (0.4.2)
     method_source (1.0.0)
+    mini_magick (4.12.0)
     mini_mime (1.1.5)
     minitest (5.22.3)
     motor-admin (0.4.26)
@@ -643,6 +647,8 @@ GEM
       rake (>= 0.8.1)
     ruby-next-core (1.0.2)
     ruby-progressbar (1.13.0)
+    ruby-vips (2.2.1)
+      ffi (~> 1.12)
     ruby2_keywords (0.0.5)
     ruby_parser (3.21.0)
       racc (~> 1.5)
@@ -876,6 +882,7 @@ DEPENDENCIES
   image_optim
   image_optim_pack
   image_optim_rails
+  image_processing
   importmap-rails
   kaminari
   letter_opener

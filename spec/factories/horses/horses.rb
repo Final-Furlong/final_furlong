@@ -7,6 +7,7 @@ FactoryBot.define do
     owner factory: :stable
     breeder { owner }
     location_bred factory: :location
+    appearance { association :horse_appearance, horse: instance }
 
     trait :with_sire do
       sire
