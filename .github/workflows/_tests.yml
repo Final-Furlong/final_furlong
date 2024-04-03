@@ -74,6 +74,11 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn --prefer-offline
 
+      - name: Install libvips
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install libvips
+
       - name: Set up primary database
         env:
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
