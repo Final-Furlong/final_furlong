@@ -8,11 +8,19 @@ const navMenu = document.getElementById("sidebar-menu")
 const hideIcon = document.getElementById("icon-hide-sidenav")
 const showIcon = document.getElementById("icon-show-sidenav")
 
+function hideElement(element) {
+  element.classList.add("d-none")
+}
+
+function showElement(element) {
+  element.classList.remove("d-none")
+}
+
 navMenu.addEventListener("hide.bs.collapse", () => {
-  showIcon.classList.remove("d-none")
-  hideIcon.classList.add("d-none")
+  showElement(showIcon)
+  hideElement(hideIcon)
 })
 navMenu.addEventListener("show.bs.collapse", () => {
-  hideIcon.classList.remove("d-none")
-  showIcon.classList.add("d-none")
+  showElement(hideIcon)
+  hideElement(showIcon)
 })

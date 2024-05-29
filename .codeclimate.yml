@@ -1,10 +1,18 @@
+version: "2"
 plugins:
+  brakeman:
+    enabled: true
   bundler-audit:
+    enabled: true
+  fixme:
     enabled: true
   haml-lint:
     enabled: true
+  shellcheck:
+    enabled: true
 exclude_patterns:
   - ".git-hooks/"
+  - "app/services/migrate_*_service.rb"
   - "config/"
   - "db/"
   - "**/node_modules/"

@@ -2,6 +2,7 @@ module CurrentStable
   class TrainingSchedulesController < ::AuthenticatedController
     before_action :set_schedule, except: %i[index new create]
     before_action :new_schedule, only: %i[new create]
+    before_action :authorize_schedule, except: :index
 
     attr_reader :schedule
 
@@ -18,22 +19,18 @@ module CurrentStable
 
     # @route GET /stable/training_schedules/new (new_stable_training_schedule)
     def new
-      authorize schedule
     end
 
     # @route GET /stable/training_schedules/:id/edit (edit_stable_training_schedule)
     def edit
-      authorize schedule
     end
 
     # @route POST /stable/training_schedules (stable_training_schedules)
     def create
-      authorize schedule
-
       if schedule.update(schedule_params)
-        redirect_to stable_training_schedules_path, notice: t(".success", name: @schedule.name)
+        redirect_success
       else
-        flash[:alert] = schedule.errors.full_messages.to_sentence
+        flash[:alert] = schedule_errors
         render :new, status: :unprocessable_entity
       end
     end
@@ -41,20 +38,16 @@ module CurrentStable
     # @route PATCH /stable/training_schedules/:id (stable_training_schedule)
     # @route PUT /stable/training_schedules/:id (stable_training_schedule)
     def update
-      authorize schedule
-
       if schedule.update(schedule_params)
-        redirect_to stable_training_schedules_path, notice: t(".success", name: @schedule.name)
+        redirect_success
       else
-        flash[:alert] = schedule.errors.full_messages.to_sentence
+        flash[:alert] = schedule_errors
         render :edit, status: :unprocessable_entity
       end
     end
 
     # @route DELETE /stable/training_schedules/:id (stable_training_schedule)
     def destroy
-      authorize schedule
-
       schedule.destroy!
 
       delete_message = t("current_stable.training_schedules.deleted", name: schedule.name)
@@ -65,6 +58,10 @@ module CurrentStable
     end
 
     private
+
+    def authorize_schedule
+      authorize schedule
+    end
 
     def set_schedule
       @schedule = current_stable.training_schedules.find(params[:id])
@@ -83,6 +80,14 @@ module CurrentStable
         thursday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3],
         friday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3],
         saturday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3]).merge(stable: current_stable)
+    end
+
+    def schedule_errors
+      schedule.errors.full_messages.to_sentence
+    end
+
+    def redirect_success
+      redirect_to stable_training_schedules_path, notice: t(".success", name: @schedule.name)
     end
   end
 end

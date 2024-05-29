@@ -135,6 +135,8 @@ ignore_unused:
   - 'views.pagination.*'
   - '{date,time,number}.*'
   - '{devise,kaminari,will_paginate,helpers}.*'
+  - 'current_stable.training_schedules.{create,update}.success'
+  - 'users.{create,update}.success'
 
 ## Exclude these keys from the `i18n-tasks eq-base' report:
 # ignore_eq_base:

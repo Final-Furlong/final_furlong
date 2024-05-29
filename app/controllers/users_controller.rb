@@ -26,8 +26,7 @@ class UsersController < AuthenticatedController
   # @route POST /users (users)
   def create
     if @user_form.save(user_attributes)
-      flash[:success] = t(".success")
-      redirect_to users_path
+      redirect_to_users
     else
       flash[:alert] = t(".failure")
       render :new, status: :unprocessable_entity
@@ -38,8 +37,7 @@ class UsersController < AuthenticatedController
   # @route PUT /users/:id (user)
   def update
     if @user_form.submit(user_attributes)
-      flash[:success] = t(".success")
-      redirect_to users_path
+      redirect_to_users
     else
       flash[:alert] = t(".failure")
       render :new, status: :unprocessable_entity
@@ -80,6 +78,11 @@ class UsersController < AuthenticatedController
 
   def user_attributes
     permitted_attributes(@user)
+  end
+
+  def redirect_to_users
+    flash[:success] = t(".success")
+    redirect_to users_path
   end
 end
 
