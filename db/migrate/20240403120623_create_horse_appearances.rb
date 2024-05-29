@@ -21,7 +21,7 @@ class CreateHorseAppearances < ActiveRecord::Migration[7.0]
       strawberry_roan
     ]
     leg_marking_list = %w[coronet ermine sock stocking]
-    face_marking_list = %w[bald_face blaze snip star star_snip star_stripe star_stripe_snip]
+    face_marking_list = %w[bald_face blaze snip star star_snip star_stripe star_stripe_snip stripe stripe_snip]
 
     create_enum :horse_color, color_list
     create_enum :horse_leg_marking, leg_marking_list

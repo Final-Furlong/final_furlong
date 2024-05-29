@@ -139,6 +139,7 @@ GEM
     bundler-audit (0.9.1)
       bundler (>= 1.2.0, < 3)
       thor (~> 1.0)
+    byebug (11.1.3)
     cancancan (3.5.0)
     capistrano (3.18.1)
       airbrussh (>= 1.0.0)
@@ -852,6 +853,7 @@ DEPENDENCIES
   browser
   bullet
   bundler-audit
+  byebug
   capistrano (~> 3.17)
   capistrano-bundler (~> 2.0)
   capistrano-deploytags (~> 1.0.0)

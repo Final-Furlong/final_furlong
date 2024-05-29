@@ -9,6 +9,7 @@ module Horses
     belongs_to :location_bred, class_name: "Location"
 
     has_one :appearance, class_name: "Appearance", dependent: :destroy
+    has_one :genetics, class_name: "Genetics", dependent: :destroy
     has_one :training_schedules_horse, class_name: "Racing::TrainingScheduleHorse", dependent: :destroy
     has_one :training_schedule, class_name: "Racing::TrainingSchedule", through: :training_schedules_horse
 

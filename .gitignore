@@ -57,3 +57,5 @@ spec/examples.txt
 .env.*.local
 
 .rubocop
+
+/config/credentials/production.key

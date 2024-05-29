@@ -87,6 +87,7 @@ group :development do
   gem "autoprefixer-rails"
   gem "bcrypt_pbkdf" # required for capistran
   gem "better_errors"
+  gem "byebug"
   gem "capistrano", "~> 3.17", require: false
   gem "capistrano-bundler", "~> 2.0", require: false
   gem "capistrano-deploytags", "~> 1.0.0", require: false
