@@ -1,5 +1,5 @@
 # config valid for current version and patch releases of Capistrano
-lock "~> 3.17.0"
+lock "~> 3.19.0"
 
 server "ffdeploy", user: "www", roles: %i[web app db], primary: true
 
