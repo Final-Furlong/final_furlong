@@ -4,11 +4,14 @@ inherit_mode:
 
 require:
   - standard
+  - rubocop-capybara
+  - rubocop-factory_bot
   - rubocop-graphql
   - rubocop-performance
   - rubocop-rails
   - rubocop-rake
   - rubocop-rspec
+  - rubocop-rspec_rails
 
 inherit_gem:
   rubocop-rails: config/default.yml
