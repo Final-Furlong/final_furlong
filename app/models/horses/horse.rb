@@ -33,6 +33,11 @@ module Horses
       self[:date_of_death] >= self[:date_of_birth]
     end
 
+    def slug
+      value = name.presence || id
+      value.parameterize
+    end
+
     def self.ransackable_attributes(_auth_object = nil)
       %w[age breeder_id dam_id date_of_birth date_of_death foals_count gender location_bred_id name owner_id sire_id status unborn_foals_count]
     end

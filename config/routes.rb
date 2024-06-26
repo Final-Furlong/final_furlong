@@ -26,7 +26,11 @@ Rails.application.routes.draw do
 
   resources :users
   resources :stables, only: %i[index show]
-  resources :horses, except: %i[new create destroy]
+  resources :horses, except: %i[new create destroy] do
+    member do
+      get :image
+    end
+  end
 
   match "/settings", to: "settings#update", as: :settings, via: %i[put patch]
 

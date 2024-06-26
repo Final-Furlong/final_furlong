@@ -126,6 +126,7 @@ group :development, :test do
   gem "i18n-debug"
   gem "i18n-tasks"
   gem "letter_opener"
+  gem "puts_debuggerer", "~> 1.0.0"
   gem "reek", require: false
   gem "rubocop", require: false
   gem "rubocop-graphql", require: false
