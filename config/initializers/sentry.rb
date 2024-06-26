@@ -1,4 +1,4 @@
-unless Rails.env.development? || Rails.env.test?
+unless Rails.env.local?
   Sentry.init do |config|
     config.enabled_environments = %w[production]
 

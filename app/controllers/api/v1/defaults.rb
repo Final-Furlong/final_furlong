@@ -21,17 +21,17 @@ module Api
           end
 
           def rails_routes
-            Rails.application.routes.default_url_options[:host] = ENV.fetch("RAILS_APP_URL", "https://localhost:3000")
+            Rails.application.routes.default_url_options[:host] = ENV.fetch("RAILS_APP_URL", "http://localhost:3000")
             Rails.application.routes.url_helpers
           end
         end
 
         rescue_from ActiveRecord::RecordNotFound do |e|
-          error_response(message: e.message, status: 404)
+          error!(e, 404)
         end
 
         rescue_from ActiveRecord::RecordInvalid do |e|
-          error_response(message: e.message, status: 422)
+          error!(e, 422)
         end
       end
     end
