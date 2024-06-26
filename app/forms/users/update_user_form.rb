@@ -13,6 +13,7 @@ module Users
     def initialize(user)
       @user = user
       super()
+      @models = [@user]
     end
 
     def submit(params)

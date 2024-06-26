@@ -5,6 +5,8 @@ module Racing
     end
 
     def new?
+      return false unless user&.stable
+
       user.stable.reload.training_schedules.size < Racing::TrainingSchedule::MAX_SCHEDULES_PER_STABLE
     end
 
@@ -23,7 +25,7 @@ module Racing
     private
 
     def owned_by_stable?
-      record.stable == user.stable
+      record.stable == user&.stable
     end
   end
 end
