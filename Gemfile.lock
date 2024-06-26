@@ -106,7 +106,7 @@ GEM
     autoprefixer-rails (10.4.16.0)
       execjs (~> 2)
     backport (1.2.0)
-    base64 (0.2.0)
+    base64 (0.1.1)
     bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.0)
     benchmark (0.3.0)
@@ -820,6 +820,7 @@ DEPENDENCIES
   activerecord_json_validator
   annotate
   autoprefixer-rails
+  base64 (= 0.1.1)
   bcrypt_pbkdf
   better_errors
   binding_of_caller
