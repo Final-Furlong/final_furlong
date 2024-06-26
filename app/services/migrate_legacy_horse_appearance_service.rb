@@ -43,8 +43,7 @@ class MigrateLegacyHorseAppearanceService # rubocop:disable Metrics/ClassLength
 
   def birth_height
     height_in_inches = (legacy_horse.Height.to_f.floor * 4) + legacy_horse.Height.to_s.split(".").last.to_i
-    # puts height_in_inches
-    birth_height_in_inches = height_in_inches * legacy_horse.FoalHeight.fdiv(100).round(2)
+    birth_height_in_inches = legacy_horse.FoalHeight.nil? ? 0 : height_in_inches * legacy_horse.FoalHeight.fdiv(100).round(2)
     # puts birth_height_in_inches.to_s
     # puts (birth_height_in_inches / 4).to_s
     # puts (birth_height_in_inches % 4).fdiv(10).round(1).to_s
