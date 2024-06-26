@@ -10,7 +10,7 @@ module Users
     before_validation :set_stable_name
 
     def initialize(attributes)
-      super(attributes)
+      super
       @models = [user, stable]
     end
 

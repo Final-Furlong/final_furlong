@@ -8,6 +8,8 @@ module Horses
     belongs_to :dam, class_name: "Horse", optional: true
     belongs_to :location_bred, class_name: "Location"
 
+    has_one :appearance, class_name: "Appearance", dependent: :destroy
+    has_one :genetics, class_name: "Genetics", dependent: :destroy
     has_one :training_schedules_horse, class_name: "Racing::TrainingScheduleHorse", dependent: :destroy
     has_one :training_schedule, class_name: "Racing::TrainingSchedule", through: :training_schedules_horse
 
@@ -29,6 +31,11 @@ module Horses
       return false unless self[:date_of_death]
 
       self[:date_of_death] >= self[:date_of_birth]
+    end
+
+    def slug
+      value = name.presence || id
+      value.parameterize
     end
 
     def self.ransackable_attributes(_auth_object = nil)

@@ -11,6 +11,10 @@ module Horses
     def show?
       !record.unborn?
     end
+
+    def image?
+      show?
+    end
   end
 end
 

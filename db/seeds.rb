@@ -7,6 +7,8 @@
 #   Character.create(name: "Luke", movie: movies.first)
 return unless Rails.env.development?
 
+Sidekiq::Queue.all.each(&:clear) # rubocop:disable Rails/FindEach
+
 require "faker"
 require "factory_bot_rails"
 max_stables = ENV.fetch("USERS", 5).to_i
@@ -30,8 +32,8 @@ if Horses::Horse.count.zero?
   Rails.logger.info "Creating mare"
   mare = FactoryBot.create(:horse, :broodmare)
   Rails.logger.info "Creating yearling"
-  FactoryBot.create(:horse, :weanling, sire: stud, dam: mare)
+  FactoryBot.create(:horse, :yearling, :plain, dam: mare)
   Rails.logger.info "Creating weanling"
-  FactoryBot.create(:horse, :yearling, dam: mare)
+  FactoryBot.create(:horse, :weanling, sire: stud, dam: mare)
 end
 

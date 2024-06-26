@@ -14,6 +14,7 @@ gem "responders"
 gem "action_policy"
 gem "active_interaction"
 gem "activerecord_json_validator"
+gem "active_storage_validations"
 gem "base64", "0.1.1"
 gem "bootstrap"
 gem "bootstrap5-kaminari-views"
@@ -32,6 +33,7 @@ gem "grape-entity"
 gem "grape_on_rails_routes"
 gem "haml"
 gem "haml-rails"
+gem "image_processing"
 gem "importmap-rails"
 gem "kaminari"
 gem "lograge"
@@ -85,6 +87,7 @@ group :development do
   gem "autoprefixer-rails"
   gem "bcrypt_pbkdf" # required for capistran
   gem "better_errors"
+  gem "byebug"
   gem "capistrano", "~> 3.17", require: false
   gem "capistrano-bundler", "~> 2.0", require: false
   gem "capistrano-deploytags", "~> 1.0.0", require: false
@@ -95,11 +98,15 @@ group :development do
   gem "capistrano-yarn", require: false
   gem "chusaku", require: false
   gem "ed25519", require: false # required for capistrano
+  gem "fastimage"
   gem "guard", require: false
   gem "guard-bundler", require: false
   gem "guard-haml_lint", require: false
   gem "guard-rspec", require: false
   gem "guard-rubocop", require: false
+  gem "image_optim", require: false
+  gem "image_optim_pack", require: false
+  gem "image_optim_rails", require: false
   gem "terminal-notifier", require: false
   gem "terminal-notifier-guard", require: false
   gem "yalphabetize", require: false
@@ -120,13 +127,17 @@ group :development, :test do
   gem "i18n-debug"
   gem "i18n-tasks"
   gem "letter_opener"
+  gem "puts_debuggerer", "~> 1.0.0"
   gem "reek", require: false
   gem "rubocop", require: false
+  gem "rubocop-capybara", require: false
+  gem "rubocop-factory_bot", require: false
   gem "rubocop-graphql", require: false
   gem "rubocop-performance", require: false
   gem "rubocop-rails", require: false
   gem "rubocop-rake", require: false
   gem "rubocop-rspec", require: false
+  gem "rubocop-rspec_rails", require: false
   gem "ruby-debug-ide", require: false
   gem "solargraph", require: false
   gem "standard"

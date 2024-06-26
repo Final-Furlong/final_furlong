@@ -8,7 +8,7 @@ module FinalFurlong
           options.reverse_merge!(allow_nil: false)
           options.reverse_merge!(allow_blank: false)
 
-          super(options)
+          super
         end
 
         def validate_each(record, attribute, value) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity

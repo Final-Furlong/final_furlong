@@ -1,5 +1,6 @@
 class HorsesController < ApplicationController
-  before_action :set_horse, except: :index
+  before_action :set_horse, except: %i[index image]
+  before_action :set_horse_by_legacy_id, only: :image
   before_action :authorize_horse, except: :index
   before_action :set_status_counts, only: :index
 
@@ -41,6 +42,20 @@ class HorsesController < ApplicationController
     end
   end
 
+  def image
+    raise ActiveRecord::RecordNotFound unless @horse.appearance&.image&.attached?
+
+    response.headers["Content-Type"] = @horse.appearance.image.content_type
+    filename = @horse.appearance.image.filename.to_s.gsub(@horse.id, @horse.slug)
+    response.headers["Content-Disposition"] = "attachment; filename=#{filename}"
+
+    @horse.appearance.image.download do |chunk|
+      response.stream.write(chunk)
+    end
+  ensure
+    response.stream.close
+  end
+
   private
 
   def authorize_horse
@@ -49,6 +64,14 @@ class HorsesController < ApplicationController
 
   def set_horse
     @horse = Horses::Horse.find(params[:id])
+  end
+
+  def set_horse_by_legacy_id
+    @horse = if params[:id].to_s.uuid?
+      Horses::Horse.find_by(id: params[:id])
+    else
+      Horses::Horse.find_by(legacy_id: params[:id])
+    end
   end
 
   def horse_params

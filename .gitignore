@@ -62,3 +62,5 @@ spec/examples.txt
 /config/credentials/staging.key
 
 .rubocop
+
+/config/credentials/production.key

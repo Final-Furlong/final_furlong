@@ -17,4 +17,5 @@ String.include CoreExtensions::String::MaskEmail
 String.include CoreExtensions::String::NormalizeEmail
 String.include CoreExtensions::String::Substrings
 String.include CoreExtensions::String::ToSearchTermsArr
+String.include CoreExtensions::String::UUID
 
