@@ -7,7 +7,7 @@ module FinalFurlong
         def initialize(options)
           options.reverse_merge!(message: :invalid)
 
-          super(options)
+          super
         end
 
         def validate_each(record, attribute, value) # rubocop:disable Metrics/CyclomaticComplexity

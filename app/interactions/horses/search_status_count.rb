@@ -78,13 +78,13 @@ module Horses
     def set_min_age_name_query
       return if query["age_gteq"].blank?
 
-      @horse_query = horse_query.where("horses.age >= ?", query["age_gteq"])
+      @horse_query = horse_query.where(horses: { age: query["age_gteq"].. })
     end
 
     def set_max_age_name_query
       return if query["age_lteq"].blank?
 
-      @horse_query = horse_query.where("horses.age <= ?", query["age_lteq"])
+      @horse_query = horse_query.where(horses: { age: ..query["age_lteq"] })
     end
 
     def group_by_status_count
