@@ -18,7 +18,6 @@ gem "bootstrap"
 gem "bootstrap5-kaminari-views"
 gem "browser"
 gem "counter_culture"
-gem "cssbundling-rails"
 gem "dartsass-rails"
 gem "dartsass-sprockets"
 gem "data_migrate"
@@ -92,6 +91,7 @@ group :development do
   gem "capistrano-rails", "~> 1.3", require: false
   gem "capistrano-rbenv", "~> 2.2", require: false
   gem "capistrano-sidekiq", require: false
+  gem "capistrano-yarn", require: false
   gem "chusaku", require: false
   gem "ed25519", require: false # required for capistrano
   gem "guard", require: false

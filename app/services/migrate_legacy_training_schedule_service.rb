@@ -26,11 +26,11 @@ class MigrateLegacyTrainingScheduleService
     )
     if legacy_schedule.Horse
       horse = Horses::Horse.find_by(legacy_id: legacy_schedule.Horse)
-      Racing::TrainingScheduleHorse.create!(training_schedule: schedule, horse:)
+      Racing::TrainingScheduleHorse.create!(training_schedule: schedule, horse:) if horse
     else
       Legacy::TrainingScheduleHorse.where("Schedule = ?", legacy_schedule.ID).find_each do |schedule_horse|
         horse = Horses::Horse.find_by(legacy_id: schedule_horse.Horse)
-        Racing::TrainingScheduleHorse.create!(training_schedule: schedule, horse:)
+        Racing::TrainingScheduleHorse.create!(training_schedule: schedule, horse:) if horse
       end
     end
   end

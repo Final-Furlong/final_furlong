@@ -56,11 +56,11 @@ module Racing
     end
 
     def activity_with_distance(index)
-      activity = send(:"activity#{index}").titleize
+      activity = send(:"activity#{index}")
       return I18n.t("common.none") if activity.blank?
 
       distance = I18n.t("common.distances.#{send(:"distance#{index}")}_furlongs")
-      I18n.t("racing.training_schedules.activity_with_distance", activity:, distance:)
+      I18n.t("racing.training_schedules.activity_with_distance", activity: activity.titleize, distance:)
     end
 
     def method_missing(name, *args, &block)
