@@ -1,9 +1,9 @@
 ---
 :concurrency: 5
 staging:
-  :concurrency: 2
+  :concurrency: 1
 production:
-  :concurrency: 10
+  :concurrency: 3
 :queues:
   - [ "critical", 6 ]
   - [ "high", 4 ]
