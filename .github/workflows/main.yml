@@ -15,6 +15,7 @@ concurrency:
 env:
   CI: true
   RAILS_ENV: test
+  MAILTRAP_API_KEY: foo
 
 jobs:
   setup:

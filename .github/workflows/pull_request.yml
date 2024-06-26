@@ -12,6 +12,7 @@ env:
   CI: true
   RAILS_ENV: test
   COVERAGE: true
+  MAILTRAP_API_KEY: foo
 
 jobs:
   setup:

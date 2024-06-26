@@ -3,6 +3,7 @@ on:
 
 env:
   CI: true
+  MAILTRAP_API_KEY: foo
 
 jobs:
   linters:

@@ -30,6 +30,8 @@ set :ssh_options, {
   verify_host_key: :always
 }
 
+set :yarn_flags, "--production --pure-lockfile --no-emoji --no-progress --ignore-engines"
+
 before "deploy:migrate", "maintenance:start"
 after "deploy:migrate", "maintenance:stop"
 
