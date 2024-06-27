@@ -27,6 +27,7 @@ gem "discard"
 gem "dotenv-rails"
 gem "dotenv_validator"
 gem "dry-validation"
+gem "fastimage"
 gem "grape"
 gem "grape-active_model_serializers"
 gem "grape-entity"
@@ -98,7 +99,6 @@ group :development do
   gem "capistrano-yarn", require: false
   gem "chusaku", require: false
   gem "ed25519", require: false # required for capistrano
-  gem "fastimage"
   gem "guard", require: false
   gem "guard-bundler", require: false
   gem "guard-haml_lint", require: false

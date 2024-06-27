@@ -1,4 +1,6 @@
-PutsDebuggerer.app_path = Rails.root.to_s if defined?(PutsDebuggerer)
+if defined?(PutsDebuggerer) && Rails.env.local?
+  PutsDebuggerer.app_path = Rails.root.to_s
+end
 
 unless Rails.env.local?
   def pd(*args, &block)

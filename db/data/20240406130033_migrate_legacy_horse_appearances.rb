@@ -2,6 +2,8 @@ class MigrateLegacyHorseAppearances < ActiveRecord::Migration[7.0]
   disable_ddl_transaction!
 
   def up
+    return if Rails.env.development?
+
     say_with_time "Migrating legacy horse appearances" do
       say "Legacy horse count: #{Legacy::Horse.count}"
       max_id = Horses::Horse.where.associated(:appearance).maximum("legacy_id")
