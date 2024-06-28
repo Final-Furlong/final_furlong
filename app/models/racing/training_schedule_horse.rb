@@ -5,6 +5,8 @@ module Racing
     belongs_to :training_schedule, class_name: "Racing::TrainingSchedule"
     belongs_to :horse, class_name: "Horses::Horse"
 
+    delegate :stable, to: :training_schedule
+
     validates :horse_id, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex
 
     counter_culture :training_schedule, column_name: :horses_count
