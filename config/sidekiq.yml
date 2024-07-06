@@ -3,7 +3,7 @@
 staging:
   :concurrency: 1
 production:
-  :concurrency: 3
+  :concurrency: 1
 :queues:
   - [ "critical", 6 ]
   - [ "high", 4 ]
