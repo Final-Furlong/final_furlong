@@ -6,10 +6,7 @@ module Horses
 
     belongs_to :horse, class_name: "Horse"
 
-    has_one_attached :image
-
     validates :birth_height, :color, :current_height, :max_height, presence: true
-    validates :image, presence: true, on: :image_creation
     validates :current_height, comparison: { greater_than_or_equal_to: :birth_height }
     validates :max_height, comparison: { greater_than_or_equal_to: :current_height }
     validates :color, inclusion: { in: Color::VALUES.keys.map(&:to_s) }
@@ -34,17 +31,17 @@ module Horses
     validates :lh_leg_image, presence: true, if: :lh_leg_marking
     validates :lh_leg_image, absence: true, unless: :lh_leg_marking
 
-    validates :image, attached: true, content_type: ["image/png", "image/jpeg"],
-      dimension: { width: { min: 800, max: 2400 }, height: { min: 600, max: 1800 } },
-      size: { between: 1.kilobyte..100.megabytes },
-      on: :image_creation
-
-    after_commit :create_image, on: :create
-
     delegate :gender, to: :horse
 
-    def create_image
-      GenerateHorseImageJob.perform_async(horse.id) if image.blank?
+    def image(max_width: 500, max_height: 500)
+      return @image if @image
+
+      result = GenerateHorseImageService.call(horse_id: horse.id, max_height:, max_width:)
+      if result.success?
+        @image = result.payload
+      else
+        raise result.error
+      end
     end
 
     def no_markings?

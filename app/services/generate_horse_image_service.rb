@@ -1,12 +1,12 @@
 require "fastimage"
 
-class GenerateHorseImageJob < ApplicationJob
+class GenerateHorseImageService < ApplicationService
   include ActionView::Helpers::AssetUrlHelper
 
   attr_reader :appearance
 
-  def perform(id)
-    horse = Horses::Horse.find(id)
+  def call(horse_id:, max_height: 500, max_width: 800)
+    horse = Horses::Horse.find(horse_id)
     @appearance = horse.appearance
 
     raise "background missing!" unless File.exist?(background_image)
@@ -16,14 +16,16 @@ class GenerateHorseImageJob < ApplicationJob
     horse_image = ImageProcessing::Vips
       .source(background_image)
       .composite(body_image, mode: "over")
+      .convert("jpeg")
+      .saver(quality: 75)
     all_markings.each do |body_part, image|
       raise leg_marking_image(body_part, image).inspect unless File.exist?(leg_marking_image(body_part, image))
       raise "leg #{appearance.gender} #{appearance.color} #{body_part} #{image} wrong!" unless FastImage.size(leg_marking_image(body_part, image)).first == 1000
       horse_image = horse_image.composite(leg_marking_image(body_part, image), mode: "over")
     end
-    appearance.image.attach(io: horse_image.call, filename: "#{horse.id}.png")
-    raise apperance.errors.full_messages.inspect unless appearance.valid?(:image_creation)
-    appearance.save
+    ServiceSuccess.new(horse_image.resize_to_limit!(max_width, max_height))
+  rescue ImageProcessing::Error => e
+    ServiceError.new(e.message)
   end
 
   private
@@ -40,7 +42,7 @@ class GenerateHorseImageJob < ApplicationJob
 
   def leg_marking_image(body_part, image)
     paths = image_path_array
-    paths << "#{body_part.downcase}_#{image}.png"
+    paths << "#{body_part.downcase}_#{image}"
 
     paths.join("/")
   end

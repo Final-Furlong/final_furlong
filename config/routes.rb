@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   resources :horses, except: %i[new create destroy] do
     member do
       get :image
+      get :thumbnail
     end
   end
 

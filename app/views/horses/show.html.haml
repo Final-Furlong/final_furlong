@@ -21,4 +21,5 @@
   = I18n.t("horses.statuses.#{@horse.status}")
 
 - if @horse.appearance.image.present?
-  = image_tag url_for(@horse.appearance.image), alt: @horse.name
+  - data = Base64.encode64(File.read(@horse.appearance.image(max_width: 500, max_height: 300)))
+  %img{ src: "data:image/png;base64,#{data}", alt: @horse.name.presence || @horse.id, width: 500 }
