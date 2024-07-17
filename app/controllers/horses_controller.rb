@@ -43,20 +43,33 @@ class HorsesController < ApplicationController
   end
 
   def image
-    raise ActiveRecord::RecordNotFound unless @horse.appearance&.image&.attached?
+    raise ActiveRecord::RecordNotFound unless @horse.appearance&.image&.present?
+    image = @horse.appearance.image
 
-    response.headers["Content-Type"] = @horse.appearance.image.content_type
-    filename = @horse.appearance.image.filename.to_s.gsub(@horse.id, @horse.slug)
-    response.headers["Content-Disposition"] = "attachment; filename=#{filename}"
+    send_image(image)
+  ensure
+    response.stream.close
+  end
 
-    @horse.appearance.image.download do |chunk|
-      response.stream.write(chunk)
-    end
+  def thumbnail
+    raise ActiveRecord::RecordNotFound unless @horse.appearance&.image(max_width: 100, max_height: 100)&.present?
+    image = @horse.appearance.image(max_width: 100, max_height: 100)
+
+    send_image(image)
   ensure
     response.stream.close
   end
 
   private
+
+  def send_image(image)
+    content_type = File.extname(image.path.split("/").last)
+    response.headers["Content-Type"] = "image/#{content_type.delete(".")}"
+    filename = [@horse.id, content_type].join("")
+    response.headers["Content-Disposition"] = "attachment; filename=#{filename}"
+
+    response.stream.write(File.read(image))
+  end
 
   def authorize_horse
     authorize @horse

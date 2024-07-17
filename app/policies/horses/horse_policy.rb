@@ -15,6 +15,10 @@ module Horses
     def image?
       show?
     end
+
+    def thumbnail?
+      show?
+    end
   end
 end
 
