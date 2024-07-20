@@ -42,7 +42,7 @@ class GenerateHorseImageService < ApplicationService
 
   def leg_marking_image(body_part, image)
     paths = image_path_array
-    paths << "#{body_part.downcase}_#{image}"
+    paths << "#{body_part.downcase}_#{image}.png"
 
     paths.join("/")
   end
