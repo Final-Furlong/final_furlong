@@ -23,7 +23,7 @@ RSpec.describe Horses::Stallion do
       end
 
       it "is valid for retired_stallion" do
-        horse = build_stubbed(:horse, :stallion, status: "retired_stud")
+        horse = build_stubbed(:horse, :stallion, status: :retired_stud)
 
         expect(horse).to be_valid
       end
@@ -37,7 +37,7 @@ RSpec.describe Horses::Stallion do
       end
 
       it "is valid for gelding" do
-        horse = build_stubbed(:horse, :stallion, gender: "gelding")
+        horse = build_stubbed(:horse, :stallion, gender: :gelding)
 
         expect(horse).to be_valid
       end

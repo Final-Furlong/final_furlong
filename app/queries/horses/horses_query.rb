@@ -9,7 +9,7 @@ module Horses
       end
 
       def born
-        where.not(status: Status::STATUSES[:unborn])
+        where.not(status: :unborn)
       end
 
       def living
