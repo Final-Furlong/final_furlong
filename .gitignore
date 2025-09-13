@@ -64,3 +64,6 @@ spec/examples.txt
 .rubocop
 
 /config/credentials/production.key
+
+.envrc
+.idea/
