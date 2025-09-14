@@ -1,4 +1,4 @@
-require "final_furlong/errors/reporting"
+require_relative "errors/reporting"
 
 module FinalFurlong
   module Common
