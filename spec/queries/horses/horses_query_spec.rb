@@ -118,8 +118,8 @@ RSpec.describe Horses::HorsesQuery do
   describe ".sort_by_status_asc" do
     it "returns horses sorted by status ascending" do # rubocop:disable RSpec/ExampleLength
       broodmare = create(:horse, :broodmare)
-      dead = create(:horse, :dead)
-      stillborn = create(:horse, :stillborn)
+      dead = create(:horse, :dead, name: "Alpha")
+      stillborn = create(:horse, :stillborn, name: "Beta")
       racehorse = create(:horse, :racehorse)
       retired = create(:horse, :retired)
       retired_broodmare = create(:horse, :retired_broodmare)

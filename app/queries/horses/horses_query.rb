@@ -29,7 +29,7 @@ module Horses
       end
 
       def sort_by_status_asc
-        in_order_of(:status, status_array_order)
+        in_order_of(:status, status_array_order).order(name: :asc)
       end
 
       private
