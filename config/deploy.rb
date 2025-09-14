@@ -4,7 +4,7 @@ lock "~> 3.19.0"
 server "ffdeploy", user: "www", roles: %i[web app db], primary: true
 
 set :application, "final_furlong"
-set :repo_url, "git@github.com:pendletons/final_furlong.git"
+set :repo_url, "git@github.com:Final-Furlong/final_furlong.git"
 
 set :branch, ENV.fetch("REVISION", "main")
 
