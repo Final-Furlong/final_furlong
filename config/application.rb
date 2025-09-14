@@ -58,10 +58,6 @@ module FinalFurlong
         resource "*", headers: :any, methods: %i[get post put delete options]
       end
     end
-
-    # View Components
-    config.autoload_paths << Rails.root.join("app/frontend/components")
-    config.view_component.preview_paths << Rails.root.join("app/frontend/components")
   end
 end
 
