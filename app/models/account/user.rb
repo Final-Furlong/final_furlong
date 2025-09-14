@@ -17,7 +17,7 @@ module Account
       :recoverable, :rememberable, :validatable,
       :confirmable, :lockable, :timeoutable, :trackable
 
-    enum status: { pending: "pending", active: "active", deleted: "deleted", banned: "banned" }
+    enum :status, { pending: "pending", active: "active", deleted: "deleted", banned: "banned" }
 
     validates :username, :status, :name, presence: true
     validates :admin, inclusion: { in: [true, false] }

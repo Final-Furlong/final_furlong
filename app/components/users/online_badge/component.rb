@@ -3,7 +3,7 @@ module Users
     class Component < ApplicationViewComponent
       def initialize(online:)
         @online = online
-        super
+        super()
       end
 
       private

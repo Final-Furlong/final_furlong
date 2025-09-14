@@ -8,7 +8,7 @@ module Nav
         @links = links
         @classes = classes
         @actions = actions
-        super
+        super()
       end
 
       private

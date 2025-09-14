@@ -2,7 +2,7 @@ class VariantComponent < ApplicationViewComponent
   def initialize(version: nil, variants: %i[phone tablet desktop])
     @version = version
     @variants = variants
-    super
+    super()
   end
 
   private

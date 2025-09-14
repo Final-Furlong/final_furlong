@@ -24,7 +24,7 @@ Bundler.require(*Rails.groups)
 module FinalFurlong
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 7.1
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -58,10 +58,6 @@ module FinalFurlong
         resource "*", headers: :any, methods: %i[get post put delete options]
       end
     end
-
-    # View Components
-    config.autoload_paths << Rails.root.join("app/frontend/components")
-    config.view_component.preview_paths << Rails.root.join("app/frontend/components")
   end
 end
 

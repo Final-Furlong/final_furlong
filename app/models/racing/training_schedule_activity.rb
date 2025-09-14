@@ -73,11 +73,7 @@ module Racing
     end
 
     def respond_to_missing?(name, *args, &block)
-      if /(walking|jogging|cantering|galloping|breezing)_activity(1|2|3)\?/.match?(name)
-        true
-      else
-        super
-      end
+      /(walking|jogging|cantering|galloping|breezing)_activity(1|2|3)\?/.match?(name) || super
     end
   end
 end

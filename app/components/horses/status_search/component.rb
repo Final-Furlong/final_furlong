@@ -1,3 +1,5 @@
+require "ransack/helpers/form_helper"
+
 module Horses
   module StatusSearch
     class Component < VariantComponent
@@ -14,6 +16,7 @@ module Horses
         @path_name = path_name
         super(version:)
       end
+
       # rubocop:enable Metrics/ParameterLists
 
       private
