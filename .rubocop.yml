@@ -92,6 +92,8 @@ Metrics/MethodLength:
     - "app/models/legacy/*.rb"
 Naming/InclusiveLanguage:
   Enabled: true
+Rails/BulkChangeTable:
+  Enabled: false
 Rails/Output:
   Exclude:
     - "db/seeds.rb"

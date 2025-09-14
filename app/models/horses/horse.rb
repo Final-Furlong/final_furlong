@@ -13,8 +13,8 @@ module Horses
     has_one :training_schedules_horse, class_name: "Racing::TrainingScheduleHorse", dependent: :destroy
     has_one :training_schedule, class_name: "Racing::TrainingSchedule", through: :training_schedules_horse
 
-    enum status: Status::STATUSES
-    enum gender: Gender::VALUES
+    enum :status, Status::STATUSES
+    enum :gender, Gender::VALUES
 
     validates :date_of_birth, :gender, :status, presence: true
     validates :date_of_death, comparison: { greater_than_or_equal_to: :date_of_birth }, if: :date_of_death
