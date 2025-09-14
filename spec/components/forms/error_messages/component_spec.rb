@@ -9,7 +9,7 @@ RSpec.describe Forms::ErrorMessages::Component, type: :component do
     it "displays nothing" do
       render_inline(component)
 
-      expect(page).to have_no_css(".notification")
+      expect(page).not_to have_css(".notification")
     end
   end
 

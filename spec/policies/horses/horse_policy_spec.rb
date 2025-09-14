@@ -22,7 +22,7 @@ RSpec.describe Horses::HorsePolicy do
     end
 
     it "does not allow show" do
-      expect(policy).not_to allow_actions(:image)
+      expect(policy).not_to allow_actions(:image, :thumbnail)
     end
   end
 
@@ -30,7 +30,7 @@ RSpec.describe Horses::HorsePolicy do
     let(:user) { nil }
 
     it "allows public actions" do
-      expect(policy).to allow_actions(:index, :show, :image)
+      expect(policy).to allow_actions(:index, :show, :image, :thumbnail)
     end
 
     it_behaves_like "not permitting anything for an unborn horse"
@@ -40,7 +40,7 @@ RSpec.describe Horses::HorsePolicy do
     let(:user) { create(:user) }
 
     it "allows public actions" do
-      expect(policy).to allow_actions(:index, :show, :image)
+      expect(policy).to allow_actions(:index, :show, :image, :thumbnail)
     end
 
     it_behaves_like "not permitting anything for an unborn horse"
@@ -50,7 +50,7 @@ RSpec.describe Horses::HorsePolicy do
     let(:user) { create(:user, admin: true) }
 
     it "allows public actions" do
-      expect(policy).to allow_actions(:index, :show, :image)
+      expect(policy).to allow_actions(:index, :show, :image, :thumbnail)
     end
 
     it_behaves_like "not permitting anything for an unborn horse"

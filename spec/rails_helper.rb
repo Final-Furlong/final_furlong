@@ -12,6 +12,7 @@ require "capybara/rails"
 require "capybara/rspec"
 require "capybara-screenshot/rspec"
 require "factory_bot_rails"
+require "axe-rspec"
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -58,6 +59,9 @@ RSpec.configure do |config|
   config.include ViewComponent::TestHelpers, type: :view_component
   config.include Capybara::RSpecMatchers, type: :view_component
 
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :view
+  config.include Devise::Test::IntegrationHelpers, type: :feature
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.include RSpec::Rails::RequestExampleGroup, type: :request, file_path: %r{spec/api}
   config.include Rails.application.routes.url_helpers, type: :request
@@ -65,5 +69,16 @@ RSpec.configure do |config|
 
   config.include AbstractController::Translation # allow t() instead of I18n.t()
   config.include ActiveSupport::Testing::TimeHelpers
+
+  # use selenium for accessibility testing
+  config.around(:each, :axe) do |example|
+    Capybara.current_driver = :selenium_chrome_headless
+    Capybara.javascript_driver = :selenium_chrome_headless
+
+    example.run
+
+    Capybara.javascript_driver = Capybara.default_driver
+    Capybara.use_default_driver
+  end
 end
 
