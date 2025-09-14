@@ -1,3 +1,5 @@
+require "ransack/helpers/form_helper"
+
 module Horses
   module SearchFilters
     class Component < VariantComponent
