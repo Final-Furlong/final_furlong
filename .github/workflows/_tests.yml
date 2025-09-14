@@ -101,21 +101,6 @@ jobs:
         run: bin/rspec
         env:
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
-          TEST_TYPE: unit
-
-      - name: Cypress
-        run: bin/rails cypress:run
-        env:
-          CYPRESS: true
-          CYPRESS_RAILS_CYPRESS_OPTS: --record
-          CYPRESS_RECORD_KEY: ${{ secrets.cypress-record-key }}
-          CYPRESS_VIDEO: true
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Combine Code Coverage
-        run: bin/rails coverage:report
-        env:
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
 
       - name: Publish Coverage
         uses: paambaati/codeclimate-action@v5.0.0

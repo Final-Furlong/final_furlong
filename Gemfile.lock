@@ -112,6 +112,22 @@ GEM
     autoprefixer-rails (10.4.21.0)
       execjs (~> 2)
     awesome_print (1.9.2)
+    axe-core-api (4.10.3)
+      dumb_delegator
+      ostruct
+      virtus
+    axe-core-capybara (4.10.3)
+      axe-core-api (= 4.10.3)
+      dumb_delegator
+    axe-core-rspec (4.10.3)
+      axe-core-api (= 4.10.3)
+      dumb_delegator
+      ostruct
+      virtus
+    axiom-types (0.1.1)
+      descendants_tracker (~> 0.0.4)
+      ice_nine (~> 0.11.0)
+      thread_safe (~> 0.3, >= 0.3.1)
     backport (1.2.0)
     base64 (0.1.1)
     bcrypt (3.1.20)
@@ -187,6 +203,8 @@ GEM
     chusaku (1.4.1)
       railties (>= 3.0)
     coderay (1.1.3)
+    coercible (1.0.0)
+      descendants_tracker (~> 0.0.1)
     colorize (1.1.0)
     concurrent-ruby (1.3.5)
     connection_pool (2.5.4)
@@ -198,9 +216,9 @@ GEM
       tzinfo
       unicode (>= 0.4.4.5)
     csv (3.3.5)
-    cypress-rails (0.7.1)
-      puma (>= 3.8.0)
-      railties (>= 5.2.0)
+    cuprite (0.15.1)
+      capybara (~> 3.0)
+      ferrum (~> 0.15.0)
     dartsass-rails (0.5.1)
       railties (>= 6.0.0)
       sass-embedded (~> 1.63)
@@ -218,6 +236,8 @@ GEM
       irb (~> 1.10)
       reline (>= 0.3.8)
     debug_inspector (1.2.0)
+    descendants_tracker (0.0.4)
+      thread_safe (~> 0.3, >= 0.3.1)
     devise (4.9.4)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -273,6 +293,7 @@ GEM
       dry-initializer (~> 3.2)
       dry-schema (~> 1.14)
       zeitwerk (~> 2.6)
+    dumb_delegator (1.1.0)
     ed25519 (1.4.0)
     erb (5.0.2)
     erubi (1.13.1)
@@ -294,6 +315,11 @@ GEM
     fasterer (0.11.0)
       ruby_parser (>= 3.19.1)
     fastimage (2.4.0)
+    ferrum (0.15)
+      addressable (~> 2.5)
+      concurrent-ruby (~> 1.1)
+      webrick (~> 1.7)
+      websocket-driver (~> 0.7)
     ffi (1.17.2-arm64-darwin)
     ffi (1.17.2-x86_64-linux-gnu)
     formatador (1.2.0)
@@ -389,6 +415,7 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.8, >= 1.8.1)
       terminal-table (>= 1.5.1)
+    ice_nine (0.11.2)
     image_optim (0.31.4)
       exifr (~> 1.2, >= 1.2.2)
       fspath (~> 3.0)
@@ -830,6 +857,7 @@ GEM
     terminal-table (4.0.0)
       unicode-display_width (>= 1.1.1, < 4)
     thor (1.4.0)
+    thread_safe (0.3.6)
     tilt (2.6.1)
     timeout (0.4.3)
     turbo-rails (2.0.16)
@@ -861,6 +889,10 @@ GEM
     view_component-contrib (0.2.5)
       ruby-next-core (>= 0.15.0)
       view_component
+    virtus (2.0.0)
+      axiom-types (~> 0.1)
+      coercible (~> 1.0)
+      descendants_tracker (~> 0.0, >= 0.0.3)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.1)
@@ -903,6 +935,8 @@ DEPENDENCIES
   activerecord_json_validator
   annotate
   autoprefixer-rails
+  axe-core-capybara
+  axe-core-rspec
   base64 (= 0.1.1)
   bcrypt_pbkdf
   better_errors
@@ -928,7 +962,7 @@ DEPENDENCIES
   chusaku
   colorize
   counter_culture
-  cypress-rails
+  cuprite
   dartsass-rails
   dartsass-sprockets
   data_migrate

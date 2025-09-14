@@ -38,7 +38,6 @@ AllCops:
     - ".simplecov"
     - "app/models/legacy_*.rb"
   NewCops: enable
-  TargetRubyVersion: 3.2
 
 Bundler/OrderedGems:
   Enabled: true

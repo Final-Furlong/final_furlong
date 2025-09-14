@@ -1,4 +1,5 @@
 require_relative "responsive_helpers"
+require "capybara/cuprite"
 
 DEFAULT_MAX_WAIT_TIME = ENV["CI"] ? 5 : 3
 
@@ -9,21 +10,21 @@ Capybara::Screenshot.register_filename_prefix_formatter(:rspec) do |example|
   "screenshot_#{example.description.tr(" ", "-").gsub(%r{^.*/spec/}, "")}"
 end
 Capybara::Screenshot.prune_strategy = :keep_last_run
-Capybara.register_driver :selenium_chrome_headless do |app|
-  # Capybara::Selenium::Driver.load_selenium
-  options = Selenium::WebDriver::Chrome::Options.new
-  options.add_argument("--window-size=1024,768")
-  options.add_argument("--force-device-scale-factor=0.95")
-  options.add_argument("--headless")
-  options.add_argument("--disable-gpu")
-  options.add_argument("--disable-site-isolation-trials")
-  options.add_argument("--no-sandbox")
-
-  Capybara::Selenium::Driver.new(app, browser: :chrome, capabilities: [options])
+Capybara.register_driver(:cuprite) do |app|
+  options = {
+    headless: ENV.fetch("HEADFULL", false) == false,
+    window_size: [1024, 768],
+    slowmo: (ENV.fetch("HEADFULL", false) == true) ? 5 : 0,
+    js_errors: true,
+    browser_name: :chrome
+  }
+  Capybara::Cuprite::Driver.new(app, options)
 end
+Capybara.javascript_driver = :cuprite
+Capybara.default_driver = :cuprite
 
-Capybara.javascript_driver = :selenium_chrome_headless
-
+# options.add_argument("--force-device-scale-factor=0.95")
+# options.add_argument("--disable-gpu")
 RSpec.configure do |config|
   config.around(:each, :mobile, type: :system) do |example|
     resize_window_to_mobile

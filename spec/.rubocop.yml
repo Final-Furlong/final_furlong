@@ -1,6 +1,9 @@
 inherit_from:
   - '../.rubocop.yml'
 
+Capybara/NegationMatcher:
+  EnforcedStyle: not_to
+
 Layout/LineLength:
   Enabled: false
 
