@@ -1,0 +1,23 @@
+---
+en:
+  errors:
+    internal_error:
+      message: We're sorry, something went wrong.
+      title: 500 - Internal Server Error
+    messages:
+      already_confirmed: was already confirmed, please try signing in
+      confirmation_period_expired: needs to be confirmed within %{period}, please request a new one
+      expired: has expired, please request a new one
+      not_found: not found
+      not_locked: was not locked
+      not_saved:
+        one: '1 error prohibited this %{resource} from being saved:'
+        other: "%{count} errors prohibited this %{resource} from being saved:"
+    not_authorized: You are not authorized to perform this action.
+    not_found:
+      message: We're sorry, the page you are looking for can't be found.
+      tips_html: You may want to check back in a little while, or <a href="%{url}">return to the homepage</a>.
+      title: 404 - Not Found
+    unprocessable:
+      message: The change you wanted was rejected.
+      title: 422 - Unprocessable

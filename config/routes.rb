@@ -52,7 +52,7 @@ end
 
 # == Route Map
 #
-# I, [2024-06-26T14:41:20.691781 #77621]  INFO -- : [dotenv] Loaded [33m.env[0m
+# I, [2025-09-15T18:07:53.305076 #85194]  INFO -- : [dotenv] Loaded [33m.env[0m
 #                                   Prefix Verb      URI Pattern                                                                                       Controller#Action
 #                                 api_base           /                                                                                                 Api::Base
 #                              motor_admin           /motor_admin                                                                                      Motor::Admin
@@ -94,6 +94,7 @@ end
 #                                  stables GET       /stables(.:format)                                                                                stables#index
 #                                   stable GET       /stables/:id(.:format)                                                                            stables#show
 #                              image_horse GET       /horses/:id/image(.:format)                                                                       horses#image
+#                          thumbnail_horse GET       /horses/:id/thumbnail(.:format)                                                                   horses#thumbnail
 #                                   horses GET       /horses(.:format)                                                                                 horses#index
 #                               edit_horse GET       /horses/:id/edit(.:format)                                                                        horses#edit
 #                                    horse GET       /horses/:id(.:format)                                                                             horses#show
@@ -152,7 +153,7 @@ end
 #                     rails_direct_uploads POST      /rails/active_storage/direct_uploads(.:format)                                                    active_storage/direct_uploads#create
 #
 # Routes for Motor::Admin:
-#                            motor_cable        /cable                                                  #<ActionCable::Server::Base:0x0000000122ab9f28 @config=#<ActionCable::Server::Configuration:0x0000000122e10820 @log_tags=[], @connection_class=#<Proc:0x00000001174554f8 /Users/shanthi/.rbenv/versions/3.2.2/lib/ruby/gems/3.2.0/gems/actioncable-7.1.3.4/lib/action_cable/engine.rb:53 (lambda)>, @worker_pool_size=4, @disable_request_forgery_protection=false, @allow_same_origin_as_host=true, @filter_parameters=[:passw, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn, /\Aio\z/], @health_check_application=#<Proc:0x000000011745a3b8 /Users/shanthi/.rbenv/versions/3.2.2/lib/ruby/gems/3.2.0/gems/actioncable-7.1.3.4/lib/action_cable/engine.rb:29 (lambda)>, @logger=#<ActiveSupport::BroadcastLogger:0x00000001207f5690 @broadcasts=[#<ActiveSupport::Logger:0x00000001204148f0 @level=0, @progname=nil, @default_formatter=#<Logger::Formatter:0x00000001207f6d10 @datetime_format=nil>, @formatter=#<Logger::Formatter:0x00000001207f6900 @datetime_format=nil>, @logdev=#<Logger::LogDevice:0x0000000120414940 @shift_period_suffix=nil, @shift_size=nil, @shift_age=nil, @filename=nil, @dev=#<IO:<STDOUT>>, @binmode=false, @mon_data=#<Monitor:0x00000001207f6c48>, @mon_data_owner_object_id=13460>>], @progname="Broadcast", @formatter=#<Logger::Formatter:0x00000001207f6900 @datetime_format=nil>>, @cable={"adapter"=>"redis", "url"=>"redis://localhost:6379/1"}, @mount_path="/cable", @precompile_assets=true, @allowed_request_origins=/https?:\/\/localhost:\d+/>, @mutex=#<Monitor:0x00000001176f4498>, @pubsub=nil, @worker_pool=nil, @event_loop=nil, @remote_connections=nil>
+#                            motor_cable        /cable                                                  #<ActionCable::Server::Base:0x00000001528c2cd0 @config=#<ActionCable::Server::Configuration:0x00000001528c8e00 @log_tags=[], @connection_class=#<Proc:0x00000001457361a8 /Users/shanthi/.asdf/installs/ruby/3.4.5/lib/ruby/gems/3.4.0/gems/actioncable-7.2.2.2/lib/action_cable/engine.rb:55 (lambda)>, @worker_pool_size=4, @disable_request_forgery_protection=false, @allow_same_origin_as_host=true, @filter_parameters=[:passw, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn, /\Aio\z/], @health_check_application=#<Proc:0x0000000145738778 /Users/shanthi/.asdf/installs/ruby/3.4.5/lib/ruby/gems/3.4.0/gems/actioncable-7.2.2.2/lib/action_cable/engine.rb:31 (lambda)>, @logger=#<ActiveSupport::BroadcastLogger:0x00000001447f5568 @broadcasts=[#<ActiveSupport::Logger:0x0000000144f39478 @level=0, @progname=nil, @default_formatter=#<Logger::Formatter:0x00000001447f8538 @datetime_format=nil>, @formatter=#<Logger::Formatter:0x00000001447f8100 @datetime_format=nil>, @logdev=#<Logger::LogDevice:0x00000001456b9608 @shift_period_suffix=nil, @shift_size=nil, @shift_age=nil, @filename=nil, @dev=#<IO:<STDOUT>>, @binmode=false, @reraise_write_errors=[], @skip_header=false, @mon_data=#<Monitor:0x00000001447f8510>, @mon_data_owner_object_id=5792>, @level_override={}>], @progname="Broadcast", @formatter=#<Logger::Formatter:0x00000001447f8100 @datetime_format=nil>>, @cable={"adapter" => "redis", "url" => "redis://localhost:6379/1"}, @mount_path="/cable", @precompile_assets=true, @allowed_request_origins=/https?:\/\/localhost:\d+/>, @mutex=#<Monitor:0x00000001456fe640>, @pubsub=nil, @worker_pool=nil, @event_loop=nil, @remote_connections=nil>
 #                  motor_api_run_queries POST   /api/run_queries(.:format)                              motor/run_queries#create
 #                    motor_api_run_query GET    /api/run_queries/:id(.:format)                          motor/run_queries#show
 #                  motor_api_send_alerts POST   /api/send_alerts(.:format)                              motor/send_alerts#create
@@ -215,16 +216,16 @@ end
 #                      motor_api_session GET    /api/session(.:format)                                  motor/sessions#show
 #                                        DELETE /api/session(.:format)                                  motor/sessions#destroy
 #          motor_api_slack_conversations GET    /api/slack_conversations(.:format)                      motor/slack_conversations#index
-#                                        PUT    /api/data/:resource/:resource_id/:method(.:format)      motor/data#execute {:resource_id=>/[^\/]+/}
-#   motor_api_resource_association_index GET    /api/data/:resource/:resource_id/:association(.:format) motor/data#index {:resource_id=>/[^\/]+/}
-#                                        POST   /api/data/:resource/:resource_id/:association(.:format) motor/data#create {:resource_id=>/[^\/]+/}
+#                                        PUT    /api/data/:resource/:resource_id/:method(.:format)      motor/data#execute {resource_id: /[^\/]+/}
+#   motor_api_resource_association_index GET    /api/data/:resource/:resource_id/:association(.:format) motor/data#index {resource_id: /[^\/]+/}
+#                                        POST   /api/data/:resource/:resource_id/:association(.:format) motor/data#create {resource_id: /[^\/]+/}
 #                                        GET    /api/data/:resource(.:format)                           motor/data#index
 #                                        POST   /api/data/:resource(.:format)                           motor/data#create
-#                     motor_api_resource GET    /api/data/:resource/:id(.:format)                       motor/data#show {:id=>/[^\/]+/}
-#                                        PATCH  /api/data/:resource/:id(.:format)                       motor/data#update {:id=>/[^\/]+/}
-#                                        PUT    /api/data/:resource/:id(.:format)                       motor/data#update {:id=>/[^\/]+/}
-#                                        DELETE /api/data/:resource/:id(.:format)                       motor/data#destroy {:id=>/[^\/]+/}
-#                            motor_asset GET    /assets/:filename                                       motor/assets#show {:filename=>/.+/}
+#                     motor_api_resource GET    /api/data/:resource/:id(.:format)                       motor/data#show {id: /[^\/]+/}
+#                                        PATCH  /api/data/:resource/:id(.:format)                       motor/data#update {id: /[^\/]+/}
+#                                        PUT    /api/data/:resource/:id(.:format)                       motor/data#update {id: /[^\/]+/}
+#                                        DELETE /api/data/:resource/:id(.:format)                       motor/data#destroy {id: /[^\/]+/}
+#                            motor_asset GET    /assets/:filename                                       motor/assets#show {filename: /.+/}
 #                                  motor GET    /                                                       motor/ui#show
 #                          motor_ui_data GET    /data(/*path)(.:format)                                 motor/ui#index
 #                 motor_ui_notifications GET    /notifications(.:format)                                motor/ui#index

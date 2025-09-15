@@ -1,0 +1,57 @@
+---
+en:
+  account:
+    stables:
+      stable:
+        last_online: 'Last online at: %{date}'
+        no_description: No description
+  current_stable:
+    horses:
+      index:
+        title: Horses
+      update:
+        success: "%{name} was successfully updated."
+    training_schedule_horses:
+      create:
+        success: "%{name} was assigned to %{schedule}"
+      index:
+        title: Horses Assigned to Training Schedule %{schedule}
+      new:
+        title: Assign Horse to Training Schedule
+    training_schedules:
+      activities:
+        breeze: Breeze
+        canter: Canter
+        gallop: Gallop
+        jog: Jog
+        walk: Walk
+      create:
+        success: Training Schedule was successfully created.
+      deleted: Training Schedule %{name} was successfully deleted.
+      horse:
+        confirm: Are you sure you want to delete the schedule for %{name}?
+        deleted: "%{name} was successfully removed from this training schedule"
+        remove: Remove Schedule
+      index:
+        add_new: Create Schedule
+        title: Training Schedules
+      new:
+        title: New Training Schedule
+      show:
+        title: 'Training Schedule: %{name}'
+      update:
+        success: Training Schedule was successfully updated.
+    workouts:
+      create:
+        success: Workout for %{horse} ran successfully
+  stables:
+    edit:
+      header: Edit Stable
+    form:
+      update: Update Stable
+    index:
+      all: All Stables
+    show:
+      joined: Joined on %{date}
+    update:
+      success: Stable successfully updated

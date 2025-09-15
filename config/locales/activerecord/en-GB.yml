@@ -1,0 +1,7 @@
+---
+en-GB:
+  activemodel:
+    errors:
+      messages:
+        date_invalid: must be a valid date. Format should be DD/MM/YYYY
+        datetime_invalid: must be a valid datetime. Format should be DD/MM/YYYY HH24:MM
