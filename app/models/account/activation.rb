@@ -10,15 +10,19 @@ end
 #
 # Table name: activations
 #
-#  id           :integer          not null, primary key
-#  token        :string           not null
+#  id           :bigint           not null, primary key
 #  activated_at :datetime
+#  token        :string           not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  user_id      :uuid             not null, indexed
+#  user_id      :uuid             not null, uniquely indexed
 #
 # Indexes
 #
 #  index_activations_on_user_id  (user_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
 #
 

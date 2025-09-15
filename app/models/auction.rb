@@ -1,0 +1,83 @@
+class Auction < ApplicationRecord
+  MINIMUM_DELAY = 7
+  MINIMUM_DURATION = 7
+  MAXIMUM_DURATION = 14
+  MAX_AUCTIONS_PER_STABLE = 2
+
+  belongs_to :auctioneer, class_name: "Account::Stable"
+
+  validates :start_time, :end_time, :hours_until_sold, :title, presence: true
+  validates :title, length: { in: 10..100 }
+  validates :broodmare_allowed, :outside_horses_allowed, :racehorse_allowed_2yo,
+    :racehorse_allowed_3yo, :racehorse_allowed_older, :reserve_pricing_allowed,
+    :stallion_allowed, :weanling_allowed, :yearling_allowed, inclusion: { in: [true, false] }
+  validates :start_time, comparison: { greater_than_or_equal_to: :today_plus_min_duration }
+  validates :end_time, comparison: { greater_than_or_equal_to: :start_time_plus_min_duration }, if: :start_time
+  validates :end_time, comparison: { less_than_or_equal_to: :start_time_plus_max_duration }, if: :start_time
+  validates :horse_purchase_cap_per_stable, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
+  validates :hours_until_sold, numericality: { only_integer: true, greater_than_or_equal_to: 12, less_than_or_equal_to: 48 }, allow_nil: true
+  validates :spending_cap_per_stable, numericality: { only_integer: true, greater_than_or_equal_to: 10_000 }, allow_nil: true
+  validate :minimum_status_required
+
+  scope :upcoming, -> { where(start_time: Time.current..) }
+  scope :past, -> { where(end_time: ..Time.current) }
+
+  private
+
+  def today_plus_min_duration
+    (Date.current + MINIMUM_DELAY.days).beginning_of_day
+  end
+
+  def start_time_plus_min_duration
+    start_time + MINIMUM_DURATION.days
+  end
+
+  def start_time_plus_max_duration
+    start_time + MAXIMUM_DURATION.days
+  end
+
+  private
+
+  def minimum_status_required
+    return if broodmare_allowed || racehorse_allowed_2yo || racehorse_allowed_3yo ||
+      racehorse_allowed_older || stallion_allowed || weanling_allowed || yearling_allowed
+
+    errors.add(:base, :status_required)
+  end
+end
+
+# == Schema Information
+#
+# Table name: auctions
+#
+#  id                            :uuid             not null, primary key
+#  broodmare_allowed             :boolean          default(FALSE), not null
+#  end_time                      :datetime         not null, indexed
+#  horse_purchase_cap_per_stable :integer
+#  hours_until_sold              :integer          default(12), not null
+#  outside_horses_allowed        :boolean          default(FALSE), not null
+#  racehorse_allowed_2yo         :boolean          default(FALSE), not null
+#  racehorse_allowed_3yo         :boolean          default(FALSE), not null
+#  racehorse_allowed_older       :boolean          default(FALSE), not null
+#  reserve_pricing_allowed       :boolean          default(FALSE), not null
+#  spending_cap_per_stable       :integer
+#  stallion_allowed              :boolean          default(FALSE), not null
+#  start_time                    :datetime         not null, indexed
+#  title                         :string           not null
+#  weanling_allowed              :boolean          default(FALSE), not null
+#  yearling_allowed              :boolean          default(FALSE), not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#  auctioneer_id                 :uuid             indexed
+#
+# Indexes
+#
+#  index_auctions_on_auctioneer_id  (auctioneer_id)
+#  index_auctions_on_end_time       (end_time)
+#  index_auctions_on_start_time     (start_time)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (auctioneer_id => stables.id)
+#
+

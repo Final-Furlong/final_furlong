@@ -52,10 +52,10 @@ end
 
 # == Route Map
 #
-# I, [2024-06-26T14:41:20.691781 #77621]  INFO -- : [dotenv] Loaded [33m.env[0m
 #                                   Prefix Verb      URI Pattern                                                                                       Controller#Action
 #                                 api_base           /                                                                                                 Api::Base
 #                              motor_admin           /motor_admin                                                                                      Motor::Admin
+#                     mission_control_jobs           /jobs                                                                                             MissionControl::Jobs::Engine
 #                        admin_impersonate DELETE    /admin/impersonate(.:format)                                                                      admin/impersonates#destroy
 #                                          POST      /admin/impersonate(.:format)                                                                      admin/impersonates#create
 #                                                    /404(.:format)                                                                                    errors#not_found
@@ -94,11 +94,20 @@ end
 #                                  stables GET       /stables(.:format)                                                                                stables#index
 #                                   stable GET       /stables/:id(.:format)                                                                            stables#show
 #                              image_horse GET       /horses/:id/image(.:format)                                                                       horses#image
+#                          thumbnail_horse GET       /horses/:id/thumbnail(.:format)                                                                   horses#thumbnail
 #                                   horses GET       /horses(.:format)                                                                                 horses#index
 #                               edit_horse GET       /horses/:id/edit(.:format)                                                                        horses#edit
 #                                    horse GET       /horses/:id(.:format)                                                                             horses#show
 #                                          PATCH     /horses/:id(.:format)                                                                             horses#update
 #                                          PUT       /horses/:id(.:format)                                                                             horses#update
+#                                 auctions GET       /auctions(.:format)                                                                               auctions#index
+#                                          POST      /auctions(.:format)                                                                               auctions#create
+#                              new_auction GET       /auctions/new(.:format)                                                                           auctions#new
+#                             edit_auction GET       /auctions/:id/edit(.:format)                                                                      auctions#edit
+#                                  auction GET       /auctions/:id(.:format)                                                                           auctions#show
+#                                          PATCH     /auctions/:id(.:format)                                                                           auctions#update
+#                                          PUT       /auctions/:id(.:format)                                                                           auctions#update
+#                                          DELETE    /auctions/:id(.:format)                                                                           auctions#destroy
 #                                 settings PUT|PATCH /settings(.:format)                                                                               settings#update
 #                      edit_current_stable GET       /stable/edit(.:format)                                                                            stables#edit
 #                           current_stable GET       /stable(.:format)                                                                                 stables#show
@@ -152,7 +161,7 @@ end
 #                     rails_direct_uploads POST      /rails/active_storage/direct_uploads(.:format)                                                    active_storage/direct_uploads#create
 #
 # Routes for Motor::Admin:
-#                            motor_cable        /cable                                                  #<ActionCable::Server::Base:0x0000000122ab9f28 @config=#<ActionCable::Server::Configuration:0x0000000122e10820 @log_tags=[], @connection_class=#<Proc:0x00000001174554f8 /Users/shanthi/.rbenv/versions/3.2.2/lib/ruby/gems/3.2.0/gems/actioncable-7.1.3.4/lib/action_cable/engine.rb:53 (lambda)>, @worker_pool_size=4, @disable_request_forgery_protection=false, @allow_same_origin_as_host=true, @filter_parameters=[:passw, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn, /\Aio\z/], @health_check_application=#<Proc:0x000000011745a3b8 /Users/shanthi/.rbenv/versions/3.2.2/lib/ruby/gems/3.2.0/gems/actioncable-7.1.3.4/lib/action_cable/engine.rb:29 (lambda)>, @logger=#<ActiveSupport::BroadcastLogger:0x00000001207f5690 @broadcasts=[#<ActiveSupport::Logger:0x00000001204148f0 @level=0, @progname=nil, @default_formatter=#<Logger::Formatter:0x00000001207f6d10 @datetime_format=nil>, @formatter=#<Logger::Formatter:0x00000001207f6900 @datetime_format=nil>, @logdev=#<Logger::LogDevice:0x0000000120414940 @shift_period_suffix=nil, @shift_size=nil, @shift_age=nil, @filename=nil, @dev=#<IO:<STDOUT>>, @binmode=false, @mon_data=#<Monitor:0x00000001207f6c48>, @mon_data_owner_object_id=13460>>], @progname="Broadcast", @formatter=#<Logger::Formatter:0x00000001207f6900 @datetime_format=nil>>, @cable={"adapter"=>"redis", "url"=>"redis://localhost:6379/1"}, @mount_path="/cable", @precompile_assets=true, @allowed_request_origins=/https?:\/\/localhost:\d+/>, @mutex=#<Monitor:0x00000001176f4498>, @pubsub=nil, @worker_pool=nil, @event_loop=nil, @remote_connections=nil>
+#                            motor_cable        /cable                                                  #<ActionCable::Server::Base:0x000000013a059b60 @config=#<ActionCable::Server::Configuration:0x000000013a6bb3c8 @log_tags=[], @connection_class=#<Proc:0x000000013a234340 /Users/shanthi/.asdf/installs/ruby/3.4.5/lib/ruby/gems/3.4.0/gems/actioncable-8.0.3/lib/action_cable/engine.rb:55 (lambda)>, @worker_pool_size=4, @disable_request_forgery_protection=false, @allow_same_origin_as_host=true, @filter_parameters=[:passw, :email, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn, :cvv, :cvc, /\Aio\z/], @health_check_application=#<Proc:0x000000013a2397f0 /Users/shanthi/.asdf/installs/ruby/3.4.5/lib/ruby/gems/3.4.0/gems/actioncable-8.0.3/lib/action_cable/engine.rb:31 (lambda)>, @logger=#<ActiveSupport::BroadcastLogger:0x0000000138eb1e30 @broadcasts=[#<ActiveSupport::Logger:0x0000000138fd07d0 @level=0, @progname=nil, @default_formatter=#<Logger::Formatter:0x0000000138eb2a10 @datetime_format=nil>, @formatter=#<Logger::Formatter:0x0000000138eb23a8 @datetime_format=nil>, @logdev=#<Logger::LogDevice:0x00000001397773a8 @shift_period_suffix="%Y%m%d", @shift_size=104857600, @shift_age=1, @filename="/Users/shanthi/code/final_furlong/log/development.log", @dev=#<File:/Users/shanthi/code/final_furlong/log/development.log>, @binmode=false, @reraise_write_errors=[], @skip_header=false, @mon_data=#<Monitor:0x0000000138eb2790>, @mon_data_owner_object_id=5552>, @level_override={}, @local_level_key=:logger_thread_safe_level_5560>], @progname="Broadcast">, @cable={"adapter" => "redis", "url" => "redis://localhost:6379/1"}, @mount_path="/cable", @precompile_assets=true, @allowed_request_origins=/https?:\/\/localhost:\d+/>, @mutex=#<Monitor:0x000000013a1daa98>, @pubsub=nil, @worker_pool=nil, @event_loop=nil, @remote_connections=nil>
 #                  motor_api_run_queries POST   /api/run_queries(.:format)                              motor/run_queries#create
 #                    motor_api_run_query GET    /api/run_queries/:id(.:format)                          motor/run_queries#show
 #                  motor_api_send_alerts POST   /api/send_alerts(.:format)                              motor/send_alerts#create
@@ -215,16 +224,16 @@ end
 #                      motor_api_session GET    /api/session(.:format)                                  motor/sessions#show
 #                                        DELETE /api/session(.:format)                                  motor/sessions#destroy
 #          motor_api_slack_conversations GET    /api/slack_conversations(.:format)                      motor/slack_conversations#index
-#                                        PUT    /api/data/:resource/:resource_id/:method(.:format)      motor/data#execute {:resource_id=>/[^\/]+/}
-#   motor_api_resource_association_index GET    /api/data/:resource/:resource_id/:association(.:format) motor/data#index {:resource_id=>/[^\/]+/}
-#                                        POST   /api/data/:resource/:resource_id/:association(.:format) motor/data#create {:resource_id=>/[^\/]+/}
+#                                        PUT    /api/data/:resource/:resource_id/:method(.:format)      motor/data#execute {resource_id: /[^\/]+/}
+#   motor_api_resource_association_index GET    /api/data/:resource/:resource_id/:association(.:format) motor/data#index {resource_id: /[^\/]+/}
+#                                        POST   /api/data/:resource/:resource_id/:association(.:format) motor/data#create {resource_id: /[^\/]+/}
 #                                        GET    /api/data/:resource(.:format)                           motor/data#index
 #                                        POST   /api/data/:resource(.:format)                           motor/data#create
-#                     motor_api_resource GET    /api/data/:resource/:id(.:format)                       motor/data#show {:id=>/[^\/]+/}
-#                                        PATCH  /api/data/:resource/:id(.:format)                       motor/data#update {:id=>/[^\/]+/}
-#                                        PUT    /api/data/:resource/:id(.:format)                       motor/data#update {:id=>/[^\/]+/}
-#                                        DELETE /api/data/:resource/:id(.:format)                       motor/data#destroy {:id=>/[^\/]+/}
-#                            motor_asset GET    /assets/:filename                                       motor/assets#show {:filename=>/.+/}
+#                     motor_api_resource GET    /api/data/:resource/:id(.:format)                       motor/data#show {id: /[^\/]+/}
+#                                        PATCH  /api/data/:resource/:id(.:format)                       motor/data#update {id: /[^\/]+/}
+#                                        PUT    /api/data/:resource/:id(.:format)                       motor/data#update {id: /[^\/]+/}
+#                                        DELETE /api/data/:resource/:id(.:format)                       motor/data#destroy {id: /[^\/]+/}
+#                            motor_asset GET    /assets/:filename                                       motor/assets#show {filename: /.+/}
 #                                  motor GET    /                                                       motor/ui#show
 #                          motor_ui_data GET    /data(/*path)(.:format)                                 motor/ui#index
 #                 motor_ui_notifications GET    /notifications(.:format)                                motor/ui#index
@@ -242,4 +251,28 @@ end
 #                         motor_ui_forms GET    /forms(.:format)                                        motor/ui#index
 #                      new_motor_ui_form GET    /forms/new(.:format)                                    motor/ui#new
 #                          motor_ui_form GET    /forms/:id(.:format)                                    motor/ui#show
+#
+# Routes for MissionControl::Jobs::Engine:
+#     application_queue_pause DELETE /applications/:application_id/queues/:queue_id/pause(.:format) mission_control/jobs/queues/pauses#destroy
+#                             POST   /applications/:application_id/queues/:queue_id/pause(.:format) mission_control/jobs/queues/pauses#create
+#          application_queues GET    /applications/:application_id/queues(.:format)                 mission_control/jobs/queues#index
+#           application_queue GET    /applications/:application_id/queues/:id(.:format)             mission_control/jobs/queues#show
+#       application_job_retry POST   /applications/:application_id/jobs/:job_id/retry(.:format)     mission_control/jobs/retries#create
+#     application_job_discard POST   /applications/:application_id/jobs/:job_id/discard(.:format)   mission_control/jobs/discards#create
+#    application_job_dispatch POST   /applications/:application_id/jobs/:job_id/dispatch(.:format)  mission_control/jobs/dispatches#create
+#    application_bulk_retries POST   /applications/:application_id/jobs/bulk_retries(.:format)      mission_control/jobs/bulk_retries#create
+#   application_bulk_discards POST   /applications/:application_id/jobs/bulk_discards(.:format)     mission_control/jobs/bulk_discards#create
+#             application_job GET    /applications/:application_id/jobs/:id(.:format)               mission_control/jobs/jobs#show
+#            application_jobs GET    /applications/:application_id/:status/jobs(.:format)           mission_control/jobs/jobs#index
+#         application_workers GET    /applications/:application_id/workers(.:format)                mission_control/jobs/workers#index
+#          application_worker GET    /applications/:application_id/workers/:id(.:format)            mission_control/jobs/workers#show
+# application_recurring_tasks GET    /applications/:application_id/recurring_tasks(.:format)        mission_control/jobs/recurring_tasks#index
+#  application_recurring_task GET    /applications/:application_id/recurring_tasks/:id(.:format)    mission_control/jobs/recurring_tasks#show
+#                             PATCH  /applications/:application_id/recurring_tasks/:id(.:format)    mission_control/jobs/recurring_tasks#update
+#                             PUT    /applications/:application_id/recurring_tasks/:id(.:format)    mission_control/jobs/recurring_tasks#update
+#                      queues GET    /queues(.:format)                                              mission_control/jobs/queues#index
+#                       queue GET    /queues/:id(.:format)                                          mission_control/jobs/queues#show
+#                         job GET    /jobs/:id(.:format)                                            mission_control/jobs/jobs#show
+#                        jobs GET    /:status/jobs(.:format)                                        mission_control/jobs/jobs#index
+#                        root GET    /                                                              mission_control/jobs/queues#index
 

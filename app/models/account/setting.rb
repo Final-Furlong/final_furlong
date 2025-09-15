@@ -9,14 +9,18 @@ end
 # Table name: settings
 #
 #  id         :uuid             not null, primary key
-#  theme      :string
 #  locale     :string
-#  user_id    :uuid             not null, indexed
+#  theme      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  user_id    :uuid             not null, uniquely indexed
 #
 # Indexes
 #
 #  index_settings_on_user_id  (user_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
 #
 

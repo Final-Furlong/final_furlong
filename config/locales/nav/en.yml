@@ -1,0 +1,32 @@
+---
+en:
+  breadcrumbs:
+    edit: Edit
+    home: Home
+    horses: Horses
+    new_user: New user
+    users: Users
+  layouts:
+    nav:
+      game_title: Final Furlong
+      join: Join
+      login: Log in
+      search_aria_label: Search
+      search_placeholder: Search...
+    sidenav:
+      all_horses: Horses
+      game_divider: Game Links
+      home: Home
+      logout: Log out
+      main_app: Main app
+      my_stable: My stable
+      settings_divider: Game Settings
+      stable:
+        horses: My horses
+        racing_divider: Racing
+        training_schedules: Training Schedules
+      stables: Stables
+    user_nav:
+      edit_profile: Edit profile
+      edit_stable: Edit stable
+      logout: Log out

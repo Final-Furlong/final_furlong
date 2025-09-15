@@ -89,23 +89,23 @@ end
 #
 # Table name: horses
 #
-#  id                 :uuid             not null, primary key
-#  age                :integer
-#  date_of_birth      :date             not null, indexed
-#  date_of_death      :date
-#  foals_count        :integer          default(0), not null
-#  gender             :enum             not null
-#  name               :string(18)       indexed
-#  status             :enum             default("unborn"), not null, indexed
-#  unborn_foals_count :integer          default(0), not null
-#  created_at         :datetime         not null, indexed
-#  updated_at         :datetime         not null
-#  breeder_id         :uuid             not null, indexed
-#  dam_id             :uuid             indexed
-#  legacy_id          :integer          indexed
-#  location_bred_id   :uuid             not null, indexed
-#  owner_id           :uuid             not null, indexed
-#  sire_id            :uuid             indexed
+#  id                                                                                                                 :uuid             not null, primary key
+#  age                                                                                                                :integer
+#  date_of_birth                                                                                                      :date             not null, indexed
+#  date_of_death                                                                                                      :date
+#  foals_count                                                                                                        :integer          default(0), not null
+#  gender(colt, filly, stallion, mare, gelding)                                                                       :enum             not null
+#  name                                                                                                               :string(18)       indexed
+#  status(unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased) :enum             default("unborn"), not null, indexed
+#  unborn_foals_count                                                                                                 :integer          default(0), not null
+#  created_at                                                                                                         :datetime         not null, indexed
+#  updated_at                                                                                                         :datetime         not null
+#  breeder_id                                                                                                         :uuid             not null, indexed
+#  dam_id                                                                                                             :uuid             indexed
+#  legacy_id                                                                                                          :integer          uniquely indexed
+#  location_bred_id                                                                                                   :uuid             not null, indexed
+#  owner_id                                                                                                           :uuid             not null, indexed
+#  sire_id                                                                                                            :uuid             indexed
 #
 # Indexes
 #

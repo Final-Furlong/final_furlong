@@ -8,10 +8,14 @@ module Overcommit::Hook::PreCommit # rubocop:disable Style/ClassAndModuleChildre
       routes_changed = changed_files.stdout.split("\n").include?("config/routes.rb")
       return :pass unless routes_changed
 
-      result = execute(["bundle", "exec", "chusaku", "--exit-with-error-on-annotation"])
-      return :fail, "Controllers have been annotated" unless result.success?
+      result = execute(["bundle", "exec", "annotaterb", "models"])
+      return :fail, "Models have been annotated" unless result.success?
+
+      result = execute(["bundle", "exec", "annotaterb", "routes"])
+      return :fail, "Routes have been annotated" unless result.success?
 
       :pass
     end
   end
 end
+
