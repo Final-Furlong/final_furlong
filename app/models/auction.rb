@@ -2,6 +2,7 @@ class Auction < ApplicationRecord
   MINIMUM_DELAY = 7
   MINIMUM_DURATION = 7
   MAXIMUM_DURATION = 14
+  MAX_AUCTIONS_PER_STABLE = 2
 
   belongs_to :auctioneer, class_name: "Account::Stable"
 
@@ -17,6 +18,9 @@ class Auction < ApplicationRecord
   validates :hours_until_sold, numericality: { only_integer: true, greater_than_or_equal_to: 12, less_than_or_equal_to: 48 }, allow_nil: true
   validates :spending_cap_per_stable, numericality: { only_integer: true, greater_than_or_equal_to: 10_000 }, allow_nil: true
   validate :minimum_status_required
+
+  scope :upcoming, -> { where(start_time: Time.current..) }
+  scope :past, -> { where(end_time: ..Time.current) }
 
   private
 

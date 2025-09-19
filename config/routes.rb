@@ -28,6 +28,7 @@ Rails.application.routes.draw do
       get :thumbnail
     end
   end
+  resources :auctions
 
   match "/settings", to: "settings#update", as: :settings, via: %i[put patch]
 
