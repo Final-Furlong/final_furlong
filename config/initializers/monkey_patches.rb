@@ -1,5 +1,5 @@
 # Require all Ruby files in the core_extensions directory
-Rails.root.glob("lib/core_extensions/**/*.rb").each { |f| require f }
+Rails.root.glob("app/lib/core_extensions/**/*.rb").each { |f| require f }
 
 # Apply the monkey patches
 Date.prepend CoreExtensions::Date::ParseSafely
