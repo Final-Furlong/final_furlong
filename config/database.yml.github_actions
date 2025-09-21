@@ -20,6 +20,11 @@ test:
     encoding: unicode
     url: <%= ENV.fetch("DATABASE_URL") %>
     pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  queue:
+    adapter: postgresql
+    encoding: unicode
+    database: final_furlong_test_queue
+    migrations_paths: db/queue_migrate
   legacy:
     adapter: mysql2
     encoding: utf8mb4
