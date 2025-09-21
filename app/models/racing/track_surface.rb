@@ -11,18 +11,18 @@ end
 #
 # Table name: track_surfaces
 #
-#  id                    :uuid             not null, primary key
-#  banking               :integer          not null
-#  condition             :enum             default("fast"), not null
-#  jumps                 :integer          default(0), not null
-#  length                :integer          not null
-#  surface               :enum             default("dirt"), not null
-#  turn_distance         :integer          not null
-#  turn_to_finish_length :integer          not null
-#  width                 :integer          not null
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
-#  racetrack_id          :uuid             not null, indexed
+#  id                                :uuid             not null, primary key
+#  banking                           :integer          not null
+#  condition(fast, good, slow, wet)  :enum             default("fast"), not null
+#  jumps                             :integer          default(0), not null
+#  length                            :integer          not null
+#  surface(dirt, turf, steeplechase) :enum             default("dirt"), not null
+#  turn_distance                     :integer          not null
+#  turn_to_finish_length             :integer          not null
+#  width                             :integer          not null
+#  created_at                        :datetime         not null
+#  updated_at                        :datetime         not null
+#  racetrack_id                      :uuid             not null, indexed
 #
 # Indexes
 #

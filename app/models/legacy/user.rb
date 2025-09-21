@@ -47,7 +47,7 @@ end
 #  Cheating           :integer          default(0), not null
 #  CreateAuction      :boolean          default(TRUE), not null
 #  Description        :text(4294967295)
-#  Email              :string(255)      not null, indexed, indexed
+#  Email              :string(255)      not null, indexed, uniquely indexed
 #  EmailVal           :boolean          default(FALSE), not null
 #  Emailed            :boolean          default(FALSE), not null
 #  Flag               :boolean          default(FALSE)
@@ -72,7 +72,7 @@ end
 #  Timestamp          :integer          default(0), not null
 #  TrackID            :integer
 #  TrackMiles         :integer
-#  Username           :string(25)       indexed, indexed
+#  Username           :string(25)       indexed, uniquely indexed
 #  discourse_api_key  :string(255)
 #  discourse_name     :string(255)
 #  last_modified      :datetime         not null

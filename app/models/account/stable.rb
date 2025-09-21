@@ -32,7 +32,7 @@ end
 #  created_at          :datetime         not null, indexed
 #  updated_at          :datetime         not null
 #  legacy_id           :integer          indexed
-#  user_id             :uuid             not null, indexed
+#  user_id             :uuid             not null, uniquely indexed
 #
 # Indexes
 #

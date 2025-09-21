@@ -28,3 +28,38 @@ FactoryBot.define do
   end
 end
 
+# == Schema Information
+#
+# Table name: auctions
+#
+#  id                            :uuid             not null, primary key
+#  broodmare_allowed             :boolean          default(FALSE), not null
+#  end_time                      :datetime         not null, indexed
+#  horse_purchase_cap_per_stable :integer
+#  hours_until_sold              :integer          default(12), not null
+#  outside_horses_allowed        :boolean          default(FALSE), not null
+#  racehorse_allowed_2yo         :boolean          default(FALSE), not null
+#  racehorse_allowed_3yo         :boolean          default(FALSE), not null
+#  racehorse_allowed_older       :boolean          default(FALSE), not null
+#  reserve_pricing_allowed       :boolean          default(FALSE), not null
+#  spending_cap_per_stable       :integer
+#  stallion_allowed              :boolean          default(FALSE), not null
+#  start_time                    :datetime         not null, indexed
+#  title                         :string           not null
+#  weanling_allowed              :boolean          default(FALSE), not null
+#  yearling_allowed              :boolean          default(FALSE), not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#  auctioneer_id                 :uuid             indexed
+#
+# Indexes
+#
+#  index_auctions_on_auctioneer_id  (auctioneer_id)
+#  index_auctions_on_end_time       (end_time)
+#  index_auctions_on_start_time     (start_time)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (auctioneer_id => stables.id)
+#
+
