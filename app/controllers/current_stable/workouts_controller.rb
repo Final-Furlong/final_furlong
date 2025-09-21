@@ -20,7 +20,7 @@ module CurrentStable
     end
 
     def workout_params
-      params.require(:workout).permit(:horse_id, :activity1, :distance1, :activity2, :distance2, :activity3, :distance3)
+      params.expect(workout: [:horse_id, :activity1, :distance1, :activity2, :distance2, :activity3, :distance3])
     end
   end
 end

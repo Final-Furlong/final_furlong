@@ -1,6 +1,4 @@
 class PagesController < ApplicationController
-  skip_after_action :verify_authorized
-
   # @route GET / (root)
   def home
   end

@@ -22,3 +22,4 @@ exclude_paths:
   - "vendor/**/*.rb"
   - "db/schema.rb"
   - "config/initializers/**/*rb"
+  - "config/routes/*.rb"

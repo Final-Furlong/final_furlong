@@ -5,9 +5,9 @@ class ApplicationController < ActionController::Base
   include Devise::Controllers::Helpers
   include DeviseHooks
 
-  impersonates :user, method: :current_user, with: ->(id) { Account::User.find_by(id:) }
-
   rescue_from ActionPolicy::Unauthorized, with: :user_not_authorized
+
+  impersonates :user, method: :current_user, with: ->(id) { Account::User.find_by(id:) }
 
   protect_from_forgery prepend: true
 
@@ -16,8 +16,6 @@ class ApplicationController < ActionController::Base
   before_action :update_stable_online, unless: :impersonating?
 
   around_action :switch_locale
-
-  after_action :verify_authorized, except: :index, unless: :devise_controller?
 
   helper_method :current_stable
 

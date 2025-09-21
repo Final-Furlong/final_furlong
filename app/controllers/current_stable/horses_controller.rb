@@ -32,7 +32,7 @@ module CurrentStable
     end
 
     def horse_params
-      params.require(:horse).permit(:name)
+      params.expect(horse: [:name])
     end
   end
 end

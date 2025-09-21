@@ -3,9 +3,7 @@ require "sidekiq/web"
 Rails.application.routes.draw do
   mount Api::Base, at: "/"
 
-  authenticate :user, ->(u) { u.admin? } do
-    draw(:admin)
-  end
+  draw(:admin)
 
   match "/404", to: "errors#not_found", via: :all
   match "/422", to: "errors#unprocessable", via: :all
@@ -43,10 +41,6 @@ Rails.application.routes.draw do
       resources :horses, controller: "training_schedule_horses", only: %i[index new create destroy]
     end
     resources :workouts, only: %i[create]
-  end
-
-  if Rails.env.test?
-    draw(:test)
   end
 
   unauthenticated do

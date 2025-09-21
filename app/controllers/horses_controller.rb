@@ -42,6 +42,7 @@ class HorsesController < ApplicationController
     end
   end
 
+  # @route GET /horses/:id/image (image_horse)
   def image
     raise ActiveRecord::RecordNotFound unless @horse.appearance&.image&.present?
     image = @horse.appearance.image
@@ -51,6 +52,7 @@ class HorsesController < ApplicationController
     response.stream.close
   end
 
+  # @route GET /horses/:id/thumbnail (thumbnail_horse)
   def thumbnail
     raise ActiveRecord::RecordNotFound unless @horse.appearance&.image(max_width: 100, max_height: 100)&.present?
     image = @horse.appearance.image(max_width: 100, max_height: 100)
@@ -88,7 +90,7 @@ class HorsesController < ApplicationController
   end
 
   def horse_params
-    params.require(:horse).permit(:name, :date_of_birth)
+    params.expect(horse: [:name, :date_of_birth])
   end
 
   def set_active_status
