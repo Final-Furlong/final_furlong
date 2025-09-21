@@ -1,7 +1,5 @@
 module Test
   class BaseController < ApplicationController
-    skip_after_action :verify_authorized, except: :index, unless: :devise_controller?
-
     respond_to :json
     rescue_from Exception, with: :show_errors
 
