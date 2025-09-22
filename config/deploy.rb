@@ -11,7 +11,7 @@ set :branch, ENV.fetch("REVISION", "main")
 set :rbenv_type, :user
 set :rbenv_ruby, "3.4.5"
 
-append :linked_files, "config/database.yml", ".rbenv-vars", "config/initializers/sidekiq.rb"
+append :linked_files, "config/database.yml", ".rbenv-vars"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpacker", "public/system",
   "vendor", "storage", ".bundle", "public/uploads"
 

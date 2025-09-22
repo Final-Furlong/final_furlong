@@ -17,10 +17,6 @@ install_plugin Capistrano::SCM::Git
 require "capistrano/deploytags"
 require "capistrano/data_migrate"
 
-# # # require "capistrano/sidekiq"
-# # install_plugin Capistrano::Sidekiq
-# install_plugin Capistrano::Sidekiq::Systemd
-
 require "whenever/capistrano"
 
 Dir.glob("lib/capistrano/tasks/*.rake").each { |r| import r }

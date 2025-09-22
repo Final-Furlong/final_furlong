@@ -1,5 +1,3 @@
-require "sidekiq/web"
-
 Rails.application.routes.draw do
   mount Api::Base, at: "/"
 
@@ -58,7 +56,6 @@ end
 #                                   Prefix Verb      URI Pattern                                                                                       Controller#Action
 #                                 api_base           /                                                                                                 Api::Base
 #                              motor_admin           /motor_admin                                                                                      Motor::Admin
-#                              sidekiq_web           /sidekiq                                                                                          Sidekiq::Web
 #                        admin_impersonate DELETE    /admin/impersonate(.:format)                                                                      admin/impersonates#destroy
 #                                          POST      /admin/impersonate(.:format)                                                                      admin/impersonates#create
 #                                                    /404(.:format)                                                                                    errors#not_found
