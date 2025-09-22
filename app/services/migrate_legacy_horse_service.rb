@@ -128,14 +128,7 @@ class MigrateLegacyHorseService # rubocop:disable Metrics/ClassLength
   end
 
   def from_game_date(value)
-    case value
-    when Date
-      value.from_game_date
-    when DateTime
-      value.from_game_time.to_date
-    else
-      Date.parse_safely(value)&.from_game_date
-    end
+    Date.parse(value) - 4.years
   end
 end
 

@@ -17,14 +17,19 @@ require "action_cable/engine"
 # require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
-# you've limited to :test, :development, or :production.require "view_component/engine"
+# you've limited to :test, :development, or :production.
 
 Bundler.require(*Rails.groups)
 
 module FinalFurlong
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.1
+    config.load_defaults 8.0
+
+    # Please, add to the `ignore` list any other `lib` subdirectories that do
+    # not contain `.rb` files, or that should not be reloaded or eager loaded.
+    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    config.autoload_lib(ignore: %w[assets tasks])
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -34,9 +39,13 @@ module FinalFurlong
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    MissionControl::Jobs.base_controller_class = "AuthenticatedController"
+    config.mission_control.jobs.http_basic_auth_enabled = false
+
     # Don't generate system test files.
     config.generators do |g|
       g.test_framework :rspec
+      g.orm(:active_record, primary_key_type: :uuid)
     end
 
     config.log_formatter = Logger::Formatter.new

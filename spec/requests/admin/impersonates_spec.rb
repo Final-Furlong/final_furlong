@@ -17,9 +17,9 @@ RSpec.describe "Impersonating users" do
       let(:current_user) { create(:user) }
 
       it "fails" do
-        expect do
-          post admin_impersonate_path, params: { id: user.id }
-        end.to raise_error ActionController::RoutingError, 'No route matches [POST] "/admin/impersonate"'
+        post admin_impersonate_path, params: { id: user.id }
+        expect(response).to have_http_status :not_found
+        expect(response.body).not_to include "Signed in as #{user.stable.name}"
       end
     end
   end

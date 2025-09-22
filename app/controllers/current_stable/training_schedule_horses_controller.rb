@@ -65,7 +65,7 @@ module CurrentStable
     end
 
     def schedule_params
-      params.require(:racing_training_schedule_horse).permit(:training_schedule_id, :horse_id)
+      params.expect(racing_training_schedule_horse: [:training_schedule_id, :horse_id])
     end
 
     def unauthorized_path

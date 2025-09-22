@@ -17,20 +17,15 @@ end
 #
 # Table name: training_schedules_horses
 #
-#  id                   :bigint           not null, primary key
+#  id                   :integer          not null, primary key
+#  training_schedule_id :uuid             not null, indexed
+#  horse_id             :uuid             not null, indexed
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
-#  horse_id             :uuid             not null, indexed
-#  training_schedule_id :uuid             not null, indexed
 #
 # Indexes
 #
 #  index_training_schedules_horses_on_horse_id              (horse_id) UNIQUE
 #  index_training_schedules_horses_on_training_schedule_id  (training_schedule_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (horse_id => horses.id)
-#  fk_rails_...  (training_schedule_id => training_schedules.id)
 #
 

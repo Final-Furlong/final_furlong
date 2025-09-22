@@ -3,7 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.4.5"
 
-gem "rails", "~> 7.2"
+gem "rails", "~> 8.0"
 
 gem "bootsnap", require: false
 
@@ -39,6 +39,7 @@ gem "importmap-rails"
 gem "kaminari"
 gem "lograge"
 gem "mailtrap"
+gem "mission_control-jobs"
 gem "motor-admin"
 gem "mysql2"
 gem "net-ssh"
@@ -52,9 +53,8 @@ gem "ransack"
 gem "redis"
 gem "sentry-rails"
 gem "sentry-ruby"
-gem "sidekiq"
-gem "sidekiq-cron"
 gem "simple_form"
+gem "solid_queue"
 gem "stimulus-rails"
 gem "store_model"
 gem "strong_migrations"

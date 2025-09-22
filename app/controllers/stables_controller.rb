@@ -54,7 +54,7 @@ class StablesController < ApplicationController
   end
 
   def stable_params
-    params.require(:stable).permit(:description)
+    params.expect(stable: [:description])
   end
 
   def load_stable

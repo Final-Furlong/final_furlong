@@ -42,13 +42,13 @@ class MigrateLegacyUserService
   private
 
   def from_game_date(value)
-    case value
-    when Date
-      value.from_game_date
-    when DateTime
-      value.from_game_time
-    else
-      Date.parse_safely(value)&.from_game_date
+    date_value = value.is_a?(Date) ? value : value.to_s
+    return if date_value.blank?
+
+    begin
+      Date.parse(value&.to_s) - 4.years
+    rescue
+      nil
     end
   end
 
