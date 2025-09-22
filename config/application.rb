@@ -49,6 +49,7 @@ module FinalFurlong
     # Don't generate system test files.
     config.generators do |g|
       g.test_framework :rspec
+      g.orm(:active_record, primary_key_type: :uuid)
     end
 
     config.log_formatter = Logger::Formatter.new
