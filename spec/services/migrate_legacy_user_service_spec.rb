@@ -74,7 +74,7 @@ RSpec.describe MigrateLegacyUserService do
           name: legacy_user.stable_name,
           user_id: anything
         )
-        expect(result.stable.created_at).to eq legacy_user.join_date.from_game_date
+        expect(result.stable.created_at).to eq legacy_user.join_date - 4.years
       end
 
       it "assigns correct attributes to user for active stable" do
@@ -91,7 +91,7 @@ RSpec.describe MigrateLegacyUserService do
           status: Account::User.statuses[:pending],
           unconfirmed_email: legacy_user.email,
           username: legacy_user.username,
-          created_at: legacy_user.join_date.from_game_date,
+          created_at: legacy_user.join_date - 4.years,
           updated_at: anything,
           discourse_id: legacy_user.discourse_id,
           password: anything,
@@ -114,7 +114,7 @@ RSpec.describe MigrateLegacyUserService do
           status: Account::User.statuses[:active],
           unconfirmed_email: legacy_user.email,
           username: legacy_user.username,
-          created_at: legacy_user.join_date.from_game_date,
+          created_at: legacy_user.join_date - 4.years,
           updated_at: anything,
           discourse_id: legacy_user.discourse_id,
           password: anything,
@@ -137,7 +137,7 @@ RSpec.describe MigrateLegacyUserService do
           status: Account::User.statuses[:deleted],
           unconfirmed_email: legacy_user.email,
           username: legacy_user.username,
-          created_at: legacy_user.join_date.from_game_date,
+          created_at: legacy_user.join_date - 4.years,
           updated_at: anything,
           discourse_id: legacy_user.discourse_id,
           password: anything,

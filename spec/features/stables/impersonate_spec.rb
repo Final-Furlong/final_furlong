@@ -26,7 +26,7 @@ RSpec.describe "Impersonate Stable Index" do
     admin_stable = create(:stable, user: admin)
     sign_in(admin)
     user = create(:user, :without_stable, email: "user@example.com", username: "user123")
-    stable = create(:stable, user:)
+    stable = create(:stable, user:, name: "A Different Stable")
 
     visit stables_path
     click_link stable.name

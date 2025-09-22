@@ -42,7 +42,14 @@ class MigrateLegacyUserService
   private
 
   def from_game_date(value)
-    Date.parse(value) - 4.years
+    date_value = value.is_a?(Date) ? value : value.to_s
+    return if date_value.blank?
+
+    begin
+      Date.parse(value&.to_s) - 4.years
+    rescue
+      nil
+    end
   end
 
   def generate_password
