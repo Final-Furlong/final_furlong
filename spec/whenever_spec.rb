@@ -8,7 +8,7 @@ RSpec.describe "Whenever Schedule" do # rubocop:disable RSpec/DescribeClass
   it "has a daily job for active store cleaning" do
     schedule = Whenever::Test::Schedule.new(file: "config/schedule.rb")
 
-    expect(schedule.jobs[:rake].count).to eq(2)
+    expect(schedule.jobs[:rake].count).to eq(1)
 
     schedule.jobs[:rake].each do |job|
       # Makes sure the rake task is defined:
