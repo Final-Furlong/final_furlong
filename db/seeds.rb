@@ -7,8 +7,6 @@
 #   Character.create(name: "Luke", movie: movies.first)
 return unless Rails.env.development?
 
-Sidekiq::Queue.all.each(&:clear) # rubocop:disable Rails/FindEach
-
 require "faker"
 require "factory_bot_rails"
 max_stables = ENV.fetch("USERS", 5).to_i

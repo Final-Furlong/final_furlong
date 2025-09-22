@@ -21,10 +21,5 @@ every 1.day do
   rake "counter_culture:fix_counts"
 end
 
-every 6.minutes do
-  # make sure sidekiq queues are healthy
-  rake "sidekiq:health"
-end
-
 # Learn more: http://github.com/javan/whenever
 
