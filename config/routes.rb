@@ -50,7 +50,6 @@ Rails.application.routes.draw do
   end
 end
 
-
 # == Route Map
 #
 #                                   Prefix Verb      URI Pattern                                                                                       Controller#Action
@@ -268,3 +267,4 @@ end
 #                         job GET    /jobs/:id(.:format)                                            mission_control/jobs/jobs#show
 #                        jobs GET    /:status/jobs(.:format)                                        mission_control/jobs/jobs#index
 #                        root GET    /                                                              mission_control/jobs/queues#index
+
