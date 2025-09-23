@@ -17,7 +17,7 @@ pre-commit:
       tags: backend
       files: git diff --name-only --staged
       glob: "app/controllers/**/*.rb"
-      run: bundle exec chusaku && git add {staged_files}
+      run: bundle exec annotaterb routes && git add {staged_files}
     eslint:
       tags: frontend style
       glob: "*.{js,ts,jsx,tsx}"
@@ -36,7 +36,7 @@ pre-commit:
       tags: backend style
       files: git diff --name-only --staged
       glob: "config/locales/**/*.yml"
-      run: i18n-tasks normalize && git add {staged_files}
+      run: bundle exec i18n-tasks normalize && git add {staged_files}
     image_optim:
       tags: backend performance
       files: git diff --name-only --staged
@@ -86,7 +86,7 @@ post-merge:
 lint:
   commands:
     annotate-controllers:
-      run: bundle exec chusaku
+      run: bundle exec annotaterb routes
     eslint:
       glob: "*.{js,ts,jsx,tsx}"
       run: yarn eslint {staged_files} --fix
@@ -95,7 +95,7 @@ lint:
     haml-lint:
       run: haml-lint
     i18n-check:
-      run: i18n-tasks health
+      run: bundle exec i18n-tasks health
     rubocop:
       run: bundle exec rubocop --server --autocorrect
     stylelint:

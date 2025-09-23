@@ -13,13 +13,17 @@ end
 # Table name: horse_genetics
 #
 #  id         :uuid             not null, primary key
-#  horse_id   :uuid             indexed
 #  allele     :string(32)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  horse_id   :uuid             indexed
 #
 # Indexes
 #
 #  index_horse_genetics_on_horse_id  (horse_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (horse_id => horses.id)
 #
 

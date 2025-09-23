@@ -8,6 +8,7 @@ module Account
       dependent: :restrict_with_exception
     has_many :training_schedules, class_name: "Racing::TrainingSchedule", inverse_of: :stable,
       dependent: :restrict_with_exception
+    has_many :auctions, class_name: "Auction", inverse_of: :auctioneer, dependent: :restrict_with_exception
 
     validates :name, presence: true
 
@@ -31,7 +32,7 @@ end
 #  created_at          :datetime         not null, indexed
 #  updated_at          :datetime         not null
 #  legacy_id           :integer          indexed
-#  user_id             :uuid             not null, indexed
+#  user_id             :uuid             not null, uniquely indexed
 #
 # Indexes
 #
