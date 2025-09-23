@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_21_162540) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_23_114259) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -61,6 +61,35 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_21_162540) do
     t.uuid "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "auction_bids", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "auction_id"
+    t.uuid "horse_id"
+    t.uuid "bidder_id"
+    t.integer "current_bid", default: 0, null: false
+    t.integer "maximum_bid"
+    t.text "comment"
+    t.boolean "email_if_outbid", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["auction_id"], name: "index_auction_bids_on_auction_id"
+    t.index ["bidder_id"], name: "index_auction_bids_on_bidder_id"
+    t.index ["horse_id"], name: "index_auction_bids_on_horse_id"
+  end
+
+  create_table "auction_horses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "auction_id"
+    t.uuid "horse_id"
+    t.integer "reserve_price"
+    t.integer "max_price"
+    t.text "comment"
+    t.datetime "sold_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["auction_id"], name: "index_auction_horses_on_auction_id"
+    t.index ["horse_id"], name: "index_auction_horses_on_horse_id"
+    t.index ["sold_at"], name: "index_auction_horses_on_sold_at"
   end
 
   create_table "auctions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -441,6 +470,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_21_162540) do
   add_foreign_key "activations", "users"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "auction_bids", "auction_horses", column: "horse_id"
+  add_foreign_key "auction_bids", "stables", column: "bidder_id"
   add_foreign_key "auctions", "stables", column: "auctioneer_id"
   add_foreign_key "horse_appearances", "horses"
   add_foreign_key "horse_genetics", "horses"
