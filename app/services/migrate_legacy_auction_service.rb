@@ -12,8 +12,8 @@ class MigrateLegacyAuctionService # rubocop:disable Metrics/ClassLength
     auction.auctioneer = Account::Stable.find_by(legacy_id: legacy_auction.Auctioneer)
     auction.outside_horses_allowed = legacy_auction.AllowOutside
     auction.reserve_pricing_allowed = legacy_auction.AllowRes
-    auction.spending_cap_per_stable = legacy_auction.SpendingCap
-    auction.horse_purchase_cap_per_stable = legacy_auction.PerPerson
+    auction.spending_cap_per_stable = legacy_auction.SpendingCap if legacy_auction.SpendingCap > 0
+    auction.horse_purchase_cap_per_stable = legacy_auction.PerPerson if legacy_auction.PerPerson > 0
     auction.hours_until_sold = legacy_auction.SellTime.to_i
     status = legacy_auction.AllowStatus
     auction.racehorse_allowed_2yo = status.include?("2yo")
