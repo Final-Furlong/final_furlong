@@ -55,7 +55,7 @@ class AuctionsController < AuthenticatedController
   end
 
   def auction_params
-    params.require(:auction).permit(:name, :date_of_birth)
+    params.expect(auction: [:name, :date_of_birth])
   end
 end
 

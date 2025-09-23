@@ -6,3 +6,4 @@ if Rails.env.development? && ENV["ANNOTATERB_SKIP_ON_DB_TASKS"].nil?
 
   AnnotateRb::Core.load_rake_tasks
 end
+
