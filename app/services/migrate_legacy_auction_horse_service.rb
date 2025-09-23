@@ -8,8 +8,9 @@ class MigrateLegacyAuctionHorseService # rubocop:disable Metrics/ClassLength
   end
 
   def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-    auction = MigrateLegacyAuctionService.call(legacy_auction:)
-    MigrateLegacyHorseService.call(legacy_horse:)
+    MigrateLegacyAuctionService.new(legacy_auction:).call
+    auction = Auction.find_by(title: legacy_auction.Title)
+    MigrateLegacyHorseService.new(horse: legacy_horse, locations: Location.all).call
     horse = Horses::Horse.find_by(legacy_horse.ID)
     auction_horse = AuctionHorse.find_or_initialize_by(auction:, horse:)
     auction_horse.max_price = legacy_auction_horse.Max if legacy_auction_horse.Max > 0
