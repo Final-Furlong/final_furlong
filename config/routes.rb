@@ -50,6 +50,7 @@ Rails.application.routes.draw do
   end
 end
 
+
 # == Route Map
 #
 #                                   Prefix Verb      URI Pattern                                                                                       Controller#Action
@@ -100,14 +101,6 @@ end
 #                                    horse GET       /horses/:id(.:format)                                                                             horses#show
 #                                          PATCH     /horses/:id(.:format)                                                                             horses#update
 #                                          PUT       /horses/:id(.:format)                                                                             horses#update
-#                                 auctions GET       /auctions(.:format)                                                                               auctions#index
-#                                          POST      /auctions(.:format)                                                                               auctions#create
-#                              new_auction GET       /auctions/new(.:format)                                                                           auctions#new
-#                             edit_auction GET       /auctions/:id/edit(.:format)                                                                      auctions#edit
-#                                  auction GET       /auctions/:id(.:format)                                                                           auctions#show
-#                                          PATCH     /auctions/:id(.:format)                                                                           auctions#update
-#                                          PUT       /auctions/:id(.:format)                                                                           auctions#update
-#                                          DELETE    /auctions/:id(.:format)                                                                           auctions#destroy
 #                                 settings PUT|PATCH /settings(.:format)                                                                               settings#update
 #                      edit_current_stable GET       /stable/edit(.:format)                                                                            stables#edit
 #                           current_stable GET       /stable(.:format)                                                                                 stables#show
@@ -161,7 +154,7 @@ end
 #                     rails_direct_uploads POST      /rails/active_storage/direct_uploads(.:format)                                                    active_storage/direct_uploads#create
 #
 # Routes for Motor::Admin:
-#                            motor_cable        /cable                                                  #<ActionCable::Server::Base:0x000000013a059b60 @config=#<ActionCable::Server::Configuration:0x000000013a6bb3c8 @log_tags=[], @connection_class=#<Proc:0x000000013a234340 /Users/shanthi/.asdf/installs/ruby/3.4.5/lib/ruby/gems/3.4.0/gems/actioncable-8.0.3/lib/action_cable/engine.rb:55 (lambda)>, @worker_pool_size=4, @disable_request_forgery_protection=false, @allow_same_origin_as_host=true, @filter_parameters=[:passw, :email, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn, :cvv, :cvc, /\Aio\z/], @health_check_application=#<Proc:0x000000013a2397f0 /Users/shanthi/.asdf/installs/ruby/3.4.5/lib/ruby/gems/3.4.0/gems/actioncable-8.0.3/lib/action_cable/engine.rb:31 (lambda)>, @logger=#<ActiveSupport::BroadcastLogger:0x0000000138eb1e30 @broadcasts=[#<ActiveSupport::Logger:0x0000000138fd07d0 @level=0, @progname=nil, @default_formatter=#<Logger::Formatter:0x0000000138eb2a10 @datetime_format=nil>, @formatter=#<Logger::Formatter:0x0000000138eb23a8 @datetime_format=nil>, @logdev=#<Logger::LogDevice:0x00000001397773a8 @shift_period_suffix="%Y%m%d", @shift_size=104857600, @shift_age=1, @filename="/Users/shanthi/code/final_furlong/log/development.log", @dev=#<File:/Users/shanthi/code/final_furlong/log/development.log>, @binmode=false, @reraise_write_errors=[], @skip_header=false, @mon_data=#<Monitor:0x0000000138eb2790>, @mon_data_owner_object_id=5552>, @level_override={}, @local_level_key=:logger_thread_safe_level_5560>], @progname="Broadcast">, @cable={"adapter" => "redis", "url" => "redis://localhost:6379/1"}, @mount_path="/cable", @precompile_assets=true, @allowed_request_origins=/https?:\/\/localhost:\d+/>, @mutex=#<Monitor:0x000000013a1daa98>, @pubsub=nil, @worker_pool=nil, @event_loop=nil, @remote_connections=nil>
+#                            motor_cable        /cable                                                  #<ActionCable::Server::Base:0x0000000126d9b418 @config=#<ActionCable::Server::Configuration:0x00000001278760e0 @log_tags=[], @connection_class=#<Proc:0x000000012b4f6088 /Users/shanthi/.asdf/installs/ruby/3.4.5/lib/ruby/gems/3.4.0/gems/actioncable-8.0.3/lib/action_cable/engine.rb:55 (lambda)>, @worker_pool_size=4, @disable_request_forgery_protection=false, @allow_same_origin_as_host=true, @filter_parameters=[:passw, :email, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn, :cvv, :cvc, /\Aio\z/], @health_check_application=#<Proc:0x000000012b4f7c80 /Users/shanthi/.asdf/installs/ruby/3.4.5/lib/ruby/gems/3.4.0/gems/actioncable-8.0.3/lib/action_cable/engine.rb:31 (lambda)>, @logger=#<ActiveSupport::BroadcastLogger:0x00000001266bf180 @broadcasts=[#<ActiveSupport::Logger:0x000000012b279d00 @level=0, @progname=nil, @default_formatter=#<Logger::Formatter:0x00000001266f0eb0 @datetime_format=nil>, @formatter=#<Logger::Formatter:0x00000001266bfdd8 @datetime_format=nil>, @logdev=#<Logger::LogDevice:0x000000012b47cc60 @shift_period_suffix="%Y%m%d", @shift_size=104857600, @shift_age=1, @filename="/Users/shanthi/code/final_furlong/log/development.log", @dev=#<File:/Users/shanthi/code/final_furlong/log/development.log>, @binmode=false, @reraise_write_errors=[], @skip_header=false, @mon_data=#<Monitor:0x00000001266f0848>, @mon_data_owner_object_id=5544>, @level_override={}, @local_level_key=:logger_thread_safe_level_5552>], @progname="Broadcast">, @cable={"adapter" => "redis", "url" => "redis://localhost:6379/1"}, @mount_path="/cable", @precompile_assets=true, @allowed_request_origins=/https?:\/\/localhost:\d+/>, @mutex=#<Monitor:0x000000012b4f07f0>, @pubsub=nil, @worker_pool=nil, @event_loop=nil, @remote_connections=nil>
 #                  motor_api_run_queries POST   /api/run_queries(.:format)                              motor/run_queries#create
 #                    motor_api_run_query GET    /api/run_queries/:id(.:format)                          motor/run_queries#show
 #                  motor_api_send_alerts POST   /api/send_alerts(.:format)                              motor/send_alerts#create
@@ -275,4 +268,3 @@ end
 #                         job GET    /jobs/:id(.:format)                                            mission_control/jobs/jobs#show
 #                        jobs GET    /:status/jobs(.:format)                                        mission_control/jobs/jobs#index
 #                        root GET    /                                                              mission_control/jobs/queues#index
-
