@@ -17,7 +17,7 @@ pre-commit:
       tags: backend
       files: git diff --name-only --staged
       glob: "app/controllers/**/*.rb"
-      run: bundle exec chusaku && git add {staged_files}
+      run: bundle exec annotaterb routes && git add {staged_files}
     eslint:
       tags: frontend style
       glob: "*.{js,ts,jsx,tsx}"
@@ -86,7 +86,7 @@ post-merge:
 lint:
   commands:
     annotate-controllers:
-      run: bundle exec chusaku
+      run: bundle exec annotaterb routes
     eslint:
       glob: "*.{js,ts,jsx,tsx}"
       run: yarn eslint {staged_files} --fix
