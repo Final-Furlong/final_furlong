@@ -28,5 +28,11 @@ class MigrateLegacyAuctionService # rubocop:disable Metrics/ClassLength
     Rails.logger.error "Legacy Info: #{legacy_auction.inspect}"
     raise e
   end
+
+  private
+
+  def from_game_time(value)
+    value - 4.years
+  end
 end
 
