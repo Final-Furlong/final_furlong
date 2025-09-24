@@ -1,0 +1,46 @@
+.card
+  .card-body
+    = search_form_for query, url: horses_path, html: { class: "d-flex flex-column", autocomplete: "off" },
+                             data: { controller: "search",
+                                     search: { target: "form" },
+                                     turbo: { frame: "all-horses-search" } },
+                             wrapper: :inline_form do |f|
+      .d-flex.flex-gap.flex-wrap.filters-layout
+        label.visually-hidden for="q_name_i_cont_all"= I18n.t("horses.search.name")
+        = f.input :name_i_cont_all, label: false, required: false, placeholder: I18n.t("horses.search.name"),
+                                    hint: I18n.t("horses.search.name"), input_html: { data: { action: "search#search",
+                                                                                              min_characters: 2 } }
+        label.visually-hidden for="q_gender_in"= I18n.t("horses.search.gender")
+        = f.input :gender_in, label: false, required: false, collection: Horses::Gender.localised_filter_options,
+                              hint: I18n.t("horses.search.gender"),
+                              selected: params.dig("q", "gender_in")&.join(",") || "",
+                              include_blank: true,
+                              input_html: { class: "custom-select", data: { action: "search#search" } }
+        label.visually-hidden for="q_sire_name_i_cont_all"= I18n.t("horses.search.sire")
+        = f.input :sire_name_i_cont_all, label: false, required: false, placeholder: I18n.t("horses.search.sire"),
+                                         hint: I18n.t("horses.search.sire"),
+                                         input_html: { data: { action: "search#search", min_characters: 2 } }
+        label.visually-hidden for="q_dam_name_i_cont_all"= I18n.t("horses.search.dam")
+        = f.input :dam_name_i_cont_all, label: false, required: false, placeholder: I18n.t("horses.search.dam"),
+                                        hint: I18n.t("horses.search.dam"),
+                                        input_html: { data: { action: "search#search", min_characters: 2 } }
+        label.visually-hidden for="q_owner_name_i_cont_all"= I18n.t("horses.search.owner")
+        = f.input :owner_name_i_cont_all, label: false, required: false, placeholder: I18n.t("horses.search.owner"),
+                                          hint: I18n.t("horses.search.owner"),
+                                          input_html: { data: { action: "search#search", min_characters: 2 } }
+        label.visually-hidden for="q_breeder_name_i_cont_all"= I18n.t("horses.search.breeder")
+        = f.input :breeder_name_i_cont_all, label: false, required: false, placeholder: I18n.t("horses.search.breeder"),
+                                            hint: I18n.t("horses.search.breeder"),
+                                            input_html: { data: { action: "search#search", min_characters: 2 } }
+        label.visually-hidden for="q_age_gteq"= I18n.t("horses.search.min_age")
+        = f.input :age_gteq, label: false, required: false, placeholder: I18n.t("horses.search.min_age"),
+                             hint: I18n.t("horses.search.min_age"), input_html: { data: { action: "search#search",
+                                                                                          min_characters: 1 } }
+        label.visually-hidden for="q_age_lteq"= I18n.t("horses.search.max_age")
+        = f.input :age_lteq, label: false, required: false, placeholder: I18n.t("horses.search.max_age"),
+                             hint: I18n.t("horses.search.max_age"), input_html: { data: { action: "search#search",
+                                                                                          min_characters: 1 } }
+      .d-flex.mt-2.justify-content-end
+        button.btn.btn-outline-danger.btn-sm.me-2 type="button" data-action="search#reset"
+          = t("common.search_form.reset_filters")
+        = f.submit t("common.search_form.action"), class: "btn btn-primary btn-sm d-lg-none"

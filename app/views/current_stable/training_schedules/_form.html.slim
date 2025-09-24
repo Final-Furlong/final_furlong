@@ -1,0 +1,27 @@
+= simple_form_for schedule, as: :training_schedule, url:, html: { class: "training-schedule form" } do |f|
+  = f.input :name, required: true
+  = f.input :description, required: false
+  table.table.table-bordered.w-100
+    thead
+      tr
+        td Day
+        td colspan=2 Activity
+        td colspan=2 Activity
+        td colspan=2 Activity
+    tbody.table-group-divider
+      - activities_collection = Racing::TrainingScheduleActivity.localised_activities
+      - distances_collection = Racing::TrainingScheduleActivity.localised_distances
+      - Date::DAYNAMES.each do |day|
+        tr
+          td= day
+          = f.fields_for "#{day.downcase}_activities", schedule.send(:"#{day.downcase}_activities") do |af|
+            td= af.input :activity1, collection: activities_collection, label: false, required: false
+            td= af.input :distance1, collection: distances_collection, label: false, required: false
+            td= af.input :activity2, collection: activities_collection, label: false, required: false
+            td= af.input :distance2, collection: distances_collection, label: false, required: false
+            td= af.input :activity3, collection: activities_collection, label: false, required: false
+            td= af.input :distance3, collection: distances_collection, label: false, required: false
+
+  .form-actions
+    = link_to t("forms.cancel"), stable_training_schedules_path, class: "btn btn-outline-secondary"
+    = f.submit t("common.create"), class: "btn btn-primary"

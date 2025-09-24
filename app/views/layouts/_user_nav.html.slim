@@ -1,0 +1,34 @@
+/ Notification dropdown
+.nav-item.dropdown.ms-3.me-3.me-lg-0
+  a.nav-link.hidden-arrow#notification-dropdown-menu-link[href="#" role="button" data-bs_toggle="dropdown"
+  aria-expanded=false aria-label="Notifications Dropdown" tabindex=0]
+    i.fas.fa-bell
+    / %span.badge.rounded-pill.badge-notification.bg-danger= 1
+  ul.dropdown-menu.dropdown-menu-end area-labelledby="notification-dropdown-menu-link"
+    li
+      a.dropdown-item href="#"= "Alerts"
+    li
+      a.dropdown-item href="#"= "Will go"
+    li
+      a.dropdown-item href="#"= "Here"
+.nav-item.dropdown
+  a.nav-link.hidden-arrow.d-flex.align-items-center#avatar-dropdown-menu-link[href="#" role="button"
+    data-bs_toggle="dropdown" aria-expanded=false aria-label="User Dropdown" tabindex=0]
+    span.icon
+      i.fa-solid.fa-user
+  ul.dropdown-menu.dropdown-menu-end aria-labelledby="avatar-dropdown-menu-link" data-popper_placement=nil
+    li
+      = link_to edit_user_registration_path, class: "dropdown-item", data: { turbo: false } do
+        i.fas.fa-gear.me-2
+        = t(".edit_profile")
+    li
+      = link_to edit_current_stable_path, class: "dropdown-item", data: { turbo: false } do
+        i.fas.fa-tractor.me-2
+        = t(".edit_stable")
+    li
+      hr.dropdown-divider
+    li
+      = button_to destroy_user_session_path, method: :delete, class: "dropdown-item",
+                                             data: { turbo: false } do
+        i.fas.fa-arrow-right-from-bracket.me-2.fa-flip-horizontal
+        = t(".logout")

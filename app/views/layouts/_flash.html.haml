@@ -1,8 +1,0 @@
-- flash.each do |name, messages|
-  - case messages.class.name.to_s
-  - when "String"
-    = render 'layouts/flash_message', message: messages, name: name
-  - when "Array"
-    - messages.compact.each do |msg|
-      = render 'layouts/flash_message', message: msg, name: name
-- flash.clear

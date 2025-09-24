@@ -16,40 +16,40 @@ FactoryBot.define do
     rf_leg_image do
       case rf_leg_marking.to_s
       when "coronet"
-        "coronet.png"
+        "coronet"
       else
-        marking1 = "#{rf_leg_marking}1.png"
-        marking2 = "#{rf_leg_marking}2.png"
+        marking1 = "#{rf_leg_marking}1"
+        marking2 = "#{rf_leg_marking}2"
         [marking1, marking2].sample
       end
     end
     lf_leg_image do
       case lf_leg_marking.to_s
       when "coronet"
-        "coronet.png"
+        "coronet"
       else
-        marking1 = "#{lf_leg_marking}1.png"
-        marking2 = "#{lf_leg_marking}2.png"
+        marking1 = "#{lf_leg_marking}1"
+        marking2 = "#{lf_leg_marking}2"
         [marking1, marking2].sample
       end
     end
     rh_leg_image do
       case rh_leg_marking.to_s
       when "coronet"
-        "coronet.png"
+        "coronet"
       else
-        marking1 = "#{rh_leg_marking}1.png"
-        marking2 = "#{rh_leg_marking}2.png"
+        marking1 = "#{rh_leg_marking}1"
+        marking2 = "#{rh_leg_marking}2"
         [marking1, marking2].sample
       end
     end
     lh_leg_image do
       case lh_leg_marking.to_s
       when "coronet"
-        "coronet.png"
+        "coronet"
       else
-        marking1 = "#{lh_leg_marking}1.png"
-        marking2 = "#{lh_leg_marking}2.png"
+        marking1 = "#{lh_leg_marking}1"
+        marking2 = "#{lh_leg_marking}2"
         [marking1, marking2].sample
       end
     end

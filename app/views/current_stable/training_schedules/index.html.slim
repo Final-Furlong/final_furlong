@@ -1,0 +1,9 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: current_stable.name, href: current_stable_path },
+                                                   { name: t(".title"), href: "#" }])
+= turbo_stream_from current_stable, "training_schedules"
+.header.is-flex.flex-wrap-wrap.is-justify-content-space-between.is-vcentered.columns
+  h1.is-size-1.column= t(".title")
+  #create-training-schedule= render partial: "create_training_schedule"
+
+= render partial: "training_schedule", collection: @schedules

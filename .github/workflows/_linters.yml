@@ -26,9 +26,9 @@ jobs:
         run: |
           bundle exec rubocop
 
-      - name: HamlLint
+      - name: Slim Lint
         run: |
-          HAML_LINT_RUBOCOP_CONF=.rubocop_haml.yml bundle exec haml-lint
+          bundle exec slim-lint
 
       - name: Fasterer
         run: |

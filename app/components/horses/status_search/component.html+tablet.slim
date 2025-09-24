@@ -1,0 +1,4 @@
+li.nav-item
+  = link_to url_with_params(status), class: "nav-link #{"active" if status == active_status}" do
+    = localised_status(status, statuses[status])
+    span.badge.text-bg-light= statuses[status]
