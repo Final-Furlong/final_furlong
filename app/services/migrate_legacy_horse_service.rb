@@ -1,16 +1,16 @@
 class MigrateLegacyHorseService # rubocop:disable Metrics/ClassLength
   attr_reader :legacy_horse, :locations
 
-  def initialize(horse:, locations:)
+  def initialize(horse:, locations: nil)
     @legacy_horse = horse
-    @locations = locations
+    @locations = locations || Location.all
   end
 
   def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     return unless legacy_horse
-    return if Horses::Horse.exists?(legacy_id: legacy_horse.id)
+    horse = Horses::Horse.find_or_initialize_by(legacy_id: legacy_horse.id)
 
-    Horses::Horse.create!(
+    horse.update!(
       age: calculate_age,
       date_of_birth: from_game_date(legacy_horse.date_of_birth),
       date_of_death: dead? ? from_game_date(legacy_horse.date_of_death) : nil,
