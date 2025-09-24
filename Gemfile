@@ -87,6 +87,7 @@ group :development do
   gem "annotaterb", require: false
   gem "autoprefixer-rails"
   gem "bcrypt_pbkdf" # required for capistran
+  gem "benchmark"
   gem "better_errors"
   gem "byebug"
   gem "capistrano", "~> 3.17", require: false
