@@ -1,30 +1,34 @@
 class MigrateLegacyHorseService # rubocop:disable Metrics/ClassLength
-  attr_reader :legacy_horse, :locations
+  attr_reader :legacy_horse
 
-  def initialize(horse:, locations: nil)
+  def initialize(horse:)
     @legacy_horse = horse
-    @locations = locations || Location.all
   end
 
   def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     return unless legacy_horse
     horse = Horses::Horse.find_or_initialize_by(legacy_id: legacy_horse.id)
-
-    horse.update!(
+    update_attrs = {
       age: calculate_age,
-      date_of_birth: from_game_date(legacy_horse.DOB),
       date_of_death: dead? ? from_game_date(legacy_horse.DOD) : nil,
       gender: pick_gender,
       name: legacy_horse.name.presence,
       status: pick_status,
-      created_at: from_game_date(legacy_horse.DOB),
-      legacy_id: legacy_horse.ID,
-      breeder_id: find_breeder,
-      owner_id: find_owner,
-      location_bred_id: find_location,
-      sire_id: find_sire,
-      dam_id: find_dam
-    )
+      owner_id: find_owner
+    }
+    unless horse.persisted?
+      update_attrs.merge!(
+        date_of_birth: from_game_date(legacy_horse.DOB),
+        created_at: from_game_date(legacy_horse.DOB),
+        legacy_id: legacy_horse.ID,
+        location_bred_id: find_location,
+        sire_id: find_sire,
+        dam_id: find_dam,
+        breeder_id: find_breeder
+      )
+    end
+
+    horse.update!(update_attrs)
   rescue => e
     Rails.logger.error "Info: #{legacy_horse.inspect}"
     raise e
@@ -45,7 +49,8 @@ class MigrateLegacyHorseService # rubocop:disable Metrics/ClassLength
   end
 
   def find_location
-    locations[legacy_horse.LocBred]
+    legacy_track = Legacy::Racetrack.find(legacy_horse.LocBred)
+    Racing::Racetrack.where(name: legacy_track.Name).pick(:location_id)
   end
 
   def find_breeder
