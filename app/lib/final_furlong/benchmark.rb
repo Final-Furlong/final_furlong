@@ -3,13 +3,14 @@ module FinalFurlong
     def measure_execution_time(identifier, tags = {})
       return unless block_given?
 
-      result = nil
+      start_time = Time.current
 
-      ms = Benchmark.ms do
-        result = yield
-      end
+      result = yield
 
-      log_msg = "[Execution Time] identifier = #{identifier}, execution_time = #{ms} [ms]"
+      end_time = Time.current
+      seconds = (end_time - start_time)
+
+      log_msg = "[Execution Time] identifier = #{identifier}, execution_time = #{seconds} [s]"
       if tags
         tags_str = tags.map { |k, v| "#{k}=#{v}" }.join(", ")
         log_msg += ", #{tags_str}"
