@@ -15,6 +15,7 @@ def update
   # will fail, but this failure is fixed by
   # doing a db:migrate
   system! "bin/rails db:migrate:with_data"
+  system! "bin/rails db:migrate:queue"
 
   log "Updating the test database"
   system!("bin/rails db:test:prepare")

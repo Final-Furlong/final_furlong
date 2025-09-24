@@ -8,14 +8,14 @@
   %span= t("layouts.sidenav.settings_divider")
 %ul.list-unstyled.mb-0.collapse#settings-links-list
   %li
-    = button_to settings_path, method: :patch, class: settings_button_classes do
+    = button_to settings_path, method: :post, class: settings_button_classes do
       = hidden_field_tag "locale", "en"
       %span.me-2{ class: "fi fi-us" }
       English
       - if american_locale?
         %i.fas.fa-check.ms-2
   %li
-    = button_to settings_path, method: :patch, class: settings_button_classes do
+    = button_to settings_path, method: :post, class: settings_button_classes do
       = hidden_field_tag "locale", "en-GB"
       %span.me-2{ class: "fi fi-gb" }
       English

@@ -2,43 +2,19 @@ Rails.application.routes.draw do
   mount Api::Base, at: "/"
 
   draw(:admin)
+  draw(:users)
+  draw(:current_stable)
 
   match "/404", to: "errors#not_found", via: :all
   match "/422", to: "errors#unprocessable", via: :all
   match "/500", to: "errors#internal_error", via: :all
 
-  devise_for :users, class_name: "Account::User", path: "", path_names: {
-    sign_up: "join",
-    sign_in: "login",
-    sign_out: "logout",
-    password: "forgot-password",
-    confirmation: "confirm-account",
-    unlock: "unlock"
-  }, controllers: {
-    registrations: "users/registrations"
-  }
-
-  get "/activation_required", to: "pages#activation", as: :activation
-
-  resources :users
   resources :stables, only: %i[index show]
   resources :horses, except: %i[new create destroy] do
     member do
       get :image
       get :thumbnail
     end
-  end
-
-  match "/settings", to: "settings#update", as: :settings, via: %i[put patch]
-
-  # current stable
-  resource :stable, only: %i[show edit update], controller: "stables", as: :current_stable
-  namespace :stable, module: "current_stable" do
-    resources :horses, only: %i[index edit show update]
-    resources :training_schedules do
-      resources :horses, controller: "training_schedule_horses", only: %i[index new create destroy]
-    end
-    resources :workouts, only: %i[create]
   end
 
   unauthenticated do
@@ -58,9 +34,6 @@ end
 #                     mission_control_jobs           /jobs                                                                                             MissionControl::Jobs::Engine
 #                        admin_impersonate DELETE    /admin/impersonate(.:format)                                                                      admin/impersonates#destroy
 #                                          POST      /admin/impersonate(.:format)                                                                      admin/impersonates#create
-#                                                    /404(.:format)                                                                                    errors#not_found
-#                                                    /422(.:format)                                                                                    errors#unprocessable
-#                                                    /500(.:format)                                                                                    errors#internal_error
 #                         new_user_session GET       /login(.:format)                                                                                  devise/sessions#new
 #                             user_session POST      /login(.:format)                                                                                  devise/sessions#create
 #                     destroy_user_session DELETE    /logout(.:format)                                                                                 devise/sessions#destroy
@@ -91,15 +64,6 @@ end
 #                                          PATCH     /users/:id(.:format)                                                                              users#update
 #                                          PUT       /users/:id(.:format)                                                                              users#update
 #                                          DELETE    /users/:id(.:format)                                                                              users#destroy
-#                                  stables GET       /stables(.:format)                                                                                stables#index
-#                                   stable GET       /stables/:id(.:format)                                                                            stables#show
-#                              image_horse GET       /horses/:id/image(.:format)                                                                       horses#image
-#                          thumbnail_horse GET       /horses/:id/thumbnail(.:format)                                                                   horses#thumbnail
-#                                   horses GET       /horses(.:format)                                                                                 horses#index
-#                               edit_horse GET       /horses/:id/edit(.:format)                                                                        horses#edit
-#                                    horse GET       /horses/:id(.:format)                                                                             horses#show
-#                                          PATCH     /horses/:id(.:format)                                                                             horses#update
-#                                          PUT       /horses/:id(.:format)                                                                             horses#update
 #                                 settings PUT|PATCH /settings(.:format)                                                                               settings#update
 #                      edit_current_stable GET       /stable/edit(.:format)                                                                            stables#edit
 #                           current_stable GET       /stable(.:format)                                                                                 stables#show
@@ -123,6 +87,18 @@ end
 #                                          PUT       /stable/training_schedules/:id(.:format)                                                          current_stable/training_schedules#update
 #                                          DELETE    /stable/training_schedules/:id(.:format)                                                          current_stable/training_schedules#destroy
 #                          stable_workouts POST      /stable/workouts(.:format)                                                                        current_stable/workouts#create
+#                                                    /404(.:format)                                                                                    errors#not_found
+#                                                    /422(.:format)                                                                                    errors#unprocessable
+#                                                    /500(.:format)                                                                                    errors#internal_error
+#                                  stables GET       /stables(.:format)                                                                                stables#index
+#                                   stable GET       /stables/:id(.:format)                                                                            stables#show
+#                              image_horse GET       /horses/:id/image(.:format)                                                                       horses#image
+#                          thumbnail_horse GET       /horses/:id/thumbnail(.:format)                                                                   horses#thumbnail
+#                                   horses GET       /horses(.:format)                                                                                 horses#index
+#                               edit_horse GET       /horses/:id/edit(.:format)                                                                        horses#edit
+#                                    horse GET       /horses/:id(.:format)                                                                             horses#show
+#                                          PATCH     /horses/:id(.:format)                                                                             horses#update
+#                                          PUT       /horses/:id(.:format)                                                                             horses#update
 #                                     root GET       /                                                                                                 pages#home
 #                       authenticated_root GET       /                                                                                                 stables#show
 #         turbo_recede_historical_location GET       /recede_historical_location(.:format)                                                             turbo/native/navigation#recede
@@ -153,7 +129,7 @@ end
 #                     rails_direct_uploads POST      /rails/active_storage/direct_uploads(.:format)                                                    active_storage/direct_uploads#create
 #
 # Routes for Motor::Admin:
-#                            motor_cable        /cable                                                  #<ActionCable::Server::Base:0x0000000126d9b418 @config=#<ActionCable::Server::Configuration:0x00000001278760e0 @log_tags=[], @connection_class=#<Proc:0x000000012b4f6088 /Users/shanthi/.asdf/installs/ruby/3.4.5/lib/ruby/gems/3.4.0/gems/actioncable-8.0.3/lib/action_cable/engine.rb:55 (lambda)>, @worker_pool_size=4, @disable_request_forgery_protection=false, @allow_same_origin_as_host=true, @filter_parameters=[:passw, :email, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn, :cvv, :cvc, /\Aio\z/], @health_check_application=#<Proc:0x000000012b4f7c80 /Users/shanthi/.asdf/installs/ruby/3.4.5/lib/ruby/gems/3.4.0/gems/actioncable-8.0.3/lib/action_cable/engine.rb:31 (lambda)>, @logger=#<ActiveSupport::BroadcastLogger:0x00000001266bf180 @broadcasts=[#<ActiveSupport::Logger:0x000000012b279d00 @level=0, @progname=nil, @default_formatter=#<Logger::Formatter:0x00000001266f0eb0 @datetime_format=nil>, @formatter=#<Logger::Formatter:0x00000001266bfdd8 @datetime_format=nil>, @logdev=#<Logger::LogDevice:0x000000012b47cc60 @shift_period_suffix="%Y%m%d", @shift_size=104857600, @shift_age=1, @filename="/Users/shanthi/code/final_furlong/log/development.log", @dev=#<File:/Users/shanthi/code/final_furlong/log/development.log>, @binmode=false, @reraise_write_errors=[], @skip_header=false, @mon_data=#<Monitor:0x00000001266f0848>, @mon_data_owner_object_id=5544>, @level_override={}, @local_level_key=:logger_thread_safe_level_5552>], @progname="Broadcast">, @cable={"adapter" => "redis", "url" => "redis://localhost:6379/1"}, @mount_path="/cable", @precompile_assets=true, @allowed_request_origins=/https?:\/\/localhost:\d+/>, @mutex=#<Monitor:0x000000012b4f07f0>, @pubsub=nil, @worker_pool=nil, @event_loop=nil, @remote_connections=nil>
+#                            motor_cable        /cable                                                  #<ActionCable::Server::Base:0x000000012e6d84e8 @config=#<ActionCable::Server::Configuration:0x000000012e6de398 @log_tags=[], @connection_class=#<Proc:0x000000012e73f490 /Users/shanthi/.asdf/installs/ruby/3.4.5/lib/ruby/gems/3.4.0/gems/actioncable-8.0.3/lib/action_cable/engine.rb:55 (lambda)>, @worker_pool_size=4, @disable_request_forgery_protection=false, @allow_same_origin_as_host=true, @filter_parameters=[:passw, :email, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn, :cvv, :cvc, /\Aio\z/], @health_check_application=#<Proc:0x000000012e6f0bd8 /Users/shanthi/.asdf/installs/ruby/3.4.5/lib/ruby/gems/3.4.0/gems/actioncable-8.0.3/lib/action_cable/engine.rb:31 (lambda)>, @logger=#<ActiveSupport::BroadcastLogger:0x00000001271d8990 @broadcasts=[#<ActiveSupport::Logger:0x00000001271bec98 @level=0, @progname=nil, @default_formatter=#<Logger::Formatter:0x00000001271d90e8 @datetime_format=nil>, @formatter=#<Logger::Formatter:0x00000001271d8d28 @datetime_format=nil>, @logdev=#<Logger::LogDevice:0x000000012143e4d8 @shift_period_suffix="%Y%m%d", @shift_size=104857600, @shift_age=1, @filename="/Users/shanthi/code/final_furlong/log/development.log", @dev=#<File:/Users/shanthi/code/final_furlong/log/development.log>, @binmode=false, @reraise_write_errors=[], @skip_header=false, @mon_data=#<Monitor:0x00000001271d9020>, @mon_data_owner_object_id=5544>, @level_override={}, @local_level_key=:logger_thread_safe_level_5552>], @progname="Broadcast">, @cable={"adapter" => "redis", "url" => "redis://localhost:6379/1"}, @mount_path="/cable", @precompile_assets=true, @allowed_request_origins=/https?:\/\/localhost:\d+/>, @mutex=#<Monitor:0x000000012e739f90>, @pubsub=nil, @worker_pool=nil, @event_loop=nil, @remote_connections=nil>
 #                  motor_api_run_queries POST   /api/run_queries(.:format)                              motor/run_queries#create
 #                    motor_api_run_query GET    /api/run_queries/:id(.:format)                          motor/run_queries#show
 #                  motor_api_send_alerts POST   /api/send_alerts(.:format)                              motor/send_alerts#create

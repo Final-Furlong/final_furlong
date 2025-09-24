@@ -15,6 +15,7 @@ def setup
   # will fail, but this failure is fixed by
   # doing a db:migrate
   system! "bin/rails db:reset || bin/rails db:migrate:with_data && bin/rails db:seed"
+  system! "bin/rails db:reset:queue || bin/rails db:migrate:queue"
 
   log "Dropping & recreating the test database"
   # Setting the RAILS_ENV explicitly to be sure

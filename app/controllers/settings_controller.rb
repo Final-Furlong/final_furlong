@@ -1,7 +1,5 @@
 class SettingsController < ApplicationController
-  # @route PUT /settings (settings)
-  # @route PATCH /settings (settings)
-  def update
+  def create
     authorize :settings
 
     if outcome.valid?
