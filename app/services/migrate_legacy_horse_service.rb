@@ -128,7 +128,8 @@ class MigrateLegacyHorseService # rubocop:disable Metrics/ClassLength
   end
 
   def from_game_date(value)
-    Date.parse(value) - 4.years
+    date_value = (value.is_a?(Date) || value.is_a?(DateTime)) ? value : Date.parse(value)
+    date_value - 4.years
   end
 end
 
