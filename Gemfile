@@ -32,8 +32,6 @@ gem "grape"
 gem "grape-active_model_serializers"
 gem "grape-entity"
 gem "grape_on_rails_routes"
-gem "haml"
-gem "haml-rails"
 gem "image_processing"
 gem "importmap-rails"
 gem "kaminari"
@@ -54,6 +52,7 @@ gem "redis"
 gem "sentry-rails"
 gem "sentry-ruby"
 gem "simple_form"
+gem "slim-rails"
 gem "solid_queue"
 gem "stimulus-rails"
 gem "store_model"
@@ -137,6 +136,7 @@ group :development, :test do
   gem "rubocop-rspec", require: false
   gem "rubocop-rspec_rails", require: false
   gem "ruby-debug-ide", require: false
+  gem "slim_lint", require: false
   gem "solargraph", require: false
   gem "standard"
   gem "standard-performance"

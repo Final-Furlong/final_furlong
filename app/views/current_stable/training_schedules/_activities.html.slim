@@ -1,0 +1,16 @@
+- activities = JSON.parse(schedule.activities, symbolize_names: true)
+- activities[:days].to_a.each do |workout_activity|
+  = turbo_frame_tag workout_activity.day.to_s do
+    .workout-activity-day
+      .workout-activity-day__header Header here
+      .workout-activity-day__body
+        .workout-activity-day-activity--header
+          .workout-activity-day-activity--activity Activity
+          .workout-activity-day-activity--distance Distance
+
+          p= workout_activity.day
+          p= workout_activity.activities.to_s
+
+- if schedule.persisted?
+  .workout-activity-day-activity__footer
+    = link_to "Add Activity", new_stable_training_schedule_activity_path(schedule), class: "btn btn-primary"

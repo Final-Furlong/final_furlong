@@ -1,0 +1,10 @@
+.header
+  h1= @user.name
+
+.username
+  strong= Account::User.human_attribute_name(:username)
+  = @user.username
+
+.email
+  strong= Account::User.human_attribute_name(:email)
+  = @user.email

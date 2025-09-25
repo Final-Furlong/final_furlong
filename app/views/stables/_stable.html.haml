@@ -1,9 +1,0 @@
-%h1= stable.name
-
-%p
-  %span= t("stables.show.joined", date: l(stable.created_at.to_date, format: :long))
-  = render Users::OnlineBadge::Component.new(online: SessionsRepository.online?(resource: stable))
-
-- if stable.description?
-  %blockquote.blockquote.border.border-secondary.rounded.p-2
-    %p= stable.description.html_safe # rubocop:disable Rails/OutputSafety

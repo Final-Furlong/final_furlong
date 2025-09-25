@@ -27,11 +27,6 @@ pre-commit:
       files: git diff --name-only --staged
       glob: "*.rb"
       run: fasterer {files}
-    haml-lint:
-      tags: frontend style
-      files: git diff --name-only --staged
-      glob: "*.haml"
-      run: HAML_LINT_RUBOCOP_CONF=.rubocop_haml.yml haml-lint {files}
     i18n-check:
       tags: backend style
       files: git diff --name-only --staged
@@ -47,6 +42,11 @@ pre-commit:
       files: git diff --name-only --staged
       glob: "*.rb"
       run: rubocop --force-exclusion --autocorrect --server {files} && git add {staged_files}
+    slim-lint:
+      tags: frontend style
+      files: git diff --name-only --staged
+      glob: "*.slim"
+      run: bundle exec slim-lint {files}
     stylelint:
       tags: frontend style
       files: git diff --name-only --staged
@@ -92,11 +92,11 @@ lint:
       run: yarn eslint {staged_files} --fix
     fasterer:
       run: fasterer
-    haml-lint:
-      run: haml-lint
     i18n-check:
       run: bundle exec i18n-tasks health
     rubocop:
       run: bundle exec rubocop --server --autocorrect
+    slim-lint:
+      run: bundle exec slim-lint
     stylelint:
       run: yarn run stylelint --fix app/assets/stylesheets

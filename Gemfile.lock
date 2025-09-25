@@ -372,11 +372,6 @@ GEM
       temple (>= 0.8.2)
       thor
       tilt
-    haml-rails (2.1.0)
-      actionpack (>= 5.1)
-      activesupport (>= 5.1)
-      haml (>= 4.0.6)
-      railties (>= 5.1)
     haml_lint (0.66.0)
       haml (>= 5.0)
       parallel (~> 1.10)
@@ -781,6 +776,17 @@ GEM
     simplecov-lcov (0.9.0)
     simplecov_json_formatter (0.1.4)
     simpleidn (0.2.3)
+    slim (5.2.1)
+      temple (~> 0.10.0)
+      tilt (>= 2.1.0)
+    slim-rails (3.7.0)
+      actionpack (>= 3.1)
+      railties (>= 3.1)
+      slim (>= 3.0, < 6.0, != 5.0.0)
+    slim_lint (0.33.0)
+      rexml (~> 3.2)
+      rubocop (>= 1.0, < 2.0)
+      slim (>= 3.0, < 6.0)
     solargraph (0.56.2)
       backport (~> 1.2)
       benchmark (~> 0.4)
@@ -984,8 +990,6 @@ DEPENDENCIES
   guard-haml_lint
   guard-rspec
   guard-rubocop
-  haml
-  haml-rails
   i18n-debug
   i18n-spec
   i18n-tasks
@@ -1038,6 +1042,8 @@ DEPENDENCIES
   simplecov-cobertura
   simplecov-json
   simplecov-lcov
+  slim-rails
+  slim_lint
   solargraph
   solid_queue
   standard

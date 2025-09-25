@@ -1,0 +1,54 @@
+/ Sidebar
+nav.collapse.d-lg-block.sidebar.collapse.bg-white#sidebar-menu aria-label="sidebar navigation"
+  .position-sticky
+    .list-group.list-group-flush
+      .d-lg-none
+        = nav_link_generator path: root_path do
+          i.fas.fa-house.fa-fw.me-3
+          span= t(".home")
+      - if user_signed_in?
+        = nav_link_generator path: current_stable_path do
+          i.fas.fa-tractor.fa-fw.me-3
+          span= t(".my_stable")
+        = nav_link_generator path: "#" do
+          i.fas.fa-horse-head.me-3
+          span= t(".stable.horses")
+        - racing_links_data = { bs_toggle: "collapse", bs_target: "#stable-racing-links-list" }
+        a.nav-list-item.py-2.collapsed[href="#" data=racing_links_data aria-expanded=false
+        aria-label="Racing Links Subnavigation"]
+          i.fa-solid.fa-bars-staggered.me-3
+          span= t(".stable.racing_divider")
+        ul.list-unstyled.mb-0.collapse#stable-racing-links-list
+          li
+            = nav_link_generator path: stable_training_schedules_path do
+              i.fas.fa-stopwatch.me-3
+              span= t(".stable.training_schedules")
+      - else
+        = nav_link_generator path: new_user_session_path, classes: "d-block d-lg-none" do
+          i.fas.fa-arrow-right-from-bracket.me-3
+          span= t("layouts.nav.login")
+
+      - game_links_data = { bs_toggle: "collapse", bs_target: "#game-links-list" }
+      a.nav-list-item.py-2 href="#" data= game_links_data
+        i.fa-solid.fa-bars-staggered.me-3
+        span= t(".game_divider")
+      ul.list-unstyled.mb-0.show#game-links-list
+        li
+          = nav_link_generator path: stables_path, classes: "border border-0 border-bottom" do
+            i.fas.fa-tractor.fa-fw.me-3
+            span= t(".stables")
+        li
+          = nav_link_generator path: horses_path, classes: "border border-0" do
+            i.fas.fa-horse-head.me-3
+            span= t(".all_horses")
+        li
+          = nav_link_generator path: "https://www.finalfurlong.org/", classes: "border-start-0 border-end-0" do
+            i.fas.fa-delete-left.me-3
+            span= t(".main_app")
+
+      = render Nav::I18n::Component.new(locale: I18n.locale, version: :phone, variants: request.variant)
+      - if user_signed_in?
+        = button_to destroy_user_session_path, method: :delete, class: ["list-group-item list-group-item-action py-2",
+                                                                        "border border-0"], data: { turbo: false } do
+          i.fas.fa-arrow-right-from-bracket.me-3.fa-flip-horizontal
+          = t(".logout")

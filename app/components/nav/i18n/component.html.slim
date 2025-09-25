@@ -1,0 +1,19 @@
+.dropdown.d-none.d-sm-block
+  button.btn.btn-light.ms-2.px-2.py-1[type="button" data-bs_toggle="dropdown"
+  aria-expanded=false aria-label=(american_locale? ? t(".us_language") : t(".uk_language"))]
+    span.fi class=(american_locale? ? "fi-us" : "fi-gb")
+  ul.dropdown-menu.dropdown-menu-end
+    li
+      = button_to settings_path, method: :post, class: "dropdown-item" do
+        = hidden_field_tag "locale", "en", id: "locale-en-US"
+        span.me-2.fi.fi-us
+          = t(".english")
+          - if american_locale?
+            i.fas.fa-check.ms-2
+    li
+      = button_to settings_path, method: :post, class: "dropdown-item" do
+        = hidden_field_tag "locale", "en-GB", id: "locale-en-gb"
+        span.me-2.fi.fi-gb
+          = t(".english")
+          - if british_locale?
+            i.fas.fa-check.ms-2

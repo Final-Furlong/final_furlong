@@ -67,7 +67,7 @@ en:
       activity_with_distance: "%{activity} for %{distance}"
       maximum_allowed_text: You have the maximum number of schedules for your stable
   settings:
-    update:
+    create:
       success:
         en: Your language is now American English
         en-GB: Your language is now British English
@@ -107,6 +107,10 @@ en:
     nav:
       breadcrumbs:
         impersonate: Impersonate
+      i18n:
+        english: English
+        uk_language: UK Language
+        us_language: US Language
     users:
       impersonating_banner:
         sign_out: "(Sign Out)"

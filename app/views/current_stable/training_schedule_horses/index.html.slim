@@ -1,0 +1,27 @@
+- content_for :breadcrumbs do
+  - schedule_name = t("current_stable.training_schedules.show.title", name: schedule.name)
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: current_stable.name, href: current_stable_path },
+                                                   { name: schedule_name, href: stable_training_schedules_path },
+                                                   { name: t(".title", schedule: schedule_name), href: "#" }])
+
+h3 Activities for Today
+p= daily_activities.activity_with_distance(1)
+- if daily_activities.activity_with_distance(2) != I18n.t("common.none")
+  p= daily_activities.activity_with_distance(2)
+- if daily_activities.activity_with_distance(3) != I18n.t("common.none")
+  p= daily_activities.activity_with_distance(3)
+
+h3 Horses
+
+- horses.each do |horse|
+  = turbo_frame_tag("schedule_horse_#{horse.id}") do
+    div
+      span= horse.name
+      button.btn.btn-sm.btn-primary Do Workout
+      ruby:
+        confirm_message = t("current_stable.training_schedules.horse.confirm", name: horse.name)
+        data = { turbo_confirm: confirm_message, turbo_method: :delete }
+        button_text = t("current_stable.training_schedules.horse.remove")
+      = button_to button_text, stable_training_schedule_horse_path(schedule, horse),
+                  method: :delete, class: "btn btn-sm btn-outline-danger",
+                  data:, form_class: "d-inline"

@@ -1,0 +1,9 @@
+doctype html
+html.light-style lang="en-US"
+  = render "layouts/head"
+  body
+    .container-fluid
+      #flash
+        = render partial: "layouts/flash"
+      .mt-5
+        = yield

@@ -1,7 +1,0 @@
-- content_for :breadcrumbs do
-  = render Nav::Breadcrumbs::Component.new(links: [{ name: stable.name, href: current_stable_path },
-                                                   { name: t("common.edit"), href: "#" }])
-
-= turbo_frame_tag stable do
-  %h1= t("stables.edit.header")
-  = render "form", form: stable_form, url: current_stable_path

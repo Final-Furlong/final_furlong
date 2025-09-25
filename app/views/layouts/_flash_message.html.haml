@@ -1,4 +1,0 @@
-- classes = "fade show alert alert-dismissible alert-#{flash_message_type_to_html_class(name)}"
-%div{ class: classes, data: { controller: "removals", action: "animationend->removals#remove" } }
-  = content_tag :span, message, id: "flash_#{name}"
-  %button.btn-close{ type: "button", data: { bs_dismiss: "alert" }, aria: { label: "Close" } }
