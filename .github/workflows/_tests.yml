@@ -94,6 +94,10 @@ jobs:
           cp config/database.yml.github_actions config/database.yml
           bin/rails db:create:legacy db:schema:load:legacy
 
+      - name: Active Record Doctor
+        run: |
+          bundle exec rake active_record_doctor
+
       - name: Precompile Assets
         run: bin/rails assets:precompile
 

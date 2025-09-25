@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :horse_appearance, class: "Horses::Appearance" do
-    horse
+    horse { association :horse, appearance: instance }
     birth_height { rand(10.0..20.0).round(2) }
     current_height { birth_height + 1.0 }
     max_height { current_height + 1.0 }

@@ -26,11 +26,6 @@ jobs:
         run: |
           bundle exec rubocop
 
-      - name: Active Record Doctor
-        run: |
-          bundle exec rake active_record_doctor
-
-
       - name: Slim Lint
         run: |
           bundle exec slim-lint
