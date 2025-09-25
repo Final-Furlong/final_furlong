@@ -1,15 +1,15 @@
 module CurrentStable
   class HorsesController < AuthenticatedController
-    before_action :set_horse, except: :index
-
     def index
       @horses = authorized_scope(Horses::Horse, type: :relation, with: CurrentStable::HorsePolicy)
     end
 
     def show
+      @horse = current_stable.horses.find(params[:id])
     end
 
     def edit
+      @horse = current_stable.horses.find(params[:id])
     end
 
     def update
@@ -21,10 +21,6 @@ module CurrentStable
     end
 
     private
-
-    def set_horse
-      @horse = current_stable.horses.find(params[:id])
-    end
 
     def horse_params
       params.expect(horse: [:name])

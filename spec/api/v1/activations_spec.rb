@@ -8,7 +8,7 @@ RSpec.describe Api::V1::Activations do
 
       get "/api/v1/activations"
       expect(response).to have_http_status :ok
-      expect(json_body).to eq([serialize(model: activation)])
+      expect(json_body).to eq([serialize(model: activation).deep_symbolize_keys])
     end
   end
 
@@ -21,7 +21,7 @@ RSpec.describe Api::V1::Activations do
 
         get "/api/v1/activations/#{token}"
         expect(response).to have_http_status :ok
-        expect(json_body).to eq("status" => "ok")
+        expect(json_body).to eq(status: "ok")
       end
     end
 
@@ -56,7 +56,7 @@ RSpec.describe Api::V1::Activations do
 
         post "/api/v1/activations/", params: { token:, stable_name: stable.name }
         expect(response).to have_http_status :created
-        expect(json_body).to eq({ "url" => new_user_password_path })
+        expect(json_body).to eq({ url: new_user_password_path })
       end
 
       it "updates activation to be activated" do
@@ -91,7 +91,7 @@ RSpec.describe Api::V1::Activations do
 
         post "/api/v1/activations/", params: { token:, stable_name: stable.name }
         expect(response).to have_http_status :internal_server_error
-        expect(json_body).to eq({ "error" => "unexpected error", "detail" => "Already registered" })
+        expect(json_body).to eq({ error: "unexpected error", detail: "Already registered" })
       end
     end
 
@@ -111,7 +111,7 @@ RSpec.describe Api::V1::Activations do
 
         post "/api/v1/activations/", params: { token:, stable_name: "foo" }
         expect(response).to have_http_status :internal_server_error
-        expect(json_body).to eq({ "error" => "invalid", "detail" => "Activation and stable do not match" })
+        expect(json_body).to eq({ error: "invalid", detail: "Activation and stable do not match" })
       end
     end
   end

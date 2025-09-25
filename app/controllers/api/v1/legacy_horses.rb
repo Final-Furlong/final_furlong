@@ -10,7 +10,7 @@ module Api
         end
         post "/" do
           unless Horses::Horse.exists?(legacy_id: permitted_params[:id])
-            horse = Legacy::Horse.find(permitted_params[:id])
+            horse = Legacy::Horse.find_by!(ID: permitted_params[:id])
             result = MigrateLegacyHorseService.new(horse:).call
             error!({ error: "invalid", detail: "Failed to migrate horse with ID #{permitted_params[:id]}" }, 500) unless result
           end

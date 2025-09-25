@@ -32,6 +32,7 @@ end
 #                                 api_base        /                                                                                                 Api::Base
 #                              motor_admin        /motor_admin                                                                                      Motor::Admin
 #                     mission_control_jobs        /jobs                                                                                             MissionControl::Jobs::Engine
+#                                  pg_hero        /pghero                                                                                           PgHero::Engine
 #                        admin_impersonate DELETE /admin/impersonate(.:format)                                                                      admin/impersonates#destroy
 #                                          POST   /admin/impersonate(.:format)                                                                      admin/impersonates#create
 #                         new_user_session GET    /login(.:format)                                                                                  devise/sessions#new
@@ -129,7 +130,7 @@ end
 #                     rails_direct_uploads POST   /rails/active_storage/direct_uploads(.:format)                                                    active_storage/direct_uploads#create
 #
 # Routes for Motor::Admin:
-#                            motor_cable        /cable                                                  #<ActionCable::Server::Base:0x0000000134c7d1b8 @config=#<ActionCable::Server::Configuration:0x0000000134bb30c0 @log_tags=[], @connection_class=#<Proc:0x0000000134c9e7f0 /Users/shanthi/.asdf/installs/ruby/3.4.5/lib/ruby/gems/3.4.0/gems/actioncable-8.0.3/lib/action_cable/engine.rb:55 (lambda)>, @worker_pool_size=4, @disable_request_forgery_protection=false, @allow_same_origin_as_host=true, @filter_parameters=[:passw, :email, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn, :cvv, :cvc, /\Aio\z/], @health_check_application=#<Proc:0x0000000134c9ff10 /Users/shanthi/.asdf/installs/ruby/3.4.5/lib/ruby/gems/3.4.0/gems/actioncable-8.0.3/lib/action_cable/engine.rb:31 (lambda)>, @logger=#<ActiveSupport::BroadcastLogger:0x00000001217a9cd0 @broadcasts=[#<ActiveSupport::Logger:0x00000001215c1fa8 @level=0, @progname=nil, @default_formatter=#<Logger::Formatter:0x00000001217aa428 @datetime_format=nil>, @formatter=#<Logger::Formatter:0x00000001217aa068 @datetime_format=nil>, @logdev=#<Logger::LogDevice:0x00000001217c32c0 @shift_period_suffix="%Y%m%d", @shift_size=104857600, @shift_age=1, @filename="/Users/shanthi/code/final_furlong/log/development.log", @dev=#<File:/Users/shanthi/code/final_furlong/log/development.log>, @binmode=false, @reraise_write_errors=[], @skip_header=false, @mon_data=#<Monitor:0x00000001217aa360>, @mon_data_owner_object_id=5560>, @level_override={}, @local_level_key=:logger_thread_safe_level_5568>], @progname="Broadcast">, @cable={"adapter" => "redis", "url" => "redis://localhost:6379/1"}, @mount_path="/cable", @precompile_assets=true, @allowed_request_origins=/https?:\/\/localhost:\d+/>, @mutex=#<Monitor:0x0000000134c992f0>, @pubsub=nil, @worker_pool=nil, @event_loop=nil, @remote_connections=nil>
+#                            motor_cable        /cable                                                  #<ActionCable::Server::Base:0x0000000124678930 @config=#<ActionCable::Server::Configuration:0x00000001253f29a8 @log_tags=[], @connection_class=#<Proc:0x0000000125214410 /Users/shanthi/.asdf/installs/ruby/3.4.5/lib/ruby/gems/3.4.0/gems/actioncable-8.0.3/lib/action_cable/engine.rb:55 (lambda)>, @worker_pool_size=4, @disable_request_forgery_protection=false, @allow_same_origin_as_host=true, @filter_parameters=[:passw, :email, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn, :cvv, :cvc, /\Aio\z/], @health_check_application=#<Proc:0x00000001252164e0 /Users/shanthi/.asdf/installs/ruby/3.4.5/lib/ruby/gems/3.4.0/gems/actioncable-8.0.3/lib/action_cable/engine.rb:31 (lambda)>, @logger=#<ActiveSupport::BroadcastLogger:0x0000000123897d20 @broadcasts=[#<ActiveSupport::Logger:0x0000000124619660 @level=0, @progname=nil, @default_formatter=#<Logger::Formatter:0x0000000123898860 @datetime_format=nil>, @formatter=#<Logger::Formatter:0x00000001238981f8 @datetime_format=nil>, @logdev=#<Logger::LogDevice:0x00000001251b01e0 @shift_period_suffix="%Y%m%d", @shift_size=104857600, @shift_age=1, @filename="/Users/shanthi/code/final_furlong/log/development.log", @dev=#<File:/Users/shanthi/code/final_furlong/log/development.log>, @binmode=false, @reraise_write_errors=[], @skip_header=false, @mon_data=#<Monitor:0x0000000123898798>, @mon_data_owner_object_id=5584>, @level_override={}, @local_level_key=:logger_thread_safe_level_5592>], @progname="Broadcast">, @cable={"adapter" => "redis", "url" => "redis://localhost:6379/1"}, @mount_path="/cable", @precompile_assets=true, @allowed_request_origins=/https?:\/\/localhost:\d+/>, @mutex=#<Monitor:0x00000001251dc510>, @pubsub=nil, @worker_pool=nil, @event_loop=nil, @remote_connections=nil>
 #                  motor_api_run_queries POST   /api/run_queries(.:format)                              motor/run_queries#create
 #                    motor_api_run_query GET    /api/run_queries/:id(.:format)                          motor/run_queries#show
 #                  motor_api_send_alerts POST   /api/send_alerts(.:format)                              motor/send_alerts#create
@@ -243,4 +244,31 @@ end
 #                         job GET    /jobs/:id(.:format)                                            mission_control/jobs/jobs#show
 #                        jobs GET    /:status/jobs(.:format)                                        mission_control/jobs/jobs#index
 #                        root GET    /                                                              mission_control/jobs/queues#index
+#
+# Routes for PgHero::Engine:
+#                     space GET  (/:database)/space(.:format)                     pg_hero/home#space
+#            relation_space GET  (/:database)/space/:relation(.:format)           pg_hero/home#relation_space
+#               index_bloat GET  (/:database)/index_bloat(.:format)               pg_hero/home#index_bloat
+#              live_queries GET  (/:database)/live_queries(.:format)              pg_hero/home#live_queries
+#                   queries GET  (/:database)/queries(.:format)                   pg_hero/home#queries
+#                show_query GET  (/:database)/queries/:query_hash(.:format)       pg_hero/home#show_query
+#                    system GET  (/:database)/system(.:format)                    pg_hero/home#system
+#                 cpu_usage GET  (/:database)/cpu_usage(.:format)                 pg_hero/home#cpu_usage
+#          connection_stats GET  (/:database)/connection_stats(.:format)          pg_hero/home#connection_stats
+#     replication_lag_stats GET  (/:database)/replication_lag_stats(.:format)     pg_hero/home#replication_lag_stats
+#                load_stats GET  (/:database)/load_stats(.:format)                pg_hero/home#load_stats
+#          free_space_stats GET  (/:database)/free_space_stats(.:format)          pg_hero/home#free_space_stats
+#                   explain GET  (/:database)/explain(.:format)                   pg_hero/home#explain
+#                      tune GET  (/:database)/tune(.:format)                      pg_hero/home#tune
+#               connections GET  (/:database)/connections(.:format)               pg_hero/home#connections
+#               maintenance GET  (/:database)/maintenance(.:format)               pg_hero/home#maintenance
+#                      kill POST (/:database)/kill(.:format)                      pg_hero/home#kill
+# kill_long_running_queries POST (/:database)/kill_long_running_queries(.:format) pg_hero/home#kill_long_running_queries
+#                  kill_all POST (/:database)/kill_all(.:format)                  pg_hero/home#kill_all
+#        enable_query_stats POST (/:database)/enable_query_stats(.:format)        pg_hero/home#enable_query_stats
+#                           POST (/:database)/explain(.:format)                   pg_hero/home#explain
+#         reset_query_stats POST (/:database)/reset_query_stats(.:format)         pg_hero/home#reset_query_stats
+#              system_stats GET  (/:database)/system_stats(.:format)              redirect(301, system)
+#               query_stats GET  (/:database)/query_stats(.:format)               redirect(301, queries)
+#                      root GET  /(:database)(.:format)                           pg_hero/home#index
 
