@@ -26,9 +26,9 @@ end
 #  maximum_bid     :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  auction_id      :uuid             indexed
-#  bidder_id       :uuid             indexed
-#  horse_id        :uuid             indexed
+#  auction_id      :uuid             not null, indexed
+#  bidder_id       :uuid             not null, indexed
+#  horse_id        :uuid             not null, indexed
 #
 # Indexes
 #
@@ -38,6 +38,7 @@ end
 #
 # Foreign Keys
 #
+#  fk_rails_...  (auction_id => auctions.id)
 #  fk_rails_...  (bidder_id => stables.id)
 #  fk_rails_...  (horse_id => auction_horses.id)
 #

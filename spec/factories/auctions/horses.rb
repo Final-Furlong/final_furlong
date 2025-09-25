@@ -32,13 +32,18 @@ end
 #  sold_at       :datetime         indexed
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  auction_id    :uuid             indexed
-#  horse_id      :uuid             indexed
+#  auction_id    :uuid             not null, indexed
+#  horse_id      :uuid             not null, indexed
 #
 # Indexes
 #
 #  index_auction_horses_on_auction_id  (auction_id)
 #  index_auction_horses_on_horse_id    (horse_id)
 #  index_auction_horses_on_sold_at     (sold_at)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (auction_id => auctions.id)
+#  fk_rails_...  (horse_id => horses.id)
 #
 

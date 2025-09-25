@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_23_114259) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_25_184704) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -64,9 +64,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_23_114259) do
   end
 
   create_table "auction_bids", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "auction_id"
-    t.uuid "horse_id"
-    t.uuid "bidder_id"
+    t.uuid "auction_id", null: false
+    t.uuid "horse_id", null: false
+    t.uuid "bidder_id", null: false
     t.integer "current_bid", default: 0, null: false
     t.integer "maximum_bid"
     t.text "comment"
@@ -79,8 +79,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_23_114259) do
   end
 
   create_table "auction_horses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "auction_id"
-    t.uuid "horse_id"
+    t.uuid "auction_id", null: false
+    t.uuid "horse_id", null: false
     t.integer "reserve_price"
     t.integer "max_price"
     t.text "comment"
@@ -95,8 +95,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_23_114259) do
   create_table "auctions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "start_time", null: false
     t.datetime "end_time", null: false
-    t.uuid "auctioneer_id"
-    t.string "title", null: false
+    t.uuid "auctioneer_id", null: false
+    t.string "title", limit: 500, null: false
     t.integer "hours_until_sold", default: 12, null: false
     t.boolean "reserve_pricing_allowed", default: false, null: false
     t.boolean "outside_horses_allowed", default: false, null: false
@@ -120,7 +120,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_23_114259) do
   end
 
   create_table "horse_appearances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "horse_id"
+    t.uuid "horse_id", null: false
     t.enum "color", default: "bay", null: false, comment: "bay, black, blood_bay, blue_roan, brown, chestnut, dapple_grey, dark_bay, dark_grey, flea_bitten_grey, grey, light_bay, light_chestnut, light_grey, liver_chestnut, mahogany_bay, red_chestnut, strawberry_roan", enum_type: "horse_color"
     t.enum "rf_leg_marking", comment: "coronet, ermine, sock, stocking", enum_type: "horse_leg_marking"
     t.enum "lf_leg_marking", comment: "coronet, ermine, sock, stocking", enum_type: "horse_leg_marking"
@@ -132,20 +132,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_23_114259) do
     t.string "rh_leg_image"
     t.string "lh_leg_image"
     t.string "face_image"
-    t.decimal "birth_height", precision: 4, scale: 2, default: "0.0"
-    t.decimal "current_height", precision: 4, scale: 2, default: "0.0"
-    t.decimal "max_height", precision: 4, scale: 2, default: "0.0"
+    t.decimal "birth_height", precision: 4, scale: 2, default: "0.0", null: false
+    t.decimal "current_height", precision: 4, scale: 2, default: "0.0", null: false
+    t.decimal "max_height", precision: 4, scale: 2, default: "0.0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["horse_id"], name: "index_horse_appearances_on_horse_id"
+    t.index ["horse_id"], name: "index_horse_appearances_on_horse_id", unique: true
   end
 
   create_table "horse_genetics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "horse_id"
-    t.string "allele", limit: 32
+    t.uuid "horse_id", null: false
+    t.string "allele", limit: 32, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["horse_id"], name: "index_horse_genetics_on_horse_id"
+    t.index ["horse_id"], name: "index_horse_genetics_on_horse_id", unique: true
   end
 
   create_table "horses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -471,7 +471,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_23_114259) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "auction_bids", "auction_horses", column: "horse_id"
+  add_foreign_key "auction_bids", "auctions"
   add_foreign_key "auction_bids", "stables", column: "bidder_id"
+  add_foreign_key "auction_horses", "auctions"
+  add_foreign_key "auction_horses", "horses"
   add_foreign_key "auctions", "stables", column: "auctioneer_id"
   add_foreign_key "horse_appearances", "horses"
   add_foreign_key "horse_genetics", "horses"

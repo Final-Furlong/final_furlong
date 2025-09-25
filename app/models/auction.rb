@@ -7,7 +7,7 @@ class Auction < ApplicationRecord
   belongs_to :auctioneer, class_name: "Account::Stable"
 
   validates :start_time, :end_time, :hours_until_sold, :title, presence: true
-  validates :title, length: { in: 10..100 }
+  validates :title, length: { in: 10..500 }
   validates :broodmare_allowed, :outside_horses_allowed, :racehorse_allowed_2yo,
     :racehorse_allowed_3yo, :racehorse_allowed_older, :reserve_pricing_allowed,
     :stallion_allowed, :weanling_allowed, :yearling_allowed, inclusion: { in: [true, false] }
@@ -63,12 +63,12 @@ end
 #  spending_cap_per_stable       :integer
 #  stallion_allowed              :boolean          default(FALSE), not null
 #  start_time                    :datetime         not null, indexed
-#  title                         :string           not null
+#  title                         :string(500)      not null
 #  weanling_allowed              :boolean          default(FALSE), not null
 #  yearling_allowed              :boolean          default(FALSE), not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
-#  auctioneer_id                 :uuid             indexed
+#  auctioneer_id                 :uuid             not null, indexed
 #
 # Indexes
 #

@@ -2,10 +2,14 @@ module Auctions
   class Bid < ApplicationRecord
     self.table_name = "auction_bids"
 
+    MINIMUM_BID = 1000
+
     belongs_to :auction, class_name: "::Auction"
     belongs_to :horse, class_name: "Auctions::Horse"
     belongs_to :bidder, class_name: "Account::Stable"
 
+    validates :current_bid, presence: true
+    validates :current_bid, numericality: { greater_than_or_equal_to: MINIMUM_BID }, allow_blank: true
     validates :maximum_bid, numericality: { greater_than_or_equal_to: :current_bid }, allow_blank: true
     validates :email_if_outbid, inclusion: { in: [true, false] }
   end
@@ -22,9 +26,9 @@ end
 #  maximum_bid     :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  auction_id      :uuid             indexed
-#  bidder_id       :uuid             indexed
-#  horse_id        :uuid             indexed
+#  auction_id      :uuid             not null, indexed
+#  bidder_id       :uuid             not null, indexed
+#  horse_id        :uuid             not null, indexed
 #
 # Indexes
 #
@@ -34,6 +38,7 @@ end
 #
 # Foreign Keys
 #
+#  fk_rails_...  (auction_id => auctions.id)
 #  fk_rails_...  (bidder_id => stables.id)
 #  fk_rails_...  (horse_id => auction_horses.id)
 #

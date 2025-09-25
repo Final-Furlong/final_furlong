@@ -13,6 +13,10 @@ pre-commit:
       tags: linter
       files: git diff --name-only --staged
       run: actionlint
+    active-record-doctor:
+      tags: linter
+      files: git diff --name-only --staged
+      run: bundle exec rake active_record_doctor
     annotate-controllers:
       tags: backend
       files: git diff --name-only --staged
@@ -85,6 +89,8 @@ post-merge:
 
 lint:
   commands:
+    active-record-doctor:
+      run: bundle exec rake active_record_doctor
     annotate-controllers:
       run: bundle exec annotaterb routes
     eslint:

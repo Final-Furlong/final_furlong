@@ -45,12 +45,12 @@ end
 #  spending_cap_per_stable       :integer
 #  stallion_allowed              :boolean          default(FALSE), not null
 #  start_time                    :datetime         not null, indexed
-#  title                         :string           not null
+#  title                         :string(500)      not null
 #  weanling_allowed              :boolean          default(FALSE), not null
 #  yearling_allowed              :boolean          default(FALSE), not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
-#  auctioneer_id                 :uuid             indexed
+#  auctioneer_id                 :uuid             not null, indexed
 #
 # Indexes
 #
