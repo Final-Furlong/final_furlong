@@ -6,6 +6,10 @@ class MigrateLegacyHorseService # rubocop:disable Metrics/ClassLength
   end
 
   def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    if Racing::Racetrack.count < 21
+      MigrateLegacyRacetrackService.new.call
+    end
+
     return unless legacy_horse
     horse = Horses::Horse.find_or_initialize_by(legacy_id: legacy_horse.id)
     update_attrs = {
@@ -63,6 +67,9 @@ class MigrateLegacyHorseService # rubocop:disable Metrics/ClassLength
     FinalFurlong::Benchmark.measure_execution_time("Find breeder") do
       return final_furlong unless legacy_horse.Breeder
 
+      unless Account::Stable.exists?(legacy_id: legacy_horse.Owner)
+        MigrateLegacyUserService.new(legacy_horse.Owner).call
+      end
       Account::Stable.where(legacy_id: legacy_horse.Breeder).pick(:id) || final_furlong
     end
   end
@@ -71,6 +78,9 @@ class MigrateLegacyHorseService # rubocop:disable Metrics/ClassLength
     FinalFurlong::Benchmark.measure_execution_time("Find owner") do
       return final_furlong unless legacy_horse.Owner
 
+      unless Account::Stable.exists?(legacy_id: legacy_horse.Owner)
+        MigrateLegacyUserService.new(legacy_horse.Owner).call
+      end
       Account::Stable.where(legacy_id: legacy_horse.Owner).pick(:id) || final_furlong
     end
   end
