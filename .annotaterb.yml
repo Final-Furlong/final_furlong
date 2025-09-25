@@ -47,7 +47,7 @@
   - created_at
   - updated_at
 :ignore_columns:
-:ignore_routes:
+:ignore_routes: 'motor|mission_control|pg_hero'
 :models: true
 :routes: false
 :skip_on_db_migrate: false
