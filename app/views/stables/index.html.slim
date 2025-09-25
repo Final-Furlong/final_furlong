@@ -1,7 +1,7 @@
 h1= t("stables.index.all")
 
 = turbo_frame_tag "stables" do
-  - stables.in_groups_of(4) do |list|
+  - @stables.in_groups_of(4) do |list|
     .row.row-cols-1.row-cols-md-2.row-cols-lg-4.g-4.mb-2
       - list.each do |stable|
         .col

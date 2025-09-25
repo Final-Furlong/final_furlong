@@ -5,25 +5,20 @@ class UsersController < AuthenticatedController
   before_action :load_edit_user_form, only: %i[edit update]
   before_action :authorize_user, except: :index
 
-  # @route GET /users (users)
   def index
     authorize Account::User
     @users = authorized_scope(Account::User, type: :relation)
   end
 
-  # @route GET /users/:id (user)
   def show
   end
 
-  # @route GET /users/new (new_user)
   def new
   end
 
-  # @route GET /users/:id/edit (edit_user)
   def edit
   end
 
-  # @route POST /users (users)
   def create
     if @user_form.save(user_attributes)
       redirect_to_users
@@ -33,8 +28,6 @@ class UsersController < AuthenticatedController
     end
   end
 
-  # @route PATCH /users/:id (user)
-  # @route PUT /users/:id (user)
   def update
     if @user_form.submit(user_attributes)
       redirect_to_users
@@ -44,7 +37,6 @@ class UsersController < AuthenticatedController
     end
   end
 
-  # @route DELETE /users/:id (user)
   def destroy
     @user.deleted!
     flash[:success] = t(".success")

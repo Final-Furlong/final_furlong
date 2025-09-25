@@ -8,7 +8,6 @@ class HorsesController < ApplicationController
 
   helper_method :horses, :horse, :statuses, :active_status, :query, :params
 
-  # @route GET /horses (horses)
   def index # rubocop:disable Metrics/AbcSize
     authorize Horses::Horse
 
@@ -20,16 +19,12 @@ class HorsesController < ApplicationController
     @horses = query.result.page(params[:page])
   end
 
-  # @route GET /horses/:id (horse)
   def show
   end
 
-  # @route GET /horses/:id/edit (edit_horse)
   def edit
   end
 
-  # @route PATCH /horses/:id (horse)
-  # @route PUT /horses/:id (horse)
   def update
     if @horse.update(horse_params)
       @horse.reload
@@ -42,7 +37,6 @@ class HorsesController < ApplicationController
     end
   end
 
-  # @route GET /horses/:id/image (image_horse)
   def image
     raise ActiveRecord::RecordNotFound unless @horse.appearance&.image&.present?
     image = @horse.appearance.image
@@ -52,7 +46,6 @@ class HorsesController < ApplicationController
     response.stream.close
   end
 
-  # @route GET /horses/:id/thumbnail (thumbnail_horse)
   def thumbnail
     raise ActiveRecord::RecordNotFound unless @horse.appearance&.image(max_width: 100, max_height: 100)&.present?
     image = @horse.appearance.image(max_width: 100, max_height: 100)

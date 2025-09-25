@@ -1,10 +1,10 @@
 - content_for :breadcrumbs do
   = render Nav::Breadcrumbs::Component.new(links: [{ name: t("stables.index.all"), href: stables_path },
-                                                   { name: stable.name, href: "#" }],
+                                                   { name: @stable.name, href: "#" }],
                                            actions: [{ name: "impersonate",
-                                                       link: admin_impersonate_path(id: stable.user_id),
+                                                       link: admin_impersonate_path(id: @stable.user_id),
                                                        i18n_key: ".impersonate",
-                                                       object: stable,
+                                                       object: @stable,
                                                        user: current_user,
                                                        base_classes: "button-danger-outline btn-sm",
                                                        classes: " d-none d-md-inline",
@@ -14,10 +14,10 @@
                                                        link: edit_current_stable_path,
                                                        i18n_key: "common.edit",
                                                        user: current_user,
-                                                       object: stable,
+                                                       object: @stable,
                                                        base_classes: "button-success-outline btn-sm",
                                                        classes: "ms-3 me-3",
                                                        responsive_classes: "w-100",
                                                        type: :link }])
-= turbo_frame_tag stable do
-  = render "stable"
+= turbo_frame_tag @stable do
+  = render "stable", stable: @stable

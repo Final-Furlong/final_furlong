@@ -8,24 +8,19 @@ module CurrentStable
 
     helper_method :schedule
 
-    # @route GET /stable/training_schedules (stable_training_schedules)
     def index
       @schedules = authorized_scope(Racing::TrainingSchedule.all)
     end
 
-    # @route GET /stable/training_schedules/:id (stable_training_schedule)
     def show
     end
 
-    # @route GET /stable/training_schedules/new (new_stable_training_schedule)
     def new
     end
 
-    # @route GET /stable/training_schedules/:id/edit (edit_stable_training_schedule)
     def edit
     end
 
-    # @route POST /stable/training_schedules (stable_training_schedules)
     def create
       if schedule.update(schedule_params)
         redirect_success
@@ -35,8 +30,6 @@ module CurrentStable
       end
     end
 
-    # @route PATCH /stable/training_schedules/:id (stable_training_schedule)
-    # @route PUT /stable/training_schedules/:id (stable_training_schedule)
     def update
       if schedule.update(schedule_params)
         redirect_success
@@ -46,7 +39,6 @@ module CurrentStable
       end
     end
 
-    # @route DELETE /stable/training_schedules/:id (stable_training_schedule)
     def destroy
       schedule.destroy!
 

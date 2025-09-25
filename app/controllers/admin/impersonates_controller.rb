@@ -1,6 +1,5 @@
 module Admin
   class ImpersonatesController < ApplicationController
-    # @route POST /admin/impersonate (admin_impersonate)
     def create
       user = Account::User.find(params[:id])
       authorize user
@@ -9,7 +8,6 @@ module Admin
       redirect_to root_path
     end
 
-    # @route DELETE /admin/impersonate (admin_impersonate)
     def destroy
       stop_impersonating_user
       flash[:notice] = t("users.stop_impersonating.success")

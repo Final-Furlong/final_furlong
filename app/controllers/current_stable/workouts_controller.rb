@@ -2,7 +2,6 @@ module CurrentStable
   class WorkoutsController < ApplicationController
     before_action :set_horse
 
-    # @route POST /stable/workouts (stable_workouts)
     def create
       workout = Racing::Workout.new(**workout_params.merge(horse:))
       if workout.valid?

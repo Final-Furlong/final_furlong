@@ -8,18 +8,15 @@ module CurrentStable
 
     helper_method :schedule, :schedule_horse, :horses, :daily_activities, :horse
 
-    # @route GET /stable/training_schedules/:training_schedule_id/horses (stable_training_schedule_horses)
     def index
       authorize schedule, :view_horses?
       @horses = Horses::HorsesQuery.with_training_schedule(schedule).owned_by(current_stable)
     end
 
-    # @route GET /stable/training_schedules/:training_schedule_id/horses/new (new_stable_training_schedule_horse)
     def new
       authorize schedule
     end
 
-    # @route POST /stable/training_schedules/:training_schedule_id/horses (stable_training_schedule_horses)
     def create
       authorize schedule
 
@@ -32,7 +29,6 @@ module CurrentStable
       end
     end
 
-    # @route DELETE /stable/training_schedules/:training_schedule_id/horses/:id (stable_training_schedule_horse)
     def destroy
       authorize schedule
 
