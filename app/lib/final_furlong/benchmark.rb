@@ -17,7 +17,6 @@ module FinalFurlong
       end
 
       Rails.logger.info log_msg
-      puts log_msg # rubocop:disable Rails/Output
 
       result
     end

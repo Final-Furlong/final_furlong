@@ -20,7 +20,7 @@ jobs:
 
   call-linters:
     needs: [ 'setup' ]
-    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@slim-template
+    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@main
 
   call-security:
     needs: [ 'setup' ]
