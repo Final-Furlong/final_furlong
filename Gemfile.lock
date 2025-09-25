@@ -549,6 +549,10 @@ GEM
       racc
     pg (1.6.2-arm64-darwin)
     pg (1.6.2-x86_64-linux)
+    pg_query (6.1.0)
+      google-protobuf (>= 3.25.3)
+    pghero (3.7.0)
+      activerecord (>= 7.1)
     popper_js (2.11.8)
     pp (0.6.2)
       prettyprint
@@ -1008,6 +1012,8 @@ DEPENDENCIES
   net-ssh
   pagy
   pg
+  pg_query (>= 2)
+  pghero
   pretender
   puma
   pundit-matchers
