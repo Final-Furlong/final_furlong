@@ -622,6 +622,11 @@ GEM
     rails-i18n (8.0.2)
       i18n (>= 0.7, < 2)
       railties (>= 8.0.0, < 9)
+    rails-pg-extras (5.6.13)
+      actionpack
+      activerecord
+      railties
+      ruby-pg-extras (= 5.6.13)
     railties (8.0.3)
       actionpack (= 8.0.3)
       activesupport (= 8.0.3)
@@ -736,6 +741,9 @@ GEM
     ruby-debug-ide (0.7.5)
       rake (>= 0.8.1)
     ruby-next-core (1.1.2)
+    ruby-pg-extras (5.6.13)
+      pg
+      terminal-table
     ruby-progressbar (1.13.0)
     ruby-vips (2.2.5)
       ffi (~> 1.12)
@@ -1030,6 +1038,7 @@ DEPENDENCIES
   rack-mini-profiler
   rails (~> 8.0)
   rails-i18n
+  rails-pg-extras
   ransack
   redis
   reek
