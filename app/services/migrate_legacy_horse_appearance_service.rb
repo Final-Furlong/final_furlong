@@ -14,11 +14,13 @@ class MigrateLegacyHorseAppearanceService # rubocop:disable Metrics/ClassLength
     genetics.allele ||= generate_allele
     genetics.save if genetics.valid?
 
+    current_height = legacy_horse.CurrentHeight.to_f
+    current_height = birth_height if current_height < birth_height
     return if pick_color.nil?
     appearance.assign_attributes(
       birth_height:,
       color: pick_color,
-      current_height: legacy_horse.CurrentHeight.to_f,
+      current_height:,
       face_image: pick_face_image,
       face_marking: pick_face_marking,
       lf_leg_image: pick_leg_image("LF"),
