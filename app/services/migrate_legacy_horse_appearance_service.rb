@@ -14,8 +14,7 @@ class MigrateLegacyHorseAppearanceService # rubocop:disable Metrics/ClassLength
     genetics.allele ||= generate_allele
     genetics.save if genetics.valid?
 
-    current_height = legacy_horse.CurrentHeight.to_f
-    current_height = birth_height if current_height < birth_height
+    current_height = [legacy_horse.CurrentHeight.to_f, birth_height.to_f].max
     return if pick_color.nil?
     appearance.assign_attributes(
       birth_height:,
@@ -33,7 +32,6 @@ class MigrateLegacyHorseAppearanceService # rubocop:disable Metrics/ClassLength
       rh_leg_image: pick_leg_image("RH"),
       rh_leg_marking: pick_leg_marking("RH")
     )
-    # puts appearance.attributes.inspect
     appearance.save!
   rescue => e
     Rails.logger.error "Legacy Info: #{legacy_horse.inspect}"
@@ -46,11 +44,7 @@ class MigrateLegacyHorseAppearanceService # rubocop:disable Metrics/ClassLength
   def birth_height
     height_in_inches = (legacy_horse.Height.to_f.floor * 4) + legacy_horse.Height.to_s.split(".").last.to_i
     birth_height_in_inches = legacy_horse.FoalHeight.nil? ? 0 : height_in_inches * legacy_horse.FoalHeight.fdiv(100).round(2)
-    # puts birth_height_in_inches.to_s
-    # puts (birth_height_in_inches / 4).to_s
-    # puts (birth_height_in_inches % 4).fdiv(10).round(1).to_s
     (birth_height_in_inches / 4).floor + (birth_height_in_inches % 4).fdiv(10).round(1)
-    # puts birth_height.to_s
   end
 
   def pick_color # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/AbcSize
