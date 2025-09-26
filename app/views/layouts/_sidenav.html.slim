@@ -1,54 +1,95 @@
 / Sidebar
-nav.collapse.d-lg-block.sidebar.collapse.bg-white#sidebar-menu aria-label="sidebar navigation"
-  .position-sticky
-    .list-group.list-group-flush
-      .d-lg-none
-        = nav_link_generator path: root_path do
-          i.fas.fa-house.fa-fw.me-3
-          span= t(".home")
-      - if user_signed_in?
-        = nav_link_generator path: current_stable_path do
-          i.fas.fa-tractor.fa-fw.me-3
-          span= t(".my_stable")
-        = nav_link_generator path: "#" do
-          i.fas.fa-horse-head.me-3
-          span= t(".stable.horses")
-        - racing_links_data = { bs_toggle: "collapse", bs_target: "#stable-racing-links-list" }
-        a.nav-list-item.py-2.collapsed[href="#" data=racing_links_data aria-expanded=false
-        aria-label="Racing Links Subnavigation"]
-          i.fa-solid.fa-bars-staggered.me-3
-          span= t(".stable.racing_divider")
-        ul.list-unstyled.mb-0.collapse#stable-racing-links-list
-          li
-            = nav_link_generator path: stable_training_schedules_path do
-              i.fas.fa-stopwatch.me-3
-              span= t(".stable.training_schedules")
+.block.w-full class="sm:hidden"
+  button.inline-flex.items-center.p-2.mt-2.ms-3.text-sm.rounded-lg[
+    data-drawer-target="sidebar-multi-level-sidebar"
+    data-drawer-toggle="sidebar-multi-level-sidebar"
+    aria-controls="sidebar"
+    type="button"
+    class="focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600"
+  ]
+    span.sr-only= t("layouts.nav.open_main_menu")
+    i.fa-solid.fa-bars.fa-xl#icon-show-sidenav
+  .float-right
+    = render Nav::I18n::Component.new(locale: I18n.locale, version: :phone, variants: request.variant)
+
+aside.menu.fixed.top-0.left-0.z-40.w-64.h-screen.shadow-sm.border-r#sidebar[
+  class="transition-transform -translate-x-full sm:translate-x-0 dark:border-r-1 dark:border-neutral-100"
+  aria-label="Sidebar"
+]
+  .h-full.px-3.py-4.overflow-y-auto
+    ul.space-y-2.font-medium
+      li
+        a.flex.items-center.p-2.rounded-lg[
+          href=root_path
+          class="dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+        ]
+          = image_tag "logo_dark.png", class: "h-6 md:h-12 w-auto block dark:hidden", alt: "Final Furlong Logo"
+          = image_tag "logo_light.png", class: "h-6 md:h-12 w-auto hidden dark:block", alt: "Final Furlong Logo"
+          span.font-semibold.ms-3.text-lg= t("layouts.nav.game_title")
+      = render "layouts/user_sidenav" if signed_in?
+      li
+        details open=true
+          summary= t("layouts.sidenav.game_divider")
+          ul
+            li
+              a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
+                href=stables_path
+                class="hover:bg-gray-100 dark:hover:bg-gray-700"
+              ]
+                i.fa.fa-solid.fa-house
+                span.ms-3= t("layouts.sidenav.stables")
+            li
+              a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
+                href=horses_path
+                class="hover:bg-gray-100 dark:hover:bg-gray-700"
+              ]
+                i.fa-solid.fa-horse-head
+                span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.all_horses")
+      = render "layouts/admin_sidenav" if signed_in? && current_user.admin?
+      - if signed_in?
+        li
+          = button_to destroy_user_session_path, method: :delete, data: { turbo: false },
+                  form_class: "p-0", class: "flex items-center w-full p-2 text-base transition rounded-lg" do
+            i.fas.fa-arrow-right-from-bracket.mr-2
+            span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.logout")
       - else
-        = nav_link_generator path: new_user_session_path, classes: "d-block d-lg-none" do
-          i.fas.fa-arrow-right-from-bracket.me-3
-          span= t("layouts.nav.login")
+        li
+          a.flex.items-center.w-full.p-2.text-base.transition.rounded-lg[
+            href=new_user_session_path
+            class="hover:bg-gray-100 dark:hover:bg-gray-700"
+          ]
+            i.fas.fa-arrow-right-from-bracket.mr-2
+            span.flex-1.ms-3.whitespace-nowrap= t("layouts.nav.login")
+      li
+        = link_to "https://www.finalfurlong.org/", class: "flex items-center p-2 rounded-lg \
+            hover:bg-gray-100 dark:hover:bg-gray-700" do
+          i.fa-solid.fa-delete-left
+          span.flex-1.ms-3.whitespace-nowrap= t(".main_app")
 
-      - game_links_data = { bs_toggle: "collapse", bs_target: "#game-links-list" }
-      a.nav-list-item.py-2 href="#" data= game_links_data
-        i.fa-solid.fa-bars-staggered.me-3
-        span= t(".game_divider")
-      ul.list-unstyled.mb-0.show#game-links-list
-        li
-          = nav_link_generator path: stables_path, classes: "border border-0 border-bottom" do
-            i.fas.fa-tractor.fa-fw.me-3
-            span= t(".stables")
-        li
-          = nav_link_generator path: horses_path, classes: "border border-0" do
-            i.fas.fa-horse-head.me-3
-            span= t(".all_horses")
-        li
-          = nav_link_generator path: "https://www.finalfurlong.org/", classes: "border-start-0 border-end-0" do
-            i.fas.fa-delete-left.me-3
-            span= t(".main_app")
+    .hidden.mt-4.border.rounded-md class="md:block"
+      form.flex.p-2 role="search"
+        input[type="search" disabled=true placeholder=t(".search_placeholder")
+        aria-label=t(".search_aria_label")]
 
-      = render Nav::I18n::Component.new(locale: I18n.locale, version: :phone, variants: request.variant)
-      - if user_signed_in?
-        = button_to destroy_user_session_path, method: :delete, class: ["list-group-item list-group-item-action py-2",
-                                                                        "border border-0"], data: { turbo: false } do
-          i.fas.fa-arrow-right-from-bracket.me-3.fa-flip-horizontal
-          = t(".logout")
+    .hidden.justify-center.p-4.space-x-4.w-full[
+      class="lg:flex z-20"
+    ]
+      - if signed_in? && false
+        a.inline-flex.justify-center.p-2.rounded.cursor-pointer[
+          href="#"
+          class="hover:text-gray-900 hover:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+        ]
+          i.fa-solid.fa-user
+        a.inline-flex.justify-center.p-2.rounded.cursor-pointer[
+          href="#"
+          class="hover:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600"
+        ]
+          i.fa-solid.fa-gear
+        a.inline-flex.justify-center.p-2.rounded.cursor-pointer[
+          href="#"
+          data-tooltip-target="tooltip-settings"
+          class="hover:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600"
+        ]
+          i.fa-solid.fa-gear.tooltip data-top=t("layouts.sidenav.view_notifications")
+
+      = render Nav::I18n::Component.new(locale: I18n.locale, version: :tablet, variants: request.variant)

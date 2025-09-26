@@ -6,6 +6,7 @@ module CurrentStable
 
     def show
       @horse = current_stable.horses.find(params[:id])
+      authorize! @horse, to: :show?
     end
 
     def edit

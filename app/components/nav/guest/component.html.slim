@@ -1,11 +1,12 @@
-.d-none.d-lg-flex
-  form.d-flex.ms-2
-    = link_to new_user_session_path, class: "btn btn-light", data: { turbo: false }, role: "button",
-                                     aria: { label: "Login" } do
-      i.fas.fa-arrow-right-from-bracket.me-2
-      strong= t("layouts.nav.login")
-  form.d-flex.ms-2
-    = link_to new_user_registration_path, class: "btn btn-light disabled", disabled: true,
-                                          data: { turbo: false }, role: "button", aria: { label: "Join" } do
-      i.fas.fa-user-plus.me-2
-      strong= t("layouts.nav.join")
+.flex.max-lg:ml-auto.space-x-4 class="h-[42]"
+  = button_to new_user_session_path, class: "ml-4 px-4 py-2 truncate text-sm font-medium cursor-pointer tracking-wide \
+    border border-gray-400 bg-neutral-100 hover:bg-neutral-200 transition-all rounded-md px-2 inline-flex items-center",
+          data: { turbo: false }, role: "button", aria: { label: "Login" } do
+    = helpers.icon "login-2", class: "mr-1"
+    = t("layouts.nav.login")
+  = button_to new_user_registration_path, class: "py-2 px-4 text-sm font-medium cursor-pointer tracking-wide \
+    border border-gray-400 bg-neutral-100 hover:bg-neutral-200 transition-all rounded-md px-2 \
+    inline-flex items-center disabled:cursor-not-allowed", disabled: true,
+          data: { turbo: false }, role: "button", aria: { label: "Join" } do
+    = helpers.icon "user-plus", class: "mr-1"
+    = t("layouts.nav.join")

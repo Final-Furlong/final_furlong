@@ -1,8 +1,9 @@
-h1= t("stables.index.all")
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(title: t("stables.index.all"))
 
 = turbo_frame_tag "stables" do
   - @stables.in_groups_of(4) do |list|
-    .row.row-cols-1.row-cols-md-2.row-cols-lg-4.g-4.mb-2
+    .grid.grid-cols-1.mb-2 class="sm:grid-cols-2 lg:grid-cols-4"
       - list.each do |stable|
         .col
           = render stable if stable

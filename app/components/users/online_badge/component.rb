@@ -19,7 +19,7 @@ module Users
       end
 
       def online_classes
-        "badge bg-success badge-online"
+        "badge badge-success"
       end
 
       def offline_classes

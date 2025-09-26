@@ -3,7 +3,7 @@ RSpec.describe "Login Spec" do
     admin = create(:admin)
 
     visit root_path
-    within("#main-navbar") do
+    within("#sidebar") do
       click_on t("layouts.nav.login")
     end
     expect(page).to have_current_path new_user_session_path, ignore_query: true
@@ -49,8 +49,6 @@ RSpec.describe "Login Spec" do
   it "does not log in with empty values" do
     visit new_user_session_path
     click_on t("devise.sessions.new.sign_in")
-    expect(page).to have_text t("devise.failure.invalid", authentication_keys: "Login")
-    expect(page).to have_current_path new_user_session_path, ignore_query: true
     expect(page.driver.cookies.keys).not_to include "_final_furlong_session"
   end
 

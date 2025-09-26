@@ -1,9 +1,10 @@
 = turbo_frame_tag stable do
-  .stable.card class="h-100"
-    h5.card-header
-      = link_to stable.name, stable_path(stable), data: { turbo_frame: "_top" },
-                                                  class: "text-decoration-none stretched-link"
+  .stable.card.card-border.border-gray-300.shadow-md.mx-2.my-2 class="dark:border-neutral-300"
     .card-body
+      .card-title
+        h5.card-header
+          = link_to stable.name, stable_path(stable), data: { turbo_frame: "_top" },
+                                                      class: "text-decoration-none stretched-link"
       .card-subtitle.mb-2
         span.text-muted= "@#{stable.user.username}"
         = render Users::OnlineBadge::Component.new(online: SessionsRepository.online?(resource: stable))

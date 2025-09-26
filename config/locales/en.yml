@@ -109,6 +109,9 @@ en:
         impersonate: Impersonate
       i18n:
         english: English
+        english_gb: English (UK)
+        english_us: English (US)
+        language_selector: Language Selector
         uk_language: UK Language
         us_language: US Language
     users:

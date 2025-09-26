@@ -1,15 +1,16 @@
-h1= t(".sign_in")
+h1.w-full.font-bold.text-xl.text-center= t(".sign_in")
 
-= simple_form_for(resource, as: resource_name, url: new_session_path(resource_name),
-                            html: { data: { turbo: false }, aria: { label: "Login" } }) do |f|
-  .form-inputs
-    = f.input :login, required: false, autofocus: true, input_html: { autocomplete: "email" }
+.mx-auto class="sm:w-3/5 lg:w-1/3"
+  = simple_form_for(resource, as: resource_name, url: new_session_path(resource_name),
+                              html: { data: { turbo: false }, aria: { label: "Login" } }) do |f|
+    .form-inputs
+      = f.input :login, required: true, autofocus: true, input_html: { autocomplete: "email" }
 
-    = f.input :password, required: false, input_html: { autocomplete: "current-password" }
+      = f.input :password, required: true, input_html: { autocomplete: "current-password" }
 
-    = f.input :remember_me, as: :boolean if devise_mapping.rememberable?
+      = f.input :remember_me, as: :boolean if devise_mapping.rememberable?
 
-  .form-actions
-    = f.button :submit, t(".sign_in"), aria: { label: t(".sign_in") }
+    .form-actions
+      = f.button :submit, t(".sign_in"), aria: { label: t(".sign_in") }
 
-= render "devise/shared/links"
+  = render "devise/shared/links"

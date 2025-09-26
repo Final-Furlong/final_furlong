@@ -4,8 +4,26 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.4.5"
 
 gem "rails", "~> 8.0"
+# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
+gem "propshaft"
+# Use postgresql as the database for Active Record
+gem "pg"
+# Use the Puma web server [https://github.com/puma/puma]
+gem "puma"
+# Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
+gem "importmap-rails"
+# Hotwire"s SPA-like page accelerator [https://turbo.hotwired.dev]
+gem "turbo-rails"
+# Hotwire"s modest JavaScript framework [https://stimulus.hotwired.dev]
+gem "stimulus-rails"
+# Build JSON APIs with ease [https://github.com/rails/jbuilder]
+gem "jbuilder"
 
+# Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
+
+# Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
+gem "thruster", require: false
 
 gem "devise"
 gem "devise-i18n"
@@ -16,12 +34,8 @@ gem "active_interaction"
 gem "activerecord_json_validator"
 gem "active_storage_validations"
 gem "base64", "0.1.1"
-gem "bootstrap"
-gem "bootstrap5-kaminari-views"
 gem "browser"
 gem "counter_culture"
-gem "dartsass-rails"
-gem "dartsass-sprockets"
 gem "data_migrate"
 gem "discard"
 gem "dotenv-rails"
@@ -33,8 +47,6 @@ gem "grape-active_model_serializers"
 gem "grape-entity"
 gem "grape_on_rails_routes"
 gem "image_processing"
-gem "importmap-rails"
-gem "kaminari"
 gem "lograge"
 gem "mailtrap"
 gem "mission_control-jobs"
@@ -42,11 +54,9 @@ gem "motor-admin"
 gem "mysql2"
 gem "net-ssh"
 gem "pagy"
-gem "pg"
 gem "pghero"
 gem "pg_query", ">= 2"
 gem "pretender"
-gem "puma"
 gem "rack-cors"
 gem "rails-i18n"
 gem "rails-pg-extras"
@@ -57,10 +67,9 @@ gem "sentry-ruby"
 gem "simple_form"
 gem "slim-rails"
 gem "solid_queue"
-gem "stimulus-rails"
 gem "store_model"
 gem "strong_migrations"
-gem "turbo-rails"
+gem "tailwindcss-rails"
 gem "turnout"
 gem "uuid"
 gem "view_component"

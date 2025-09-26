@@ -115,7 +115,7 @@ ignore_missing:
 ## Consider these keys used:
 # ignore_unused:
 # - 'activerecord.attributes.*'
-# - '{devise,kaminari,will_paginate}.*'
+# - '{devise,pagy}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'
 # - 'simple_form.{error_notification,required}.:'
@@ -134,7 +134,7 @@ ignore_unused:
   - 'view_components.*'
   - 'views.pagination.*'
   - '{date,time,number}.*'
-  - '{devise,kaminari,will_paginate,helpers}.*'
+  - '{devise,pagy,helpers}.*'
   - 'current_stable.training_schedules.{create,update}.success'
   - 'users.{create,update}.success'
 

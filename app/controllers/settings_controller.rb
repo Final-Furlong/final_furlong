@@ -1,11 +1,11 @@
 class SettingsController < ApplicationController
   def create
-    authorize :settings
+    authorize! with: Account::SettingsPolicy
 
     if outcome.valid?
       locale = save_locale_cookie(outcome)
 
-      flash[:notice] = t(".success.#{locale}")
+      flash[:success] = t(".success.#{locale}")
     else
       flash[:alert] = errors
     end
@@ -23,7 +23,7 @@ class SettingsController < ApplicationController
   end
 
   def update_params
-    params.merge(user: current_user)
+    params.expect(settings: [:locale]).merge(user: current_user)
   end
 
   def save_locale_cookie(outcome)

@@ -40,7 +40,7 @@ jobs:
 
       - name: StyleLint
         run: |
-          yarn run stylelint app/assets/stylesheets
+          yarn run stylelint app/assets/tailwind
 
       - name: Locales
         run: |

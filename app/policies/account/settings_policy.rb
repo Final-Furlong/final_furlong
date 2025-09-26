@@ -1,6 +1,6 @@
 module Account
   class SettingsPolicy < ApplicationPolicy
-    def update?
+    def create?
       true
     end
   end

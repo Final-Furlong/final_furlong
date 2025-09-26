@@ -16,7 +16,7 @@ class HorsesController < ApplicationController
     @query = authorized_scope(Horses::Horse.all).includes(:owner).ransack(params[:q])
     query.sorts = "name asc" if query.sorts.blank?
 
-    @horses = query.result.page(params[:page])
+    @pagy, @horses = pagy(query.result)
   end
 
   def show

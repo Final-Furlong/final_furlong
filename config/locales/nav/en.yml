@@ -11,22 +11,20 @@ en:
       game_title: Final Furlong
       join: Join
       login: Log in
-      search_aria_label: Search
-      search_placeholder: Search...
+      open_main_menu: Open Main Menu
     sidenav:
+      admin_divider: Admin
       all_horses: Horses
       game_divider: Game Links
-      home: Home
+      jobs: Jobs
       logout: Log out
       main_app: Main app
       my_stable: My stable
-      settings_divider: Game Settings
+      search_aria_label: Search
+      search_placeholder: Search...
       stable:
         horses: My horses
         racing_divider: Racing
         training_schedules: Training Schedules
       stables: Stables
-    user_nav:
-      edit_profile: Edit profile
-      edit_stable: Edit stable
-      logout: Log out
+      view_notifications: View Notifications

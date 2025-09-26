@@ -193,15 +193,6 @@ ActiveRecordDoctor.configure do
       "Motor::Tag"
     ]
 
-  detector :missing_foreign_keys,
-    ignore_columns: [
-      "horses.legacy_id",
-      "sessions.session_id",
-      "sessions.user_id",
-      "stables.legacy_id",
-      "users.discourse_id"
-    ]
-
   detector :missing_non_null_constraint,
     ignore_tables: [
       "ff_horses",
@@ -242,6 +233,12 @@ ActiveRecordDoctor.configure do
   detector :unindexed_deleted_at,
     ignore_indexes: [
       "index_users_on_lowercase_username" # includes lowercase username
+    ]
+
+  detector :table_without_timestamps,
+    ignore_tables: [
+      "active_storage_variant_records",
+      "data_migrations"
     ]
 end
 

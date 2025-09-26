@@ -1,22 +1,28 @@
-ruby:
-  settings_button_classes = "list-group-item list-group-item-action py-2 " \
-          "border border-top-0 border-start-0 border-end-0"
-a.d-block.d-md-none.list-group-item.list-group-item-action.py-2.dropdown-toggle.dropdown-item-text[
-data-bs_toggle="collapse" data-bs_target="#settings-links-list" aria-expanded=false]
-  i.fa-solid.fa-gears.me-3
-  span= t("layouts.sidenav.settings_divider")
-ul.list-unstyled.mb-0.collapse#settings-links-list
-  li
-    = button_to settings_path, method: :post, class: settings_button_classes do
-      = hidden_field_tag "locale", "en"
-      span.me-2.fi.fi-us
-        = t(".english")
-        - if american_locale?
-          i.fas.fa-check.ms-2
-  li
-    = button_to settings_path, method: :post, class: settings_button_classes do
-      = hidden_field_tag "locale", "en-GB"
-      span.me-2.fi.fi-gb
-        = t(".english")
-        - if british_locale?
-          i.fas.fa-check.ms-2
+button[
+  type="button"
+  data-dropdown-toggle="language-dropdown"
+  class="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer \
+    dark:hover:text-white dark:text-gray-400 hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600"
+  aria-label=t(".language_selector")
+]
+  span.me-2.fi class=(american_locale? ? "fi-us" : "fi-gb")
+
+.hidden.z-50.my-4.text-base.list-none.bg-white.rounded.divide-y.divide-gray-100.shadow[
+  class="dark:bg-gray-700"
+  id="language-dropdown"
+]
+  ul.py-1 role="none"
+    li
+      = form_with scope: :settings, url: settings_path, method: :post do |form|
+        = form.hidden_field :locale, value: "en"
+        = button_tag class: "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 \
+          dark:hover:text-white dark:text-gray-300 dark:hover:bg-gray-600" do
+          .inline-flex.items-center
+            span.me-2.fi.fi-us
+    li
+      = form_with scope: :settings, url: settings_path, method: :post do |form|
+        = form.hidden_field :locale, value: "en-GB"
+        = button_tag class: "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 \
+          dark:hover:text-white dark:text-gray-300 dark:hover:bg-gray-600" do
+          .inline-flex.items-center
+            span.me-2.fi.fi-gb

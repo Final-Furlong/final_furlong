@@ -1,8 +1,7 @@
-.card-header
-  ul.nav.nav-tabs.nav-fill.card-header-tabs role="navigation"
-    - status_order.each do |status_key|
-      - if non_empty_status?(status_key)
-        = render Horses::StatusSearch::Component.new(statuses:, status: status_key, active_status:, path_name:,
-                                                     params: params.to_unsafe_hash, version:)
-      - else
-        = render Horses::StatusEmpty::Component.new(status: status_key, version:)
+.tabs.tabs-lift role="tablist"
+  - status_order.each do |status_key|
+    - if non_empty_status?(status_key)
+      = render Horses::StatusSearch::Component.new(statuses:, status: status_key, active_status:, path_name:,
+                                                   params: params.to_unsafe_hash, version:)
+    - else
+      = render Horses::StatusEmpty::Component.new(status: status_key, version:)

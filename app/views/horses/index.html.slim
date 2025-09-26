@@ -4,11 +4,13 @@
 = render Horses::SearchFilters::Component.new(version: request_variant, path_name: "horses_path", params:, query:,
                                               active_status:)
 
-.card.mt-2
+.card.card-border.mt-2.p-4.shadow-md class="dark:border-1 dark:border-neutral-100"
   = turbo_stream_from "horses"
   = render Horses::StatusList::Component.new(version: request_variant, variants: [:desktop], statuses:, active_status:,
                                              params:, path_name: "horses_path")
   .card-body
     = turbo_frame_tag "horses" do
       = render "table", horses:, query:
-  = render Nav::Pagination::Component.new(collection: horses, page: params[:page], div_class: "card-footer")
+
+.float-right.mt-2
+  == pagy_nav(@pagy)

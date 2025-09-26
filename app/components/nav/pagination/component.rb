@@ -13,7 +13,7 @@ module Nav
       private
 
       def render?
-        collection.total_pages > 1
+        # collection.total_pages > 1
       end
     end
   end

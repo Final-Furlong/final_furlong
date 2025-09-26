@@ -1,5 +1,4 @@
 #impersonation-alert
-  .col-sm-12
-    .alert.alert-danger.text-center
-      span.fs-5= t(".title", username: helpers.current_user.username, stable: helpers.current_stable.name)
-      span.fs-6= button_to t(".sign_out"), admin_impersonate_path, method: :delete, class: "btn btn-link"
+  .alert.alert-error.alert-soft
+    span.fs-5= t(".title", username: helpers.current_user.username, stable: helpers.current_stable.name)
+    span.fs-6= button_to t(".sign_out"), admin_impersonate_path, method: :delete, class: "btn btn-link"

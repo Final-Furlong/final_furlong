@@ -25,8 +25,8 @@ class StablesController < AuthenticatedController
     outcome = Stables::UpdateDescription.run(update_params)
 
     if outcome.valid?
-      success_message = t(".success")
-      redirect_to current_stable_path, notice: success_message
+      flash[:success] = t(".success")
+      redirect_to current_stable_path
     else
       @stable_form = outcome
       render :edit
