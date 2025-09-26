@@ -125,6 +125,7 @@ group :development, :test do
   gem "fasterer", require: false
   gem "i18n-debug"
   gem "i18n-tasks"
+  gem "isolator"
   gem "letter_opener"
   gem "puts_debuggerer", "~> 1.0.0"
   gem "reek", require: false
