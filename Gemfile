@@ -62,6 +62,7 @@ gem "store_model"
 gem "strong_migrations"
 gem "turbo-rails"
 gem "turnout"
+gem "uuid"
 gem "view_component"
 gem "view_component-contrib"
 gem "whenever", require: false
