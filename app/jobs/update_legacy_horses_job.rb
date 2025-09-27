@@ -13,7 +13,7 @@ class UpdateLegacyHorsesJob < ApplicationJob
       end
     end
     Horses::Horse.where.not(name: living_famous_studs).where.not(status: "deceased")
-      .order(updated_at: :asc).limit(50).find_each do |horse|
+      .order(updated_at: :asc).limit(50).each do |horse|
       legacy_horse = Legacy::Horse.find(horse.legacy_id)
       result = MigrateLegacyHorseService.new(horse: legacy_horse).call
       if result
