@@ -1,5 +1,7 @@
 module Account
   class Stable < ApplicationRecord
+    FINAL_FURLONG = "Final Furlong"
+
     belongs_to :user
 
     has_many :bred_horses, class_name: "Horses::Horse", foreign_key: :breeder_id, inverse_of: :breeder,
@@ -9,6 +11,7 @@ module Account
     has_many :training_schedules, class_name: "Racing::TrainingSchedule", inverse_of: :stable,
       dependent: :restrict_with_exception
     has_many :auctions, class_name: "Auction", inverse_of: :auctioneer, dependent: :restrict_with_exception
+    has_many :auction_bids, class_name: "Auctions::Bid", inverse_of: :bidder, dependent: :delete_all
 
     validates :name, presence: true
 

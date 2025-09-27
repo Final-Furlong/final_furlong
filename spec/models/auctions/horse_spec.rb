@@ -2,6 +2,7 @@ RSpec.describe Auctions::Horse do
   describe "associations" do
     it { is_expected.to belong_to(:auction).class_name("::Auction") }
     it { is_expected.to belong_to(:horse).class_name("Horses::Horse") }
+    it { is_expected.to have_many(:bids).class_name("Auctions::Bid").dependent(:delete_all) }
   end
 
   describe "validations" do

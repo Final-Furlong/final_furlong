@@ -80,5 +80,20 @@ RSpec.configure do |config|
     Capybara.javascript_driver = Capybara.default_driver
     Capybara.use_default_driver
   end
+
+  # Performing jobs synchronously
+  config.around(:each, type: :job) do |example|
+    include ActiveJob::TestHelper
+
+    old_adapter = ActiveJob::Base.queue_adapter
+    ActiveJob::Base.queue_adapter = :test
+    perform_jobs = example.metadata[:perform_enqueueed_jobs] != false
+    ActiveJob::Base.queue_adapter.perform_enqueued_jobs = perform_jobs
+    ActiveJob::Base.queue_adapter.perform_enqueued_at_jobs = perform_jobs
+
+    example.run
+
+    ActiveJob::Base.queue_adapter = old_adapter
+  end
 end
 

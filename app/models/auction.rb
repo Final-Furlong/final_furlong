@@ -5,6 +5,8 @@ class Auction < ApplicationRecord
   MAX_AUCTIONS_PER_STABLE = 2
 
   belongs_to :auctioneer, class_name: "Account::Stable"
+  has_many :horses, class_name: "Auctions::Horse", dependent: :destroy
+  has_many :bids, class_name: "Auctions::Bid", dependent: :delete_all
 
   validates :start_time, :end_time, :hours_until_sold, :title, presence: true
   validates :title, length: { in: 10..500 }

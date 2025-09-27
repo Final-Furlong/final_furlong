@@ -4,6 +4,7 @@ module Auctions
 
     belongs_to :auction, class_name: "::Auction"
     belongs_to :horse, class_name: "Horses::Horse"
+    has_many :bids, class_name: "Auctions::Bid", dependent: :delete_all
 
     validates :max_price, numericality: { greater_than_or_equal_to: :reserve_price }, if: :reserve_price
   end

@@ -7,3 +7,4 @@
 //= link controllers/hello_controller.js
 //= link controllers/search_controller.js
 //= link controllers/removals_controller.js
+//= link application.css
