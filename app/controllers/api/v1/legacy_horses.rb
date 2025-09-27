@@ -9,13 +9,15 @@ module Api
           requires :id, type: Integer, desc: "Unique id for the Legacy::Horse"
         end
         post "/" do
+          legacy_horse = Legacy::Horse.find_by!(ID: permitted_params[:id])
           unless Horses::Horse.exists?(legacy_id: permitted_params[:id])
-            horse = Legacy::Horse.find_by!(ID: permitted_params[:id])
-            result = MigrateLegacyHorseService.new(horse:).call
+            result = MigrateLegacyHorseService.new(horse: legacy_horse).call
             error!({ error: "invalid", detail: "Failed to migrate horse with ID #{permitted_params[:id]}" }, 500) unless result
           end
           horse = Horses::Horse.find_by(legacy_id: permitted_params[:id])
           error!({ error: "not_found", detail: "Failed to migrate horse with ID #{permitted_params[:id]}" }, 500) unless horse
+          result = MigrateLegacyHorseAppearanceService.new(legacy_horse:)
+          error!({ error: "invalid", detail: "Failed to migrate horse appearance with ID #{permitted_params[:id]}" }, 500) unless result
 
           { rails_id: horse.id }
         end
