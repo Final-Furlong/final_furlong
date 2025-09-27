@@ -16,6 +16,9 @@ class UpdateLegacyHorsesJob < ApplicationJob
       .order(updated_at: :asc).limit(50).find_each do |horse|
       legacy_horse = Legacy::Horse.find(horse.legacy_id)
       result = MigrateLegacyHorseService.new(horse: legacy_horse).call
+      if result
+        result = MigrateLegacyHorseAppearanceService.new(legacy_horse:)
+      end
       raise StandardError, "Could not migrate horse with legacy id: #{horse.legacy_id}" unless result
     end
   end
