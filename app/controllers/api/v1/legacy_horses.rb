@@ -18,6 +18,7 @@ module Api
 
           result = MigrateLegacyHorseAppearanceService.new(legacy_horse:)
           error!({ error: "invalid", detail: "Failed to migrate horse appearance with ID #{permitted_params[:id]}" }, 500) unless result
+          legacy_horse.update(last_synced_to_rails_at: Time.current)
 
           { rails_id: horse.id }
         end

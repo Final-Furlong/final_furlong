@@ -64,17 +64,6 @@ RSpec.describe Api::V1::LegacyHorses do
     end
   end
 
-  # post "/" do
-  #   unless Horses::Horse.exists?(legacy_id: permitted_params[:id])
-  #     result = MigrateLegacyHorseService.new(horse:).call
-  #     error!({ error: "invalid", detail: "Failed to migrate horse with ID #{permitted_params[:id]}" }, 500) unless result
-  #   end
-  #   horse = Horses::Horse.find_by(legacy_id: permitted_params[:id])
-  #   error!({ error: "not_found", detail: "Failed to migrate horse with ID #{permitted_params[:id]}" }, 500) unless horse
-  #
-  #   { rails_id: horse.id }
-  # end
-
   private
 
   def mock_horse_migration
@@ -82,7 +71,7 @@ RSpec.describe Api::V1::LegacyHorses do
   end
 
   def legacy_horse
-    @legacy_horse ||= create(:legacy_horse)
+    @legacy_horse ||= create(:legacy_horse, last_synced_to_rails_at: 5.minutes.ago)
   end
 end
 
