@@ -1,6 +1,6 @@
 module Users
   module OnlineBadge
-    class Component < ApplicationViewComponent
+    class Component < ApplicationComponent
       def initialize(online:)
         @online = online
         super()

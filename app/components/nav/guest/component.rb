@@ -1,6 +1,6 @@
 module Nav
   module Guest
-    class Component < ApplicationViewComponent
+    class Component < ApplicationComponent
     end
   end
 end

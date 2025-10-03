@@ -22,7 +22,7 @@ module Horses
 
       def localise_statuses
         @statuses = []
-        HorseStatus::SEARCH_STATUSES.each do |status|
+        Horses::Status::SEARCH_STATUSES.each do |status|
           @statuses << [I18n.t("horses.statuses.#{status}"), status.to_s]
         end
       end

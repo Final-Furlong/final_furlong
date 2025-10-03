@@ -21,7 +21,7 @@ module Account
 
     validates :username, :status, :name, presence: true
     validates :admin, inclusion: { in: [true, false] }
-    validates :username, uniqueness: { case_sensitive: false }
+    validates :username, uniqueness: { case_sensitive: false }, length: { minimum: 3 }
 
     delegate :locale, to: :setting, allow_nil: true
 

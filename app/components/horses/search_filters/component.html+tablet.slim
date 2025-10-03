@@ -21,7 +21,7 @@ tabindex="-1" aria-labelledby="search-filters-label"]
         = f.input :name_i_cont_all, required: false, placeholder: I18n.t("horses.search.name"),
                                     label: I18n.t("horses.search.name"), input_html: { data: { action: "search#search",
                                                                                                min_characters: 2 } }
-        = f.input :gender_in, required: false, collection: HorseGender.localised_filter_options,
+        = f.input :gender_in, required: false, collection: Horses::Gender.localised_filter_options,
                               label: I18n.t("horses.search.gender"),
                               selected: params.dig("q", "gender_in")&.join(",") || "",
                               include_blank: true,
