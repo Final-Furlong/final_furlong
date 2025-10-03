@@ -1,3 +1,4 @@
+/# locals: (schedule_horse:)
 = simple_form_for schedule_horse, url:, html: { class: "training-schedule-horse form" } do |f|
   = f.input :training_schedule_id, as: :hidden, value: schedule.id, required: true
   = f.input :horse_id, collection: horses, required: true

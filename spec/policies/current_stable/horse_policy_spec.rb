@@ -1,12 +1,12 @@
 require "rails_helper"
 
 RSpec.describe CurrentStable::HorsePolicy do
-  subject(:policy) { described_class.new(Horses::Horse.new, user:) }
+  subject(:policy) { described_class.new(Horses::Horse.new, user) }
 
   let(:user) { create(:user) }
 
-  describe "#relation scope" do
-    subject(:scope) { policy.apply_scope(Horses::Horse.all, type: :relation) }
+  describe "#scope" do
+    subject(:scope) { described_class::Scope.new(user, Horses::Horse.all).resolve }
 
     let(:stable) { user.stable }
     let(:owned_horse) { create(:horse, owner: stable) }

@@ -1,79 +1,61 @@
-/ Sidebar
-.block.w-full class="sm:hidden"
-  button.inline-flex.items-center.p-2.mt-2.ms-3.text-sm.rounded-lg[
-    data-drawer-target="sidebar-multi-level-sidebar"
-    data-drawer-toggle="sidebar-multi-level-sidebar"
-    aria-controls="sidebar"
-    type="button"
-    class="focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600"
-  ]
-    span.sr-only= t("layouts.nav.open_main_menu")
-    i.fa-solid.fa-bars.fa-xl#icon-show-sidenav
-  .float-right
-    = render Nav::I18n::Component.new(locale: I18n.locale, version: :phone, variants: request.variant)
-
-aside.menu.fixed.top-0.left-0.z-40.w-64.h-screen.shadow-sm.border-r#sidebar[
-  class="transition-transform -translate-x-full sm:translate-x-0 dark:border-r-1 dark:border-neutral-100"
-  aria-label="Sidebar"
-]
-  .h-full.px-3.py-4.overflow-y-auto
-    ul.space-y-2.font-medium
+input#sidebar-drawer type="checkbox" class="drawer-toggle"
+nav.drawer-side#sidebar class="border-r-1 border-gray-500/50 dark:border-neutral-100/50"
+  label for="sidebar-drawer" aria-label="close sidebar" class="drawer-overlay"
+  ul.menu.bg-base-200.text-base-content.min-h-full.w-80.p-4
+    li
+      a.flex.items-center.p-2.rounded-lg[
+        href=root_path
+        class="dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+      ]
+        = image_tag "logo_dark.png", class: "h-6 md:h-12 w-auto block dark:hidden", alt: "Final Furlong Logo"
+        = image_tag "logo_light.png", class: "h-6 md:h-12 w-auto hidden dark:block", alt: "Final Furlong Logo"
+        span.font-semibold.ms-3.text-lg= t("layouts.nav.game_title")
+    = render "layouts/user_sidenav" if signed_in?
+    li
+      details open=true
+        summary= t("layouts.sidenav.game_divider")
+        ul
+          li
+            a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
+              href=stables_path
+              class="hover:bg-gray-100 dark:hover:bg-gray-700"
+            ]
+              i.fa.fa-solid.fa-house
+              span.ms-3= t("layouts.sidenav.stables")
+          li
+            a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
+              href=horses_path
+              class="hover:bg-gray-100 dark:hover:bg-gray-700"
+            ]
+              i.fa-solid.fa-horse-head
+              span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.all_horses")
+    = render "layouts/admin_sidenav" if signed_in? && current_user.admin?
+    - if signed_in?
       li
-        a.flex.items-center.p-2.rounded-lg[
-          href=root_path
-          class="dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+        = button_to destroy_user_session_path, method: :delete, data: { turbo: false },
+                form_class: "p-0", class: "flex items-center w-full p-2 text-base transition rounded-lg" do
+          i.fas.fa-arrow-right-from-bracket.mr-2
+          span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.logout")
+    - else
+      li
+        a.flex.items-center.w-full.p-2.text-base.transition.rounded-lg[
+          href=new_user_session_path
+          class="hover:bg-gray-100 dark:hover:bg-gray-700"
         ]
-          = image_tag "logo_dark.png", class: "h-6 md:h-12 w-auto block dark:hidden", alt: "Final Furlong Logo"
-          = image_tag "logo_light.png", class: "h-6 md:h-12 w-auto hidden dark:block", alt: "Final Furlong Logo"
-          span.font-semibold.ms-3.text-lg= t("layouts.nav.game_title")
-      = render "layouts/user_sidenav" if signed_in?
-      li
-        details open=true
-          summary= t("layouts.sidenav.game_divider")
-          ul
-            li
-              a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
-                href=stables_path
-                class="hover:bg-gray-100 dark:hover:bg-gray-700"
-              ]
-                i.fa.fa-solid.fa-house
-                span.ms-3= t("layouts.sidenav.stables")
-            li
-              a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
-                href=horses_path
-                class="hover:bg-gray-100 dark:hover:bg-gray-700"
-              ]
-                i.fa-solid.fa-horse-head
-                span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.all_horses")
-      = render "layouts/admin_sidenav" if signed_in? && current_user.admin?
-      - if signed_in?
-        li
-          = button_to destroy_user_session_path, method: :delete, data: { turbo: false },
-                  form_class: "p-0", class: "flex items-center w-full p-2 text-base transition rounded-lg" do
-            i.fas.fa-arrow-right-from-bracket.mr-2
-            span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.logout")
-      - else
-        li
-          a.flex.items-center.w-full.p-2.text-base.transition.rounded-lg[
-            href=new_user_session_path
-            class="hover:bg-gray-100 dark:hover:bg-gray-700"
-          ]
-            i.fas.fa-arrow-right-from-bracket.mr-2
-            span.flex-1.ms-3.whitespace-nowrap= t("layouts.nav.login")
-      li
-        = link_to "https://www.finalfurlong.org/", class: "flex items-center p-2 rounded-lg \
-            hover:bg-gray-100 dark:hover:bg-gray-700" do
-          i.fa-solid.fa-delete-left
-          span.flex-1.ms-3.whitespace-nowrap= t(".main_app")
+          i.fas.fa-arrow-right-from-bracket.mr-2
+          span.flex-1.ms-3.whitespace-nowrap= t("layouts.nav.login")
+    li
+      = link_to "https://www.finalfurlong.org/", class: "flex items-center p-2 rounded-lg \
+                hover:bg-gray-100 dark:hover:bg-gray-700" do
+        i.fa-solid.fa-delete-left
+        span.flex-1.ms-3.whitespace-nowrap= t(".main_app")
 
-    .hidden.mt-4.border.rounded-md class="md:block"
-      form.flex.p-2 role="search"
-        input[type="search" disabled=true placeholder=t(".search_placeholder")
-        aria-label=t(".search_aria_label")]
+    li
+      .hidden.mt-4.border.rounded-md class="md:block"
+        form.flex.p-2 role="search"
+          input[type="search" disabled=true placeholder=t(".search_placeholder") aria-label=t(".search_aria_label")]
 
-    .hidden.justify-center.p-4.space-x-4.w-full[
-      class="lg:flex z-20"
-    ]
+    li.hidden.justify-center.p-4.space-x-4.w-full[ class="lg:flex z-20" ]
       - if signed_in? && false
         a.inline-flex.justify-center.p-2.rounded.cursor-pointer[
           href="#"

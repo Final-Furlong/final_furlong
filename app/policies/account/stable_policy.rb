@@ -1,7 +1,9 @@
 module Account
   class StablePolicy < ApplicationPolicy
-    scope_for :active_record_relation do |relation|
-      Account::StablesQuery.new.active
+    class Scope < ApplicationPolicy::Scope
+      def resolve
+        Account::StablesQuery.new.active
+      end
     end
 
     def index?
@@ -21,7 +23,7 @@ module Account
     end
 
     def impersonate?
-      user&.admin && record.user != user
+      admin? && record.user != user
     end
   end
 end

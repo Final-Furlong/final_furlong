@@ -1,3 +1,4 @@
+/# locals: (schedule:)
 - activities = JSON.parse(schedule.activities, symbolize_names: true)
 - activities[:days].to_a.each do |workout_activity|
   = turbo_frame_tag workout_activity.day.to_s do

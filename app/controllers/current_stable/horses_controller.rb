@@ -1,12 +1,12 @@
 module CurrentStable
   class HorsesController < AuthenticatedController
     def index
-      @horses = authorized_scope(Horses::Horse, type: :relation, with: CurrentStable::HorsePolicy)
+      @horses = policy_scope(Horses::Horse, policy_scope_class: CurrentStable::HorsePolicy::Scope)
     end
 
     def show
       @horse = current_stable.horses.find(params[:id])
-      authorize! @horse, to: :show?
+      authorize @horse, policy_class: CurrentStable::HorsePolicy
     end
 
     def edit

@@ -4,7 +4,7 @@ class StablesController < AuthenticatedController
 
   def index
     authorize Account::Stable
-    @stables = authorized_scope(Stables::List.run!)
+    @stables = policy_scope(Account::Stable)
   end
 
   def show

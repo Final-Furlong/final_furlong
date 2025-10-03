@@ -25,6 +25,15 @@ FactoryBot.define do
         auction.spending_cap_per_stable = context.spending_cap
       end
     end
+
+    trait :past do
+      after(:create) do |auction|
+        # rubocop:disable Rails/SkipsModelValidations
+        auction.update_column(:start_time, Date.current - 20.days)
+        auction.update_column(:end_time, Date.current - 20.days)
+        # rubocop:enable Rails/SkipsModelValidations
+      end
+    end
   end
 end
 

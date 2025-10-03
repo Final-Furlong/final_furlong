@@ -19,6 +19,7 @@ RSpec.describe "Impersonating users" do
       it "fails" do
         post admin_impersonate_path, params: { id: user.id }
         expect(response).to have_http_status :not_found
+
         expect(response.body).not_to include "Signed in as #{user.stable.name}"
       end
     end

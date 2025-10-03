@@ -1,29 +1,23 @@
 require "rails_helper"
 
-class FakePolicy < AuthenticatedPolicy
-  def show?
-    true
-  end
-end
-
 RSpec.describe AuthenticatedPolicy do
-  subject(:policy) { FakePolicy.new(Account::User.new, user:) }
+  subject(:policy) { described_class.new(user, Account::User.new) }
 
-  let(:user) { Account::User.new }
+  let(:user) { build_stubbed(:user) }
 
-  describe "#show?" do
-    context "when user is set" do
-      it "does not raise error" do
-        expect(policy.apply(:show?)).to be true
-      end
+  context "when user is a visitor" do
+    let(:user) { nil }
+
+    it "forbids everything by default" do
+      expect(policy).not_to permit_actions(*%i[index show new create edit update destroy])
     end
+  end
 
-    context "when user is not set" do
-      let(:user) { nil }
+  context "when user is logged in" do
+    let(:user) { build_stubbed(:user) }
 
-      it "raises error" do
-        expect(policy.apply(:show?)).to be false
-      end
+    it "allows everything by default" do
+      expect(policy).to permit_actions(*%i[index show new create edit update destroy])
     end
   end
 end

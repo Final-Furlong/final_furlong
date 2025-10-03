@@ -1,7 +1,0 @@
-- if current_user != true_user
-  #impersonation-alert
-    .col-sm-12
-      .alert.alert-danger.text-center
-        span.fs-5= "You are signed in as #{current_stable.name} (#{current_user.name})"
-        span.fs-6
-          = button_to "(Back to Admin)", stop_impersonating_users_path, method: :post, class: "btn btn-link"

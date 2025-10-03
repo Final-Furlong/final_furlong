@@ -1,18 +1,22 @@
-class AuctionPolicy < ::ApplicationPolicy
-  def index?
-    true
-  end
+class AuctionPolicy < AuthenticatedPolicy
+  def create?
+    return false unless user&.stable
 
-  def show?
-    index?
-  end
-
-  def new?
     user.stable.auctions.upcoming.count <= Auction::MAX_AUCTIONS_PER_STABLE
   end
 
-  def create?
-    new?
+  def update?
+    return false unless user&.stable
+    return true if admin?
+
+    record.auctioneer == user.stable
+  end
+
+  def destroy?
+    return false unless user&.stable
+    return false unless (record.auctioneer == user.stable) || admin?
+
+    record.start_time > Time.current
   end
 end
 

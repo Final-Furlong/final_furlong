@@ -1,13 +1,13 @@
 require "spec_helper"
 
 RSpec.describe Account::UserPolicy do
-  subject(:policy) { described_class.new(subject_user, user:) }
+  subject(:policy) { described_class.new(user, subject_user) }
 
   let(:user) { build_stubbed(:user) }
   let(:subject_user) { build_stubbed(:user) }
 
-  describe "relation scope" do
-    subject(:scope) { policy.apply_scope(Account::User.all, type: :relation) }
+  describe "scope" do
+    subject(:scope) { described_class::Scope.new(user, Account::User.all).resolve }
 
     let(:user) { build_stubbed(:user) }
     let(:active_user) { create(:user) }
@@ -26,13 +26,13 @@ RSpec.describe Account::UserPolicy do
     let(:user) { nil }
 
     it "disallows admin actions" do
-      expect(policy).not_to allow_actions(:create, :impersonate)
+      expect(policy).not_to permit_actions(:create, :impersonate)
     end
   end
 
   context "when user is not admin" do
     it "disallows admin actions" do
-      expect(policy).not_to allow_actions(:create, :impersonate)
+      expect(policy).not_to permit_actions(:create, :impersonate)
     end
   end
 
@@ -40,18 +40,18 @@ RSpec.describe Account::UserPolicy do
     let(:user) { build_stubbed(:admin) }
 
     it "allows admin actions" do
-      expect(policy).to allow_actions(:create, :impersonate)
+      expect(policy).to permit_actions(:create, :impersonate)
     end
 
     context "when dealing with own account" do
       let(:subject_user) { user }
 
       it "allows actions" do
-        expect(policy).to allow_actions(:create)
+        expect(policy).to permit_actions(:create)
       end
 
       it "disallows actions" do
-        expect(policy).not_to allow_actions(:impersonate)
+        expect(policy).not_to permit_actions(:impersonate)
       end
     end
 
