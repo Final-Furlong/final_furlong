@@ -1,6 +1,6 @@
 class SettingsController < ApplicationController
   def create
-    authorize! with: Account::SettingsPolicy
+    authorize %i[account settings]
 
     if outcome.valid?
       locale = save_locale_cookie(outcome)

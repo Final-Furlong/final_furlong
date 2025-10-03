@@ -1,3 +1,4 @@
+/# locals: (form:, url:)
 = simple_form_for form, as: :stable, method: :patch, url:,
                         html: { class: "stable form" }, data: { turbo: false } do |f|
   = render Forms::ErrorMessages::Component.new(object: form)

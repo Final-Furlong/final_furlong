@@ -1,12 +1,12 @@
 require "rails_helper"
 
 RSpec.describe Account::StablePolicy do
-  subject(:policy) { described_class.new(stable, user:) }
+  subject(:policy) { described_class.new(user, stable) }
 
   let(:stable) { build(:stable) }
 
-  describe "relation scope" do
-    subject(:scope) { policy.apply_scope(Account::Stable.all, type: :active_record_relation) }
+  describe "scope" do
+    subject(:scope) { described_class::Scope.new(user, Account::Stable.all).resolve }
 
     let(:user) { build_stubbed(:user) }
     let(:active_stable) { create(:stable) }
@@ -25,11 +25,11 @@ RSpec.describe Account::StablePolicy do
     let(:user) { nil }
 
     it "allows public actions" do
-      expect(policy).to allow_actions(:index, :show)
+      expect(policy).to permit_actions(:index, :show)
     end
 
     it "disallows private actions" do
-      expect(policy).not_to allow_actions(:edit, :update, :destroy, :impersonate)
+      expect(policy).not_to permit_actions(:edit, :update, :destroy, :impersonate)
     end
   end
 
@@ -37,11 +37,11 @@ RSpec.describe Account::StablePolicy do
     let(:user) { stable.user }
 
     it "allows private actions" do
-      expect(policy).to allow_actions(:index, :show, :edit, :update)
+      expect(policy).to permit_actions(:index, :show, :edit, :update)
     end
 
     it "disallows admin actions" do
-      expect(policy).not_to allow_actions(:destroy, :impersonate)
+      expect(policy).not_to permit_actions(:destroy, :impersonate)
     end
   end
 
@@ -49,11 +49,11 @@ RSpec.describe Account::StablePolicy do
     let(:user) { create(:user, admin: true) }
 
     it "allows admin actions" do
-      expect(policy).to allow_actions(:index, :show, :impersonate)
+      expect(policy).to permit_actions(:index, :show, :impersonate)
     end
 
     it "disallows private actions" do
-      expect(policy).not_to allow_actions(:edit, :update, :destroy)
+      expect(policy).not_to permit_actions(:edit, :update, :destroy)
     end
 
     context "when dealing with own stable" do
@@ -62,11 +62,11 @@ RSpec.describe Account::StablePolicy do
       before { user.update!(admin: true) }
 
       it "allows private actions" do
-        expect(policy).to allow_actions(:show, :edit, :update)
+        expect(policy).to permit_actions(:show, :edit, :update)
       end
 
       it "disallows admin actions" do
-        expect(policy).not_to allow_actions(:destroy, :impersonate)
+        expect(policy).not_to permit_actions(:destroy, :impersonate)
       end
     end
   end

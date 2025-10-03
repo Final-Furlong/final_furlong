@@ -1,3 +1,4 @@
+/# locals: (horse:)
 = simple_form_for horse, html: { class: "horse form" } do |f|
   = render Forms::ErrorMessages::Component.new(object: horse)
   = f.input :name, value: horse.name.html_safe, input_html: { autofocus: true } # rubocop:disable Rails/OutputSafety

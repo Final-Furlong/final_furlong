@@ -1,16 +1,16 @@
 require "rails_helper"
 
 RSpec.describe Racing::TrainingSchedulePolicy do
-  subject(:policy) { described_class.new(schedule, user:) }
+  subject(:policy) { described_class.new(user, schedule) }
 
   let(:user) { build_stubbed(:user) }
   let(:schedule) { build_stubbed(:training_schedule) }
 
-  describe "relation scope" do
-    subject(:scope) { policy.apply_scope(Racing::TrainingSchedule.all, type: :active_record_relation) }
+  describe "scope" do
+    subject(:scope) { described_class::Scope.new(user, Racing::TrainingSchedule.all).resolve }
 
-    it "includes born horses" do
-      expect(scope).to eq Racing::TrainingSchedulesQuery.new.with_stable(user.stable).ordered
+    it "includes training schedules for the stable" do
+      expect(scope).to eq Racing::TrainingSchedule.where(stable: user.stable)
     end
   end
 
@@ -18,7 +18,7 @@ RSpec.describe Racing::TrainingSchedulePolicy do
     let(:user) { nil }
 
     it "does not allow anything" do
-      expect(policy).not_to allow_actions(:new, :edit, :destroy, :view_horses)
+      expect(policy).not_to permit_actions(:new, :edit, :destroy, :view_horses)
     end
   end
 
@@ -27,12 +27,12 @@ RSpec.describe Racing::TrainingSchedulePolicy do
     let(:schedule) { create(:training_schedule, stable: user.stable) }
 
     it "allows main actions" do
-      expect(policy).to allow_actions(:edit, :destroy, :view_horses)
+      expect(policy).to permit_actions(:edit, :destroy, :view_horses)
     end
 
     context "when stable does not have max schedules" do
       it "allows new" do
-        expect(policy).to allow_actions(:new)
+        expect(policy).to permit_actions(:new)
       end
     end
 
@@ -42,7 +42,7 @@ RSpec.describe Racing::TrainingSchedulePolicy do
           create(:training_schedule, stable: user.stable)
         end
 
-        expect(policy).not_to allow_actions(:new)
+        expect(policy).not_to permit_actions(:new)
       end
     end
   end
@@ -52,7 +52,7 @@ RSpec.describe Racing::TrainingSchedulePolicy do
     let(:schedule) { create(:training_schedule, stable: create(:stable)) }
 
     it "disallows main actions" do
-      expect(policy).not_to allow_actions(:edit, :destroy, :view_horses)
+      expect(policy).not_to permit_actions(:edit, :destroy, :view_horses)
     end
   end
 end

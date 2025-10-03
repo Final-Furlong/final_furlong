@@ -1,19 +1,21 @@
 module Account
   class UserPolicy < ApplicationPolicy
-    scope_for :relation do |relation|
-      Account::UsersQuery.new.active.ordered
+    class Scope < ApplicationPolicy::Scope
+      def resolve
+        Account::UsersQuery.new.active.ordered
+      end
     end
 
     def index?
-      user&.admin?
+      admin?
     end
 
     def create?
-      user&.admin?
+      admin?
     end
 
     def impersonate?
-      user&.admin? && user != record
+      admin? && user != record
     end
 
     def permitted_attributes

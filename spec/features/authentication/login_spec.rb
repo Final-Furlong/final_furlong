@@ -62,9 +62,8 @@ RSpec.describe "Login Spec" do
     expect(page.driver.cookies.keys).not_to include "_final_furlong_session"
   end
 
-  it "is accessible", :axe do
-    visit new_user_session_path
-    expect(page).to be_axe_clean
+  it_behaves_like "a page that is accessible" do
+    let(:path_to_visit) { new_user_session_path }
   end
 end
 

@@ -7,7 +7,7 @@ class UsersController < AuthenticatedController
 
   def index
     authorize Account::User
-    @users = authorized_scope(Account::User, type: :relation)
+    @users = policy_scope(Account::User)
   end
 
   def show

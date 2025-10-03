@@ -4,8 +4,10 @@ class ApplicationController < ActionController::Base
   include Pagy::Backend
   include Devise::Controllers::Helpers
   include DeviseHooks
+  include Pundit::Authorization
 
-  rescue_from ActionPolicy::Unauthorized, with: :user_not_authorized
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   impersonates :user, method: :current_user, with: ->(id) { Account::User.find_by(id:) }
 
@@ -17,25 +19,30 @@ class ApplicationController < ActionController::Base
 
   around_action :switch_locale
 
+  after_action :verify_pundit_authorization
+
   helper_method :current_stable
 
   protected
 
-  def authorize(record, rule = nil)
-    options = {}
-    options[:to] = rule unless rule.nil?
-
-    authorize! record, **options
+  def not_found
+    render "errors/not_found"
   end
 
-  def user_not_authorized(exception)
-    flash[:alert] = if exception.result.reasons.full_messages
-      exception.result.reasons.full_messages.join(", ")
-    else
-      I18n.t("errors.not_authorized", locale: wanted_locale)
-    end
+  def user_not_authorized
+    flash[:alert] = I18n.t("errors.not_authorized", locale: wanted_locale)
 
     redirect_to unauthorized_path
+  end
+
+  def verify_pundit_authorization
+    return if devise_controller?
+
+    if action_name == "index"
+      verify_policy_scoped
+    else
+      verify_authorized
+    end
   end
 
   def unauthorized_path

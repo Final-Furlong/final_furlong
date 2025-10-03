@@ -32,9 +32,8 @@ RSpec.describe "Stable Index" do
     end
   end
 
-  it "is accessible", :axe do
-    visit stables_path
-    expect(page).to be_axe_clean
+  it_behaves_like "a page that is accessible" do
+    let(:path_to_visit) { stables_path }
   end
 end
 

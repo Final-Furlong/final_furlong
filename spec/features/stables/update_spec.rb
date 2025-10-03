@@ -37,9 +37,8 @@ RSpec.describe "Update Stable Description" do
       expect(page).not_to have_text updated_description
     end
 
-    it "is accessible", :axe do
-      visit current_stable_path
-      expect(page).to be_axe_clean
+    it_behaves_like "a page that is accessible" do
+      let(:path_to_visit) { current_stable_path }
     end
   end
 

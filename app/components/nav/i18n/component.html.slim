@@ -1,17 +1,19 @@
-.dropdown.dropdown-top.hidden class="sm:block"
-  .m-1 tabindex="0" role="button"
-    span.me-2.fi class=(american_locale? ? "fi-us" : "fi-gb")
-  ul.dropdown-content.rounded-box.z-1 tabindex="0" class="w-16 p-2 shadow-sm"
-    ul.py-1 role="none"
-      li
-        = form_with scope: :settings, url: settings_path, method: :post do |form|
-          = form.hidden_field :locale, value: "en"
-          = button_tag class: "block text-sm" do
-            .inline-flex.items-center
-              span.fi.fi-us
-      li
-        = form_with scope: :settings, url: settings_path, method: :post do |form|
-          = form.hidden_field :locale, value: "en-GB"
-          = button_tag class: "block text-sm" do
-            .inline-flex.items-center
-              span.fi.fi-gb
+ruby:
+  flag_class = american_locale? ? "fi-us" : "fi-gb"
+  flag_label = american_locale? ? t("view_components.nav.i18n.us_language") : t("view_components.nav.i18n.uk_language")
+.dropdown.dropdown-top.hidden.mx-auto class="sm:block"
+  .m-1 tabindex="0" role="button" aria-label=t("view_components.nav.i18n.language_selector")
+    span.me-2.fi[ class=flag_class aria-label=flag_label ]
+  ul.dropdown-content.menu.py-1.z-50.my-4.bg-white.rounded.shadow tabindex="0" class="w-16 p-2 shadow-sm"
+    li
+      = form_with scope: :settings, url: settings_path, method: :post do |form|
+        = form.hidden_field :locale, value: "en"
+        = button_tag class: "block text-sm" do
+          .inline-flex.items-center
+            span.fi.fi-us
+    li
+      = form_with scope: :settings, url: settings_path, method: :post do |form|
+        = form.hidden_field :locale, value: "en-GB"
+        = button_tag class: "block text-sm" do
+          .inline-flex.items-center
+            span.fi.fi-gb
