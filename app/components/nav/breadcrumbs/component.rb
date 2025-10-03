@@ -1,6 +1,6 @@
 module Nav
   module Breadcrumbs
-    class Component < ApplicationViewComponent
+    class Component < ApplicationComponent
       attr_reader :actions
 
       def initialize(links: [], title: nil, classes: "", actions: [])

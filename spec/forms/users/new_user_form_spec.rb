@@ -17,7 +17,7 @@ RSpec.describe Users::NewUserForm, type: :model do
       form = described_class.new(args.merge(username: ""))
 
       expect(form).not_to be_valid
-      expect(form.errors[:username]).to eq(["can't be blank"])
+      expect(form.errors[:username]).to contain_exactly("can't be blank", "is too short (minimum is 3 characters)")
     end
 
     it "uses stable validations" do

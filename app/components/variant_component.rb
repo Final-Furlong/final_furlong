@@ -1,4 +1,4 @@
-class VariantComponent < ApplicationViewComponent
+class VariantComponent < ApplicationComponent
   def initialize(version: nil, variants: %i[phone tablet desktop])
     @version = version
     @variants = variants

@@ -24,7 +24,7 @@ SimpleCov.profiles.define 'common' do
   add_group "Mailers", "app/mailers"
   add_group "Operations", %w[app/interactions app/services]
   add_group "Lib", %w[lib/ app/validation/final_furlong]
-  add_group "View Components", "app/frontend/components"
+  add_group "View Components", "app/components"
 
   track_files "{app,lib}/**/*.rb"
 

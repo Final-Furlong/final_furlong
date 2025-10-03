@@ -1,6 +1,6 @@
 module Nav
   module Pagination
-    class Component < ApplicationViewComponent
+    class Component < ApplicationComponent
       attr_reader :collection, :page, :div_class
 
       def initialize(collection:, page:, div_class:)

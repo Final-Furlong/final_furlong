@@ -1,4 +1,4 @@
-RSpec.describe Forms::ErrorMessages::Component, type: :component do
+RSpec.describe Forms::ErrorMessages::Component do
   subject(:component) { described_class.new(object: user) }
 
   let(:user) { build(:user) }
@@ -14,13 +14,14 @@ RSpec.describe Forms::ErrorMessages::Component, type: :component do
   end
 
   context "when object has errors" do
-    let(:user) { build(:user, username: "aaa", email: "ab") }
+    let(:user) { build(:user, username: "aa", email: "ab") }
 
     it "displays all errors" do
       render_inline(component)
 
-      within ".notifications" do
-        expect(page).to have_text "Email is invalid and username is too short (minimmum is 4 characters)"
+      within ".alert" do
+        expect(page).to have_text "foo"
+        expect(page).to have_text "Email is invalid and username is too short (minimum is 3 characters)"
       end
     end
   end

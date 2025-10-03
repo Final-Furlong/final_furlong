@@ -39,8 +39,8 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 RSpec.configure do |config|
-  config.define_derived_metadata(file_path: %r{/spec/frontend/components}) do |metadata|
-    metadata[:type] = :view_component
+  config.define_derived_metadata(file_path: %r{/spec/components}) do |metadata|
+    metadata[:type] = :component
   end
 
   config.use_transactional_fixtures = true
@@ -55,8 +55,9 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.include ViewComponent::TestHelpers, type: :component
+  config.include ViewComponent::SystemSpecHelpers, type: :feature
+  config.include ViewComponent::SystemSpecHelpers, type: :system
   config.include Capybara::RSpecMatchers, type: :component
-  config.include ViewComponent::TestHelpers, type: :view_component
   config.include Capybara::RSpecMatchers, type: :view_component
 
   config.include Devise::Test::ControllerHelpers, type: :controller

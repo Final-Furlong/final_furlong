@@ -46,6 +46,8 @@ module FinalFurlong
     config.generators do |g|
       g.test_framework :rspec
       g.orm(:active_record, primary_key_type: :uuid)
+      g.template_engine = :slim
+      g.helper false
     end
 
     config.log_formatter = Logger::Formatter.new

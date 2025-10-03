@@ -1,6 +1,6 @@
 module Forms
   module ErrorMessages
-    class Component < ApplicationViewComponent
+    class Component < ApplicationComponent
       attr_reader :object
 
       def initialize(object:)
