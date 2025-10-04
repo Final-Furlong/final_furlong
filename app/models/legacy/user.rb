@@ -55,7 +55,7 @@ end
 #  ForumID            :integer          indexed
 #  ID                 :integer          not null, primary key
 #  IP                 :string(255)
-#  JoinDate           :date             default(NULL), not null, indexed
+#  JoinDate           :date             not null, indexed
 #  LastBought         :datetime         indexed
 #  LastEntry          :datetime         indexed
 #  LastLogin          :datetime         indexed
@@ -79,6 +79,7 @@ end
 #  rails_activated_at :datetime
 #  slug               :string(255)
 #  discourse_id       :integer
+#  rails_id           :string(36)
 #  user_id            :integer
 #
 # Indexes
