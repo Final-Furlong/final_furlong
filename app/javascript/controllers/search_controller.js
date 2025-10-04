@@ -29,7 +29,7 @@ export default class extends Controller {
   }
 
   resetFields(form, preventSubmit, clearErrors) {
-    let inputs = form.find(".form-control")
+    let inputs = form.find(".input")
 
     inputs.each(function (i, el) {
       let input = $(el)

@@ -1,31 +1,35 @@
 class HorsesController < ApplicationController
-  before_action :set_horse, except: %i[index image]
-  before_action :set_horse_by_legacy_id, only: :image
-  before_action :authorize_horse, except: :index
-  before_action :set_status_counts, only: :index
+  attr_accessor :horses, :horse, :statuses, :active_status
 
-  attr_accessor :horses, :horse, :statuses, :active_status, :query
-
-  helper_method :horses, :horse, :statuses, :active_status, :query, :params
+  helper_method :horses, :horse, :statuses, :active_status, :params
 
   def index # rubocop:disable Metrics/AbcSize
     authorize Horses::Horse
 
+    query = params.to_unsafe_hash["q"].symbolize_keys if params[:q]
+    @statuses = Horses::SearchStatusCount.run(query:).result
+
     set_active_status
     set_gender_select
     @query = policy_scope(Horses::Horse).includes(:owner).ransack(params[:q])
-    query.sorts = "name asc" if query.sorts.blank?
+    @query.sorts = "name asc" if @query.sorts.blank?
 
-    @pagy, @horses = pagy(query.result)
+    @pagy, @horses = pagy(@query.result)
   end
 
   def show
+    @horse = load_horse
+    authorize @horse
   end
 
   def edit
+    @horse = load_horse
+    authorize @horse
   end
 
   def update
+    @horse = load_horse
+    authorize @horse
     if @horse.update(horse_params)
       @horse.reload
       respond_to do |format|
@@ -38,6 +42,7 @@ class HorsesController < ApplicationController
   end
 
   def image
+    @horse = load_horse_by_legacy_id
     raise ActiveRecord::RecordNotFound unless @horse.appearance&.image&.present?
     image = @horse.appearance.image
 
@@ -47,6 +52,7 @@ class HorsesController < ApplicationController
   end
 
   def thumbnail
+    @horse = load_horse
     raise ActiveRecord::RecordNotFound unless @horse.appearance&.image(max_width: 100, max_height: 100)&.present?
     image = @horse.appearance.image(max_width: 100, max_height: 100)
 
@@ -66,16 +72,12 @@ class HorsesController < ApplicationController
     response.stream.write(File.read(image))
   end
 
-  def authorize_horse
-    authorize @horse
+  def load_horse
+    Horses::Horse.find(params[:id])
   end
 
-  def set_horse
-    @horse = Horses::Horse.find(params[:id])
-  end
-
-  def set_horse_by_legacy_id
-    @horse = if UUID.validate(params[:id].to_s)
+  def load_horse_by_legacy_id
+    if UUID.validate(params[:id].to_s)
       Horses::Horse.find_by(id: params[:id])
     else
       Horses::Horse.find_by(legacy_id: params[:id])
@@ -114,11 +116,6 @@ class HorsesController < ApplicationController
 
   def set_gender_select
     params[:q][:gender_in] = params[:q][:gender_in].split(",") if params.dig(:q, :gender_in)
-  end
-
-  def set_status_counts
-    query = params.to_unsafe_hash["q"].symbolize_keys if params[:q]
-    @statuses = Horses::SearchStatusCount.run(query:).result
   end
 end
 

@@ -1,9 +1,8 @@
 .card.card-border.shadow-md.my-4 class="dark:border-1 dark:border-neutral-100/50"
   .card-body
     = search_form_for query, url: horses_path, html: { class: "d-flex flex-column", autocomplete: "off" },
-                             data: { controller: "search",
-                                     search: { target: "form" },
-                                     turbo: { frame: "all-horses-search" } } do |f|
+                             data: { "controller" => "search", "search-target" => "form" },
+                                     turbo: { frame: "all-horses-search" } do |f|
       .grid.grid-cols-4.mb-2.gap-4
         div
           label.visually-hidden for="q_name_i_cont_all"= I18n.t("horses.search.name")

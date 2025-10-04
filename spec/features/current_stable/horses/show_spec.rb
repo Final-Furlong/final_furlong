@@ -3,8 +3,8 @@ RSpec.describe "Viewing Own Horse" do
     it "shows horse owned by the stable" do
       stable = create(:stable)
       user = stable.user
-      horse1 = create(:horse, owner: stable)
-      horse2 = create(:horse, owner: create(:stable))
+      horse1 = create(:horse, owner: stable, name: "My Horse")
+      horse2 = create(:horse, owner: create(:stable), name: "Another Horse")
 
       sign_in(user)
       visit stable_horse_path(horse1)

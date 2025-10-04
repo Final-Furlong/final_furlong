@@ -1,8 +1,8 @@
 - content_for :breadcrumbs do
   = render Nav::Breadcrumbs::Component.new(title: t("horses.index.title"))
 
-= render Horses::SearchFilters::Component.new(version: request_variant, path_name: "horses_path", params:, query:,
-                                              active_status:)
+= render Horses::SearchFilters::Component.new(version: request_variant,
+        path_name: "horses_path", params:, query: @query, active_status:)
 
 .card.card-border.mt-2.p-4.shadow-md class="dark:border-1 dark:border-neutral-100"
   = turbo_stream_from "horses"
@@ -10,7 +10,7 @@
                                              params:, path_name: "horses_path")
   .card-body
     = turbo_frame_tag "horses" do
-      = render "table", horses:, query:
+      = render "table", horses:, query: @query
 
 .float-right.mt-2
   == pagy_nav(@pagy)
