@@ -328,7 +328,9 @@ CREATE TABLE public.horse_appearances (
     current_height numeric(4,2) DEFAULT 0.0 NOT NULL,
     max_height numeric(4,2) DEFAULT 0.0 NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone NOT NULL
+    updated_at timestamp with time zone NOT NULL,
+    CONSTRAINT current_height_must_be_valid CHECK ((current_height >= birth_height)),
+    CONSTRAINT max_height_must_be_valid CHECK ((max_height >= current_height))
 );
 
 
@@ -1477,10 +1479,10 @@ CREATE INDEX index_auction_bids_on_horse_id ON public.auction_bids USING btree (
 
 
 --
--- Name: index_auction_horses_on_auction_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_auction_horses_on_auction_id_and_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_auction_horses_on_auction_id ON public.auction_horses USING btree (auction_id);
+CREATE UNIQUE INDEX index_auction_horses_on_auction_id_and_horse_id ON public.auction_horses USING btree (auction_id, horse_id);
 
 
 --
@@ -1600,6 +1602,13 @@ CREATE INDEX index_horses_on_sire_id ON public.horses USING btree (sire_id);
 --
 
 CREATE INDEX index_horses_on_status ON public.horses USING btree (status);
+
+
+--
+-- Name: index_locations_on_country_and_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_locations_on_country_and_name ON public.locations USING btree (country, name);
 
 
 --
@@ -1813,6 +1822,13 @@ CREATE INDEX index_stables_on_legacy_id ON public.stables USING btree (legacy_id
 
 
 --
+-- Name: index_stables_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_stables_on_name ON public.stables USING btree (lower((name)::text));
+
+
+--
 -- Name: index_stables_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1820,10 +1836,10 @@ CREATE UNIQUE INDEX index_stables_on_user_id ON public.stables USING btree (user
 
 
 --
--- Name: index_track_surfaces_on_racetrack_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_track_surfaces_on_racetrack_id_and_surface; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_track_surfaces_on_racetrack_id ON public.track_surfaces USING btree (racetrack_id);
+CREATE UNIQUE INDEX index_track_surfaces_on_racetrack_id_and_surface ON public.track_surfaces USING btree (racetrack_id, surface);
 
 
 --
@@ -2251,6 +2267,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251004194127'),
 ('20251004173409'),
 ('20250925184704'),
 ('20250925183807'),

@@ -7,6 +7,7 @@ module Auctions
     has_many :bids, class_name: "Auctions::Bid", dependent: :delete_all
 
     validates :max_price, numericality: { greater_than_or_equal_to: :reserve_price }, if: :reserve_price
+    validates :horse_id, uniqueness: { scope: :auction_id }
   end
 end
 
@@ -21,14 +22,14 @@ end
 #  sold_at       :datetime         indexed
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  auction_id    :uuid             not null, indexed
-#  horse_id      :uuid             not null, indexed
+#  auction_id    :uuid             not null, uniquely indexed => [horse_id]
+#  horse_id      :uuid             not null, uniquely indexed => [auction_id], indexed
 #
 # Indexes
 #
-#  index_auction_horses_on_auction_id  (auction_id)
-#  index_auction_horses_on_horse_id    (horse_id)
-#  index_auction_horses_on_sold_at     (sold_at)
+#  index_auction_horses_on_auction_id_and_horse_id  (auction_id,horse_id) UNIQUE
+#  index_auction_horses_on_horse_id                 (horse_id)
+#  index_auction_horses_on_sold_at                  (sold_at)
 #
 # Foreign Keys
 #

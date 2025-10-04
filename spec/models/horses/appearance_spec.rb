@@ -23,6 +23,19 @@ RSpec.describe Horses::Appearance do
       expect(appearance).not_to be_valid
     end
 
+    it "has check constraint for current height vs birth height" do
+      # rubocop:disable Rails/SkipsModelValidations
+      appearance = create(:horse_appearance)
+      expect do
+        appearance.update_columns(current_height: 10, max_height: 11, birth_height: 5)
+      end.not_to raise_error
+
+      expect do
+        appearance.update_columns(current_height: 10, max_height: 20, birth_height: 15)
+      end.to raise_error ActiveRecord::StatementInvalid, /current_height_must_be_valid/
+      # rubocop:enable Rails/SkipsModelValidations
+    end
+
     it "validates max height vs current height" do
       appearance.max_height = 11
       appearance.current_height = 10
@@ -31,6 +44,19 @@ RSpec.describe Horses::Appearance do
 
       appearance.max_height = 9
       expect(appearance).not_to be_valid
+    end
+
+    it "has check constraint for max height vs current height" do
+      # rubocop:disable Rails/SkipsModelValidations
+      appearance = create(:horse_appearance)
+      expect do
+        appearance.update_columns(current_height: 10, max_height: 11, birth_height: 5)
+      end.not_to raise_error
+
+      expect do
+        appearance.update_columns(current_height: 10, max_height: 5, birth_height: 5)
+      end.to raise_error ActiveRecord::StatementInvalid, /max_height_must_be_valid/
+      # rubocop:enable Rails/SkipsModelValidations
     end
 
     it { is_expected.to validate_inclusion_of(:color).in_array(Horses::Color::VALUES.keys.map(&:to_s)) }

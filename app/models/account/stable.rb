@@ -14,6 +14,7 @@ module Account
     has_many :auction_bids, class_name: "Auctions::Bid", inverse_of: :bidder, dependent: :delete_all
 
     validates :name, presence: true
+    validates :name, uniqueness: { case_sensitive: false }
 
     def self.ransackable_attributes(_auth_object = nil)
       %w[bred_horses_count description horses_count name unborn_horses_count]
@@ -42,6 +43,7 @@ end
 #  index_stables_on_created_at      (created_at)
 #  index_stables_on_last_online_at  (last_online_at)
 #  index_stables_on_legacy_id       (legacy_id)
+#  index_stables_on_name            (lower((name)::text)) UNIQUE
 #  index_stables_on_user_id         (user_id) UNIQUE
 #
 # Foreign Keys
