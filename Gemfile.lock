@@ -314,6 +314,9 @@ GEM
       ruby-progressbar (~> 1.4)
     globalid (1.3.0)
       activesupport (>= 6.1)
+    good_migrations (0.3.1)
+      activerecord (>= 3.1)
+      railties (>= 3.1)
     google-protobuf (4.32.1)
       bigdecimal
       rake (>= 13)
@@ -1031,6 +1034,7 @@ DEPENDENCIES
   fasterer
   fastimage
   fuubar
+  good_migrations
   grape
   grape-active_model_serializers
   grape-entity

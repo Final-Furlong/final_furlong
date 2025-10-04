@@ -42,6 +42,8 @@ module FinalFurlong
     MissionControl::Jobs.base_controller_class = "AuthenticatedController"
     config.mission_control.jobs.http_basic_auth_enabled = false
 
+    config.active_record.schema_format = :sql
+
     # Don't generate system test files.
     config.generators do |g|
       g.test_framework :rspec
