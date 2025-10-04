@@ -111,6 +111,7 @@ group :development do
   gem "capistrano-rbenv", "~> 2.2", require: false
   gem "capistrano-yarn", require: false
   gem "ed25519", require: false # required for capistrano
+  gem "good_migrations"
   gem "guard", require: false
   gem "guard-bundler", require: false
   gem "guard-haml_lint", require: false
