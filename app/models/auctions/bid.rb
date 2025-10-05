@@ -3,6 +3,7 @@ module Auctions
     self.table_name = "auction_bids"
 
     MINIMUM_BID = 1000
+    MINIMUM_INCREMENT = 500
 
     belongs_to :auction, class_name: "::Auction"
     belongs_to :horse, class_name: "Auctions::Horse"

@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe Horses::Appearance do
   describe "associations" do
     it { is_expected.to belong_to(:horse).class_name("Horses::Horse") }

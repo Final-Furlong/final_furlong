@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe Users::OnlineBadge::Component, type: :component do
   context "when online" do
     it "renders online badge" do

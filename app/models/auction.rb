@@ -26,6 +26,10 @@ class Auction < ApplicationRecord
   scope :upcoming, -> { where(start_time: Time.current..) }
   scope :past, -> { where(end_time: ..Time.current) }
 
+  def active?
+    DateTime.current.between?(start_time, end_time)
+  end
+
   private
 
   def today_plus_min_duration

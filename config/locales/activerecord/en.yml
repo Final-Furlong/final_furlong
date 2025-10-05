@@ -40,6 +40,10 @@ en:
           attributes:
             base:
               status_required: At least one status must be selected
+        auctions/bid:
+          attributes:
+            base:
+              cannot_be_owner: Cannot bid on your own horse!
         horses/horse:
           attributes:
             name:

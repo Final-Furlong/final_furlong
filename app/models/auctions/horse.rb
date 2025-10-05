@@ -8,6 +8,10 @@ module Auctions
 
     validates :max_price, numericality: { greater_than_or_equal_to: :reserve_price }, if: :reserve_price
     validates :horse_id, uniqueness: { scope: :auction_id }
+
+    def sold?
+      sold_at.present?
+    end
   end
 end
 

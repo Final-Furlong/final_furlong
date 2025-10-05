@@ -1,0 +1,13 @@
+---
+en:
+  services:
+    auctions:
+      bid_creator:
+        auction_inactive: Auction is not active
+        auction_not_found: Could not find auction
+        bid_not_high_enough: Current bid must be greater than or equal to %{number}
+        bidder_has_high_bid: You already have the high bid on this horse
+        bidder_is_owner: Cannot bid on your own horse
+        bidder_not_found: Could not find stable
+        horse_not_found: Could not find horse consigned to auction
+        horse_sold: Horse is already sold

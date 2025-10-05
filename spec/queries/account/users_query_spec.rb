@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe Account::UsersQuery do
   subject(:query) { described_class.new }
 

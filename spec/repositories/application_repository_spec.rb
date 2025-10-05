@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe ApplicationRepository do
   subject(:repo) { described_class.new(model:) }
 

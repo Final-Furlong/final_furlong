@@ -26,6 +26,15 @@ FactoryBot.define do
       end
     end
 
+    trait :current do
+      after(:create) do |auction|
+        # rubocop:disable Rails/SkipsModelValidations
+        auction.update_column(:start_time, Date.current - 5.days)
+        auction.update_column(:end_time, Date.current + 5.days)
+        # rubocop:enable Rails/SkipsModelValidations
+      end
+    end
+
     trait :past do
       after(:create) do |auction|
         # rubocop:disable Rails/SkipsModelValidations

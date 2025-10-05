@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe Api::V1::Activations do
   describe "GET /api/v1/activations" do
     it "returns un-activated activations" do

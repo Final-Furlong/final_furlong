@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe Racing::TrainingScheduleActivity do
   describe "validations" do
     it { is_expected.to validate_inclusion_of(:activity1).in_array(described_class::VALID_ACTIVITIES).allow_blank }

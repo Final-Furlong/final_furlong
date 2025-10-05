@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe AuthenticatedPolicy do
   subject(:policy) { described_class.new(user, Account::User.new) }
 

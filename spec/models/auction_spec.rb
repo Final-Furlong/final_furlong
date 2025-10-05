@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe Auction do
   describe "associations" do
     it { is_expected.to belong_to(:auctioneer).class_name("Account::Stable") }
