@@ -13,6 +13,8 @@ module Auctions
     validates :current_bid, numericality: { greater_than_or_equal_to: MINIMUM_BID }, allow_blank: true
     validates :maximum_bid, numericality: { greater_than_or_equal_to: :current_bid }, allow_blank: true
     validates :email_if_outbid, inclusion: { in: [true, false] }
+
+    scope :winning, -> { order(maximum_bid: :desc, current_bid: :desc, updated_at: :desc) }
   end
 end
 
