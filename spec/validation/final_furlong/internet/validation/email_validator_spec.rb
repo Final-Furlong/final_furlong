@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe FinalFurlong::Internet::Validation::EmailValidator do
   describe "validating password strength" do
     it "fails when nil" do

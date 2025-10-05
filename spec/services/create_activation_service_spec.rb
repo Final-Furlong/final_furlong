@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe CreateActivationService do
   subject(:migrate) { described_class.new(user.id) }
 

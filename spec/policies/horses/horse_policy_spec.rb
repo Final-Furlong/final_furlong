@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe Horses::HorsePolicy do
   subject(:policy) { described_class.new(user, horse) }
 

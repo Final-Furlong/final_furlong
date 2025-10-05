@@ -1,0 +1,18 @@
+---
+en:
+  services:
+    auctions:
+      bid_creator:
+        auction_inactive: Auction is not active
+        auction_not_found: Could not find auction
+        bid_not_high_enough: Current bid must be greater than or equal to %{number}
+        bid_value_invalid: Bids must be a multiple of %{increment}
+        bidder_has_high_bid: You already have the high bid on this horse
+        bidder_is_owner: Cannot bid on your own horse
+        bidder_not_found: Could not find stable
+        bought_max_horses: You have already bought the maximum horses allowed for this auction
+        cannot_afford_bid: You cannot afford this bid
+        horse_not_found: Could not find horse consigned to auction
+        horse_sold: Horse is already sold
+        reserve_not_met: You have not met the reserve price for this horse
+        spent_max_money: You have already spent the maximum allowed for this auction

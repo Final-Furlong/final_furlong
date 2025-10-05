@@ -1,4 +1,3 @@
-require "rails_helper"
 require_relative "../../shared/horse_examples"
 
 RSpec.describe Horses::Stallion do

@@ -1,4 +1,3 @@
-require "rails_helper"
 require_relative "../../shared/horse_examples"
 
 RSpec.describe Horses::Horse do
@@ -83,16 +82,16 @@ RSpec.describe Horses::Horse do
   describe ".ransackable_attributes" do
     it "returns correct fields" do
       expect(described_class.ransackable_attributes).to match_array(
-        %w[age breeder_id dam_id date_of_birth date_of_death foals_count gender location_bred_id name owner_id sire_id status unborn_foals_count]
-      )
+                                                          %w[age breeder_id dam_id date_of_birth date_of_death foals_count gender location_bred_id name owner_id sire_id status unborn_foals_count]
+                                                        )
     end
   end
 
   describe ".ransackable_associations" do
     it "returns correct list" do
       expect(described_class.ransackable_associations).to match_array(
-        %w[breeder dam location_bred owner sire]
-      )
+                                                            %w[breeder dam location_bred owner sire]
+                                                          )
     end
   end
 end

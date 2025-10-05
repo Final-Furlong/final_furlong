@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe Api::V1::LegacyHorses do
   describe "POST /api/v1/legacy_horses" do
     context "when ID does not match a legacy horse" do

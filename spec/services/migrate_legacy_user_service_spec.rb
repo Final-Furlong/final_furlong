@@ -1,5 +1,3 @@
-require "rails_helper"
-
 # rubocop:disable RSpec/ExampleLength
 RSpec.describe MigrateLegacyUserService do
   subject(:migrate) { described_class.new(id) }

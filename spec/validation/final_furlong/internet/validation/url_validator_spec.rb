@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe FinalFurlong::Internet::Validation::UrlValidator do
   it "fails when url is nil" do
     model = set_model

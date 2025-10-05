@@ -6,8 +6,15 @@ module Auctions
     belongs_to :horse, class_name: "Horses::Horse"
     has_many :bids, class_name: "Auctions::Bid", dependent: :delete_all
 
-    validates :max_price, numericality: { greater_than_or_equal_to: :reserve_price }, if: :reserve_price
+    validates :max_price, numericality: { greater_than_or_equal_to: :reserve_price }, if: :reserve_price, allow_blank: true
     validates :horse_id, uniqueness: { scope: :auction_id }
+
+    scope :sold, -> { where.not(sold_at: nil) }
+    scope :unsold, -> { where(sold_at: nil) }
+
+    def sold?
+      sold_at.present?
+    end
   end
 end
 

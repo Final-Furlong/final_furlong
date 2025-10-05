@@ -1,29 +1,17 @@
 module Legacy
   class Stable < Record
-    self.table_name = "ff_stable"
+    self.table_name = "ff_stables"
   end
 end
 
 # == Schema Information
 #
-# Table name: ff_speedrecords
+# Table name: ff_stables
 #
-#  Distance :float(53)        indexed
-#  Gender   :string(50)       indexed
-#  Horse    :string(25)       default("0"), not null, indexed
-#  ID       :integer          not null, primary key
-#  NewRec   :string(1)        not null
-#  RaceID   :integer          default(0), not null, indexed
-#  Time     :string(50)       not null, indexed
-#  Track    :string(50)       indexed
-#
-# Indexes
-#
-#  Distance  (Distance)
-#  Gender    (Gender)
-#  Horse     (Horse)
-#  RaceID    (RaceID)
-#  Time      (Time)
-#  Track     (Track)
+#  id               :integer          not null, primary key
+#  availableBalance :integer          default(0)
+#  date             :datetime         not null
+#  slug             :string(255)
+#  totalBalance     :integer          default(0)
 #
 

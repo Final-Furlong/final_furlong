@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :horse, class: "Horses::Horse" do
-    sequence(:name) { Faker::Creature::Horse.name }
+    name { "Horse #{SecureRandom.alphanumeric(10)}" }
     gender { %w[colt filly gelding].sample }
     status { "racehorse" }
     date_of_birth { Date.current - 3.years }

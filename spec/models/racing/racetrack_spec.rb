@@ -1,5 +1,3 @@
-require "rails_helper"
-
 RSpec.describe Racing::Racetrack do
   describe "associations" do
     it { is_expected.to belong_to(:location) }
