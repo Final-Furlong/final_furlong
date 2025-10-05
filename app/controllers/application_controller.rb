@@ -36,14 +36,17 @@ class ApplicationController < ActionController::Base
   end
 
   def verify_pundit_authorization
-    return if devise_controller?
-    Rails.logger.warn "DEBUG CONTROLLER NAME: #{controller_name}"
+    return if devise_controller? || mission_control_controller?
 
     if action_name == "index"
       verify_policy_scoped
     else
       verify_authorized
     end
+  end
+
+  def mission_control_controller?
+    is_a?(MissionControl::Jobs::ApplicationController)
   end
 
   def unauthorized_path
