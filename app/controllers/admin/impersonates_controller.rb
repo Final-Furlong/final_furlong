@@ -1,6 +1,9 @@
 module Admin
-  class ImpersonatesController < ApplicationController
-    skip_after_action :verify_pundit_authorization, only: :destroy
+  class ImpersonatesController < AdminController
+    skip_after_action :verify_authorized, only: :destroy
+
+    def index
+    end
 
     def create
       user = Account::User.find(params[:id])

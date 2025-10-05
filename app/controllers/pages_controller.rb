@@ -1,6 +1,7 @@
 class PagesController < ApplicationController
+  skip_after_action :verify_pundit_authorization
+
   def home
-    skip_authorization
   end
 
   def activation

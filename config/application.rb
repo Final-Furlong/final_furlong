@@ -39,7 +39,6 @@ module FinalFurlong
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    MissionControl::Jobs.base_controller_class = "AuthenticatedController"
     config.mission_control.jobs.http_basic_auth_enabled = false
 
     config.active_record.schema_format = :sql
