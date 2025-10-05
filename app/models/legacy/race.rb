@@ -2,6 +2,12 @@ module Legacy
   class Race < Record
     self.table_name = "ff_races"
     self.primary_key = "ID"
+
+    belongs_to :type, class_name: "Legacy::RaceType", foreign_key: :Type
+
+    def lookup_methods
+      %w[Age Date DayNum Distance Gender Grade ID Location Name Num Purse Type]
+    end
   end
 end
 

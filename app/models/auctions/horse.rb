@@ -4,9 +4,10 @@ module Auctions
 
     belongs_to :auction, class_name: "::Auction"
     belongs_to :horse, class_name: "Horses::Horse"
-    has_many :bids, class_name: "Auctions::Bid", dependent: :delete_all
+    has_many :bids, class_name: "Auctions::Bid", dependent: :destroy
 
     validates :max_price, numericality: { greater_than_or_equal_to: :reserve_price }, if: :reserve_price, allow_blank: true
+    validates :maximum_price, numericality: { greater_than_or_equal_to: :reserve_price }, if: :reserve_price, allow_blank: true
     validates :horse_id, uniqueness: { scope: :auction_id }
 
     scope :sold, -> { where.not(sold_at: nil) }
@@ -25,6 +26,7 @@ end
 #  id            :uuid             not null, primary key
 #  comment       :text
 #  max_price     :integer
+#  maximum_price :integer
 #  reserve_price :integer
 #  sold_at       :datetime         indexed
 #  created_at    :datetime         not null

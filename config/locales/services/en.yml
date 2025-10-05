@@ -16,3 +16,13 @@ en:
         horse_sold: Horse is already sold
         reserve_not_met: You have not met the reserve price for this horse
         spent_max_money: You have already spent the maximum allowed for this auction
+      horse_seller:
+        auction_inactive: Auction is not active
+        bid_timeout_not_met: This horse is not yet ready to be sold
+        bidder_is_owner: You already own this horse
+        bought_max_horses: You have already bought the maximum horses allowed for this auction
+        cannot_afford_bid: You cannot afford this bid
+        did_not_meet_max_price: You did not meet the max price for this horse
+        horse_sold: Horse is already sold
+        reserve_not_met: You have not met the reserve price for this horse
+        spent_max_money: You have already spent the maximum allowed for this auction

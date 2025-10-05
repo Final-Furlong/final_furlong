@@ -32,3 +32,7 @@ test:
     username: developer
     password: password
     migrations_paths: db/legacy_migrate
+  queue:
+    <<: *default
+    database: final_furlong_test_queue
+    migrations_paths: db/queue_migrate

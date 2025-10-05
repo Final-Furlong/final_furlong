@@ -9,12 +9,39 @@ module Auctions
     belongs_to :horse, class_name: "Auctions::Horse"
     belongs_to :bidder, class_name: "Account::Stable"
 
+    after_commit :schedule_sale, on: %i[create update]
+    after_commit :unschedule_sale, on: :destroy
+
     validates :current_bid, presence: true
     validates :current_bid, numericality: { greater_than_or_equal_to: MINIMUM_BID }, allow_blank: true
     validates :maximum_bid, numericality: { greater_than_or_equal_to: :current_bid }, allow_blank: true
     validates :email_if_outbid, inclusion: { in: [true, false] }
 
     scope :winning, -> { order(maximum_bid: :desc, current_bid: :desc, updated_at: :desc) }
+    scope :with_bid_matching, ->(amount) { where("GREATEST(current_bid, CAST(maximum_bid AS integer)) >= ?", amount) }
+
+    private
+
+    def schedule_sale
+      unschedule_sale
+      schedule_job
+    end
+
+    def schedule_job
+      ProcessAuctionSaleJob.set(wait: auction.hours_until_sold.hours).perform_later(
+        bid: self, horse:, auction:, bidder:
+      )
+    end
+
+    def unschedule_sale
+      sale_job.destroy_all if sale_job.exists?
+    end
+
+    def sale_job
+      SolidQueue::Job.where(class_name: "ProcessAuctionSaleJob")
+        .where("arguments LIKE ?", "%#{horse_id}%")
+        .where("arguments LIKE ?", "%#{auction_id}%")
+    end
   end
 end
 

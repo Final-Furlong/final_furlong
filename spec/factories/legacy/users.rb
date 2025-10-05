@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :legacy_user, class: "Legacy::User" do
-    Username { Faker::Internet.username }
+    Username { SecureRandom.alphanumeric(20) }
     Password { Faker::Internet.password }
     Status { "A" }
     Name { Faker::Name.first_name }
@@ -12,7 +12,7 @@ FactoryBot.define do
     Description { "foo" }
 
     after(:build) do |user|
-      user.StableName = "#{user.username} Stable"
+      user.StableName = "#{user.Username} Stable"
     end
   end
 end
