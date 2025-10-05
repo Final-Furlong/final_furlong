@@ -66,6 +66,7 @@ end
 #  index_auctions_on_auctioneer_id  (auctioneer_id)
 #  index_auctions_on_end_time       (end_time)
 #  index_auctions_on_start_time     (start_time)
+#  index_auctions_on_title          (lower((title)::text)) UNIQUE
 #
 # Foreign Keys
 #

@@ -1521,6 +1521,13 @@ CREATE INDEX index_auctions_on_start_time ON public.auctions USING btree (start_
 
 
 --
+-- Name: index_auctions_on_title; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_auctions_on_title ON public.auctions USING btree (lower((title)::text));
+
+
+--
 -- Name: index_horse_appearances_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2267,6 +2274,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251005120538'),
 ('20251004194127'),
 ('20251004173409'),
 ('20250925184704'),
