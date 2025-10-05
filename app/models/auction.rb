@@ -10,6 +10,7 @@ class Auction < ApplicationRecord
 
   validates :start_time, :end_time, :hours_until_sold, :title, presence: true
   validates :title, length: { in: 10..500 }
+  validates :title, uniqueness: { case_sensitive: false }
   validates :broodmare_allowed, :outside_horses_allowed, :racehorse_allowed_2yo,
     :racehorse_allowed_3yo, :racehorse_allowed_older, :reserve_pricing_allowed,
     :stallion_allowed, :weanling_allowed, :yearling_allowed, inclusion: { in: [true, false] }
@@ -20,6 +21,7 @@ class Auction < ApplicationRecord
   validates :hours_until_sold, numericality: { only_integer: true, greater_than_or_equal_to: 12, less_than_or_equal_to: 48 }, allow_nil: true
   validates :spending_cap_per_stable, numericality: { only_integer: true, greater_than_or_equal_to: 10_000 }, allow_nil: true
   validate :minimum_status_required
+  validate :final_furlong_only, on: :auto_create
 
   scope :upcoming, -> { where(start_time: Time.current..) }
   scope :past, -> { where(end_time: ..Time.current) }
@@ -45,6 +47,13 @@ class Auction < ApplicationRecord
       racehorse_allowed_older || stallion_allowed || weanling_allowed || yearling_allowed
 
     errors.add(:base, :status_required)
+  end
+
+  def final_furlong_only
+    return if auctioneer.blank?
+    return if auctioneer.name == "Final Furlong"
+
+    errors.add(:auctioneer, :invalid)
   end
 end
 
@@ -77,6 +86,7 @@ end
 #  index_auctions_on_auctioneer_id  (auctioneer_id)
 #  index_auctions_on_end_time       (end_time)
 #  index_auctions_on_start_time     (start_time)
+#  index_auctions_on_title          (lower((title)::text)) UNIQUE
 #
 # Foreign Keys
 #
