@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
 
   def verify_pundit_authorization
     return if devise_controller?
-    Rails.logger.info "DEBUG CONTROLLER NAME: #{controller_name}"
+    Rails.logger.warn "DEBUG CONTROLLER NAME: #{controller_name}"
 
     if action_name == "index"
       verify_policy_scoped
