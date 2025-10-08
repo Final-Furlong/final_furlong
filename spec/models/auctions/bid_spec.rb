@@ -37,5 +37,72 @@ RSpec.describe Auctions::Bid do
       end
     end
   end
+
+  describe "callbacks" do
+    before do
+      ActiveJob::Base.queue_adapter = :solid_queue
+    end
+
+    context "when bid is created" do
+      it "enqueues the process auction sale job" do
+        freeze_time
+        bid = build(:auction_bid)
+        expect do
+          bid.save
+        end.to change(SolidQueue::Job, :count).by(1)
+        last_job = SolidQueue::Job.order(id: :desc).first
+        job_arguments = last_job.arguments.deep_symbolize_keys[:arguments].first
+        expect(job_arguments[:bid].values.first).to eq global_id_string(bid)
+        expect(last_job.scheduled_at).to eq Time.current + bid.reload.auction.hours_until_sold.hours
+      end
+
+      context "when previous bid exists, with enqueued job" do
+        it "replaces the process auction sale job" do
+          freeze_time
+          old_bid = create(:auction_bid)
+          bid = build(:auction_bid, auction: old_bid.auction, horse: old_bid.horse, current_bid: old_bid.current_bid + 1000)
+          expect { bid.save }.not_to change(SolidQueue::Job, :count)
+          last_job = SolidQueue::Job.order(id: :desc).first
+          job_arguments = last_job.arguments.deep_symbolize_keys[:arguments].first
+          expect(job_arguments[:bid].values.first).to eq global_id_string(bid)
+          expect(last_job.scheduled_at).to eq Time.current + bid.reload.auction.hours_until_sold.hours
+        end
+      end
+    end
+
+    context "when bid is updated" do
+      it "replaces the process auction sale job" do # rubocop:disable RSpec/ExampleLength
+        bid = last_job_id = nil
+        travel_to 1.hour.ago do
+          bid = create(:auction_bid)
+          last_job_id = SolidQueue::Job.order(id: :desc).first.id
+        end
+        freeze_time
+        bid.update(current_bid: 10_000)
+        last_job = SolidQueue::Job.order(id: :desc).first
+        expect(last_job.id).not_to eq last_job_id
+        job_arguments = last_job.arguments.deep_symbolize_keys[:arguments].first
+        expect(job_arguments[:bid].values.first).to eq global_id_string(bid)
+        expect(last_job.scheduled_at).to eq Time.current + bid.reload.auction.hours_until_sold.hours
+      end
+    end
+
+    context "when bid is destroyed" do
+      it "deletes enqueued process auction sale job" do
+        bid = create(:auction_bid)
+        last_job = SolidQueue::Job.order(id: :desc).first
+        expect do
+          bid.destroy
+        end.to change(SolidQueue::Job, :count).by(-1)
+        expect(SolidQueue::Job.exists?(id: last_job.id)).to be false
+      end
+    end
+  end
+
+  private
+
+  def global_id_string(object)
+    object.to_global_id.to_s
+  end
 end
 

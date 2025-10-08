@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :legacy_horse, class: "Legacy::Horse" do
     Breeder factory: :legacy_user
-    ID { Faker::Number.number(digits: 3) }
+    ID { Faker::Number.number(digits: 5) }
     can_be_sold { false }
     last_modified { Time.current }
     rails_id { SecureRandom.uuid }
@@ -11,6 +11,10 @@ FactoryBot.define do
     Die { 5.years.from_now }
     Status { 3 }
     LocBred { create(:legacy_racetrack).ID }
+
+    trait :unborn do
+      DOB { 49.months.from_now }
+    end
   end
 end
 

@@ -7,7 +7,7 @@ RSpec.describe Account::Stable do
     it { is_expected.to have_many(:bred_horses).class_name("Horses::Horse").inverse_of(:breeder) }
     it { is_expected.to have_many(:training_schedules).class_name("Racing::TrainingSchedule").inverse_of(:stable) }
     it { is_expected.to have_many(:auctions).class_name("Auction").inverse_of(:auctioneer).dependent(:restrict_with_exception) }
-    it { is_expected.to have_many(:auction_bids).class_name("Auctions::Bid").inverse_of(:bidder).dependent(:delete_all) }
+    it { is_expected.to have_many(:auction_bids).class_name("Auctions::Bid").inverse_of(:bidder).dependent(:destroy) }
   end
 
   describe ".ransackable_attributes" do

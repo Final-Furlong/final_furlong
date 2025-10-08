@@ -1,6 +1,19 @@
 module Legacy
   class Stable < Record
     self.table_name = "ff_stables"
+
+    def self.update_balance(id:, amount:)
+      record = find_or_initialize_by(id:)
+      record.update(
+        date: Date.current + 4.years,
+        totalBalance: record.totalBalance.to_i + amount,
+        availableBalance: record.availableBalance.to_i + amount
+      )
+    end
+
+    def lookup_methods
+      %w[id availableBalance totalBalance date slug]
+    end
   end
 end
 

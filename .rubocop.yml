@@ -96,6 +96,9 @@ Naming/InclusiveLanguage:
   Enabled: true
 Rails/BulkChangeTable:
   Enabled: false
+Rails/InverseOf:
+  Exclude:
+    - "app/models/legacy/*.rb"
 Rails/Output:
   Exclude:
     - "db/seeds.rb"

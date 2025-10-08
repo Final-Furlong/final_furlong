@@ -2,6 +2,8 @@ module Legacy
   class RaceEntry < Record
     self.table_name = "ff_raceentries"
     self.primary_key = "ID"
+
+    belongs_to :race, class_name: "Legacy::Race", foreign_key: :Race
   end
 end
 

@@ -4,6 +4,10 @@ module Legacy
 
     connects_to database: { writing: :legacy, reading: :legacy }
 
+    def format_attribute(value)
+      value.to_s
+    end
+
     def method_missing(method_name, *_args)
       self[format_attribute(method_name)]
     end

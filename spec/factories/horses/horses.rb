@@ -14,11 +14,11 @@ FactoryBot.define do
     end
 
     trait :with_sire do
-      sire
+      sire { association :sire }
     end
 
     trait :with_dam do
-      dam
+      dam { association :dam }
     end
 
     factory :sire do
@@ -30,6 +30,7 @@ FactoryBot.define do
     end
 
     trait :weanling do
+      name { nil }
       status { "weanling" }
       date_of_birth { Date.current - (6 - Date.current.month).months }
       gender { %w[colt filly].sample }
@@ -81,6 +82,13 @@ FactoryBot.define do
     trait :dead do
       status { "deceased" }
       date_of_death { Date.current }
+    end
+
+    trait :unborn do
+      name { nil }
+      status { "unborn" }
+      date_of_birth { Date.current + 6.months }
+      gender { %w[colt filly].sample }
     end
   end
 end

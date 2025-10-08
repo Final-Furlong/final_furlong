@@ -28,6 +28,7 @@ end
 #  id            :uuid             not null, primary key
 #  comment       :text
 #  max_price     :integer
+#  maximum_price :integer
 #  reserve_price :integer
 #  sold_at       :datetime         indexed
 #  created_at    :datetime         not null

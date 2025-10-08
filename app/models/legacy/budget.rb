@@ -2,6 +2,19 @@ module Legacy
   class Budget < Record
     self.table_name = "ff_budgets"
     self.primary_key = "ID"
+
+    scope :recent, -> { order(Date: :desc, ID: :desc) }
+
+    def self.create_new(legacy_id:, description:, amount:)
+      previous_budget = where(Stable: legacy_id).recent.first
+      Legacy::Budget.create!(
+        Stable: legacy_id,
+        Date: Date.current + 4.years,
+        Description: description,
+        Amount: amount,
+        Balance: previous_budget&.balance.to_i + amount
+      )
+    end
   end
 end
 

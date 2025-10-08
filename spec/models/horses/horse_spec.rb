@@ -94,5 +94,47 @@ RSpec.describe Horses::Horse do
                                                           )
     end
   end
+
+  describe "#budget_name" do
+    context "when horse name is blank" do
+      context "when horse has sire" do
+        it "returns unnamed + sire name" do
+          horse = create(:horse, :with_sire, name: nil)
+
+          expect(horse.budget_name).to eq "Unnamed (#{horse.sire.name} x Created)"
+        end
+      end
+
+      context "when horse has dam" do
+        it "returns unnamed + dam name" do
+          horse = create(:horse, :with_dam, name: nil)
+
+          expect(horse.budget_name).to eq "Unnamed (Created x #{horse.dam.name})"
+        end
+      end
+
+      context "when horse has sire + dam" do
+        it "returns unnamed + sire/dam names" do
+          horse = create(:horse, :with_sire, :with_dam, name: nil)
+
+          expect(horse.budget_name).to eq "Unnamed (#{horse.sire.name} x #{horse.dam.name})"
+        end
+      end
+    end
+
+    context "when horse name is not blank" do
+      it "returns horse name" do
+        horse = create(:horse, sire: nil, dam: nil)
+
+        expect(horse.budget_name).to eq horse.name
+      end
+    end
+
+    # return name if name.present?
+
+    # foal_name = "Unnamed ("
+    # foal_name += sire_id ? sire.name : "Created"
+    # foal_name += dam_id ? dam.name : "Created"
+  end
 end
 

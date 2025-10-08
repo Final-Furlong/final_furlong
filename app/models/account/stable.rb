@@ -11,13 +11,21 @@ module Account
     has_many :training_schedules, class_name: "Racing::TrainingSchedule", inverse_of: :stable,
       dependent: :restrict_with_exception
     has_many :auctions, class_name: "Auction", inverse_of: :auctioneer, dependent: :restrict_with_exception
-    has_many :auction_bids, class_name: "Auctions::Bid", inverse_of: :bidder, dependent: :delete_all
+    has_many :auction_bids, class_name: "Auctions::Bid", inverse_of: :bidder, dependent: :destroy
 
     validates :name, presence: true
     validates :name, uniqueness: { case_sensitive: false }
 
     def self.ransackable_attributes(_auth_object = nil)
       %w[bred_horses_count description horses_count name unborn_horses_count]
+    end
+
+    def newbie?
+      created_at >= 1.year.ago
+    end
+
+    def second_year?
+      created_at.between?(366.days.ago, 2.years.ago)
     end
   end
 end

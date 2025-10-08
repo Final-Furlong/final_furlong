@@ -26,6 +26,8 @@ ActiveRecordDoctor.configure do
     "auto_entry_status",
     "auto_shipping_status",
     "pending_retirements",
+    "horse_racehorses_mv",
+    "horse_training_schedules_mv",
     "user_alerts",
     "user_preferences"
   ]
@@ -166,6 +168,8 @@ ActiveRecordDoctor.configure do
     "Legacy::Workout",
     "Legacy::WorkoutBonus",
     "Legacy::WorkoutType",
+    "Legacy::ViewRacehorses",
+    "Legacy::ViewTrainingSchedules",
     "Motor::Alert",
     "Motor::AlertLock",
     "Motor::ApiConfig",

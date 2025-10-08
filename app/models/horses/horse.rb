@@ -23,6 +23,16 @@ module Horses
 
     # broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
 
+    def budget_name
+      return name if name.present?
+
+      foal_name = "Unnamed ("
+      foal_name += sire_id ? sire.name : "Created"
+      foal_name += " x "
+      foal_name += dam_id ? dam.name : "Created"
+      foal_name + ")"
+    end
+
     def stillborn?
       self[:date_of_birth] == self[:date_of_death]
     end

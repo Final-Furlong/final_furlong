@@ -2,6 +2,27 @@ module Legacy
   class Activity < Record
     self.table_name = "ff_activity"
     self.primary_key = "ID"
+
+    scope :recent, -> { order(Date: :desc, ID: :desc) }
+
+    def self.create_new(legacy_id:, points:, budget_id:)
+      activity = where(Stable: legacy_id).recent.first
+      initial_amount = activity&.amount.to_i
+      stable = Legacy::Stable.find_by(ID: legacy_id)
+      new_points = stable.newbie? ? 6 : 2
+      Legacy::Activity.create!(
+        Date: Date.current,
+        Stable: legacy_id,
+        Type: 4,
+        amount: new_points,
+        balance: initial_amount + points,
+        budget: budget_id
+      )
+    end
+
+    def lookup_methods
+      %w[Date ID Stable Type amount balance budget]
+    end
   end
 end
 
