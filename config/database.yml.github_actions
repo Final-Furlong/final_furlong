@@ -33,6 +33,8 @@ test:
     password: password
     migrations_paths: db/legacy_migrate
   queue:
-    <<: *default
-    database: final_furlong_test_queue
+    adapter: postgresql
+    encoding: unicode
+    url: <%= ENV.fetch("QUEUE_DATABASE_URL") %>
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
     migrations_paths: db/queue_migrate

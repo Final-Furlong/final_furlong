@@ -15,6 +15,7 @@ env:
   CI: true
   RAILS_ENV: test
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/final_furlong_test
+  QUEUE_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/final_furlong_test_queue
   REDIS_URL: redis://localhost:6379/0
   COVERAGE: true
   MAILTRAP_API_KEY: foo
@@ -81,15 +82,16 @@ jobs:
           sudo apt-get -y install libvips
 
       - name: Set up primary database
-        env:
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
         run: |
           cp config/database.yml.github_actions config/database.yml
           bin/rails db:create:primary db:schema:load:primary
 
+      - name: Set up queue database
+        run: |
+          cp config/database.yml.github_actions config/database.yml
+          bin/rails db:create:queue db:schema:load:queue
+
       - name: Set up legacy database
-        env:
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/final_furlong_test"
         run: |
           cp config/database.yml.github_actions config/database.yml
           bin/rails db:create:legacy db:schema:load:legacy
