@@ -28,8 +28,9 @@ module Horses
 
       foal_name = "Unnamed ("
       foal_name += sire_id ? sire.name : "Created"
+      foal_name += " x "
       foal_name += dam_id ? dam.name : "Created"
-      foal_name
+      foal_name + ")"
     end
 
     def stillborn?
