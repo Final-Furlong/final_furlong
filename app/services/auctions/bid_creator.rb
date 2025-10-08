@@ -84,41 +84,46 @@ module Auctions
         return result
       end
 
-      max_bid = previous_max_bid
-      minimum_bid_amount = max_bid + increment if max_bid.positive?
-      if minimum_bid_amount && bid_params[:current_bid] <= minimum_bid_amount
-        Auctions::BidIncrementor.new.increment_bid(
-          original_bid_id: previous_bid.id, new_bidder_id: bid_params[:bidder_id],
-          current_bid: bid_params[:current_bid], maximum_bid: bid_params[:maximum_bid]
+      ActiveRecord::Base.transaction do
+        max_bid = previous_max_bid
+        minimum_bid_amount = max_bid + increment if max_bid.positive?
+        if minimum_bid_amount && bid_params[:current_bid] <= minimum_bid_amount
+          Auctions::BidIncrementor.new.increment_bid(
+            original_bid_id: previous_bid.id, new_bidder_id: bid_params[:bidder_id],
+            current_bid: bid_params[:current_bid], maximum_bid: bid_params[:maximum_bid]
+          )
+          extra_invalid_amount = bid_params[:current_bid] % increment
+          minimum_display_amount = [previous_bid.current_bid + increment, bid_params[:current_bid] - extra_invalid_amount + increment].max
+          result.error = I18n.t("services.auctions.bid_creator.bid_not_high_enough", number: minimum_display_amount)
+          return result
+        end
+
+        result.error = nil unless result.error == error("reserve_not_met")
+        bid = Auctions::Bid.new(
+          auction:,
+          horse: auction_horse,
+          bidder:,
+          current_bid: bid_params[:current_bid],
+          maximum_bid: bid_params[:maximum_bid].presence,
+          comment: bid_params[:comment],
+          email_if_outbid: false
         )
-        extra_invalid_amount = bid_params[:current_bid] % increment
-        minimum_display_amount = [previous_bid.current_bid + increment, bid_params[:current_bid] - extra_invalid_amount + increment].max
-        result.error = I18n.t("services.auctions.bid_creator.bid_not_high_enough", number: minimum_display_amount)
-        return result
-      end
 
-      result.error = nil unless result.error == error("reserve_not_met")
-      bid = Auctions::Bid.new(
-        auction:,
-        horse: auction_horse,
-        bidder:,
-        current_bid: bid_params[:current_bid],
-        maximum_bid: bid_params[:maximum_bid].presence,
-        comment: bid_params[:comment],
-        email_if_outbid: false
-      )
-
-      if bid.valid?
-        result.created = bid.save
-      else
-        result.error = bid.errors.full_messages.to_sentence
+        if bid.valid?
+          result.created = bid.save
+        else
+          result.error = bid.errors.full_messages.to_sentence
+        end
+        result.bid = bid
+      rescue ActiveRecord::ActiveRecordError
+        result.created = false
+        result.error = bid.errors.full_messages.to_sentence if bid
       end
-      result.bid = bid
       result
     end
 
     class Result
-      attr_reader :auction, :bid, :horse, :error
+      attr_accessor :auction, :horse, :bid, :error, :created
 
       def initialize(created:, auction:, horse:, bid:, error: nil)
         @created = created
@@ -127,16 +132,6 @@ module Auctions
         @horse = horse
         @error = error
       end
-
-      attr_writer :auction
-
-      attr_writer :horse
-
-      attr_writer :bid
-
-      attr_writer :error
-
-      attr_writer :created
 
       def created?
         @created

@@ -16,6 +16,10 @@ en:
         horse_sold: Horse is already sold
         reserve_not_met: You have not met the reserve price for this horse
         spent_max_money: You have already spent the maximum allowed for this auction
+      horse_consigner:
+        auction_not_future: Auction is not in the future
+        no_consignment_configs: There are no configs to run for consigning horses
+        non_game_auction: Auction is not run by Final Furlong
       horse_seller:
         auction_inactive: Auction is not active
         bid_timeout_not_met: This horse is not yet ready to be sold

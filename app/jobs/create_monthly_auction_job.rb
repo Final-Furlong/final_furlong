@@ -8,6 +8,8 @@ class CreateMonthlyAuctionJob < ApplicationJob
 
     result = Auctions::AutoAuctionCreator.new.create_auction(auction_params)
     raise AuctionNotCreated, result.auction.errors.full_messages.to_sentence unless result.created?
+
+    ConsignAuctionHorsesJob.set(wait: 5.minutes).perform_later(auction: result.auction)
   end
 
   private

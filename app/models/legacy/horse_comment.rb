@@ -2,6 +2,8 @@ module Legacy
   class HorseComment < Record
     self.table_name = "ff_horse_comments"
     self.primary_key = "ID"
+
+    scope :famous_stud, -> { where(CommentID: 1) }
   end
 end
 

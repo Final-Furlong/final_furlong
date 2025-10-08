@@ -13,7 +13,7 @@ module Auctions
         end
       end
       Result.new(deleted: true, bids:, error: nil)
-    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotDestroyed
+    rescue ActiveRecord::ActiveRecordError
       Result.new(deleted: false, bids:, error: nil)
     end
 

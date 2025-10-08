@@ -6,11 +6,44 @@ FactoryBot.define do
     last_modified { Time.current }
     rails_id { SecureRandom.uuid }
     Gender { "M" }
-    DOB { 4.years.ago }
+    DOB { Date.current }
     Retire { 2.years.from_now }
     Die { 5.years.from_now }
     Status { 3 }
     LocBred { create(:legacy_racetrack).ID }
+
+    trait :final_furlong do
+      Owner { 20 }
+    end
+
+    trait :sellable do
+      can_be_sold { true }
+    end
+
+    trait :racehorse do
+      Status { 3 }
+      DOB { 1.year.from_now }
+    end
+
+    trait :stallion do
+      Status { 7 }
+      DOB { 2.years.ago }
+    end
+
+    trait :broodmare do
+      Status { 1 }
+      DOB { 2.years.ago }
+    end
+
+    trait :yearling do
+      Status { 10 }
+      DOB { 3.years.from_now }
+    end
+
+    trait :weanling do
+      Status { 9 }
+      DOB { 4.years.from_now }
+    end
 
     trait :unborn do
       DOB { 49.months.from_now }

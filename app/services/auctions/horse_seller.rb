@@ -135,6 +135,8 @@ module Auctions
         horse.update(owner: buyer)
 
         result.sold = true
+      rescue ActiveRecord::ActiveRecordError
+        result.sold = false
       end
 
       result
