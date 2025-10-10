@@ -4,7 +4,7 @@ module Legacy
     self.primary_key = "ID"
 
     scope :game_owned, -> { where(Owner: 20) }
-    scope :alive, -> { where(DOD: [nil, "0000-00-00"]) }
+    scope :alive, -> { where("DOB != DOD") }
     scope :racehorse, -> { where(status: 3).alive }
     scope :stallion, -> { where(status: 7).alive }
     scope :broodmare, -> { where(status: 1).alive }
