@@ -8,6 +8,7 @@ module Horses
     belongs_to :dam, class_name: "Horse", optional: true
     belongs_to :location_bred, class_name: "Location"
 
+    has_one :horse_attributes, class_name: "Attributes", dependent: :delete
     has_one :appearance, class_name: "Appearance", dependent: :delete
     has_one :genetics, class_name: "Genetics", dependent: :delete
     has_one :training_schedules_horse, class_name: "Racing::TrainingScheduleHorse", dependent: :destroy
@@ -22,6 +23,12 @@ module Horses
     validates_horse_name :name, on: :update, if: :name_changed?
 
     # broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
+
+    def age
+      return 0 if stillborn?
+
+      horse_attributes.age
+    end
 
     def budget_name
       return name if name.present?

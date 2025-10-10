@@ -2,6 +2,11 @@ module Legacy
   class HorseBreedRanking < Record
     self.table_name = "ff_horse_brankings"
     self.primary_key = "Horse"
+
+    scope :bronze, -> { where(Ranking: 1) }
+    scope :silver, -> { where(Ranking: 2) }
+    scope :gold, -> { where(Ranking: 3) }
+    scope :platinum, -> { where(Ranking: 4) }
   end
 end
 

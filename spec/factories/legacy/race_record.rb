@@ -1,72 +1,81 @@
-module Legacy
-  class Horse < Record
-    self.table_name = "ff_horses"
-    self.primary_key = "ID"
+FactoryBot.define do
+  factory :legacy_race_record, class: "Legacy::RaceRecord" do
+    Year { Date.current.year + 4 }
+    sequence(:Horse)
+    Starts { 5 }
+    Wins { 0 }
+    Seconds { 0 }
+    Thirds { 0 }
+    Fourths { 0 }
+    Stakes { 0 }
+    StakesWn { 0 }
+    StakesSds { 0 }
+    StakesTds { 0 }
+    StakesFs { 0 }
+    Points { 0 }
+    Earnings { 0 }
+    FlatSC { "F" }
 
-    scope :game_owned, -> { where(Owner: 20) }
-    scope :alive, -> { where(DOD: [nil, "0000-00-00"]) }
-    scope :racehorse, -> { where(status: 3).alive }
-    scope :stallion, -> { where(status: 7).alive }
-    scope :broodmare, -> { where(status: 1).alive }
-    scope :yearling, -> { where(status: 10).alive }
-    scope :weanling, -> { where(status: 9).alive }
-    scope :unborn, -> { where(status: 8).alive }
-
-    scope :famous_stud, -> { where(ID: Legacy::HorseComment.famous_stud.select(:Horse)) }
-    scope :non_famous_stud, -> { where.not(ID: Legacy::HorseComment.famous_stud.select(:Horse)) }
-
-    scope :minimum_age, ->(age) { where(DOB: ..game_year_end(age)) }
-    scope :maximum_age, ->(age) { where(DOB: game_year_start(age)..) }
-
-    scope :sellable, -> { where(can_be_sold: true) }
-    scope :random_order, -> { order("RAND()") }
-
-    def self.game_year_end(years_ago)
-      year = Date.current.year + 4 - years_ago
-      Date.new(year, 12, 31)
+    trait :winner do
+      Wins { 1 }
+      Points { 6 }
     end
 
-    def self.game_year_start(years_ago)
-      year = Date.current.year + 4 - years_ago
-      Date.new(year, 1, 1)
+    trait :placed do
+      Seconds { 1 }
+      Thirds { 1 }
+      Points { 3 }
     end
 
-    private
-
-    def format_attribute(value)
-      value = value.to_s
-      case value
-      when "secondary_bloodline_power"
-        "BMBPF"
-      when "bloodline_power"
-        "BPF"
-      when "dosage"
-        "DC"
-      when "date_of_birth"
-        "DOB"
-      when "date_of_death"
-        "DOD"
-      when "game_mares_allowed"
-        "FFMares"
-      else
-        value.titleize.delete(" ")
-      end
+    trait :stakes_winner do
+      Stakes { 2 }
+      StakesWn { 1 }
+      Earnings { 20_000 }
+      Points { 20 }
     end
 
-    def lookup_methods
-      %w[Acceleration Allele Approval Ave BMBPF BPF Boarded Break Breeder
-        Close Color Comments Consistency Courage CurrentHeight DC DOB Dam
-        DamDam DamSire DefaultEquip DefaultInstructions DefaultJock1 DefaultJock2
-        DefaultJock3 DefaultWorkoutTrack Die Dirt DisplayEnergy DisplayFitness
-        EnergyCurrent EnergyMin EnergyRegain Equipment FFMares Face FacePic
-        Fast Fitness FoalHeight GenSound Gender Good Hasbeen Height ID
-        Immature InTransit LFPic LFmarkings LHPic LHmarkings LastRaceFinishers
-        LastRaceId Lead Leased LoafPct LoafStride LoafThresh LocBred Location
-        MaresPerStable Max Midpack Min NEGain NELoss Name NaturalEnergy Outside
-        Owner OwnerComments Pace Pissy RFPic RFmarkings RHPic RHmarkings RacesCount
-        Ratability RestDayCount Retire SC SPS SalePrice SellTo Sire SireDam SireSire
-        Slow Soundness Stamina Status StudPrice Sustain Traffic Turf Turning Weight
-        Wet XPCurrent XPRate can_be_sold last_modified leaser slug last_synced_to_rails_at]
+    trait :stakes_placed do
+      Stakes { 2 }
+      StakesTds { 1 }
+      Earnings { 10_000 }
+      Points { 15 }
+    end
+
+    trait :final_furlong do
+      Owner { 20 }
+    end
+
+    trait :sellable do
+      can_be_sold { true }
+    end
+
+    trait :racehorse do
+      Status { 3 }
+      DOB { 1.year.from_now }
+    end
+
+    trait :stallion do
+      Status { 7 }
+      DOB { 2.years.ago }
+    end
+
+    trait :broodmare do
+      Status { 1 }
+      DOB { 2.years.ago }
+    end
+
+    trait :yearling do
+      Status { 10 }
+      DOB { 3.years.from_now }
+    end
+
+    trait :weanling do
+      Status { 9 }
+      DOB { 4.years.from_now }
+    end
+
+    trait :unborn do
+      DOB { 49.months.from_now }
     end
   end
 end

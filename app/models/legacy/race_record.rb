@@ -2,6 +2,8 @@ module Legacy
   class RaceRecord < Record
     self.table_name = "ff_racerecords"
     self.primary_key = "ID"
+
+    scope :stakes_quality, -> { where("StakesWn > 0 OR StakesSds > 0 OR StakesTds > 0") }
   end
 end
 

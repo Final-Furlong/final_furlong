@@ -47,6 +47,12 @@ RSpec.describe Auctions::AutoAuctionCreator do
       end.to change(Auction, :count).by(1)
     end
 
+    it "creates auction consignment configs" do
+      expect do
+        described_class.new.create_auction(auction_params)
+      end.to change(Auctions::ConsignmentConfig, :count).by(4)
+    end
+
     it "returns auction without errors" do
       result = described_class.new.create_auction(auction_params)
       expect(result.auction.errors).to be_empty

@@ -254,6 +254,23 @@ CREATE TABLE public.auction_bids (
 
 
 --
+-- Name: auction_consignment_configs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.auction_consignment_configs (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    auction_id uuid NOT NULL,
+    horse_type character varying NOT NULL,
+    minimum_age integer DEFAULT 0 NOT NULL,
+    maximum_age integer DEFAULT 0 NOT NULL,
+    minimum_count integer DEFAULT 0 NOT NULL,
+    stakes_quality boolean DEFAULT false NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
 -- Name: auction_horses; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -375,6 +392,19 @@ COMMENT ON COLUMN public.horse_appearances.lh_leg_marking IS 'coronet, ermine, s
 --
 
 COMMENT ON COLUMN public.horse_appearances.face_marking IS 'bald_face, blaze, snip, star, star_snip, star_stripe, star_stripe_snip, stripe, stripe_snip';
+
+
+--
+-- Name: horse_attributes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.horse_attributes (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    horse_id uuid NOT NULL,
+    age integer DEFAULT 0,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
 
 
 --
@@ -1208,6 +1238,14 @@ ALTER TABLE ONLY public.auction_bids
 
 
 --
+-- Name: auction_consignment_configs auction_consignment_configs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auction_consignment_configs
+    ADD CONSTRAINT auction_consignment_configs_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: auction_horses auction_horses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1237,6 +1275,14 @@ ALTER TABLE ONLY public.data_migrations
 
 ALTER TABLE ONLY public.horse_appearances
     ADD CONSTRAINT horse_appearances_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: horse_attributes horse_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horse_attributes
+    ADD CONSTRAINT horse_attributes_pkey PRIMARY KEY (id);
 
 
 --
@@ -1480,6 +1526,13 @@ CREATE INDEX index_auction_bids_on_horse_id ON public.auction_bids USING btree (
 
 
 --
+-- Name: index_auction_consignment_configs_on_auction_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_auction_consignment_configs_on_auction_id ON public.auction_consignment_configs USING btree (auction_id);
+
+
+--
 -- Name: index_auction_horses_on_auction_id_and_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1529,10 +1582,24 @@ CREATE UNIQUE INDEX index_auctions_on_title ON public.auctions USING btree (lowe
 
 
 --
+-- Name: index_consignment_configs_on_horse_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_consignment_configs_on_horse_type ON public.auction_consignment_configs USING btree (auction_id, lower((horse_type)::text));
+
+
+--
 -- Name: index_horse_appearances_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_horse_appearances_on_horse_id ON public.horse_appearances USING btree (horse_id);
+
+
+--
+-- Name: index_horse_attributes_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_horse_attributes_on_horse_id ON public.horse_attributes USING btree (horse_id);
 
 
 --
@@ -2077,6 +2144,14 @@ ALTER TABLE ONLY public.horse_genetics
 
 
 --
+-- Name: auction_consignment_configs fk_rails_2d96c0c08a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auction_consignment_configs
+    ADD CONSTRAINT fk_rails_2d96c0c08a FOREIGN KEY (auction_id) REFERENCES public.auctions(id);
+
+
+--
 -- Name: stables fk_rails_337ce4ea4d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2170,6 +2245,14 @@ ALTER TABLE ONLY public.training_schedules_horses
 
 ALTER TABLE ONLY public.auction_bids
     ADD CONSTRAINT fk_rails_a66160d8e4 FOREIGN KEY (auction_id) REFERENCES public.auctions(id);
+
+
+--
+-- Name: horse_attributes fk_rails_a783c29acc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horse_attributes
+    ADD CONSTRAINT fk_rails_a783c29acc FOREIGN KEY (horse_id) REFERENCES public.horses(id);
 
 
 --
@@ -2275,6 +2358,8 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251008210419'),
+('20251008184823'),
 ('20251007163508'),
 ('20251005120538'),
 ('20251004194127'),

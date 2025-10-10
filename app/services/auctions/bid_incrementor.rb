@@ -35,7 +35,7 @@ module Auctions
         )
         return Result.new(created: true, current_bid: bid)
       end
-    rescue ActiveRecord::RecordInvalid
+    rescue ActiveRecord::ActiveRecordError
       Result.new(created: false, current_bid: nil)
     end
 
