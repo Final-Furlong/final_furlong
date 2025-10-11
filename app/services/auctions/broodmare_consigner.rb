@@ -1,13 +1,13 @@
 module Auctions
-  class BroodmareConsigner < ApplicationService
-    def select_horses(number:, min_age: 2, max_age: 3, stakes_quality: false)
-      quality_stallions = Legacy::HorseBreedRanking.gold.or(Legacy::HorseBreedRanking.platinum).select(:Horse)
+  class BroodmareConsigner < BaseHorseConsigner
+    def select_horses(number:, min_age:, max_age:, stakes_quality: false)
+      quality_mares = Legacy::HorseBreedRanking.gold.or(Legacy::HorseBreedRanking.platinum).select(:Horse)
 
-      query = Legacy::Horse.game_owned.sellable.broodmare.minimum_age(min_age).maximum_age(max_age)
+      query = base_query.broodmare.minimum_age(min_age).maximum_age(max_age).where.not(ID: consigned_to_auction)
       query = if stakes_quality
-        query.where(ID: quality_stallions)
+        query.where(ID: quality_mares)
       else
-        query.where.not(ID: quality_stallions)
+        query.where.not(ID: quality_mares)
       end
       query.random_order.limit(number)
     end

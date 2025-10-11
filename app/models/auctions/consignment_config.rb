@@ -2,7 +2,7 @@ module Auctions
   class ConsignmentConfig < ApplicationRecord
     self.table_name = "auction_consignment_configs"
 
-    HORSE_TYPES = %w[racehorse stallion broodmare yearling weanling].freeze
+    HORSE_TYPES = %w[racehorse stud broodmare yearling weanling].freeze
 
     belongs_to :auction, class_name: "::Auction"
 
