@@ -11,7 +11,7 @@ module Auctions
     end
 
     def consigned_to_auction
-      Horses::Horse.where.associated(:auction_horse).pick(:legacy_id)
+      Horses::Horse.where.associated(:auction_horse).pluck(:legacy_id)
     end
   end
 end
