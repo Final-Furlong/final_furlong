@@ -15,21 +15,21 @@ RSpec.describe Auctions::Horse do
       it "cannot be less than reserve price, if there is one" do
         horse = create(:auction_horse)
         horse.reserve_price = 10
-        horse.max_price = 9
+        horse.maximum_price = 9
         expect(horse).not_to be_valid
       end
 
       it "can be equal to reserve price, if there is one" do
         horse = create(:auction_horse)
         horse.reserve_price = 10
-        horse.max_price = 10
+        horse.maximum_price = 10
         expect(horse).to be_valid
       end
 
       it "can be greater than reserve price, if there is one" do
         horse = create(:auction_horse)
         horse.reserve_price = 10
-        horse.max_price = 12
+        horse.maximum_price = 12
         expect(horse).to be_valid
       end
     end
