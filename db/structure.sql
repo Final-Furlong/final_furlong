@@ -324,6 +324,22 @@ CREATE TABLE public.data_migrations (
 
 
 --
+-- Name: game_alerts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.game_alerts (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    start_time timestamp without time zone NOT NULL,
+    end_time timestamp without time zone,
+    message text NOT NULL,
+    display_to_newbies boolean DEFAULT true NOT NULL,
+    display_to_non_newbies boolean DEFAULT true NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
 -- Name: horse_appearances; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1269,6 +1285,14 @@ ALTER TABLE ONLY public.data_migrations
 
 
 --
+-- Name: game_alerts game_alerts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.game_alerts
+    ADD CONSTRAINT game_alerts_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: horse_appearances horse_appearances_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1585,6 +1609,20 @@ CREATE UNIQUE INDEX index_auctions_on_title ON public.auctions USING btree (lowe
 --
 
 CREATE UNIQUE INDEX index_consignment_configs_on_horse_type ON public.auction_consignment_configs USING btree (auction_id, lower((horse_type)::text));
+
+
+--
+-- Name: index_game_alerts_on_end_time; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_game_alerts_on_end_time ON public.game_alerts USING btree (end_time);
+
+
+--
+-- Name: index_game_alerts_on_start_time; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_game_alerts_on_start_time ON public.game_alerts USING btree (start_time);
 
 
 --
@@ -2357,6 +2395,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251011175308'),
 ('20251011134245'),
 ('20251011103916'),
 ('20251008210419'),
