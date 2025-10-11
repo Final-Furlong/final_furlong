@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :horse, class: "Horses::Horse" do
-    name { "Horse #{SecureRandom.alphanumeric(10)}" }
+    name { "Horse #{SecureRandom.alphanumeric(12)}" }
     gender { %w[colt filly gelding].sample }
     status { "racehorse" }
     date_of_birth { Date.current - 3.years }
