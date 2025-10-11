@@ -20,6 +20,10 @@ module Auctions
     scope :winning, -> { order(maximum_bid: :desc, current_bid: :desc, updated_at: :desc) }
     scope :with_bid_matching, ->(amount) { where("GREATEST(current_bid, CAST(maximum_bid AS integer)) >= ?", amount) }
 
+    def unschedule_sale
+      sale_job.destroy_all if sale_job.exists?
+    end
+
     private
 
     def schedule_sale
@@ -31,10 +35,6 @@ module Auctions
       ProcessAuctionSaleJob.set(wait: auction.hours_until_sold.hours).perform_later(
         bid: self, horse:, auction:, bidder:
       )
-    end
-
-    def unschedule_sale
-      sale_job.destroy_all if sale_job.exists?
     end
 
     def sale_job

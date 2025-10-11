@@ -128,15 +128,4 @@ RSpec.describe Auctions::DeleteEmptyAuctionService do
     @auction
   end
 end
-# def call(auction)
-#   if auction.horses.count < 5
-#     if auction.auctioneer.legacy_id != 20
-#       ActiveRecord::Base.transaction do
-#         Auctions::Bid.where(auction: auction).delete_all
-#         Auctions::Horse.where(auction: auction).delete_all
-#         auction.destroy!
-#       end
-#     end
-#   end
-# end
 

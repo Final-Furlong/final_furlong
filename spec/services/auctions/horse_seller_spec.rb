@@ -166,7 +166,12 @@ RSpec.describe Auctions::HorseSeller do
   end
 
   context "when sale time has not been met" do
-    before { bid.update(updated_at: DateTime.current - auction.hours_until_sold.hours + 5.minutes) }
+    # rubocop:disable Rails/SkipsModelValidations
+    before do
+      bid.update(updated_at: DateTime.current - auction.hours_until_sold.hours + 5.minutes)
+      auction.update_column(:end_time, DateTime.current + 2.days)
+    end
+    # rubocop:enable Rails/SkipsModelValidations
 
     it "returns sold false" do
       result = described_class.new.process_sale(bid:)
@@ -179,6 +184,27 @@ RSpec.describe Auctions::HorseSeller do
     end
 
     it_behaves_like "an unprocessed sale"
+  end
+
+  context "when sale time has not been met but auction is ending" do
+    # rubocop:disable Rails/SkipsModelValidations
+    before do
+      bid.update(updated_at: DateTime.current - 1.hour)
+      auction.update_column(:end_time, 5.minutes.ago)
+    end
+    # rubocop:enable Rails/SkipsModelValidations
+
+    it "returns sold true" do
+      result = described_class.new.process_sale(bid:)
+      expect(result.sold?).to be true
+    end
+
+    it "returns no error" do
+      result = described_class.new.process_sale(bid:)
+      expect(result.error).to be_nil
+    end
+
+    it_behaves_like "a processed sale"
   end
 
   context "when bidder owns the horse" do

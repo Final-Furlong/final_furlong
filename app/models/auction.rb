@@ -9,6 +9,9 @@ class Auction < ApplicationRecord
   has_many :bids, class_name: "Auctions::Bid", dependent: :destroy
   has_many :consignment_configs, class_name: "Auctions::ConsignmentConfig", dependent: :delete_all
 
+  after_commit :schedule_deletion, on: %i[create update]
+  after_commit :unschedule_deletion, on: :destroy
+
   validates :start_time, :end_time, :hours_until_sold, :title, presence: true
   validates :title, length: { in: 10..500 }
   validates :title, uniqueness: { case_sensitive: false }
@@ -31,11 +34,32 @@ class Auction < ApplicationRecord
     DateTime.current.between?(start_time, end_time)
   end
 
+  def recently_ended?
+    DateTime.current <= end_time + 1.day
+  end
+
   def future?
     start_time > DateTime.current
   end
 
   private
+
+  def schedule_deletion
+    unschedule_deletion
+    schedule_job
+  end
+
+  def unschedule_deletion
+    deletion_job.destroy_all if deletion_job.exists?
+  end
+
+  def deletion_job
+    SolidQueue::Job.where(class_name: "DeleteCompletedAuctionsJob").where("arguments LIKE ?", "%#{global_id_string}%")
+  end
+
+  def schedule_job
+    DeleteCompletedAuctionsJob.set(wait_until: end_time + 1.minute).perform_later(auction: self)
+  end
 
   def today_plus_min_duration
     (Date.current + MINIMUM_DELAY.days).beginning_of_day

@@ -11,7 +11,7 @@ module Auctions
       @seller = horse.owner
       auction = bid.auction
 
-      unless auction.active?
+      unless auction.active? || auction.recently_ended?
         result.error = error("auction_inactive")
         return result
       end
@@ -21,7 +21,7 @@ module Auctions
         return result
       end
 
-      if DateTime.current < bid.updated_at + auction.hours_until_sold.hours
+      if DateTime.current < bid.updated_at + auction.hours_until_sold.hours && DateTime.current < auction.end_time
         ProcessAuctionSaleJob.set(wait_until: bid.updated_at + auction.hours_until_sold.hours).perform_later(bid:)
         result.error = error("bid_timeout_not_met")
         return result
