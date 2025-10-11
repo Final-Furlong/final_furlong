@@ -13,7 +13,7 @@ FactoryBot.define do
   end
 
   trait :with_max_price do
-    max_price { Faker::Number.number(digits: 6) }
+    maximum_price { Faker::Number.number(digits: 6) }
   end
 
   trait :sold do
@@ -27,7 +27,6 @@ end
 #
 #  id            :uuid             not null, primary key
 #  comment       :text
-#  max_price     :integer
 #  maximum_price :integer
 #  reserve_price :integer
 #  sold_at       :datetime         indexed

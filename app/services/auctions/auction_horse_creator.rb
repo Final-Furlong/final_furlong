@@ -15,10 +15,7 @@ module Auctions
       result.error = error("horse_not_found") unless horse
 
       auction_horse = Auctions::Horse.new(auction:, horse:, sold_at: nil)
-      if spending_cap&.positive?
-        auction_horse.max_price = spending_cap
-        auction_horse.maximum_price = spending_cap
-      end
+      auction_horse.maximum_price = spending_cap if spending_cap&.positive?
       result.horse = auction_horse
       result.created = if auction_horse.save!
         true
