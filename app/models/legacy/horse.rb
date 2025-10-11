@@ -21,6 +21,7 @@ module Legacy
 
     scope :minimum_age, ->(age) { where(DOB: ..game_year_end(age)) }
     scope :maximum_age, ->(age) { where(DOB: game_year_start(age)..) }
+    scope :age_between, ->(min, max) { where(DOB: game_year_start(max)..game_year_end(min)) }
 
     scope :sellable, -> { where(can_be_sold: true) }
     scope :random_order, -> { order("RAND()") }

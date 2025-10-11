@@ -1,9 +1,9 @@
 module Auctions
   class YearlingConsigner < BaseHorseConsigner
     def select_horses(number:, min_age: 1, max_age: 1, stakes_quality: false)
-      stakes_horses = Legacy::RaceRecord.stakes_quality.select(:Horse)
+      stakes_horses = Legacy::RaceRecord.stakes_quality.select(:Horse).distinct
 
-      query = base_query.yearling.minimum_age(min_age).maximum_age(max_age).where.not(ID: consigned_to_auction)
+      query = base_query.yearling.age_between(min_age, max_age).where.not(ID: consigned_to_auction)
       query = if stakes_quality
         query.where(Dam: stakes_horses)
       else
