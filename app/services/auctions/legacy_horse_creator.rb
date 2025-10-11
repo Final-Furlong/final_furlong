@@ -1,5 +1,5 @@
 module Auctions
-  class AuctionHorseCreator < ApplicationService
+  class LegacyHorseCreator < ApplicationService
     attr_reader :auction
 
     def create_horse(auction:, legacy_horse_id:)
@@ -43,7 +43,7 @@ module Auctions
     private
 
     def error(key)
-      I18n.t("services.auctions.auction_horse_creator.#{key}")
+      I18n.t("services.auctions.legacy_horse_creator.#{key}")
     end
   end
 end

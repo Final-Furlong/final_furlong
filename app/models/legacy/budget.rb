@@ -12,7 +12,7 @@ module Legacy
         Date: Date.current + 4.years,
         Description: description,
         Amount: amount,
-        Balance: previous_budget&.balance.to_i + amount
+        Balance: previous_budget&.Balance.to_i + amount
       )
     end
   end

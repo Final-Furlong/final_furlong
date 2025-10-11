@@ -8,7 +8,7 @@ module Auctions
     has_many :bids, class_name: "Auctions::Bid", dependent: :destroy
 
     validates :maximum_price, numericality: { greater_than_or_equal_to: :reserve_price }, if: :reserve_price, allow_blank: true
-    validates :horse_id, uniqueness: { scope: :auction_id }
+    validates :horse_id, uniqueness: true
 
     scope :sold, -> { where.not(sold_at: nil) }
     scope :unsold, -> { where(sold_at: nil) }
