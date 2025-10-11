@@ -1533,17 +1533,17 @@ CREATE INDEX index_auction_consignment_configs_on_auction_id ON public.auction_c
 
 
 --
--- Name: index_auction_horses_on_auction_id_and_horse_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_auction_horses_on_auction_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_auction_horses_on_auction_id_and_horse_id ON public.auction_horses USING btree (auction_id, horse_id);
+CREATE INDEX index_auction_horses_on_auction_id ON public.auction_horses USING btree (auction_id);
 
 
 --
 -- Name: index_auction_horses_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_auction_horses_on_horse_id ON public.auction_horses USING btree (horse_id);
+CREATE UNIQUE INDEX index_auction_horses_on_horse_id ON public.auction_horses USING btree (horse_id);
 
 
 --
@@ -2358,6 +2358,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251011103916'),
 ('20251008210419'),
 ('20251008184823'),
 ('20251007163508'),

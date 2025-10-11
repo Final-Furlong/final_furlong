@@ -147,6 +147,19 @@ RSpec.describe Auctions::HorseConsigner do
       end.to change(Auctions::Horse, :count).by(1)
       expect(Auctions::Horse.last.horse).to eq stallion
     end
+
+    context "when consigned horses already exist" do
+      it "does not consign horses" do
+        legacy_stud = create(:legacy_horse, :stallion, :final_furlong, can_be_sold: true)
+        stallion = create(:horse, :stallion, owner: stable, legacy_id: legacy_stud.ID)
+        create(:auction_horse, horse: stallion, auction:)
+        expect do
+          result = described_class.new.consign_horses(auction:)
+          expect(result.number_consigned).to eq 1
+        end.not_to change(Auctions::Horse, :count)
+        expect(Auctions::Horse.last.horse).to eq stallion
+      end
+    end
   end
 
   context "when config specifies broodmares" do
@@ -274,7 +287,7 @@ RSpec.describe Auctions::HorseConsigner do
   end
 
   def racehorse_config
-    Auctions::ConsignmentConfig.create!(
+    @racehorse_config ||= Auctions::ConsignmentConfig.create!(
       auction:,
       horse_type: "racehorse",
       minimum_age: 2,
@@ -284,9 +297,9 @@ RSpec.describe Auctions::HorseConsigner do
   end
 
   def stallion_config
-    Auctions::ConsignmentConfig.create!(
+    @stallion_config ||= Auctions::ConsignmentConfig.create!(
       auction:,
-      horse_type: "stallion",
+      horse_type: "stud",
       minimum_age: 4,
       maximum_age: 12,
       minimum_count: 1
@@ -294,7 +307,7 @@ RSpec.describe Auctions::HorseConsigner do
   end
 
   def broodmare_config
-    Auctions::ConsignmentConfig.create!(
+    @broodmare_config ||= Auctions::ConsignmentConfig.create!(
       auction:,
       horse_type: "broodmare",
       minimum_age: 4,
@@ -304,7 +317,7 @@ RSpec.describe Auctions::HorseConsigner do
   end
 
   def yearling_config
-    Auctions::ConsignmentConfig.create!(
+    @yearling_config ||= Auctions::ConsignmentConfig.create!(
       auction:,
       horse_type: "yearling",
       minimum_age: 1,
@@ -314,7 +327,7 @@ RSpec.describe Auctions::HorseConsigner do
   end
 
   def weanling_config
-    Auctions::ConsignmentConfig.create!(
+    @weanling_config ||= Auctions::ConsignmentConfig.create!(
       auction:,
       horse_type: "weanling",
       minimum_age: 0,

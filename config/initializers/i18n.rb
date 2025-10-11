@@ -1,4 +1,6 @@
-I18n::Debug.logger = Logger.new(Rails.root.join("log/i18n.log")) if Rails.env.development? && defined? I18n::Debug
+if defined? I18n::Debug
+  I18n::Debug.logger = Logger.new(Rails.root.join("log/i18n.log")) if Rails.env.development?
+end
 
 module I18n
   module Tasks

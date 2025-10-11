@@ -13,6 +13,7 @@ module Horses
     has_one :genetics, class_name: "Genetics", dependent: :delete
     has_one :training_schedules_horse, class_name: "Racing::TrainingScheduleHorse", dependent: :destroy
     has_one :training_schedule, class_name: "Racing::TrainingSchedule", through: :training_schedules_horse
+    has_one :auction_horse, class_name: "Auctions::Horse", dependent: :destroy
 
     enum :status, Status::STATUSES
     enum :gender, Gender::VALUES

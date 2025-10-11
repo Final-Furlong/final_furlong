@@ -25,11 +25,12 @@ module Auctions
       number_consigned = 0
       ActiveRecord::Base.transaction do
         auction.consignment_configs.each do |config|
-          horse_type_number_consigned = 0
+          horse_type_check = config.horse_type.to_s.downcase
+          horse_type_number_consigned = Auctions::Horse.joins(:horse).where(auction:).merge(Horses::Horse.send(horse_type_check.to_sym)).count
           consigner_class = case config.horse_type.to_s.downcase
           when "racehorse"
             Auctions::RacehorseConsigner
-          when "stallion"
+          when "stud"
             Auctions::StallionConsigner
           when "broodmare"
             Auctions::BroodmareConsigner
@@ -41,7 +42,8 @@ module Auctions
             raise UnknownConsignmentTypeError
           end
           legacy_horses = consigner_class.new.select_horses(
-            number: config.minimum_count, stakes_quality: config.stakes_quality,
+            number: config.minimum_count - horse_type_number_consigned,
+            stakes_quality: config.stakes_quality,
             min_age: config.minimum_age, max_age: config.maximum_age
           ).select(:ID)
           legacy_horses.find_each do |horse|

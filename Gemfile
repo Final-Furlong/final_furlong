@@ -117,6 +117,7 @@ group :development do
   gem "guard-haml_lint", require: false
   gem "guard-rspec", require: false
   gem "guard-rubocop", require: false
+  gem "i18n-debug"
   gem "image_optim", require: false
   gem "image_optim_pack", require: false
   gem "image_optim_rails", require: false
@@ -136,7 +137,6 @@ group :development, :test do
   gem "factory_bot_rails", require: false
   gem "faker", require: false
   gem "fasterer", require: false
-  gem "i18n-debug"
   gem "i18n-tasks"
   gem "isolator"
   gem "letter_opener"
