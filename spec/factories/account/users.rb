@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :user, class: "Account::User" do
     sequence(:username) do |n|
-      "#{Faker::Internet.username(specifier: Account::User::USERNAME_LENGTH - 1 - n.to_s.length)}_#{n}"
+      "#{SecureRandom.alphanumeric(20)}_#{n}"
     end
     password { "abc1A$ab" }
     status { "active" }

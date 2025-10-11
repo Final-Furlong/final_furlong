@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :stable, class: "Account::Stable" do
-    name { "#{Faker::Adjective.positive} #{Faker::Color.color_name} Stable" }
+    name { "#{SecureRandom.alphanumeric(20)} #{SecureRandom.alphanumeric(10)} Stable" }
     user { association :user, stable: instance }
     legacy_id { rand(1..999_999) }
   end
