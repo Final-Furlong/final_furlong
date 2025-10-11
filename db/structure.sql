@@ -279,7 +279,6 @@ CREATE TABLE public.auction_horses (
     auction_id uuid NOT NULL,
     horse_id uuid NOT NULL,
     reserve_price integer,
-    max_price integer,
     comment text,
     sold_at timestamp with time zone,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -2358,6 +2357,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251011134245'),
 ('20251011103916'),
 ('20251008210419'),
 ('20251008184823'),
