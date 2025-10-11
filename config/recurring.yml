@@ -18,6 +18,22 @@ production:
     class: CreateMonthlyAuctionJob
     queue: low_priority
     schedule: 1 0 1 * * # first day of every month
+  auto_create_two_year_old_auction:
+    class: CreateTwoYearOldAuctionJob
+    queue: low_priority
+    schedule: 9 0 1 2 * # first day of Feb
+  auto_create_mixed_auction:
+    class: CreateMixedAuctionJob
+    queue: low_priority
+    schedule: 9 0 1 6 * # first day of June
+  auto_create_select_auction:
+    class: CreateSelectAuctionJob
+    queue: low_priority
+    schedule: 9 0 1 8 * # first day of August
+  auto_create_foal_auction:
+    class: CreateFoalAuctionJob
+    queue: low_priority
+    schedule: 9 0 1 11 * # first day of November
   delete_empty_auctions:
     class: DeleteEmptyAuctionsJob
     queue: low_priority

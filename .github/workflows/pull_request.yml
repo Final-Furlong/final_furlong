@@ -28,7 +28,7 @@ jobs:
 
   call-tests:
     if: "!contains(github.event.commits[0].message, '[ci skip]') && !contains(github.event.commits[0].message, '[skip ci]')"
-    uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@process-auction-sales
+    uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@main
     needs: [ 'setup' ]
     secrets:
       lcov-token: ${{ secrets.LCOV_GITHUB_TOKEN }}
