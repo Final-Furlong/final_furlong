@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :auction_bid, class: "Auctions::Bid" do
     auction factory: :auction
-    horse factory: :auction_horse
+    horse { association :auction_horse, auction: }
     bidder factory: :stable
     current_bid { Faker::Number.number(digits: 5) }
   end

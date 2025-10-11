@@ -46,7 +46,8 @@ RSpec.describe Auctions::Bid do
     context "when bid is created" do
       it "enqueues the process auction sale job" do
         freeze_time
-        bid = build(:auction_bid)
+        auction = create(:auction)
+        bid = build(:auction_bid, auction:)
         expect do
           bid.save
         end.to change(SolidQueue::Job, :count).by(1)
