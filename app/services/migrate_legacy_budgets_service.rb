@@ -8,22 +8,23 @@ class MigrateLegacyBudgetsService # rubocop:disable Metrics/ClassLength
 
   def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     Legacy::Budget.where("ID > ?", budget_id).order(Date: :asc, ID: :asc).limit(limit).find_each do |legacy_budget|
-      next if Budget.exists?(legacy_budget_id: legacy_budget.ID)
+      next if Account::Budget.exists?(legacy_budget_id: legacy_budget.ID)
 
       stable = Account::Stable.find_by(legacy_id: legacy_budget.Stable)
       budget_attrs = {
         stable:,
         description: legacy_budget.Description,
         amount: legacy_budget.Amount,
-        date: Date.parse(legacy_budget.Date) - 4.years,
+        date: Date.parse(legacy_budget.Date.to_s) - 4.years,
         legacy_budget_id: legacy_budget.ID,
         legacy_stable_id: legacy_budget.Stable
       }
-      if Budget.exists?(stable:)
-        Budget.create_new(budget_attrs)
+      if Account::Budget.exists?(stable:)
+        Account::Budget.create_new(**budget_attrs)
       else
         budget_attrs[:balance] = legacy_budget.Amount
-        Budget.create!(budget_attrs)
+        budget_attrs[:created_at] = budget_attrs.delete(:date)
+        Account::Budget.create!(budget_attrs)
       end
     end
   rescue => e
