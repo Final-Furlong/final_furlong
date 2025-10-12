@@ -37,12 +37,10 @@ export default class extends Controller {
       this.statusTarget.textContent = this.browserSubscribedValue
       this.subscriptionFieldTarget.value = JSON.stringify(subscription)
       this.sendPushDemoFieldsetTarget.disabled = false
-      this.notificationButtonTarget.disabled = false
     } else {
       this.statusTarget.textContent = this.browserUnsubscribedValue
       this.subscriptionFieldTarget.value = ""
       this.sendPushDemoFieldsetTarget.disabled = true
-      this.notificationButtonTarget.disabled = true
     }
   }
 
