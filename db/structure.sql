@@ -315,6 +315,23 @@ CREATE TABLE public.auctions (
 
 
 --
+-- Name: budgets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.budgets (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    stable_id uuid NOT NULL,
+    description text NOT NULL,
+    amount integer DEFAULT 0 NOT NULL,
+    balance integer DEFAULT 0 NOT NULL,
+    legacy_budget_id integer DEFAULT 0,
+    legacy_stable_id integer DEFAULT 0,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
 -- Name: data_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -965,7 +982,9 @@ CREATE TABLE public.stables (
     last_online_at timestamp with time zone,
     horses_count integer DEFAULT 0 NOT NULL,
     bred_horses_count integer DEFAULT 0 NOT NULL,
-    unborn_horses_count integer DEFAULT 0 NOT NULL
+    unborn_horses_count integer DEFAULT 0 NOT NULL,
+    available_balance integer DEFAULT 0,
+    total_balance integer DEFAULT 0
 );
 
 
@@ -1274,6 +1293,14 @@ ALTER TABLE ONLY public.auction_horses
 
 ALTER TABLE ONLY public.auctions
     ADD CONSTRAINT auctions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: budgets budgets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.budgets
+    ADD CONSTRAINT budgets_pkey PRIMARY KEY (id);
 
 
 --
@@ -1602,6 +1629,34 @@ CREATE INDEX index_auctions_on_start_time ON public.auctions USING btree (start_
 --
 
 CREATE UNIQUE INDEX index_auctions_on_title ON public.auctions USING btree (lower((title)::text));
+
+
+--
+-- Name: index_budgets_on_description; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_budgets_on_description ON public.budgets USING btree (description);
+
+
+--
+-- Name: index_budgets_on_legacy_budget_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_budgets_on_legacy_budget_id ON public.budgets USING btree (legacy_budget_id);
+
+
+--
+-- Name: index_budgets_on_legacy_stable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_budgets_on_legacy_stable_id ON public.budgets USING btree (legacy_stable_id);
+
+
+--
+-- Name: index_budgets_on_stable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_budgets_on_stable_id ON public.budgets USING btree (stable_id);
 
 
 --
@@ -2269,6 +2324,14 @@ ALTER TABLE ONLY public.active_storage_variant_records
 
 
 --
+-- Name: budgets fk_rails_a43f3d3880; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.budgets
+    ADD CONSTRAINT fk_rails_a43f3d3880 FOREIGN KEY (stable_id) REFERENCES public.stables(id);
+
+
+--
 -- Name: training_schedules_horses fk_rails_a48e7af8f9; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2395,6 +2458,8 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251012093408'),
+('20251012091923'),
 ('20251011175308'),
 ('20251011134245'),
 ('20251011103916'),
