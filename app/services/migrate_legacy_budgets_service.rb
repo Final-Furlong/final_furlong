@@ -27,7 +27,7 @@ class MigrateLegacyBudgetsService # rubocop:disable Metrics/ClassLength
       end
     end
   rescue => e
-    Rails.logger.error "Info: #{legacy_budget.inspect}"
+    Rails.logger.error "Info: #{e.message}"
     raise e
   end
 end
