@@ -15,5 +15,15 @@ head
   = stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.4/css/flag-icons.min.css"
   = javascript_importmap_tags
   = javascript_include_tag "application", "data-turbo-track": "reload", defer: true, type: "module"
+  = tag.link rel: "manifest", href: pwa_manifest_path(format: :json)
+
+  link href="/favicon.ico" rel="icon" type="image/x-icon"
+  link href="/favicon-32x32.png" rel="icon" type="image/png" sizes="32x32"
+  link href="/favicon-16x16.png" rel="icon" type="image/png" sizes="16x16"
+  link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"
+  link href="/android-chrome-192x192.png" rel="icon" type="image/png" sizes="192x192"
+  link href="/android-chrome-512x512.png" rel="icon" type="image/png" sizes="512x512"
+
+  meta name="vapid-public-key" content=Rails.configuration.x.vapid.public_key
+
   script src="https://kit.fontawesome.com/a2bbd059ad.js" crossorigin="anonymous"
-    / link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet"

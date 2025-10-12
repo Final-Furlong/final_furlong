@@ -17,6 +17,10 @@ Rails.application.routes.draw do
     end
   end
 
+  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
+  get "manifest" => "rails/pwa#manifest", :as => :pwa_manifest
+  get "service-worker" => "rails/pwa#service_worker", :as => :pwa_service_worker
+
   unauthenticated do
     root to: "pages#home"
   end
@@ -63,6 +67,9 @@ end
 #                                          PUT    /users/:id(.:format)                                                                              users#update
 #                                          DELETE /users/:id(.:format)                                                                              users#destroy
 #                                 settings POST   /settings(.:format)                                                                               settings#create
+#                           pwa_web_pushes POST   /pwa/web_pushes(.:format)                                                                         pwa/web_pushes#create
+#                       push_subscriptions POST   /push_subscriptions(.:format)                                                                     current_stable/push_subscriptions#create
+#                     change_notifications POST   /push_subscriptions/change(.:format)                                                              current_stable/push_subscriptions#change
 #                      edit_current_stable GET    /stable/edit(.:format)                                                                            stables#edit
 #                           current_stable GET    /stable(.:format)                                                                                 stables#show
 #                                          PATCH  /stable(.:format)                                                                                 stables#update
@@ -85,6 +92,7 @@ end
 #                                          PUT    /stable/training_schedules/:id(.:format)                                                          current_stable/training_schedules#update
 #                                          DELETE /stable/training_schedules/:id(.:format)                                                          current_stable/training_schedules#destroy
 #                          stable_workouts POST   /stable/workouts(.:format)                                                                        current_stable/workouts#create
+#                       new_stable_setting GET    /stable/settings/new(.:format)                                                                    current_stable/settings#new
 #                                                 /404(.:format)                                                                                    errors#not_found
 #                                                 /422(.:format)                                                                                    errors#unprocessable
 #                                                 /500(.:format)                                                                                    errors#internal_error
@@ -97,6 +105,8 @@ end
 #                                    horse GET    /horses/:id(.:format)                                                                             horses#show
 #                                          PATCH  /horses/:id(.:format)                                                                             horses#update
 #                                          PUT    /horses/:id(.:format)                                                                             horses#update
+#                             pwa_manifest GET    /manifest(.:format)                                                                               rails/pwa#manifest
+#                       pwa_service_worker GET    /service-worker(.:format)                                                                         rails/pwa#service_worker
 #                                     root GET    /                                                                                                 pages#home
 #                       authenticated_root GET    /                                                                                                 stables#show
 #         turbo_recede_historical_location GET    /recede_historical_location(.:format)                                                             turbo/native/navigation#recede

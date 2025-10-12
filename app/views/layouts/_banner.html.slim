@@ -1,0 +1,18 @@
+header data-controller="banner"
+  div[
+    data-banner-target="offline"
+    class="container bg-zinc-500 mx-auto px-5 py-2 flex justify-between items-center hidden"
+  ]
+    p class="text-white text-center py-2"
+      = t(".offline")
+  div[
+    data-banner-target="upgrade"
+    classs="container bg-indigo-500 mx-auto px-5 py-2 flex justify-between items-center hidden"
+  ]
+    p class="text-white text-center py-2"
+      = t(".new_version")
+    button[
+      data-action="click->banner#serviceWorkerUpgrade"
+      class="bg-indigo-600 text-white px-4 py-2 rounded"
+    ]
+      = t(".upgrade_action")

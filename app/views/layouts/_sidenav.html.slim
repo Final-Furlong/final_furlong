@@ -9,7 +9,7 @@ nav.drawer-side#sidebar class="border-r-1 border-gray-500/50 dark:border-neutral
       ]
         = image_tag "logo_dark.png", class: "h-6 md:h-12 w-auto block dark:hidden", alt: "Final Furlong Logo"
         = image_tag "logo_light.png", class: "h-6 md:h-12 w-auto hidden dark:block", alt: "Final Furlong Logo"
-        span.font-semibold.ms-3.text-lg= t("layouts.nav.game_title")
+        span.font-semibold.ms-3.text-lg= t("game_title")
     = render "layouts/user_sidenav" if signed_in?
     li
       details open=true

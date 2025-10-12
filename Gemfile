@@ -63,6 +63,7 @@ gem "rails-i18n"
 gem "rails-pg-extras"
 gem "ransack"
 gem "redis"
+gem "requestjs-rails"
 gem "sentry-rails"
 gem "sentry-ruby"
 gem "simple_form"
@@ -75,6 +76,7 @@ gem "turnout"
 gem "uuid"
 gem "view_component"
 gem "view_component-contrib"
+gem "web-push"
 gem "whenever", require: false
 gem "yaaf"
 
@@ -109,7 +111,7 @@ group :development do
   gem "capistrano-passenger", require: false
   gem "capistrano-rails", "~> 1.3", require: false
   gem "capistrano-rbenv", "~> 2.2", require: false
-  gem 'capistrano-solid_queue', require: false
+  gem "capistrano-solid_queue", require: false
   gem "capistrano-yarn", require: false
   gem "ed25519", require: false # required for capistrano
   gem "good_migrations"

@@ -1,0 +1,87 @@
+{
+  "id": "final-furlong",
+  "name": "Final Furlong",
+  "icons": [
+    {
+      "src": "<%= asset_path("app-icons/icon-64.png") %>",
+      "type": "image/png",
+      "sizes": "64x64",
+      "purpose": "any"
+    },
+    {
+      "src": "<%= asset_path("app-icons/icon-64-maskable.png") %>",
+      "type": "image/png",
+      "sizes": "64x64",
+      "purpose": "maskable"
+    },
+    {
+      "src": "<%= asset_path("app-icons/icon-192.png") %>",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "<%= asset_path("app-icons/icon-192-maskable.png") %>",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "<%= asset_path("app-icons/icon.png") %>",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "<%= asset_path("app-icons/icon-maskable.png") %>",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "48x48 72x72 96x96 128x128 256x256 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "start_url": "<%= Rails.env.production? ? "https://www.finalfurlong.org" : "/" %>",
+  "display": "standalone",
+  "description": "An online horse racing game",
+  "categories": ["entertainment", "horses", "games"],
+  "scope": "/",
+  "scope_extensions": [],
+  "launch_handler": {
+    "client_mode": ["focus-existing", "auto"]
+  },
+  "dir": "ltr",
+  "lang": "en",
+  "prefer_related_applications": false,
+  "author": "Shanthi Pendleton",
+  "orientation": "portrait",
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://www.finalfurlong.org"
+    }
+  ],
+  "short_name": "FF",
+  "theme_color": "#06b6d4",
+  "background_color": "#f1f5fd",
+  "screenshots": [
+    {
+      "src": "<%= asset_path("screenshots/homepage.png") %>",
+      "form_factor": "wide",
+      "label": "Home screen of Final Furlong",
+      "type": "image/png",
+      "sizes": "1024x626"
+    },
+    {
+      "src": "<%= asset_path("screenshots/homepage-narrow.png") %>",
+      "form_factor": "narrow",
+      "label": "Home screen of Final Furlong",
+      "type": "image/png",
+      "sizes": "786x1276"
+    }
+  ]
+}

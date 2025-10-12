@@ -459,6 +459,8 @@ GEM
       regexp_parser (~> 2.0)
       simpleidn (~> 0.2)
     jsonapi-renderer (0.2.2)
+    jwt (3.1.2)
+      base64
     kramdown (2.5.1)
       rexml (>= 3.3.9)
     kramdown-parser-gfm (1.1.0)
@@ -559,6 +561,7 @@ GEM
       nenv (~> 0.1)
       shellany (~> 0.0)
     observer (0.1.2)
+    openssl (3.3.0)
     orm_adapter (0.5.0)
     ostruct (0.6.3)
     pagy (9.4.0)
@@ -689,6 +692,8 @@ GEM
       io-console (~> 0.5)
     request_store (1.7.0)
       rack (>= 1.4)
+    requestjs-rails (0.0.13)
+      railties (>= 7.1.0)
     responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
@@ -953,6 +958,9 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
+    web-push (3.0.2)
+      jwt (~> 3.0)
+      openssl (~> 3.0)
     webrick (1.9.1)
     websocket (1.2.11)
     websocket-driver (0.8.0)
@@ -1082,6 +1090,7 @@ DEPENDENCIES
   ransack
   redis
   reek
+  requestjs-rails
   responders
   rspec
   rspec-rails
@@ -1127,6 +1136,7 @@ DEPENDENCIES
   view_component
   view_component-contrib
   web-console
+  web-push
   whenever
   whenever-test
   yaaf

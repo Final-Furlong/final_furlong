@@ -67,3 +67,5 @@ spec/examples.txt
 
 .envrc
 .idea/
+
+/config/credentials/test.key
