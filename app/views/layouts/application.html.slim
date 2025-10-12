@@ -10,7 +10,7 @@ html(lang= I18n.locale)
         .float-right
           = render Nav::I18n::Component.new(locale: I18n.locale, version: :phone, variants: request.variant)
         = yield :breadcrumbs
-        .container.p-2
+        .container.p-6.clear-both class="sm:p-4"
           = render Users::ImpersonatingBanner::Component.new
           .toast.toast-top#messages
             = render partial: "layouts/flash"

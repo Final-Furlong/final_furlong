@@ -16,14 +16,14 @@
   ]
     li
       = form_with scope: :settings, url: settings_path, method: :post do |form|
-        = form.hidden_field :locale, value: "en"
+        = form.hidden_field :locale, value: "en", id: "settings_locale_us_mobile"
         = button_tag class: "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 \
           dark:hover:text-white dark:text-gray-300 dark:hover:bg-gray-600" do
           .inline-flex.items-center
             span.me-2.fi.fi-us
     li
       = form_with scope: :settings, url: settings_path, method: :post do |form|
-        = form.hidden_field :locale, value: "en-GB"
+        = form.hidden_field :locale, value: "en-GB", id: "settings_locale_gb_mobile"
         = button_tag class: "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 \
           dark:hover:text-white dark:text-gray-300 dark:hover:bg-gray-600" do
           .inline-flex.items-center
