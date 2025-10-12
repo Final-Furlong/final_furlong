@@ -26,13 +26,13 @@ RSpec.describe Account::UserPolicy do
     let(:user) { nil }
 
     it "disallows admin actions" do
-      expect(policy).not_to permit_actions(:create, :impersonate)
+      expect(policy).not_to permit_actions(:index, :create, :impersonate)
     end
   end
 
   context "when user is not admin" do
     it "disallows admin actions" do
-      expect(policy).not_to permit_actions(:create, :impersonate)
+      expect(policy).not_to permit_actions(:index, :create, :impersonate)
     end
   end
 
@@ -40,7 +40,7 @@ RSpec.describe Account::UserPolicy do
     let(:user) { build_stubbed(:admin) }
 
     it "allows admin actions" do
-      expect(policy).to permit_actions(:create, :impersonate)
+      expect(policy).to permit_actions(:index, :create, :impersonate)
     end
 
     context "when dealing with own account" do

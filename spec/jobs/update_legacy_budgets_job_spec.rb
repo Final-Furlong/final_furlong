@@ -12,7 +12,7 @@ RSpec.describe UpdateLegacyBudgetsJob, :perform_enqueued_jobs do
         create(:budget, legacy_budget_id: 2)
         create(:budget, legacy_budget_id: 3)
         described_class.perform_later
-        expect(MigrateLegacyBudgetsService).to have_received(:new).with(budget_id: 3)
+        expect(MigrateLegacyBudgetsService).to have_received(:new).with(budget_id: 3, limit: 1000)
       end
     end
 
@@ -20,7 +20,7 @@ RSpec.describe UpdateLegacyBudgetsJob, :perform_enqueued_jobs do
       it "triggers update code with 0" do
         allow(MigrateLegacyBudgetsService).to receive(:new).and_return mock_service
         described_class.perform_later
-        expect(MigrateLegacyBudgetsService).to have_received(:new).with(budget_id: 0)
+        expect(MigrateLegacyBudgetsService).to have_received(:new).with(budget_id: 0, limit: 1000)
       end
     end
   end

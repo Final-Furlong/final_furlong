@@ -20,6 +20,10 @@ FactoryBot.define do
       admin { true }
     end
 
+    trait :developer do
+      developer { true }
+    end
+
     trait :pending do
       status { "pending" }
     end
@@ -60,6 +64,7 @@ end
 #  confirmed_at                               :datetime
 #  current_sign_in_at                         :datetime
 #  current_sign_in_ip                         :string
+#  developer                                  :boolean          default(FALSE), not null, indexed
 #  discarded_at                               :datetime         indexed
 #  email                                      :string           default(""), not null, uniquely indexed
 #  encrypted_password                         :string           default(""), not null
@@ -85,6 +90,7 @@ end
 #
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE WHERE (discarded_at IS NULL)
 #  index_users_on_created_at            (created_at) WHERE (discarded_at IS NULL)
+#  index_users_on_developer             (developer) WHERE (discarded_at IS NULL)
 #  index_users_on_discarded_at          (discarded_at) WHERE (discarded_at IS NULL)
 #  index_users_on_discourse_id          (discourse_id) UNIQUE WHERE (discarded_at IS NULL)
 #  index_users_on_email                 (email) UNIQUE WHERE (discarded_at IS NULL)

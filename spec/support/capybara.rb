@@ -17,7 +17,7 @@ Capybara.register_driver(:cuprite) do |app|
     slowmo: (ENV.fetch("HEADFULL", false) == true) ? 5 : 0,
     js_errors: true,
     browser_name: :chrome,
-    timeout: (ENV.fetch("CI", false) == true) ? 10 : 5,
+    timeout: (ENV.fetch("CI", false) == true) ? 20 : 5,
     process_timeout: (ENV.fetch("CI", false) == true) ? 20 : 10
   }
   Capybara::Cuprite::Driver.new(app, options)

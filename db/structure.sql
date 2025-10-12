@@ -1077,6 +1077,22 @@ ALTER SEQUENCE public.training_schedules_horses_id_seq OWNED BY public.training_
 
 
 --
+-- Name: user_push_subscriptions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_push_subscriptions (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid NOT NULL,
+    auth_key character varying,
+    endpoint character varying,
+    p256dh_key character varying,
+    user_agent character varying,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1107,7 +1123,8 @@ CREATE TABLE public.users (
     locked_at timestamp with time zone,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone NOT NULL,
-    discarded_at timestamp with time zone
+    discarded_at timestamp with time zone,
+    developer boolean DEFAULT false NOT NULL
 );
 
 
@@ -1509,6 +1526,14 @@ ALTER TABLE ONLY public.training_schedules_horses
 
 ALTER TABLE ONLY public.training_schedules
     ADD CONSTRAINT training_schedules_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_push_subscriptions user_push_subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_push_subscriptions
+    ADD CONSTRAINT user_push_subscriptions_pkey PRIMARY KEY (id);
 
 
 --
@@ -2087,6 +2112,13 @@ CREATE INDEX index_training_schedules_on_wednesday_activities ON public.training
 
 
 --
+-- Name: index_user_push_subscriptions_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_push_subscriptions_on_user_id ON public.user_push_subscriptions USING btree (user_id);
+
+
+--
 -- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2098,6 +2130,13 @@ CREATE UNIQUE INDEX index_users_on_confirmation_token ON public.users USING btre
 --
 
 CREATE INDEX index_users_on_created_at ON public.users USING btree (created_at) WHERE (discarded_at IS NULL);
+
+
+--
+-- Name: index_users_on_developer; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_developer ON public.users USING btree (developer) WHERE (discarded_at IS NULL);
 
 
 --
@@ -2233,6 +2272,14 @@ ALTER TABLE ONLY public.auction_horses
 
 ALTER TABLE ONLY public.horse_genetics
     ADD CONSTRAINT fk_rails_10e493203b FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
+-- Name: user_push_subscriptions fk_rails_2762779401; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_push_subscriptions
+    ADD CONSTRAINT fk_rails_2762779401 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -2458,6 +2505,8 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251012155939'),
+('20251012133537'),
 ('20251012093408'),
 ('20251012091923'),
 ('20251011175308'),

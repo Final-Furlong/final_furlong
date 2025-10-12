@@ -7,8 +7,11 @@ en:
     new_user: New user
     users: Users
   layouts:
+    banner:
+      new_version: New version available!
+      offline: You are offline - Content may be outdated
+      upgrade_action: Upgrade
     nav:
-      game_title: Final Furlong
       join: Join
       login: Log in
       open_main_menu: Open Main Menu

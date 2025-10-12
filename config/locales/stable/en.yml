@@ -11,6 +11,18 @@ en:
         title: Horses
       update:
         success: "%{name} was successfully updated."
+    settings:
+      new:
+        browser_subscribed: 'Status: YES! Your browser is currently subscribed to push notifications'
+        browser_unsubscribed: 'Status: Your browser is NOT subscribed to push notifications'
+        instructions: Try sending a web push notification using the form below. The first text box will be used as a title and the second text box represents the message body. Click the button to send a push notification to yourself.
+        notification: Hi from Final Furlong
+        notification_not_supported: Notifications are not supported in your browser
+        push_not_supported: Push messaging is not supported in your browser
+        send: Send Notification
+        subscribe_action: Subscribe
+        title: Settings
+        unsubscribe_action: Unsubscribe
     training_schedule_horses:
       create:
         success: "%{name} was assigned to %{schedule}"

@@ -10,6 +10,7 @@ module Account
     has_one :stable, dependent: :destroy
     has_one :activation, class_name: "Account::Activation", dependent: :delete
     has_one :setting, dependent: :delete
+    has_many :push_subscriptions, inverse_of: :user, dependent: :delete_all
 
     # Include default devise modules. Others available are:
     # :omniauthable
@@ -21,7 +22,10 @@ module Account
 
     validates :username, :status, :name, presence: true
     validates :admin, inclusion: { in: [true, false] }
+    validates :developer, inclusion: { in: [true, false] }
     validates :username, uniqueness: { case_sensitive: false }, length: { minimum: 3 }
+
+    scope :developer, -> { where(developer: true) }
 
     delegate :locale, to: :setting, allow_nil: true
 
@@ -60,6 +64,7 @@ end
 #  confirmed_at                               :datetime
 #  current_sign_in_at                         :datetime
 #  current_sign_in_ip                         :string
+#  developer                                  :boolean          default(FALSE), not null, indexed
 #  discarded_at                               :datetime         indexed
 #  email                                      :string           default(""), not null, uniquely indexed
 #  encrypted_password                         :string           default(""), not null
@@ -85,6 +90,7 @@ end
 #
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE WHERE (discarded_at IS NULL)
 #  index_users_on_created_at            (created_at) WHERE (discarded_at IS NULL)
+#  index_users_on_developer             (developer) WHERE (discarded_at IS NULL)
 #  index_users_on_discarded_at          (discarded_at) WHERE (discarded_at IS NULL)
 #  index_users_on_discourse_id          (discourse_id) UNIQUE WHERE (discarded_at IS NULL)
 #  index_users_on_email                 (email) UNIQUE WHERE (discarded_at IS NULL)
