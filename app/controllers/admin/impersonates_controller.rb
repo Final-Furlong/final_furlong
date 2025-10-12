@@ -1,10 +1,5 @@
 module Admin
   class ImpersonatesController < AdminController
-    skip_after_action :verify_authorized, only: :destroy
-
-    def index
-    end
-
     def create
       user = Account::User.find(params[:id])
       authorize user.stable, :impersonate?, policy_class: Account::StablePolicy

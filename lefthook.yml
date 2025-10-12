@@ -13,15 +13,15 @@ pre-commit:
       tags: linter
       files: git diff --name-only --staged
       run: actionlint
-    active-record-doctor:
-      tags: linter
-      files: git diff --name-only --staged
-      run: bundle exec rake active_record_doctor
     annotate-controllers:
       tags: backend
       files: git diff --name-only --staged
       glob: "app/controllers/**/*.rb"
       run: bundle exec annotaterb routes && git add {staged_files}
+    active-record-doctor:
+      tags: linter
+      files: git diff --name-only --staged
+      run: bundle exec rake active_record_doctor
     eslint:
       tags: frontend style
       glob: "*.{js,ts,jsx,tsx}"

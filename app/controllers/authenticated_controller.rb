@@ -1,6 +1,4 @@
 class AuthenticatedController < ApplicationController
-  verify_authorized except: :index
-
   before_action :authenticate_user!, unless: :devise_controller?
   before_action :verify_active_user!, unless: :devise_controller?
 
