@@ -3,10 +3,6 @@ module Legacy
     self.table_name = "ff_horses"
     self.primary_key = "ID"
 
-    # rubocop:disable Rails/HasManyOrHasOneDependent
-    has_one :auction_consignment, class_name: "Legacy::AuctionHorse", foreign_key: :horse
-    # rubocop:enable Rails/HasManyOrHasOneDependent
-
     scope :game_owned, -> { where(Owner: 20) }
     scope :alive, -> { where(DOD: Date.current + 4.years..).or(where(DOD: nil)) }
     scope :racehorse, -> { where(status: 3).alive }

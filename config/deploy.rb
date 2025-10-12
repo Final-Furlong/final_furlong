@@ -32,6 +32,44 @@ set :ssh_options, {
 
 set :yarn_flags, "--production --pure-lockfile --no-emoji --no-progress --ignore-engines"
 
+# solid queue
+set :solid_queue_systemd_unit_name, "solid-queue-ff.service"
+
+namespace :solid_queue do
+  desc "Quiet solid_queue (start graceful termination)"
+  task :quiet do
+    on roles(:app) do
+      execute :systemctl, "--user", "kill", "-s", "SIGTERM", fetch(:solid_queue_systemd_unit_name), raise_on_non_zero_exit: false
+    end
+  end
+
+  desc "Stop solid_queue (force immediate termination)"
+  task :stop do
+    on roles(:app) do
+      execute :systemctl, "--user", "kill", "-s", "SIGQUIT", fetch(:solid_queue_systemd_unit_name), raise_on_non_zero_exit: false
+    end
+  end
+
+  desc "Start solid_queue"
+  task :start do
+    on roles(:app) do
+      execute :systemctl, "--user", "start", fetch(:solid_queue_systemd_unit_name)
+    end
+  end
+
+  desc "Restart solid_queue"
+  task :restart do
+    on roles(:app) do
+      execute :systemctl, "--user", "restart", fetch(:solid_queue_systemd_unit_name)
+    end
+  end
+end
+
+after "deploy:starting", "solid_queue:quiet"
+after "deploy:updated", "solid_queue:stop"
+after "deploy:published", "solid_queue:start"
+after "deploy:failed", "solid_queue:restart"
+
 before "deploy:migrate", "maintenance:start"
 after "deploy:migrate", "maintenance:stop"
 

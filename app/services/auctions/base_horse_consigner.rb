@@ -7,7 +7,7 @@ module Auctions
     private
 
     def base_query
-      Legacy::Horse.game_owned.where.missing(:auction_consignment)
+      Legacy::Horse.game_owned
     end
 
     def consigned_to_auction
