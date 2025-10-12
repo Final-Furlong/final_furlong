@@ -2,7 +2,7 @@ doctype html
 html(lang= I18n.locale)
   = render "layouts/head"
   body class="dark:bg-gray-900"
-    .drawer class="lg:drawer-open"
+    .drawer class="lg:h-screen lg:drawer-open"
       main.drawer-content
         label for="sidebar-drawer" class="float-left btn drawer-button lg:hidden"
           span.sr-only= t("layouts.nav.open_main_menu")
