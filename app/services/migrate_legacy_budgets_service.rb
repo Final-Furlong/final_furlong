@@ -11,6 +11,8 @@ class MigrateLegacyBudgetsService # rubocop:disable Metrics/ClassLength
       next if Account::Budget.exists?(legacy_budget_id: budget.ID)
 
       stable = Account::Stable.find_by(legacy_id: budget.Stable)
+      next unless stable
+
       budget_attrs = {
         stable:,
         description: budget.Description,
