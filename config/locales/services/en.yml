@@ -20,6 +20,24 @@ en:
         auction_not_future: Auction is not in the future
         no_consignment_configs: There are no configs to run for consigning horses
         non_game_auction: Auction is not run by Final Furlong
+      horse_creator:
+        auction_not_found: Auction could not be found
+        auction_not_future: Auction is not in the future
+        broodmares_not_allowed: Broodmares are not allowed in this auction
+        cannot_afford_reserve_fee: You cannot afford the fee for this horse
+        dead_horses_not_allowed: Your horse is dead
+        horse_not_found: Horse could not be found
+        horse_not_owned: You do not own this horse
+        outside_horses_not_allowed: Outside horses are not allowed in this auction
+        racehorse_2yo_not_allowed: Two year old racehorses are not allowed in this auction
+        racehorse_3yo_not_allowed: Three year old racehorses are not allowed in this auction
+        racehorse_older_not_allowed: Four+ year old racehorses are not allowed in this auction
+        reserves_not_allowed: Reserve price is not allowed
+        stable_not_found: Stable could not be found
+        stallions_not_allowed: Stallions are not allowed in this auction
+        unborn_horses_not_allowed: Your horse is not yet born
+        weanlings_not_allowed: Weanlings are not allowed in this auction
+        yearlings_not_allowed: Yearlings are not allowed in this auction
       horse_seller:
         auction_inactive: Auction is not active
         bid_timeout_not_met: This horse is not yet ready to be sold
@@ -30,3 +48,6 @@ en:
         horse_sold: Horse is already sold
         reserve_not_met: You have not met the reserve price for this horse
         spent_max_money: You have already spent the maximum allowed for this auction
+      legacy_horse_creator:
+        auction_not_future: Auction is not in the future
+        horse_not_found: Could not find horse

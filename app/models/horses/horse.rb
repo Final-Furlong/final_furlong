@@ -28,7 +28,8 @@ module Horses
     def age
       return 0 if stillborn?
 
-      horse_attributes.age
+      max_date = date_of_death ? date_of_death.year : Date.current
+      max_date.year - date_of_birth.year
     end
 
     def budget_name

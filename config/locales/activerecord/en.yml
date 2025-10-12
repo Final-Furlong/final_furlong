@@ -44,6 +44,10 @@ en:
           attributes:
             base:
               cannot_be_owner: Cannot bid on your own horse!
+        auctions/horse:
+          attributes:
+            horse_id:
+              taken: is already consigned to an auction
         horses/horse:
           attributes:
             name:

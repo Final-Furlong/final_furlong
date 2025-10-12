@@ -47,7 +47,7 @@ module Auctions
             min_age: config.minimum_age, max_age: config.maximum_age
           ).select(:ID)
           legacy_horses.find_each do |horse|
-            creator_result = Auctions::AuctionHorseCreator.new.create_horse(auction:, legacy_horse_id: horse.ID)
+            creator_result = Auctions::LegacyHorseCreator.new.create_horse(auction:, legacy_horse_id: horse.ID)
             if creator_result.created?
               horse_type_number_consigned += 1
             else
