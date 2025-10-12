@@ -35,11 +35,13 @@ end
 # Table name: stables
 #
 #  id                  :uuid             not null, primary key
+#  available_balance   :integer          default(0)
 #  bred_horses_count   :integer          default(0), not null
 #  description         :text
 #  horses_count        :integer          default(0), not null
 #  last_online_at      :datetime         indexed
 #  name                :string           not null
+#  total_balance       :integer          default(0)
 #  unborn_horses_count :integer          default(0), not null
 #  created_at          :datetime         not null, indexed
 #  updated_at          :datetime         not null
