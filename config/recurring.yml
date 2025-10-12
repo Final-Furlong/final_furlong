@@ -13,7 +13,7 @@ production:
   migrate_legacy_budgets:
     class: UpdateLegacyBudgetsJob
     queue: low_priority
-    schedule: every 3 minutes
+    schedule: every 90 seconds
   migrate_legacy_horses:
     class: UpdateLegacyHorsesJob
     queue: low_priority
