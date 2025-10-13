@@ -5,7 +5,7 @@ class MigrateLegacyRacesService # rubocop:disable Metrics/ClassLength
 
   def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     Legacy::Race.find_each do |race|
-      legacy_racetrack = Legacy::Racetrack.find!(race.Location)
+      legacy_racetrack = Legacy::Racetrack.find_by!(ID: race.Location)
 
       track_surface = Racing::TrackSurface.joins(:racetrack).where(surface: legacy_racetrack.DTSC.downcase, racetracks: { name: legacy_racetrack.Name })
       race_schedule = Racing::RaceSchedule.find_or_initialize_by(day_number: race.DayNum, number: race.Number)
