@@ -60,7 +60,7 @@ class MigrateLegacyRacesService # rubocop:disable Metrics/ClassLength
         name: race.Name.presence,
         purse: race.Purse,
         claiming_price:,
-        surface: track_surface
+        track_surface:
       )
     end
   rescue => e
