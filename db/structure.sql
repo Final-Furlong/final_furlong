@@ -110,6 +110,48 @@ CREATE TYPE public.horse_status AS ENUM (
 
 
 --
+-- Name: race_age; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.race_age AS ENUM (
+    '2',
+    '2+',
+    '3',
+    '3+',
+    '4',
+    '4+'
+);
+
+
+--
+-- Name: race_grade; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.race_grade AS ENUM (
+    'Ungraded',
+    'Grade 3',
+    'Grade 2',
+    'Grade 1'
+);
+
+
+--
+-- Name: race_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.race_type AS ENUM (
+    'maiden',
+    'claiming',
+    'starter_allowance',
+    'nw1_allowance',
+    'nw2_allowance',
+    'nw3_allowance',
+    'allowance',
+    'stakes'
+);
+
+
+--
 -- Name: track_condition; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -897,6 +939,50 @@ ALTER SEQUENCE public.motor_tags_id_seq OWNED BY public.motor_tags.id;
 
 
 --
+-- Name: race_schedules; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.race_schedules (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    day_number integer DEFAULT 1 NOT NULL,
+    date date NOT NULL,
+    number integer DEFAULT 1 NOT NULL,
+    race_type public.race_type DEFAULT 'maiden'::public.race_type NOT NULL,
+    age public.race_age DEFAULT '2'::public.race_age NOT NULL,
+    female_only boolean DEFAULT false NOT NULL,
+    distance numeric(3,1) DEFAULT 5.0 NOT NULL,
+    grade public.race_grade,
+    surface_id uuid NOT NULL,
+    name character varying,
+    purse integer DEFAULT 0 NOT NULL,
+    claiming_price integer,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN race_schedules.race_type; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_schedules.race_type IS 'maiden, claiming, starter_allowance, nw1_allowance, nw2_allowance, nw3_allowance, allowance, stakes';
+
+
+--
+-- Name: COLUMN race_schedules.age; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_schedules.age IS '2, 2+, 3, 3+, 4, 4+';
+
+
+--
+-- Name: COLUMN race_schedules.grade; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_schedules.grade IS 'Ungraded, Grade 3, Grade 2, Grade 1';
+
+
+--
 -- Name: racetracks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1465,6 +1551,14 @@ ALTER TABLE ONLY public.motor_tags
 
 
 --
+-- Name: race_schedules race_schedules_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_schedules
+    ADD CONSTRAINT race_schedules_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: racetracks racetracks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1930,6 +2024,83 @@ CREATE INDEX index_motor_taggable_tags_on_tag_id ON public.motor_taggable_tags U
 
 
 --
+-- Name: index_race_schedules_on_age; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_schedules_on_age ON public.race_schedules USING btree (age);
+
+
+--
+-- Name: index_race_schedules_on_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_schedules_on_date ON public.race_schedules USING btree (date);
+
+
+--
+-- Name: index_race_schedules_on_day_number; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_schedules_on_day_number ON public.race_schedules USING btree (day_number);
+
+
+--
+-- Name: index_race_schedules_on_distance; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_schedules_on_distance ON public.race_schedules USING btree (distance);
+
+
+--
+-- Name: index_race_schedules_on_female_only; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_schedules_on_female_only ON public.race_schedules USING btree (female_only);
+
+
+--
+-- Name: index_race_schedules_on_grade; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_schedules_on_grade ON public.race_schedules USING btree (grade);
+
+
+--
+-- Name: index_race_schedules_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_schedules_on_name ON public.race_schedules USING btree (name);
+
+
+--
+-- Name: index_race_schedules_on_number; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_schedules_on_number ON public.race_schedules USING btree (number);
+
+
+--
+-- Name: index_race_schedules_on_purse; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_schedules_on_purse ON public.race_schedules USING btree (purse);
+
+
+--
+-- Name: index_race_schedules_on_race_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_schedules_on_race_type ON public.race_schedules USING btree (race_type);
+
+
+--
+-- Name: index_race_schedules_on_surface_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_schedules_on_surface_id ON public.race_schedules USING btree (surface_id);
+
+
+--
 -- Name: index_racetracks_on_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2259,6 +2430,14 @@ CREATE UNIQUE INDEX motor_tags_name_unique_index ON public.motor_tags USING btre
 
 
 --
+-- Name: race_schedules fk_rails_0831641203; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_schedules
+    ADD CONSTRAINT fk_rails_0831641203 FOREIGN KEY (surface_id) REFERENCES public.track_surfaces(id);
+
+
+--
 -- Name: auction_horses fk_rails_0ff758e7f8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2505,6 +2684,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251013155516'),
 ('20251012155939'),
 ('20251012133537'),
 ('20251012093408'),

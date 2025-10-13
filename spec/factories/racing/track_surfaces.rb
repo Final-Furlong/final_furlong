@@ -1,12 +1,14 @@
-module Racing
-  class TrackSurface < ApplicationRecord
-    belongs_to :racetrack
-
-    has_many :scheduled_races, class_name: "RaceSchedule", dependent: :restrict_with_exception
-
-    validates :surface, :condition, :width, :length, :turn_to_finish_length,
-      :turn_distance, :banking, :jumps, presence: true
-    validates :surface, uniqueness: { scope: :racetrack_id }
+FactoryBot.define do
+  factory :track_surface, class: "Racing::TrackSurface" do
+    banking { 4 }
+    condition { "fast" }
+    jumps { 0 }
+    length { 2500 }
+    surface { "dirt" }
+    turn_distance { 1000 }
+    turn_to_finish_length { 1000 }
+    width { 100 }
+    racetrack
   end
 end
 
