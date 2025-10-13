@@ -17,7 +17,7 @@ class Racing::RaceSchedule < ApplicationRecord
   belongs_to :track_surface, class_name: "Racing::TrackSurface", foreign_key: :surface_id, inverse_of: :scheduled_races
 
   validates :day_number, :date, :number, :race_type, :age, :distance, :purse, presence: true
-  validates :day_number, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 104 }
+  validates :day_number, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 105 }, allow_nil: true
   validates :number, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 50 }
   validates :race_type, inclusion: { in: RACE_TYPES }
   validates :age, inclusion: { in: RACE_AGES }

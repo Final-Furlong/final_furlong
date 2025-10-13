@@ -13,7 +13,7 @@ RSpec.describe Racing::RaceSchedule do
     it { is_expected.to validate_presence_of(:age) }
     it { is_expected.to validate_presence_of(:distance) }
     it { is_expected.to validate_presence_of(:purse) }
-    it { is_expected.to validate_numericality_of(:day_number).only_integer.is_greater_than_or_equal_to(1).is_less_than_or_equal_to(104) }
+    it { is_expected.to validate_numericality_of(:day_number).only_integer.is_greater_than_or_equal_to(1).is_less_than_or_equal_to(105).allow_nil }
     it { is_expected.to validate_numericality_of(:number).only_integer.is_greater_than_or_equal_to(1).is_less_than_or_equal_to(50) }
     it { is_expected.to validate_inclusion_of(:race_type).in_array(described_class::RACE_TYPES) }
     it { is_expected.to validate_inclusion_of(:age).in_array(described_class::RACE_AGES) }

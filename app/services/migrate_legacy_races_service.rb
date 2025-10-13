@@ -49,7 +49,7 @@ class MigrateLegacyRacesService # rubocop:disable Metrics/ClassLength
         end
       end
       race_schedule.update!(
-        day_number: race.DayNum,
+        day_number: race.DayNum.between?(1, 105) ? race.DayNum : nil,
         number: race.Num,
         date: Date.parse(race.Date.to_s) - 4.years,
         age: race_age,
