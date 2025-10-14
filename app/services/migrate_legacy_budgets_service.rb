@@ -9,6 +9,7 @@ class MigrateLegacyBudgetsService # rubocop:disable Metrics/ClassLength
   def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     Legacy::Budget.where("ID > ?", budget_id).order(ID: :asc).limit(limit).find_each do |budget|
       next if Account::Budget.exists?(legacy_budget_id: budget.ID)
+      next if budget.Amount.blank?
 
       stable = Account::Stable.find_by(legacy_id: budget.Stable)
       next unless stable
