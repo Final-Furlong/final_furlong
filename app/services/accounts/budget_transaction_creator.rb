@@ -1,6 +1,6 @@
 module Accounts
   class BudgetTransactionCreator < ApplicationService
-    def create_transaction(stable:, description:, amount:, date:, legacy_budget_id: nil, legacy_stable_id: nil)
+    def create_transaction(stable:, description:, amount:, date: nil, legacy_budget_id: nil, legacy_stable_id: nil)
       previous_budget = Account::Budget.where(stable:).recent.last
       attrs = {
         stable:,

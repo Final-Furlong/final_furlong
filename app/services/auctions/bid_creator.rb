@@ -34,8 +34,8 @@ module Auctions
         return result
       end
 
-      available_balance = Legacy::Stable.find_by(id: bidder.legacy_id)&.availableBalance
-      if available_balance && (available_balance < bid_params[:current_bid] || available_balance < bid_params[:maximum_bid])
+      available_balance = bidder.available_balance.to_i
+      if available_balance < bid_params[:current_bid].to_i || available_balance < bid_params[:maximum_bid].to_i
         result.error = error("cannot_afford_bid")
         return result
       end

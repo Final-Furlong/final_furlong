@@ -88,7 +88,7 @@ module Auctions
           return result
         else
           auction_horse.reserve_price = reserve_price
-          available_balance = Legacy::Stable.find_by(id: stable.legacy_id)&.availableBalance
+          available_balance = stable.available_balance
           if available_balance.to_i <= reserve_price * 0.1
             result.error = error("cannot_afford_reserve_fee")
             return result
@@ -102,11 +102,11 @@ module Auctions
 
       ActiveRecord::Base.transaction do
         if reserve_price
-          reserve_fee = reserve_price * 0.1 * -1
-          Legacy::Budget.create_new(
-            legacy_id: stable.legacy_id, description: "Consigning #{horse.name} to #{auction.title}", amount: reserve_fee
+          reserve_fee = (reserve_price * 0.1).to_i * -1
+          description = "Consigning #{horse.name} to #{auction.title}"
+          Accounts::BudgetTransactionCreator.new.create_transaction(
+            stable:, description:, amount: reserve_fee, legacy_stable_id: stable.legacy_id
           )
-          Legacy::Stable.update_balance(id: stable.legacy_id, amount: reserve_fee)
         end
         Legacy::Horse.where(ID: horse.legacy_id).update(consigned_auction_id: auction.id)
         if auction_horse.save!

@@ -402,8 +402,7 @@ RSpec.describe Auctions::HorseCreator do
   context "when reserve pricing is allowed and reserve price is set" do
     before do
       auction.update(reserve_pricing_allowed: true)
-      Legacy::Budget.create_new(legacy_id: stable.legacy_id, description: "Opening Balance", amount: 50_000)
-      Legacy::Stable.create(id: stable.legacy_id, availableBalance: 50_000, totalBalance: 50_000)
+      Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description: "Opening Balance", amount: 50_000)
     end
 
     it "returns created true" do
@@ -426,20 +425,19 @@ RSpec.describe Auctions::HorseCreator do
     it "charges fee of 10% of reserve price" do
       expect do
         described_class.new.create_horse(params.merge(reserve_price: 10_000))
-      end.to change(Legacy::Budget, :count).by(1)
-      expect(Legacy::Budget.recent.first.Amount).to eq(-1_000)
+      end.to change(Account::Budget, :count).by(1)
+      expect(Account::Budget.recent.first.amount).to eq(-1_000)
     end
 
     context "when stable cannot afford fee" do
       before do
-        Legacy::Budget.create_new(legacy_id: stable.legacy_id, description: "Opening Balance", amount: 2_000)
-        Legacy::Stable.where(id: stable.legacy_id).update(availableBalance: 2_000, totalBalance: 2_000)
+        stable.update(available_balance: 2_000, total_balance: 2_000)
       end
 
       it "does not charge 10% fee" do
         expect do
           described_class.new.create_horse(params.merge(reserve_price: 50_000))
-        end.not_to change(Legacy::Budget, :count)
+        end.not_to change(Account::Budget, :count)
       end
 
       it "does not consign horse" do

@@ -31,7 +31,7 @@ module Auctions
       if horse_max_price.positive?
         if Auctions::Bid.where.not(id: bid.id).with_bid_matching(horse_max_price).exists?(horse: auction_horse)
           all_max_bidders = Auctions::Bid.with_bid_matching(horse_max_price).select { |max_bid|
-            Legacy::Stable.find_by(id: max_bid.bidder.legacy_id)&.availableBalance.to_i >= horse_max_price
+            max_bid.bidder.available_balance.to_i >= horse_max_price
           }
           if all_max_bidders.empty?
             Auctions::BidDeleter.new.delete_bids(bids: Auctions::Bid.with_bid_matching(horse_max_price).to_a)
@@ -44,7 +44,7 @@ module Auctions
       end
       buyer = bid.bidder
 
-      available_balance = Legacy::Stable.find_by(id: buyer.legacy_id)&.availableBalance
+      available_balance = buyer.available_balance
       if available_balance.nil? || available_balance < bid.current_bid
         Auctions::BidDeleter.new.delete_bids(bids: [bid])
         result.error = error("cannot_afford_bid")
@@ -83,22 +83,22 @@ module Auctions
       result.error = nil
       ActiveRecord::Base.transaction do
         description = "#{auction.title}: Purchased #{horse.budget_name} (ID# #{horse.legacy_id}) from #{seller.name}"
-        legacy_budget = Legacy::Budget.create_new(legacy_id: buyer.legacy_id, description:, amount: bid.current_bid * -1)
-        Legacy::Stable.update_balance(id: buyer.legacy_id, amount: bid.current_bid * -1)
+        Accounts::BudgetTransactionCreator.new.create_transaction(
+          stable: buyer, description:, amount: bid.current_bid * -1, legacy_stable_id: buyer.legacy_id
+        )
 
         new_points = buyer.newbie? ? 6 : 2
         Legacy::Activity.create_new(
-          legacy_id: buyer.legacy_id, points: new_points, budget_id: legacy_budget.ID
+          legacy_id: buyer.legacy_id, points: new_points
         )
 
         description = "#{auction.title}: Sold #{horse.budget_name} (ID# #{horse.legacy_id}) to #{buyer.name}"
-        legacy_budget2 = Legacy::Budget.create_new(legacy_id: seller.legacy_id, description:, amount: bid.current_bid)
-        Legacy::Stable.update_balance(id: seller.legacy_id, amount: bid.current_bid)
+        Accounts::BudgetTransactionCreator.new.create_transaction(
+          stable: seller, description:, amount: bid.current_bid, legacy_stable_id: seller.legacy_id
+        )
 
         new_points = seller.newbie? ? 6 : 2
-        Legacy::Activity.create_new(
-          legacy_id: seller.legacy_id, points: new_points, budget_id: legacy_budget2.ID
-        )
+        Legacy::Activity.create_new(legacy_id: seller.legacy_id, points: new_points)
 
         Legacy::TrainingSchedule.where(Horse: horse.legacy_id).delete_all
         Legacy::TrainingScheduleHorse.where(Horse: horse.legacy_id).delete_all

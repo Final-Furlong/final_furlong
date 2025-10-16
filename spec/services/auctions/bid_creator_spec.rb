@@ -404,24 +404,21 @@ RSpec.describe Auctions::BidCreator do
   context "when bidder cannot afford current bid" do
     it "returns created false" do
       legacy_user = create(:legacy_user)
-      stable.update(legacy_id: legacy_user.ID)
-      _legacy_stable = create(:legacy_stable, id: legacy_user.ID, availableBalance: 5_000)
+      stable.update(legacy_id: legacy_user.ID, available_balance: 5_000)
       result = described_class.new.create_bid(bid_params.merge(current_bid: 10_000))
       expect(result.created?).to be false
     end
 
     it "returns error" do
       legacy_user = create(:legacy_user)
-      stable.update(legacy_id: legacy_user.ID)
-      _legacy_stable = create(:legacy_stable, id: legacy_user.ID, availableBalance: 5_000)
+      stable.update(legacy_id: legacy_user.ID, available_balance: 5_000)
       result = described_class.new.create_bid(bid_params.merge(current_bid: 10_000))
       expect(result.error).to eq error("cannot_afford_bid")
     end
 
     it "does not create bid" do
       legacy_user = create(:legacy_user)
-      stable.update(legacy_id: legacy_user.ID)
-      _legacy_stable = create(:legacy_stable, id: legacy_user.ID, availableBalance: 5_000)
+      stable.update(legacy_id: legacy_user.ID, available_balance: 5_000)
       expect do
         described_class.new.create_bid(bid_params.merge(current_bid: 10_000))
       end.not_to change(Auctions::Bid, :count)
@@ -431,24 +428,21 @@ RSpec.describe Auctions::BidCreator do
   context "when bidder cannot afford maximum bid" do
     it "returns created false" do
       legacy_user = create(:legacy_user)
-      stable.update(legacy_id: legacy_user.ID)
-      _legacy_stable = create(:legacy_stable, id: legacy_user.ID, availableBalance: 5_000)
+      stable.update(legacy_id: legacy_user.ID, available_balance: 5_000)
       result = described_class.new.create_bid(bid_params.merge(current_bid: 1000, maximum_bid: 10_000))
       expect(result.created?).to be false
     end
 
     it "returns error" do
       legacy_user = create(:legacy_user)
-      stable.update(legacy_id: legacy_user.ID)
-      _legacy_stable = create(:legacy_stable, id: legacy_user.ID, availableBalance: 5_000)
+      stable.update(legacy_id: legacy_user.ID, available_balance: 5_000)
       result = described_class.new.create_bid(bid_params.merge(current_bid: 1000, maximum_bid: 10_000))
       expect(result.error).to eq error("cannot_afford_bid")
     end
 
     it "does not create bid" do
       legacy_user = create(:legacy_user)
-      stable.update(legacy_id: legacy_user.ID)
-      _legacy_stable = create(:legacy_stable, id: legacy_user.ID, availableBalance: 5_000)
+      stable.update(legacy_id: legacy_user.ID, available_balance: 5_000)
       expect do
         described_class.new.create_bid(bid_params.merge(current_bid: 1000, maximum_bid: 10_000))
       end.not_to change(Auctions::Bid, :count)
@@ -547,7 +541,7 @@ RSpec.describe Auctions::BidCreator do
   end
 
   def stable
-    @stable ||= create(:stable)
+    @stable ||= create(:stable, available_balance: 40_000, total_balance: 50_000)
   end
 
   def horse

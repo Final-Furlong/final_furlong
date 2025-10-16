@@ -7,7 +7,7 @@ RSpec.describe Auctions::HorseSeller do
 
   shared_examples "an unprocessed sale" do
     it "does not create budget entries" do
-      expect { described_class.new.process_sale(bid:) }.not_to change(Legacy::Budget, :count)
+      expect { described_class.new.process_sale(bid:) }.not_to change(Account::Budget, :count)
     end
 
     it "does not modify horse" do
@@ -17,50 +17,46 @@ RSpec.describe Auctions::HorseSeller do
 
   shared_examples "a processed sale" do
     it "creates budget entries" do
-      expect { described_class.new.process_sale(bid:) }.to change(Legacy::Budget, :count).by(2)
+      expect { described_class.new.process_sale(bid:) }.to change(Account::Budget, :count).by(2)
     end
 
     it "creates budget entry for buyer" do
       described_class.new.process_sale(bid:)
-      budget = Legacy::Budget.where(Stable: legacy_stable_buyer.ID).recent.first
+      budget = Account::Budget.where(stable: @buyer).recent.first
       expect(budget).to have_attributes(
-        Date: Date.current + 4.years,
-        Description: "#{auction.title}: Purchased #{horse.name} (ID# #{horse.legacy_id}) from #{seller.name}",
-        Amount: bid.current_bid * -1,
-        Balance: bid.current_bid * -1
+        description: "#{auction.title}: Purchased #{horse.name} (ID# #{horse.legacy_id}) from #{seller.name}",
+        amount: bid.current_bid * -1,
+        balance: bid.current_bid * -1
       )
     end
 
     it "creates budget entry for seller" do
       described_class.new.process_sale(bid:)
-      budget = Legacy::Budget.where(Stable: legacy_stable_seller.ID).recent.first
+      budget = Account::Budget.where(stable: @seller).recent.first
       expect(budget).to have_attributes(
-        Date: Date.current + 4.years,
-        Description: "#{auction.title}: Sold #{horse.name} (ID# #{horse.legacy_id}) to #{buyer.name}",
-        Amount: bid.current_bid,
-        Balance: bid.current_bid
+        description: "#{auction.title}: Sold #{horse.name} (ID# #{horse.legacy_id}) to #{buyer.name}",
+        amount: bid.current_bid,
+        balance: bid.current_bid
       )
     end
 
     it "modifies legacy stable for buyer" do
-      original_balance = legacy_buyer_balance
-      original_available_balance = original_balance.availableBalance
-      original_total_balance = original_balance.totalBalance
+      original_available_balance = buyer.available_balance
+      original_total_balance = buyer.total_balance
       described_class.new.process_sale(bid:)
-      expect(legacy_buyer_balance.reload).to have_attributes(
-        availableBalance: original_available_balance - bid.current_bid,
-        totalBalance: original_total_balance - bid.current_bid
+      expect(buyer.reload).to have_attributes(
+        available_balance: original_available_balance - bid.current_bid,
+        total_balance: original_total_balance - bid.current_bid
       )
     end
 
     it "modifies legacy stable for seller" do
-      original_balance = legacy_seller_balance
-      original_available_balance = original_balance.availableBalance
-      original_total_balance = original_balance.totalBalance
+      original_available_balance = seller.available_balance
+      original_total_balance = seller.total_balance
       described_class.new.process_sale(bid:)
-      expect(legacy_seller_balance.reload).to have_attributes(
-        availableBalance: original_available_balance + bid.current_bid,
-        totalBalance: original_total_balance + bid.current_bid
+      expect(seller.reload).to have_attributes(
+        available_balance: original_available_balance + bid.current_bid,
+        total_balance: original_total_balance + bid.current_bid
       )
     end
 
@@ -341,7 +337,7 @@ RSpec.describe Auctions::HorseSeller do
   end
 
   context "when bidder cannot afford current bid" do
-    before { legacy_buyer_balance.update(availableBalance: 500) }
+    before { buyer.update(available_balance: 500) }
 
     it "returns sold false" do
       result = described_class.new.process_sale(bid:)
@@ -364,7 +360,7 @@ RSpec.describe Auctions::HorseSeller do
   end
 
   context "when bidder cannot afford current bid and does not have a balance" do
-    before { legacy_buyer_balance.destroy }
+    before { buyer.update(available_balance: nil) }
 
     it "returns sold false" do
       result = described_class.new.process_sale(bid:)
@@ -443,12 +439,11 @@ RSpec.describe Auctions::HorseSeller do
         @other_winning_bidder = @bid2.bidder
         @legacy_stable_buyer_2 = create(:legacy_user)
         @bid2.bidder.update(legacy_id: @legacy_stable_buyer_2.ID)
-        @legacy_buyer_balance_2 = create(:legacy_stable, id: @legacy_stable_buyer_2.ID, availableBalance: 200_000, totalBalance: 200_000)
       end
 
       context "when other bidder cannot afford the max price" do
         before do
-          @legacy_buyer_balance_2.update(availableBalance: 50_000, totalBalance: 50_000)
+          @bid2.bidder.update(available_balance: 50_000, total_balance: 50_000)
         end
 
         it "returns sold true" do
@@ -469,8 +464,8 @@ RSpec.describe Auctions::HorseSeller do
 
       context "when all bidders cannot afford the max price" do
         before do
-          @legacy_buyer_balance_2.update(availableBalance: 50_000, totalBalance: 50_000)
-          legacy_buyer_balance.update(availableBalance: 500)
+          @bid2.bidder.update(available_balance: 50_000, total_balance: 50_000)
+          buyer.update(available_balance: 500)
         end
 
         it "returns sold true" do
@@ -568,12 +563,12 @@ RSpec.describe Auctions::HorseSeller do
     @legacy_stable_buyer = create(:legacy_user)
     @bid.bidder.update(legacy_id: legacy_stable_buyer.ID)
     @legacy_stable_seller = create(:legacy_user)
-    @legacy_buyer_balance = create(:legacy_stable, id: legacy_stable_buyer.ID, availableBalance: 200_000, totalBalance: 200_000)
-    @legacy_seller_balance = create(:legacy_stable, id: legacy_stable_seller.ID, availableBalance: 200_000, totalBalance: 200_000)
     @legacy_horse = create(:legacy_horse, Owner: legacy_stable_seller)
     @horse = @auction_horse.horse
     @buyer = bid.bidder
     @seller = horse.owner
+    @buyer.update(available_balance: 200_000, total_balance: 200_000)
+    @seller.update(available_balance: 200_000, total_balance: 200_000)
     horse.update(legacy_id: legacy_horse.ID)
     horse.owner.update(legacy_id: legacy_stable_seller.ID)
     @legacy_training_schedule = Legacy::TrainingSchedule.create!(

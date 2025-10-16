@@ -9,7 +9,6 @@ module Api
           requires :amount, type: Integer, desc: "Amount of the transaction"
           requires :description, type: String, desc: "Description of the transaction"
           requires :legacy_stable_id, type: Integer, desc: "Legacy ID for the stable"
-          optional :legacy_budget_id, type: Integer, desc: "Unique ID for the Legacy::Budget entry"
         end
         post "/" do
           stable = Account::Stable.find_by!(legacy_id: params[:legacy_stable_id])

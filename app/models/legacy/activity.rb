@@ -5,17 +5,17 @@ module Legacy
 
     scope :recent, -> { order(Date: :desc, ID: :desc) }
 
-    def self.create_new(legacy_id:, points:, budget_id:)
+    def self.create_new(legacy_id:, points:, budget_id: nil)
       activity = where(Stable: legacy_id).recent.first
       initial_amount = activity&.amount.to_i
-      stable = Legacy::Stable.find_by(ID: legacy_id)
-      new_points = stable.newbie? ? 6 : 2
+      stable = Account::Stable.find_by(legacy_id:)
+      new_points = stable&.newbie? ? points * 2 : points
       Legacy::Activity.create!(
         Date: Date.current,
         Stable: legacy_id,
         Type: 4,
         amount: new_points,
-        balance: initial_amount + points,
+        balance: initial_amount + new_points,
         budget: budget_id
       )
     end
