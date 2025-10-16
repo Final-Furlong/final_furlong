@@ -1,7 +1,7 @@
 class UpdateBudgetForStables < ActiveRecord::Migration[8.0]
   def up
     Account::Stable.find_each do |stable|
-      legacy_budget = Legacy::Budget.where(ID: stable.legacy_id).order(Date: :desc, ID: :desc).first
+      legacy_budget = Legacy::Budget.where(Stable: stable.legacy_id).order(Date: :desc, ID: :desc).first
       next unless legacy_budget
 
       new_budget = Account::Budget.where(stable:).order(created_at: :desc).first
