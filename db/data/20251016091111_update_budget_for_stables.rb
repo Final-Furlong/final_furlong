@@ -11,7 +11,7 @@ class UpdateBudgetForStables < ActiveRecord::Migration[8.0]
         Account::Budget.create_new(stable:, description: "Budget adjustment", amount:)
       end
       legacy_stable = Legacy::Stable.find_by(id: stable.legacy_id)
-      available_amount = if legacy_stable.availableBalance < legacy_stable.totalBalance
+      available_amount = if legacy_stable && legacy_stable.availableBalance < legacy_stable.totalBalance
         legacy_stable.availableBalance - legacy_stable.totalBalance
       else
         0
