@@ -5,15 +5,15 @@ module Account
     validates :amount, :balance, :description, presence: true
     validates :amount, :balance, numericality: { only_integer: true }
 
-    scope :recent, -> { order(id: :desc) }
+    scope :recent, -> { order(created_at: :desc) }
 
     def self.create_new(stable:, description:, amount:, date: nil, legacy_budget_id: nil, legacy_stable_id: nil)
-      previous_budget = where(stable:).recent.first
+      previous_budget = where(stable:).recent.last
       attrs = {
         stable:,
         description:,
         amount:,
-        balance: previous_budget&.balance.to_i + amount
+        balance: (previous_budget&.balance || 0) + amount
       }
       attrs[:created_at] = date if date.present?
       attrs[:legacy_budget_id] = legacy_budget_id if legacy_budget_id.present?
