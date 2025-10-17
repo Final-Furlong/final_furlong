@@ -14,8 +14,8 @@ end
 # Table name: budgets
 #
 #  id               :uuid             not null, primary key
-#  amount           :integer          default(0), not null
-#  balance          :integer          default(0), not null
+#  amount           :bigint           default(0), not null
+#  balance          :bigint           default(0), not null
 #  description      :text             not null, indexed
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null

@@ -2,15 +2,17 @@ module Accounts
   class BudgetTransactionCreator < ApplicationService
     def create_transaction(stable:, description:, amount:, date: nil, legacy_budget_id: nil, legacy_stable_id: nil)
       previous_budget = Account::Budget.where(stable:).recent.last
+      Rails.logger.error "PREVIOUS BUDGET #{stable.legacy_id}: #{previous_budget.inspect}"
       attrs = {
         stable:,
         description:,
         amount:,
-        balance: (previous_budget&.balance || 0) + amount
+        balance: (previous_budget&.balance || 0) + amount,
+        legacy_stable_id: stable.legacy_id
       }
       attrs[:created_at] = date if date.present?
       attrs[:legacy_budget_id] = legacy_budget_id if legacy_budget_id.present?
-      attrs[:legacy_stable_id] = legacy_stable_id if legacy_stable_id.present?
+      Rails.logger.error "NEW BUDGET #{stable.legacy_id}: #{attrs.inspect}"
       ActiveRecord::Base.transaction do
         new_budget = Account::Budget.create!(attrs)
         stable.total_balance += amount

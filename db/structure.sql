@@ -364,8 +364,8 @@ CREATE TABLE public.budgets (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     stable_id uuid NOT NULL,
     description text NOT NULL,
-    amount integer DEFAULT 0 NOT NULL,
-    balance integer DEFAULT 0 NOT NULL,
+    amount bigint DEFAULT 0 NOT NULL,
+    balance bigint DEFAULT 0 NOT NULL,
     legacy_budget_id integer DEFAULT 0,
     legacy_stable_id integer DEFAULT 0,
     created_at timestamp(6) with time zone NOT NULL,
@@ -2684,6 +2684,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251017084750'),
 ('20251013155516'),
 ('20251012155939'),
 ('20251012133537'),
