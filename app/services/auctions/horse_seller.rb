@@ -83,9 +83,7 @@ module Auctions
       result.error = nil
       ActiveRecord::Base.transaction do
         description = "#{auction.title}: Purchased #{horse.budget_name} (ID# #{horse.legacy_id}) from #{seller.name}"
-        Accounts::BudgetTransactionCreator.new.create_transaction(
-          stable: buyer, description:, amount: bid.current_bid * -1, legacy_stable_id: buyer.legacy_id
-        )
+        Accounts::BudgetTransactionCreator.new.create_transaction(stable: buyer, description:, amount: bid.current_bid * -1)
 
         new_points = buyer.newbie? ? 6 : 2
         Legacy::Activity.create_new(
@@ -93,9 +91,7 @@ module Auctions
         )
 
         description = "#{auction.title}: Sold #{horse.budget_name} (ID# #{horse.legacy_id}) to #{buyer.name}"
-        Accounts::BudgetTransactionCreator.new.create_transaction(
-          stable: seller, description:, amount: bid.current_bid, legacy_stable_id: seller.legacy_id
-        )
+        Accounts::BudgetTransactionCreator.new.create_transaction(stable: seller, description:, amount: bid.current_bid)
 
         new_points = seller.newbie? ? 6 : 2
         Legacy::Activity.create_new(legacy_id: seller.legacy_id, points: new_points)

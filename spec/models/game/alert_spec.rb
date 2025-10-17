@@ -1,4 +1,4 @@
-RSpec.describe GameAlert do
+RSpec.describe Game::Alert do
   describe "validations" do
     it { is_expected.to validate_presence_of(:message) }
     it { is_expected.to validate_presence_of(:start_time) }

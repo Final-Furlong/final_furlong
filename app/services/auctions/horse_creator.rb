@@ -104,9 +104,7 @@ module Auctions
         if reserve_price
           reserve_fee = (reserve_price * 0.1).to_i * -1
           description = "Consigning #{horse.name} to #{auction.title}"
-          Accounts::BudgetTransactionCreator.new.create_transaction(
-            stable:, description:, amount: reserve_fee, legacy_stable_id: stable.legacy_id
-          )
+          Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: reserve_fee)
         end
         Legacy::Horse.where(ID: horse.legacy_id).update(consigned_auction_id: auction.id)
         if auction_horse.save!
