@@ -24,6 +24,22 @@ COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 
 --
+-- Name: activity_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.activity_type AS ENUM (
+    'color_war',
+    'auction',
+    'selling',
+    'buying',
+    'breeding',
+    'claiming',
+    'entering',
+    'redeem'
+);
+
+
+--
 -- Name: horse_color; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -266,6 +282,30 @@ CREATE TABLE public.active_storage_variant_records (
 
 
 --
+-- Name: activity_points; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.activity_points (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    stable_id uuid NOT NULL,
+    activity_type public.activity_type NOT NULL,
+    budget_id uuid,
+    amount integer DEFAULT 0 NOT NULL,
+    balance integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL,
+    legacy_stable_id integer DEFAULT 0 NOT NULL
+);
+
+
+--
+-- Name: COLUMN activity_points.activity_type; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.activity_points.activity_type IS 'color_war, auction, selling, buying, breeding, claiming, entering, redeem';
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -380,6 +420,28 @@ CREATE TABLE public.budgets (
 CREATE TABLE public.data_migrations (
     version character varying NOT NULL
 );
+
+
+--
+-- Name: game_activity_points; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.game_activity_points (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    activity_type public.activity_type NOT NULL,
+    first_year_points integer DEFAULT 0 NOT NULL,
+    second_year_points integer DEFAULT 0 NOT NULL,
+    older_year_points integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN game_activity_points.activity_type; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.game_activity_points.activity_type IS 'color_war, auction, selling, buying, breeding, claiming, entering, redeem';
 
 
 --
@@ -1359,6 +1421,14 @@ ALTER TABLE ONLY public.active_storage_variant_records
 
 
 --
+-- Name: activity_points activity_points_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.activity_points
+    ADD CONSTRAINT activity_points_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1412,6 +1482,14 @@ ALTER TABLE ONLY public.budgets
 
 ALTER TABLE ONLY public.data_migrations
     ADD CONSTRAINT data_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: game_activity_points game_activity_points_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.game_activity_points
+    ADD CONSTRAINT game_activity_points_pkey PRIMARY KEY (id);
 
 
 --
@@ -1674,6 +1752,34 @@ CREATE UNIQUE INDEX index_active_storage_variant_records_uniqueness ON public.ac
 
 
 --
+-- Name: index_activity_points_on_activity_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_activity_points_on_activity_type ON public.activity_points USING btree (activity_type);
+
+
+--
+-- Name: index_activity_points_on_budget_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_activity_points_on_budget_id ON public.activity_points USING btree (budget_id);
+
+
+--
+-- Name: index_activity_points_on_legacy_stable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_activity_points_on_legacy_stable_id ON public.activity_points USING btree (legacy_stable_id);
+
+
+--
+-- Name: index_activity_points_on_stable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_activity_points_on_stable_id ON public.activity_points USING btree (stable_id);
+
+
+--
 -- Name: index_auction_bids_on_auction_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1783,6 +1889,13 @@ CREATE INDEX index_budgets_on_stable_id ON public.budgets USING btree (stable_id
 --
 
 CREATE UNIQUE INDEX index_consignment_configs_on_horse_type ON public.auction_consignment_configs USING btree (auction_id, lower((horse_type)::text));
+
+
+--
+-- Name: index_game_activity_points_on_activity_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_game_activity_points_on_activity_type ON public.game_activity_points USING btree (activity_type);
 
 
 --
@@ -2542,11 +2655,27 @@ ALTER TABLE ONLY public.horses
 
 
 --
+-- Name: activity_points fk_rails_9921842c69; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.activity_points
+    ADD CONSTRAINT fk_rails_9921842c69 FOREIGN KEY (budget_id) REFERENCES public.budgets(id);
+
+
+--
 -- Name: active_storage_variant_records fk_rails_993965df05; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.active_storage_variant_records
     ADD CONSTRAINT fk_rails_993965df05 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
+
+
+--
+-- Name: activity_points fk_rails_a3b05b12f2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.activity_points
+    ADD CONSTRAINT fk_rails_a3b05b12f2 FOREIGN KEY (stable_id) REFERENCES public.stables(id);
 
 
 --
@@ -2684,6 +2813,9 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251017161018'),
+('20251017125321'),
+('20251017114946'),
 ('20251017084750'),
 ('20251013155516'),
 ('20251012155939'),

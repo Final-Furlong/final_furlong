@@ -9,6 +9,7 @@ module Api
           requires :amount, type: Integer, desc: "Amount of the transaction"
           requires :description, type: String, desc: "Description of the transaction"
           requires :legacy_stable_id, type: Integer, desc: "Legacy ID for the stable"
+          optional :activity_type, type: String, desc: "Type of activity points associated with the transaction"
         end
         post "/" do
           stable = Account::Stable.find_by!(legacy_id: params[:legacy_stable_id])
@@ -16,10 +17,10 @@ module Api
             stable:,
             description: params[:description],
             amount: params[:amount],
-            date: Date.current,
-            legacy_stable_id: params[:legacy_stable_id]
+            date: Date.current
           }
           attrs[:legacy_budget_id] = params[:legacy_budget_id] if params[:legacy_budget_id].present?
+          attrs[:activity_type] = params[:activity_type] if params[:activity_type].present?
           budget = Accounts::BudgetTransactionCreator.new.create_transaction(**attrs)
           error!({ error: "invalid", detail: budget.errors.full_messages.to_sentence }, 500) unless budget
 
