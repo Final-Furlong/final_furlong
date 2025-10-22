@@ -85,7 +85,7 @@ class MigrateLegacyRaceResultsService # rubocop:disable Metrics/ClassLength
           female_only: legacy_race.Gender == "F",
           race_type:,
           grade: race_grade,
-          name: legacy_race.Name.presence,
+          name: legacy_race.RaceName.presence,
           purse: legacy_race.Purse,
           claiming_price:,
           track_surface:,
