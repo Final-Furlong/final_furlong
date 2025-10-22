@@ -1,11 +1,15 @@
 module Racing
   class TrackSurface < ApplicationRecord
+    CONDITIONS = %w[fast good slow wet].freeze
+
     belongs_to :racetrack
 
     has_many :scheduled_races, class_name: "RaceSchedule", dependent: :restrict_with_exception
+    has_many :completed_races, class_name: "RaceResult", dependent: :restrict_with_exception
 
     validates :surface, :condition, :width, :length, :turn_to_finish_length,
       :turn_distance, :banking, :jumps, presence: true
+    validates :condition, inclusion: { in: CONDITIONS }
     validates :surface, uniqueness: { scope: :racetrack_id }
   end
 end

@@ -126,6 +126,37 @@ CREATE TYPE public.horse_status AS ENUM (
 
 
 --
+-- Name: jockey_gender; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.jockey_gender AS ENUM (
+    'male',
+    'female'
+);
+
+
+--
+-- Name: jockey_status; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.jockey_status AS ENUM (
+    'apprentice',
+    'veteran',
+    'retired'
+);
+
+
+--
+-- Name: jockey_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.jockey_type AS ENUM (
+    'flat',
+    'jump'
+);
+
+
+--
 -- Name: race_age; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -148,6 +179,16 @@ CREATE TYPE public.race_grade AS ENUM (
     'Grade 3',
     'Grade 2',
     'Grade 1'
+);
+
+
+--
+-- Name: race_splits; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.race_splits AS ENUM (
+    '4Q',
+    '2F'
 );
 
 
@@ -596,6 +637,75 @@ COMMENT ON COLUMN public.horses.status IS 'unborn, weanling, yearling, racehorse
 
 
 --
+-- Name: jockeys; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.jockeys (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    legacy_id integer NOT NULL,
+    first_name character varying NOT NULL,
+    last_name character varying NOT NULL,
+    date_of_birth date NOT NULL,
+    gender public.jockey_gender,
+    status public.jockey_status,
+    jockey_type public.jockey_type,
+    height_in_inches integer NOT NULL,
+    weight integer NOT NULL,
+    strength integer NOT NULL,
+    acceleration integer NOT NULL,
+    break_speed integer NOT NULL,
+    min_speed integer NOT NULL,
+    average_speed integer NOT NULL,
+    max_speed integer NOT NULL,
+    "leading" integer NOT NULL,
+    midpack integer NOT NULL,
+    off_pace integer NOT NULL,
+    closing integer NOT NULL,
+    consistency integer NOT NULL,
+    courage integer NOT NULL,
+    pissy integer NOT NULL,
+    rating integer NOT NULL,
+    dirt integer NOT NULL,
+    turf integer NOT NULL,
+    steeplechase integer NOT NULL,
+    fast integer NOT NULL,
+    good integer NOT NULL,
+    slow integer NOT NULL,
+    wet integer NOT NULL,
+    turning integer NOT NULL,
+    looking integer NOT NULL,
+    traffic integer NOT NULL,
+    loaf_threshold integer NOT NULL,
+    whip_seconds integer NOT NULL,
+    experience integer NOT NULL,
+    experience_rate integer NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN jockeys.gender; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.jockeys.gender IS 'male, female';
+
+
+--
+-- Name: COLUMN jockeys.status; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.jockeys.status IS 'apprentice, veteran, retired';
+
+
+--
+-- Name: COLUMN jockeys.jockey_type; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.jockeys.jockey_type IS 'flat, jump';
+
+
+--
 -- Name: locations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1001,6 +1111,104 @@ ALTER SEQUENCE public.motor_tags_id_seq OWNED BY public.motor_tags.id;
 
 
 --
+-- Name: race_odds; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.race_odds (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    display character varying NOT NULL,
+    value numeric(3,1) NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: race_result_horses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.race_result_horses (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    race_id uuid NOT NULL,
+    horse_id uuid NOT NULL,
+    legacy_horse_id integer DEFAULT 0 NOT NULL,
+    post_parade integer DEFAULT 1 NOT NULL,
+    finish_position integer DEFAULT 1 NOT NULL,
+    positions character varying NOT NULL,
+    margins character varying NOT NULL,
+    fractions character varying,
+    jockey_id uuid NOT NULL,
+    equipment integer DEFAULT 0 NOT NULL,
+    odd_id uuid NOT NULL,
+    speed_factor integer DEFAULT 0 NOT NULL,
+    weight integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: race_results; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.race_results (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    date date NOT NULL,
+    number integer DEFAULT 1 NOT NULL,
+    race_type public.race_type DEFAULT 'maiden'::public.race_type NOT NULL,
+    age public.race_age DEFAULT '2'::public.race_age NOT NULL,
+    male_only boolean DEFAULT false NOT NULL,
+    female_only boolean DEFAULT false NOT NULL,
+    distance numeric(3,1) DEFAULT 5.0 NOT NULL,
+    grade public.race_grade,
+    surface_id uuid NOT NULL,
+    condition public.track_condition,
+    name character varying,
+    purse integer DEFAULT 0 NOT NULL,
+    claiming_price integer,
+    split public.race_splits,
+    time_in_seconds numeric(7,3) DEFAULT 0.0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN race_results.race_type; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_results.race_type IS 'maiden, claiming, starter_allowance, nw1_allowance, nw2_allowance, nw3_allowance, allowance, stakes';
+
+
+--
+-- Name: COLUMN race_results.age; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_results.age IS '2, 2+, 3, 3+, 4, 4+';
+
+
+--
+-- Name: COLUMN race_results.grade; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_results.grade IS 'Ungraded, Grade 3, Grade 2, Grade 1';
+
+
+--
+-- Name: COLUMN race_results.condition; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_results.condition IS 'fast, good, slow, wet';
+
+
+--
+-- Name: COLUMN race_results.split; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_results.split IS '4Q, 2F';
+
+
+--
 -- Name: race_schedules; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1011,6 +1219,7 @@ CREATE TABLE public.race_schedules (
     number integer DEFAULT 1 NOT NULL,
     race_type public.race_type DEFAULT 'maiden'::public.race_type NOT NULL,
     age public.race_age DEFAULT '2'::public.race_age NOT NULL,
+    male_only boolean DEFAULT false NOT NULL,
     female_only boolean DEFAULT false NOT NULL,
     distance numeric(3,1) DEFAULT 5.0 NOT NULL,
     grade public.race_grade,
@@ -1018,6 +1227,7 @@ CREATE TABLE public.race_schedules (
     name character varying,
     purse integer DEFAULT 0 NOT NULL,
     claiming_price integer,
+    qualification_required boolean DEFAULT false NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -1533,6 +1743,14 @@ ALTER TABLE ONLY public.horses
 
 
 --
+-- Name: jockeys jockeys_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.jockeys
+    ADD CONSTRAINT jockeys_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: locations locations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1626,6 +1844,30 @@ ALTER TABLE ONLY public.motor_taggable_tags
 
 ALTER TABLE ONLY public.motor_tags
     ADD CONSTRAINT motor_tags_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: race_odds race_odds_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_odds
+    ADD CONSTRAINT race_odds_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: race_result_horses race_result_horses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_result_horses
+    ADD CONSTRAINT race_result_horses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: race_results race_results_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_results
+    ADD CONSTRAINT race_results_pkey PRIMARY KEY (id);
 
 
 --
@@ -2004,6 +2246,48 @@ CREATE INDEX index_horses_on_status ON public.horses USING btree (status);
 
 
 --
+-- Name: index_jockeys_on_gender; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jockeys_on_gender ON public.jockeys USING btree (gender);
+
+
+--
+-- Name: index_jockeys_on_height_in_inches; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jockeys_on_height_in_inches ON public.jockeys USING btree (height_in_inches);
+
+
+--
+-- Name: index_jockeys_on_jockey_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jockeys_on_jockey_type ON public.jockeys USING btree (jockey_type);
+
+
+--
+-- Name: index_jockeys_on_legacy_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jockeys_on_legacy_id ON public.jockeys USING btree (legacy_id);
+
+
+--
+-- Name: index_jockeys_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jockeys_on_status ON public.jockeys USING btree (status);
+
+
+--
+-- Name: index_jockeys_on_weight; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jockeys_on_weight ON public.jockeys USING btree (weight);
+
+
+--
 -- Name: index_locations_on_country_and_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2137,6 +2421,146 @@ CREATE INDEX index_motor_taggable_tags_on_tag_id ON public.motor_taggable_tags U
 
 
 --
+-- Name: index_race_result_horses_on_finish_position; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_result_horses_on_finish_position ON public.race_result_horses USING btree (finish_position);
+
+
+--
+-- Name: index_race_result_horses_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_result_horses_on_horse_id ON public.race_result_horses USING btree (horse_id);
+
+
+--
+-- Name: index_race_result_horses_on_jockey_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_result_horses_on_jockey_id ON public.race_result_horses USING btree (jockey_id);
+
+
+--
+-- Name: index_race_result_horses_on_legacy_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_result_horses_on_legacy_horse_id ON public.race_result_horses USING btree (legacy_horse_id);
+
+
+--
+-- Name: index_race_result_horses_on_odd_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_result_horses_on_odd_id ON public.race_result_horses USING btree (odd_id);
+
+
+--
+-- Name: index_race_result_horses_on_race_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_result_horses_on_race_id ON public.race_result_horses USING btree (race_id);
+
+
+--
+-- Name: index_race_result_horses_on_speed_factor; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_result_horses_on_speed_factor ON public.race_result_horses USING btree (speed_factor);
+
+
+--
+-- Name: index_race_results_on_age; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_results_on_age ON public.race_results USING btree (age);
+
+
+--
+-- Name: index_race_results_on_condition; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_results_on_condition ON public.race_results USING btree (condition);
+
+
+--
+-- Name: index_race_results_on_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_results_on_date ON public.race_results USING btree (date);
+
+
+--
+-- Name: index_race_results_on_distance; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_results_on_distance ON public.race_results USING btree (distance);
+
+
+--
+-- Name: index_race_results_on_female_only; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_results_on_female_only ON public.race_results USING btree (female_only);
+
+
+--
+-- Name: index_race_results_on_grade; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_results_on_grade ON public.race_results USING btree (grade);
+
+
+--
+-- Name: index_race_results_on_male_only; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_results_on_male_only ON public.race_results USING btree (male_only);
+
+
+--
+-- Name: index_race_results_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_results_on_name ON public.race_results USING btree (name);
+
+
+--
+-- Name: index_race_results_on_number; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_results_on_number ON public.race_results USING btree (number);
+
+
+--
+-- Name: index_race_results_on_purse; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_results_on_purse ON public.race_results USING btree (purse);
+
+
+--
+-- Name: index_race_results_on_race_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_results_on_race_type ON public.race_results USING btree (race_type);
+
+
+--
+-- Name: index_race_results_on_surface_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_results_on_surface_id ON public.race_results USING btree (surface_id);
+
+
+--
+-- Name: index_race_results_on_time_in_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_results_on_time_in_seconds ON public.race_results USING btree (time_in_seconds);
+
+
+--
 -- Name: index_race_schedules_on_age; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2179,6 +2603,13 @@ CREATE INDEX index_race_schedules_on_grade ON public.race_schedules USING btree 
 
 
 --
+-- Name: index_race_schedules_on_male_only; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_schedules_on_male_only ON public.race_schedules USING btree (male_only);
+
+
+--
 -- Name: index_race_schedules_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2197,6 +2628,13 @@ CREATE INDEX index_race_schedules_on_number ON public.race_schedules USING btree
 --
 
 CREATE INDEX index_race_schedules_on_purse ON public.race_schedules USING btree (purse);
+
+
+--
+-- Name: index_race_schedules_on_qualification_required; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_schedules_on_qualification_required ON public.race_schedules USING btree (qualification_required);
 
 
 --
@@ -2543,6 +2981,14 @@ CREATE UNIQUE INDEX motor_tags_name_unique_index ON public.motor_tags USING btre
 
 
 --
+-- Name: race_results fk_rails_06818a8fab; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_results
+    ADD CONSTRAINT fk_rails_06818a8fab FOREIGN KEY (surface_id) REFERENCES public.track_surfaces(id);
+
+
+--
 -- Name: race_schedules fk_rails_0831641203; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2564,6 +3010,14 @@ ALTER TABLE ONLY public.auction_horses
 
 ALTER TABLE ONLY public.horse_genetics
     ADD CONSTRAINT fk_rails_10e493203b FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
+-- Name: race_result_horses fk_rails_1fdef5dc32; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_result_horses
+    ADD CONSTRAINT fk_rails_1fdef5dc32 FOREIGN KEY (race_id) REFERENCES public.race_results(id);
 
 
 --
@@ -2615,6 +3069,14 @@ ALTER TABLE ONLY public.training_schedules_horses
 
 
 --
+-- Name: race_result_horses fk_rails_5a43ac707f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_result_horses
+    ADD CONSTRAINT fk_rails_5a43ac707f FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
 -- Name: auction_horses fk_rails_68ba859655; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2628,6 +3090,14 @@ ALTER TABLE ONLY public.auction_horses
 
 ALTER TABLE ONLY public.racetracks
     ADD CONSTRAINT fk_rails_7135862009 FOREIGN KEY (location_id) REFERENCES public.locations(id);
+
+
+--
+-- Name: race_result_horses fk_rails_7254168319; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_result_horses
+    ADD CONSTRAINT fk_rails_7254168319 FOREIGN KEY (odd_id) REFERENCES public.race_odds(id);
 
 
 --
@@ -2799,6 +3269,14 @@ ALTER TABLE ONLY public.horse_appearances
 
 
 --
+-- Name: race_result_horses fk_rails_f05befc048; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_result_horses
+    ADD CONSTRAINT fk_rails_f05befc048 FOREIGN KEY (jockey_id) REFERENCES public.jockeys(id);
+
+
+--
 -- Name: horses fk_rails_fc5ea1ce34; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2813,6 +3291,8 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251022133524'),
+('20251022112251'),
 ('20251017161018'),
 ('20251017125321'),
 ('20251017114946'),

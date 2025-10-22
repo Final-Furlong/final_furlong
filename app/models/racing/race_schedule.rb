@@ -21,7 +21,7 @@ class Racing::RaceSchedule < ApplicationRecord
   validates :number, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 50 }
   validates :race_type, inclusion: { in: RACE_TYPES }
   validates :age, inclusion: { in: RACE_AGES }
-  validates :female_only, inclusion: { in: [true, false] }
+  validates :male_only, :female_only, :qualification_required, inclusion: { in: [true, false] }
   validates :distance, numericality: { greater_than_or_equal_to: 5.0, less_than_or_equal_to: 24.0 }
   validates :grade, inclusion: { in: RACE_GRADES }, allow_blank: true
   validates :name, presence: true, if: :grade
@@ -47,9 +47,11 @@ end
 #  distance                                                                                                       :decimal(3, 1)    default(5.0), not null, indexed
 #  female_only                                                                                                    :boolean          default(FALSE), not null, indexed
 #  grade(Ungraded, Grade 3, Grade 2, Grade 1)                                                                     :enum             indexed
+#  male_only                                                                                                      :boolean          default(FALSE), not null, indexed
 #  name                                                                                                           :string           indexed
 #  number                                                                                                         :integer          default(1), not null, indexed
 #  purse                                                                                                          :integer          default(0), not null, indexed
+#  qualification_required                                                                                         :boolean          default(FALSE), not null, indexed
 #  race_type(maiden, claiming, starter_allowance, nw1_allowance, nw2_allowance, nw3_allowance, allowance, stakes) :enum             default("maiden"), not null, indexed
 #  created_at                                                                                                     :datetime         not null
 #  updated_at                                                                                                     :datetime         not null
@@ -57,17 +59,19 @@ end
 #
 # Indexes
 #
-#  index_race_schedules_on_age          (age)
-#  index_race_schedules_on_date         (date)
-#  index_race_schedules_on_day_number   (day_number)
-#  index_race_schedules_on_distance     (distance)
-#  index_race_schedules_on_female_only  (female_only)
-#  index_race_schedules_on_grade        (grade)
-#  index_race_schedules_on_name         (name)
-#  index_race_schedules_on_number       (number)
-#  index_race_schedules_on_purse        (purse)
-#  index_race_schedules_on_race_type    (race_type)
-#  index_race_schedules_on_surface_id   (surface_id)
+#  index_race_schedules_on_age                     (age)
+#  index_race_schedules_on_date                    (date)
+#  index_race_schedules_on_day_number              (day_number)
+#  index_race_schedules_on_distance                (distance)
+#  index_race_schedules_on_female_only             (female_only)
+#  index_race_schedules_on_grade                   (grade)
+#  index_race_schedules_on_male_only               (male_only)
+#  index_race_schedules_on_name                    (name)
+#  index_race_schedules_on_number                  (number)
+#  index_race_schedules_on_purse                   (purse)
+#  index_race_schedules_on_qualification_required  (qualification_required)
+#  index_race_schedules_on_race_type               (race_type)
+#  index_race_schedules_on_surface_id              (surface_id)
 #
 # Foreign Keys
 #
