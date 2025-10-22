@@ -4,8 +4,8 @@ module Racing
 
     belongs_to :race, class_name: "Racing::RaceResult", inverse_of: :horses
     belongs_to :horse, class_name: "Horses::Horse", inverse_of: :race_result_finishes
-    belongs_to :jockey, class_name: "Racing::Jockey", inverse_of: :race_result_horses
-    belongs_to :odd, class_name: "Racing::Odd", inverse_of: :race_result_horses
+    belongs_to :jockey, class_name: "Racing::Jockey", optional: true, inverse_of: :race_result_horses
+    belongs_to :odd, class_name: "Racing::Odd", optional: true, inverse_of: :race_result_horses
 
     validates :legacy_horse_id, :post_parade, :finish_position, :positions, :margins, :equipment,
       :speed_factor, :weight, presence: true
@@ -37,9 +37,9 @@ end
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  horse_id        :uuid             not null, indexed
-#  jockey_id       :uuid             not null, indexed
+#  jockey_id       :uuid             indexed
 #  legacy_horse_id :integer          default(0), not null, indexed
-#  odd_id          :uuid             not null, indexed
+#  odd_id          :uuid             indexed
 #  race_id         :uuid             not null, indexed
 #
 # Indexes

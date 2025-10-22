@@ -1137,9 +1137,9 @@ CREATE TABLE public.race_result_horses (
     positions character varying NOT NULL,
     margins character varying NOT NULL,
     fractions character varying,
-    jockey_id uuid NOT NULL,
+    jockey_id uuid,
     equipment integer DEFAULT 0 NOT NULL,
-    odd_id uuid NOT NULL,
+    odd_id uuid,
     speed_factor integer DEFAULT 0 NOT NULL,
     weight integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
@@ -3291,6 +3291,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251022194854'),
 ('20251022133524'),
 ('20251022112251'),
 ('20251017161018'),

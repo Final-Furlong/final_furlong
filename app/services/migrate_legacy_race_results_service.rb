@@ -105,7 +105,7 @@ class MigrateLegacyRaceResultsService # rubocop:disable Metrics/ClassLength
             margins: legacy_horse.MarL,
             speed_factor: legacy_horse.SF,
             finish_position: legacy_horse.Pos,
-            weight: legacy_horse.Weight,
+            weight: legacy_horse.Weight || 0,
             created_at: race_date.beginning_of_day
           }
           attrs[:fractions] = legacy_horse.Fractions if legacy_horse.Fractions.present?
