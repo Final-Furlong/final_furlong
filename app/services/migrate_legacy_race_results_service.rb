@@ -62,6 +62,7 @@ class MigrateLegacyRaceResultsService # rubocop:disable Metrics/ClassLength
         when 9 then 35_000
         when 10 then 40_000
         when 11 then 50_000
+        else 5_000
         end
       end
       finish_time_splits = legacy_race.Time.to_s.split(":")
