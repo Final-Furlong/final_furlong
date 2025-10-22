@@ -14,6 +14,8 @@ module Horses
     has_one :training_schedules_horse, class_name: "Racing::TrainingScheduleHorse", dependent: :destroy
     has_one :training_schedule, class_name: "Racing::TrainingSchedule", through: :training_schedules_horse
     has_one :auction_horse, class_name: "Auctions::Horse", dependent: :destroy
+    has_many :race_result_finishes, class_name: "Racing::RaceResultHorse", inverse_of: :horse, dependent: :delete_all
+    has_many :race_results, class_name: "Racing::RaceResult", source: :race, through: :race_result_finishes
 
     enum :status, Status::STATUSES
     enum :gender, Gender::VALUES

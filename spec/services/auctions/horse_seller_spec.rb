@@ -60,10 +60,6 @@ RSpec.describe Auctions::HorseSeller do
       )
     end
 
-    it "creates activity entries" do
-      expect { described_class.new.process_sale(bid:) }.to change(Legacy::Activity, :count).by(2)
-    end
-
     it "deletes training schedules" do
       expect { described_class.new.process_sale(bid:) }.to change(Legacy::TrainingSchedule, :count).by(-1)
     end

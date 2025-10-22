@@ -42,6 +42,7 @@ gem "dotenv-rails"
 gem "dotenv_validator"
 gem "dry-validation"
 gem "fastimage"
+gem "flag_shih_tzu" # bit mask
 gem "grape"
 gem "grape-active_model_serializers"
 gem "grape-entity"

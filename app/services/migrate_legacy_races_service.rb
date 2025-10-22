@@ -54,7 +54,9 @@ class MigrateLegacyRacesService # rubocop:disable Metrics/ClassLength
         date: Date.parse(race.Date.to_s) - 4.years,
         age: race_age,
         distance: race.Distance,
+        male_only: breeders_stakes_races.include?(race.Name),
         female_only: race.Gender == "F",
+        qualification_required: Legacy::QualifiedRace.exists?(race_id: race.ID),
         race_type:,
         grade: race_grade,
         name: race.Name.presence,
@@ -66,6 +68,34 @@ class MigrateLegacyRacesService # rubocop:disable Metrics/ClassLength
   rescue => e
     Rails.logger.error "Info: #{e.message}"
     raise e
+  end
+
+  private
+
+  def breeders_stakes_races
+    [
+      "Moonover Boy Breeders' Stakes",
+      "Rainbow Quest Breeders' Stakes",
+      "Cross Roads Breeders' Stakes",
+      "Crimson Lad Breeders' Stakes",
+      "Lucky Cigar Breeders' Stakes",
+      "Secretariat Breeders' Stakes",
+      "Valid Wager Breeders' Stakes",
+      "Highland Rogue Breeders' Stakes",
+      "Planet Hollywood Breeders' Stakes",
+      "What's It Worth Breeders' Stakes",
+      "Lonesome Glory Breeders' Stakes",
+      "Seabiscuit Breeders' Stakes",
+      "Bold Ruler Breeders' Stakes",
+      "A.P. Indy Breeders' Stakes",
+      "Townsend Prince Breeders' Stakes",
+      "Highland Bandit Breeders' Stakes",
+      "Spectacular Bid Breeders' Stakes",
+      "The Black Breeders' Stakes",
+      "Man O'War Breeders' Stakes",
+      "Cigar Breeders' Stakes",
+      "Omaha Breeders' Stakes"
+    ]
   end
 end
 
