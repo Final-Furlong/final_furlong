@@ -13,7 +13,7 @@ class MigrateLegacyRaceResultsService # rubocop:disable Metrics/ClassLength
       min_number = 0
     end
     next_result = Legacy::RaceResult.where(Date: min_date..).where(Num: min_number..).order(Date: :asc, Num: :asc).pick(:ID)
-    Legacy::RaceResult.where(ID: next_result..).order(Date: :asc, Num: :asc).limit(1000).find_each do |legacy_race|
+    Legacy::RaceResult.where(ID: next_result..).limit(1000).find_each(cursor: [:Date, :Num], order: [:asc, :asc]) do |legacy_race|
       legacy_racetrack = Legacy::Racetrack.find_by!(ID: legacy_race.Location)
 
       track_surface = Racing::TrackSurface.joins(:racetrack).find_by(surface: legacy_racetrack.DTSC.downcase, racetracks: { name: legacy_racetrack.Name })
