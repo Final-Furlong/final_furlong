@@ -7,7 +7,7 @@ class MigrateLegacyRaceResultsService # rubocop:disable Metrics/ClassLength
   def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     if Racing::RaceResult.count.positive?
       last_migrated = Racing::RaceResult.order(date: :desc, number: :desc).first
-      min_date = (last_migrated.number == 50) ? last_migrated.date + 1.day : last_migrated.date
+      min_date = (last_migrated.number == 50) ? last_migrated.date + 4.years + 1.day : last_migrated.date + 4.years
       min_number = (last_migrated.number == 50) ? 0 : last_migrated.number + 1
     else
       min_date = 50.years.ago
@@ -96,7 +96,6 @@ class MigrateLegacyRaceResultsService # rubocop:disable Metrics/ClassLength
           time_in_seconds: finish_time,
           created_at: race_date.beginning_of_day
         }
-        puts "Race Result: #{attrs.inspect}"
         race_result.update!(attrs)
 
         Legacy::RaceResultHorse.where(RaceID: legacy_race.ID).find_each do |legacy_horse|
@@ -126,7 +125,6 @@ class MigrateLegacyRaceResultsService # rubocop:disable Metrics/ClassLength
             attrs[:wraps] = equipment.include?("W")
             attrs[:no_whip] = equipment.include?("NW")
           end
-          puts "Horse #{legacy_horse.Horse}: #{attrs.inspect}"
           race_horse.update!(attrs)
         end
       end
