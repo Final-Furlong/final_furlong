@@ -76,7 +76,7 @@ class MigrateLegacyRaceResultsService # rubocop:disable Metrics/ClassLength
       else
         0
       end
-      finish_time = legacy_race.Distance * rand(10, 20) if finish_time.zero?
+      finish_time = legacy_race.Distance * rand(10..20) if finish_time.zero?
       ActiveRecord::Base.transaction do
         attrs = {
           date: race_date,
