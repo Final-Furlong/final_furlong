@@ -7,7 +7,7 @@ class MigrateLegacyRaceResultsService # rubocop:disable Metrics/ClassLength
     if Racing::RaceResult.count.positive?
       last_migrated = Racing::RaceResult.order(date: :desc, number: :desc).first
       min_date = (last_migrated.number == 50) ? last_migrated.date + 1.day : last_migrated.date
-      min_number = (last_migrated.number == 50) ? 0 : last_migrated.number
+      min_number = (last_migrated.number == 50) ? 0 : last_migrated.number + 1
     else
       min_date = 50.years.ago
       min_number = 0
