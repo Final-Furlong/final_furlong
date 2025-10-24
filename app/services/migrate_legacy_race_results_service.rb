@@ -3,6 +3,7 @@ class MigrateLegacyRaceResultsService # rubocop:disable Metrics/ClassLength
 
   class InvalidGradeError < StandardError; end
 
+  # rubocop:disable Rails/Output
   def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     if Racing::RaceResult.count.positive?
       last_migrated = Racing::RaceResult.order(date: :desc, number: :desc).first
@@ -14,6 +15,7 @@ class MigrateLegacyRaceResultsService # rubocop:disable Metrics/ClassLength
     end
     next_result = Legacy::RaceResult.where(Date: min_date..).where(Num: min_number..).order(Date: :asc, Num: :asc).pick(:ID)
     Legacy::RaceResult.where(ID: next_result..).limit(1000).find_each(cursor: [:Date, :Num], order: [:asc, :asc]) do |legacy_race|
+      puts "Legacy Race: #{legacy_race.Date} ##{legacy_race.Num}"
       legacy_racetrack = Legacy::Racetrack.find_by!(ID: legacy_race.Location)
 
       track_surface = Racing::TrackSurface.joins(:racetrack).find_by(surface: legacy_racetrack.DTSC.downcase, racetracks: { name: legacy_racetrack.Name })
@@ -94,6 +96,7 @@ class MigrateLegacyRaceResultsService # rubocop:disable Metrics/ClassLength
           time_in_seconds: finish_time,
           created_at: race_date.beginning_of_day
         }
+        puts "Race Result: #{attrs.inspect}"
         race_result.update!(attrs)
 
         Legacy::RaceResultHorse.where(RaceID: legacy_race.ID).find_each do |legacy_horse|
@@ -123,6 +126,7 @@ class MigrateLegacyRaceResultsService # rubocop:disable Metrics/ClassLength
             attrs[:wraps] = equipment.include?("W")
             attrs[:no_whip] = equipment.include?("NW")
           end
+          puts "Horse #{legacy_horse.Horse}: #{attrs.inspect}"
           race_horse.update!(attrs)
         end
       end
@@ -159,5 +163,7 @@ class MigrateLegacyRaceResultsService # rubocop:disable Metrics/ClassLength
       "Omaha Breeders' Stakes"
     ]
   end
+
+  # rubocop:enable Rails/Output
 end
 
