@@ -60,6 +60,11 @@ module Api
             condition: permitted_params[:condition],
             time: permitted_params[:time],
             purse: permitted_params[:purse],
+            male_only: permitted_params[:male_only],
+            female_only: permitted_params[:female_only],
+            grade: permitted_params[:grade],
+            claiming_price: permitted_params[:claiming_price],
+            name: permitted_params[:name],
             horses: permitted_params[:horses]
           )
           error!({ error: "invalid", detail: result.error }, 500) unless result.created?
