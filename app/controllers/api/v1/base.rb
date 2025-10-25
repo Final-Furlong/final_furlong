@@ -7,6 +7,7 @@ module Api
       mount Api::V1::AuctionHorses
       mount Api::V1::Budgets
       mount Api::V1::LegacyHorses
+      mount Api::V1::RaceResults
     end
   end
 end
