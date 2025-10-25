@@ -46,6 +46,7 @@ gem "flag_shih_tzu" # bit mask
 gem "grape"
 gem "grape-active_model_serializers"
 gem "grape-entity"
+gem "grape_logging"
 gem "grape_on_rails_routes"
 gem "image_processing"
 gem "lograge"

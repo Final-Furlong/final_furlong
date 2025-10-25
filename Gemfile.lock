@@ -350,6 +350,9 @@ GEM
     grape-entity (1.0.1)
       activesupport (>= 3.0.0)
       multi_json (>= 1.3.2)
+    grape_logging (3.0.0)
+      grape (>= 2.4.0)
+      rack
     grape_on_rails_routes (0.3.2)
       rails (>= 3.1.1)
     guard (2.19.1)
@@ -1051,6 +1054,7 @@ DEPENDENCIES
   grape
   grape-active_model_serializers
   grape-entity
+  grape_logging
   grape_on_rails_routes
   guard
   guard-bundler
@@ -1274,6 +1278,7 @@ CHECKSUMS
   grape (2.4.0) sha256=3d59673e80f11d49ba86270b78344e5348dc057b318c2bbc1c01f3532f9b6aec
   grape-active_model_serializers (2.0.0) sha256=05b9a462ef4935fd68367c7b1818ae23e3df9a7f693a93e167b2afedac1b1c7e
   grape-entity (1.0.1) sha256=e00f9e94e407aff77aa2945d741f544d07e48501927942988799913151d02634
+  grape_logging (3.0.0) sha256=7b62d984ce96df15d120508668debe307e6a59ac1c511f1d9b5f3b4bea793e13
   grape_on_rails_routes (0.3.2) sha256=da6742361b124641109acd1c56b219c71845943c4aab8127bedb2f79bed3ebe6
   guard (2.19.1) sha256=b8bc52694be3d8b26730280de7dcec7fe92ea1cff3414246fe96af3f23580f3d
   guard-bundler (3.0.1) sha256=c68c064220b087bcca02b2220d2792ac66c4aa8a13c8adf5ba67ad111a28e58c
