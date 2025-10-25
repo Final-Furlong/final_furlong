@@ -23,12 +23,8 @@ module Api
           optional :male_only, type: Boolean, default: false, desc: "Male only flag"
           optional :female_only, type: Boolean, default: false, desc: "Female only flag"
           optional :grade, type: String, desc: "Race Grade", values: Racing::RaceSchedule::RACE_GRADES
-          given race_type: ->(value) { value == "claiming" } do
-            requires :claiming_price, Integer, desc: "Claiming Price"
-          end
-          given :grade do
-            requires :name, String, desc: "Race Name"
-          end
+          optional :claiming_price, Integer, desc: "Claiming Price"
+          optional :name, String, desc: "Race Name"
           requires :horses, type: Array, length: { min: 1, max: 14 } do
             requires :finish_position, type: Integer, desc: "Finish Position", values: 1..14
             requires :post_parade, type: Integer, desc: "Post Position", values: 1..14
