@@ -20,7 +20,7 @@ module Racing
           condition:,
           split: "2F",
           time_in_seconds: time,
-          created_at: date.beginning_of_day + number.minutes
+          created_at: race_date.beginning_of_day + number.minutes
         }
         race_result.update!(attrs)
 
