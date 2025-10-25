@@ -5,21 +5,14 @@ class MigrateLegacyRaceResultsService # rubocop:disable Metrics/ClassLength
 
   # rubocop:disable Rails/Output
   def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-    if Racing::RaceResult.count.positive?
-      last_migrated = Racing::RaceResult.order(date: :desc, number: :desc).first
-      min_date = (last_migrated.number == 50) ? last_migrated.date + 4.years + 1.day : last_migrated.date + 4.years
-      min_number = (last_migrated.number == 50) ? 0 : last_migrated.number + 1
-    else
-      min_date = 50.years.ago
-      min_number = 0
-    end
-    next_result = Legacy::RaceResult.where(Date: min_date..).where(Num: min_number..).order(Date: :asc, Num: :asc).pick(:ID)
-    Legacy::RaceResult.where(ID: next_result..).limit(1000).find_each(cursor: [:Date, :Num], order: [:asc, :asc]) do |legacy_race|
+    Legacy::RaceResult.find_each(cursor: [:Date, :Num], order: [:asc, :asc]) do |legacy_race|
+      race_date = Date.parse(legacy_race.Date.to_s) - 4.years
+      next if Racing::RaceResult.exists?(date: race_date, number: legacy_race.Num)
+
       puts "Legacy Race: #{legacy_race.Date} ##{legacy_race.Num}"
       legacy_racetrack = Legacy::Racetrack.find_by!(ID: legacy_race.Location)
 
       track_surface = Racing::TrackSurface.joins(:racetrack).find_by(surface: legacy_racetrack.DTSC.downcase, racetracks: { name: legacy_racetrack.Name })
-      race_date = Date.parse(legacy_race.Date.to_s) - 4.years
       race_result = Racing::RaceResult.find_or_initialize_by(date: race_date, number: legacy_race.Num)
       race_age = case legacy_race.Age.to_i
       when 1 then "2"
