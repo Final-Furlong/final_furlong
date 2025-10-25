@@ -105,7 +105,7 @@ class CreateRaceResults < ActiveRecord::Migration[8.0]
       t.integer :equipment, default: 0, null: false # flag_shih_tzu-managed bit field
       # Effective booleans which will be stored on the equipment column:
       # t.boolean      :blinkers
-      # t.boolean      :shadow_wrap
+      # t.boolean      :shadow_roll
       # t.boolean      :wraps
       # t.boolean      :figure_8
       # t.boolean      :no_whip

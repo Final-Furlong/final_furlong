@@ -9,11 +9,14 @@ module Racing
 
     validates :legacy_horse_id, :post_parade, :finish_position, :positions, :margins, :equipment,
       :speed_factor, :weight, presence: true
+    validates :post_parade, :finish_position, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 14 }
+    validates :speed_factor, :weight, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+    validates :legacy_horse_id, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
     include FlagShihTzu
 
     has_flags 1 => :blinkers,
-      2 => :shadow_wrap,
+      2 => :shadow_roll,
       3 => :wraps,
       4 => :figure_8,
       5 => :no_whip,
