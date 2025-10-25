@@ -3,39 +3,43 @@ module Api
     class RaceResults < Grape::API
       include Api::V1::Defaults
 
+      rescue_from Grape::Exceptions::ValidationErrors do |e|
+        error!({ messages: e.full_messages }, 400)
+      end
+
       resource :race_results do
         desc "Create a race result"
         params do
           requires :date, type: String, desc: "Date of the race"
-          requires :number, type: Integer, desc: "Number of the race"
-          requires :race_type, type: String, desc: "Race Type"
-          requires :distance, type: Float, desc: "Distance"
-          requires :age, type: String, values: %w[2 2+ 3 3+ 4 4+], desc: "Race age"
+          requires :number, type: Integer, desc: "Number of the race", values: 1..50
+          requires :race_type, type: String, desc: "Race Type", values: Racing::RaceSchedule::RACE_TYPES
+          requires :distance, type: Float, desc: "Distance", values: 5.0..24.00
+          requires :age, type: String, desc: "Race age", values: Racing::RaceSchedule::RACE_AGES
           requires :track_name, type: String, desc: "Track Name"
           requires :track_surface, type: String, values: %w[dirt turf steeplechase], desc: "Track surface"
-          requires :condition, type: String, values: %w[fast good slow wet], desc: "Track condition"
+          requires :condition, type: String, desc: "Track condition", values: Racing::TrackSurface::CONDITIONS
           requires :time, type: Float, desc: "Time in seconds"
-          requires :purse, type: Integer, desc: "Purse"
+          requires :purse, type: Integer, desc: "Purse", values: 10_000..25_000_000
           optional :male_only, type: Boolean, default: false, desc: "Male only flag"
           optional :female_only, type: Boolean, default: false, desc: "Female only flag"
-          optional :grade, type: String, values: ["Ungraded", "Grade 3", "Grade 2", "Grade 1"], desc: "Race Grade"
+          optional :grade, type: String, desc: "Race Grade", values: Racing::RaceSchedule::RACE_GRADES
           given race_type: ->(value) { value == "claiming" } do
             requires :claiming_price, Integer, desc: "Claiming Price"
           end
           given :grade do
             requires :name, String, desc: "Race Name"
           end
-          requires :horses, type: Array, allow_blank: false do
-            requires :finish_position, type: Integer, desc: "Finish Position"
-            requires :post_parade, type: Integer, desc: "Post Position"
+          requires :horses, type: Array, length: { min: 1, max: 14 } do
+            requires :finish_position, type: Integer, desc: "Finish Position", values: 1..14
+            requires :post_parade, type: Integer, desc: "Post Position", values: 1..14
             requires :positions, type: String, desc: "Positions"
             requires :margins, type: String, desc: "Margins"
             requires :fractions, type: String, desc: "Fractions"
-            requires :legacy_id, type: Integer, desc: "Legacy ID"
-            requires :jockey_legacy_id, type: Integer, desc: "Jockey Legacy ID"
+            requires :legacy_id, type: Integer, desc: "Legacy ID", values: 1..10_000_000
+            requires :jockey_legacy_id, type: Integer, desc: "Jockey Legacy ID", values: 1..10_000_000
             requires :odds, type: String, desc: "Odds"
-            requires :weight, type: Integer, desc: "Weight"
-            requires :speed_factor, type: Integer, desc: "Speed Factor"
+            requires :weight, type: Integer, desc: "Weight", values: 10..200
+            requires :speed_factor, type: Integer, desc: "Speed Factor", values: 0..1_000
             optional :blinkers, type: Boolean, default: false, desc: "Blinkers"
             optional :shadow_roll, type: Boolean, default: false, desc: "Shadow Roll"
             optional :wraps, type: Boolean, default: false, desc: "Wraps"
