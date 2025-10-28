@@ -1,0 +1,96 @@
+---
+en:
+  horse:
+    created: Created
+    foal_due: Foal Due
+    height: "%{height}h"
+    in_foal: in foal
+    markings:
+      bald_face: bald face
+      blaze: blaze
+      none: no markings
+      snip: snip
+      star: star
+      star_snip: star, snip
+      star_stripe: star, stripe
+      star_stripe_snip: star, stripe, snip
+      stripe: stripe
+      stripe_snip: stripe, snip
+    type:
+      broodmare: broodmare
+      generic: horse
+      racehorse: racehorse
+      retired: retired
+      retired_broodmare: retired broodmare
+      retired_stud: retired stallion
+      stallion: stallion
+      stillborn: stillborn
+      unborn: unborn
+      weanling: weanling
+      yearling: yearling
+    unnamed: Unnamed
+  horses:
+    dam_foal_list:
+      gender: Gender
+      name: Name
+      record: Record
+      sire: Sire
+      status: Status
+      year_of_birth: YOB
+    dam_foal_summary:
+      average_earnings: Ave. Earnings
+      foals: Foals
+      millionaires: Millionaires
+      multi_stakes_winners: Mult. Stakes Winners
+      racers: Racers
+      stakes_winners: Stakes Winners
+      winners: Winners
+    dam_foals:
+      foals: Foals
+      summary: Summary
+    info:
+      breeder: Breeder
+      breeding_record: Breeding Record
+      color: Color
+      date_of_birth: Date of Birth
+      date_of_death: Date of Death
+      gender: Gender
+      height: Height
+      last_foal: Last Foal
+      last_race: Last Race
+      location: Location
+      location_bred: Location Bred
+      markings: Markings
+      name: Name
+      next_foal: Next Foal
+      next_race: Next Race
+      owner: Owner
+      sale_status: Sale Status
+      scheduled_race: Scheduled Race
+      status: Status
+      track_record: Track Record
+    show:
+      foals: Foals
+      info: Info
+      pedigree: Pedigree
+      photos: Photos
+      races: Races
+    sire_foal_list:
+      dam: Dam
+      gender: Gender
+      name: Name
+      record: Record
+      status: Status
+      year_of_birth: YOB
+    sire_foal_summary:
+      average_earnings: Ave. Earnings
+      crops: Foal Crops
+      foals: Foals
+      millionaires: Millionaires
+      multi_stakes_winners: Mult. Stakes Winners
+      racers: Racers
+      stakes_winners: Stakes Winners
+      winners: Winners
+    sire_foals:
+      foals: Foals
+      summary: Summary

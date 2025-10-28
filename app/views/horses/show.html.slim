@@ -12,15 +12,26 @@
                                                        responsive_classes: "w-100",
                                                        type: :link }])
 
-.name
-  strong= Horses::Horse.human_attribute_name(:name)
-  = @horse.name
+.tabs.tabs-border role="tablist" class="dark:border-neutral-400"
+  input type="radio" name="horse" class="tab" aria-label=t(".info") checked="checked"
+  .tab-content.border-base-300.bg-base-100.p-2 class="sm:p-4"
+    = render "horses/info", horse: @horse
 
-.status
-  strong= Horses::Horse.human_attribute_name(:status)
-  = I18n.t("horses.statuses.#{@horse.status}")
+  input type="radio" name="horse" class="tab" aria-label=t(".pedigree") disabled=@horse.created?
+  .tab-content.border-base-300.bg-base-100.p-2 class="sm:p-4"
+    = render "horses/pedigree", horse: @horse
 
-- if @horse.appearance.image.present?
-  - data = Base64.encode64(File.read(@horse.appearance.image(max_width: 500, max_height: 300)))
-  - image_alt = @horse.name.presence || @horse.id
-  img src="data:image/png;base64,#{data}" alt=image_alt width=500
+  input type="radio" name="horse" class="tab" aria-label=t(".races") disabled="disabled"
+  .tab-content.border-base-300.bg-base-100.p-2 class="sm:p-4"
+    = "races content"
+
+  input[ type="radio" name="horse" class="tab" aria-label=t(".foals")
+    disabled=(horse.foals.empty? && horse.stud_foals.empty?)
+  ]
+  .tab-content.border-base-300.bg-base-100.p-2 class="sm:p-4"
+    = render "horses/dam_foals", horse: @horse if horse.female?
+    = render "horses/sire_foals", horse: @horse if horse.male?
+
+  input type="radio" name="horse" class="tab" aria-label=t(".photos")
+  .tab-content.border-base-300.bg-base-100.p-2 class="sm:p-4"
+    = render "horses/photos", horse: @horse

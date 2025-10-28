@@ -1,13 +1,14 @@
 module Nav
   module Breadcrumbs
     class Component < ApplicationComponent
-      attr_reader :actions
+      attr_reader :actions, :badge
 
-      def initialize(links: [], title: nil, classes: "", actions: [])
+      def initialize(links: [], title: nil, classes: "", actions: [], badge: nil)
         @title = title
         @links = links
         @classes = classes
         @actions = actions
+        @badge = badge
         super()
       end
 

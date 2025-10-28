@@ -1,12 +1,38 @@
 /# locals: (stable:)
-h1= stable.name
-
-p
-  span= t("stables.show.joined", date: l(stable.created_at.to_date, format: :long))
-  = render Users::OnlineBadge::Component.new(online: SessionsRepository.online?(resource: stable))
+.text-center
+  h1.text-2xl= stable.name
+  - if stable.user.name.present?
+    p.mt-2= t(".owner", name: stable.user.name)
+  - if stable.racetrack.present?
+    p.mt-2
+      = t(".location", track: stable.racetrack.name, miles: stable.miles_from_track,
+              location: stable.racetrack.location.name)
+  p.mt-2
+    span= t("stables.show.joined", date: l(stable.created_at.to_date, format: :long))
 
 - if stable.description?
-  blockquote.blockquote.border.border-secondary.rounded.p-2
+  blockquote.blockquote.border.border-secondary.rounded-box.mx-auto.p-2.mt-4.w-full class="sm:w-1/2"
     - # rubocop:disable Rails/OutputSafety
     p= stable.description.html_safe
     - # rubocop:enable Rails/OutputSafety
+
+.mt-4.overflow-x-auto.rounded-box.mx-auto.w-full.border[
+  class="sm:w-1/2 border-base-content/5 bg-base-100 dark:border-neutral-200"
+]
+  table.table.table-sm
+    thead
+      tr
+        th.text-center colspan=3
+          = t(".general_statistics")
+    tbody
+      tr
+        td.text-center colspan=3
+          = pluralize(stable.horses.alive.count, t("horse.type.generic")).titleize
+      tr
+        td= pluralize(stable.horses.racehorse.count, t("horse.type.racehorse")).titleize
+        td= pluralize(stable.horses.stud.count, t("horse.type.stallion")).titleize
+        td= pluralize(stable.horses.broodmare.count, t("horse.type.broodmare")).titleize
+      tr
+        td= pluralize(stable.horses.yearling.count, t("horse.type.yearling")).titleize
+        td= pluralize(stable.horses.weanling.count, t("horse.type.weanling")).titleize
+        td= pluralize(stable.horses.retired.count, t("horse.type.retired")).titleize

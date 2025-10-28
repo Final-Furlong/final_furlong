@@ -17,13 +17,13 @@ end
 
 # == Schema Information
 #
-# Table name: race_schedules
+# Table name: race_results
 #
 #  id                                                                                                             :uuid             not null, primary key
 #  age(2, 2+, 3, 3+, 4, 4+)                                                                                       :enum             default("2"), not null, indexed
 #  claiming_price                                                                                                 :integer
+#  condition(fast, good, slow, wet)                                                                               :enum             indexed
 #  date                                                                                                           :date             not null, indexed
-#  day_number                                                                                                     :integer          default(1), not null, indexed
 #  distance                                                                                                       :decimal(3, 1)    default(5.0), not null, indexed
 #  female_only                                                                                                    :boolean          default(FALSE), not null, indexed
 #  grade(Ungraded, Grade 3, Grade 2, Grade 1)                                                                     :enum             indexed
@@ -31,27 +31,28 @@ end
 #  name                                                                                                           :string           indexed
 #  number                                                                                                         :integer          default(1), not null, indexed
 #  purse                                                                                                          :integer          default(0), not null, indexed
-#  qualification_required                                                                                         :boolean          default(FALSE), not null, indexed
 #  race_type(maiden, claiming, starter_allowance, nw1_allowance, nw2_allowance, nw3_allowance, allowance, stakes) :enum             default("maiden"), not null, indexed
+#  split(4Q, 2F)                                                                                                  :enum
+#  time_in_seconds                                                                                                :decimal(7, 3)    default(0.0), not null, indexed
 #  created_at                                                                                                     :datetime         not null
 #  updated_at                                                                                                     :datetime         not null
 #  surface_id                                                                                                     :uuid             not null, indexed
 #
 # Indexes
 #
-#  index_race_schedules_on_age                     (age)
-#  index_race_schedules_on_date                    (date)
-#  index_race_schedules_on_day_number              (day_number)
-#  index_race_schedules_on_distance                (distance)
-#  index_race_schedules_on_female_only             (female_only)
-#  index_race_schedules_on_grade                   (grade)
-#  index_race_schedules_on_male_only               (male_only)
-#  index_race_schedules_on_name                    (name)
-#  index_race_schedules_on_number                  (number)
-#  index_race_schedules_on_purse                   (purse)
-#  index_race_schedules_on_qualification_required  (qualification_required)
-#  index_race_schedules_on_race_type               (race_type)
-#  index_race_schedules_on_surface_id              (surface_id)
+#  index_race_results_on_age              (age)
+#  index_race_results_on_condition        (condition)
+#  index_race_results_on_date             (date)
+#  index_race_results_on_distance         (distance)
+#  index_race_results_on_female_only      (female_only)
+#  index_race_results_on_grade            (grade)
+#  index_race_results_on_male_only        (male_only)
+#  index_race_results_on_name             (name)
+#  index_race_results_on_number           (number)
+#  index_race_results_on_purse            (purse)
+#  index_race_results_on_race_type        (race_type)
+#  index_race_results_on_surface_id       (surface_id)
+#  index_race_results_on_time_in_seconds  (time_in_seconds)
 #
 # Foreign Keys
 #

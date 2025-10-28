@@ -50,7 +50,7 @@ pre-commit:
       tags: frontend style
       files: git diff --name-only --staged
       glob: "*.slim"
-      run: bundle exec slim-lint {files}
+      run: SLIM_LINT_RUBOCOP_CONF=.rubocop_slim.yml bundle exec slim-lint {files}
     stylelint:
       tags: frontend style
       files: git diff --name-only --staged
@@ -103,6 +103,6 @@ lint:
     rubocop:
       run: bundle exec rubocop --server --autocorrect
     slim-lint:
-      run: bundle exec slim-lint
+      run: SLIM_LINT_RUBOCOP_CONF=.rubocop_slim.yml bundle exec slim-lint
     stylelint:
       run: yarn run stylelint --fix app/assets/stylesheets

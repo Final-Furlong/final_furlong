@@ -11,6 +11,7 @@ en:
     confirmation:
       delete_with_name: Are you sure you want to delete %{name}?
     create: Create
+    dash: "-"
     distances:
       12_furlongs: 1 1/2 Miles
       16_furlongs: 2 Miles
@@ -32,10 +33,15 @@ en:
     search_form:
       action: Search
       reset_filters: Reset filters
+  date:
+    formats:
+      default: "%Y-%m-%d"
+      long: "%B %-d, %Y"
+      short: "%b %d"
   time:
     am: am
     formats:
       default: "%a, %d %b %Y %I:%M:%S %p %Z"
-      long: "%B %d, %Y %I:%M %p"
-      short: "%d %b %I:%M %p"
+      long: "%B %-d, %Y %I:%M %p"
+      short: "%-d %b %I:%M %p"
     pm: pm

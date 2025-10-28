@@ -1,0 +1,45 @@
+/# locals: (horse:)
+.mx-auto.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100.w-full[
+  class="sm:w-1/2 dark:border-neutral-100/50"
+]
+  table.table.table-sm
+    tbody
+      tr
+        th.uppercase.text-center colspan=2
+          = t(".foals")
+      tr.text-center
+        td colspan=2
+          = horse.foals.born.count
+          - if (stillborn_count = horse.foals.born.stillborn.count).positive?
+            = "&nbsp;".html_safe
+            em= "(#{stillborn_count} Stillborn)"
+      tr
+        th.uppercase.text-center
+          = t(".racers")
+        th.uppercase.text-center
+          = t(".winners")
+      tr
+        td.text-center
+          = "x (y%)"
+        td.text-center
+          = "x (y%)"
+      tr
+        th.uppercase.text-center
+          = t(".stakes_winners")
+        th.uppercase.text-center
+          = t(".multi_stakes_winners")
+      tr
+        td.text-center
+          = "x (y%)"
+        td.text-center
+          = "x (y%)"
+      tr
+        th.uppercase.text-center
+          = t(".millionaires")
+        th.uppercase.text-center
+          = t(".average_earnings")
+      tr
+        td.text-center
+          = "x (y%)"
+        td.text-center
+          = "$x"

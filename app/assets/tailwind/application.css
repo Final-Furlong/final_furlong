@@ -12,6 +12,31 @@
   }
 }
 
+.breadcrumbs ul.inline-flex {
+  display: inline-flex !important;
+}
+
+td.created {
+  font-style: italic;
+}
+
+td.mare,
+td.filly {
+  background-color: #ffcccc;
+  color: #000000;
+}
+
+td.stallion,
+td.colt {
+  background-color: #ccccff;
+  color: #000000;
+}
+
+td.gelding {
+  background-color: #b3ebb3;
+  color: #000000;
+}
+
 .pagy {
   @apply flex space-x-1 font-semibold text-sm text-gray-500;
 

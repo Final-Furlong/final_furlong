@@ -1,0 +1,23 @@
+/# locals: (horse:)
+- pedigree = Horses::PedigreeDisplayService.new(horse)
+.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100
+  table.table
+    tbody
+      tr
+        td.border-1 rowspan=4 class=horse.gender
+          = horse.name || t("horse.unnamed")
+        td.stallion.border-1 rowspan=2 class=("created" if horse.sire.blank?)
+          = pedigree.sire_display
+        td.stallion.border-1 class=("created" if horse.sire&.sire.blank?)
+          = pedigree.sire_sire_display
+      tr
+        td.mare.border-1 class=("created" if horse.sire&.dam.blank?)
+          = pedigree.sire_dam_display
+      tr
+        td.mare.border-1 rowspan=2 class=("created" if horse.dam.blank?)
+          = pedigree.dam_display
+        td.stallion.border-1 class=("created" if horse.dam&.sire.blank?)
+          = pedigree.dam_sire_display
+      tr
+        td.mare.border-1 class=("created" if horse.dam&.dam.blank?)
+          = pedigree.dam_dam_display
