@@ -1,7 +1,7 @@
 .navbar.bg-base-100.shadow-sm.border-primary.border-b-1#breadcrumbs
   .flex-1
     .breadcrumbs aria-label="breadcrumb"
-      ul
+      ul.inline-flex
         - styled_links.each do |link|
           li
             - if link[:last]
@@ -12,6 +12,8 @@
           li
             h1.font-bold
               = @title
+      - if badge
+        = render badge
   .flex-none#breadcrumb-actions
     - actions&.each do |action|
       - if allowed_action?(action)

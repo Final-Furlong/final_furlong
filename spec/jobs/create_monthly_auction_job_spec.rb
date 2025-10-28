@@ -8,19 +8,21 @@ RSpec.describe CreateMonthlyAuctionJob, :perform_enqueued_jobs do
 
     context "when auction already exists" do
       it "does not create auction" do
-        final_furlong
-        described_class.perform_later
-
-        expect do
+        travel_to Date.new(Date.current.year, Date.current.month, 1) do
+          final_furlong
           described_class.perform_later
-        end.not_to change(Auction, :count)
+
+          expect do
+            described_class.perform_later
+          end.not_to change(Auction, :count)
+        end
       end
     end
 
     context "when auction does not exist" do
       it "creates auction" do
         final_furlong
-        travel_to Time.zone.local(2025, 9, 1, 0, 0, 0) do
+        travel_to Date.new(Date.current.year, Date.current.month, 1) do
           expect do
             described_class.perform_later
           end.to change(Auction, :count).by(1)
@@ -29,7 +31,7 @@ RSpec.describe CreateMonthlyAuctionJob, :perform_enqueued_jobs do
 
       it "works when wrapping to new year" do
         final_furlong
-        travel_to Time.zone.local(2025, 12, 1, 0, 0, 0) do
+        travel_to Date.new(Date.current.year, 12, 1) do
           expect do
             described_class.perform_later
           end.to change(Auction, :count).by(1)
@@ -43,7 +45,7 @@ RSpec.describe CreateMonthlyAuctionJob, :perform_enqueued_jobs do
           result = instance_double(Auctions::AutoAuctionCreator::Result, created?: false, auction:)
           allow_any_instance_of(Auctions::AutoAuctionCreator).to receive(:create_auction).and_return result # rubocop:disable RSpec/AnyInstance
           final_furlong
-          travel_to Time.zone.local(2025, 9, 1, 0, 0, 0) do
+          travel_to Date.new(Date.current.year, 12, 1) do
             expect do
               described_class.perform_later
             end.to raise_error described_class::AuctionNotCreated, "Title can't be blank and Title is too short (minimum is 10 characters)"

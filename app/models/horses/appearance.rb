@@ -2,6 +2,8 @@ require "image_processing/vips"
 
 module Horses
   class Appearance < ApplicationRecord
+    include ActionView::Helpers::TextHelper
+
     self.table_name = "horse_appearances"
 
     belongs_to :horse, class_name: "Horse"
@@ -41,6 +43,31 @@ module Horses
         @image = result.payload
       else
         raise result.error
+      end
+    end
+
+    def height_display
+      I18n.t("horse.height", height: current_height)
+    end
+
+    def markings_description
+      if no_markings?
+        I18n.t("horse.markings.none").titleize
+      else
+        markings = []
+        markings << I18n.t("horse.markings.#{face_marking}").titleize if face_marking.present?
+        all_legs = [rh_leg_marking, lf_leg_marking, rh_leg_marking, lh_leg_marking].compact
+        if all_legs.size == 4 && all_legs.uniq.size == 1
+          Rails.logger.info "same markings everywhere"
+          markings << pluralize(4, all_legs.first.titleize)
+        else
+          markings << "LF #{lf_leg_marking.titleize}" if lf_leg_marking.present?
+          markings << "RF #{rf_leg_marking.titleize}" if rf_leg_marking.present?
+          markings << "LH #{lh_leg_marking.titleize}" if lh_leg_marking.present?
+          markings << "RH #{rh_leg_marking.titleize}" if rh_leg_marking.present?
+          Rails.logger.info "not same markings everywhere"
+        end
+        markings.join(", ")
       end
     end
 

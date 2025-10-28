@@ -1,7 +1,12 @@
 ---
 en-GB:
+  date:
+    formats:
+      default: "%d-%m-%Y"
+      long: "%-d %B, %Y"
+      short: "%d %b"
   time:
     formats:
       default: "%a, %d %b %Y %H:%M:%S %z"
-      long: "%d %B, %Y %H:%M"
+      long: "%-d %B, %Y %H:%M"
       short: "%d %b %H:%M"

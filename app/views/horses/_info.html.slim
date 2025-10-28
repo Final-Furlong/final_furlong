@@ -1,0 +1,75 @@
+/# locals: (horse:)
+.overflow-x-auto
+  table.table
+    tbody
+      tr
+        th= t(".name")
+        td= horse.name || t("horse.unnamed")
+      tr
+        th= t(".date_of_birth")
+        td
+          = l(horse.date_of_birth)
+          - unless horse.dead?
+            = "&nbsp;".html_safe
+            = "(#{horse.age}yo)"
+      - if horse.dead?
+        tr
+          th= t(".date_of_death")
+          td
+            = l(horse.date_of_death)
+            = "&nbsp;".html_safe
+            = "(#{horse.age}yo)"
+      tr
+        th= t(".location_bred")
+        td= horse.location_bred_name
+      tr
+        th= t(".gender")
+        td= horse.gender.titleize
+      tr
+        th= t(".status")
+        td= horse.status.titleize
+      tr
+        th= t(".color")
+        td= horse.appearance.color.titleize
+      tr
+        th= t(".markings")
+        td= horse.appearance.markings_description
+      tr
+        th= t(".height")
+        td= horse.appearance.height_display
+      tr
+        th= t(".breeder")
+        td= link_to horse.breeder.name, stable_path(horse.breeder)
+      tr
+        th= t(".owner")
+        td= link_to horse.owner.name, stable_path(horse.owner)
+      - unless horse.dead?
+        tr
+          th= t(".location")
+          td Not Yet Added
+        tr
+          th= t(".sale_status")
+          td Not Yet Added
+      tr
+        th= t(".track_record")
+        td Not Yet Added
+      - if horse.racehorse?
+        tr
+          th= t(".last_race")
+          td Not Yet Added
+        tr
+          th= t(".next_race")
+          td Not Yet Added
+        tr
+          th= t(".scheduled_race")
+          td Not Yet Added
+      tr
+        th= t(".breeding_record")
+        td Not Yet Added
+      - if Horses::Status::FEMALE_BREEDING_STATUSES.include?(horse.status)
+        tr
+          th= t(".last_foal")
+          td Not Yet Added
+        tr
+          th= t(".next_foal")
+          td Not Yet Added

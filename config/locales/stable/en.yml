@@ -65,5 +65,9 @@ en:
       all: All Stables
     show:
       joined: Joined on %{date}
+    stable:
+      general_statistics: General Statistics
+      location: Located %{miles} miles from %{track} (%{location})
+      owner: Owned by %{name}
     update:
       success: Stable successfully updated

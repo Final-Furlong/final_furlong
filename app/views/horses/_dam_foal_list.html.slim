@@ -1,0 +1,35 @@
+/# locals: (horse:)
+.mx-auto.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100.w-full[
+  class="sm:w-3/4 dark:border-neutral-100"
+]
+  table.table.table-sm
+    thead
+      tr
+        th.uppercase= t(".name")
+        th.uppercase= t(".year_of_birth")
+        th.uppercase= t(".gender")
+        th.uppercase= t(".sire")
+        th.uppercase= t(".status")
+        th.uppercase= t(".record")
+    tbody
+      - horse.foals.born.order(date_of_birth: :asc).each do |foal|
+        tr
+          td= link_to (foal.name || t("horse.unnamed")), horse_path(foal)
+          td= foal.date_of_birth.year
+          td= foal.gender.titleize
+          td= link_to foal.sire.name, horse_path(foal.sire)
+          td= foal.status.titleize
+          td
+            - if foal.stillborn?
+              em= t("horse.type.stillborn").titleize
+            - else
+              = "Track Record TBD"
+      - unborn_foal = horse.foals.unborn.order(date_of_birth: :asc).first
+      - if unborn_foal
+        tr
+          td= t("horse.in_foal").titleize
+          td= unborn_foal.date_of_birth.year
+          td= t("common.dash")
+          td= link_to unborn_foal.sire.name, horse_path(unborn_foal.sire)
+          td colspan=2
+            = "due date here"

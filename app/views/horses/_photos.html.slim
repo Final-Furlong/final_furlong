@@ -1,0 +1,6 @@
+/# locals: (horse:)
+.overflow-x-auto
+  - if horse.appearance.image.present?
+    - data = Base64.encode64(File.read(horse.appearance.image(max_width: 500, max_height: 300)))
+    - image_alt = horse.name.presence || horse.id
+    img src="data:image/png;base64,#{data}" alt=image_alt width=500

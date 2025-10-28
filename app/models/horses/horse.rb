@@ -16,6 +16,8 @@ module Horses
     has_one :auction_horse, class_name: "Auctions::Horse", dependent: :destroy
     has_many :race_result_finishes, class_name: "Racing::RaceResultHorse", inverse_of: :horse, dependent: :delete_all
     has_many :race_results, class_name: "Racing::RaceResult", source: :race, through: :race_result_finishes
+    has_many :foals, class_name: "Horses::Horse", inverse_of: :dam, dependent: :nullify
+    has_many :stud_foals, class_name: "Horses::Horse", inverse_of: :sire, dependent: :nullify
 
     enum :status, Status::STATUSES
     enum :gender, Gender::VALUES
@@ -25,13 +27,37 @@ module Horses
     validate :name_required, on: :update
     validates_horse_name :name, on: :update, if: :name_changed?
 
+    scope :alive, -> { where(status: Status::LIVING_STATUSES) }
+    scope :retired, -> { where(status: Status::RETIRED_STATUSES) }
+    scope :born, -> { where(date_of_birth: ..Date.current) }
+    scope :stillborn, -> { where("date_of_birth = date_of_death") }
+    scope :order_by_yob, -> { order(Arel.sql("TO_CHAR(date_of_birth, 'YYYY') ASC")) }
+    scope :order_by_dam, -> { includes(:dam).order("dams_horses.name ASC") }
+
     # broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
 
     def age
       return 0 if stillborn?
 
-      max_date = date_of_death ? date_of_death.year : Date.current
+      max_date = date_of_death || Date.current
       max_date.year - date_of_birth.year
+    end
+
+    def created?
+      sire.blank? && dam.blank?
+    end
+
+    def female?
+      Gender::FEMALE_GENDERS.include?(gender)
+    end
+
+    def male?
+      !female?
+    end
+
+    def location_bred_name
+      location = location_bred.state || location_bred.county
+      [location, location_bred.country].join(", ")
     end
 
     def budget_name
