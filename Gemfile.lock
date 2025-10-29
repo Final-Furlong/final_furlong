@@ -792,6 +792,9 @@ GEM
       sexp_processor (~> 4.16)
     rubyzip (2.4.1)
     rugged (1.9.0)
+    scenic (1.9.0)
+      activerecord (>= 4.0.0)
+      railties (>= 4.0.0)
     securerandom (0.4.1)
     selenium-webdriver (4.16.0)
       rexml (~> 3.2, >= 3.2.5)
@@ -1116,6 +1119,7 @@ DEPENDENCIES
   rubocop-rspec
   rubocop-rspec_rails
   ruby-debug-ide
+  scenic
   selenium-webdriver
   sentry-rails
   sentry-ruby
@@ -1453,6 +1457,7 @@ CHECKSUMS
   ruby_parser (3.21.1) sha256=9d931abe5aec287d65280f811d3cf672564956ef1bd49f528ca48479984d6fec
   rubyzip (2.4.1) sha256=8577c88edc1fde8935eb91064c5cb1aef9ad5494b940cf19c775ee833e075615
   rugged (1.9.0) sha256=7faaa912c5888d6e348d20fa31209b6409f1574346b1b80e309dbc7e8d63efac
+  scenic (1.9.0) sha256=6eec3aa049ba2a137e7eb0b4c4f0200b77f7765fc82e08ad44c01da7905563d9
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
   selenium-webdriver (4.16.0) sha256=237013649ea52435fe386cf4069b56d3f64c127b05af5f4d5c059bd71ee4c3e3
   sentry-rails (5.28.0) sha256=a0cbba7ce86312172db9d1b3c39c5302de07e446e7df3f68e4f4b1d240a91fc2

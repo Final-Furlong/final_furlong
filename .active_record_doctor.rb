@@ -242,5 +242,11 @@ ActiveRecordDoctor.configure do
       "active_storage_variant_records",
       "data_migrations"
     ]
+
+  detector :missing_foreign_keys,
+    ignore_associations: [
+      "Racing::AnnualRaceRecord.horse",
+      "Racing::LifetimeRaceRecord.horse"
+    ]
 end
 

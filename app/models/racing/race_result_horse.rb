@@ -1,5 +1,7 @@
 module Racing
   class RaceResultHorse < ApplicationRecord
+    include FlagShihTzu
+
     self.table_name = "race_result_horses"
 
     belongs_to :race, class_name: "Racing::RaceResult", inverse_of: :horses
@@ -13,7 +15,8 @@ module Racing
     validates :speed_factor, :weight, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     validates :legacy_horse_id, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
-    include FlagShihTzu
+    scope :by_finish, ->(position) { where(finish_position: position) }
+    scope :by_max_finish, ->(position) { where(finish_position: ..position) }
 
     has_flags 1 => :blinkers,
       2 => :shadow_roll,

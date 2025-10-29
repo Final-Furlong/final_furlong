@@ -11,6 +11,10 @@ module Racing
       :turn_distance, :banking, :jumps, presence: true
     validates :condition, inclusion: { in: CONDITIONS }
     validates :surface, uniqueness: { scope: :racetrack_id }
+
+    scope :dirt, -> { where(surface: "dirt") }
+    scope :turf, -> { where(surface: "turf") }
+    scope :steeplechase, -> { where(surface: "steeplechase") }
   end
 end
 

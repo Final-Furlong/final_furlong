@@ -14,24 +14,27 @@
 
 .tabs.tabs-border role="tablist" class="dark:border-neutral-400"
   input type="radio" name="horse" class="tab" aria-label=t(".info") checked="checked"
-  .tab-content.border-base-300.bg-base-100.p-2 class="sm:p-4"
+  .tab-content.border-base-400.bg-base-100.p-2 class="sm:p-4"
     = render "horses/info", horse: @horse
 
   input type="radio" name="horse" class="tab" aria-label=t(".pedigree") disabled=@horse.created?
-  .tab-content.border-base-300.bg-base-100.p-2 class="sm:p-4"
+  .tab-content.border-base-400.bg-base-100.p-2 class="sm:p-4"
     = render "horses/pedigree", horse: @horse
 
-  input type="radio" name="horse" class="tab" aria-label=t(".races") disabled="disabled"
-  .tab-content.border-base-300.bg-base-100.p-2 class="sm:p-4"
-    = "races content"
+  input type="radio" name="horse" class="tab" aria-label=t(".races") disabled=!horse.lifetime_race_record
+  .tab-content.border-base-400.bg-base-100.p-2 class="sm:p-4"
+    - if request.variant.include?(:phone)
+      = render "horses/races_mobile", horse: @horse
+    - else
+      = render "horses/races", horse: @horse
 
   input[ type="radio" name="horse" class="tab" aria-label=t(".foals")
     disabled=(horse.foals.empty? && horse.stud_foals.empty?)
   ]
-  .tab-content.border-base-300.bg-base-100.p-2 class="sm:p-4"
+  .tab-content.border-base-400.bg-base-100.p-2 class="sm:p-4"
     = render "horses/dam_foals", horse: @horse if horse.female?
     = render "horses/sire_foals", horse: @horse if horse.male?
 
   input type="radio" name="horse" class="tab" aria-label=t(".photos")
-  .tab-content.border-base-300.bg-base-100.p-2 class="sm:p-4"
+  .tab-content.border-base-400.bg-base-100.p-2 class="sm:p-4"
     = render "horses/photos", horse: @horse

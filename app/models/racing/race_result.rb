@@ -23,6 +23,10 @@ module Racing
     validates :purse, numericality: { only_integer: true, greater_than_or_equal_to: 10_000, less_than_or_equal_to: 20_000_000 }
     validates :claiming_price, numericality: { only_integer: true, greater_than_or_equal_to: 5_000, less_than_or_equal_to: 50_000 }, if: :claiming?
 
+    scope :by_year, ->(year) { where("CAST(TO_CHAR(date, 'YYYY') AS integer) = ?", year) }
+    scope :by_track, ->(track) { joins(:track_surface).merge(TrackSurface.send(track.to_sym)) }
+    scope :by_type, ->(type) { where(race_type: type) }
+
     delegate :racetrack, to: :track_surface
 
     def claiming?
