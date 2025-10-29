@@ -8,13 +8,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  CI: true
-  EXTERNAL_CI: true
-  RAILS_ENV: test
-  COVERAGE: true
-  MAILTRAP_API_KEY: foo
-
 jobs:
   check-signoff:
     runs-on: ubuntu-latest

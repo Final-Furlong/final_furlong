@@ -13,6 +13,7 @@ on:
 
 env:
   CI: true
+  EXTERNAL_CI: true
   RAILS_ENV: test
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/final_furlong_test
   QUEUE_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/final_furlong_test_queue
