@@ -1,7 +1,9 @@
 # Run using bin/ci
 
 CI.run do
-  unless ENV.fetch("EXTERNAL_CI", false)
+  if ENV.fetch("EXTERNAL_CI", false)
+    step "Setup", "bin/rails assets:precompile"
+  else
     step "Setup", "bin/setup test"
   end
 
