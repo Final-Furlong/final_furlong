@@ -3,6 +3,7 @@ on:
 
 env:
   CI: true
+  EXTERNAL_CI: true
   LIMITED_CI: true
   RAILS_ENV: test
   COVERAGE: true

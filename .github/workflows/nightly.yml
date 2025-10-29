@@ -9,12 +9,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  CI: true
-  EXTERNAL_CI: true
-  RAILS_ENV: test
-  MAILTRAP_API_KEY: foo
-
 jobs:
   run-ci:
     uses: Final-Furlong/final_furlong/.github/workflows/_ci_limited.yml@main
