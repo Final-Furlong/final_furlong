@@ -3,30 +3,25 @@ on:
 
 env:
   CI: true
+  LIMITED_CI: true
+  RAILS_ENV: test
+  COVERAGE: true
   MAILTRAP_API_KEY: foo
 
 jobs:
-  caching:
-    name: Install & Cache
-    timeout-minutes: 5
+  tests:
+    name: Tests
+    timeout-minutes: 20
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Install bundler
-        run: sudo gem install bundler:2.3.18
 
       - name: Setup Ruby and install gems
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.tool-versions'
-          cache: 'npm'
 
       - name: Yarn Cache
         uses: actions/cache@v4
@@ -38,3 +33,6 @@ jobs:
       - name: Yarn Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn --prefer-offline
+
+      - name: CI Run
+        run: bin/ci
