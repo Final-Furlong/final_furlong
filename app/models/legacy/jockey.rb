@@ -15,7 +15,7 @@ end
 #  Close        :integer          default(0), not null
 #  Consistency  :integer          default(0), not null
 #  Courage      :integer          default(0), not null
-#  DOB          :date             default(NULL), not null
+#  DOB          :date             not null
 #  Dirt         :integer          default(0), not null
 #  Fast         :integer          default(0), not null
 #  First        :string(255)      not null, indexed

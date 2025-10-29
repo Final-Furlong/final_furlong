@@ -1,6 +1,6 @@
 class StablesController < AuthenticatedController
-  skip_before_action :authenticate_user!, except: %i[edit update]
-  skip_before_action :verify_active_user!, except: %i[edit update]
+  skip_before_action :authenticate_user!, only: %i[index show]
+  skip_before_action :verify_active_user!, only: %i[index show]
 
   def index
     authorize Account::Stable

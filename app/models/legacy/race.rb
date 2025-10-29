@@ -16,7 +16,7 @@ end
 # Table name: ff_races
 #
 #  Age      :integer          not null, indexed
-#  Date     :date             default(NULL), not null, indexed
+#  Date     :date             not null, indexed
 #  DayNum   :integer          not null
 #  Distance :float(53)        not null, indexed
 #  Gender   :string(1)

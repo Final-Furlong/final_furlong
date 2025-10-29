@@ -1,0 +1,251 @@
+[1;32mContinuous Integration[0m
+[1;90mRunning tests, style checks, and security audits[0m
+[1;35m
+
+Setup[0m
+[1;90mbin/setup test
+[0m
+[0;33;49m[ bin/setup ] Installing gems[0m
+[0;33;49m[ bin/setup ] Executing ["bundle check || bundle install"][0m
+The Gemfile's dependencies are satisfied
+[0;32;49m[ bin/setup ] ["bundle check || bundle install"] succeeded[0m
+[0;33;49m[ bin/setup ] Installing node modules[0m
+[0;33;49m[ bin/setup ] Executing ["yarn install"][0m
+yarn install v1.22.22
+[1/4] Resolving packages...
+success Already up-to-date.
+Done in 0.10s.
+[0;32;49m[ bin/setup ] ["yarn install"] succeeded[0m
+[0;33;49m[ bin/setup ] Dropping & recreating the test database[0m
+[0;33;49m[ bin/setup ] Executing [{"RAILS_ENV" => "test"}, "bin/rails db:reset"][0m
+Dropped database 'final_furlong_test'
+Dropped database 'final_furlong_test_queue'
+Created database 'final_furlong_test'
+Created database 'final_furlong_test_queue'
+[0;32;49m[ bin/setup ] [{"RAILS_ENV" => "test"}, "bin/rails db:reset"] succeeded[0m
+[0;33;49m[ bin/setup ] Removing old logs and tempfiles[0m
+[0;33;49m[ bin/setup ] Executing ["bin/rails log:clear tmp:clear"][0m
+[0;32;49m[ bin/setup ] ["bin/rails log:clear tmp:clear"] succeeded[0m
+[0;32;49m[ bin/setup ] All set up.[0m
+[ bin/setup ] 
+[ bin/setup ] To see commonly-needed commands, run:
+[ bin/setup ] 
+[ bin/setup ]     bin/setup help
+[ bin/setup ] 
+[1;32m
+✅ Setup passed in 23.24s[0m
+[1;35m
+
+Style: Ruby[0m
+[1;90mbundle exec rubocop
+[0m
+Inspecting 569 files
+[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[33mC[0m[32m.[0m[33mC[0m[32m.[0m[32m.[0m[32m.[0m[33mC[0m[32m.[0m[33mC[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[33mC[0m[32m.[0m[33mC[0m[32m.[0m[32m.[0m[33mC[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[33mC[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[33mC[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m
+
+Offenses:
+
+[36mconfig/boot.rb[0m:5:1: [33mC[0m: [33m[Correctable] [0mLayout/TrailingEmptyLines: Trailing blank line missing.
+[36mconfig/ci.rb[0m:28:1: [33mC[0m: [33m[Correctable] [0mLayout/TrailingEmptyLines: Trailing blank line missing.
+[36mconfig/environment.rb[0m:6:1: [33mC[0m: [33m[Correctable] [0mLayout/TrailingEmptyLines: Trailing blank line missing.
+[36mconfig/environments/production.rb[0m:38:55: [33mC[0m: [33m[Correctable] [0mStyle/GlobalStdStream: Use [33m$stdout[0m instead of [33mSTDOUT[0m.
+  config.logger = ActiveSupport::TaggedLogging.logger(STDOUT)
+                                                      ^^^^^^
+[36mconfig/initializers/assets.rb[0m:8:1: [33mC[0m: [33m[Correctable] [0mLayout/TrailingEmptyLines: Trailing blank line missing.
+[36mconfig/initializers/content_security_policy.rb[0m:30:1: [33mC[0m: [33m[Correctable] [0mLayout/TrailingEmptyLines: Trailing blank line missing.
+[36mconfig/initializers/filter_parameter_logging.rb[0m:9:1: [33mC[0m: [33m[Correctable] [0mLayout/TrailingEmptyLines: Trailing blank line missing.
+[36mconfig/initializers/new_framework_defaults_8_1.rb[0m:75:1: [33mC[0m: [33m[Correctable] [0mLayout/TrailingEmptyLines: Trailing blank line missing.
+[36mconfig/puma.rb[0m:43:1: [33mC[0m: [33m[Correctable] [0mLayout/TrailingEmptyLines: Trailing blank line missing.
+
+569 files inspected, [31m9 offenses[0m detected, [33m9 offenses[0m autocorrectable
+[1;31m
+❌ Style: Ruby failed in 2.19s[0m
+[1;35m
+
+Style: Fasterer[0m
+[1;90mbin/fasterer
+[0m
+[32m531 files inspected[0m, [32m0 offenses detected[0m
+[1;32m
+✅ Style: Fasterer passed in 2.58s[0m
+[1;35m
+
+Style: Slim[0m
+[1;90mSLIM_LINT_RUBOCOP_CONF=.rubocop_slim.yml bundle exec slim-lint
+[0m
+[1;32m
+✅ Style: Slim passed in 1.08s[0m
+[1;35m
+
+Style: ESLint[0m
+[1;90myarn run eslint app/javascript
+[0m
+yarn run v1.22.22
+$ /Users/shanthi/code/final_furlong/node_modules/.bin/eslint app/javascript
+Done in 1.84s.
+[1;32m
+✅ Style: ESLint passed in 2.09s[0m
+[1;35m
+
+Style: StyleLint[0m
+[1;90myarn run stylelint app/assets/tailwind
+[0m
+yarn run v1.22.22
+$ /Users/shanthi/code/final_furlong/node_modules/.bin/stylelint app/assets/tailwind
+
+app/assets/tailwind/application.css
+ [2m19:21[22m  [31m[31m✖[39m  Insert "·"  [2mprettier/prettier[22m
+
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+[1;31m
+❌ Style: StyleLint failed in 2.09s[0m
+[1;35m
+
+Style: I18n[0m
+[1;90mbin/i18n-tasks health
+[0m
+[1;32m
+✅ Style: I18n passed in 1.76s[0m
+[1;35m
+
+Security: Gem audit[0m
+[1;90mbin/bundler-audit
+[0m
+No vulnerabilities found
+[1;32m
+✅ Security: Gem audit passed in 1.20s[0m
+[1;35m
+
+Security: Importmap vulnerability audit[0m
+[1;90mbin/importmap audit
+[0m
+No vulnerable packages found
+[1;32m
+✅ Security: Importmap vulnerability audit passed in 10.67s[0m
+[1;35m
+
+Security: Yarn vulnerability audit[0m
+[1;90mbin/yarn_audit.sh
+[0m
+[1;31m
+❌ Security: Yarn vulnerability audit failed in 0.00s[0m
+[1;35m
+
+Security: Brakeman code analysis[0m
+[1;90mbin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
+[0m
+
+== Brakeman Report ==
+
+Application Path: /Users/shanthi/code/final_furlong
+Rails Version: 8.1.0
+Brakeman Version: 7.1.0
+Scan Date: 2025-10-29 11:41:14 +0000
+Duration: 4.265911 seconds
+Checks Run: BasicAuth, BasicAuthTimingAttack, CSRFTokenForgeryCVE, ContentTag, CookieSerialization, CreateWith, CrossSiteScripting, DefaultRoutes, Deserialize, DetailedExceptions, DigestDoS, DynamicFinders, EOLRails, EOLRuby, EscapeFunction, Evaluation, Execute, FileAccess, FileDisclosure, FilterSkipping, ForgerySetting, HeaderDoS, I18nXSS, JRubyXML, JSONEncoding, JSONEntityEscape, JSONParsing, LinkTo, LinkToHref, MailTo, MassAssignment, MimeTypeDoS, ModelAttrAccessible, ModelAttributes, ModelSerialize, NestedAttributes, NestedAttributesBypass, NumberToCurrency, PageCachingCVE, Pathname, PermitAttributes, QuoteTableName, Ransack, Redirect, RegexDoS, Render, RenderDoS, RenderInline, ResponseSplitting, RouteDoS, SQL, SQLCVEs, SSLVerify, SafeBufferManipulation, SanitizeConfigCve, SanitizeMethods, SelectTag, SelectVulnerability, Send, SendFile, SessionManipulation, SessionSettings, SimpleFormat, SingleQuotes, SkipBeforeFilter, SprocketsPathTraversal, StripTags, SymbolDoSCVE, TemplateInjection, TranslateBug, UnsafeReflection, UnsafeReflectionMethods, ValidationRegex, VerbConfusion, WeakRSAKey, WithoutProtection, XMLDoS, YAMLParsing
+
+== Overview ==
+
+Controllers: 18
+Models: 149
+Templates: 84
+Errors: 1
+Security Warnings: 1
+
+== Warning Types ==
+
+Authentication: 1
+
+== Errors ==
+
+Error: app/views/horses/_form.html.slim:13 :: parse error on value "end" (kEND) Could not parse app/views/horses/_form.html.slim
+Location: Could not parse /Users/shanthi/code/final_furlong/app/views/horses/_form.html.slim
+
+== Warnings ==
+
+Confidence: Medium
+Category: Authentication
+Check: SkipBeforeFilter
+Message: List specific actions (`:only => [..]`) when skipping authentication
+Code: skip_before_action(:authenticate_user!, :except => ([:edit, :update]))
+File: app/controllers/stables_controller.rb
+Line: 2
+
+[1;31m
+❌ Security: Brakeman code analysis failed in 7.53s[0m
+[1;35m
+
+Tests: Rails[0m
+[1;90mbin/rspec
+[0m
+
+Randomized with seed 34471
+
+Progress: |============================================================================================================================================================================================================================================|
+
+Top 10 slowest examples (13.21 seconds, 20.9% of total time):
+  Viewing Own Horses when horses exist shows horses owned by the stable
+    3.85 seconds ./spec/features/current_stable/horses/index_spec.rb:3
+  Login Spec behaves like a page that is accessible is axe clean
+    1.83 seconds ./spec/support/shared/accessibility_examples.rb:2
+  Update Stable Description when user is signed in allows update to description
+    1.13 seconds ./spec/features/stables/update_spec.rb:11
+  Impersonate Stable Index does allow impersonating as admin user
+    1.12 seconds ./spec/features/stables/impersonate_spec.rb:24
+  Login Spec allows login with email
+    0.97141 seconds ./spec/features/authentication/login_spec.rb:2
+  Login Spec supports remember me
+    0.96024 seconds ./spec/features/authentication/login_spec.rb:37
+  Login Spec allows login with username
+    0.90112 seconds ./spec/features/authentication/login_spec.rb:22
+  Impersonate Stable Index does not allow impersonating as visitor
+    0.83159 seconds ./spec/features/stables/impersonate_spec.rb:2
+  Login Spec does not log in with invalid values
+    0.81516 seconds ./spec/features/authentication/login_spec.rb:55
+  Login Spec does not log in with empty values
+    0.7984 seconds ./spec/features/authentication/login_spec.rb:49
+
+Top 10 slowest example groups:
+  Viewing Own Horses
+    2.28 seconds average (4.57 seconds / 2 examples) ./spec/features/current_stable/horses/index_spec.rb:1
+  Login Spec
+    1.05 seconds average (6.28 seconds / 6 examples) ./spec/features/authentication/login_spec.rb:1
+  Impersonate Stable Index
+    0.91443 seconds average (2.74 seconds / 3 examples) ./spec/features/stables/impersonate_spec.rb:1
+  Viewing Own Horse
+    0.70645 seconds average (1.41 seconds / 2 examples) ./spec/features/current_stable/horses/show_spec.rb:1
+  Update Stable Description
+    0.68794 seconds average (2.75 seconds / 4 examples) ./spec/features/stables/update_spec.rb:1
+  Stable Index
+    0.56392 seconds average (2.82 seconds / 5 examples) ./spec/features/stables/index_spec.rb:1
+  FactoryBot
+    0.23335 seconds average (0.23335 seconds / 1 example) ./spec/factory_bot_spec.rb:4
+  Auctions::HorseSeller
+    0.13493 seconds average (24.42 seconds / 181 examples) ./spec/services/auctions/horse_seller_spec.rb:1
+  Whenever Schedule
+    0.11732 seconds average (0.11732 seconds / 1 example) ./spec/whenever_spec.rb:3
+  Auctions::BidIncrementor
+    0.0718 seconds average (1.44 seconds / 20 examples) ./spec/services/auctions/bid_incrementor_spec.rb:1
+
+Finished in 1 minute 3.13 seconds (files took 12.55 seconds to load)
+1185 examples, 0 failures
+
+Randomized with seed 34471
+Coverage report generated for RSpec to /Users/shanthi/code/final_furlong/coverage/coverage.json. 2770 / 3267 LOC (84.79%) covered.
+Coverage report generated for RSpec to /Users/shanthi/code/final_furlong/coverage/coverage.xml.
+Line Coverage: 84.79% (2770 / 3267)
+Branch Coverage: 62.18% (462 / 743)
+Coverage report generated for RSpec to /Users/shanthi/code/final_furlong/coverage.
+Line Coverage: 84.79% (2770 / 3267)
+Branch Coverage: 62.18% (462 / 743)
+Lcov style coverage report generated for RSpec to coverage/lcov.info
+[1;32m
+✅ Tests: Rails passed in 1m16.71s[0m
+[1;35m
+
+Tests: Seeds[0m
+[1;90menv RAILS_ENV=test bin/rails db:seed:replant
+[0m
+[1;32m
+✅ Tests: Seeds passed in 12.79s[0m
+[1;31m
+❌ Continuous Integration failed in 2m23.93s[0m

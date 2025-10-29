@@ -1,33 +1,45 @@
 #!/usr/bin/env ruby
 require 'colorize'
+require "fileutils"
 
-def setup
-  log "Installing gems"
-  # Only do bundle install if the much-faster
-  # bundle check indicates we need to
-  system! "bundle check || bundle install"
+APP_ROOT = File.expand_path("..", __dir__)
 
-  log "Installing node modules"
-  system! "yarn install"
+def setup(test_mode = false)
+  FileUtils.chdir APP_ROOT do
+    log "Installing gems"
+    # Only do bundle install if the much-faster
+    # bundle check indicates we need to
+    system! "bundle check || bundle install"
 
-  log "Dropping & recreating the development database"
-  # Note that the very first time this runs, db:reset
-  # will fail, but this failure is fixed by
-  # doing a db:migrate
-  system! "bin/rails db:reset || bin/rails db:migrate:with_data && bin/rails db:seed"
-  system! "bin/rails db:reset:queue || bin/rails db:migrate:queue"
+    log "Installing node modules"
+    system! "yarn install"
 
-  log "Dropping & recreating the test database"
-  # Setting the RAILS_ENV explicitly to be sure
-  # we actually reset the dev database
-  system!({ "RAILS_ENV" => "test" }, "bin/rails db:reset")
+    unless test_mode
+      log "Dropping & recreating the development database"
+      unless File.exist?("config/database.yml")
+        FileUtils.cp "config/database.yml.sample", "config/database.yml"
+      end
+      # Note that the very first time this runs, db:reset
+      # will fail, but this failure is fixed by
+      # doing a db:migrate
+      system! "bin/rails db:reset || bin/rails db:migrate:with_data && bin/rails db:seed"
+    end
 
-  log "All set up.", color: :green
-  log "", color: false
-  log "To see commonly-needed commands, run:", color: false
-  log "", color: false
-  log "    bin/setup help", color: false
-  log "", color: false
+    log "Dropping & recreating the test database"
+    # Setting the RAILS_ENV explicitly to be sure
+    # we actually reset the dev database
+    system!({ "RAILS_ENV" => "test" }, "bin/rails db:reset")
+
+    log "Removing old logs and tempfiles"
+    system! "bin/rails log:clear tmp:clear"
+
+    log "All set up.", color: :green
+    log "", color: false
+    log "To see commonly-needed commands, run:", color: false
+    log "", color: false
+    log "    bin/setup help", color: false
+    log "", color: false
+  end
 end
 
 def help
@@ -60,6 +72,9 @@ def help
   log ""
   log "  bin/rspec"
   log "     # run tests"
+  log ""
+  log "  bin/setup test"
+  log "     # run setup only for tests (skip development setup)"
   log ""
   log "  bin/setup help"
   log "     # show this help"
@@ -96,5 +111,5 @@ end
 if ARGV[0] == "help"
   help
 else
-  setup
+  setup(ARGV[0] == "test")
 end

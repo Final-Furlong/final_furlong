@@ -24,7 +24,7 @@ module Users
     def sync_cookie_locale_to_user
       return unless valid_locale?(cookies[:locale])
 
-      setting = user.setting || user.build_setting
+      setting = user.reload.setting || user.build_setting
       setting.update!(locale: cookies[:locale].to_s)
     end
 

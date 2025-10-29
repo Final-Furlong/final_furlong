@@ -10,6 +10,7 @@ concurrency:
 
 env:
   CI: true
+  EXTERNAL_CI: true
   RAILS_ENV: test
   COVERAGE: true
   MAILTRAP_API_KEY: foo
@@ -17,14 +18,6 @@ env:
 jobs:
   setup:
     uses: Final-Furlong/final_furlong/.github/workflows/_dependencies.yml@main
-
-  call-linters:
-    needs: [ 'setup' ]
-    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@main
-
-  call-security:
-    needs: [ 'setup' ]
-    uses: Final-Furlong/final_furlong/.github/workflows/_security.yml@main
 
   call-tests:
     if: "!contains(github.event.commits[0].message, '[ci skip]') && !contains(github.event.commits[0].message, '[skip ci]')"
