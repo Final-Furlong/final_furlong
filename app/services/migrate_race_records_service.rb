@@ -3,7 +3,7 @@ class MigrateRaceRecordsService # rubocop:disable Metrics/ClassLength
   def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     min_horse = Horses::Horse.where.associated(:race_records).order(id: :asc).last
     query = Horses::Horse.where.associated(:race_result_finishes)
-    query = query.where("horses.id > ?", min_horse.id)
+    query = query.where("horses.id > ?", min_horse.id) if min_horse
     query.limit(1000).find_each(cursor: [:id], order: [:asc]) do |horse|
       start_year = horse.date_of_birth.year + 2
       (start_year..Date.current.year).each do |year|
