@@ -16,13 +16,80 @@ env:
   MAILTRAP_API_KEY: foo
 
 jobs:
-  setup:
-    uses: Final-Furlong/final_furlong/.github/workflows/_dependencies.yml@main
+  check-signoff:
+    runs-on: ubuntu-latest
+    outputs:
+      should-skip: ${{ steps.check.outputs.should-skip }}
+    steps:
+      - id: check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Function to sleep for a given number of milliseconds
+            const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  call-tests:
-    if: "!contains(github.event.commits[0].message, '[ci skip]') && !contains(github.event.commits[0].message, '[skip ci]')"
-    uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@main
-    needs: [ 'setup' ]
+            // Function to check for signoff status
+            async function checkSignoff() {
+              // Get all check runs, including external ones
+              const { data: checksResponse } = await github.rest.checks.listForRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: context.sha,
+                filter: 'all'
+              });
+
+              // Get all statuses
+              const { data: statusesResponse } = await github.rest.repos.listCommitStatusesForRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: context.sha
+              });
+              // Look for signoff in both checks and statuses
+              const signoffCheck = checksResponse.check_runs.find(check => 
+                check.name === 'signoff' && 
+                check.status === 'completed' && 
+                check.conclusion === 'success'
+              );
+
+              const signoffStatus = statusesResponse.find(status =>
+                status.context === 'signoff' &&
+                status.state === 'success'
+              );
+
+              return signoffCheck || signoffStatus;
+            }
+
+            // Try for 5 seconds, checking every second
+            let signoffResult = null;
+            for (let i = 0; i < 5; i++) {
+              console.log(`Attempt ${i + 1} to find successful signoff...`);
+              signoffResult = await checkSignoff();
+
+              if (signoffResult) {
+                console.log('Found successful signoff:', JSON.stringify(signoffResult, null, 2));
+                break;
+              } else {
+                if (i < 4) {
+                  console.log('Successful signoff not found, waiting 1 second...');
+                  await sleep(1000);
+                }
+              }
+            }
+
+            const shouldSkip = !!signoffResult;
+
+            core.setOutput('should-skip', shouldSkip ? 'true' : 'false');
+  skip-notification:
+    needs: check-signoff
+    if: needs.check-signoff.outputs.should-skip == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "All jobs skipped due to successful signoff"
+
+  run-ci:
+    needs: check-signoff
+    if: "needs.check-signoff.outputs.should-skip != 'true' && !contains(github.event.commits[0].message, '[ci skip]') && !contains(github.event.commits[0].message, '[skip ci]')"
+    uses: Final-Furlong/final_furlong/.github/workflows/_ci.yml@main
     secrets:
       lcov-token: ${{ secrets.LCOV_GITHUB_TOKEN }}
       code-climate-token: ${{ secrets.CC_TEST_REPORTER_ID }}
