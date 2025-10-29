@@ -4,7 +4,7 @@
 = render Horses::SearchFilters::Component.new(version: request_variant, path_name: "horses_path", params:, query:,
                                               active_status:)
 
-.card.card-border.mt-2.p-4.shadow-md class="dark:border-1 dark:border-neutral-100"
+.card.card-border.mt-2.p-4.shadow-md.border-1.border-base-100
   = turbo_stream_from "horses"
   = render Horses::StatusList::Component.new(version: request_variant, variants: [:desktop], statuses:, active_status:,
                                              params:, path_name: "horses_path")

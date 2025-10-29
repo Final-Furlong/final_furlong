@@ -1,0 +1,67 @@
+/# locals: (horse:)
+.mx-auto.overflow-x-auto.border.rounded-md.w-full
+  - if horse.annual_race_records.empty?
+    table.table
+      thead
+        td.text-secondary-content.text-center= t(".unraced")
+  - else
+    .join.join-vertical.bg-base-100
+      .collapse.collapse-arrow.join-item.border-base-300.border
+        input type="radio" name="race-record" checked="checked"
+        .collapse-title.font-semibold= t(".lifetime")
+        .collapse-content.text-sm
+          - record = horse.lifetime_race_record
+          - if record
+            table.table.table-zebra
+              tbody
+                tr
+                  td= t(".starts")
+                  td.text-right= record.starts_string
+                tr
+                  td= t(".wins")
+                  td.text-right= record.wins_string
+                tr
+                  td= t(".seconds")
+                  td.text-right= record.seconds_string
+                tr
+                  td= t(".thirds")
+                  td.text-right= record.thirds_string
+                tr
+                  td= t(".fourths")
+                  td.text-right= record.fourths_string
+                tr
+                  td= t(".earnings")
+                  td.text-right= record.earnings_string
+                tr
+                  td= t(".points")
+                  td.text-right= record.points
+
+        - horse.annual_race_records.ordered.each do |record|
+          - description = t(".race_year", age: record.year - horse.date_of_birth.year, year: record.year)
+          .collapse.collapse-arrow.join-item.border-base-300.border
+            input type="radio" name="race-record"
+            .collapse-title.font-semibold= description
+            .collapse-content.text-sm
+              table.table.table-zebra
+                tbody
+                  tr
+                    td= t(".starts")
+                    td.text-right= record.starts_string
+                  tr
+                    td= t(".wins")
+                    td.text-right= record.wins_string
+                  tr
+                    td= t(".seconds")
+                    td.text-right= record.seconds_string
+                  tr
+                    td= t(".thirds")
+                    td.text-right= record.thirds_string
+                  tr
+                    td= t(".fourths")
+                    td.text-right= record.fourths_string
+                  tr
+                    td= t(".earnings")
+                    td.text-right= record.earnings_string
+                  tr
+                    td= t(".points")
+                    td.text-right= record.points

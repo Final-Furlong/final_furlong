@@ -69,6 +69,29 @@ en:
       scheduled_race: Scheduled Race
       status: Status
       track_record: Track Record
+    races:
+      earnings: Earnings
+      fourths: Fourths
+      lifetime: Lifetime
+      points: Points
+      race_year: "%{age}yo (%{year})"
+      seconds: Seconds
+      starts: Starts
+      thirds: Thirds
+      unraced: Unraced
+      wins: Wins
+      year: Year
+    races_mobile:
+      earnings: Earnings
+      fourths: Fourths
+      lifetime: Lifetime
+      points: Points
+      race_year: "%{age}yo (%{year})"
+      seconds: Seconds
+      starts: Starts
+      thirds: Thirds
+      unraced: Unraced
+      wins: Wins
     show:
       foals: Foals
       info: Info

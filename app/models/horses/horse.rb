@@ -11,11 +11,19 @@ module Horses
     has_one :horse_attributes, class_name: "Attributes", dependent: :delete
     has_one :appearance, class_name: "Appearance", dependent: :delete
     has_one :genetics, class_name: "Genetics", dependent: :delete
+
+    has_one :auction_horse, class_name: "Auctions::Horse", dependent: :destroy
+
     has_one :training_schedules_horse, class_name: "Racing::TrainingScheduleHorse", dependent: :destroy
     has_one :training_schedule, class_name: "Racing::TrainingSchedule", through: :training_schedules_horse
-    has_one :auction_horse, class_name: "Auctions::Horse", dependent: :destroy
     has_many :race_result_finishes, class_name: "Racing::RaceResultHorse", inverse_of: :horse, dependent: :delete_all
     has_many :race_results, class_name: "Racing::RaceResult", source: :race, through: :race_result_finishes
+    has_many :race_records, class_name: "Racing::RaceRecord", inverse_of: :horse, dependent: :delete_all
+    # rubocop:disable Rails/HasManyOrHasOneDependent
+    has_many :annual_race_records, class_name: "Racing::AnnualRaceRecord", inverse_of: :horse
+    has_one :lifetime_race_record, class_name: "Racing::LifetimeRaceRecord", inverse_of: :horse
+    # rubocop:enable Rails/HasManyOrHasOneDependent
+
     has_many :foals, class_name: "Horses::Horse", inverse_of: :dam, dependent: :nullify
     has_many :stud_foals, class_name: "Horses::Horse", inverse_of: :sire, dependent: :nullify
 

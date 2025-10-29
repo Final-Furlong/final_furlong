@@ -1,0 +1,41 @@
+/# locals: (horse:)
+.mx-auto.overflow-x-auto.border.rounded-md.w-full class="sm:w-3/4"
+  table.table.table-zebra
+    thead
+      tr.border-b-1 class="border-gray-400 dark:border-neutral-600"
+        th= t(".year")
+        th= t(".starts")
+        th= t(".wins")
+        th= t(".seconds")
+        th= t(".thirds")
+        th= t(".fourths")
+        th= t(".earnings")
+        th= t(".points")
+    tbody
+      tr
+        - if horse.annual_race_records.empty?
+          td colspan=8
+            .text-secondary-content.text-center= t(".unraced")
+        - else
+          - horse.annual_race_records.ordered.each do |record|
+            tr
+              td= t(".race_year", age: record.year - horse.date_of_birth.year, year: record.year)
+              td= record.starts_string
+              td= record.wins_string
+              td= record.seconds_string
+              td= record.thirds_string
+              td= record.fourths_string
+              td.text-right= record.earnings_string
+              td.text-right= record.points
+    - record = horse.lifetime_race_record
+    - if record
+      tfoot
+        tr.border-t-1 class="border-gray-400 dark:border-neutral-600"
+          td= t(".lifetime")
+          td= record.starts_string
+          td= record.wins_string
+          td= record.seconds_string
+          td= record.thirds_string
+          td= record.fourths_string
+          td.text-right= record.earnings_string
+          td.text-right= record.points

@@ -6,7 +6,7 @@
         small= t("horses.index.no_horses")
     - else
       .table-responsive-md
-        table.table.table-responsive.table-striped
+        table.table.table-responsive.table-zebra
           thead
             tr
               th= sort_link query, :name, Horses::Horse.human_attribute_name("name")

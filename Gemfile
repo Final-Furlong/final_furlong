@@ -66,6 +66,7 @@ gem "rails-pg-extras"
 gem "ransack"
 gem "redis"
 gem "requestjs-rails"
+gem "scenic" # versioned views
 gem "sentry-rails"
 gem "sentry-ruby"
 gem "simple_form"
