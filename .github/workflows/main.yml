@@ -14,20 +14,13 @@ concurrency:
 
 env:
   CI: true
+  EXTERNAL_CI: true
   RAILS_ENV: test
   MAILTRAP_API_KEY: foo
 
 jobs:
   setup:
     uses: Final-Furlong/final_furlong/.github/workflows/_dependencies.yml@main
-
-  call-linters:
-    needs: [ 'setup' ]
-    uses: Final-Furlong/final_furlong/.github/workflows/_linters.yml@main
-
-  call-security:
-    needs: [ 'setup' ]
-    uses: Final-Furlong/final_furlong/.github/workflows/_security.yml@main
 
   call-tests:
     uses: Final-Furlong/final_furlong/.github/workflows/_tests.yml@main

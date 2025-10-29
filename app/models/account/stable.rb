@@ -43,7 +43,7 @@ end
 #  description         :text
 #  horses_count        :integer          default(0), not null
 #  last_online_at      :datetime         indexed
-#  miles_from_track    :integer          default(1), not null
+#  miles_from_track    :integer          default(10), not null
 #  name                :string           not null
 #  total_balance       :integer          default(0)
 #  unborn_horses_count :integer          default(0), not null

@@ -1,5 +1,3 @@
-require "active_support/core_ext/integer/time"
-
 # The test environment is used exclusively to run your application's
 # test suite. You never need to work with it otherwise. Remember that
 # your test database is "scratch space" for the test suite and is wiped
@@ -18,7 +16,7 @@ Rails.application.configure do
   config.eager_load = ENV["CI"].present?
 
   # Configure public file server for tests with cache-control for performance.
-  config.public_file_server.headers = { "Cache-Control" => "public, max-age=3600" }
+  config.public_file_server.headers = { "cache-control" => "public, max-age=3600" }
 
   # Show full error reports.
   config.consider_all_requests_local = false
@@ -36,8 +34,6 @@ Rails.application.configure do
   config.active_job.queue_adapter = :test
   config.solid_queue.connects_to = { database: { writing: :queue } }
 
-  config.action_mailer.perform_caching = false
-
   # Tell Action Mailer not to deliver emails to the real world.
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
@@ -53,8 +49,6 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
-
-  config.log_level = :debug
 
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = false

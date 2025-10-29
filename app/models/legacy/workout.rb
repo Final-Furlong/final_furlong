@@ -15,7 +15,7 @@ end
 #  Comment    :integer          not null
 #  Condition  :integer          not null
 #  DTSC       :integer          not null
-#  Date       :date             default(NULL), not null, indexed, indexed => [Location], indexed => [Horse]
+#  Date       :date             not null, indexed, indexed => [Location], indexed => [Horse]
 #  Distance1  :integer          default(0), not null
 #  Distance2  :integer
 #  Distance3  :integer

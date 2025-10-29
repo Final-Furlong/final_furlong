@@ -24,7 +24,7 @@ Bundler.require(*Rails.groups)
 module FinalFurlong
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 8.0
+    config.load_defaults 8.1
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
@@ -45,6 +45,7 @@ module FinalFurlong
 
     # Don't generate system test files.
     config.generators do |g|
+      g.system_tests = nil
       g.test_framework :rspec
       g.orm(:active_record, primary_key_type: :uuid)
       g.template_engine = :slim

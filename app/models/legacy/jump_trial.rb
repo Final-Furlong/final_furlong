@@ -11,7 +11,7 @@ end
 #
 #  Comment   :integer          not null
 #  Condition :integer          not null, indexed => [Horse, Jockey, Location]
-#  Date      :date             default(NULL), not null
+#  Date      :date             not null
 #  Distance  :integer          default(0), not null
 #  Horse     :integer          default(0), not null, indexed => [Jockey, Condition, Location]
 #  ID        :integer          not null, primary key

@@ -16,6 +16,10 @@
   display: inline-flex !important;
 }
 
+.table :where(thead, tfoot) {
+  color: hsl(var(--color-base-200));
+}
+
 td.created {
   font-style: italic;
 }

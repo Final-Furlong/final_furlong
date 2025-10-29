@@ -1,6 +1,8 @@
 #!/bin/bash
 
-cd ../../
+SCRIPT_DIR=$(pwd)
+
+cd ../
 
 yarn install --production=false
 
@@ -33,5 +35,7 @@ if [ $YARN_EXIT != 0 ]; then
   echo
   echo "and commit the yarn-audit-known-issues file"
 fi
+
+cd $SCRIPT_DIR
 
 exit $YARN_EXIT
