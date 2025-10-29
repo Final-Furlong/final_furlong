@@ -15,7 +15,7 @@ CI.run do
     step "Style: ESLint", "yarn eslint app/javascript"
     step "Style: StyleLint", "yarn run stylelint app/assets/tailwind"
     step "Style: I18n", "bin/i18n-tasks health"
-    step "Style: Github Workflow", "actionlint"
+    step "Style: Github Workflow", "actionlint" unless external_ci
   end
 
   step "Security: Gem audit", "bin/bundler-audit"
