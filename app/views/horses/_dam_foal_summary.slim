@@ -1,18 +1,22 @@
 /# locals: (horse:)
+- record = horse.broodmare_foal_record || horse.build_broodmare_foal_record
 .mx-auto.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100.w-full[
   class="sm:w-1/2 dark:border-neutral-100/50"
 ]
   table.table.table-sm
     tbody
       tr
-        th.uppercase.text-center colspan=2
+        th.uppercase.text-center
           = t(".foals")
+        th.uppercase.text-center
+          = t(".breed_ranking")
       tr.text-center
-        td colspan=2
-          = horse.foals.born.count
-          - if (stillborn_count = horse.foals.born.stillborn.count).positive?
+        td
+          = record.born_foals_count
+          - if record.stillborn_foals_count.positive?
             = "&nbsp;".html_safe
-            em= "(#{stillborn_count} Stillborn)"
+            em= "(#{record.stillborn_foals_count} Stillborn)"
+        td= record.breed_ranking_string
       tr
         th.uppercase.text-center
           = t(".racers")
@@ -20,9 +24,9 @@
           = t(".winners")
       tr
         td.text-center
-          = "x (y%)"
+          = record.raced_foals_string
         td.text-center
-          = "x (y%)"
+          = record.winning_foals_string
       tr
         th.uppercase.text-center
           = t(".stakes_winners")
@@ -30,9 +34,9 @@
           = t(".multi_stakes_winners")
       tr
         td.text-center
-          = "x (y%)"
+          = record.stakes_winning_foals_string
         td.text-center
-          = "x (y%)"
+          = record.multi_stakes_winning_foals_string
       tr
         th.uppercase.text-center
           = t(".millionaires")
@@ -40,6 +44,6 @@
           = t(".average_earnings")
       tr
         td.text-center
-          = "x (y%)"
+          = record.millionaire_foals_string
         td.text-center
-          = "$x"
+          = record.earnings_string

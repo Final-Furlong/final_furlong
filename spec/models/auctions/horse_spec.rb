@@ -34,5 +34,21 @@ RSpec.describe Auctions::Horse do
       end
     end
   end
+
+  describe "#sold?" do
+    context "when sold_at is present" do
+      it "returns true" do
+        horse = build_stubbed(:auction_horse, sold_at: 1.day.ago)
+        expect(horse.sold?).to be true
+      end
+    end
+
+    context "when sold_at is blank" do
+      it "returns false" do
+        horse = build_stubbed(:auction_horse, sold_at: nil)
+        expect(horse.sold?).to be false
+      end
+    end
+  end
 end
 

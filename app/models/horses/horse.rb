@@ -1,6 +1,9 @@
 module Horses
   class Horse < ApplicationRecord
     include FinalFurlong::Horses::Validation
+    include FriendlyId
+
+    friendly_id :name_and_foal_status, use: [:slugged, :finders]
 
     belongs_to :breeder, class_name: "Account::Stable"
     belongs_to :owner, class_name: "Account::Stable"
@@ -26,6 +29,7 @@ module Horses
 
     has_many :foals, class_name: "Horses::Horse", inverse_of: :dam, dependent: :nullify
     has_many :stud_foals, class_name: "Horses::Horse", inverse_of: :sire, dependent: :nullify
+    has_one :broodmare_foal_record, inverse_of: :mare, dependent: :delete
 
     enum :status, Status::STATUSES
     enum :gender, Gender::VALUES
@@ -38,9 +42,15 @@ module Horses
     scope :alive, -> { where(status: Status::LIVING_STATUSES) }
     scope :retired, -> { where(status: Status::RETIRED_STATUSES) }
     scope :born, -> { where(date_of_birth: ..Date.current) }
+    scope :unborn, -> { where(date_of_birth: Date.current + 1.day..) }
     scope :stillborn, -> { where("date_of_birth = date_of_death") }
+    scope :not_stillborn, -> { where(date_of_death: nil).or(where("date_of_death > date_of_birth")) }
+    scope :female, -> { where(gender: Gender::FEMALE_GENDERS) }
+    scope :not_female, -> { where.not(gender: Gender::FEMALE_GENDERS) }
     scope :order_by_yob, -> { order(Arel.sql("TO_CHAR(date_of_birth, 'YYYY') ASC")) }
     scope :order_by_dam, -> { includes(:dam).order("dams_horses.name ASC") }
+
+    delegate :title, :breeding_record, :dosage_text, :track_record, to: :horse_attributes, allow_nil: true
 
     # broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
 
@@ -88,9 +98,38 @@ module Horses
       self[:date_of_death] >= self[:date_of_birth]
     end
 
-    def slug
-      value = name.presence || id
-      value.parameterize
+    def name_and_foal_status
+      return name if name.present?
+
+      if dam.blank?
+        if Horses::Horse.where(name: nil, date_of_birth:, dam: nil).where.not(id:).exists?
+          if Horses::Horse.where(name: nil, date_of_birth:, dam: nil).where.not(id:).count == 1
+            "created-#{date_of_birth}-2"
+          else
+            slugs = Horses::Horse.where(name: nil, date_of_birth:, dam: nil).pluck(:slug)
+            slugs.map! { |slug| slug.gsub("created-#{date_of_birth}", "").split("-").last.to_s }
+            max_slug = slugs.map(&:to_i).max
+            "created-#{date_of_birth}-#{max_slug + 1}"
+          end
+        else
+          "created-#{date_of_birth}"
+        end
+      else
+        return "stillborn-#{year_of_birth}-#{dam.name}" if stillborn?
+
+        has_twin = Horses::Horse.where(date_of_birth:, dam:).where.not(id:).exists?
+        return "foal-#{year_of_birth}-#{dam.name}" unless has_twin
+
+        "foal-#{year_of_birth}-#{dam.name}-2"
+      end
+    end
+
+    def should_generate_new_friendly_id?
+      name_changed? || super
+    end
+
+    def year_of_birth
+      date_of_birth&.year
     end
 
     def self.ransackable_attributes(_auth_object = nil)
@@ -145,6 +184,7 @@ end
 #  foals_count                                                                                                        :integer          default(0), not null
 #  gender(colt, filly, stallion, mare, gelding)                                                                       :enum             not null
 #  name                                                                                                               :string(18)       indexed
+#  slug                                                                                                               :string           uniquely indexed
 #  status(unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased) :enum             default("unborn"), not null, indexed
 #  unborn_foals_count                                                                                                 :integer          default(0), not null
 #  created_at                                                                                                         :datetime         not null, indexed
@@ -167,6 +207,7 @@ end
 #  index_horses_on_name              (name)
 #  index_horses_on_owner_id          (owner_id)
 #  index_horses_on_sire_id           (sire_id)
+#  index_horses_on_slug              (slug) UNIQUE
 #  index_horses_on_status            (status)
 #
 # Foreign Keys

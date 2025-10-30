@@ -107,6 +107,7 @@ end
 #  foals_count                                                                                                        :integer          default(0), not null
 #  gender(colt, filly, stallion, mare, gelding)                                                                       :enum             not null
 #  name                                                                                                               :string(18)       indexed
+#  slug                                                                                                               :string           uniquely indexed
 #  status(unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased) :enum             default("unborn"), not null, indexed
 #  unborn_foals_count                                                                                                 :integer          default(0), not null
 #  created_at                                                                                                         :datetime         not null, indexed
@@ -129,6 +130,7 @@ end
 #  index_horses_on_name              (name)
 #  index_horses_on_owner_id          (owner_id)
 #  index_horses_on_sire_id           (sire_id)
+#  index_horses_on_slug              (slug) UNIQUE
 #  index_horses_on_status            (status)
 #
 # Foreign Keys

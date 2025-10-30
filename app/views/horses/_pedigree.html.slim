@@ -6,18 +6,18 @@
       tr
         td.border-1 rowspan=4 class=horse.gender
           = horse.name || t("horse.unnamed")
-        td.stallion.border-1 rowspan=2 class=("created" if horse.sire.blank?)
-          = pedigree.sire_display
-        td.stallion.border-1 class=("created" if horse.sire&.sire.blank?)
-          = pedigree.sire_sire_display
+        td.stallion.border-1 rowspan=2
+          = pedigree.sire_display(tag: true)
+        td.stallion.border-1
+          = pedigree.sire_sire_display(tag: true)
       tr
-        td.mare.border-1 class=("created" if horse.sire&.dam.blank?)
-          = pedigree.sire_dam_display
+        td.mare.border-1
+          = pedigree.sire_dam_display(tag: true)
       tr
-        td.mare.border-1 rowspan=2 class=("created" if horse.dam.blank?)
-          = pedigree.dam_display
-        td.stallion.border-1 class=("created" if horse.dam&.sire.blank?)
-          = pedigree.dam_sire_display
+        td.mare.border-1 rowspan=2
+          = pedigree.dam_display(tag: true)
+        td.stallion.border-1
+          = pedigree.dam_sire_display(tag: true)
       tr
-        td.mare.border-1 class=("created" if horse.dam&.dam.blank?)
-          = pedigree.dam_dam_display
+        td.mare.border-1
+          = pedigree.dam_dam_display(tag: true)

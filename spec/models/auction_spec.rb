@@ -67,7 +67,42 @@ RSpec.describe Auction do
       end
     end
 
-    # validate :minimum_status_required
+    describe "auctioneer" do
+      context "when auction is auto created" do
+        it "cannot be blank" do
+          auction = build(:auction, auctioneer: nil)
+          expect(auction.valid?(:auto_create)).to be false
+          expect(auction.errors[:auctioneer]).to eq ["must exist"]
+        end
+
+        it "must be FF" do
+          auctioneer = build(:stable, name: "Final Furlong")
+          auction = build(:auction, auctioneer:)
+          expect(auction.valid?(:auto_create)).to be true
+        end
+
+        it "must not be non-FF" do
+          auctioneer = build(:stable, name: "Other Stable")
+          auction = build(:auction, auctioneer:)
+          expect(auction.valid?(:auto_create)).to be false
+          expect(auction.errors[:auctioneer]).to eq ["is invalid"]
+        end
+      end
+
+      context "when auction is not auto created" do
+        it "can be non-FF" do
+          auctioneer = build(:stable, name: "Final Furlong")
+          auction = build(:auction, auctioneer:)
+          expect(auction.valid?).to be true
+        end
+
+        it "can be FF" do
+          auctioneer = build(:stable, name: "Other Stable")
+          auction = build(:auction, auctioneer:)
+          expect(auction.valid?).to be true
+        end
+      end
+    end
   end
 
   describe "callbacks" do
@@ -114,6 +149,83 @@ RSpec.describe Auction do
           auction.destroy
         end.to change(SolidQueue::Job, :count).by(-1)
         expect(SolidQueue::Job.exists?(id: last_job.id)).to be false
+      end
+    end
+  end
+
+  describe "#active?" do
+    context "when current date is between start/end times" do
+      it "returns true" do
+        auction = create(:auction, :current)
+        expect(auction.active?).to be true
+      end
+    end
+
+    context "when start date is in the future" do
+      it "returns false" do
+        auction = build(:auction)
+        expect(auction.active?).to be false
+      end
+    end
+
+    context "when end date is in the past" do
+      it "returns false" do
+        auction = create(:auction, :past)
+        expect(auction.active?).to be false
+      end
+    end
+  end
+
+  describe "#recently_ended?" do
+    context "when current date before end time" do
+      it "returns false" do
+        auction = create(:auction, :current)
+        expect(auction.recently_ended?).to be false
+      end
+    end
+
+    context "when current date is equal to end time" do
+      it "returns true" do
+        auction = build(:auction)
+        travel_to auction.end_time do
+          expect(auction.recently_ended?).to be true
+        end
+      end
+    end
+
+    context "when current date is end time + 1 day" do
+      it "returns true" do
+        auction = create(:auction, :past)
+        travel_to auction.end_time + 23.hours do
+          expect(auction.recently_ended?).to be true
+        end
+      end
+    end
+
+    context "when current date is end time + 2 days" do
+      it "returns false" do
+        auction = build(:auction)
+        travel_to auction.end_time + 2.days do
+          expect(auction.recently_ended?).to be false
+        end
+      end
+    end
+  end
+
+  describe "#future?" do
+    context "when current date is before start time" do
+      it "returns true" do
+        auction = build(:auction)
+        expect(auction.future?).to be true
+      end
+    end
+
+    context "when current date is after start time" do
+      it "returns false" do
+        auction = build(:auction)
+        travel_to auction.start_time + 1.day do
+          expect(auction.future?).to be false
+        end
       end
     end
   end

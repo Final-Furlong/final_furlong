@@ -2,6 +2,14 @@ module RaceRecordable
   extend ActiveSupport::Concern
 
   included do
+    def places
+      seconds + thirds
+    end
+
+    def stakes_places
+      stakes_seconds + stakes_thirds
+    end
+
     def starts_string
       stakes_string(starts, stakes_starts)
     end

@@ -14,17 +14,18 @@
         th.uppercase= t(".record")
     tbody
       - horse.stud_foals.born.includes(:dam).order_by_yob.order(name: :asc).each do |foal|
+        - pedigree = Horses::PedigreeDisplayService.new(foal)
         tr
           td= link_to (foal.name || t("horse.unnamed")), horse_path(foal)
           td= foal.date_of_birth.year
           td= foal.gender.titleize
-          td= link_to foal.dam.name, horse_path(foal.dam)
+          td= pedigree.dam_display(tag: true)
           td= foal.status.titleize
           td
             - if foal.stillborn?
               em= t("horse.type.stillborn").titleize
             - else
-              = "Track Record TBD"
+              = foal.track_record
 
     - unborn_foals.each do |unborn_foal|
       tr

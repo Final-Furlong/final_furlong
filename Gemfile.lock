@@ -311,6 +311,8 @@ GEM
     flag_shih_tzu (0.3.23)
     formatador (1.2.1)
       reline
+    friendly_id (5.5.1)
+      activerecord (>= 4.0.0)
     fspath (3.1.2)
     fugit (1.11.2)
       et-orbi (~> 1, >= 1.2.11)
@@ -1057,6 +1059,7 @@ DEPENDENCIES
   fasterer
   fastimage
   flag_shih_tzu
+  friendly_id
   fuubar
   good_migrations
   grape
@@ -1274,6 +1277,7 @@ CHECKSUMS
   ffi (1.17.2-x86_64-linux-musl) sha256=97c0eb3981414309285a64dc4d466bd149e981c279a56371ef811395d68cb95c
   flag_shih_tzu (0.3.23) sha256=0982215a5b96771671e13884e08f34c7084650752fd002a3ad6e91c4897061be
   formatador (1.2.1) sha256=c8aab8fc04af44e134da4d94ab22fc2b18ba831cd12cb57574d79043fc794da2
+  friendly_id (5.5.1) sha256=e018f2b89bfc143276fee6d378a64792385cd4fddd3d4fce501f59ec19c06207
   fspath (3.1.2) sha256=b5ac9bafb97e2c8f8f9e303cd98ebd484be76fe9aa588bc4d01c6d99e78c9d75
   fugit (1.11.2) sha256=4c2e234f750c78d4514d0ca343a0b923847eac3846976fdb23ed4245d8fde6fe
   fuubar (2.5.1) sha256=b272a7804b282661c7fab583a3764f92543cb482c365ae39c685cd218fdd4880

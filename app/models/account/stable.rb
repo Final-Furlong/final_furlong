@@ -28,7 +28,7 @@ module Account
     end
 
     def second_year?
-      created_at.between?(366.days.ago, 2.years.ago)
+      created_at.between?(2.years.ago, 366.days.ago)
     end
   end
 end
