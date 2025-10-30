@@ -3,6 +3,7 @@ name: Nightly CI
 on:
   schedule:
     - cron: '0 0 * * *'  # Every day at midnight UTC
+  workflow_dispatch:
 
 concurrency:
   # The concurrency group contains the workflow name and the branch name.
