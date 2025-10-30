@@ -1,10 +1,12 @@
 class MigrateRaceRecordsService # rubocop:disable Metrics/ClassLength
   # rubocop:disable Rails/Output
   def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    old_logger = ActiveRecord::Base.logger
+    ActiveRecord::Base.logger = nil
     min_horse = Horses::Horse.where.associated(:race_records).order(id: :asc).last
     query = Horses::Horse.where.associated(:race_result_finishes)
     query = query.where("horses.id > ?", min_horse.id) if min_horse
-    query.limit(100).find_each(cursor: [:id], order: [:asc]) do |horse|
+    query.find_each(cursor: [:id], order: [:asc]) do |horse|
       start_year = horse.date_of_birth.year + 2
       (start_year..Date.current.year).each do |year|
         if horse.race_results.by_year(year).exists?
@@ -40,11 +42,10 @@ class MigrateRaceRecordsService # rubocop:disable Metrics/ClassLength
           end
         end
       end
+      print "."
     end
-    min_horse = Horses::Horse.where.associated(:race_records).order(id: :asc).last
-    unless Horses::Horse.where.associated(:race_records).exists?(id: min_horse.id..)
-      User::SendDeveloperNotifications.call(title: "FF: Race Records", message: "Finished migrating!")
-    end
+    ActiveRecord::Base.logger = old_logger
+    nil
   rescue => e
     Rails.logger.error "Info: #{e.message}"
     raise e
