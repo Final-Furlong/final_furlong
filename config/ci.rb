@@ -2,13 +2,13 @@
 
 CI.run do
   external_ci = ENV.fetch("EXTERNAL_CI", false)
+  limited_ci = ENV.fetch("LIMITED_CI", false)
   if external_ci && !limited_ci
     step "Setup", "bin/rails assets:precompile"
   else
     step "Setup", "bin/setup test"
   end
 
-  limited_ci = ENV.fetch("LIMITED_CI", false)
   unless limited_ci
     step "Style: Ruby", "bundle exec rubocop"
     step "Style: Slim", "SLIM_LINT_RUBOCOP_CONF=.rubocop_slim.yml bundle exec slim-lint"
