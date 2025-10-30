@@ -10,10 +10,6 @@
 #     schedule: at 5am every day
 
 production:
-  migrate_race_records:
-    class: UpdateRaceRecordsJob
-    queue: low_priority
-    schedule: every 2 minutes
   migrate_legacy_horses:
     class: UpdateLegacyHorsesJob
     queue: low_priority
