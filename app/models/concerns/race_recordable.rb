@@ -23,7 +23,7 @@ module RaceRecordable
     end
 
     def earnings_string
-      ActiveSupport::NumberHelper.number_to_currency(earnings, unit: "$")
+      ActiveSupport::NumberHelper.number_to_currency(earnings, unit: "$", precision: 0)
     end
 
     private
