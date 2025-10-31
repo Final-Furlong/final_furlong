@@ -9,51 +9,62 @@ module Horses
       @routes = Rails.application.routes.url_helpers
     end
 
-    def sire_display
+    def sire_display(tag: false)
       if horse.sire.present?
-        link_to horse.sire.name, routes.horse_path(horse.sire)
+        link_to horse.sire.name, routes.horse_path(horse.sire.slug)
       else
-        I18n.t("horse.created")
+        display_created(tag)
       end
     end
 
-    def sire_sire_display
+    def sire_sire_display(tag: false)
       if horse.sire&.sire.present?
-        link_to horse.sire.sire.name, routes.horse_path(horse.sire.sire)
+        link_to horse.sire.sire.name, routes.horse_path(horse.sire.sire.slug)
       else
-        I18n.t("horse.created")
+        display_created(tag)
       end
     end
 
-    def sire_dam_display
+    def sire_dam_display(tag: false)
       if horse.sire&.dam.present?
-        link_to horse.sire.dam.name, routes.horse_path(horse.sire.dam)
+        link_to horse.sire.dam.name, routes.horse_path(horse.sire.dam.slug)
       else
-        I18n.t("horse.created")
+        display_created(tag)
       end
     end
 
-    def dam_display
+    def dam_display(tag: false)
       if horse.dam.present?
-        link_to horse.dam.name, routes.horse_path(horse.dam)
+        link_to horse.dam.name, routes.horse_path(horse.dam.slug)
       else
-        I18n.t("horse.created")
+        display_created(tag)
       end
     end
 
-    def dam_sire_display
+    def dam_sire_display(tag: false)
       if horse.dam&.sire.present?
-        link_to horse.dam.sire.name, routes.horse_path(horse.dam.sire)
+        link_to horse.dam.sire.name, routes.horse_path(horse.dam.sire.slug)
       else
-        I18n.t("horse.created")
+        display_created(tag)
       end
     end
 
-    def dam_dam_display
+    def dam_dam_display(tag: false)
       if horse.dam&.dam.present?
-        link_to horse.dam.dam.name, routes.horse_path(horse.dam.dam)
+        link_to horse.dam.dam.name, routes.horse_path(horse.dam.dam.slug)
+      else
+        display_created(tag)
+      end
+    end
+
+    private
+
+    def display_created(tag)
+      if tag
+        content_tag(:em, I18n.t("horse.created"))
       else
         I18n.t("horse.created")
+
       end
     end
   end

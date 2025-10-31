@@ -16,6 +16,20 @@ en:
       star_stripe_snip: star, stripe, snip
       stripe: stripe
       stripe_snip: stripe, snip
+    titles:
+      abbr:
+        final_furlong: FFCh.
+        grand: GCh.
+        international: ICh.
+        national: NCh.
+        normal: Ch.
+        world: WCh.
+      final_furlong: Final Furlong Champion
+      grand: Grand Champion
+      international: International Champion
+      national: National Champion
+      normal: Champion
+      world: World Champion
     type:
       broodmare: broodmare
       generic: horse
@@ -39,6 +53,7 @@ en:
       year_of_birth: YOB
     dam_foal_summary:
       average_earnings: Ave. Earnings
+      breed_ranking: Breed Ranking
       foals: Foals
       millionaires: Millionaires
       multi_stakes_winners: Mult. Stakes Winners

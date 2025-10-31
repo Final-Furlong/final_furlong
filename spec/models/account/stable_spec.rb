@@ -17,5 +17,37 @@ RSpec.describe Account::Stable do
                                                         )
     end
   end
+
+  describe "#newbie?" do
+    context "when created_at is within the last year" do
+      it "returns true" do
+        stable = build_stubbed(:stable, created_at: 9.months.ago)
+        expect(stable.newbie?).to be true
+      end
+    end
+
+    context "when created_at is later than a year ago" do
+      it "returns false" do
+        stable = build_stubbed(:stable, created_at: 366.days.ago)
+        expect(stable.newbie?).to be false
+      end
+    end
+  end
+
+  describe "#second_year?" do
+    context "when created_at is within the year before last" do
+      it "returns true" do
+        stable = build_stubbed(:stable, created_at: 23.months.ago)
+        expect(stable.second_year?).to be true
+      end
+    end
+
+    context "when created_at is later than 2 years ago" do
+      it "returns false" do
+        stable = build_stubbed(:stable, created_at: 25.months.ago)
+        expect(stable.second_year?).to be false
+      end
+    end
+  end
 end
 

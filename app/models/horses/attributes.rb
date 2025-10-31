@@ -1,10 +1,25 @@
 module Horses
   class Attributes < ApplicationRecord
     self.table_name = "horse_attributes"
+    self.ignored_columns += ["age"]
+
+    TITLES = ["Final Furlong", "World", "International", "National", "Grand", "Normal"].freeze
+
+    attribute :track_record, default: -> { "Unraced" }
+    attribute :breeding_record, default: -> { "None" }
 
     belongs_to :horse, class_name: "Horse"
 
-    validates :age, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+    validates :track_record, :breeding_record, presence: true
+    validates :title, inclusion: { in: TITLES }, allow_blank: true
+
+    def title_string
+      I18n.t("horse.titles.#{title.downcase.tr(" ", "_")}")
+    end
+
+    def title_abbr
+      I18n.t("horse.titles.abbr.#{title.downcase.tr(" ", "_")}")
+    end
   end
 end
 
@@ -12,11 +27,14 @@ end
 #
 # Table name: horse_attributes
 #
-#  id         :uuid             not null, primary key
-#  age        :integer          default(0)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  horse_id   :uuid             not null, uniquely indexed
+#  id              :uuid             not null, primary key
+#  breeding_record :string           default("None"), not null
+#  dosage_text     :string
+#  title           :string
+#  track_record    :string           default("Unraced"), not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  horse_id        :uuid             not null, uniquely indexed
 #
 # Indexes
 #

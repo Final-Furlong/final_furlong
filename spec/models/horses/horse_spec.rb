@@ -1,9 +1,26 @@
-require_relative "../../shared/horse_examples"
-
 RSpec.describe Horses::Horse do
-  it_behaves_like "a horse"
+  describe "associations" do
+    subject(:horse) { build_stubbed(:horse) }
+
+    it { is_expected.to belong_to(:breeder).class_name("Account::Stable") }
+    it { is_expected.to belong_to(:owner).class_name("Account::Stable") }
+    it { is_expected.to belong_to(:sire).class_name("Horses::Horse").optional }
+    it { is_expected.to belong_to(:dam).class_name("Horses::Horse").optional }
+    it { is_expected.to belong_to(:location_bred).class_name("Location") }
+
+    it { is_expected.to have_one(:appearance).class_name("Horses::Appearance").dependent(:delete) }
+    it { is_expected.to have_one(:horse_attributes).class_name("Horses::Attributes").dependent(:delete) }
+    it { is_expected.to have_one(:genetics).class_name("Horses::Genetics").dependent(:delete) }
+    it { is_expected.to have_one(:training_schedule).class_name("Racing::TrainingSchedule").through(:training_schedules_horse) }
+    it { is_expected.to have_one(:training_schedules_horse).class_name("Racing::TrainingScheduleHorse").dependent(:destroy) }
+    it { is_expected.to have_one(:auction_horse).class_name("Auctions::Horse").dependent(:destroy) }
+    it { is_expected.to have_many(:race_result_finishes).class_name("Racing::RaceResultHorse").dependent(:delete_all) }
+    it { is_expected.to have_many(:race_results).class_name("Racing::RaceResult").through(:race_result_finishes) }
+  end
 
   describe "validations" do
+    it { is_expected.to validate_presence_of(:date_of_birth) }
+
     describe "name" do
       it "can be blank for a new horse" do
         horse = build(:horse, name: nil)
@@ -129,12 +146,207 @@ RSpec.describe Horses::Horse do
         expect(horse.budget_name).to eq horse.name
       end
     end
+  end
 
-    # return name if name.present?
+  describe "#age" do
+    context "when horse is stillborn" do
+      it "returns 0" do
+        horse = build(:horse, date_of_birth: 1.year.ago, date_of_death: 1.year.ago)
+        expect(horse.age).to eq 0
+      end
+    end
 
-    # foal_name = "Unnamed ("
-    # foal_name += sire_id ? sire.name : "Created"
-    # foal_name += dam_id ? dam.name : "Created"
+    context "when horse is not stillborn, but dead" do
+      it "returns age at death" do
+        horse = build(:horse, date_of_birth: 10.years.ago, date_of_death: 2.years.ago)
+        expect(horse.age).to eq 8
+      end
+    end
+
+    context "when horse is alive" do
+      it "returns current age" do
+        horse = build(:horse, date_of_birth: 10.years.ago)
+        expect(horse.age).to eq 10
+      end
+    end
+  end
+
+  describe "#created?" do
+    context "when horse has no sire or dam" do
+      it "returns true" do
+        horse = build(:horse, sire: nil, dam: nil)
+        expect(horse.created?).to be true
+      end
+    end
+
+    context "when horse has in-game sire" do
+      it "returns false" do
+        horse = create(:horse, :with_sire, dam: nil)
+        expect(horse.created?).to be false
+      end
+    end
+
+    context "when horse has in-game dam" do
+      it "returns false" do
+        horse = create(:horse, :with_dam, sire: nil)
+        expect(horse.created?).to be false
+      end
+    end
+  end
+
+  describe "#female?" do
+    context "when gender is filly" do
+      it "returns true" do
+        horse = build(:horse, gender: "filly")
+        expect(horse.female?).to be true
+      end
+    end
+
+    context "when gender is mare" do
+      it "returns true" do
+        horse = build(:horse, gender: "mare")
+        expect(horse.female?).to be true
+      end
+    end
+
+    context "when gender is not filly or mare" do
+      it "returns false" do
+        horse = build(:horse)
+        %w[colt stallion gelding].each do |gender|
+          horse.gender = gender
+          expect(horse.female?).to be false
+        end
+      end
+    end
+  end
+
+  describe "#male?" do
+    context "when gender is colt" do
+      it "returns true" do
+        horse = build(:horse, gender: "colt")
+        expect(horse.male?).to be true
+      end
+    end
+
+    context "when gender is stallion" do
+      it "returns true" do
+        horse = build(:horse, gender: "stallion")
+        expect(horse.male?).to be true
+      end
+    end
+
+    context "when gender is gelding" do
+      it "returns true" do
+        horse = build(:horse, gender: "gelding")
+        expect(horse.male?).to be true
+      end
+    end
+
+    context "when gender is not colt, stallion, or gelding" do
+      it "returns false" do
+        horse = build(:horse)
+        %w[filly mare].each do |gender|
+          horse.gender = gender
+          expect(horse.male?).to be false
+        end
+      end
+    end
+  end
+
+  describe "#location_bred_name" do
+    context "when location has state" do
+      it "returns state/country" do
+        location = create(:location, state: "Foo", county: "Bar", country: "US")
+        horse = build_stubbed(:horse, location_bred: location)
+        expect(horse.location_bred_name).to eq "Foo, US"
+      end
+    end
+
+    context "when location has county" do
+      it "returns county/country" do
+        location = create(:location, state: nil, county: "Bar", country: "US")
+        horse = build_stubbed(:horse, location_bred: location)
+        expect(horse.location_bred_name).to eq "Bar, US"
+      end
+    end
+  end
+
+  describe "#year_of_birth" do
+    context "when date of birth is set" do
+      it "returns year from date of birth" do
+        horse = described_class.new(date_of_birth: 1.year.ago)
+        expect(horse.year_of_birth).to eq Date.current.year - 1
+      end
+    end
+
+    context "when date of birth is blank" do
+      it "returns year from date of birth" do
+        horse = described_class.new(date_of_birth: nil)
+        expect(horse.year_of_birth).to be_nil
+      end
+    end
+  end
+
+  describe "#name_and_foal_status" do
+    context "when horse has a name" do
+      it "uses the name" do
+        horse = described_class.new(name: SecureRandom.alphanumeric(20))
+        expect(horse.name_and_foal_status).to eq horse.name
+      end
+    end
+
+    context "when horse has no dam" do
+      context "when multiple created horses have the same date of birth" do
+        it "uses the index of each horse based on id" do
+          date_of_birth = 3.years.ago.to_date
+          horse1 = build(:horse, date_of_birth:, name: nil, sire: nil, dam: nil)
+          expect(horse1.name_and_foal_status).to eq "created-#{date_of_birth}"
+          horse1.save
+          horse2 = build(:horse, date_of_birth:, name: nil, sire: nil, dam: nil)
+          expect(horse2.name_and_foal_status).to eq "created-#{date_of_birth}-2"
+          horse2.save
+          horse3 = build(:horse, date_of_birth:, name: nil, sire: nil, dam: nil)
+          expect(horse3.name_and_foal_status).to eq "created-#{date_of_birth}-3"
+        end
+      end
+
+      context "when it is the only horse with the date of birth" do
+        it "uses the date of birth" do
+          date_of_birth = 3.years.ago.to_date
+          horse = create(:horse, date_of_birth:, name: nil, sire: nil, dam: nil)
+          expect(horse.name_and_foal_status).to eq "created-#{date_of_birth}"
+        end
+      end
+    end
+
+    context "when horse has a dam" do
+      context "when horse is stillborn" do
+        it "uses stillborn and year of birth" do
+          horse = create(:horse, :stillborn, :with_dam, name: nil, date_of_birth: Date.current)
+          expect(horse.name_and_foal_status).to eq "stillborn-#{Date.current.year}-#{horse.dam.name}"
+        end
+      end
+
+      context "when horse has a twin" do
+        it "uses the order of the twins" do
+          dam = create(:horse, :broodmare)
+          horse = build(:horse, name: nil, date_of_birth: Date.current, dam:)
+          expect(horse.name_and_foal_status).to eq "foal-#{Date.current.year}-#{dam.name}"
+          horse.save
+
+          horse2 = build(:horse, name: nil, date_of_birth: Date.current, dam:)
+          expect(horse2.name_and_foal_status).to eq "foal-#{Date.current.year}-#{dam.name}-2"
+        end
+      end
+
+      context "when horse has no twin" do
+        it "uses foal and year of birth" do
+          dam = create(:horse, :broodmare)
+          horse = build(:horse, name: nil, date_of_birth: Date.current, dam:)
+          expect(horse.name_and_foal_status).to eq "foal-#{Date.current.year}-#{dam.name}"
+        end
+      end
+    end
   end
 end
 

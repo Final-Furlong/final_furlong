@@ -20,10 +20,6 @@
   color: hsl(var(--color-base-200));
 }
 
-td.created {
-  font-style: italic;
-}
-
 td.mare,
 td.filly {
   background-color: #ffcccc;

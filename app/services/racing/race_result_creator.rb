@@ -28,7 +28,8 @@ module Racing
           race_horses = process_race_horses(race_result:, horses:)
           race_horses.each do |race_horse|
             result.created = race_horse.valid?
-            next if race_horse.save!
+            race_record = update_race_record(race_result:, surface:, race_horse:)
+            next if race_horse.save! && race_record.save!
 
             result.created = false
             raise ActiveRecord::Rollback, race_horse.errors.full_messages.to_sentence
@@ -58,6 +59,35 @@ module Racing
     end
 
     private
+
+    def update_race_record(race_result:, surface:, race_horse:)
+      horse = race_horse.horse
+      record = horse.race_records.find_or_initialize_by(year: race_result.date.year, result_type: surface.surface.to_s.downcase)
+      record.starts += 1
+      stakes_race = race_result.race_type == "stakes"
+      record.stakes_starts += 1 if stakes_race
+      case race_horse.finish_position
+      when 1
+        record.wins += 1
+        record.stakes_wins += 1 if stakes_race
+        record.earnings += (race_result.purse * 0.6).to_i
+      when 2
+        record.seconds += 1
+        record.stakes_seconds += 1 if stakes_race
+        record.earnings += (race_result.purse * 0.2).to_i
+      when 3
+        record.thirds += 1
+        record.stakes_thirds += 1 if stakes_race
+        record.earnings += (race_result.purse * 0.1).to_i
+      when 4
+        record.fourths += 1
+        record.stakes_fourths += 1 if stakes_race
+        record.earnings += (race_result.purse * 0.07).to_i
+      when 5
+        record.earnings += (race_result.purse * 0.03).to_i
+      end
+      record
+    end
 
     def process_race_horses(race_result:, horses:)
       race_horses = []

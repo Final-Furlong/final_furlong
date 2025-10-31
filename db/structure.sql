@@ -54,6 +54,18 @@ CREATE TYPE public.activity_type AS ENUM (
 
 
 --
+-- Name: breed_rankings; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.breed_rankings AS ENUM (
+    'bronze',
+    'silver',
+    'gold',
+    'platinum'
+);
+
+
+--
 -- Name: horse_color; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -376,7 +388,7 @@ COMMENT ON COLUMN public.activity_points.activity_type IS 'color_war, auction, s
 --
 
 CREATE TABLE public.race_records (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     horse_id uuid NOT NULL,
     year integer DEFAULT 1996 NOT NULL,
     result_type public.race_result_types DEFAULT 'dirt'::public.race_result_types,
@@ -517,6 +529,38 @@ CREATE TABLE public.auctions (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone NOT NULL
 );
+
+
+--
+-- Name: broodmare_foal_records; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.broodmare_foal_records (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    horse_id uuid NOT NULL,
+    born_foals_count integer DEFAULT 0 NOT NULL,
+    stillborn_foals_count integer DEFAULT 0 NOT NULL,
+    unborn_foals_count integer DEFAULT 0 NOT NULL,
+    raced_foals_count integer DEFAULT 0 NOT NULL,
+    winning_foals_count integer DEFAULT 0 NOT NULL,
+    stakes_winning_foals_count integer DEFAULT 0 NOT NULL,
+    multi_stakes_winning_foals_count integer DEFAULT 0 NOT NULL,
+    millionaire_foals_count integer DEFAULT 0 NOT NULL,
+    multi_millionaire_foals_count integer DEFAULT 0 NOT NULL,
+    total_foal_points integer DEFAULT 0 NOT NULL,
+    total_foal_races integer DEFAULT 0 NOT NULL,
+    total_foal_earnings bigint DEFAULT 0 NOT NULL,
+    breed_ranking public.breed_rankings,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN broodmare_foal_records.breed_ranking; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.broodmare_foal_records.breed_ranking IS 'bronze, silver, gold, platinum';
 
 
 --
@@ -662,7 +706,11 @@ CREATE TABLE public.horse_attributes (
     horse_id uuid NOT NULL,
     age integer DEFAULT 0,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    track_record character varying DEFAULT 'Unraced'::character varying NOT NULL,
+    title character varying,
+    breeding_record character varying DEFAULT 'None'::character varying NOT NULL,
+    dosage_text character varying
 );
 
 
@@ -700,7 +748,8 @@ CREATE TABLE public.horses (
     location_bred_id uuid NOT NULL,
     legacy_id integer,
     foals_count integer DEFAULT 0 NOT NULL,
-    unborn_foals_count integer DEFAULT 0 NOT NULL
+    unborn_foals_count integer DEFAULT 0 NOT NULL,
+    slug character varying
 );
 
 
@@ -1831,6 +1880,14 @@ ALTER TABLE ONLY public.auctions
 
 
 --
+-- Name: broodmare_foal_records broodmare_foal_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.broodmare_foal_records
+    ADD CONSTRAINT broodmare_foal_records_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: budgets budgets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2143,6 +2200,13 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: idx_on_multi_stakes_winning_foals_count_d86a3500a8; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_multi_stakes_winning_foals_count_d86a3500a8 ON public.broodmare_foal_records USING btree (multi_stakes_winning_foals_count);
+
+
+--
 -- Name: index_activations_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2283,6 +2347,69 @@ CREATE UNIQUE INDEX index_auctions_on_title ON public.auctions USING btree (lowe
 
 
 --
+-- Name: index_broodmare_foal_records_on_born_foals_count; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_broodmare_foal_records_on_born_foals_count ON public.broodmare_foal_records USING btree (born_foals_count);
+
+
+--
+-- Name: index_broodmare_foal_records_on_breed_ranking; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_broodmare_foal_records_on_breed_ranking ON public.broodmare_foal_records USING btree (breed_ranking);
+
+
+--
+-- Name: index_broodmare_foal_records_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_broodmare_foal_records_on_horse_id ON public.broodmare_foal_records USING btree (horse_id);
+
+
+--
+-- Name: index_broodmare_foal_records_on_millionaire_foals_count; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_broodmare_foal_records_on_millionaire_foals_count ON public.broodmare_foal_records USING btree (millionaire_foals_count);
+
+
+--
+-- Name: index_broodmare_foal_records_on_multi_millionaire_foals_count; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_broodmare_foal_records_on_multi_millionaire_foals_count ON public.broodmare_foal_records USING btree (multi_millionaire_foals_count);
+
+
+--
+-- Name: index_broodmare_foal_records_on_raced_foals_count; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_broodmare_foal_records_on_raced_foals_count ON public.broodmare_foal_records USING btree (raced_foals_count);
+
+
+--
+-- Name: index_broodmare_foal_records_on_stakes_winning_foals_count; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_broodmare_foal_records_on_stakes_winning_foals_count ON public.broodmare_foal_records USING btree (stakes_winning_foals_count);
+
+
+--
+-- Name: index_broodmare_foal_records_on_unborn_foals_count; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_broodmare_foal_records_on_unborn_foals_count ON public.broodmare_foal_records USING btree (unborn_foals_count);
+
+
+--
+-- Name: index_broodmare_foal_records_on_winning_foals_count; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_broodmare_foal_records_on_winning_foals_count ON public.broodmare_foal_records USING btree (winning_foals_count);
+
+
+--
 -- Name: index_budgets_on_description; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2420,6 +2547,13 @@ CREATE INDEX index_horses_on_owner_id ON public.horses USING btree (owner_id);
 --
 
 CREATE INDEX index_horses_on_sire_id ON public.horses USING btree (sire_id);
+
+
+--
+-- Name: index_horses_on_slug; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_horses_on_slug ON public.horses USING btree (slug);
 
 
 --
@@ -3553,6 +3687,14 @@ ALTER TABLE ONLY public.horse_appearances
 
 
 --
+-- Name: broodmare_foal_records fk_rails_f03f5afd0c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.broodmare_foal_records
+    ADD CONSTRAINT fk_rails_f03f5afd0c FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
 -- Name: race_result_horses fk_rails_f05befc048; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3575,6 +3717,10 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251030225629'),
+('20251030195925'),
+('20251030135303'),
+('20251030120315'),
 ('20251029202531'),
 ('20251029201112'),
 ('20251029190419'),
