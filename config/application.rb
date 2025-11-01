@@ -47,7 +47,6 @@ module FinalFurlong
     config.generators do |g|
       g.system_tests = nil
       g.test_framework :rspec
-      g.orm(:active_record, primary_key_type: :uuid)
       g.template_engine = :slim
       g.helper false
     end
