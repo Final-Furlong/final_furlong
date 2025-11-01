@@ -1,8 +1,10 @@
 class CreateNewTables < ActiveRecord::Migration[8.1]
   def change
+    # rubocop:disable Rails/ReversibleMigration
     drop_table :new_activations if table_exists? :new_activations
     drop_table :new_racetracks if table_exists? :new_racetracks
     drop_table :new_stables if table_exists? :new_stables
+    # rubocop:enable Rails/ReversibleMigration
 
     create_table :new_activations do |t|
       t.datetime "activated_at", precision: nil
@@ -521,8 +523,8 @@ class CreateNewTables < ActiveRecord::Migration[8.1]
     conditions = %w[fast good slow wet]
 
     create_table :new_track_surfaces do |t|
-      t.enum :surface, enum_type: "track_surface", default: "dirt", null: false, comment: surfaces.join(', ')
-      t.enum :condition, enum_type: "track_condition", default: "fast", null: false, comment: conditions.join(', ')
+      t.enum :surface, enum_type: "track_surface", default: "dirt", null: false, comment: surfaces.join(", ")
+      t.enum :condition, enum_type: "track_condition", default: "fast", null: false, comment: conditions.join(", ")
       t.integer "racetrack_id", index: true
       t.uuid "old_racetrack_id", null: false, index: true
       t.integer "banking", null: false
@@ -582,7 +584,7 @@ class CreateNewTables < ActiveRecord::Migration[8.1]
       t.string "slug", index: { unique: true }
       t.string "username", null: false, index: true
       t.string "public_id", limit: 12, index: true
-      t.enum :status, enum_type: "user_status", default: "pending", null: false, comment: user_statuses.join(', ')
+      t.enum :status, enum_type: "user_status", default: "pending", null: false, comment: user_statuses.join(", ")
       t.integer "discourse_id", index: { unique: true }
       t.string "email", default: "", null: false, index: { unique: true }
       t.string "name", null: false, index: true
@@ -611,3 +613,4 @@ class CreateNewTables < ActiveRecord::Migration[8.1]
     end
   end
 end
+

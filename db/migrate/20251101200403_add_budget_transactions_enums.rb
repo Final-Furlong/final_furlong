@@ -13,3 +13,4 @@ class AddBudgetTransactionsEnums < ActiveRecord::Migration[8.1]
     add_enum_value :budget_activity_type, "misc", if_not_exists: true
   end
 end
+
