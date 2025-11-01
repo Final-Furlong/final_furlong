@@ -10,20 +10,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
-
-
---
--- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
-
-
---
 -- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -366,7 +352,7 @@ ALTER SEQUENCE public.activations_id_seq OWNED BY public.activations.id;
 --
 
 CREATE TABLE public.active_storage_attachments (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     name character varying NOT NULL,
     record_type character varying NOT NULL,
     record_id uuid NOT NULL,
@@ -380,7 +366,7 @@ CREATE TABLE public.active_storage_attachments (
 --
 
 CREATE TABLE public.active_storage_blobs (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     key character varying NOT NULL,
     filename character varying NOT NULL,
     content_type character varying,
@@ -397,7 +383,7 @@ CREATE TABLE public.active_storage_blobs (
 --
 
 CREATE TABLE public.active_storage_variant_records (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     blob_id uuid NOT NULL,
     variation_digest character varying NOT NULL
 );
@@ -408,7 +394,7 @@ CREATE TABLE public.active_storage_variant_records (
 --
 
 CREATE TABLE public.activity_points (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     stable_id uuid NOT NULL,
     activity_type public.activity_type NOT NULL,
     budget_id uuid,
@@ -432,7 +418,7 @@ COMMENT ON COLUMN public.activity_points.activity_type IS 'color_war, auction, s
 --
 
 CREATE TABLE public.race_records (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     horse_id uuid NOT NULL,
     year integer DEFAULT 1996 NOT NULL,
     result_type public.race_result_types DEFAULT 'dirt'::public.race_result_types,
@@ -501,7 +487,7 @@ CREATE TABLE public.ar_internal_metadata (
 --
 
 CREATE TABLE public.auction_bids (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     auction_id uuid NOT NULL,
     horse_id uuid NOT NULL,
     bidder_id uuid NOT NULL,
@@ -519,7 +505,7 @@ CREATE TABLE public.auction_bids (
 --
 
 CREATE TABLE public.auction_consignment_configs (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     auction_id uuid NOT NULL,
     horse_type character varying NOT NULL,
     minimum_age integer DEFAULT 0 NOT NULL,
@@ -536,7 +522,7 @@ CREATE TABLE public.auction_consignment_configs (
 --
 
 CREATE TABLE public.auction_horses (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     auction_id uuid NOT NULL,
     horse_id uuid NOT NULL,
     reserve_price integer,
@@ -553,7 +539,7 @@ CREATE TABLE public.auction_horses (
 --
 
 CREATE TABLE public.auctions (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     start_time timestamp with time zone NOT NULL,
     end_time timestamp with time zone NOT NULL,
     auctioneer_id uuid NOT NULL,
@@ -612,7 +598,7 @@ COMMENT ON COLUMN public.broodmare_foal_records.breed_ranking IS 'bronze, silver
 --
 
 CREATE TABLE public.budgets (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     stable_id uuid NOT NULL,
     description text NOT NULL,
     amount bigint DEFAULT 0 NOT NULL,
@@ -638,7 +624,7 @@ CREATE TABLE public.data_migrations (
 --
 
 CREATE TABLE public.game_activity_points (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     activity_type public.activity_type NOT NULL,
     first_year_points integer DEFAULT 0 NOT NULL,
     second_year_points integer DEFAULT 0 NOT NULL,
@@ -660,7 +646,7 @@ COMMENT ON COLUMN public.game_activity_points.activity_type IS 'color_war, aucti
 --
 
 CREATE TABLE public.game_alerts (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     start_time timestamp without time zone NOT NULL,
     end_time timestamp without time zone,
     message text NOT NULL,
@@ -676,7 +662,7 @@ CREATE TABLE public.game_alerts (
 --
 
 CREATE TABLE public.horse_appearances (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     horse_id uuid NOT NULL,
     color public.horse_color DEFAULT 'bay'::public.horse_color NOT NULL,
     rf_leg_marking public.horse_leg_marking,
@@ -746,7 +732,7 @@ COMMENT ON COLUMN public.horse_appearances.face_marking IS 'bald_face, blaze, sn
 --
 
 CREATE TABLE public.horse_attributes (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     horse_id uuid NOT NULL,
     age integer DEFAULT 0,
     created_at timestamp(6) with time zone NOT NULL,
@@ -763,7 +749,7 @@ CREATE TABLE public.horse_attributes (
 --
 
 CREATE TABLE public.horse_genetics (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     horse_id uuid NOT NULL,
     allele character varying(32) NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -776,7 +762,7 @@ CREATE TABLE public.horse_genetics (
 --
 
 CREATE TABLE public.horses (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     name character varying(18),
     gender public.horse_gender NOT NULL,
     status public.horse_status DEFAULT 'unborn'::public.horse_status NOT NULL,
@@ -816,7 +802,7 @@ COMMENT ON COLUMN public.horses.status IS 'unborn, weanling, yearling, racehorse
 --
 
 CREATE TABLE public.jockeys (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     legacy_id integer NOT NULL,
     first_name character varying NOT NULL,
     last_name character varying NOT NULL,
@@ -908,7 +894,7 @@ CREATE MATERIALIZED VIEW public.lifetime_race_records AS
 --
 
 CREATE TABLE public.locations (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     name character varying NOT NULL,
     state character varying,
     county character varying,
@@ -2760,7 +2746,7 @@ ALTER SEQUENCE public.new_users_id_seq OWNED BY public.new_users.id;
 --
 
 CREATE TABLE public.race_odds (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     display character varying NOT NULL,
     value numeric(3,1) NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
@@ -2773,7 +2759,7 @@ CREATE TABLE public.race_odds (
 --
 
 CREATE TABLE public.race_result_horses (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     race_id uuid NOT NULL,
     horse_id uuid NOT NULL,
     legacy_horse_id integer DEFAULT 0 NOT NULL,
@@ -2797,7 +2783,7 @@ CREATE TABLE public.race_result_horses (
 --
 
 CREATE TABLE public.race_results (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     date date NOT NULL,
     number integer DEFAULT 1 NOT NULL,
     race_type public.race_type DEFAULT 'maiden'::public.race_type NOT NULL,
@@ -2858,7 +2844,7 @@ COMMENT ON COLUMN public.race_results.split IS '4Q, 2F';
 --
 
 CREATE TABLE public.race_schedules (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     day_number integer DEFAULT 1 NOT NULL,
     date date NOT NULL,
     number integer DEFAULT 1 NOT NULL,
@@ -2904,7 +2890,7 @@ COMMENT ON COLUMN public.race_schedules.grade IS 'Ungraded, Grade 3, Grade 2, Gr
 --
 
 CREATE TABLE public.racetracks (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     name character varying NOT NULL,
     latitude numeric NOT NULL,
     longitude numeric NOT NULL,
@@ -2961,7 +2947,7 @@ ALTER SEQUENCE public.sessions_id_seq OWNED BY public.sessions.id;
 --
 
 CREATE TABLE public.settings (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     theme character varying,
     locale character varying,
     user_id uuid NOT NULL,
@@ -2975,7 +2961,7 @@ CREATE TABLE public.settings (
 --
 
 CREATE TABLE public.stables (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     name character varying NOT NULL,
     user_id uuid NOT NULL,
     legacy_id integer,
@@ -2998,7 +2984,7 @@ CREATE TABLE public.stables (
 --
 
 CREATE TABLE public.track_surfaces (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     racetrack_id uuid NOT NULL,
     surface public.track_surface DEFAULT 'dirt'::public.track_surface NOT NULL,
     condition public.track_condition DEFAULT 'fast'::public.track_condition NOT NULL,
@@ -3032,7 +3018,7 @@ COMMENT ON COLUMN public.track_surfaces.condition IS 'fast, good, slow, wet';
 --
 
 CREATE TABLE public.training_schedules (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     stable_id uuid NOT NULL,
     name character varying NOT NULL,
     description text,
@@ -3086,7 +3072,7 @@ ALTER SEQUENCE public.training_schedules_horses_id_seq OWNED BY public.training_
 --
 
 CREATE TABLE public.user_push_subscriptions (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     user_id uuid NOT NULL,
     auth_key character varying,
     endpoint character varying,
@@ -3103,7 +3089,7 @@ CREATE TABLE public.user_push_subscriptions (
 
 CREATE TABLE public.users (
     slug character varying,
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     username character varying NOT NULL,
     status public.user_status DEFAULT 'pending'::public.user_status NOT NULL,
     name character varying NOT NULL,
@@ -7062,7 +7048,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220722201433'),
 ('20220722200044'),
 ('20220722173334'),
-('20220721204945'),
 ('20220717190341'),
 ('20220717121209'),
 ('20220717024945'),
