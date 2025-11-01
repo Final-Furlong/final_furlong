@@ -80,18 +80,7 @@ CREATE TYPE public.budget_activity_type AS ENUM (
     'jockey_fee',
     'nominated_racehorse',
     'nominated_stallion',
-    'boarded_horse',
-    'opening_balance',
-    'paid_tax',
-    'handicapping_races',
-    'nominated_breeders_series',
-    'consigned_auction',
-    'leased_horse',
-    'color_war',
-    'activity_points',
-    'donation',
-    'won_breeders_series',
-    'misc'
+    'boarded_horse'
 );
 
 
@@ -6983,7 +6972,6 @@ SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20251101223740'),
-('20251101200403'),
 ('20251031160653'),
 ('20251030225629'),
 ('20251030195925'),
