@@ -6014,35 +6014,35 @@ CREATE INDEX index_new_user_push_subscriptions_on_user_id ON public.new_user_pus
 -- Name: index_new_users_on_admin; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_new_users_on_admin ON public.new_users USING btree (admin);
+CREATE INDEX index_new_users_on_admin ON public.new_users USING btree (admin) WHERE (discarded_at IS NOT NULL);
 
 
 --
 -- Name: index_new_users_on_developer; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_new_users_on_developer ON public.new_users USING btree (developer);
+CREATE INDEX index_new_users_on_developer ON public.new_users USING btree (developer) WHERE (discarded_at IS NOT NULL);
 
 
 --
 -- Name: index_new_users_on_discourse_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_new_users_on_discourse_id ON public.new_users USING btree (discourse_id);
+CREATE UNIQUE INDEX index_new_users_on_discourse_id ON public.new_users USING btree (discourse_id) WHERE (discarded_at IS NOT NULL);
 
 
 --
 -- Name: index_new_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_new_users_on_email ON public.new_users USING btree (email);
+CREATE UNIQUE INDEX index_new_users_on_email ON public.new_users USING btree (email) WHERE (discarded_at IS NOT NULL);
 
 
 --
 -- Name: index_new_users_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_new_users_on_name ON public.new_users USING btree (name);
+CREATE INDEX index_new_users_on_name ON public.new_users USING btree (name) WHERE (discarded_at IS NOT NULL);
 
 
 --
@@ -6056,21 +6056,21 @@ CREATE INDEX index_new_users_on_old_id ON public.new_users USING btree (old_id);
 -- Name: index_new_users_on_public_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_new_users_on_public_id ON public.new_users USING btree (public_id);
+CREATE UNIQUE INDEX index_new_users_on_public_id ON public.new_users USING btree (public_id) WHERE (discarded_at IS NOT NULL);
 
 
 --
 -- Name: index_new_users_on_slug; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_new_users_on_slug ON public.new_users USING btree (slug);
+CREATE UNIQUE INDEX index_new_users_on_slug ON public.new_users USING btree (slug) WHERE (discarded_at IS NOT NULL);
 
 
 --
 -- Name: index_new_users_on_username; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_new_users_on_username ON public.new_users USING btree (username);
+CREATE UNIQUE INDEX index_new_users_on_username ON public.new_users USING btree (username) WHERE (discarded_at IS NOT NULL);
 
 
 --
@@ -6996,6 +6996,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251101223740'),
 ('20251101200403'),
 ('20251031160653'),
 ('20251030225629'),

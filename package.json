@@ -40,5 +40,6 @@
   "resolutions": {
     "sass/**/glob-parent": "^6.0.1",
     "stylelint/**/glob-parent": "^6.0.1"
-  }
+  },
+  "version": "0.0.0"
 }
