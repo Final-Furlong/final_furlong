@@ -24,4 +24,7 @@ end
 require "rubygems"
 require "bundler/setup"
 
+# TODO: Remove once RubyParser V34 is released
+require_relative "../config/initializers/00_ruby_parser_patch"
+
 load Gem.bin_path("fasterer", "fasterer")

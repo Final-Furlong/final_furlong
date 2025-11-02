@@ -234,7 +234,8 @@ ActiveRecordDoctor.configure do
 
   detector :unindexed_deleted_at,
     ignore_indexes: [
-      "index_users_on_lowercase_username" # includes lowercase username
+      "index_users_on_lowercase_username", # includes lowercase username
+      "index_new_users_on_old_id" # temporary
     ]
 
   detector :table_without_timestamps,
@@ -247,6 +248,12 @@ ActiveRecordDoctor.configure do
     ignore_associations: [
       "Racing::AnnualRaceRecord.horse",
       "Racing::LifetimeRaceRecord.horse"
+    ]
+
+  detector :unindexed_foreign_keys,
+    ignore_tables: [
+      "new_horse_genetics",
+      "new_race_result_horses"
     ]
 end
 

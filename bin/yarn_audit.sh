@@ -4,6 +4,10 @@ SCRIPT_DIR=$(pwd)
 
 cd ../
 
+if command -v asdf >/dev/null 2>&1
+then
+  asdf set nodejs 25.1.0
+fi
 yarn install --production=false
 
 yarn audit
