@@ -11,9 +11,9 @@ end
 # Table name: locations
 #
 #  id         :bigint           not null, primary key
-#  country    :string           not null
+#  country    :string           not null, uniquely indexed => [name]
 #  county     :string
-#  name       :string           not null, indexed
+#  name       :string           not null, uniquely indexed => [country], indexed
 #  state      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -21,7 +21,8 @@ end
 #
 # Indexes
 #
-#  index_locations_on_name    (name)
-#  index_locations_on_old_id  (old_id)
+#  index_locations_on_country_and_name  (country,name) UNIQUE
+#  index_locations_on_name              (name)
+#  index_locations_on_old_id            (old_id)
 #
 

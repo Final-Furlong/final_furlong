@@ -38,3 +38,4 @@ class ValidateNewForeignKeys < ActiveRecord::Migration[8.1]
     validate_foreign_key :user_push_subscriptions, :users
   end
 end
+

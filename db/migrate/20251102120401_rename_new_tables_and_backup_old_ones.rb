@@ -396,6 +396,44 @@ class RenameNewTablesAndBackupOldOnes < ActiveRecord::Migration[8.1]
       rename_index :new_users, :index_new_users_on_admin, :index_users_on_admin
       rename_index :new_users, :index_new_users_on_developer, :index_users_on_developer
       rename_table :new_users, :users
+
+      # rubocop:disable Rails/ReversibleMigration
+      change_column :activations, :user_id, :bigint
+      change_column :budget_transactions, :stable_id, :bigint
+      change_column :activity_points, :budget_id, :bigint
+      change_column :activity_points, :stable_id, :bigint
+      change_column :stables, :user_id, :bigint
+      change_column :stables, :racetrack_id, :bigint
+      change_column :auctions, :auctioneer_id, :bigint
+      change_column :auction_consignment_configs, :auction_id, :bigint
+      change_column :auction_bids, :auction_id, :bigint
+      change_column :auction_bids, :bidder_id, :bigint
+      change_column :auction_bids, :horse_id, :bigint
+      change_column :auction_horses, :auction_id, :bigint
+      change_column :auction_horses, :horse_id, :bigint
+      change_column :horses, :owner_id, :bigint
+      change_column :horses, :breeder_id, :bigint
+      change_column :horses, :sire_id, :bigint
+      change_column :horses, :dam_id, :bigint
+      change_column :broodmare_foal_records, :horse_id, :bigint
+      change_column :horse_appearances, :horse_id, :bigint
+      change_column :horse_attributes, :horse_id, :bigint
+      change_column :horse_genetics, :horse_id, :bigint
+      change_column :race_records, :horse_id, :bigint
+      change_column :track_surfaces, :racetrack_id, :bigint
+      change_column :race_results, :surface_id, :bigint
+      change_column :race_result_horses, :race_id, :bigint
+      change_column :race_result_horses, :horse_id, :bigint
+      change_column :race_result_horses, :odd_id, :bigint
+      change_column :race_result_horses, :jockey_id, :bigint
+      change_column :race_schedules, :surface_id, :bigint
+      change_column :racetracks, :location_id, :bigint
+      change_column :settings, :user_id, :bigint
+      change_column :training_schedules_horses, :horse_id, :bigint
+      change_column :training_schedules_horses, :training_schedule_id, :bigint
+      change_column :training_schedules, :stable_id, :bigint
+      change_column :user_push_subscriptions, :user_id, :bigint
+      # rubocop:enable Rails/ReversibleMigration
     end
 
     add_foreign_key :activations, :users, on_delete: :cascade, on_update: :cascade, validate: false
@@ -436,3 +474,4 @@ class RenameNewTablesAndBackupOldOnes < ActiveRecord::Migration[8.1]
     add_foreign_key :user_push_subscriptions, :users, on_delete: :cascade, on_update: :cascade, validate: false
   end
 end
+

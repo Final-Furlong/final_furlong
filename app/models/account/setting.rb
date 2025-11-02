@@ -15,13 +15,13 @@ end
 #  updated_at  :datetime         not null
 #  old_id      :uuid             indexed
 #  old_user_id :uuid             not null, indexed
-#  user_id     :integer          indexed
+#  user_id     :bigint           not null, uniquely indexed
 #
 # Indexes
 #
 #  index_settings_on_old_id       (old_id)
 #  index_settings_on_old_user_id  (old_user_id)
-#  index_settings_on_user_id      (user_id)
+#  index_settings_on_user_id      (user_id) UNIQUE
 #
 # Foreign Keys
 #

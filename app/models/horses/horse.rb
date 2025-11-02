@@ -1,5 +1,6 @@
 module Horses
   class Horse < ApplicationRecord
+    include PublicIdGenerator
     include FinalFurlong::Horses::Validation
     include FriendlyId
 
@@ -34,7 +35,7 @@ module Horses
     enum :status, Status::STATUSES
     enum :gender, Gender::VALUES
 
-    validates :date_of_birth, :gender, :status, presence: true
+    validates :date_of_birth, :age, :gender, :status, presence: true
     validates :date_of_death, comparison: { greater_than_or_equal_to: :date_of_birth }, if: :date_of_death
     validate :name_required, on: :update
     validates_horse_name :name, on: :update, if: :name_changed?
@@ -142,25 +143,25 @@ module Horses
 
     # :nocov:
     counter_culture :sire, column_name: proc { |model| model.unborn? ? "unborn_foals_count" : "foals_count" },
-      column_names: {
-        ["horses.status = ?", "unborn"] => "unborn_foals_count",
-        ["horses.status != ?", "unborn"] => "foals_count"
-      }
+                    column_names: {
+                      ["horses.status = ?", "unborn"] => "unborn_foals_count",
+                      ["horses.status != ?", "unborn"] => "foals_count"
+                    }
     counter_culture :dam, column_name: proc { |model| model.unborn? ? "unborn_foals_count" : "foals_count" },
-      column_names: {
-        ["horses.status = ?", "unborn"] => "unborn_foals_count",
-        ["horses.status != ?", "unborn"] => "foals_count"
-      }
+                    column_names: {
+                      ["horses.status = ?", "unborn"] => "unborn_foals_count",
+                      ["horses.status != ?", "unborn"] => "foals_count"
+                    }
     counter_culture :breeder, column_name: proc { |model| model.unborn? ? nil : "bred_horses_count" },
-      column_names: {
-        ["horses.status = ?", "unborn"] => nil,
-        ["horses.status != ?", "unborn"] => "bred_horses_count"
-      }
+                    column_names: {
+                      ["horses.status = ?", "unborn"] => nil,
+                      ["horses.status != ?", "unborn"] => "bred_horses_count"
+                    }
     counter_culture :owner, column_name: proc { |model| model.unborn? ? "unborn_horses_count" : "horses_count" },
-      column_names: {
-        ["horses.status = ?", "unborn"] => "unborn_horses_count",
-        ["horses.status != ?", "unborn"] => "horses_count"
-      }
+                    column_names: {
+                      ["horses.status = ?", "unborn"] => "unborn_horses_count",
+                      ["horses.status != ?", "unborn"] => "horses_count"
+                    }
     # :nocov:
 
     private
@@ -187,19 +188,19 @@ end
 #  status(unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased) :enum             default("unborn"), not null, indexed
 #  created_at                                                                                                         :datetime         not null
 #  updated_at                                                                                                         :datetime         not null
-#  breeder_id                                                                                                         :integer          indexed
-#  dam_id                                                                                                             :integer          indexed
+#  breeder_id                                                                                                         :bigint           not null, indexed
+#  dam_id                                                                                                             :bigint           indexed
 #  legacy_id                                                                                                          :integer          indexed
-#  location_bred_id                                                                                                   :integer          indexed
+#  location_bred_id                                                                                                   :bigint           not null, indexed
 #  old_breeder_id                                                                                                     :uuid             not null, indexed
 #  old_dam_id                                                                                                         :uuid             indexed
 #  old_id                                                                                                             :uuid             indexed
 #  old_location_bred_id                                                                                               :uuid             not null, indexed
 #  old_owner_id                                                                                                       :uuid             not null, indexed
 #  old_sire_id                                                                                                        :uuid             indexed
-#  owner_id                                                                                                           :integer          indexed
+#  owner_id                                                                                                           :bigint           not null, indexed
 #  public_id                                                                                                          :string(12)       indexed
-#  sire_id                                                                                                            :integer          indexed
+#  sire_id                                                                                                            :bigint           indexed
 #
 # Indexes
 #

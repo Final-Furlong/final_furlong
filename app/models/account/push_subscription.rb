@@ -27,7 +27,7 @@ end
 #  updated_at  :datetime         not null
 #  old_id      :uuid             indexed
 #  old_user_id :uuid             not null, indexed
-#  user_id     :integer          indexed
+#  user_id     :bigint           not null, indexed
 #
 # Indexes
 #

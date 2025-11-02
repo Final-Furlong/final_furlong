@@ -1,4 +1,6 @@
 class Auction < ApplicationRecord
+  include PublicIdGenerator
+
   MINIMUM_DELAY = 7
   MINIMUM_DURATION = 7
   MAXIMUM_DURATION = 14
@@ -16,8 +18,8 @@ class Auction < ApplicationRecord
   validates :title, length: { in: 10..500 }
   validates :title, uniqueness: { case_sensitive: false }
   validates :broodmare_allowed, :outside_horses_allowed, :racehorse_allowed_2yo,
-    :racehorse_allowed_3yo, :racehorse_allowed_older, :reserve_pricing_allowed,
-    :stallion_allowed, :weanling_allowed, :yearling_allowed, inclusion: { in: [true, false] }
+            :racehorse_allowed_3yo, :racehorse_allowed_older, :reserve_pricing_allowed,
+            :stallion_allowed, :weanling_allowed, :yearling_allowed, inclusion: { in: [true, false] }
   validates :start_time, comparison: { greater_than_or_equal_to: :today_plus_min_duration }
   validates :end_time, comparison: { greater_than_or_equal_to: :start_time_plus_min_duration }, if: :start_time
   validates :end_time, comparison: { less_than_or_equal_to: :start_time_plus_max_duration }, if: :start_time
@@ -77,7 +79,7 @@ class Auction < ApplicationRecord
 
   def minimum_status_required
     return if broodmare_allowed || racehorse_allowed_2yo || racehorse_allowed_3yo ||
-      racehorse_allowed_older || stallion_allowed || weanling_allowed || yearling_allowed
+              racehorse_allowed_older || stallion_allowed || weanling_allowed || yearling_allowed
 
     errors.add(:base, :status_required)
   end
@@ -107,12 +109,12 @@ end
 #  spending_cap_per_stable       :integer
 #  stallion_allowed              :boolean          default(FALSE), not null
 #  start_time                    :datetime         not null, indexed
-#  title                         :string(500)      not null, uniquely indexed
+#  title                         :string(500)      not null
 #  weanling_allowed              :boolean          default(FALSE), not null
 #  yearling_allowed              :boolean          default(FALSE), not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
-#  auctioneer_id                 :integer          indexed
+#  auctioneer_id                 :bigint           not null, indexed
 #  old_auctioneer_id             :uuid             not null, indexed
 #  old_id                        :uuid             indexed
 #  public_id                     :string(12)
@@ -124,7 +126,7 @@ end
 #  index_auctions_on_old_auctioneer_id  (old_auctioneer_id)
 #  index_auctions_on_old_id             (old_id)
 #  index_auctions_on_start_time         (start_time)
-#  index_auctions_on_title              (title) UNIQUE
+#  index_auctions_on_title              (lower((title)::text)) UNIQUE
 #
 # Foreign Keys
 #

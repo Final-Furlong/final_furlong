@@ -1,5 +1,7 @@
 module Auctions
   class Horse < ApplicationRecord
+    include PublicIdGenerator
+
     self.table_name = "auction_horses"
     self.ignored_columns += ["max_price"]
 
@@ -30,8 +32,8 @@ end
 #  sold_at        :datetime         indexed
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  auction_id     :integer          indexed
-#  horse_id       :integer          indexed
+#  auction_id     :bigint           not null, indexed
+#  horse_id       :bigint           not null, uniquely indexed
 #  old_auction_id :uuid             not null, indexed
 #  old_horse_id   :uuid             not null, indexed
 #  old_id         :uuid             indexed
@@ -40,7 +42,7 @@ end
 # Indexes
 #
 #  index_auction_horses_on_auction_id      (auction_id)
-#  index_auction_horses_on_horse_id        (horse_id)
+#  index_auction_horses_on_horse_id        (horse_id) UNIQUE
 #  index_auction_horses_on_old_auction_id  (old_auction_id)
 #  index_auction_horses_on_old_horse_id    (old_horse_id)
 #  index_auction_horses_on_old_id          (old_id)

@@ -15,7 +15,7 @@ module Auctions
     validates :current_bid, presence: true
     validates :current_bid, numericality: { greater_than_or_equal_to: MINIMUM_BID }, allow_blank: true
     validates :maximum_bid, numericality: { greater_than_or_equal_to: :current_bid }, allow_blank: true
-    validates :email_if_outbid, inclusion: { in: [true, false] }
+    validates :notify_if_outbid, inclusion: { in: [true, false] }
 
     scope :winning, -> { order(maximum_bid: :desc, current_bid: :desc, updated_at: :desc) }
     scope :with_bid_matching, ->(amount) { where("GREATEST(current_bid, CAST(maximum_bid AS integer)) >= ?", amount) }
@@ -56,9 +56,9 @@ end
 #  notify_if_outbid :boolean          default(FALSE), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  auction_id       :integer          indexed
-#  bidder_id        :integer          indexed
-#  horse_id         :integer          indexed
+#  auction_id       :bigint           not null, indexed
+#  bidder_id        :bigint           not null, indexed
+#  horse_id         :bigint           not null, indexed
 #  old_auction_id   :uuid             not null, indexed
 #  old_bidder_id    :uuid             not null, indexed
 #  old_horse_id     :uuid             not null, indexed

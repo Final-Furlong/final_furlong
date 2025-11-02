@@ -82,29 +82,29 @@ end
 # Table name: horse_appearances
 #
 #  id                                                                                                                                                                                                                     :bigint           not null, primary key
-#  birth_height                                                                                                                                                                                                           :decimal(4, 2)    default(0.0)
+#  birth_height                                                                                                                                                                                                           :decimal(4, 2)    default(0.0), not null
 #  color(bay, black, blood_bay, blue_roan, brown, chestnut, dapple_grey, dark_bay, dark_grey, flea_bitten_grey, grey, light_bay, light_chestnut, light_grey, liver_chestnut, mahogany_bay, red_chestnut, strawberry_roan) :enum             default("bay"), not null
-#  current_height                                                                                                                                                                                                         :decimal(4, 2)    default(0.0)
+#  current_height                                                                                                                                                                                                         :decimal(4, 2)    default(0.0), not null
 #  face_image                                                                                                                                                                                                             :string
 #  face_marking(bald_face, blaze, snip, star, star_snip, star_stripe, star_stripe_snip, stripe, stripe_snip)                                                                                                              :enum
 #  lf_leg_image                                                                                                                                                                                                           :string
 #  lf_leg_marking(coronet, ermine, sock, stocking)                                                                                                                                                                        :enum
 #  lh_leg_image                                                                                                                                                                                                           :string
 #  lh_leg_marking(coronet, ermine, sock, stocking)                                                                                                                                                                        :enum
-#  max_height                                                                                                                                                                                                             :decimal(4, 2)    default(0.0)
+#  max_height                                                                                                                                                                                                             :decimal(4, 2)    default(0.0), not null
 #  rf_leg_image                                                                                                                                                                                                           :string
 #  rf_leg_marking(coronet, ermine, sock, stocking)                                                                                                                                                                        :enum
 #  rh_leg_image                                                                                                                                                                                                           :string
 #  rh_leg_marking(coronet, ermine, sock, stocking)                                                                                                                                                                        :enum
 #  created_at                                                                                                                                                                                                             :datetime         not null
 #  updated_at                                                                                                                                                                                                             :datetime         not null
-#  horse_id                                                                                                                                                                                                               :integer          indexed
+#  horse_id                                                                                                                                                                                                               :bigint           not null, uniquely indexed
 #  old_horse_id                                                                                                                                                                                                           :uuid             not null, indexed
 #  old_id                                                                                                                                                                                                                 :uuid             indexed
 #
 # Indexes
 #
-#  index_horse_appearances_on_horse_id      (horse_id)
+#  index_horse_appearances_on_horse_id      (horse_id) UNIQUE
 #  index_horse_appearances_on_old_horse_id  (old_horse_id)
 #  index_horse_appearances_on_old_id        (old_id)
 #

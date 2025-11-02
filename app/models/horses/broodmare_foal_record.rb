@@ -91,7 +91,7 @@ end
 #  winning_foals_count              :integer          default(0), not null, indexed
 #  created_at                       :datetime         not null
 #  updated_at                       :datetime         not null
-#  horse_id                         :integer          indexed
+#  horse_id                         :bigint           not null, uniquely indexed
 #  old_horse_id                     :uuid             not null, indexed
 #  old_id                           :uuid             indexed
 #
@@ -100,7 +100,7 @@ end
 #  idx_on_multi_stakes_winning_foals_count_d86a3500a8             (multi_stakes_winning_foals_count)
 #  index_broodmare_foal_records_on_born_foals_count               (born_foals_count)
 #  index_broodmare_foal_records_on_breed_ranking                  (breed_ranking)
-#  index_broodmare_foal_records_on_horse_id                       (horse_id)
+#  index_broodmare_foal_records_on_horse_id                       (horse_id) UNIQUE
 #  index_broodmare_foal_records_on_millionaire_foals_count        (millionaire_foals_count)
 #  index_broodmare_foal_records_on_multi_millionaire_foals_count  (multi_millionaire_foals_count)
 #  index_broodmare_foal_records_on_old_horse_id                   (old_horse_id)

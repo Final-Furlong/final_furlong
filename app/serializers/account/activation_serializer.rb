@@ -14,7 +14,7 @@ end
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  old_user_id  :uuid             not null, uniquely indexed
-#  user_id      :integer          uniquely indexed
+#  user_id      :bigint           not null, uniquely indexed
 #
 # Indexes
 #

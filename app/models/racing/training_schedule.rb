@@ -69,7 +69,7 @@ end
 #  updated_at           :datetime         not null
 #  old_id               :uuid             indexed
 #  old_stable_id        :uuid             not null, indexed
-#  stable_id            :integer          indexed
+#  stable_id            :bigint           not null, indexed
 #
 # Indexes
 #
@@ -79,6 +79,7 @@ end
 #  index_training_schedules_on_old_id                (old_id)
 #  index_training_schedules_on_old_stable_id         (old_stable_id)
 #  index_training_schedules_on_saturday_activities   (saturday_activities)
+#  index_training_schedules_on_stable_and_name       (stable_id, lower((name)::text)) UNIQUE
 #  index_training_schedules_on_stable_id             (stable_id)
 #  index_training_schedules_on_sunday_activities     (sunday_activities)
 #  index_training_schedules_on_thursday_activities   (thursday_activities)

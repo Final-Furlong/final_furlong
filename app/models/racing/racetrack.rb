@@ -1,5 +1,7 @@
 module Racing
   class Racetrack < ApplicationRecord
+    include PublicIdGenerator
+
     belongs_to :location, inverse_of: :racetracks
 
     has_many :surfaces, class_name: "TrackSurface", dependent: :restrict_with_exception
@@ -9,9 +11,9 @@ module Racing
     validates :name, uniqueness: { case_sensitive: false }
 
     validates :longitude, presence: true,
-      numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180 }
+              numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180 }
     validates :latitude, presence: true,
-      numericality: { less_than_or_equal_to: 90, greater_than_or_equal_to: -90 }
+              numericality: { less_than_or_equal_to: 90, greater_than_or_equal_to: -90 }
   end
 end
 
@@ -22,11 +24,11 @@ end
 #  id              :bigint           not null, primary key
 #  latitude        :decimal(, )      not null
 #  longitude       :decimal(, )      not null
-#  name            :string           not null, uniquely indexed
+#  name            :string           not null
 #  slug            :string           indexed
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  location_id     :integer          indexed
+#  location_id     :bigint           not null, indexed
 #  old_id          :uuid             indexed
 #  old_location_id :uuid             not null, indexed
 #  public_id       :string(12)       indexed
@@ -34,7 +36,7 @@ end
 # Indexes
 #
 #  index_racetracks_on_location_id      (location_id)
-#  index_racetracks_on_name             (name) UNIQUE
+#  index_racetracks_on_name             (lower((name)::text)) UNIQUE
 #  index_racetracks_on_old_id           (old_id)
 #  index_racetracks_on_old_location_id  (old_location_id)
 #  index_racetracks_on_public_id        (public_id)

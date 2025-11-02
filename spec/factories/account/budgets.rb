@@ -11,27 +11,33 @@ end
 
 # == Schema Information
 #
-# Table name: budgets
+# Table name: budget_transactions
 #
-#  id               :uuid             not null, primary key
-#  amount           :bigint           default(0), not null
-#  balance          :bigint           default(0), not null
-#  description      :text             not null, indexed
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  legacy_budget_id :integer          default(0), indexed
-#  legacy_stable_id :integer          default(0), indexed
-#  stable_id        :uuid             not null, indexed
+#  id                                                                                                                                                                                           :bigint           not null, primary key
+#  activity_type(sold_horse, bought_horse, bred_mare, bred_stud, claimed_horse, entered_race, shipped_horse, race_winnings, jockey_fee, nominated_racehorse, nominated_stallion, boarded_horse) :enum             indexed
+#  amount                                                                                                                                                                                       :integer          default(0), not null
+#  balance                                                                                                                                                                                      :integer          default(0), not null
+#  description                                                                                                                                                                                  :text             not null, indexed
+#  created_at                                                                                                                                                                                   :datetime         not null
+#  updated_at                                                                                                                                                                                   :datetime         not null
+#  legacy_budget_id                                                                                                                                                                             :integer          default(0), indexed
+#  legacy_stable_id                                                                                                                                                                             :integer          default(0), indexed
+#  old_id                                                                                                                                                                                       :uuid             indexed
+#  old_stable_id                                                                                                                                                                                :uuid             not null, indexed
+#  stable_id                                                                                                                                                                                    :bigint           not null, indexed
 #
 # Indexes
 #
-#  index_budgets_on_description       (description)
-#  index_budgets_on_legacy_budget_id  (legacy_budget_id)
-#  index_budgets_on_legacy_stable_id  (legacy_stable_id)
-#  index_budgets_on_stable_id         (stable_id)
+#  index_budget_transactions_on_activity_type     (activity_type)
+#  index_budget_transactions_on_description       (description)
+#  index_budget_transactions_on_legacy_budget_id  (legacy_budget_id)
+#  index_budget_transactions_on_legacy_stable_id  (legacy_stable_id)
+#  index_budget_transactions_on_old_id            (old_id)
+#  index_budget_transactions_on_old_stable_id     (old_stable_id)
+#  index_budget_transactions_on_stable_id         (stable_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (stable_id => stables.id)
+#  fk_rails_...  (stable_id => stables.id) ON DELETE => cascade ON UPDATE => cascade
 #
 

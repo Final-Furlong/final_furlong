@@ -21,7 +21,7 @@ end
 #  condition(fast, good, slow, wet)  :enum             default("fast"), not null
 #  jumps                             :integer          default(0), not null
 #  length                            :integer          not null
-#  surface(dirt, turf, steeplechase) :enum             default("dirt"), not null
+#  surface(dirt, turf, steeplechase) :enum             default("dirt"), not null, uniquely indexed => [racetrack_id]
 #  turn_distance                     :integer          not null
 #  turn_to_finish_length             :integer          not null
 #  width                             :integer          not null
@@ -29,13 +29,13 @@ end
 #  updated_at                        :datetime         not null
 #  old_id                            :uuid             indexed
 #  old_racetrack_id                  :uuid             not null, indexed
-#  racetrack_id                      :integer          indexed
+#  racetrack_id                      :bigint           not null, uniquely indexed => [surface]
 #
 # Indexes
 #
-#  index_track_surfaces_on_old_id            (old_id)
-#  index_track_surfaces_on_old_racetrack_id  (old_racetrack_id)
-#  index_track_surfaces_on_racetrack_id      (racetrack_id)
+#  index_track_surfaces_on_old_id                    (old_id)
+#  index_track_surfaces_on_old_racetrack_id          (old_racetrack_id)
+#  index_track_surfaces_on_racetrack_id_and_surface  (racetrack_id,surface) UNIQUE
 #
 # Foreign Keys
 #

@@ -26,7 +26,7 @@ end
 #  earnings                              :bigint           default(0), not null
 #  fourths                               :integer          default(0), not null
 #  points                                :integer          default(0), not null
-#  result_type(dirt, turf, steeplechase) :enum             default("dirt"), indexed
+#  result_type(dirt, turf, steeplechase) :enum             default("dirt"), uniquely indexed => [horse_id, year], indexed
 #  seconds                               :integer          default(0), not null
 #  stakes_fourths                        :integer          default(0), not null
 #  stakes_seconds                        :integer          default(0), not null
@@ -36,24 +36,24 @@ end
 #  starts                                :integer          default(0), not null, indexed
 #  thirds                                :integer          default(0), not null
 #  wins                                  :integer          default(0), not null, indexed
-#  year                                  :integer          default(1996), not null, indexed
+#  year                                  :integer          default(1996), not null, uniquely indexed => [horse_id, result_type], indexed
 #  created_at                            :datetime         not null
 #  updated_at                            :datetime         not null
-#  horse_id                              :integer          indexed
+#  horse_id                              :bigint           not null, uniquely indexed => [year, result_type]
 #  old_horse_id                          :uuid             not null, indexed
 #  old_id                                :uuid             indexed
 #
 # Indexes
 #
-#  index_race_records_on_horse_id       (horse_id)
-#  index_race_records_on_old_horse_id   (old_horse_id)
-#  index_race_records_on_old_id         (old_id)
-#  index_race_records_on_result_type    (result_type)
-#  index_race_records_on_stakes_starts  (stakes_starts)
-#  index_race_records_on_stakes_wins    (stakes_wins)
-#  index_race_records_on_starts         (starts)
-#  index_race_records_on_wins           (wins)
-#  index_race_records_on_year           (year)
+#  index_race_records_on_horse_id_and_year_and_result_type  (horse_id,year,result_type) UNIQUE
+#  index_race_records_on_old_horse_id                       (old_horse_id)
+#  index_race_records_on_old_id                             (old_id)
+#  index_race_records_on_result_type                        (result_type)
+#  index_race_records_on_stakes_starts                      (stakes_starts)
+#  index_race_records_on_stakes_wins                        (stakes_wins)
+#  index_race_records_on_starts                             (starts)
+#  index_race_records_on_wins                               (wins)
+#  index_race_records_on_year                               (year)
 #
 # Foreign Keys
 #

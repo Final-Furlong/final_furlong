@@ -15,7 +15,7 @@ end
 #  description       :text
 #  last_online_at    :datetime         indexed
 #  miles_from_track  :integer          default(10), not null
-#  name              :string           not null, uniquely indexed
+#  name              :string           not null
 #  slug              :string           indexed
 #  total_balance     :bigint           default(0), indexed
 #  created_at        :datetime         not null
@@ -25,15 +25,15 @@ end
 #  old_racetrack_id  :uuid             indexed
 #  old_user_id       :uuid             not null, indexed
 #  public_id         :string(12)       indexed
-#  racetrack_id      :integer          indexed
-#  user_id           :integer          indexed
+#  racetrack_id      :bigint           indexed
+#  user_id           :bigint           not null, uniquely indexed
 #
 # Indexes
 #
 #  index_stables_on_available_balance  (available_balance)
 #  index_stables_on_last_online_at     (last_online_at)
 #  index_stables_on_legacy_id          (legacy_id)
-#  index_stables_on_name               (name) UNIQUE
+#  index_stables_on_name               (lower((name)::text)) UNIQUE
 #  index_stables_on_old_id             (old_id)
 #  index_stables_on_old_racetrack_id   (old_racetrack_id)
 #  index_stables_on_old_user_id        (old_user_id)
@@ -41,7 +41,7 @@ end
 #  index_stables_on_racetrack_id       (racetrack_id)
 #  index_stables_on_slug               (slug)
 #  index_stables_on_total_balance      (total_balance)
-#  index_stables_on_user_id            (user_id)
+#  index_stables_on_user_id            (user_id) UNIQUE
 #
 # Foreign Keys
 #

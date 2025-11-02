@@ -63,12 +63,12 @@ end
 #  spending_cap_per_stable       :integer
 #  stallion_allowed              :boolean          default(FALSE), not null
 #  start_time                    :datetime         not null, indexed
-#  title                         :string(500)      not null, uniquely indexed
+#  title                         :string(500)      not null
 #  weanling_allowed              :boolean          default(FALSE), not null
 #  yearling_allowed              :boolean          default(FALSE), not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
-#  auctioneer_id                 :integer          indexed
+#  auctioneer_id                 :bigint           not null, indexed
 #  old_auctioneer_id             :uuid             not null, indexed
 #  old_id                        :uuid             indexed
 #  public_id                     :string(12)
@@ -80,7 +80,7 @@ end
 #  index_auctions_on_old_auctioneer_id  (old_auctioneer_id)
 #  index_auctions_on_old_id             (old_id)
 #  index_auctions_on_start_time         (start_time)
-#  index_auctions_on_title              (title) UNIQUE
+#  index_auctions_on_title              (lower((title)::text)) UNIQUE
 #
 # Foreign Keys
 #

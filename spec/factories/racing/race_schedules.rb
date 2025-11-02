@@ -36,7 +36,7 @@ end
 #  updated_at                                                                                                     :datetime         not null
 #  old_id                                                                                                         :uuid             indexed
 #  old_surface_id                                                                                                 :uuid             not null, indexed
-#  surface_id                                                                                                     :integer          indexed
+#  surface_id                                                                                                     :bigint           not null, indexed
 #
 # Indexes
 #

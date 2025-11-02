@@ -42,16 +42,16 @@ end
 #  weight          :integer          default(0), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  horse_id        :integer          indexed
-#  jockey_id       :integer          indexed
+#  horse_id        :bigint           not null, indexed
+#  jockey_id       :bigint           indexed
 #  legacy_horse_id :integer          default(0), not null, indexed
-#  odd_id          :integer
+#  odd_id          :bigint           indexed
 #  old_horse_id    :uuid             not null, indexed
 #  old_id          :uuid             indexed
 #  old_jockey_id   :uuid             indexed
 #  old_odd_id      :uuid             indexed
 #  old_race_id     :uuid             not null, indexed
-#  race_id         :integer          indexed
+#  race_id         :bigint           not null, indexed
 #
 # Indexes
 #
@@ -59,6 +59,7 @@ end
 #  index_race_result_horses_on_horse_id         (horse_id)
 #  index_race_result_horses_on_jockey_id        (jockey_id)
 #  index_race_result_horses_on_legacy_horse_id  (legacy_horse_id)
+#  index_race_result_horses_on_odd_id           (odd_id)
 #  index_race_result_horses_on_old_horse_id     (old_horse_id)
 #  index_race_result_horses_on_old_id           (old_id)
 #  index_race_result_horses_on_old_jockey_id    (old_jockey_id)
