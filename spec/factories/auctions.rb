@@ -50,7 +50,7 @@ end
 #
 # Table name: auctions
 #
-#  id                            :uuid             not null, primary key
+#  id                            :bigint           not null, primary key
 #  broodmare_allowed             :boolean          default(FALSE), not null
 #  end_time                      :datetime         not null, indexed
 #  horse_purchase_cap_per_stable :integer
@@ -63,22 +63,27 @@ end
 #  spending_cap_per_stable       :integer
 #  stallion_allowed              :boolean          default(FALSE), not null
 #  start_time                    :datetime         not null, indexed
-#  title                         :string(500)      not null
+#  title                         :string(500)      not null, uniquely indexed
 #  weanling_allowed              :boolean          default(FALSE), not null
 #  yearling_allowed              :boolean          default(FALSE), not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
-#  auctioneer_id                 :uuid             not null, indexed
+#  auctioneer_id                 :integer          indexed
+#  old_auctioneer_id             :uuid             not null, indexed
+#  old_id                        :uuid             indexed
+#  public_id                     :string(12)
 #
 # Indexes
 #
-#  index_auctions_on_auctioneer_id  (auctioneer_id)
-#  index_auctions_on_end_time       (end_time)
-#  index_auctions_on_start_time     (start_time)
-#  index_auctions_on_title          (lower((title)::text)) UNIQUE
+#  index_auctions_on_auctioneer_id      (auctioneer_id)
+#  index_auctions_on_end_time           (end_time)
+#  index_auctions_on_old_auctioneer_id  (old_auctioneer_id)
+#  index_auctions_on_old_id             (old_id)
+#  index_auctions_on_start_time         (start_time)
+#  index_auctions_on_title              (title) UNIQUE
 #
 # Foreign Keys
 #
-#  fk_rails_...  (auctioneer_id => stables.id)
+#  fk_rails_...  (auctioneer_id => stables.id) ON DELETE => cascade ON UPDATE => cascade
 #
 

@@ -19,24 +19,29 @@ end
 #
 # Table name: racetracks
 #
-#  id          :uuid             not null, primary key
-#  latitude    :decimal(, )      not null, indexed
-#  longitude   :decimal(, )      not null, indexed
-#  name        :string           not null
-#  created_at  :datetime         not null, indexed
-#  updated_at  :datetime         not null
-#  location_id :uuid             not null, indexed
+#  id              :bigint           not null, primary key
+#  latitude        :decimal(, )      not null
+#  longitude       :decimal(, )      not null
+#  name            :string           not null, uniquely indexed
+#  slug            :string           indexed
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  location_id     :integer          indexed
+#  old_id          :uuid             indexed
+#  old_location_id :uuid             not null, indexed
+#  public_id       :string(12)       indexed
 #
 # Indexes
 #
-#  index_racetracks_on_created_at      (created_at)
-#  index_racetracks_on_latitude        (latitude)
-#  index_racetracks_on_location_id     (location_id)
-#  index_racetracks_on_longitude       (longitude)
-#  index_racetracks_on_lowercase_name  (lower((name)::text)) UNIQUE
+#  index_racetracks_on_location_id      (location_id)
+#  index_racetracks_on_name             (name) UNIQUE
+#  index_racetracks_on_old_id           (old_id)
+#  index_racetracks_on_old_location_id  (old_location_id)
+#  index_racetracks_on_public_id        (public_id)
+#  index_racetracks_on_slug             (slug)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (location_id => locations.id)
+#  fk_rails_...  (location_id => locations.id) ON DELETE => restrict ON UPDATE => cascade
 #
 

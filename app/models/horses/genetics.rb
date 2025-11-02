@@ -12,18 +12,21 @@ end
 #
 # Table name: horse_genetics
 #
-#  id         :uuid             not null, primary key
-#  allele     :string(32)       not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  horse_id   :uuid             not null, uniquely indexed
+#  id           :bigint           not null, primary key
+#  allele       :string(32)       not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  horse_id     :integer          indexed
+#  old_horse_id :uuid             not null
+#  old_id       :uuid             indexed
 #
 # Indexes
 #
-#  index_horse_genetics_on_horse_id  (horse_id) UNIQUE
+#  index_horse_genetics_on_horse_id  (horse_id)
+#  index_horse_genetics_on_old_id    (old_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (horse_id => horses.id)
+#  fk_rails_...  (horse_id => horses.id) ON DELETE => cascade ON UPDATE => cascade
 #
 

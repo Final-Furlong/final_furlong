@@ -23,16 +23,18 @@ end
 #
 # Table name: game_activity_points
 #
-#  id                                                                                       :uuid             not null, primary key
+#  id                                                                                       :bigint           not null, primary key
 #  activity_type(color_war, auction, selling, buying, breeding, claiming, entering, redeem) :enum             not null, indexed
 #  first_year_points                                                                        :integer          default(0), not null
 #  older_year_points                                                                        :integer          default(0), not null
 #  second_year_points                                                                       :integer          default(0), not null
 #  created_at                                                                               :datetime         not null
 #  updated_at                                                                               :datetime         not null
+#  old_id                                                                                   :uuid             indexed
 #
 # Indexes
 #
 #  index_game_activity_points_on_activity_type  (activity_type)
+#  index_game_activity_points_on_old_id         (old_id)
 #
 

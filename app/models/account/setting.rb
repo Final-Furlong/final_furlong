@@ -8,19 +8,23 @@ end
 #
 # Table name: settings
 #
-#  id         :uuid             not null, primary key
-#  locale     :string
-#  theme      :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  user_id    :uuid             not null, uniquely indexed
+#  id          :bigint           not null, primary key
+#  locale      :string
+#  theme       :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  old_id      :uuid             indexed
+#  old_user_id :uuid             not null, indexed
+#  user_id     :integer          indexed
 #
 # Indexes
 #
-#  index_settings_on_user_id  (user_id) UNIQUE
+#  index_settings_on_old_id       (old_id)
+#  index_settings_on_old_user_id  (old_user_id)
+#  index_settings_on_user_id      (user_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (user_id => users.id)
+#  fk_rails_...  (user_id => users.id) ON DELETE => cascade ON UPDATE => cascade
 #
 

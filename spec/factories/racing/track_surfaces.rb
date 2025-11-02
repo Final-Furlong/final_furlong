@@ -16,25 +16,29 @@ end
 #
 # Table name: track_surfaces
 #
-#  id                                :uuid             not null, primary key
+#  id                                :bigint           not null, primary key
 #  banking                           :integer          not null
 #  condition(fast, good, slow, wet)  :enum             default("fast"), not null
 #  jumps                             :integer          default(0), not null
 #  length                            :integer          not null
-#  surface(dirt, turf, steeplechase) :enum             default("dirt"), not null, uniquely indexed => [racetrack_id]
+#  surface(dirt, turf, steeplechase) :enum             default("dirt"), not null
 #  turn_distance                     :integer          not null
 #  turn_to_finish_length             :integer          not null
 #  width                             :integer          not null
 #  created_at                        :datetime         not null
 #  updated_at                        :datetime         not null
-#  racetrack_id                      :uuid             not null, uniquely indexed => [surface]
+#  old_id                            :uuid             indexed
+#  old_racetrack_id                  :uuid             not null, indexed
+#  racetrack_id                      :integer          indexed
 #
 # Indexes
 #
-#  index_track_surfaces_on_racetrack_id_and_surface  (racetrack_id,surface) UNIQUE
+#  index_track_surfaces_on_old_id            (old_id)
+#  index_track_surfaces_on_old_racetrack_id  (old_racetrack_id)
+#  index_track_surfaces_on_racetrack_id      (racetrack_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (racetrack_id => racetracks.id)
+#  fk_rails_...  (racetrack_id => racetracks.id) ON DELETE => cascade ON UPDATE => cascade
 #
 

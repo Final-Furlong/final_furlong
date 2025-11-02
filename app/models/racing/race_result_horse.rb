@@ -31,7 +31,7 @@ end
 #
 # Table name: race_result_horses
 #
-#  id              :uuid             not null, primary key
+#  id              :bigint           not null, primary key
 #  equipment       :integer          default(0), not null
 #  finish_position :integer          default(1), not null, indexed
 #  fractions       :string
@@ -42,11 +42,16 @@ end
 #  weight          :integer          default(0), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  horse_id        :uuid             not null, indexed
-#  jockey_id       :uuid             indexed
+#  horse_id        :integer          indexed
+#  jockey_id       :integer          indexed
 #  legacy_horse_id :integer          default(0), not null, indexed
-#  odd_id          :uuid             indexed
-#  race_id         :uuid             not null, indexed
+#  odd_id          :integer
+#  old_horse_id    :uuid             not null, indexed
+#  old_id          :uuid             indexed
+#  old_jockey_id   :uuid             indexed
+#  old_odd_id      :uuid             indexed
+#  old_race_id     :uuid             not null, indexed
+#  race_id         :integer          indexed
 #
 # Indexes
 #
@@ -54,15 +59,19 @@ end
 #  index_race_result_horses_on_horse_id         (horse_id)
 #  index_race_result_horses_on_jockey_id        (jockey_id)
 #  index_race_result_horses_on_legacy_horse_id  (legacy_horse_id)
-#  index_race_result_horses_on_odd_id           (odd_id)
+#  index_race_result_horses_on_old_horse_id     (old_horse_id)
+#  index_race_result_horses_on_old_id           (old_id)
+#  index_race_result_horses_on_old_jockey_id    (old_jockey_id)
+#  index_race_result_horses_on_old_odd_id       (old_odd_id)
+#  index_race_result_horses_on_old_race_id      (old_race_id)
 #  index_race_result_horses_on_race_id          (race_id)
 #  index_race_result_horses_on_speed_factor     (speed_factor)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (horse_id => horses.id)
-#  fk_rails_...  (jockey_id => jockeys.id)
-#  fk_rails_...  (odd_id => race_odds.id)
-#  fk_rails_...  (race_id => race_results.id)
+#  fk_rails_...  (horse_id => horses.id) ON DELETE => restrict ON UPDATE => cascade
+#  fk_rails_...  (jockey_id => jockeys.id) ON DELETE => restrict ON UPDATE => cascade
+#  fk_rails_...  (odd_id => race_results.id) ON DELETE => nullify ON UPDATE => cascade
+#  fk_rails_...  (race_id => race_results.id) ON DELETE => cascade ON UPDATE => cascade
 #
 

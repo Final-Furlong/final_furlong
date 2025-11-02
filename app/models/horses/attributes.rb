@@ -27,21 +27,26 @@ end
 #
 # Table name: horse_attributes
 #
-#  id              :uuid             not null, primary key
-#  breeding_record :string           default("None"), not null
-#  dosage_text     :string
-#  title           :string
-#  track_record    :string           default("Unraced"), not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  horse_id        :uuid             not null, uniquely indexed
+#  id                                                    :bigint           not null, primary key
+#  breeding_record(none, bronze, silver, gold, platinum) :enum             default("None"), not null
+#  dosage_text                                           :string
+#  string                                                :string
+#  title                                                 :string
+#  track_record                                          :string           default("Unraced"), not null
+#  created_at                                            :datetime         not null
+#  updated_at                                            :datetime         not null
+#  horse_id                                              :integer          indexed
+#  old_horse_id                                          :uuid             not null, indexed
+#  old_id                                                :uuid             indexed
 #
 # Indexes
 #
-#  index_horse_attributes_on_horse_id  (horse_id) UNIQUE
+#  index_horse_attributes_on_horse_id      (horse_id)
+#  index_horse_attributes_on_old_horse_id  (old_horse_id)
+#  index_horse_attributes_on_old_id        (old_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (horse_id => horses.id)
+#  fk_rails_...  (horse_id => horses.id) ON DELETE => cascade ON UPDATE => cascade
 #
 

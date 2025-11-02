@@ -49,7 +49,7 @@ end
 #
 # Table name: auction_consignment_configs
 #
-#  id             :uuid             not null, primary key
+#  id             :bigint           not null, primary key
 #  horse_type     :string           not null
 #  maximum_age    :integer          default(0), not null
 #  minimum_age    :integer          default(0), not null
@@ -57,15 +57,18 @@ end
 #  stakes_quality :boolean          default(FALSE), not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  auction_id     :uuid             not null, indexed
+#  auction_id     :integer          indexed
+#  old_auction_id :uuid             not null, indexed
+#  old_id         :uuid             indexed
 #
 # Indexes
 #
-#  index_auction_consignment_configs_on_auction_id  (auction_id)
-#  index_consignment_configs_on_horse_type          (auction_id, lower((horse_type)::text)) UNIQUE
+#  index_auction_consignment_configs_on_auction_id      (auction_id)
+#  index_auction_consignment_configs_on_old_auction_id  (old_auction_id)
+#  index_auction_consignment_configs_on_old_id          (old_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (auction_id => auctions.id)
+#  fk_rails_...  (auction_id => auctions.id) ON DELETE => cascade ON UPDATE => cascade
 #
 

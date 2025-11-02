@@ -12,10 +12,16 @@ end
 #
 # Table name: race_odds
 #
-#  id         :uuid             not null, primary key
-#  display    :string           not null
+#  id         :bigint           not null, primary key
+#  display    :string           not null, indexed
 #  value      :decimal(3, 1)    not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  old_id     :uuid             indexed
+#
+# Indexes
+#
+#  index_race_odds_on_display  (display)
+#  index_race_odds_on_old_id   (old_id)
 #
 
