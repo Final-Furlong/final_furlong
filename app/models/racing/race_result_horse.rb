@@ -3,6 +3,7 @@ module Racing
     include FlagShihTzu
 
     self.table_name = "race_result_horses"
+    self.ignored_columns += ["old_id", "old_horse_id", "old_jockey_id", "old_odd_id", "old_race_id"]
 
     belongs_to :race, class_name: "Racing::RaceResult", inverse_of: :horses
     belongs_to :horse, class_name: "Horses::Horse", inverse_of: :race_result_finishes
@@ -10,7 +11,7 @@ module Racing
     belongs_to :odd, class_name: "Racing::Odd", optional: true, inverse_of: :race_result_horses
 
     validates :legacy_horse_id, :post_parade, :finish_position, :positions, :margins, :equipment,
-      :speed_factor, :weight, presence: true
+              :speed_factor, :weight, presence: true
     validates :post_parade, :finish_position, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 14 }
     validates :speed_factor, :weight, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     validates :legacy_horse_id, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
@@ -19,11 +20,11 @@ module Racing
     scope :by_max_finish, ->(position) { where(finish_position: ..position) }
 
     has_flags 1 => :blinkers,
-      2 => :shadow_roll,
-      3 => :wraps,
-      4 => :figure_8,
-      5 => :no_whip,
-      :column => "equipment"
+              2 => :shadow_roll,
+              3 => :wraps,
+              4 => :figure_8,
+              5 => :no_whip,
+              :column => "equipment"
   end
 end
 

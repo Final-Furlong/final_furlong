@@ -1,6 +1,7 @@
 module Auctions
   class Bid < ApplicationRecord
     self.table_name = "auction_bids"
+    self.ignored_columns += ["old_auction_id", "old_bidder_id", "old_horse_id", "old_id"]
 
     MINIMUM_BID = 1000
     MINIMUM_INCREMENT = 500
@@ -39,8 +40,8 @@ module Auctions
 
     def sale_job
       SolidQueue::Job.where(class_name: "ProcessAuctionSaleJob")
-        .where("arguments LIKE ?", "%#{horse_id}%")
-        .where("arguments LIKE ?", "%#{auction_id}%")
+                     .where("arguments LIKE ?", "%#{horse_id}%")
+                     .where("arguments LIKE ?", "%#{auction_id}%")
     end
   end
 end

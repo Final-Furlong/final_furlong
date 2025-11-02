@@ -2,6 +2,8 @@ module Racing
   class Racetrack < ApplicationRecord
     include PublicIdGenerator
 
+    self.ignored_columns += ["old_id", "old_location_id"]
+
     belongs_to :location, inverse_of: :racetracks
 
     has_many :surfaces, class_name: "TrackSurface", dependent: :restrict_with_exception
@@ -11,9 +13,9 @@ module Racing
     validates :name, uniqueness: { case_sensitive: false }
 
     validates :longitude, presence: true,
-      numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180 }
+              numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180 }
     validates :latitude, presence: true,
-      numericality: { less_than_or_equal_to: 90, greater_than_or_equal_to: -90 }
+              numericality: { less_than_or_equal_to: 90, greater_than_or_equal_to: -90 }
   end
 end
 

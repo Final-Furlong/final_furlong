@@ -1,5 +1,7 @@
 module Racing
   class TrackSurface < ApplicationRecord
+    self.ignored_columns += ["old_id", "old_racetrack_id"]
+
     CONDITIONS = %w[fast good slow wet].freeze
 
     belongs_to :racetrack
@@ -8,7 +10,7 @@ module Racing
     has_many :completed_races, class_name: "RaceResult", dependent: :restrict_with_exception
 
     validates :surface, :condition, :width, :length, :turn_to_finish_length,
-      :turn_distance, :banking, :jumps, presence: true
+              :turn_distance, :banking, :jumps, presence: true
     validates :condition, inclusion: { in: CONDITIONS }
     validates :surface, uniqueness: { scope: :racetrack_id }
 

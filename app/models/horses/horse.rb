@@ -4,6 +4,8 @@ module Horses
     include FinalFurlong::Horses::Validation
     include FriendlyId
 
+    self.ignored_columns += ["old_id", "old_breeder_id", "old_dam_id", "old_id", "old_location_bred_id", "old_owner_id", "old_sire_id"]
+
     friendly_id :name_and_foal_status, use: [:slugged, :finders]
 
     belongs_to :breeder, class_name: "Account::Stable"
@@ -143,25 +145,25 @@ module Horses
 
     # :nocov:
     counter_culture :sire, column_name: proc { |model| model.unborn? ? "unborn_foals_count" : "foals_count" },
-      column_names: {
-        ["horses.status = ?", "unborn"] => "unborn_foals_count",
-        ["horses.status != ?", "unborn"] => "foals_count"
-      }
+                    column_names: {
+                      ["horses.status = ?", "unborn"] => "unborn_foals_count",
+                      ["horses.status != ?", "unborn"] => "foals_count"
+                    }
     counter_culture :dam, column_name: proc { |model| model.unborn? ? "unborn_foals_count" : "foals_count" },
-      column_names: {
-        ["horses.status = ?", "unborn"] => "unborn_foals_count",
-        ["horses.status != ?", "unborn"] => "foals_count"
-      }
+                    column_names: {
+                      ["horses.status = ?", "unborn"] => "unborn_foals_count",
+                      ["horses.status != ?", "unborn"] => "foals_count"
+                    }
     counter_culture :breeder, column_name: proc { |model| model.unborn? ? nil : "bred_horses_count" },
-      column_names: {
-        ["horses.status = ?", "unborn"] => nil,
-        ["horses.status != ?", "unborn"] => "bred_horses_count"
-      }
+                    column_names: {
+                      ["horses.status = ?", "unborn"] => nil,
+                      ["horses.status != ?", "unborn"] => "bred_horses_count"
+                    }
     counter_culture :owner, column_name: proc { |model| model.unborn? ? "unborn_horses_count" : "horses_count" },
-      column_names: {
-        ["horses.status = ?", "unborn"] => "unborn_horses_count",
-        ["horses.status != ?", "unborn"] => "horses_count"
-      }
+                    column_names: {
+                      ["horses.status = ?", "unborn"] => "unborn_horses_count",
+                      ["horses.status != ?", "unborn"] => "horses_count"
+                    }
     # :nocov:
 
     private

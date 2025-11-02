@@ -1,5 +1,7 @@
 module Racing
   class TrainingSchedule < ApplicationRecord
+    self.ignored_columns += ["old_id", "old_stable_id"]
+
     include StoreModel::NestedAttributes
 
     MAX_SCHEDULES_PER_STABLE = 10
@@ -18,8 +20,8 @@ module Racing
     attribute :saturday_activities, TrainingScheduleActivity.to_type
 
     accepts_nested_attributes_for :sunday_activities, :monday_activities, :tuesday_activities,
-      :wednesday_activities, :thursday_activities, :friday_activities,
-      :saturday_activities, allow_destroy: true
+                                  :wednesday_activities, :thursday_activities, :friday_activities,
+                                  :saturday_activities, allow_destroy: true
 
     validates :name, presence: true, uniqueness: { scope: :stable_id, case_sensitive: false }
     validates :sunday_activities, store_model: true
@@ -35,7 +37,7 @@ module Racing
 
     def all_activities
       [sunday_activities, monday_activities, tuesday_activities, wednesday_activities, thursday_activities,
-        friday_activities, saturday_activities]
+       friday_activities, saturday_activities]
     end
 
     def minimum_activities

@@ -1,7 +1,7 @@
 module Horses
   class Attributes < ApplicationRecord
     self.table_name = "horse_attributes"
-    self.ignored_columns += ["age"]
+    self.ignored_columns += ["old_id", "old_horse_id"]
 
     TITLES = ["Final Furlong", "World", "International", "National", "Grand", "Normal"].freeze
 

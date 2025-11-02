@@ -1,4 +1,6 @@
 class Location < ApplicationRecord
+  self.ignored_columns += ["old_id"]
+
   has_many :racetracks, class_name: "Racing::Racetrack", dependent: :restrict_with_exception
 
   validates :name, :country, presence: true

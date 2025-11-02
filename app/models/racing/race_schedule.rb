@@ -1,5 +1,6 @@
 class Racing::RaceSchedule < ApplicationRecord
   self.table_name = "race_schedules"
+  self.ignored_columns += ["old_id", "old_surface_id"]
 
   RACE_TYPES = %w[
     maiden

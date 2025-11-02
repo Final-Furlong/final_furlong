@@ -3,6 +3,8 @@ module Account
     include Discard::Model
     include PublicIdGenerator
 
+    self.ignored_columns += ["old_id"]
+
     attr_accessor :login
 
     USERNAME_LENGTH = 4
@@ -16,8 +18,8 @@ module Account
     # Include default devise modules. Others available are:
     # :omniauthable
     devise :database_authenticatable, :registerable,
-      :recoverable, :rememberable, :validatable,
-      :confirmable, :lockable, :timeoutable, :trackable
+           :recoverable, :rememberable, :validatable,
+           :confirmable, :lockable, :timeoutable, :trackable
 
     enum :status, { pending: "pending", active: "active", deleted: "deleted", banned: "banned" }
 

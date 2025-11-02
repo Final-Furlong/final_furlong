@@ -3,7 +3,7 @@ module Auctions
     include PublicIdGenerator
 
     self.table_name = "auction_horses"
-    self.ignored_columns += ["max_price"]
+    self.ignored_columns += ["old_auction_id", "old_horse_id", "old_id"]
 
     belongs_to :auction, class_name: "::Auction"
     belongs_to :horse, class_name: "Horses::Horse"

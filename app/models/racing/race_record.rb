@@ -1,18 +1,19 @@
 module Racing
   class RaceRecord < ApplicationRecord
     self.table_name = "race_records"
+    self.ignored_columns += ["old_id", "old_horse_id"]
 
     TYPES = %w[dirt turf steeplechase].freeze
 
     belongs_to :horse, class_name: "Horses::Horse", inverse_of: :race_records
 
     validates :year, :starts, :stakes_starts, :wins, :stakes_wins, :seconds, :stakes_seconds,
-      :thirds, :stakes_thirds, :fourths, :stakes_fourths, :points, :earnings, presence: true
+              :thirds, :stakes_thirds, :fourths, :stakes_fourths, :points, :earnings, presence: true
     validates :starts, :stakes_starts, :wins, :stakes_wins, :seconds, :stakes_seconds,
-      :thirds, :stakes_thirds, :fourths, :stakes_fourths,
-      numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+              :thirds, :stakes_thirds, :fourths, :stakes_fourths,
+              numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     validates :year, numericality: { only_integer: true },
-      comparison: { greater_than_or_equal_to: 1996, less_than_or_equal_to: -> { Date.current.year } }
+              comparison: { greater_than_or_equal_to: 1996, less_than_or_equal_to: -> { Date.current.year } }
     validates :points, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     validates :result_type, inclusion: { in: TYPES }, uniqueness: { scope: [:horse_id, :year] }
   end

@@ -1,6 +1,7 @@
 module Auctions
   class ConsignmentConfig < ApplicationRecord
     self.table_name = "auction_consignment_configs"
+    self.ignored_columns += ["old_auction_id", "old_id"]
 
     HORSE_TYPES = %w[racehorse stud broodmare yearling weanling].freeze
 

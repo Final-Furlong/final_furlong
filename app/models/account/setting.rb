@@ -1,5 +1,7 @@
 module Account
   class Setting < ApplicationRecord
+    self.ignored_columns += ["old_id", "old_user_id"]
+
     belongs_to :user
   end
 end

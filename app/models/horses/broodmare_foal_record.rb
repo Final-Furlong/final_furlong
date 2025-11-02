@@ -1,20 +1,21 @@
 module Horses
   class BroodmareFoalRecord < ApplicationRecord
     self.table_name = "broodmare_foal_records"
+    self.ignored_columns += ["old_id", "old_horse_id"]
 
     belongs_to :mare, class_name: "Horse", foreign_key: :horse_id, inverse_of: :broodmare_foal_record
 
     validates :born_foals_count, :stillborn_foals_count, :unborn_foals_count,
-      :raced_foals_count, :winning_foals_count, :stakes_winning_foals_count,
-      :multi_stakes_winning_foals_count, :millionaire_foals_count,
-      :multi_millionaire_foals_count, :total_foal_earnings,
-      :total_foal_races, :total_foal_points, presence: true
+              :raced_foals_count, :winning_foals_count, :stakes_winning_foals_count,
+              :multi_stakes_winning_foals_count, :millionaire_foals_count,
+              :multi_millionaire_foals_count, :total_foal_earnings,
+              :total_foal_races, :total_foal_points, presence: true
     validates :born_foals_count, :stillborn_foals_count, :unborn_foals_count,
-      :raced_foals_count, :winning_foals_count, :stakes_winning_foals_count,
-      :multi_stakes_winning_foals_count, :millionaire_foals_count,
-      :multi_millionaire_foals_count, :total_foal_earnings,
-      :total_foal_races, :total_foal_points,
-      numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+              :raced_foals_count, :winning_foals_count, :stakes_winning_foals_count,
+              :multi_stakes_winning_foals_count, :millionaire_foals_count,
+              :multi_millionaire_foals_count, :total_foal_earnings,
+              :total_foal_races, :total_foal_points,
+              numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     validates :stillborn_foals_count, comparison: { less_than_or_equal_to: :born_foals_count }
     validates :raced_foals_count, comparison: { less_than_or_equal_to: :born_foals_count }
     validates :winning_foals_count, comparison: { less_than_or_equal_to: :raced_foals_count }

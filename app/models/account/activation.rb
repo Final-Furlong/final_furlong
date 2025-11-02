@@ -1,5 +1,7 @@
 module Account
   class Activation < ApplicationRecord
+    self.ignored_columns += ["old_user_id"]
+
     belongs_to :user
 
     validates :token, presence: true

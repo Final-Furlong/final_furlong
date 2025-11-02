@@ -1,6 +1,7 @@
 module Account
   class Budget < ApplicationRecord
     self.table_name = "budget_transactions"
+    self.ignored_columns += ["old_id", "old_stable_id"]
 
     belongs_to :stable
 
