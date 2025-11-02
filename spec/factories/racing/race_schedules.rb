@@ -34,7 +34,7 @@ end
 #  race_type(maiden, claiming, starter_allowance, nw1_allowance, nw2_allowance, nw3_allowance, allowance, stakes) :enum             default("maiden"), not null, indexed
 #  created_at                                                                                                     :datetime         not null
 #  updated_at                                                                                                     :datetime         not null
-#  surface_id                                                                                                     :integer          not null, indexed
+#  surface_id                                                                                                     :bigint           not null, indexed
 #
 # Indexes
 #

@@ -15,7 +15,7 @@ module Auctions
           bidder: new_bidder,
           current_bid: new_current_bid,
           maximum_bid: new_maximum_bid,
-          email_if_outbid: false,
+          notify_if_outbid: false,
           created_at: 1.second.ago,
           updated_at: 1.second.ago
         )
@@ -30,7 +30,7 @@ module Auctions
           bidder: original_bid.bidder,
           current_bid: update_current_bid,
           maximum_bid: original_bid.maximum_bid,
-          email_if_outbid: false,
+          notify_if_outbid: false,
           updated_at: Time.current
         )
         return Result.new(created: true, current_bid: bid)

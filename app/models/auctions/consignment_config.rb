@@ -58,7 +58,7 @@ end
 #  stakes_quality :boolean          default(FALSE), not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  auction_id     :integer          not null, indexed
+#  auction_id     :bigint           not null, indexed
 #
 # Indexes
 #

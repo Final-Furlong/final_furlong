@@ -45,7 +45,6 @@ end
 #  index_users_on_discourse_id  (discourse_id) UNIQUE WHERE (discarded_at IS NOT NULL)
 #  index_users_on_email         (email) UNIQUE WHERE (discarded_at IS NOT NULL)
 #  index_users_on_name          (name) WHERE (discarded_at IS NOT NULL)
-#  index_users_on_old_id        (old_id)
 #  index_users_on_public_id     (public_id) UNIQUE WHERE (discarded_at IS NOT NULL)
 #  index_users_on_slug          (slug) UNIQUE WHERE (discarded_at IS NOT NULL)
 #  index_users_on_username      (username) UNIQUE WHERE (discarded_at IS NOT NULL)

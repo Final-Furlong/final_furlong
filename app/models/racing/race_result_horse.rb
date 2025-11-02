@@ -43,11 +43,11 @@ end
 #  weight          :integer          default(0), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  horse_id        :integer          not null, indexed
-#  jockey_id       :integer          indexed
+#  horse_id        :bigint           not null, indexed
+#  jockey_id       :bigint           indexed
 #  legacy_horse_id :integer          default(0), not null, indexed
-#  odd_id          :integer          indexed
-#  race_id         :integer          not null, indexed
+#  odd_id          :bigint           indexed
+#  race_id         :bigint           not null, indexed
 #
 # Indexes
 #

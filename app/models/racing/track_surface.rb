@@ -35,7 +35,7 @@ end
 #  width                             :integer          not null
 #  created_at                        :datetime         not null
 #  updated_at                        :datetime         not null
-#  racetrack_id                      :integer          not null, uniquely indexed => [surface]
+#  racetrack_id                      :bigint           not null, uniquely indexed => [surface]
 #
 # Indexes
 #

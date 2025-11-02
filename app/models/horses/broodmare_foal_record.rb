@@ -92,7 +92,7 @@ end
 #  winning_foals_count              :integer          default(0), not null, indexed
 #  created_at                       :datetime         not null
 #  updated_at                       :datetime         not null
-#  horse_id                         :integer          not null, uniquely indexed
+#  horse_id                         :bigint           not null, uniquely indexed
 #
 # Indexes
 #

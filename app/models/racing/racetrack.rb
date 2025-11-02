@@ -30,7 +30,7 @@ end
 #  slug        :string           indexed
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  location_id :integer          not null, indexed
+#  location_id :bigint           not null, indexed
 #  public_id   :string(12)       indexed
 #
 # Indexes

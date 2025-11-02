@@ -40,7 +40,7 @@ end
 #  year                                  :integer          default(1996), not null, uniquely indexed => [horse_id, result_type], indexed
 #  created_at                            :datetime         not null
 #  updated_at                            :datetime         not null
-#  horse_id                              :integer          not null, uniquely indexed => [year, result_type]
+#  horse_id                              :bigint           not null, uniquely indexed => [year, result_type]
 #
 # Indexes
 #
