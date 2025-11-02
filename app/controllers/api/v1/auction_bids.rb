@@ -6,9 +6,9 @@ module Api
       resource :auction_bids do
         desc "Create a bid on a horse"
         params do
-          requires :auction_id, type: String, desc: "Unique id for the Auction"
-          requires :horse_id, type: String, desc: "Unique id for the Auction::Horse"
-          requires :bidder_id, type: String, desc: "Unique id for the Account::Stable"
+          requires :auction_id, type: Integer, desc: "Unique id for the Auction"
+          requires :horse_id, type: Integer, desc: "Unique id for the Auction::Horse"
+          requires :bidder_id, type: Integer, desc: "Unique id for the Account::Stable"
           requires :current_bid, type: Integer, desc: "Current bid amount"
           requires :maximum_bid, type: Integer, desc: "Maximum bid amount"
           optional :comment, type: String, desc: "Comment relating to the bid"

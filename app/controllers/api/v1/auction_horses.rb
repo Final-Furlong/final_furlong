@@ -6,9 +6,9 @@ module Api
       resource :auction_horses do
         desc "Consign a horse to an auction"
         params do
-          requires :auction_id, type: String, desc: "Unique id for the Auction"
-          requires :horse_id, type: String, desc: "Unique id for the Horses::Horse"
-          requires :stable_id, type: String, desc: "Unique id for the Account::Stable"
+          requires :auction_id, type: Integer, desc: "Unique id for the Auction"
+          requires :horse_id, type: Integer, desc: "Unique id for the Horses::Horse"
+          requires :stable_id, type: Integer, desc: "Unique id for the Account::Stable"
           optional :reserve_price, type: Integer, desc: "Reserve price for the horse"
           optional :comment, type: String, desc: "Comment relating to the bid"
         end
