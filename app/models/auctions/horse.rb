@@ -25,28 +25,23 @@ end
 #
 # Table name: auction_horses
 #
-#  id             :bigint           not null, primary key
-#  comment        :text
-#  maximum_price  :integer
-#  reserve_price  :integer
-#  sold_at        :datetime         indexed
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  auction_id     :bigint           not null, indexed
-#  horse_id       :bigint           not null, uniquely indexed
-#  old_auction_id :uuid             not null, indexed
-#  old_horse_id   :uuid             not null, indexed
-#  old_id         :uuid             indexed
-#  public_id      :string(12)
+#  id            :bigint           not null, primary key
+#  comment       :text
+#  maximum_price :integer
+#  reserve_price :integer
+#  sold_at       :datetime         indexed
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  auction_id    :integer          not null, indexed
+#  horse_id      :integer          not null, uniquely indexed
+#  public_id     :string(12)
 #
 # Indexes
 #
-#  index_auction_horses_on_auction_id      (auction_id)
-#  index_auction_horses_on_horse_id        (horse_id) UNIQUE
-#  index_auction_horses_on_old_auction_id  (old_auction_id)
-#  index_auction_horses_on_old_horse_id    (old_horse_id)
-#  index_auction_horses_on_old_id          (old_id)
-#  index_auction_horses_on_sold_at         (sold_at)
+#  index_auction_horses_on_auction_id  (auction_id)
+#  index_auction_horses_on_horse_id    (horse_id) UNIQUE
+#  index_auction_horses_on_old_id      (old_id)
+#  index_auction_horses_on_sold_at     (sold_at)
 #
 # Foreign Keys
 #

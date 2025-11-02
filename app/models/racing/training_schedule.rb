@@ -20,8 +20,8 @@ module Racing
     attribute :saturday_activities, TrainingScheduleActivity.to_type
 
     accepts_nested_attributes_for :sunday_activities, :monday_activities, :tuesday_activities,
-                                  :wednesday_activities, :thursday_activities, :friday_activities,
-                                  :saturday_activities, allow_destroy: true
+      :wednesday_activities, :thursday_activities, :friday_activities,
+      :saturday_activities, allow_destroy: true
 
     validates :name, presence: true, uniqueness: { scope: :stable_id, case_sensitive: false }
     validates :sunday_activities, store_model: true
@@ -37,7 +37,7 @@ module Racing
 
     def all_activities
       [sunday_activities, monday_activities, tuesday_activities, wednesday_activities, thursday_activities,
-       friday_activities, saturday_activities]
+        friday_activities, saturday_activities]
     end
 
     def minimum_activities
@@ -69,9 +69,7 @@ end
 #  wednesday_activities :string           not null, indexed
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
-#  old_id               :uuid             indexed
-#  old_stable_id        :uuid             not null, indexed
-#  stable_id            :bigint           not null, indexed
+#  stable_id            :integer          not null, indexed
 #
 # Indexes
 #
@@ -79,7 +77,6 @@ end
 #  index_training_schedules_on_horses_count          (horses_count)
 #  index_training_schedules_on_monday_activities     (monday_activities)
 #  index_training_schedules_on_old_id                (old_id)
-#  index_training_schedules_on_old_stable_id         (old_stable_id)
 #  index_training_schedules_on_saturday_activities   (saturday_activities)
 #  index_training_schedules_on_stable_and_name       (stable_id, lower((name)::text)) UNIQUE
 #  index_training_schedules_on_stable_id             (stable_id)

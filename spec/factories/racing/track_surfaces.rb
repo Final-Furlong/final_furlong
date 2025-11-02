@@ -27,14 +27,11 @@ end
 #  width                             :integer          not null
 #  created_at                        :datetime         not null
 #  updated_at                        :datetime         not null
-#  old_id                            :uuid             indexed
-#  old_racetrack_id                  :uuid             not null, indexed
-#  racetrack_id                      :bigint           not null, uniquely indexed => [surface]
+#  racetrack_id                      :integer          not null, uniquely indexed => [surface]
 #
 # Indexes
 #
 #  index_track_surfaces_on_old_id                    (old_id)
-#  index_track_surfaces_on_old_racetrack_id          (old_racetrack_id)
 #  index_track_surfaces_on_racetrack_id_and_surface  (racetrack_id,surface) UNIQUE
 #
 # Foreign Keys

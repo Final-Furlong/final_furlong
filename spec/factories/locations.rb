@@ -17,7 +17,6 @@ end
 #  state      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  old_id     :uuid             indexed
 #
 # Indexes
 #

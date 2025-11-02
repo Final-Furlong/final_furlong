@@ -22,9 +22,7 @@ end
 #  updated_at                                                                                                                                                                                   :datetime         not null
 #  legacy_budget_id                                                                                                                                                                             :integer          default(0), indexed
 #  legacy_stable_id                                                                                                                                                                             :integer          default(0), indexed
-#  old_id                                                                                                                                                                                       :uuid             indexed
-#  old_stable_id                                                                                                                                                                                :uuid             not null, indexed
-#  stable_id                                                                                                                                                                                    :bigint           not null, indexed
+#  stable_id                                                                                                                                                                                    :integer          not null, indexed
 #
 # Indexes
 #
@@ -33,7 +31,6 @@ end
 #  index_budget_transactions_on_legacy_budget_id  (legacy_budget_id)
 #  index_budget_transactions_on_legacy_stable_id  (legacy_stable_id)
 #  index_budget_transactions_on_old_id            (old_id)
-#  index_budget_transactions_on_old_stable_id     (old_stable_id)
 #  index_budget_transactions_on_stable_id         (stable_id)
 #
 # Foreign Keys

@@ -6,16 +6,16 @@ module Horses
     belongs_to :mare, class_name: "Horse", foreign_key: :horse_id, inverse_of: :broodmare_foal_record
 
     validates :born_foals_count, :stillborn_foals_count, :unborn_foals_count,
-              :raced_foals_count, :winning_foals_count, :stakes_winning_foals_count,
-              :multi_stakes_winning_foals_count, :millionaire_foals_count,
-              :multi_millionaire_foals_count, :total_foal_earnings,
-              :total_foal_races, :total_foal_points, presence: true
+      :raced_foals_count, :winning_foals_count, :stakes_winning_foals_count,
+      :multi_stakes_winning_foals_count, :millionaire_foals_count,
+      :multi_millionaire_foals_count, :total_foal_earnings,
+      :total_foal_races, :total_foal_points, presence: true
     validates :born_foals_count, :stillborn_foals_count, :unborn_foals_count,
-              :raced_foals_count, :winning_foals_count, :stakes_winning_foals_count,
-              :multi_stakes_winning_foals_count, :millionaire_foals_count,
-              :multi_millionaire_foals_count, :total_foal_earnings,
-              :total_foal_races, :total_foal_points,
-              numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+      :raced_foals_count, :winning_foals_count, :stakes_winning_foals_count,
+      :multi_stakes_winning_foals_count, :millionaire_foals_count,
+      :multi_millionaire_foals_count, :total_foal_earnings,
+      :total_foal_races, :total_foal_points,
+      numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     validates :stillborn_foals_count, comparison: { less_than_or_equal_to: :born_foals_count }
     validates :raced_foals_count, comparison: { less_than_or_equal_to: :born_foals_count }
     validates :winning_foals_count, comparison: { less_than_or_equal_to: :raced_foals_count }
@@ -92,9 +92,7 @@ end
 #  winning_foals_count              :integer          default(0), not null, indexed
 #  created_at                       :datetime         not null
 #  updated_at                       :datetime         not null
-#  horse_id                         :bigint           not null, uniquely indexed
-#  old_horse_id                     :uuid             not null, indexed
-#  old_id                           :uuid             indexed
+#  horse_id                         :integer          not null, uniquely indexed
 #
 # Indexes
 #
@@ -104,7 +102,6 @@ end
 #  index_broodmare_foal_records_on_horse_id                       (horse_id) UNIQUE
 #  index_broodmare_foal_records_on_millionaire_foals_count        (millionaire_foals_count)
 #  index_broodmare_foal_records_on_multi_millionaire_foals_count  (multi_millionaire_foals_count)
-#  index_broodmare_foal_records_on_old_horse_id                   (old_horse_id)
 #  index_broodmare_foal_records_on_old_id                         (old_id)
 #  index_broodmare_foal_records_on_raced_foals_count              (raced_foals_count)
 #  index_broodmare_foal_records_on_stakes_winning_foals_count     (stakes_winning_foals_count)

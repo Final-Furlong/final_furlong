@@ -12,11 +12,11 @@ module Account
     belongs_to :racetrack, class_name: "Racing::Racetrack", optional: true
 
     has_many :bred_horses, class_name: "Horses::Horse", foreign_key: :breeder_id, inverse_of: :breeder,
-             dependent: :restrict_with_exception
+      dependent: :restrict_with_exception
     has_many :horses, class_name: "Horses::Horse", foreign_key: :owner_id, inverse_of: :owner,
-             dependent: :restrict_with_exception
+      dependent: :restrict_with_exception
     has_many :training_schedules, class_name: "Racing::TrainingSchedule", inverse_of: :stable,
-             dependent: :restrict_with_exception
+      dependent: :restrict_with_exception
     has_many :auctions, class_name: "Auction", inverse_of: :auctioneer, dependent: :restrict_with_exception
     has_many :auction_bids, class_name: "Auctions::Bid", inverse_of: :bidder, dependent: :destroy
 
@@ -52,12 +52,9 @@ end
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  legacy_id         :integer          indexed
-#  old_id            :uuid             not null, indexed
-#  old_racetrack_id  :uuid             indexed
-#  old_user_id       :uuid             not null, indexed
 #  public_id         :string(12)       indexed
-#  racetrack_id      :bigint           indexed
-#  user_id           :bigint           not null, uniquely indexed
+#  racetrack_id      :integer          indexed
+#  user_id           :integer          not null, uniquely indexed
 #
 # Indexes
 #
@@ -65,9 +62,7 @@ end
 #  index_stables_on_last_online_at     (last_online_at)
 #  index_stables_on_legacy_id          (legacy_id)
 #  index_stables_on_name               (lower((name)::text)) UNIQUE
-#  index_stables_on_old_id             (old_id)
 #  index_stables_on_old_racetrack_id   (old_racetrack_id)
-#  index_stables_on_old_user_id        (old_user_id)
 #  index_stables_on_public_id          (public_id)
 #  index_stables_on_racetrack_id       (racetrack_id)
 #  index_stables_on_slug               (slug)

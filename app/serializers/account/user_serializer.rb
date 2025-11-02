@@ -36,7 +36,6 @@ end
 #  created_at                               :datetime         not null
 #  updated_at                               :datetime         not null
 #  discourse_id                             :integer          uniquely indexed
-#  old_id                                   :uuid             indexed
 #  public_id                                :string(12)       uniquely indexed
 #
 # Indexes

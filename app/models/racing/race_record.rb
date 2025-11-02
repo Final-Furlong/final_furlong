@@ -8,12 +8,12 @@ module Racing
     belongs_to :horse, class_name: "Horses::Horse", inverse_of: :race_records
 
     validates :year, :starts, :stakes_starts, :wins, :stakes_wins, :seconds, :stakes_seconds,
-              :thirds, :stakes_thirds, :fourths, :stakes_fourths, :points, :earnings, presence: true
+      :thirds, :stakes_thirds, :fourths, :stakes_fourths, :points, :earnings, presence: true
     validates :starts, :stakes_starts, :wins, :stakes_wins, :seconds, :stakes_seconds,
-              :thirds, :stakes_thirds, :fourths, :stakes_fourths,
-              numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+      :thirds, :stakes_thirds, :fourths, :stakes_fourths,
+      numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     validates :year, numericality: { only_integer: true },
-              comparison: { greater_than_or_equal_to: 1996, less_than_or_equal_to: -> { Date.current.year } }
+      comparison: { greater_than_or_equal_to: 1996, less_than_or_equal_to: -> { Date.current.year } }
     validates :points, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     validates :result_type, inclusion: { in: TYPES }, uniqueness: { scope: [:horse_id, :year] }
   end
@@ -40,15 +40,11 @@ end
 #  year                                  :integer          default(1996), not null, uniquely indexed => [horse_id, result_type], indexed
 #  created_at                            :datetime         not null
 #  updated_at                            :datetime         not null
-#  horse_id                              :bigint           not null, uniquely indexed => [year, result_type]
-#  old_horse_id                          :uuid             not null, indexed
-#  old_id                                :uuid             indexed
+#  horse_id                              :integer          not null, uniquely indexed => [year, result_type]
 #
 # Indexes
 #
 #  index_race_records_on_horse_id_and_year_and_result_type  (horse_id,year,result_type) UNIQUE
-#  index_race_records_on_old_horse_id                       (old_horse_id)
-#  index_race_records_on_old_id                             (old_id)
 #  index_race_records_on_result_type                        (result_type)
 #  index_race_records_on_stakes_starts                      (stakes_starts)
 #  index_race_records_on_stakes_wins                        (stakes_wins)

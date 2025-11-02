@@ -68,19 +68,16 @@ end
 #  yearling_allowed              :boolean          default(FALSE), not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
-#  auctioneer_id                 :bigint           not null, indexed
-#  old_auctioneer_id             :uuid             not null, indexed
-#  old_id                        :uuid             indexed
+#  auctioneer_id                 :integer          not null, indexed
 #  public_id                     :string(12)
 #
 # Indexes
 #
-#  index_auctions_on_auctioneer_id      (auctioneer_id)
-#  index_auctions_on_end_time           (end_time)
-#  index_auctions_on_old_auctioneer_id  (old_auctioneer_id)
-#  index_auctions_on_old_id             (old_id)
-#  index_auctions_on_start_time         (start_time)
-#  index_auctions_on_title              (lower((title)::text)) UNIQUE
+#  index_auctions_on_auctioneer_id  (auctioneer_id)
+#  index_auctions_on_end_time       (end_time)
+#  index_auctions_on_old_id         (old_id)
+#  index_auctions_on_start_time     (start_time)
+#  index_auctions_on_title          (lower((title)::text)) UNIQUE
 #
 # Foreign Keys
 #

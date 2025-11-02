@@ -31,7 +31,6 @@ end
 #  second_year_points                                                                       :integer          default(0), not null
 #  created_at                                                                               :datetime         not null
 #  updated_at                                                                               :datetime         not null
-#  old_id                                                                                   :uuid             indexed
 #
 # Indexes
 #

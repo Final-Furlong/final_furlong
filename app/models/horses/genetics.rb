@@ -13,13 +13,11 @@ end
 #
 # Table name: horse_genetics
 #
-#  id           :bigint           not null, primary key
-#  allele       :string(32)       not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  horse_id     :bigint           not null, uniquely indexed
-#  old_horse_id :uuid             not null
-#  old_id       :uuid             indexed
+#  id         :bigint           not null, primary key
+#  allele     :string(32)       not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  horse_id   :integer          not null, uniquely indexed
 #
 # Indexes
 #

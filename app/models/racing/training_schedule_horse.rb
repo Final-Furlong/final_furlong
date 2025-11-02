@@ -18,22 +18,17 @@ end
 #
 # Table name: training_schedules_horses
 #
-#  id                       :bigint           not null, primary key
-#  created_at               :datetime         not null
-#  updated_at               :datetime         not null
-#  horse_id                 :bigint           not null, uniquely indexed
-#  old_horse_id             :uuid             not null, indexed
-#  old_id                   :uuid             indexed
-#  old_training_schedule_id :uuid             not null, indexed
-#  training_schedule_id     :bigint           not null, indexed
+#  id                   :bigint           not null, primary key
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  horse_id             :integer          not null, uniquely indexed
+#  training_schedule_id :integer          not null, indexed
 #
 # Indexes
 #
-#  index_training_schedules_horses_on_horse_id                  (horse_id) UNIQUE
-#  index_training_schedules_horses_on_old_horse_id              (old_horse_id)
-#  index_training_schedules_horses_on_old_id                    (old_id)
-#  index_training_schedules_horses_on_old_training_schedule_id  (old_training_schedule_id)
-#  index_training_schedules_horses_on_training_schedule_id      (training_schedule_id)
+#  index_training_schedules_horses_on_horse_id              (horse_id) UNIQUE
+#  index_training_schedules_horses_on_old_id                (old_id)
+#  index_training_schedules_horses_on_training_schedule_id  (training_schedule_id)
 #
 # Foreign Keys
 #

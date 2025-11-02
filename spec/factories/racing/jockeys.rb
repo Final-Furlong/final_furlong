@@ -85,7 +85,6 @@ end
 #  created_at                           :datetime         not null
 #  updated_at                           :datetime         not null
 #  legacy_id                            :integer          not null, indexed
-#  old_id                               :uuid             indexed
 #  public_id                            :string(12)       indexed
 #
 # Indexes

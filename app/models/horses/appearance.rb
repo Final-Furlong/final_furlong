@@ -99,15 +99,12 @@ end
 #  rh_leg_marking(coronet, ermine, sock, stocking)                                                                                                                                                                        :enum
 #  created_at                                                                                                                                                                                                             :datetime         not null
 #  updated_at                                                                                                                                                                                                             :datetime         not null
-#  horse_id                                                                                                                                                                                                               :bigint           not null, uniquely indexed
-#  old_horse_id                                                                                                                                                                                                           :uuid             not null, indexed
-#  old_id                                                                                                                                                                                                                 :uuid             indexed
+#  horse_id                                                                                                                                                                                                               :integer          not null, uniquely indexed
 #
 # Indexes
 #
-#  index_horse_appearances_on_horse_id      (horse_id) UNIQUE
-#  index_horse_appearances_on_old_horse_id  (old_horse_id)
-#  index_horse_appearances_on_old_id        (old_id)
+#  index_horse_appearances_on_horse_id  (horse_id) UNIQUE
+#  index_horse_appearances_on_old_id    (old_id)
 #
 # Foreign Keys
 #

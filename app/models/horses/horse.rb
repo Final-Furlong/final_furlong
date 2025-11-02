@@ -145,25 +145,25 @@ module Horses
 
     # :nocov:
     counter_culture :sire, column_name: proc { |model| model.unborn? ? "unborn_foals_count" : "foals_count" },
-                    column_names: {
-                      ["horses.status = ?", "unborn"] => "unborn_foals_count",
-                      ["horses.status != ?", "unborn"] => "foals_count"
-                    }
+      column_names: {
+        ["horses.status = ?", "unborn"] => "unborn_foals_count",
+        ["horses.status != ?", "unborn"] => "foals_count"
+      }
     counter_culture :dam, column_name: proc { |model| model.unborn? ? "unborn_foals_count" : "foals_count" },
-                    column_names: {
-                      ["horses.status = ?", "unborn"] => "unborn_foals_count",
-                      ["horses.status != ?", "unborn"] => "foals_count"
-                    }
+      column_names: {
+        ["horses.status = ?", "unborn"] => "unborn_foals_count",
+        ["horses.status != ?", "unborn"] => "foals_count"
+      }
     counter_culture :breeder, column_name: proc { |model| model.unborn? ? nil : "bred_horses_count" },
-                    column_names: {
-                      ["horses.status = ?", "unborn"] => nil,
-                      ["horses.status != ?", "unborn"] => "bred_horses_count"
-                    }
+      column_names: {
+        ["horses.status = ?", "unborn"] => nil,
+        ["horses.status != ?", "unborn"] => "bred_horses_count"
+      }
     counter_culture :owner, column_name: proc { |model| model.unborn? ? "unborn_horses_count" : "horses_count" },
-                    column_names: {
-                      ["horses.status = ?", "unborn"] => "unborn_horses_count",
-                      ["horses.status != ?", "unborn"] => "horses_count"
-                    }
+      column_names: {
+        ["horses.status = ?", "unborn"] => "unborn_horses_count",
+        ["horses.status != ?", "unborn"] => "horses_count"
+      }
     # :nocov:
 
     private
@@ -190,42 +190,33 @@ end
 #  status(unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased) :enum             default("unborn"), not null, indexed
 #  created_at                                                                                                         :datetime         not null
 #  updated_at                                                                                                         :datetime         not null
-#  breeder_id                                                                                                         :bigint           not null, indexed
-#  dam_id                                                                                                             :bigint           indexed
+#  breeder_id                                                                                                         :integer          not null, indexed
+#  dam_id                                                                                                             :integer          indexed
 #  legacy_id                                                                                                          :integer          indexed
 #  location_bred_id                                                                                                   :bigint           not null, indexed
-#  old_breeder_id                                                                                                     :uuid             not null, indexed
-#  old_dam_id                                                                                                         :uuid             indexed
-#  old_id                                                                                                             :uuid             indexed
-#  old_location_bred_id                                                                                               :uuid             not null, indexed
-#  old_owner_id                                                                                                       :uuid             not null, indexed
-#  old_sire_id                                                                                                        :uuid             indexed
-#  owner_id                                                                                                           :bigint           not null, indexed
+#  owner_id                                                                                                           :integer          not null, indexed
 #  public_id                                                                                                          :string(12)       indexed
-#  sire_id                                                                                                            :bigint           indexed
+#  sire_id                                                                                                            :integer          indexed
 #
 # Indexes
 #
-#  index_horses_on_age                   (age)
-#  index_horses_on_breeder_id            (breeder_id)
-#  index_horses_on_dam_id                (dam_id)
-#  index_horses_on_date_of_birth         (date_of_birth)
-#  index_horses_on_date_of_death         (date_of_death)
-#  index_horses_on_gender                (gender)
-#  index_horses_on_legacy_id             (legacy_id)
-#  index_horses_on_location_bred_id      (location_bred_id)
-#  index_horses_on_name                  (name)
-#  index_horses_on_old_breeder_id        (old_breeder_id)
-#  index_horses_on_old_dam_id            (old_dam_id)
-#  index_horses_on_old_id                (old_id)
-#  index_horses_on_old_location_bred_id  (old_location_bred_id)
-#  index_horses_on_old_owner_id          (old_owner_id)
-#  index_horses_on_old_sire_id           (old_sire_id)
-#  index_horses_on_owner_id              (owner_id)
-#  index_horses_on_public_id             (public_id)
-#  index_horses_on_sire_id               (sire_id)
-#  index_horses_on_slug                  (slug)
-#  index_horses_on_status                (status)
+#  index_horses_on_age               (age)
+#  index_horses_on_breeder_id        (breeder_id)
+#  index_horses_on_dam_id            (dam_id)
+#  index_horses_on_date_of_birth     (date_of_birth)
+#  index_horses_on_date_of_death     (date_of_death)
+#  index_horses_on_gender            (gender)
+#  index_horses_on_legacy_id         (legacy_id)
+#  index_horses_on_location_bred_id  (location_bred_id)
+#  index_horses_on_name              (name)
+#  index_horses_on_old_dam_id        (old_dam_id)
+#  index_horses_on_old_id            (old_id)
+#  index_horses_on_old_sire_id       (old_sire_id)
+#  index_horses_on_owner_id          (owner_id)
+#  index_horses_on_public_id         (public_id)
+#  index_horses_on_sire_id           (sire_id)
+#  index_horses_on_slug              (slug)
+#  index_horses_on_status            (status)
 #
 # Foreign Keys
 #

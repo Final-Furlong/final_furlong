@@ -13,13 +13,11 @@ end
 #  token        :string           not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  old_user_id  :uuid             not null, uniquely indexed
-#  user_id      :bigint           not null, uniquely indexed
+#  user_id      :integer          not null, uniquely indexed
 #
 # Indexes
 #
-#  index_activations_on_old_user_id  (old_user_id) UNIQUE
-#  index_activations_on_user_id      (user_id) UNIQUE
+#  index_activations_on_user_id  (user_id) UNIQUE
 #
 # Foreign Keys
 #

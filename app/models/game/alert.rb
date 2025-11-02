@@ -23,7 +23,6 @@ end
 #  start_time             :datetime         not null, indexed
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  old_id                 :uuid             indexed
 #
 # Indexes
 #

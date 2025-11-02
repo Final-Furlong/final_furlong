@@ -37,9 +37,7 @@ end
 #  time_in_seconds                                                                                                :decimal(7, 3)    default(0.0), not null, indexed
 #  created_at                                                                                                     :datetime         not null
 #  updated_at                                                                                                     :datetime         not null
-#  old_id                                                                                                         :uuid             indexed
-#  old_surface_id                                                                                                 :uuid             not null, indexed
-#  surface_id                                                                                                     :bigint           not null, indexed
+#  surface_id                                                                                                     :integer          not null, indexed
 #
 # Indexes
 #

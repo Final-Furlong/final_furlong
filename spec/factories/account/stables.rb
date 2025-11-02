@@ -21,12 +21,9 @@ end
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  legacy_id         :integer          indexed
-#  old_id            :uuid             not null, indexed
-#  old_racetrack_id  :uuid             indexed
-#  old_user_id       :uuid             not null, indexed
 #  public_id         :string(12)       indexed
-#  racetrack_id      :bigint           indexed
-#  user_id           :bigint           not null, uniquely indexed
+#  racetrack_id      :integer          indexed
+#  user_id           :integer          not null, uniquely indexed
 #
 # Indexes
 #
@@ -34,9 +31,7 @@ end
 #  index_stables_on_last_online_at     (last_online_at)
 #  index_stables_on_legacy_id          (legacy_id)
 #  index_stables_on_name               (lower((name)::text)) UNIQUE
-#  index_stables_on_old_id             (old_id)
 #  index_stables_on_old_racetrack_id   (old_racetrack_id)
-#  index_stables_on_old_user_id        (old_user_id)
 #  index_stables_on_public_id          (public_id)
 #  index_stables_on_racetrack_id       (racetrack_id)
 #  index_stables_on_slug               (slug)

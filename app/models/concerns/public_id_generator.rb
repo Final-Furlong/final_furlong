@@ -15,7 +15,7 @@ module PublicIdGenerator
 
   class_methods do
     def generate_nanoid(alphabet: PUBLIC_ID_ALPHABET, size: PUBLIC_ID_LENGTH)
-      Nanoid.generate(size: size, alphabet: alphabet)
+      Nanoid.generate(size:, alphabet:)
     end
   end
 
@@ -24,7 +24,7 @@ module PublicIdGenerator
     return if public_id.present?
     MAX_RETRY.times do
       self.public_id = generate_public_id
-      return unless self.class.where(public_id: public_id).exists?
+      return unless self.class.exists?(public_id:)
     end
     raise "Failed to generate a unique public id after #{MAX_RETRY} attempts"
   end

@@ -11,7 +11,7 @@ module Racing
     belongs_to :odd, class_name: "Racing::Odd", optional: true, inverse_of: :race_result_horses
 
     validates :legacy_horse_id, :post_parade, :finish_position, :positions, :margins, :equipment,
-              :speed_factor, :weight, presence: true
+      :speed_factor, :weight, presence: true
     validates :post_parade, :finish_position, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 14 }
     validates :speed_factor, :weight, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     validates :legacy_horse_id, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
@@ -20,11 +20,11 @@ module Racing
     scope :by_max_finish, ->(position) { where(finish_position: ..position) }
 
     has_flags 1 => :blinkers,
-              2 => :shadow_roll,
-              3 => :wraps,
-              4 => :figure_8,
-              5 => :no_whip,
-              :column => "equipment"
+      2 => :shadow_roll,
+      3 => :wraps,
+      4 => :figure_8,
+      5 => :no_whip,
+      :column => "equipment"
   end
 end
 
@@ -43,16 +43,11 @@ end
 #  weight          :integer          default(0), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  horse_id        :bigint           not null, indexed
-#  jockey_id       :bigint           indexed
+#  horse_id        :integer          not null, indexed
+#  jockey_id       :integer          indexed
 #  legacy_horse_id :integer          default(0), not null, indexed
-#  odd_id          :bigint           indexed
-#  old_horse_id    :uuid             not null, indexed
-#  old_id          :uuid             indexed
-#  old_jockey_id   :uuid             indexed
-#  old_odd_id      :uuid             indexed
-#  old_race_id     :uuid             not null, indexed
-#  race_id         :bigint           not null, indexed
+#  odd_id          :integer          indexed
+#  race_id         :integer          not null, indexed
 #
 # Indexes
 #
@@ -61,11 +56,9 @@ end
 #  index_race_result_horses_on_jockey_id        (jockey_id)
 #  index_race_result_horses_on_legacy_horse_id  (legacy_horse_id)
 #  index_race_result_horses_on_odd_id           (odd_id)
-#  index_race_result_horses_on_old_horse_id     (old_horse_id)
 #  index_race_result_horses_on_old_id           (old_id)
 #  index_race_result_horses_on_old_jockey_id    (old_jockey_id)
 #  index_race_result_horses_on_old_odd_id       (old_odd_id)
-#  index_race_result_horses_on_old_race_id      (old_race_id)
 #  index_race_result_horses_on_race_id          (race_id)
 #  index_race_result_horses_on_speed_factor     (speed_factor)
 #

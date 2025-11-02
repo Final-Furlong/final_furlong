@@ -30,9 +30,7 @@ end
 #  wednesday_activities :string           not null, indexed
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
-#  old_id               :uuid             indexed
-#  old_stable_id        :uuid             not null, indexed
-#  stable_id            :bigint           not null, indexed
+#  stable_id            :integer          not null, indexed
 #
 # Indexes
 #
@@ -40,7 +38,6 @@ end
 #  index_training_schedules_on_horses_count          (horses_count)
 #  index_training_schedules_on_monday_activities     (monday_activities)
 #  index_training_schedules_on_old_id                (old_id)
-#  index_training_schedules_on_old_stable_id         (old_stable_id)
 #  index_training_schedules_on_saturday_activities   (saturday_activities)
 #  index_training_schedules_on_stable_and_name       (stable_id, lower((name)::text)) UNIQUE
 #  index_training_schedules_on_stable_id             (stable_id)

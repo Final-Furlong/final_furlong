@@ -23,12 +23,9 @@ end
 #  balance                                                                                  :bigint           default(0), not null
 #  created_at                                                                               :datetime         not null
 #  updated_at                                                                               :datetime         not null
-#  budget_id                                                                                :bigint           indexed
+#  budget_id                                                                                :integer          indexed
 #  legacy_stable_id                                                                         :integer          default(0), not null, indexed
-#  old_budget_id                                                                            :uuid             indexed
-#  old_id                                                                                   :uuid             not null, indexed
-#  old_stable_id                                                                            :uuid             not null, indexed
-#  stable_id                                                                                :bigint           not null, indexed
+#  stable_id                                                                                :integer          not null, indexed
 #
 # Indexes
 #
@@ -36,8 +33,6 @@ end
 #  index_activity_points_on_budget_id         (budget_id)
 #  index_activity_points_on_legacy_stable_id  (legacy_stable_id)
 #  index_activity_points_on_old_budget_id     (old_budget_id)
-#  index_activity_points_on_old_id            (old_id)
-#  index_activity_points_on_old_stable_id     (old_stable_id)
 #  index_activity_points_on_stable_id         (stable_id)
 #
 # Foreign Keys

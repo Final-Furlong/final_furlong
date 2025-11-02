@@ -19,22 +19,19 @@ end
 #
 # Table name: user_push_subscriptions
 #
-#  id          :bigint           not null, primary key
-#  auth_key    :string
-#  endpoint    :string
-#  p256dh_key  :string
-#  user_agent  :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  old_id      :uuid             indexed
-#  old_user_id :uuid             not null, indexed
-#  user_id     :bigint           not null, indexed
+#  id         :bigint           not null, primary key
+#  auth_key   :string
+#  endpoint   :string
+#  p256dh_key :string
+#  user_agent :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  user_id    :integer          not null, indexed
 #
 # Indexes
 #
-#  index_user_push_subscriptions_on_old_id       (old_id)
-#  index_user_push_subscriptions_on_old_user_id  (old_user_id)
-#  index_user_push_subscriptions_on_user_id      (user_id)
+#  index_user_push_subscriptions_on_old_id   (old_id)
+#  index_user_push_subscriptions_on_user_id  (user_id)
 #
 # Foreign Keys
 #

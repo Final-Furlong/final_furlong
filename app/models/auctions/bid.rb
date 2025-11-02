@@ -40,8 +40,8 @@ module Auctions
 
     def sale_job
       SolidQueue::Job.where(class_name: "ProcessAuctionSaleJob")
-                     .where("arguments LIKE ?", "%#{horse_id}%")
-                     .where("arguments LIKE ?", "%#{auction_id}%")
+        .where("arguments LIKE ?", "%#{horse_id}%")
+        .where("arguments LIKE ?", "%#{auction_id}%")
     end
   end
 end
@@ -57,23 +57,16 @@ end
 #  notify_if_outbid :boolean          default(FALSE), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  auction_id       :bigint           not null, indexed
-#  bidder_id        :bigint           not null, indexed
-#  horse_id         :bigint           not null, indexed
-#  old_auction_id   :uuid             not null, indexed
-#  old_bidder_id    :uuid             not null, indexed
-#  old_horse_id     :uuid             not null, indexed
-#  old_id           :uuid             indexed
+#  auction_id       :integer          not null, indexed
+#  bidder_id        :integer          not null, indexed
+#  horse_id         :integer          not null, indexed
 #
 # Indexes
 #
-#  index_auction_bids_on_auction_id      (auction_id)
-#  index_auction_bids_on_bidder_id       (bidder_id)
-#  index_auction_bids_on_horse_id        (horse_id)
-#  index_auction_bids_on_old_auction_id  (old_auction_id)
-#  index_auction_bids_on_old_bidder_id   (old_bidder_id)
-#  index_auction_bids_on_old_horse_id    (old_horse_id)
-#  index_auction_bids_on_old_id          (old_id)
+#  index_auction_bids_on_auction_id  (auction_id)
+#  index_auction_bids_on_bidder_id   (bidder_id)
+#  index_auction_bids_on_horse_id    (horse_id)
+#  index_auction_bids_on_old_id      (old_id)
 #
 # Foreign Keys
 #
