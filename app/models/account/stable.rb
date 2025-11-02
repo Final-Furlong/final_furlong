@@ -53,8 +53,8 @@ end
 #  updated_at        :datetime         not null
 #  legacy_id         :integer          indexed
 #  public_id         :string(12)       indexed
-#  racetrack_id      :integer          indexed
-#  user_id           :integer          not null, uniquely indexed
+#  racetrack_id      :bigint           indexed
+#  user_id           :bigint           not null, uniquely indexed
 #
 # Indexes
 #

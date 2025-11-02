@@ -84,14 +84,19 @@ RSpec.describe Auctions::HorseConsigner do
   context "when config specifies racehorses" do
     before do
       racehorse_config
+      Legacy::Horse.destroy_all
     end
 
     it "returns created true" do
+      legacy_racehorse = create(:legacy_horse, :racehorse, :final_furlong, can_be_sold: true)
+      create(:horse, owner: stable, legacy_id: legacy_racehorse.ID)
       result = described_class.new.consign_horses(auction:)
       expect(result.created?).to be true
     end
 
     it "returns no error" do
+      legacy_racehorse = create(:legacy_horse, :racehorse, :final_furlong, can_be_sold: true)
+      create(:horse, owner: stable, legacy_id: legacy_racehorse.ID)
       result = described_class.new.consign_horses(auction:)
       expect(result.error).to be_nil
     end

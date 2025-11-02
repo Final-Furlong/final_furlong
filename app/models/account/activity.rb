@@ -23,9 +23,9 @@ end
 #  balance                                                                                  :bigint           default(0), not null
 #  created_at                                                                               :datetime         not null
 #  updated_at                                                                               :datetime         not null
-#  budget_id                                                                                :integer          indexed
+#  budget_id                                                                                :bigint           indexed
 #  legacy_stable_id                                                                         :integer          default(0), not null, indexed
-#  stable_id                                                                                :integer          not null, indexed
+#  stable_id                                                                                :bigint           not null, indexed
 #
 # Indexes
 #

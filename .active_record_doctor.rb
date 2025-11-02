@@ -203,6 +203,15 @@ ActiveRecordDoctor.configure do
       "ff_training_schedule_details",
       "ff_training_schedule_horses",
       "ff_users"
+    ],
+    ignore_columns: [
+      "stables.public_id",
+      "users.public_id",
+      "auctions.public_id",
+      "horses.public_id",
+      "jockeys.public_id",
+      "racetracks.public_id",
+      "auction_horses.public_id"
     ]
 
   detector :missing_presence_validation,

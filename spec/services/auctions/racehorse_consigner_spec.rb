@@ -56,6 +56,7 @@ RSpec.describe Auctions::RacehorseConsigner do
   end
 
   it "ignores already consigned horses" do
+    Legacy::Horse.destroy_all
     already_consigned_1 = create(:legacy_horse, :racehorse, :final_furlong)
     already_con_1_horse = create(:horse, :racehorse, legacy_id: already_consigned_1.ID)
     create(:auction_horse, horse: already_con_1_horse)

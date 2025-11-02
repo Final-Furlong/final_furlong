@@ -116,7 +116,7 @@ end
 #  yearling_allowed              :boolean          default(FALSE), not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
-#  auctioneer_id                 :integer          not null, indexed
+#  auctioneer_id                 :bigint           not null, indexed
 #  public_id                     :string(12)
 #
 # Indexes

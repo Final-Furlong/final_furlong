@@ -58,7 +58,7 @@ end
 #  time_in_seconds                                                                                                :decimal(7, 3)    default(0.0), not null, indexed
 #  created_at                                                                                                     :datetime         not null
 #  updated_at                                                                                                     :datetime         not null
-#  surface_id                                                                                                     :integer          not null, indexed
+#  surface_id                                                                                                     :bigint           not null, indexed
 #
 # Indexes
 #
@@ -70,7 +70,6 @@ end
 #  index_race_results_on_name             (name)
 #  index_race_results_on_number           (number)
 #  index_race_results_on_old_id           (old_id)
-#  index_race_results_on_old_surface_id   (old_surface_id)
 #  index_race_results_on_purse            (purse)
 #  index_race_results_on_race_type        (race_type)
 #  index_race_results_on_slug             (slug)

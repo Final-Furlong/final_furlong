@@ -32,8 +32,8 @@ end
 #  sold_at       :datetime         indexed
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  auction_id    :integer          not null, indexed
-#  horse_id      :integer          not null, uniquely indexed
+#  auction_id    :bigint           not null, indexed
+#  horse_id      :bigint           not null, uniquely indexed
 #  public_id     :string(12)
 #
 # Indexes

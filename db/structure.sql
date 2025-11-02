@@ -10,20 +10,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
-
-
---
--- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
-
-
---
 -- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -336,7 +322,7 @@ CREATE TABLE public.activations (
     id bigint NOT NULL,
     activated_at timestamp with time zone,
     token character varying NOT NULL,
-    user_id integer NOT NULL,
+    user_id bigint NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -366,7 +352,7 @@ ALTER SEQUENCE public.activations_id_seq OWNED BY public.activations.id;
 --
 
 CREATE TABLE public.active_storage_attachments (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     name character varying NOT NULL,
     record_type character varying NOT NULL,
     record_id uuid NOT NULL,
@@ -380,7 +366,7 @@ CREATE TABLE public.active_storage_attachments (
 --
 
 CREATE TABLE public.active_storage_blobs (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     key character varying NOT NULL,
     filename character varying NOT NULL,
     content_type character varying,
@@ -397,7 +383,7 @@ CREATE TABLE public.active_storage_blobs (
 --
 
 CREATE TABLE public.active_storage_variant_records (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     blob_id uuid NOT NULL,
     variation_digest character varying NOT NULL
 );
@@ -412,10 +398,10 @@ CREATE TABLE public.activity_points (
     activity_type public.activity_type NOT NULL,
     amount integer DEFAULT 0 NOT NULL,
     balance bigint DEFAULT 0 NOT NULL,
-    budget_id integer,
+    budget_id bigint,
     old_budget_id uuid,
     legacy_stable_id integer DEFAULT 0 NOT NULL,
-    stable_id integer NOT NULL,
+    stable_id bigint NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -452,7 +438,7 @@ ALTER SEQUENCE public.activity_points_id_seq OWNED BY public.activity_points.id;
 --
 
 CREATE TABLE public.backup_race_records (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     horse_id uuid NOT NULL,
     year integer DEFAULT 1996 NOT NULL,
     result_type public.race_result_types DEFAULT 'dirt'::public.race_result_types,
@@ -522,12 +508,12 @@ CREATE TABLE public.ar_internal_metadata (
 
 CREATE TABLE public.auction_bids (
     id bigint NOT NULL,
-    auction_id integer NOT NULL,
-    bidder_id integer NOT NULL,
+    auction_id bigint NOT NULL,
+    bidder_id bigint NOT NULL,
     comment text,
     current_bid integer DEFAULT 0 NOT NULL,
     notify_if_outbid boolean DEFAULT false NOT NULL,
-    horse_id integer NOT NULL,
+    horse_id bigint NOT NULL,
     maximum_bid integer,
     old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
@@ -560,7 +546,7 @@ ALTER SEQUENCE public.auction_bids_id_seq OWNED BY public.auction_bids.id;
 
 CREATE TABLE public.auction_consignment_configs (
     id bigint NOT NULL,
-    auction_id integer NOT NULL,
+    auction_id bigint NOT NULL,
     horse_type character varying NOT NULL,
     maximum_age integer DEFAULT 0 NOT NULL,
     minimum_age integer DEFAULT 0 NOT NULL,
@@ -597,9 +583,9 @@ ALTER SEQUENCE public.auction_consignment_configs_id_seq OWNED BY public.auction
 
 CREATE TABLE public.auction_horses (
     id bigint NOT NULL,
-    auction_id integer NOT NULL,
+    auction_id bigint NOT NULL,
     comment text,
-    horse_id integer NOT NULL,
+    horse_id bigint NOT NULL,
     maximum_price integer,
     reserve_price integer,
     sold_at timestamp with time zone,
@@ -635,7 +621,7 @@ ALTER SEQUENCE public.auction_horses_id_seq OWNED BY public.auction_horses.id;
 
 CREATE TABLE public.auctions (
     id bigint NOT NULL,
-    auctioneer_id integer NOT NULL,
+    auctioneer_id bigint NOT NULL,
     broodmare_allowed boolean DEFAULT false NOT NULL,
     end_time timestamp with time zone NOT NULL,
     horse_purchase_cap_per_stable integer,
@@ -715,7 +701,7 @@ ALTER SEQUENCE public.backup_activations_id_seq OWNED BY public.backup_activatio
 --
 
 CREATE TABLE public.backup_activity_points (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     stable_id uuid NOT NULL,
     activity_type public.activity_type NOT NULL,
     budget_id uuid,
@@ -739,7 +725,7 @@ COMMENT ON COLUMN public.backup_activity_points.activity_type IS 'color_war, auc
 --
 
 CREATE TABLE public.backup_auction_bids (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     auction_id uuid NOT NULL,
     horse_id uuid NOT NULL,
     bidder_id uuid NOT NULL,
@@ -757,7 +743,7 @@ CREATE TABLE public.backup_auction_bids (
 --
 
 CREATE TABLE public.backup_auction_consignment_configs (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     auction_id uuid NOT NULL,
     horse_type character varying NOT NULL,
     minimum_age integer DEFAULT 0 NOT NULL,
@@ -774,7 +760,7 @@ CREATE TABLE public.backup_auction_consignment_configs (
 --
 
 CREATE TABLE public.backup_auction_horses (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     auction_id uuid NOT NULL,
     horse_id uuid NOT NULL,
     reserve_price integer,
@@ -791,7 +777,7 @@ CREATE TABLE public.backup_auction_horses (
 --
 
 CREATE TABLE public.backup_auctions (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     start_time timestamp with time zone NOT NULL,
     end_time timestamp with time zone NOT NULL,
     auctioneer_id uuid NOT NULL,
@@ -850,7 +836,7 @@ COMMENT ON COLUMN public.backup_broodmare_foal_records.breed_ranking IS 'bronze,
 --
 
 CREATE TABLE public.backup_budgets (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     stable_id uuid NOT NULL,
     description text NOT NULL,
     amount bigint DEFAULT 0 NOT NULL,
@@ -867,7 +853,7 @@ CREATE TABLE public.backup_budgets (
 --
 
 CREATE TABLE public.backup_game_activity_points (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     activity_type public.activity_type NOT NULL,
     first_year_points integer DEFAULT 0 NOT NULL,
     second_year_points integer DEFAULT 0 NOT NULL,
@@ -889,7 +875,7 @@ COMMENT ON COLUMN public.backup_game_activity_points.activity_type IS 'color_war
 --
 
 CREATE TABLE public.backup_game_alerts (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     start_time timestamp without time zone NOT NULL,
     end_time timestamp without time zone,
     message text NOT NULL,
@@ -905,7 +891,7 @@ CREATE TABLE public.backup_game_alerts (
 --
 
 CREATE TABLE public.backup_horse_appearances (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     horse_id uuid NOT NULL,
     color public.horse_color DEFAULT 'bay'::public.horse_color NOT NULL,
     rf_leg_marking public.horse_leg_marking,
@@ -975,7 +961,7 @@ COMMENT ON COLUMN public.backup_horse_appearances.face_marking IS 'bald_face, bl
 --
 
 CREATE TABLE public.backup_horse_attributes (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     horse_id uuid NOT NULL,
     age integer DEFAULT 0,
     created_at timestamp(6) with time zone NOT NULL,
@@ -992,7 +978,7 @@ CREATE TABLE public.backup_horse_attributes (
 --
 
 CREATE TABLE public.backup_horse_genetics (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     horse_id uuid NOT NULL,
     allele character varying(32) NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -1005,7 +991,7 @@ CREATE TABLE public.backup_horse_genetics (
 --
 
 CREATE TABLE public.backup_horses (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     name character varying(18),
     gender public.horse_gender NOT NULL,
     status public.horse_status DEFAULT 'unborn'::public.horse_status NOT NULL,
@@ -1045,7 +1031,7 @@ COMMENT ON COLUMN public.backup_horses.status IS 'unborn, weanling, yearling, ra
 --
 
 CREATE TABLE public.backup_jockeys (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     legacy_id integer NOT NULL,
     first_name character varying NOT NULL,
     last_name character varying NOT NULL,
@@ -1114,7 +1100,7 @@ COMMENT ON COLUMN public.backup_jockeys.jockey_type IS 'flat, jump';
 --
 
 CREATE TABLE public.backup_locations (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     name character varying NOT NULL,
     state character varying,
     county character varying,
@@ -1129,7 +1115,7 @@ CREATE TABLE public.backup_locations (
 --
 
 CREATE TABLE public.backup_race_odds (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     display character varying NOT NULL,
     value numeric(3,1) NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
@@ -1142,7 +1128,7 @@ CREATE TABLE public.backup_race_odds (
 --
 
 CREATE TABLE public.backup_race_result_horses (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     race_id uuid NOT NULL,
     horse_id uuid NOT NULL,
     legacy_horse_id integer DEFAULT 0 NOT NULL,
@@ -1166,7 +1152,7 @@ CREATE TABLE public.backup_race_result_horses (
 --
 
 CREATE TABLE public.backup_race_results (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     date date NOT NULL,
     number integer DEFAULT 1 NOT NULL,
     race_type public.race_type DEFAULT 'maiden'::public.race_type NOT NULL,
@@ -1227,7 +1213,7 @@ COMMENT ON COLUMN public.backup_race_results.split IS '4Q, 2F';
 --
 
 CREATE TABLE public.backup_race_schedules (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     day_number integer DEFAULT 1 NOT NULL,
     date date NOT NULL,
     number integer DEFAULT 1 NOT NULL,
@@ -1273,7 +1259,7 @@ COMMENT ON COLUMN public.backup_race_schedules.grade IS 'Ungraded, Grade 3, Grad
 --
 
 CREATE TABLE public.backup_racetracks (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     name character varying NOT NULL,
     latitude numeric NOT NULL,
     longitude numeric NOT NULL,
@@ -1321,7 +1307,7 @@ ALTER SEQUENCE public.backup_sessions_id_seq OWNED BY public.backup_sessions.id;
 --
 
 CREATE TABLE public.backup_settings (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     theme character varying,
     locale character varying,
     user_id uuid NOT NULL,
@@ -1335,7 +1321,7 @@ CREATE TABLE public.backup_settings (
 --
 
 CREATE TABLE public.backup_stables (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     name character varying NOT NULL,
     user_id uuid NOT NULL,
     legacy_id integer,
@@ -1358,7 +1344,7 @@ CREATE TABLE public.backup_stables (
 --
 
 CREATE TABLE public.backup_track_surfaces (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     racetrack_id uuid NOT NULL,
     surface public.track_surface DEFAULT 'dirt'::public.track_surface NOT NULL,
     condition public.track_condition DEFAULT 'fast'::public.track_condition NOT NULL,
@@ -1392,7 +1378,7 @@ COMMENT ON COLUMN public.backup_track_surfaces.condition IS 'fast, good, slow, w
 --
 
 CREATE TABLE public.backup_training_schedules (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     stable_id uuid NOT NULL,
     name character varying NOT NULL,
     description text,
@@ -1446,7 +1432,7 @@ ALTER SEQUENCE public.backup_training_schedules_horses_id_seq OWNED BY public.ba
 --
 
 CREATE TABLE public.backup_user_push_subscriptions (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     user_id uuid NOT NULL,
     auth_key character varying,
     endpoint character varying,
@@ -1463,7 +1449,7 @@ CREATE TABLE public.backup_user_push_subscriptions (
 
 CREATE TABLE public.backup_users (
     slug character varying,
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     username character varying NOT NULL,
     status public.user_status DEFAULT 'pending'::public.user_status NOT NULL,
     name character varying NOT NULL,
@@ -1515,7 +1501,7 @@ CREATE TABLE public.broodmare_foal_records (
     id bigint NOT NULL,
     born_foals_count integer DEFAULT 0 NOT NULL,
     breed_ranking character varying,
-    horse_id integer NOT NULL,
+    horse_id bigint NOT NULL,
     millionaire_foals_count integer DEFAULT 0 NOT NULL,
     multi_millionaire_foals_count integer DEFAULT 0 NOT NULL,
     multi_stakes_winning_foals_count integer DEFAULT 0 NOT NULL,
@@ -1564,7 +1550,7 @@ CREATE TABLE public.budget_transactions (
     description text NOT NULL,
     legacy_budget_id integer DEFAULT 0,
     legacy_stable_id integer DEFAULT 0,
-    stable_id integer NOT NULL,
+    stable_id bigint NOT NULL,
     old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
@@ -1700,14 +1686,16 @@ CREATE TABLE public.horse_appearances (
     lh_leg_marking public.horse_leg_marking,
     face_marking public.horse_face_marking,
     face_image character varying,
-    horse_id integer NOT NULL,
+    horse_id bigint NOT NULL,
     lf_leg_image character varying,
     lh_leg_image character varying,
     rf_leg_image character varying,
     rh_leg_image character varying,
     old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    CONSTRAINT current_height_must_be_valid CHECK ((current_height >= birth_height)),
+    CONSTRAINT max_height_must_be_valid CHECK ((max_height >= current_height))
 );
 
 
@@ -1783,7 +1771,7 @@ CREATE TABLE public.horse_attributes (
     breeding_record public.breed_record DEFAULT 'none'::public.breed_record NOT NULL,
     dosage_text character varying,
     string character varying,
-    horse_id integer NOT NULL,
+    horse_id bigint NOT NULL,
     old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
@@ -1823,7 +1811,7 @@ ALTER SEQUENCE public.horse_attributes_id_seq OWNED BY public.horse_attributes.i
 CREATE TABLE public.horse_genetics (
     id bigint NOT NULL,
     allele character varying(32) NOT NULL,
-    horse_id integer NOT NULL,
+    horse_id bigint NOT NULL,
     old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
@@ -1863,12 +1851,12 @@ CREATE TABLE public.horses (
     age integer DEFAULT 0 NOT NULL,
     gender public.horse_gender NOT NULL,
     status public.horse_status DEFAULT 'unborn'::public.horse_status NOT NULL,
-    sire_id integer,
+    sire_id bigint,
     old_sire_id uuid,
-    dam_id integer,
+    dam_id bigint,
     old_dam_id uuid,
-    owner_id integer NOT NULL,
-    breeder_id integer NOT NULL,
+    owner_id bigint NOT NULL,
+    breeder_id bigint NOT NULL,
     legacy_id integer,
     location_bred_id bigint NOT NULL,
     old_id uuid,
@@ -2488,7 +2476,7 @@ ALTER SEQUENCE public.race_odds_id_seq OWNED BY public.race_odds.id;
 
 CREATE TABLE public.race_records (
     id bigint NOT NULL,
-    horse_id integer NOT NULL,
+    horse_id bigint NOT NULL,
     year integer DEFAULT 1996 NOT NULL,
     result_type public.race_result_types DEFAULT 'dirt'::public.race_result_types,
     starts integer DEFAULT 0 NOT NULL,
@@ -2540,18 +2528,18 @@ ALTER SEQUENCE public.race_records_id_seq OWNED BY public.race_records.id;
 
 CREATE TABLE public.race_result_horses (
     id bigint NOT NULL,
-    race_id integer NOT NULL,
-    horse_id integer NOT NULL,
+    race_id bigint NOT NULL,
+    horse_id bigint NOT NULL,
     legacy_horse_id integer DEFAULT 0 NOT NULL,
     post_parade integer DEFAULT 1 NOT NULL,
     finish_position integer DEFAULT 1 NOT NULL,
     positions character varying NOT NULL,
     margins character varying NOT NULL,
     fractions character varying,
-    jockey_id integer,
+    jockey_id bigint,
     old_jockey_id uuid,
     equipment integer DEFAULT 0 NOT NULL,
-    odd_id integer,
+    odd_id bigint,
     old_odd_id uuid,
     speed_factor integer DEFAULT 0 NOT NULL,
     weight integer DEFAULT 0 NOT NULL,
@@ -2594,8 +2582,7 @@ CREATE TABLE public.race_results (
     female_only boolean DEFAULT false NOT NULL,
     distance numeric(3,1) DEFAULT 5.0 NOT NULL,
     grade public.race_grade,
-    surface_id integer NOT NULL,
-    old_surface_id uuid NOT NULL,
+    surface_id bigint NOT NULL,
     condition public.track_condition,
     name character varying,
     purse bigint DEFAULT 0 NOT NULL,
@@ -2678,7 +2665,7 @@ CREATE TABLE public.race_schedules (
     female_only boolean DEFAULT false NOT NULL,
     distance numeric(3,1) DEFAULT 5.0 NOT NULL,
     grade public.race_grade,
-    surface_id integer NOT NULL,
+    surface_id bigint NOT NULL,
     name character varying,
     purse bigint DEFAULT 0 NOT NULL,
     claiming_price integer,
@@ -2740,7 +2727,7 @@ CREATE TABLE public.racetracks (
     public_id character varying(12),
     latitude numeric NOT NULL,
     longitude numeric NOT NULL,
-    location_id integer NOT NULL,
+    location_id bigint NOT NULL,
     old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
@@ -2816,7 +2803,7 @@ ALTER SEQUENCE public.sessions_id_seq OWNED BY public.sessions.id;
 
 CREATE TABLE public.settings (
     id bigint NOT NULL,
-    user_id integer NOT NULL,
+    user_id bigint NOT NULL,
     theme character varying,
     locale character varying,
     old_id uuid,
@@ -2859,9 +2846,9 @@ CREATE TABLE public.stables (
     last_online_at timestamp with time zone,
     description text,
     miles_from_track integer DEFAULT 1 NOT NULL,
-    racetrack_id integer,
+    racetrack_id bigint,
     old_racetrack_id uuid,
-    user_id integer NOT NULL,
+    user_id bigint NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -2894,7 +2881,7 @@ CREATE TABLE public.track_surfaces (
     id bigint NOT NULL,
     surface public.track_surface DEFAULT 'dirt'::public.track_surface NOT NULL,
     condition public.track_condition DEFAULT 'fast'::public.track_condition NOT NULL,
-    racetrack_id integer NOT NULL,
+    racetrack_id bigint NOT NULL,
     banking integer NOT NULL,
     jumps integer DEFAULT 0 NOT NULL,
     length integer NOT NULL,
@@ -2946,18 +2933,17 @@ ALTER SEQUENCE public.track_surfaces_id_seq OWNED BY public.track_surfaces.id;
 
 CREATE TABLE public.training_schedules (
     id bigint NOT NULL,
+    stable_id bigint NOT NULL,
     name character varying NOT NULL,
-    stable_id integer NOT NULL,
     horses_count integer DEFAULT 0 NOT NULL,
-    monday_activities character varying NOT NULL,
-    tuesday_activities character varying NOT NULL,
-    wednesday_activities character varying NOT NULL,
-    thursday_activities character varying NOT NULL,
-    friday_activities character varying NOT NULL,
-    saturday_activities character varying NOT NULL,
-    sunday_activities character varying NOT NULL,
     description text,
-    old_id uuid,
+    sunday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
+    monday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
+    tuesday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
+    wednesday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
+    thursday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
+    friday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
+    saturday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -2969,8 +2955,8 @@ CREATE TABLE public.training_schedules (
 
 CREATE TABLE public.training_schedules_horses (
     id bigint NOT NULL,
-    horse_id integer NOT NULL,
-    training_schedule_id integer NOT NULL,
+    horse_id bigint NOT NULL,
+    training_schedule_id bigint NOT NULL,
     old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
@@ -3021,7 +3007,7 @@ ALTER SEQUENCE public.training_schedules_id_seq OWNED BY public.training_schedul
 
 CREATE TABLE public.user_push_subscriptions (
     id bigint NOT NULL,
-    user_id integer NOT NULL,
+    user_id bigint NOT NULL,
     user_agent character varying,
     auth_key character varying,
     endpoint character varying,
@@ -3083,7 +3069,6 @@ CREATE TABLE public.users (
     confirmation_token character varying,
     confirmed_at timestamp with time zone,
     encrypted_password character varying DEFAULT ''::character varying NOT NULL,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -5902,13 +5887,6 @@ CREATE INDEX index_race_results_on_old_id ON public.race_results USING btree (ol
 
 
 --
--- Name: index_race_results_on_old_surface_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_results_on_old_surface_id ON public.race_results USING btree (old_surface_id);
-
-
---
 -- Name: index_race_results_on_purse; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6220,42 +6198,28 @@ CREATE INDEX index_training_schedules_horses_on_training_schedule_id ON public.t
 -- Name: index_training_schedules_on_friday_activities; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_training_schedules_on_friday_activities ON public.training_schedules USING btree (friday_activities);
+CREATE INDEX index_training_schedules_on_friday_activities ON public.training_schedules USING gin (friday_activities);
 
 
 --
--- Name: index_training_schedules_on_horses_count; Type: INDEX; Schema: public; Owner: -
+-- Name: index_training_schedules_on_lowercase_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_training_schedules_on_horses_count ON public.training_schedules USING btree (horses_count);
+CREATE UNIQUE INDEX index_training_schedules_on_lowercase_name ON public.training_schedules USING btree (stable_id, lower((name)::text));
 
 
 --
 -- Name: index_training_schedules_on_monday_activities; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_training_schedules_on_monday_activities ON public.training_schedules USING btree (monday_activities);
-
-
---
--- Name: index_training_schedules_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_training_schedules_on_old_id ON public.training_schedules USING btree (old_id);
+CREATE INDEX index_training_schedules_on_monday_activities ON public.training_schedules USING gin (monday_activities);
 
 
 --
 -- Name: index_training_schedules_on_saturday_activities; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_training_schedules_on_saturday_activities ON public.training_schedules USING btree (saturday_activities);
-
-
---
--- Name: index_training_schedules_on_stable_and_name; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_training_schedules_on_stable_and_name ON public.training_schedules USING btree (stable_id, lower((name)::text));
+CREATE INDEX index_training_schedules_on_saturday_activities ON public.training_schedules USING gin (saturday_activities);
 
 
 --
@@ -6269,28 +6233,28 @@ CREATE INDEX index_training_schedules_on_stable_id ON public.training_schedules 
 -- Name: index_training_schedules_on_sunday_activities; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_training_schedules_on_sunday_activities ON public.training_schedules USING btree (sunday_activities);
+CREATE INDEX index_training_schedules_on_sunday_activities ON public.training_schedules USING gin (sunday_activities);
 
 
 --
 -- Name: index_training_schedules_on_thursday_activities; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_training_schedules_on_thursday_activities ON public.training_schedules USING btree (thursday_activities);
+CREATE INDEX index_training_schedules_on_thursday_activities ON public.training_schedules USING gin (thursday_activities);
 
 
 --
 -- Name: index_training_schedules_on_tuesday_activities; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_training_schedules_on_tuesday_activities ON public.training_schedules USING btree (tuesday_activities);
+CREATE INDEX index_training_schedules_on_tuesday_activities ON public.training_schedules USING gin (tuesday_activities);
 
 
 --
 -- Name: index_training_schedules_on_wednesday_activities; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_training_schedules_on_wednesday_activities ON public.training_schedules USING btree (wednesday_activities);
+CREATE INDEX index_training_schedules_on_wednesday_activities ON public.training_schedules USING gin (wednesday_activities);
 
 
 --
@@ -6340,13 +6304,6 @@ CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email) WHE
 --
 
 CREATE INDEX index_users_on_name ON public.users USING btree (name) WHERE (discarded_at IS NOT NULL);
-
-
---
--- Name: index_users_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_users_on_old_id ON public.users USING btree (old_id);
 
 
 --
@@ -6605,7 +6562,7 @@ ALTER TABLE ONLY public.backup_training_schedules_horses
 --
 
 ALTER TABLE ONLY public.training_schedules_horses
-    ADD CONSTRAINT fk_rails_5699b9eba5 FOREIGN KEY (horse_id) REFERENCES public.horses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_5699b9eba5 FOREIGN KEY (horse_id) REFERENCES public.horses(id) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -6797,7 +6754,7 @@ ALTER TABLE ONLY public.backup_training_schedules_horses
 --
 
 ALTER TABLE ONLY public.training_schedules_horses
-    ADD CONSTRAINT fk_rails_a48e7af8f9 FOREIGN KEY (training_schedule_id) REFERENCES public.training_schedules(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_a48e7af8f9 FOREIGN KEY (training_schedule_id) REFERENCES public.training_schedules(id) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -6909,7 +6866,7 @@ ALTER TABLE ONLY public.backup_training_schedules
 --
 
 ALTER TABLE ONLY public.training_schedules
-    ADD CONSTRAINT fk_rails_c52806e045 FOREIGN KEY (stable_id) REFERENCES public.stables(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_c52806e045 FOREIGN KEY (stable_id) REFERENCES public.stables(id) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -7063,6 +7020,10 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251102193414'),
+('20251102185333'),
+('20251102180612'),
+('20251102174639'),
 ('20251102162634'),
 ('20251102151433'),
 ('20251102145553'),
@@ -7071,7 +7032,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20251102120401'),
 ('20251102115205'),
 ('20251101223740'),
-('20251101200403'),
 ('20251031160653'),
 ('20251030225629'),
 ('20251030195925'),
@@ -7136,7 +7096,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220722201433'),
 ('20220722200044'),
 ('20220722173334'),
-('20220721204945'),
 ('20220717190341'),
 ('20220717121209'),
 ('20220717024945'),

@@ -1,6 +1,6 @@
 module Stables
   class Find < BaseInteraction
-    string :id
+    integer :id
 
     def execute
       stable = Account::Stable.find_by(id:)

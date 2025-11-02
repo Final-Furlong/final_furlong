@@ -106,7 +106,7 @@ module Auctions
           current_bid: bid_params[:current_bid],
           maximum_bid: bid_params[:maximum_bid].presence,
           comment: bid_params[:comment],
-          email_if_outbid: false
+          notify_if_outbid: false
         )
 
         if bid.valid?

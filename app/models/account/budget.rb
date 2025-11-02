@@ -39,7 +39,7 @@ end
 #  updated_at                                                                                                                                                                                   :datetime         not null
 #  legacy_budget_id                                                                                                                                                                             :integer          default(0), indexed
 #  legacy_stable_id                                                                                                                                                                             :integer          default(0), indexed
-#  stable_id                                                                                                                                                                                    :integer          not null, indexed
+#  stable_id                                                                                                                                                                                    :bigint           not null, indexed
 #
 # Indexes
 #

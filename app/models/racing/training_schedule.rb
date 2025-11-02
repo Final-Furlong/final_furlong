@@ -41,7 +41,7 @@ module Racing
     end
 
     def minimum_activities
-      return if all_activities.any? { |activity| activity.activity1.present? && activity.distance1.present? }
+      return if all_activities.compact.any? { |activity| activity.activity1.present? && activity.distance1.present? }
 
       errors.add(:base, :missing_activities)
     end
@@ -58,32 +58,30 @@ end
 #
 #  id                   :bigint           not null, primary key
 #  description          :text
-#  friday_activities    :string           not null, indexed
-#  horses_count         :integer          default(0), not null, indexed
-#  monday_activities    :string           not null, indexed
+#  friday_activities    :jsonb            not null, indexed
+#  horses_count         :integer          default(0), not null
+#  monday_activities    :jsonb            not null, indexed
 #  name                 :string           not null
-#  saturday_activities  :string           not null, indexed
-#  sunday_activities    :string           not null, indexed
-#  thursday_activities  :string           not null, indexed
-#  tuesday_activities   :string           not null, indexed
-#  wednesday_activities :string           not null, indexed
+#  saturday_activities  :jsonb            not null, indexed
+#  sunday_activities    :jsonb            not null, indexed
+#  thursday_activities  :jsonb            not null, indexed
+#  tuesday_activities   :jsonb            not null, indexed
+#  wednesday_activities :jsonb            not null, indexed
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
-#  stable_id            :integer          not null, indexed
+#  stable_id            :bigint           not null, indexed
 #
 # Indexes
 #
-#  index_training_schedules_on_friday_activities     (friday_activities)
-#  index_training_schedules_on_horses_count          (horses_count)
-#  index_training_schedules_on_monday_activities     (monday_activities)
-#  index_training_schedules_on_old_id                (old_id)
-#  index_training_schedules_on_saturday_activities   (saturday_activities)
-#  index_training_schedules_on_stable_and_name       (stable_id, lower((name)::text)) UNIQUE
+#  index_training_schedules_on_friday_activities     (friday_activities) USING gin
+#  index_training_schedules_on_lowercase_name        (stable_id, lower((name)::text)) UNIQUE
+#  index_training_schedules_on_monday_activities     (monday_activities) USING gin
+#  index_training_schedules_on_saturday_activities   (saturday_activities) USING gin
 #  index_training_schedules_on_stable_id             (stable_id)
-#  index_training_schedules_on_sunday_activities     (sunday_activities)
-#  index_training_schedules_on_thursday_activities   (thursday_activities)
-#  index_training_schedules_on_tuesday_activities    (tuesday_activities)
-#  index_training_schedules_on_wednesday_activities  (wednesday_activities)
+#  index_training_schedules_on_sunday_activities     (sunday_activities) USING gin
+#  index_training_schedules_on_thursday_activities   (thursday_activities) USING gin
+#  index_training_schedules_on_tuesday_activities    (tuesday_activities) USING gin
+#  index_training_schedules_on_wednesday_activities  (wednesday_activities) USING gin
 #
 # Foreign Keys
 #
