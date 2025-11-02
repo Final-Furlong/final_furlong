@@ -1,7 +1,6 @@
 module Game
   class Alert < ApplicationRecord
     self.table_name = "game_alerts"
-    self.ignored_columns += ["old_id"]
 
     validates :message, :start_time, presence: true
     validates :end_time, comparison: { greater_than: :start_time }, allow_nil: true, if: :start_time

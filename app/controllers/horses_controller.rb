@@ -1,4 +1,6 @@
 class HorsesController < ApplicationController
+  include NonNumericIdOnly
+
   before_action :set_horse, except: %i[index image]
   before_action :set_horse_by_legacy_id, only: :image
   before_action :authorize_horse, except: :index

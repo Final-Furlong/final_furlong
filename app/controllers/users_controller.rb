@@ -1,4 +1,6 @@
 class UsersController < AuthenticatedController
+  include NonNumericIdOnly
+
   before_action :load_user, only: %i[show edit update destroy]
   before_action :new_user, only: %i[new create]
   before_action :load_new_user_form, only: %i[new create]
@@ -53,11 +55,11 @@ class UsersController < AuthenticatedController
   end
 
   def load_user
-    @user = User.find_by(id: params[:id])
+    @user = Account::User.find_by(id: params[:id])
   end
 
   def new_user
-    @user = User.new
+    @user = Account::User.new
   end
 
   def load_new_user_form

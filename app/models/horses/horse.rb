@@ -4,8 +4,6 @@ module Horses
     include FinalFurlong::Horses::Validation
     include FriendlyId
 
-    self.ignored_columns += ["old_id", "old_breeder_id", "old_dam_id", "old_id", "old_location_bred_id", "old_owner_id", "old_sire_id"]
-
     friendly_id :name_and_foal_status, use: [:slugged, :finders]
 
     belongs_to :breeder, class_name: "Account::Stable"

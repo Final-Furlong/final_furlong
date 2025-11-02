@@ -1,7 +1,6 @@
 module Racing
   class RaceRecord < ApplicationRecord
     self.table_name = "race_records"
-    self.ignored_columns += ["old_id", "old_horse_id"]
 
     TYPES = %w[dirt turf steeplechase].freeze
 

@@ -1,7 +1,8 @@
 .text-center
   h1= t(".title")
 
-  = image_tag "horse-running.png", alt: "404 icon", class: "img-fluid"
+  .w-full
+    = image_tag "horse-running.png", alt: "404 icon", class: "img-fluid mx-auto"
 
   p.lead= t(".message")
   p.lead= t(".tips_html", url: root_url)

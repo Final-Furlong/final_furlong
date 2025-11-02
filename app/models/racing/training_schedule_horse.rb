@@ -1,7 +1,6 @@
 module Racing
   class TrainingScheduleHorse < ApplicationRecord
     self.table_name = "training_schedules_horses"
-    self.ignored_columns += ["old_id", "old_horse_id", "old_training_schedule_id"]
 
     belongs_to :training_schedule, class_name: "Racing::TrainingSchedule"
     belongs_to :horse, class_name: "Horses::Horse"

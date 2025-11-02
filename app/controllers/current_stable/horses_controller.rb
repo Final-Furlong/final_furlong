@@ -1,5 +1,7 @@
 module CurrentStable
   class HorsesController < AuthenticatedController
+    include NonNumericIdOnly
+
     before_action :set_status_counts, only: :index
 
     def index

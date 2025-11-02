@@ -1,0 +1,70 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-shebang-scripts-are-executable
+      - id: check-symlinks
+      - id: check-yaml
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.2
+    hooks:
+      - id: gitleaks
+        name: check for hardcoded secrets
+  - repo: https://github.com/rubocop/rubocop
+    rev: v1.81.1
+    hooks:
+      - id: rubocop
+        name: 'run rubocop'
+        additional_dependencies:
+          - rubocop-capybara
+          - rubocop-factory_bot
+          - rubocop-graphql
+          - rubocop-performance
+          - rubocop-rails
+          - rubocop-rake
+          - rubocop-rspec
+          - rubocop-rspec_rails
+  - repo: local
+    hooks:
+      - id: actionlint
+        language: script
+        name: run actionlint
+        files: \.yml$
+        entry: actionlint
+      - id: active-record-doctor
+        language: script
+        name: run active record doctor
+        types: [ ruby ]
+        entry: bin/active_record_doctor
+      - id: eslint
+        language: script
+        name: run eslint
+        types: [ javascript ]
+        entry: yarn eslint --fix
+      - id: fasterer
+        language: script
+        name: run fasterer
+        types: [ ruby ]
+        entry: bin/fasterer
+      - id: i18n-normalize
+        language: script
+        name: run i18n normalize
+        files: \.yml$
+        entry: bundle exec i18n-tasks normalize
+      - id: image-optim
+        language: script
+        name: run image-optim
+        types: [ jpeg, gif, png, svg ]
+        entry: image_optim
+      - id: slim-lint
+        language: script
+        name: run slim-lint
+        files: \.slim$
+        entry: bin/slim-lint
+      - id: stylelint
+        language: script
+        name: run stylelint
+        files: \.css$
+        entry: yarn run stylelint --fix

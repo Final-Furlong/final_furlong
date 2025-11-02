@@ -1,7 +1,6 @@
 module Auctions
   class Bid < ApplicationRecord
     self.table_name = "auction_bids"
-    self.ignored_columns += ["old_auction_id", "old_bidder_id", "old_horse_id", "old_id"]
 
     MINIMUM_BID = 1000
     MINIMUM_INCREMENT = 500

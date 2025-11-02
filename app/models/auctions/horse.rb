@@ -1,9 +1,11 @@
 module Auctions
   class Horse < ApplicationRecord
     include PublicIdGenerator
+    include FriendlyId
 
     self.table_name = "auction_horses"
-    self.ignored_columns += ["old_auction_id", "old_horse_id", "old_id"]
+
+    friendly_id :horse_slug, use: [:slugged, :finders]
 
     belongs_to :auction, class_name: "::Auction"
     belongs_to :horse, class_name: "Horses::Horse"
@@ -18,6 +20,18 @@ module Auctions
     def sold?
       sold_at.present?
     end
+
+    def horse_slug
+      return horse&.slug if horse
+
+      public_id
+    end
+
+    private
+
+    def should_generate_new_friendly_id?
+      horse_changed? || public_id_changed? || super
+    end
   end
 end
 
@@ -29,6 +43,7 @@ end
 #  comment       :text
 #  maximum_price :integer
 #  reserve_price :integer
+#  slug          :string           uniquely indexed
 #  sold_at       :datetime         indexed
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
@@ -41,6 +56,7 @@ end
 #  index_auction_horses_on_auction_id  (auction_id)
 #  index_auction_horses_on_horse_id    (horse_id) UNIQUE
 #  index_auction_horses_on_old_id      (old_id)
+#  index_auction_horses_on_slug        (slug) UNIQUE
 #  index_auction_horses_on_sold_at     (sold_at)
 #
 # Foreign Keys
