@@ -1,4 +1,4 @@
-return unless Rails.local?
+return unless Rails.env.local?
 
 require "ruby_parser"
 
