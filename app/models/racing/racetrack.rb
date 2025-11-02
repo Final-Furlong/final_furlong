@@ -11,9 +11,9 @@ module Racing
     validates :name, uniqueness: { case_sensitive: false }
 
     validates :longitude, presence: true,
-              numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180 }
+      numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180 }
     validates :latitude, presence: true,
-              numericality: { less_than_or_equal_to: 90, greater_than_or_equal_to: -90 }
+      numericality: { less_than_or_equal_to: 90, greater_than_or_equal_to: -90 }
   end
 end
 

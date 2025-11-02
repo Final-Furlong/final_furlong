@@ -143,25 +143,25 @@ module Horses
 
     # :nocov:
     counter_culture :sire, column_name: proc { |model| model.unborn? ? "unborn_foals_count" : "foals_count" },
-                    column_names: {
-                      ["horses.status = ?", "unborn"] => "unborn_foals_count",
-                      ["horses.status != ?", "unborn"] => "foals_count"
-                    }
+      column_names: {
+        ["horses.status = ?", "unborn"] => "unborn_foals_count",
+        ["horses.status != ?", "unborn"] => "foals_count"
+      }
     counter_culture :dam, column_name: proc { |model| model.unborn? ? "unborn_foals_count" : "foals_count" },
-                    column_names: {
-                      ["horses.status = ?", "unborn"] => "unborn_foals_count",
-                      ["horses.status != ?", "unborn"] => "foals_count"
-                    }
+      column_names: {
+        ["horses.status = ?", "unborn"] => "unborn_foals_count",
+        ["horses.status != ?", "unborn"] => "foals_count"
+      }
     counter_culture :breeder, column_name: proc { |model| model.unborn? ? nil : "bred_horses_count" },
-                    column_names: {
-                      ["horses.status = ?", "unborn"] => nil,
-                      ["horses.status != ?", "unborn"] => "bred_horses_count"
-                    }
+      column_names: {
+        ["horses.status = ?", "unborn"] => nil,
+        ["horses.status != ?", "unborn"] => "bred_horses_count"
+      }
     counter_culture :owner, column_name: proc { |model| model.unborn? ? "unborn_horses_count" : "horses_count" },
-                    column_names: {
-                      ["horses.status = ?", "unborn"] => "unborn_horses_count",
-                      ["horses.status != ?", "unborn"] => "horses_count"
-                    }
+      column_names: {
+        ["horses.status = ?", "unborn"] => "unborn_horses_count",
+        ["horses.status != ?", "unborn"] => "horses_count"
+      }
     # :nocov:
 
     private

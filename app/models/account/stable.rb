@@ -10,11 +10,11 @@ module Account
     belongs_to :racetrack, class_name: "Racing::Racetrack", optional: true
 
     has_many :bred_horses, class_name: "Horses::Horse", foreign_key: :breeder_id, inverse_of: :breeder,
-             dependent: :restrict_with_exception
+      dependent: :restrict_with_exception
     has_many :horses, class_name: "Horses::Horse", foreign_key: :owner_id, inverse_of: :owner,
-             dependent: :restrict_with_exception
+      dependent: :restrict_with_exception
     has_many :training_schedules, class_name: "Racing::TrainingSchedule", inverse_of: :stable,
-             dependent: :restrict_with_exception
+      dependent: :restrict_with_exception
     has_many :auctions, class_name: "Auction", inverse_of: :auctioneer, dependent: :restrict_with_exception
     has_many :auction_bids, class_name: "Auctions::Bid", inverse_of: :bidder, dependent: :destroy
 

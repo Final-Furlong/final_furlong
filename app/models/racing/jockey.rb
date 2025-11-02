@@ -11,18 +11,18 @@ module Racing
     has_many :race_result_horses, class_name: "Racing::RaceResultHorse", inverse_of: :jockey, dependent: :nullify
 
     validates :legacy_id, :first_name, :last_name, :date_of_birth, :height_in_inches,
-              :weight, :strength, :acceleration, :break_speed, :min_speed, :average_speed,
-              :max_speed, :leading, :midpack, :off_pace, :closing, :consistency, :courage,
-              :pissy, :rating, :dirt, :turf, :steeplechase, :fast, :good, :slow, :wet,
-              :turning, :looking, :traffic, :loaf_threshold, :whip_seconds, :experience,
-              :experience_rate, presence: true
+      :weight, :strength, :acceleration, :break_speed, :min_speed, :average_speed,
+      :max_speed, :leading, :midpack, :off_pace, :closing, :consistency, :courage,
+      :pissy, :rating, :dirt, :turf, :steeplechase, :fast, :good, :slow, :wet,
+      :turning, :looking, :traffic, :loaf_threshold, :whip_seconds, :experience,
+      :experience_rate, presence: true
     validates :acceleration, :leading, :off_pace, :closing, :midpack, :consistency, :courage, :dirt, :turf, :steeplechase,
-              :fast, :good, :wet, :slow, :loaf_threshold, :pissy, :rating, :strength, :traffic, :whip_seconds,
-              numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
+      :fast, :good, :wet, :slow, :loaf_threshold, :pissy, :rating, :strength, :traffic, :whip_seconds,
+      numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
     validates :experience, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     validates :experience_rate, numericality: { greater_than_or_equal_to: 0.1, less_than_or_equal_to: 0.5 }
     validates :break_speed, :min_speed, :average_speed, :max_speed, :turning,
-              numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }
+      numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }
     validates :first_name, :last_name, length: { minimum: 3 }
     validates :gender, inclusion: { in: GENDERS }
     validates :height_in_inches, numericality: { only_integer: true, greater_than_or_equal_to: 48, less_than_or_equal_to: 70 }

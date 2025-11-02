@@ -5,3 +5,4 @@ module PublicIdGenerator
     validates :public_id, length: { maximum: 12 }
   end
 end
+

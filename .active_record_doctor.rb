@@ -187,106 +187,106 @@ ActiveRecordDoctor.configure do
   ]
 
   detector :incorrect_dependent_option,
-           ignore_models: [
-             "Motor::Alert",
-             "Motor::Dashboard",
-             "Motor::Form",
-             "Motor::Query",
-             "Motor::Tag"
-           ]
+    ignore_models: [
+      "Motor::Alert",
+      "Motor::Dashboard",
+      "Motor::Form",
+      "Motor::Query",
+      "Motor::Tag"
+    ]
 
   detector :missing_non_null_constraint,
-           ignore_tables: [
-             "ff_horses",
-             "ff_trackdata",
-             "ff_training_schedules",
-             "ff_training_schedule_details",
-             "ff_training_schedule_horses",
-             "ff_users"
-           ]
+    ignore_tables: [
+      "ff_horses",
+      "ff_trackdata",
+      "ff_training_schedules",
+      "ff_training_schedule_details",
+      "ff_training_schedule_horses",
+      "ff_users"
+    ]
 
   detector :missing_presence_validation,
-           ignore_attributes: [
-             "Account::Stable.bred_horses_count",
-             "Account::Stable.horses_count",
-             "Account::Stable.unborn_horses_count",
-             "Account::User.encrypted_password",
-             "Account::User.failed_attempts",
-             "Account::User.sign_in_count",
-             "Horses::Horse.foals_count",
-             "Horses::Horse.unborn_foals_count",
-             "Horses::Stallion.foals_count",
-             "Horses::Stallion.unborn_foals_count",
-             "Racing::TrainingSchedule.horses_count",
-             "Racing::TrainingSchedule.sunday_activities",
-             "Racing::TrainingSchedule.monday_activities",
-             "Racing::TrainingSchedule.tuesday_activities",
-             "Racing::TrainingSchedule.wednesday_activities",
-             "Racing::TrainingSchedule.thursday_activities",
-             "Racing::TrainingSchedule.friday_activities",
-             "Racing::TrainingSchedule.saturday_activities",
-             "Account::Activation.old_user_id",
-             "Account::Activity.old_stable_id",
-             "Account::Activity.old_id",
-             "Account::Budget.old_stable_id",
-             "Account::PushSubscription.old_user_id",
-             "Account::Setting.old_user_id",
-             "Account::Stable.old_user_id",
-             "Account::Stable.old_id",
-             "Auction.old_auctioneer_id",
-             "Auctions::Bid.old_auction_id",
-             "Auctions::Bid.old_bidder_id",
-             "Auctions::Bid.old_horse_id",
-             "Auctions::ConsignmentConfig.old_auction_id",
-             "Auctions::Horse.old_auction_id",
-             "Auctions::Horse.old_horse_id",
-             "Horses::Appearance.old_horse_id",
-             "Horses::Attributes.old_horse_id",
-             "Horses::BroodmareFoalRecord.old_horse_id",
-             "Horses::Genetics.old_horse_id",
-             "Horses::Horse.old_owner_id",
-             "Horses::Horse.old_breeder_id",
-             "Horses::Horse.old_location_bred_id",
-             "Racing::RaceRecord.old_horse_id",
-             "Racing::RaceResult.old_surface_id",
-             "Racing::RaceResultHorse.old_horse_id",
-             "Racing::RaceResultHorse.old_race_id",
-             "Racing::RaceSchedule.old_surface_id",
-             "Racing::Racetrack.old_location_id",
-             "Racing::TrackSurface.old_racetrack_id",
-             "Racing::TrainingSchedule.old_stable_id",
-             "Racing::TrainingScheduleHorse.old_horse_id",
-             "Racing::TrainingScheduleHorse.old_training_schedule_id",
-           ]
+    ignore_attributes: [
+      "Account::Stable.bred_horses_count",
+      "Account::Stable.horses_count",
+      "Account::Stable.unborn_horses_count",
+      "Account::User.encrypted_password",
+      "Account::User.failed_attempts",
+      "Account::User.sign_in_count",
+      "Horses::Horse.foals_count",
+      "Horses::Horse.unborn_foals_count",
+      "Horses::Stallion.foals_count",
+      "Horses::Stallion.unborn_foals_count",
+      "Racing::TrainingSchedule.horses_count",
+      "Racing::TrainingSchedule.sunday_activities",
+      "Racing::TrainingSchedule.monday_activities",
+      "Racing::TrainingSchedule.tuesday_activities",
+      "Racing::TrainingSchedule.wednesday_activities",
+      "Racing::TrainingSchedule.thursday_activities",
+      "Racing::TrainingSchedule.friday_activities",
+      "Racing::TrainingSchedule.saturday_activities",
+      "Account::Activation.old_user_id",
+      "Account::Activity.old_stable_id",
+      "Account::Activity.old_id",
+      "Account::Budget.old_stable_id",
+      "Account::PushSubscription.old_user_id",
+      "Account::Setting.old_user_id",
+      "Account::Stable.old_user_id",
+      "Account::Stable.old_id",
+      "Auction.old_auctioneer_id",
+      "Auctions::Bid.old_auction_id",
+      "Auctions::Bid.old_bidder_id",
+      "Auctions::Bid.old_horse_id",
+      "Auctions::ConsignmentConfig.old_auction_id",
+      "Auctions::Horse.old_auction_id",
+      "Auctions::Horse.old_horse_id",
+      "Horses::Appearance.old_horse_id",
+      "Horses::Attributes.old_horse_id",
+      "Horses::BroodmareFoalRecord.old_horse_id",
+      "Horses::Genetics.old_horse_id",
+      "Horses::Horse.old_owner_id",
+      "Horses::Horse.old_breeder_id",
+      "Horses::Horse.old_location_bred_id",
+      "Racing::RaceRecord.old_horse_id",
+      "Racing::RaceResult.old_surface_id",
+      "Racing::RaceResultHorse.old_horse_id",
+      "Racing::RaceResultHorse.old_race_id",
+      "Racing::RaceSchedule.old_surface_id",
+      "Racing::Racetrack.old_location_id",
+      "Racing::TrackSurface.old_racetrack_id",
+      "Racing::TrainingSchedule.old_stable_id",
+      "Racing::TrainingScheduleHorse.old_horse_id",
+      "Racing::TrainingScheduleHorse.old_training_schedule_id"
+    ]
 
   detector :missing_unique_indexes,
-           ignore_columns: [
-             "Account::User(username)" # includes discarded_at WHERE
-           ]
+    ignore_columns: [
+      "Account::User(username)" # includes discarded_at WHERE
+    ]
 
   detector :unindexed_deleted_at,
-           ignore_indexes: [
-             "index_users_on_lowercase_username", # includes lowercase username
-             "index_users_on_old_id" # temporary
-           ]
+    ignore_indexes: [
+      "index_users_on_lowercase_username", # includes lowercase username
+      "index_users_on_old_id" # temporary
+    ]
 
   detector :table_without_timestamps,
-           ignore_tables: [
-             "active_storage_variant_records",
-             "data_migrations"
-           ]
+    ignore_tables: [
+      "active_storage_variant_records",
+      "data_migrations"
+    ]
 
   detector :missing_foreign_keys,
-           ignore_associations: [
-             "Racing::AnnualRaceRecord.horse",
-             "Racing::LifetimeRaceRecord.horse"
-           ]
+    ignore_associations: [
+      "Racing::AnnualRaceRecord.horse",
+      "Racing::LifetimeRaceRecord.horse"
+    ]
 
   detector :unindexed_foreign_keys,
-           ignore_tables: [
-             "new_horse_genetics",
-             "new_race_result_horses",
-             "horse_genetics"
-           ]
+    ignore_tables: [
+      "new_horse_genetics",
+      "new_race_result_horses",
+      "horse_genetics"
+    ]
 end
 
