@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_racerecords_lifetime
+# Database name: legacy
 #
 #  Earnings  :integer          default(0), not null, indexed
 #  Fourths   :integer          default(0), not null

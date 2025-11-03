@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_user_styles
+# Database name: legacy
 #
 #  Colt       :string(6)        default("00F"), not null
 #  Filly      :string(6)        default("F00"), not null

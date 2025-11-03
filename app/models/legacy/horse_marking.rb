@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_horse_markings
+# Database name: legacy
 #
 #  ID      :integer          not null, primary key
 #  Marking :string(255)      not null

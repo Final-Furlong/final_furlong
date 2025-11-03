@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_jocklines
+# Database name: legacy
 #
 #  ID    :integer          not null, primary key
 #  Line  :string(255)      not null

@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_horse_shipping
+# Database name: legacy
 #
 #  Arrive    :date             not null
 #  Date      :date             not null, indexed

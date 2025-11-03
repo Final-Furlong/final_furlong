@@ -49,9 +49,7 @@ SimpleForm.setup do |config|
     b.use :label, class: "fieldset-legend", error_class: "text-error"
     b.use :input, class: "input w-full", error_class: "input-error", valid_class: "input-success"
     b.use :full_error, wrap_with: { tag: "p", class: "mt-2 text-error text-xs italic w-full" }
-    b.wrapper tag: "label", class: "label hint" do |ba|
-      ba.use :hint, wrap_with: { tag: "span", class: "label-text-alt" }
-    end
+    b.use :hint, wrap_with: { tag: :p, class: "hint" }
   end
 
   config.wrappers :input_group, tag: "fieldset", class: "fieldset",

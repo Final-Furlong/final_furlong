@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_cw_entries
+# Database name: legacy
 #
 #  Date   :datetime         not null
 #  Horse  :integer          not null, uniquely indexed => [Race]

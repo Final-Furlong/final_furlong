@@ -7,12 +7,14 @@ end
 # == Schema Information
 #
 # Table name: settings
+# Database name: primary
 #
 #  id         :bigint           not null, primary key
 #  locale     :string
 #  theme      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  old_id     :uuid             indexed
 #  user_id    :bigint           not null, uniquely indexed
 #
 # Indexes

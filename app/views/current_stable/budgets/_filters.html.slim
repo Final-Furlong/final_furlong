@@ -1,0 +1,23 @@
+/# locals: (dashboard:)
+.card.card-border.shadow-md.my-4 class="dark:border-1 dark:border-neutral-100/50"
+  .card-body
+    = search_form_for dashboard.query, url: stable_budgets_path, html: { class: "d-flex flex-column", autocomplete: "off" },
+            data: { controller: "search", 'search-target': "form", 'turbo-frame' => "stable-budget-search" } do |f|
+      .grid.grid-cols-1.mb-2.gap-4 class="md:grid-cols-4"
+        div
+          = f.input :budget_description, label: false, required: false, placeholder: I18n.t("current_stable.budgets.search.description"),
+                  hint: I18n.t("current_stable.budgets.search.description_hint"),
+                  input_html: { data: { action: "search#search", min_characters: 2 } }
+        div
+          = f.input :created_at_gteq, label: false, required: false, hint: I18n.t("current_stable.budgets.search.date_from"),
+                  input_html: { type: :date, data: { action: "search#search", min_characters: 2 } }
+        div
+          = f.input :created_at_lteq, label: false, required: false, hint: I18n.t("current_stable.budgets.search.date_to"),
+                  input_html: { type: :date, data: { action: "search#search", min_characters: 2 } }
+        div
+          = f.input :budget_category, collection: dashboard.categories, label: false, required: false,
+                  prompt: I18n.t("current_stable.budgets.search.category")
+      .float-right.flex.mt-2.justify-content-end
+        button.btn.btn-outline.btn-error.btn-sm.me-2 type="button" data-action="search#reset"
+          = t("common.search_form.reset_filters")
+        = f.submit t("common.search_form.action"), class: "btn btn-primary btn-soft btn-sm d-lg-none"

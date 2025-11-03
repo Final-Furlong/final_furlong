@@ -99,6 +99,7 @@ end
 # == Schema Information
 #
 # Table name: horses
+# Database name: primary
 #
 #  id                                                                                                                 :bigint           not null, primary key
 #  age                                                                                                                :integer          default(0), not null, indexed
@@ -114,6 +115,9 @@ end
 #  dam_id                                                                                                             :bigint           indexed
 #  legacy_id                                                                                                          :integer          indexed
 #  location_bred_id                                                                                                   :bigint           not null, indexed
+#  old_dam_id                                                                                                         :uuid             indexed
+#  old_id                                                                                                             :uuid             indexed
+#  old_sire_id                                                                                                        :uuid             indexed
 #  owner_id                                                                                                           :bigint           not null, indexed
 #  public_id                                                                                                          :string(12)       indexed
 #  sire_id                                                                                                            :bigint           indexed

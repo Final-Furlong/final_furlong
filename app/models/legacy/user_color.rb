@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_user_colors
+# Database name: legacy
 #
 #  ID             :integer          not null, primary key
 #  MenuLink       :string(6)        not null

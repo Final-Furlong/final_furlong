@@ -51,6 +51,12 @@ repos:
         name: run active record doctor
         files: \/db\/migrate\/.+\.rb
         entry: bin/active_record_doctor
+      - id: brakeman
+        language: script
+        name: run brakeman
+        types: [ ruby ]
+        entry: bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-erro
+        pass_filenames: false
       - id: eslint
         language: script
         name: run eslint

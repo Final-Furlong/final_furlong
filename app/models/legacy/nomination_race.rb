@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_nomraces
+# Database name: legacy
 #
 #  2yo      :integer          unsigned
 #  3yo      :integer          unsigned

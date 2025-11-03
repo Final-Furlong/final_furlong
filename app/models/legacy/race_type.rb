@@ -14,6 +14,7 @@ end
 # == Schema Information
 #
 # Table name: ff_race_types
+# Database name: legacy
 #
 #  ID   :integer          not null, primary key
 #  Type :string(50)       not null, indexed

@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_shipping
+# Database name: legacy
 #
 #  ACost      :integer
 #  ADay       :integer

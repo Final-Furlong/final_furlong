@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_foalrecords
+# Database name: legacy
 #
 #  DC        :string           default("B"), not null, indexed
 #  Earnings  :integer          default(0), not null

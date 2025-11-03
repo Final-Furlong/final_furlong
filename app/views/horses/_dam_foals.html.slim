@@ -1,5 +1,5 @@
 /# locals: (horse:)
-- if request.variant.include?(:phone)
+- if mobile_variant?
   .mx-auto
     .tabs.tabs-border role="tablist" class="sm:hidden dark:border-neutral-400"
       input type="radio" name="foals" class="tab" aria-label=t(".summary")

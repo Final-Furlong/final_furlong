@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_bcstuds
+# Database name: legacy
 #
 #  ID   :integer          not null, primary key
 #  Stud :integer          indexed

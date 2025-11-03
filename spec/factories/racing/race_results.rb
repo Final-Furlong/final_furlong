@@ -18,6 +18,7 @@ end
 # == Schema Information
 #
 # Table name: race_results
+# Database name: primary
 #
 #  id                                                                                                             :bigint           not null, primary key
 #  age(2, 2+, 3, 3+, 4, 4+)                                                                                       :enum             default("2"), not null, indexed
@@ -37,6 +38,7 @@ end
 #  time_in_seconds                                                                                                :decimal(7, 3)    default(0.0), not null, indexed
 #  created_at                                                                                                     :datetime         not null
 #  updated_at                                                                                                     :datetime         not null
+#  old_id                                                                                                         :uuid             indexed
 #  surface_id                                                                                                     :bigint           not null, indexed
 #
 # Indexes

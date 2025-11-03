@@ -1,0 +1,29 @@
+ruby:
+  total_money = Game::MoneyFormatter.new(current_stable.total_balance).to_s
+  available_money = Game::MoneyFormatter.new(current_stable.available_balance).to_s
+  title = if current_stable.total_balance > current_stable.available_balance
+            t(".title_with_available", available: available_money, total: total_money)
+          else
+            t(".title_with_total", total: total_money)
+          end
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new( links: [{ name: current_stable.name, href: current_stable_path },
+                                                    { name: title, href: "#", title: true }],
+                                            mobile_links: [{ name: current_stable.name, href: current_stable_path },
+                                                    { name: t(".title"), href: "#", title: true }])
+
+div class="sm:hidden"
+  p
+    = t(".total_balance", amount: total_money)
+  - if current_stable.total_balance > current_stable.available_balance
+    p= t(".available_balance", amount: available_money)
+
+= render 'filters', dashboard: @dashboard
+.card.card-border.mt-2.p-2.shadow-md class="dark:border-1 dark:border-neutral-100"
+  = turbo_stream_from "budgets"
+  .card-body
+    = turbo_frame_tag "budgets" do
+      = render "table", dashboard: @dashboard
+
+.float-right.mt-2
+  == @dashboard.pagy.series_nav(slots: mobile_variant? ? 3 : 9)

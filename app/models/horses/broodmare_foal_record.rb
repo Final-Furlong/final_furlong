@@ -55,7 +55,7 @@ module Horses
 
     def earnings_string
       earnings = (raced_foals_count.positive? && total_foal_earnings.positive?) ? total_foal_earnings / raced_foals_count : 0
-      ActiveSupport::NumberHelper.number_to_currency(earnings, unit: "$", precision: 0)
+      Game::MoneyFormatter.new(earnings).to_s
     end
 
     private
@@ -74,6 +74,7 @@ end
 # == Schema Information
 #
 # Table name: broodmare_foal_records
+# Database name: primary
 #
 #  id                               :bigint           not null, primary key
 #  born_foals_count                 :integer          default(0), not null, indexed
@@ -92,6 +93,7 @@ end
 #  created_at                       :datetime         not null
 #  updated_at                       :datetime         not null
 #  horse_id                         :bigint           not null, uniquely indexed
+#  old_id                           :uuid             indexed
 #
 # Indexes
 #

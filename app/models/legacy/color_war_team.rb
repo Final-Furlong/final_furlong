@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_cw_teams
+# Database name: legacy
 #
 #  Captain :boolean          default(FALSE), not null
 #  End     :datetime         default(NULL), not null

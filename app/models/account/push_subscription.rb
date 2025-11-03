@@ -17,6 +17,7 @@ end
 # == Schema Information
 #
 # Table name: user_push_subscriptions
+# Database name: primary
 #
 #  id         :bigint           not null, primary key
 #  auth_key   :string
@@ -25,6 +26,7 @@ end
 #  user_agent :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  old_id     :uuid             indexed
 #  user_id    :bigint           not null, indexed
 #
 # Indexes

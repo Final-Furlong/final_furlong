@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: ff_farms
+# Database name: legacy
 #
 #  id       :integer          not null, primary key
 #  track_id :integer          not null, uniquely indexed

@@ -448,12 +448,12 @@ ALTER SEQUENCE public.activity_points_id_seq OWNED BY public.activity_points.id;
 
 
 --
--- Name: backup_race_records; Type: TABLE; Schema: public; Owner: -
+-- Name: race_records; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.backup_race_records (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    horse_id uuid NOT NULL,
+CREATE TABLE public.race_records (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
     year integer DEFAULT 1996 NOT NULL,
     result_type public.race_result_types DEFAULT 'dirt'::public.race_result_types,
     starts integer DEFAULT 0 NOT NULL,
@@ -474,10 +474,10 @@ CREATE TABLE public.backup_race_records (
 
 
 --
--- Name: COLUMN backup_race_records.result_type; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN race_records.result_type; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN public.backup_race_records.result_type IS 'dirt, turf, steeplechase';
+COMMENT ON COLUMN public.race_records.result_type IS 'dirt, turf, steeplechase';
 
 
 --
@@ -485,22 +485,22 @@ COMMENT ON COLUMN public.backup_race_records.result_type IS 'dirt, turf, steeple
 --
 
 CREATE MATERIALIZED VIEW public.annual_race_records AS
- SELECT backup_race_records.year,
-    backup_race_records.horse_id,
-    sum(backup_race_records.starts) AS starts,
-    sum(backup_race_records.stakes_starts) AS stakes_starts,
-    sum(backup_race_records.wins) AS wins,
-    sum(backup_race_records.stakes_wins) AS stakes_wins,
-    sum(backup_race_records.seconds) AS seconds,
-    sum(backup_race_records.stakes_seconds) AS stakes_seconds,
-    sum(backup_race_records.thirds) AS thirds,
-    sum(backup_race_records.stakes_thirds) AS stakes_thirds,
-    sum(backup_race_records.fourths) AS fourths,
-    sum(backup_race_records.stakes_fourths) AS stakes_fourths,
-    sum(backup_race_records.points) AS points,
-    sum(backup_race_records.earnings) AS earnings
-   FROM public.backup_race_records
-  GROUP BY backup_race_records.year, backup_race_records.horse_id
+ SELECT race_records.year,
+    race_records.horse_id,
+    sum(race_records.starts) AS starts,
+    sum(race_records.stakes_starts) AS stakes_starts,
+    sum(race_records.wins) AS wins,
+    sum(race_records.stakes_wins) AS stakes_wins,
+    sum(race_records.seconds) AS seconds,
+    sum(race_records.stakes_seconds) AS stakes_seconds,
+    sum(race_records.thirds) AS thirds,
+    sum(race_records.stakes_thirds) AS stakes_thirds,
+    sum(race_records.fourths) AS fourths,
+    sum(race_records.stakes_fourths) AS stakes_fourths,
+    sum(race_records.points) AS points,
+    sum(race_records.earnings) AS earnings
+   FROM public.race_records
+  GROUP BY race_records.year, race_records.horse_id
   WITH NO DATA;
 
 
@@ -1137,6 +1137,39 @@ CREATE TABLE public.backup_race_odds (
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
+
+
+--
+-- Name: backup_race_records; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.backup_race_records (
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    horse_id uuid NOT NULL,
+    year integer DEFAULT 1996 NOT NULL,
+    result_type public.race_result_types DEFAULT 'dirt'::public.race_result_types,
+    starts integer DEFAULT 0 NOT NULL,
+    stakes_starts integer DEFAULT 0 NOT NULL,
+    wins integer DEFAULT 0 NOT NULL,
+    stakes_wins integer DEFAULT 0 NOT NULL,
+    seconds integer DEFAULT 0 NOT NULL,
+    stakes_seconds integer DEFAULT 0 NOT NULL,
+    thirds integer DEFAULT 0 NOT NULL,
+    stakes_thirds integer DEFAULT 0 NOT NULL,
+    fourths integer DEFAULT 0 NOT NULL,
+    stakes_fourths integer DEFAULT 0 NOT NULL,
+    points integer DEFAULT 0 NOT NULL,
+    earnings bigint DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN backup_race_records.result_type; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.backup_race_records.result_type IS 'dirt, turf, steeplechase';
 
 
 --
@@ -2010,21 +2043,21 @@ ALTER SEQUENCE public.jockeys_id_seq OWNED BY public.jockeys.id;
 --
 
 CREATE MATERIALIZED VIEW public.lifetime_race_records AS
- SELECT backup_race_records.horse_id,
-    sum(backup_race_records.starts) AS starts,
-    sum(backup_race_records.stakes_starts) AS stakes_starts,
-    sum(backup_race_records.wins) AS wins,
-    sum(backup_race_records.stakes_wins) AS stakes_wins,
-    sum(backup_race_records.seconds) AS seconds,
-    sum(backup_race_records.stakes_seconds) AS stakes_seconds,
-    sum(backup_race_records.thirds) AS thirds,
-    sum(backup_race_records.stakes_thirds) AS stakes_thirds,
-    sum(backup_race_records.fourths) AS fourths,
-    sum(backup_race_records.stakes_fourths) AS stakes_fourths,
-    sum(backup_race_records.points) AS points,
-    sum(backup_race_records.earnings) AS earnings
-   FROM public.backup_race_records
-  GROUP BY backup_race_records.horse_id
+ SELECT race_records.horse_id,
+    sum(race_records.starts) AS starts,
+    sum(race_records.stakes_starts) AS stakes_starts,
+    sum(race_records.wins) AS wins,
+    sum(race_records.stakes_wins) AS stakes_wins,
+    sum(race_records.seconds) AS seconds,
+    sum(race_records.stakes_seconds) AS stakes_seconds,
+    sum(race_records.thirds) AS thirds,
+    sum(race_records.stakes_thirds) AS stakes_thirds,
+    sum(race_records.fourths) AS fourths,
+    sum(race_records.stakes_fourths) AS stakes_fourths,
+    sum(race_records.points) AS points,
+    sum(race_records.earnings) AS earnings
+   FROM public.race_records
+  GROUP BY race_records.horse_id
   WITH NO DATA;
 
 
@@ -2484,39 +2517,6 @@ CREATE SEQUENCE public.race_odds_id_seq
 --
 
 ALTER SEQUENCE public.race_odds_id_seq OWNED BY public.race_odds.id;
-
-
---
--- Name: race_records; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.race_records (
-    id bigint NOT NULL,
-    horse_id bigint NOT NULL,
-    year integer DEFAULT 1996 NOT NULL,
-    result_type public.race_result_types DEFAULT 'dirt'::public.race_result_types,
-    starts integer DEFAULT 0 NOT NULL,
-    stakes_starts integer DEFAULT 0 NOT NULL,
-    wins integer DEFAULT 0 NOT NULL,
-    stakes_wins integer DEFAULT 0 NOT NULL,
-    seconds integer DEFAULT 0 NOT NULL,
-    stakes_seconds integer DEFAULT 0 NOT NULL,
-    thirds integer DEFAULT 0 NOT NULL,
-    stakes_thirds integer DEFAULT 0 NOT NULL,
-    fourths integer DEFAULT 0 NOT NULL,
-    stakes_fourths integer DEFAULT 0 NOT NULL,
-    points integer DEFAULT 0 NOT NULL,
-    earnings bigint DEFAULT 0 NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
-);
-
-
---
--- Name: COLUMN race_records.result_type; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.race_records.result_type IS 'dirt, turf, steeplechase';
 
 
 --
@@ -7057,6 +7057,8 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251103195539'),
+('20251103195523'),
 ('20251103132832'),
 ('20251103101559'),
 ('20251102193414'),

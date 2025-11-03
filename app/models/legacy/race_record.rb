@@ -12,6 +12,7 @@ end
 # == Schema Information
 #
 # Table name: ff_racerecords
+# Database name: legacy
 #
 #  Earnings  :bigint           default(0), not null, indexed
 #  FlatSC    :string           default("F"), not null, indexed, indexed => [Year]

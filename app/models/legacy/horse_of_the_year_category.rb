@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_hoty_cats
+# Database name: legacy
 #
 #  ID   :integer          not null, primary key
 #  Name :string(255)      not null, uniquely indexed

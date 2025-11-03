@@ -13,6 +13,7 @@ end
 # == Schema Information
 #
 # Table name: game_alerts
+# Database name: primary
 #
 #  id                     :bigint           not null, primary key
 #  display_to_newbies     :boolean          default(TRUE), not null, indexed
@@ -22,6 +23,7 @@ end
 #  start_time             :datetime         not null, indexed
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  old_id                 :uuid             indexed
 #
 # Indexes
 #

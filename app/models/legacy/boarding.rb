@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: ff_boarding
+# Database name: legacy
 #
 #  id         :integer          not null, primary key
 #  days       :integer          not null

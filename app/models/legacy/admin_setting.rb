@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_admin
+# Database name: legacy
 #
 #  BroodmareLimit :integer          default(25), not null
 #  BugPassword    :string(50)       not null

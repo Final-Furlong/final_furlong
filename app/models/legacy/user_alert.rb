@@ -5,6 +5,7 @@ end
 # == Schema Information
 #
 # Table name: user_alerts
+# Database name: legacy
 #
 #  id             :integer          not null, primary key
 #  activates_at   :date             not null, indexed => [user_id]

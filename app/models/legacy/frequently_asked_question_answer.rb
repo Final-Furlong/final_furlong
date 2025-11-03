@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: ff_faq_answers
+# Database name: legacy
 #
 #  id       :integer          not null, primary key
 #  answer   :text(4294967295) not null

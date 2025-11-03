@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: ff_nominations_sup
+# Database name: legacy
 #
 #  id    :integer          not null, primary key
 #  horse :integer          not null

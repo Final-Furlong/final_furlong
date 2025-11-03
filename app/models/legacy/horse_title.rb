@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_horse_titles
+# Database name: legacy
 #
 #  Abbr   :string(10)       not null, indexed
 #  ID     :integer          not null, primary key

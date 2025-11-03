@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_leases
+# Database name: legacy
 #
 #  Active        :boolean          default(FALSE), not null
 #  End           :date             uniquely indexed => [horse, Start]

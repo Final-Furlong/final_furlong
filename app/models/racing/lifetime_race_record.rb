@@ -27,6 +27,7 @@ end
 # == Schema Information
 #
 # Table name: lifetime_race_records
+# Database name: primary
 #
 #  earnings       :decimal(, )
 #  fourths        :bigint
@@ -40,7 +41,7 @@ end
 #  starts         :bigint
 #  thirds         :bigint
 #  wins           :bigint
-#  horse_id       :uuid             primary key, uniquely indexed
+#  horse_id       :bigint           primary key, uniquely indexed
 #
 # Indexes
 #

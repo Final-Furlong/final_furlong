@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: horse_racehorses_mv
+# Database name: legacy
 #
 #  age                    :integer
 #  allowance_wins_count   :integer          default(0), not null

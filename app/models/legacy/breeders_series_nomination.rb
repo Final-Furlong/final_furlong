@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_nom_bs
+# Database name: legacy
 #
 #  BS     :integer          default(0), not null, indexed
 #  ID     :integer          not null, primary key

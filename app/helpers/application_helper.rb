@@ -6,5 +6,9 @@ module ApplicationHelper
   def request_variant
     request.variant.first
   end
+
+  def mobile_variant?
+    request.variant.include?(:phone)
+  end
 end
 

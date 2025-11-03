@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_faq_questions
+# Database name: legacy
 #
 #  Email      :string(50)       not null
 #  Name       :string(50)       not null, indexed

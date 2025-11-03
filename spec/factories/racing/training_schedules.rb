@@ -16,6 +16,7 @@ end
 # == Schema Information
 #
 # Table name: training_schedules
+# Database name: primary
 #
 #  id                   :bigint           not null, primary key
 #  description          :text

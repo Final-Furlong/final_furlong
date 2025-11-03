@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_injuries
+# Database name: legacy
 #
 #  Date    :date
 #  Horse   :integer          default(0), not null

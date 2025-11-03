@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_hoty_winners
+# Database name: legacy
 #
 #  Category :integer          default(0), not null, indexed
 #  ID       :integer          not null, primary key

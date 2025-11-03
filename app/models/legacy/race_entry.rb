@@ -10,6 +10,7 @@ end
 # == Schema Information
 #
 # Table name: ff_raceentries
+# Database name: legacy
 #
 #  EntryDate    :datetime         not null
 #  Equipment    :integer          indexed

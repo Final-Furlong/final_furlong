@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: locations
+# Database name: primary
 #
 #  id         :bigint           not null, primary key
 #  country    :string           not null, uniquely indexed => [name]
@@ -16,6 +17,7 @@ end
 #  state      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  old_id     :uuid             indexed
 #
 # Indexes
 #

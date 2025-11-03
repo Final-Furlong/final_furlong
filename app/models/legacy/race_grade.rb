@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_race_grades
+# Database name: legacy
 #
 #  Abbr  :string(5)        not null
 #  Grade :string(50)       not null

@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_horse_bsrankings
+# Database name: legacy
 #
 #  Foals   :integer          default(0), not null
 #  Horse   :integer          not null, primary key

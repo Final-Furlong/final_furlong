@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_jockeys
+# Database name: legacy
 #
 #  Acceleration :integer          default(0), not null
 #  Ave          :integer          default(0), not null

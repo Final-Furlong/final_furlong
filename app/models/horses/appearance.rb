@@ -80,6 +80,7 @@ end
 # == Schema Information
 #
 # Table name: horse_appearances
+# Database name: primary
 #
 #  id                                                                                                                                                                                                                     :bigint           not null, primary key
 #  birth_height                                                                                                                                                                                                           :decimal(4, 2)    default(0.0), not null
@@ -99,6 +100,7 @@ end
 #  created_at                                                                                                                                                                                                             :datetime         not null
 #  updated_at                                                                                                                                                                                                             :datetime         not null
 #  horse_id                                                                                                                                                                                                               :bigint           not null, uniquely indexed
+#  old_id                                                                                                                                                                                                                 :uuid             indexed
 #
 # Indexes
 #

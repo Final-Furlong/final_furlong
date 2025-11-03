@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: ff_cw_guesses
+# Database name: legacy
 #
 #  id         :integer          not null, primary key
 #  correct    :boolean          not null

@@ -3,9 +3,10 @@ module Nav
     class Component < ApplicationComponent
       attr_reader :actions, :badge
 
-      def initialize(links: [], title: nil, classes: "", actions: [], badge: nil)
+      def initialize(links: [], mobile_links: [], title: nil, classes: "", actions: [], badge: nil)
         @title = title
         @links = links
+        @mobile_links = mobile_links
         @classes = classes
         @actions = actions
         @badge = badge
@@ -47,7 +48,18 @@ module Nav
       def styled_links
         @styled_links ||= @links.map do |link|
           link[:classes] = @classes
-          if link == @links.last
+          if link == @links.last || link[:title]
+            last_link_metadata(link)
+          else
+            link_metadata(link)
+          end
+        end
+      end
+
+      def styled_mobile_links
+        @styled_mobile_links ||= @mobile_links.map do |link|
+          link[:classes] = @classes
+          if link == @links.last || link[:title]
             last_link_metadata(link)
           else
             link_metadata(link)

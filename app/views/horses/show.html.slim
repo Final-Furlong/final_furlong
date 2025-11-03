@@ -23,7 +23,7 @@
 
   input type="radio" name="horse" class="tab" aria-label=t(".races") disabled=!horse.lifetime_race_record
   .tab-content.border-base-400.bg-base-100.p-2 class="sm:p-4"
-    - if request.variant.include?(:phone)
+    - if mobile_variant?
       = render "horses/races_mobile", horse: @horse
     - else
       = render "horses/races", horse: @horse

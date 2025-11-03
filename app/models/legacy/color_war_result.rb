@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: ff_cw_results
+# Database name: legacy
 #
 #  id       :integer          not null, primary key
 #  position :integer          not null

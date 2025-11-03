@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_horse_sales
+# Database name: legacy
 #
 #  Buyer  :integer          indexed
 #  Date   :date             not null, indexed, indexed => [Seller]

@@ -50,6 +50,7 @@ end
 # == Schema Information
 #
 # Table name: stables
+# Database name: primary
 #
 #  id                :bigint           not null, primary key
 #  available_balance :bigint           default(0), indexed
@@ -62,6 +63,7 @@ end
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  legacy_id         :integer          indexed
+#  old_racetrack_id  :uuid             indexed
 #  public_id         :string(12)       indexed
 #  racetrack_id      :bigint           indexed
 #  user_id           :bigint           not null, uniquely indexed

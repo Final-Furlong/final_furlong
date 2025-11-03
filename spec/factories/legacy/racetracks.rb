@@ -9,6 +9,7 @@ end
 # == Schema Information
 #
 # Table name: ff_trackdata
+# Database name: legacy
 #
 #  Abbr         :string(5)        not null
 #  Banking      :integer

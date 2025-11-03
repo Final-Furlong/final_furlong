@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_cw_activities
+# Database name: legacy
 #
 #  Activity :string(255)      not null
 #  End      :datetime         default(NULL), not null

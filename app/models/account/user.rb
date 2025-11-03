@@ -19,7 +19,7 @@ module Account
     # Include default devise modules. Others available are:
     # :omniauthable
     devise :database_authenticatable, :registerable,
-      :recoverable, :rememberable, :validatable,
+      :recoverable, :rememberable, :validatable, # codespell:ignore rememberable
       :confirmable, :lockable, :timeoutable, :trackable
 
     enum :status, { pending: "pending", active: "active", deleted: "deleted", banned: "banned" }
@@ -60,6 +60,7 @@ end
 # == Schema Information
 #
 # Table name: users
+# Database name: primary
 #
 #  id                                       :bigint           not null, primary key
 #  admin                                    :boolean          default(FALSE), not null, indexed

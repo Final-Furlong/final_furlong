@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: ff_faq_categories
+# Database name: legacy
 #
 #  id       :integer          unsigned, not null, primary key
 #  approved :string(1)        default("Y"), indexed => [parent]

@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: ff_cw_signups
+# Database name: legacy
 #
 #  id      :integer          not null, primary key
 #  captain :integer          not null

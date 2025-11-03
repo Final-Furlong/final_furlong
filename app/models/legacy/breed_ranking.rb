@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_breed_rankings
+# Database name: legacy
 #
 #  ID      :integer          not null, primary key
 #  MinPts  :integer          not null

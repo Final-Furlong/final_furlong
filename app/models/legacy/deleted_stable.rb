@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: ff_deleted_stables
+# Database name: legacy
 #
 #  id      :integer          not null, primary key
 #  balance :integer          not null

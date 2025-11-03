@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: ff_qual_horses
+# Database name: legacy
 #
 #  id             :integer          not null, primary key
 #  bc_places      :integer          default(0)

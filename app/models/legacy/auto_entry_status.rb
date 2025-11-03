@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: auto_entry_status
+# Database name: legacy
 #
 #  id        :integer          not null, primary key
 #  race_date :date             uniquely indexed => [horse_id]

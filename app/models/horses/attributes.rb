@@ -5,7 +5,7 @@ module Horses
     TITLES = ["Final Furlong", "World", "International", "National", "Grand", "Normal"].freeze
 
     attribute :track_record, default: -> { "Unraced" }
-    attribute :breeding_record, default: -> { "None" }
+    attribute :breeding_record, default: -> { "none" }
 
     belongs_to :horse, class_name: "Horse"
 
@@ -25,6 +25,7 @@ end
 # == Schema Information
 #
 # Table name: horse_attributes
+# Database name: primary
 #
 #  id                                                    :bigint           not null, primary key
 #  breeding_record(none, bronze, silver, gold, platinum) :enum             default("None"), not null
@@ -35,6 +36,7 @@ end
 #  created_at                                            :datetime         not null
 #  updated_at                                            :datetime         not null
 #  horse_id                                              :bigint           not null, uniquely indexed
+#  old_id                                                :uuid             indexed
 #
 # Indexes
 #

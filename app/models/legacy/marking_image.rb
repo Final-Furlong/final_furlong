@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: ff_marking_images
+# Database name: legacy
 #
 #  id         :integer          not null, primary key
 #  image      :string(25)       not null, uniquely indexed => [marking_id]

@@ -15,6 +15,7 @@ end
 # == Schema Information
 #
 # Table name: track_surfaces
+# Database name: primary
 #
 #  id                                :bigint           not null, primary key
 #  banking                           :integer          not null
@@ -27,6 +28,7 @@ end
 #  width                             :integer          not null
 #  created_at                        :datetime         not null
 #  updated_at                        :datetime         not null
+#  old_id                            :uuid             indexed
 #  racetrack_id                      :bigint           not null, uniquely indexed => [surface]
 #
 # Indexes

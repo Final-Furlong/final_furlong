@@ -21,6 +21,7 @@ end
 # == Schema Information
 #
 # Table name: race_records
+# Database name: primary
 #
 #  id                                    :bigint           not null, primary key
 #  earnings                              :bigint           default(0), not null

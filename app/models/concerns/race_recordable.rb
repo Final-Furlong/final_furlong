@@ -31,7 +31,7 @@ module RaceRecordable
     end
 
     def earnings_string
-      ActiveSupport::NumberHelper.number_to_currency(earnings, unit: "$", precision: 0)
+      Game::MoneyFormatter.new(earnings).to_s
     end
 
     private

@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_stable_notes
+# Database name: legacy
 #
 #  Created :datetime         not null, uniquely indexed => [Stable, Title]
 #  ID      :integer          not null, primary key

@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_injury_types
+# Database name: legacy
 #
 #  ID     :integer          not null, primary key
 #  Injury :string(50)       not null

@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_horse_colors
+# Database name: legacy
 #
 #  Abbr  :string(5)        not null
 #  Color :string(255)      not null

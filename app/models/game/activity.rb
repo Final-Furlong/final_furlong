@@ -22,6 +22,7 @@ end
 # == Schema Information
 #
 # Table name: game_activity_points
+# Database name: primary
 #
 #  id                                                                                       :bigint           not null, primary key
 #  activity_type(color_war, auction, selling, buying, breeding, claiming, entering, redeem) :enum             not null, indexed
@@ -30,6 +31,7 @@ end
 #  second_year_points                                                                       :integer          default(0), not null
 #  created_at                                                                               :datetime         not null
 #  updated_at                                                                               :datetime         not null
+#  old_id                                                                                   :uuid             indexed
 #
 # Indexes
 #
