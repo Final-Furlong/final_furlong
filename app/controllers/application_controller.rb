@@ -1,7 +1,7 @@
 require "browser/aliases"
 
 class ApplicationController < ActionController::Base
-  include Pagy::Backend
+  include Pagy::Method
   include Devise::Controllers::Helpers
   include DeviseHooks
   include Pundit::Authorization

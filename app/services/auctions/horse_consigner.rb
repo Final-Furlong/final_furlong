@@ -28,19 +28,19 @@ module Auctions
           horse_type_check = config.horse_type.to_s.downcase
           horse_type_number_consigned = Auctions::Horse.joins(:horse).where(auction:).merge(Horses::Horse.send(horse_type_check.to_sym)).count
           consigner_class = case config.horse_type.to_s.downcase
-                            when "racehorse"
-                              Auctions::RacehorseConsigner
-                            when "stud"
-                              Auctions::StallionConsigner
-                            when "broodmare"
-                              Auctions::BroodmareConsigner
-                            when "yearling"
-                              Auctions::YearlingConsigner
-                            when "weanling"
-                              Auctions::WeanlingConsigner
-                            else
-                              raise UnknownConsignmentTypeError
-                            end
+          when "racehorse"
+            Auctions::RacehorseConsigner
+          when "stud"
+            Auctions::StallionConsigner
+          when "broodmare"
+            Auctions::BroodmareConsigner
+          when "yearling"
+            Auctions::YearlingConsigner
+          when "weanling"
+            Auctions::WeanlingConsigner
+          else
+            raise UnknownConsignmentTypeError
+          end
           legacy_horses = consigner_class.new.select_horses(
             number: config.minimum_count - horse_type_number_consigned,
             stakes_quality: config.stakes_quality,

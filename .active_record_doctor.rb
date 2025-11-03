@@ -183,82 +183,82 @@ ActiveRecordDoctor.configure do
   ]
 
   detector :incorrect_dependent_option,
-           ignore_models: [
-             "Motor::Alert",
-             "Motor::Dashboard",
-             "Motor::Form",
-             "Motor::Query",
-             "Motor::Tag"
-           ]
+    ignore_models: [
+      "Motor::Alert",
+      "Motor::Dashboard",
+      "Motor::Form",
+      "Motor::Query",
+      "Motor::Tag"
+    ]
 
   detector :missing_non_null_constraint,
-           ignore_tables: [
-             "ff_horses",
-             "ff_trackdata",
-             "ff_training_schedules",
-             "ff_training_schedule_details",
-             "ff_training_schedule_horses",
-             "ff_users"
-           ],
-           ignore_columns: [
-             "stables.public_id",
-             "users.public_id",
-             "auctions.public_id",
-             "horses.public_id",
-             "jockeys.public_id",
-             "racetracks.public_id",
-             "auction_horses.public_id"
-           ]
+    ignore_tables: [
+      "ff_horses",
+      "ff_trackdata",
+      "ff_training_schedules",
+      "ff_training_schedule_details",
+      "ff_training_schedule_horses",
+      "ff_users"
+    ],
+    ignore_columns: [
+      "stables.public_id",
+      "users.public_id",
+      "auctions.public_id",
+      "horses.public_id",
+      "jockeys.public_id",
+      "racetracks.public_id",
+      "auction_horses.public_id"
+    ]
 
   detector :missing_presence_validation,
-           ignore_attributes: [
-             "Account::Stable.bred_horses_count",
-             "Account::Stable.horses_count",
-             "Account::Stable.unborn_horses_count",
-             "Account::User.encrypted_password",
-             "Account::User.failed_attempts",
-             "Account::User.sign_in_count",
-             "Horses::Horse.foals_count",
-             "Horses::Horse.unborn_foals_count",
-             "Horses::Stallion.foals_count",
-             "Horses::Stallion.unborn_foals_count",
-             "Racing::TrainingSchedule.horses_count",
-             "Racing::TrainingSchedule.sunday_activities",
-             "Racing::TrainingSchedule.monday_activities",
-             "Racing::TrainingSchedule.tuesday_activities",
-             "Racing::TrainingSchedule.wednesday_activities",
-             "Racing::TrainingSchedule.thursday_activities",
-             "Racing::TrainingSchedule.friday_activities",
-             "Racing::TrainingSchedule.saturday_activities"
-           ]
+    ignore_attributes: [
+      "Account::Stable.bred_horses_count",
+      "Account::Stable.horses_count",
+      "Account::Stable.unborn_horses_count",
+      "Account::User.encrypted_password",
+      "Account::User.failed_attempts",
+      "Account::User.sign_in_count",
+      "Horses::Horse.foals_count",
+      "Horses::Horse.unborn_foals_count",
+      "Horses::Stallion.foals_count",
+      "Horses::Stallion.unborn_foals_count",
+      "Racing::TrainingSchedule.horses_count",
+      "Racing::TrainingSchedule.sunday_activities",
+      "Racing::TrainingSchedule.monday_activities",
+      "Racing::TrainingSchedule.tuesday_activities",
+      "Racing::TrainingSchedule.wednesday_activities",
+      "Racing::TrainingSchedule.thursday_activities",
+      "Racing::TrainingSchedule.friday_activities",
+      "Racing::TrainingSchedule.saturday_activities"
+    ]
 
   detector :missing_unique_indexes,
-           ignore_columns: [
-             "Account::User(username)" # includes discarded_at WHERE
-           ]
+    ignore_columns: [
+      "Account::User(username)" # includes discarded_at WHERE
+    ]
 
   detector :unindexed_deleted_at,
-           ignore_indexes: [
-             "index_users_on_lowercase_username" # includes lowercase username
-           ]
+    ignore_indexes: [
+      "index_users_on_lowercase_username" # includes lowercase username
+    ]
 
   detector :table_without_timestamps,
-           ignore_tables: [
-             "active_storage_variant_records",
-             "data_migrations"
-           ]
+    ignore_tables: [
+      "active_storage_variant_records",
+      "data_migrations"
+    ]
 
   detector :missing_foreign_keys,
-           ignore_associations: [
-             "Racing::AnnualRaceRecord.horse",
-             "Racing::LifetimeRaceRecord.horse"
-           ]
+    ignore_associations: [
+      "Racing::AnnualRaceRecord.horse",
+      "Racing::LifetimeRaceRecord.horse"
+    ]
 
   detector :unindexed_foreign_keys,
-           ignore_tables: [
-             "new_horse_genetics",
-             "new_race_result_horses",
-             "horse_genetics"
-           ]
+    ignore_tables: [
+      "new_horse_genetics",
+      "new_race_result_horses",
+      "horse_genetics"
+    ]
 end
 
