@@ -3,7 +3,9 @@ module Legacy
     self.table_name = "ff_racerecords"
     self.primary_key = "ID"
 
-    scope :stakes_quality, -> { where("StakesWn > 0 OR StakesSds > 0 OR StakesTds > 0") }
+    scope :stakes_quality, -> do
+      group(:Horse).having('SUM(StakesWn) > 0 OR SUM(StakesSds) > 0 OR SUM(StakesTds) > 0')
+    end
   end
 end
 

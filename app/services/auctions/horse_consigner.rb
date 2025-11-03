@@ -28,30 +28,30 @@ module Auctions
           horse_type_check = config.horse_type.to_s.downcase
           horse_type_number_consigned = Auctions::Horse.joins(:horse).where(auction:).merge(Horses::Horse.send(horse_type_check.to_sym)).count
           consigner_class = case config.horse_type.to_s.downcase
-          when "racehorse"
-            Auctions::RacehorseConsigner
-          when "stud"
-            Auctions::StallionConsigner
-          when "broodmare"
-            Auctions::BroodmareConsigner
-          when "yearling"
-            Auctions::YearlingConsigner
-          when "weanling"
-            Auctions::WeanlingConsigner
-          else
-            raise UnknownConsignmentTypeError
-          end
+                            when "racehorse"
+                              Auctions::RacehorseConsigner
+                            when "stud"
+                              Auctions::StallionConsigner
+                            when "broodmare"
+                              Auctions::BroodmareConsigner
+                            when "yearling"
+                              Auctions::YearlingConsigner
+                            when "weanling"
+                              Auctions::WeanlingConsigner
+                            else
+                              raise UnknownConsignmentTypeError
+                            end
           legacy_horses = consigner_class.new.select_horses(
             number: config.minimum_count - horse_type_number_consigned,
             stakes_quality: config.stakes_quality,
             min_age: config.minimum_age, max_age: config.maximum_age
           ).select(:ID)
-          legacy_horses.find_each do |horse|
+          legacy_horses.each do |horse|
             creator_result = Auctions::LegacyHorseCreator.new.create_horse(auction:, legacy_horse_id: horse.ID)
             if creator_result.created?
               horse_type_number_consigned += 1
             else
-              raise CouldNotConsignHorseError, creator_result.error
+              next
             end
           end
           config.destroy if horse_type_number_consigned >= config.minimum_count
