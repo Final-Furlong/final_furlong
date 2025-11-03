@@ -1,10 +1,11 @@
 module Account
   class Stable < ApplicationRecord
     include PublicIdGenerator
-
-    self.ignored_columns += ["old_id", "old_racetrack_id", "old_user_id"]
+    include FriendlyId
 
     FINAL_FURLONG = "Final Furlong"
+
+    friendly_id :slug_candidates, use: [:slugged, :finders]
 
     attribute :miles_from_track, default: -> { 10 }
 
@@ -33,6 +34,15 @@ module Account
 
     def second_year?
       created_at.between?(2.years.ago, 366.days.ago)
+    end
+
+    private
+
+    def slug_candidates
+      [
+        :name,
+        [:name, :public_id]
+      ]
     end
   end
 end

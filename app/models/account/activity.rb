@@ -1,7 +1,6 @@
 module Account
   class Activity < ApplicationRecord
     self.table_name = "activity_points"
-    self.ignored_columns += ["old_budget_id", "old_id", "old_stable_id"]
 
     belongs_to :stable
     belongs_to :budget, optional: true

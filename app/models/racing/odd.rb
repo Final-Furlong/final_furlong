@@ -1,7 +1,6 @@
 module Racing
   class Odd < ApplicationRecord
     self.table_name = "race_odds"
-    self.ignored_columns += ["old_id"]
 
     has_many :race_result_horses, class_name: "Racing::RaceResultHorse", inverse_of: :odd, dependent: :nullify
 

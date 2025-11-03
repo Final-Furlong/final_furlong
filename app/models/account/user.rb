@@ -2,8 +2,9 @@ module Account
   class User < ApplicationRecord
     include Discard::Model
     include PublicIdGenerator
+    include FriendlyId
 
-    self.ignored_columns += ["old_id"]
+    friendly_id :username, use: [:slugged, :finders]
 
     attr_accessor :login
 

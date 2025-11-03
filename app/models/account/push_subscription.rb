@@ -1,6 +1,5 @@
 class Account::PushSubscription < ApplicationRecord
   self.table_name = "user_push_subscriptions"
-  self.ignored_columns += ["old_id", "old_user_id"]
 
   belongs_to :user, inverse_of: :push_subscriptions
 

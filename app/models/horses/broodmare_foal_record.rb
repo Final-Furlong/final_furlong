@@ -1,7 +1,6 @@
 module Horses
   class BroodmareFoalRecord < ApplicationRecord
     self.table_name = "broodmare_foal_records"
-    self.ignored_columns += ["old_id", "old_horse_id"]
 
     belongs_to :mare, class_name: "Horse", foreign_key: :horse_id, inverse_of: :broodmare_foal_record
 

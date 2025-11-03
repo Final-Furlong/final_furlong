@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+SLIM_LINT_RUBOCOP_CONF=.rubocop_slim.yml bundle exec slim-lint

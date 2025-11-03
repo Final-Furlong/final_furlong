@@ -1,7 +1,5 @@
 module Racing
   class TrackSurface < ApplicationRecord
-    self.ignored_columns += ["old_id", "old_racetrack_id"]
-
     CONDITIONS = %w[fast good slow wet].freeze
 
     belongs_to :racetrack

@@ -59,9 +59,10 @@ end
 #  discourse_name     :string(255)
 #  last_modified      :datetime         not null
 #  rails_activated_at :datetime
+#  rails_uuid         :string(36)       indexed
 #  slug               :string(255)
 #  discourse_id       :integer
-#  rails_id           :string(36)
+#  rails_id           :bigint
 #  user_id            :integer
 #
 # Indexes
@@ -81,6 +82,7 @@ end
 #  Status           (Status)
 #  Username         (Username)
 #  email_unique     (Email) UNIQUE
+#  idx_rails_id     (rails_uuid)
 #  username_unique  (Username) UNIQUE
 #
 

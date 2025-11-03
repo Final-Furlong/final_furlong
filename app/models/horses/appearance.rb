@@ -5,7 +5,6 @@ module Horses
     include ActionView::Helpers::TextHelper
 
     self.table_name = "horse_appearances"
-    self.ignored_columns += ["old_id", "old_horse_id"]
 
     belongs_to :horse, class_name: "Horse"
 

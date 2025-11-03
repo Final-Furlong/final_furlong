@@ -1,4 +1,6 @@
 class StablesController < AuthenticatedController
+  include NonNumericIdOnly
+
   skip_before_action :authenticate_user!, only: %i[index show]
   skip_before_action :verify_active_user!, only: %i[index show]
 
@@ -48,11 +50,7 @@ class StablesController < AuthenticatedController
   end
 
   def find_stable!
-    outcome = Stables::Find.run(params)
-
-    raise ActiveRecord::RecordNotFound, outcome.errors.full_messages.to_sentence unless outcome.valid?
-
-    outcome.result
+    Account::Stable.find(params[:id])
   end
 end
 

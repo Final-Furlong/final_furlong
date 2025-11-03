@@ -1,7 +1,5 @@
 module Racing
   class TrainingSchedule < ApplicationRecord
-    self.ignored_columns += ["old_id", "old_stable_id"]
-
     include StoreModel::NestedAttributes
 
     MAX_SCHEDULES_PER_STABLE = 10

@@ -27,12 +27,12 @@
     tbody
       tr
         td.text-center colspan=3
-          = pluralize(stable.horses.alive.count, t("horse.type.generic")).titleize
+          = stable.horses.alive.count.to_s + ' ' + 'horse'.pluralize(stable.horses.alive.count).titleize
       tr
-        td= pluralize(stable.horses.racehorse.count, t("horse.type.racehorse")).titleize
-        td= pluralize(stable.horses.stud.count, t("horse.type.stallion")).titleize
-        td= pluralize(stable.horses.broodmare.count, t("horse.type.broodmare")).titleize
+        td= stable.horses.racehorse.count.to_s + ' ' + 'racehorse'.pluralize(stable.horses.racehorse.count).titleize
+        td= stable.horses.stud.count.to_s + ' ' + 'stallion'.pluralize(stable.horses.stud.count).titleize
+        td= stable.horses.broodmare.count.to_s + ' ' + 'broodmare'.pluralize(stable.horses.broodmare.count).titleize
       tr
-        td= pluralize(stable.horses.yearling.count, t("horse.type.yearling")).titleize
-        td= pluralize(stable.horses.weanling.count, t("horse.type.weanling")).titleize
-        td= pluralize(stable.horses.retired.count, t("horse.type.retired")).titleize
+        td= stable.horses.yearling.count.to_s + ' ' + 'yearling'.pluralize(stable.horses.yearling.count).titleize
+        td= stable.horses.weanling.count.to_s + ' ' + 'weanling'.pluralize(stable.horses.weanling.count).titleize
+        td= stable.horses.retired.count.to_s + ' ' + 'retired'.pluralize(stable.horses.retired.count).titleize

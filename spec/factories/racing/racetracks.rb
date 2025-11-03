@@ -19,6 +19,7 @@ end
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  location_id :bigint           not null, indexed
+#  old_id      :uuid             indexed
 #  public_id   :string(12)       indexed
 #
 # Indexes
