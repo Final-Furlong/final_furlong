@@ -18,10 +18,10 @@ module Auctions
       auction_horse.maximum_price = spending_cap if spending_cap&.positive?
       result.horse = auction_horse
       result.created = if auction_horse.save!
-                         true
-                       else
-                         false
-                       end
+        true
+      else
+        false
+      end
       result
     end
 

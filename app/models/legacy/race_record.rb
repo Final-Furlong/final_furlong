@@ -4,7 +4,7 @@ module Legacy
     self.primary_key = "ID"
 
     scope :stakes_quality, -> do
-      group(:Horse).having('SUM(StakesWn) > 0 OR SUM(StakesSds) > 0 OR SUM(StakesTds) > 0')
+      group(:Horse).having("SUM(StakesWn) > 0 OR SUM(StakesSds) > 0 OR SUM(StakesTds) > 0")
     end
   end
 end

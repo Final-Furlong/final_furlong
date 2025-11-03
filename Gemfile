@@ -148,7 +148,7 @@ group :development, :test do
   gem "i18n-tasks"
   gem "isolator"
   gem "letter_opener"
-  gem "puts_debuggerer", "~> 1.0.0"
+  gem "puts_debuggerer"
   gem "reek", require: false
   gem "rubocop", require: false
   gem "rubocop-capybara", require: false

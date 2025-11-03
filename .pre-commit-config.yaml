@@ -7,6 +7,13 @@ repos:
       - id: check-shebang-scripts-are-executable
       - id: check-symlinks
       - id: check-yaml
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+        name: check spelling
+        files: ^(app|spec)/ # Only application + test code
+        args: [ "--exclude-file=yarn.lock" ]
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.24.2
     hooks:
@@ -26,17 +33,23 @@ repos:
           - rubocop-rake
           - rubocop-rspec
           - rubocop-rspec_rails
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: "v4.0.0-alpha.8"
+    hooks:
+      - id: prettier
+        name: run prettier
+        files: ^app/(assets/tailwind|javascript)/.*\.(js|jsx|ts|tsx|json|css|scss|md)$
   - repo: local
     hooks:
       - id: actionlint
         language: script
         name: run actionlint
-        files: \.yml$
+        files: \/\.github\/workflow\/.+\.yml$
         entry: actionlint
       - id: active-record-doctor
         language: script
         name: run active record doctor
-        types: [ ruby ]
+        files: \/db\/migrate\/.+\.rb
         entry: bin/active_record_doctor
       - id: eslint
         language: script
@@ -51,12 +64,12 @@ repos:
       - id: i18n-normalize
         language: script
         name: run i18n normalize
-        files: \.yml$
+        files: \/config\/locales\/.+\.yml
         entry: bundle exec i18n-tasks normalize
       - id: image-optim
         language: script
         name: run image-optim
-        types: [ jpeg, gif, png, svg ]
+        types_or: [ jpeg, gif, png, svg ]
         entry: image_optim
       - id: slim-lint
         language: script
