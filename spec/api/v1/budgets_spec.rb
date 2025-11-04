@@ -146,7 +146,7 @@ RSpec.describe Api::V1::Budgets do
   end
 
   def initial_budget
-    @initial_budget ||= Account::Budget.create_new(stable:, description: "Opening Balance", amount: 250_000)
+    @initial_budget ||= Account::Budget.create(stable:, description: "Opening Balance", amount: 250_000, balance: 250_000)
   end
 end
 

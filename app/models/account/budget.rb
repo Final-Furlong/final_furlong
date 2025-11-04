@@ -27,20 +27,6 @@ module Account
     scope :debit, -> { where(amount: ...0) }
     scope :with_desc, ->(value) { where("description ILIKE ?", "%#{value}%") }
 
-    def self.create_new(stable:, description:, amount:, date: nil, legacy_budget_id: nil, legacy_stable_id: nil)
-      previous_budget = where(stable:).recent.last
-      attrs = {
-        stable:,
-        description:,
-        amount:,
-        balance: (previous_budget&.balance || 0) + amount
-      }
-      attrs[:created_at] = date if date.present?
-      attrs[:legacy_budget_id] = legacy_budget_id if legacy_budget_id.present?
-      attrs[:legacy_stable_id] = legacy_stable_id if legacy_stable_id.present?
-      create!(attrs)
-    end
-
     def self.budget_category(category)
       case category.to_s.downcase
       when "sold_or_bought"
