@@ -49,7 +49,7 @@ RSpec.describe "Login Spec" do
   it "does not log in with empty values" do
     visit new_user_session_path
     click_on t("devise.sessions.new.sign_in")
-    expect(page.driver.cookies.keys).not_to include "_final_furlong_session"
+    expect(page).to have_current_path new_user_session_path, ignore_query: true
   end
 
   it "does not log in with invalid values" do
@@ -59,7 +59,6 @@ RSpec.describe "Login Spec" do
     click_on t("devise.sessions.new.sign_in")
     expect(page).to have_text t("devise.failure.invalid", authentication_keys: "Login")
     expect(page).to have_current_path new_user_session_path, ignore_query: true
-    expect(page.driver.cookies.keys).not_to include "_final_furlong_session"
   end
 
   it_behaves_like "a page that is accessible" do

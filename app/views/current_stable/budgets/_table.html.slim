@@ -23,7 +23,24 @@
               .stat-desc= dashboard.total_diff.positive? ? t(".total_gained") : t(".total_lost")
         span.w-full.my-2.hint class="sm:flex sm:justify-center sm:items-center"
           = t(".balance_disclaimer")
-      .mx-auto.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100.w-full
+      / mobile cards
+      .mx-auto.mt-2 class="sm:hidden"
+        - dashboard.transactions.each do |transaction|
+          .card.card-border.bg-base-100.w-full.px-2.rounded-none
+            .card-body.p-0.rounded-none
+              .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+                input type="checkbox"
+                .collapse-title.font-semibold
+                  span= l(transaction.created_at.to_date)
+                  span.float-right class=('text-error' if transaction.amount.negative?)
+                    = Game::MoneyFormatter.new(transaction.amount).to_s
+                .collapse-content.text-sm.border-t-1.border-base-content/40
+                  p.mt-2= transaction.description
+                  div.mt-2
+                    span= Account::Budget.human_attribute_name("balance")
+                    span.float-right= Game::MoneyFormatter.new(transaction.balance).to_s
+      / desktop table
+      .mx-auto.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100.w-full.hidden class="sm:block"
         .table-responsive-md
           table.table.table-responsive.table-zebra
             thead

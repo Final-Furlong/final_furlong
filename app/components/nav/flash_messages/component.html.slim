@@ -1,16 +1,7 @@
-.relative.z-10.flex.flex-row.justify-between.max-w-sm.px-3.py-2.my-2.border.rounded-lg.shadow-xl[
-  class="first:mt-0 last:mb-0 ring-1 ring-offset-0 transition gap-3 #{alert_classes}"
-  role="alert"
-  id="alert-#{index}"
-  data=flash_message_controller_data
-]
+div.transition.transform.duration-1000 data=controller_data class=alert_classes
   i.fa class=icon_class
-  .ms-3.text-sm.font-medium= message
-  button.ms-auto.inline-flex.items-center.justify-center.h-8.w-8.rounded-lg[
-    type="button"
-    class="-mx-1.5 -my-1.5 p-1.5 focus:ring-2 #{close_button_classes}"
-    data-dismiss-target="#alert-#{index}"
-    aria-label=t("common.actions.close")
-  ]
+  span= message
+
+  button.float-right data-action="notification#hide"
     span.sr-only= t("common.actions.close")
     i.fa.fa-xmark

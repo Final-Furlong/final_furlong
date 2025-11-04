@@ -24,9 +24,11 @@ CI.run do
     step "Performance: Active Record Doctor", "bundle exec rake active_record_doctor"
   end
 
-  unless limited_ci
-    step "Tests: Rails", "bin/rspec"
-    step "Tests: Seeds", "env RAILS_ENV=test bin/rails db:seed:replant"
+  if success?
+    unless limited_ci
+      step "Tests: Rails", "bin/rspec"
+      step "Tests: Seeds", "env RAILS_ENV=test bin/rails db:seed:replant"
+    end
   end
 
   # Optional: set a green GitHub commit status to unblock PR merge.

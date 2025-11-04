@@ -6,26 +6,25 @@ module Nav
 
       attr_reader :type, :message, :index, :dismiss_flash_timeout
 
-      def initialize(type:, message:, index: 0)
+      def initialize(type:, message:, delay: DEFAULT_TIMEOUT)
         super()
         @type = type.to_s
         @message = message
-        @index = 0
-        @dismiss_flash_timeout = (@type != "alert") ? DEFAULT_TIMEOUT : NO_DISMISS
+        @dismiss_flash_timeout = (@type != "alert") ? delay : NO_DISMISS
       end
 
       def alert_classes
         case type
         when "alert"
-          "text-red-800 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:ring-gray-200 dark:border-gray-900"
+          "alert alert-error"
         when "info"
-          "text-blue-800 border-blue-300 bg-blue-50 dark:text-blue-400 dark:bg-gray-800 dark:ring-gray-200 dark:border-gray-900"
+          "alert alert-info"
         when "success"
-          "text-green-800 border-green-300 bg-green-50 dark:text-green-400 dark:bg-gray-800 dark:ring-gray-200 dark:border-gray-900"
+          "alert alert-success"
         when "notice"
-          "text-yellow-800 border-yellow-300 bg-yellow-50 dark:text-yellow-300 dark:bg-gray-800 dark:ring-gray-200 dark:border-gray-900"
+          "alert alert-warning"
         else
-          "text-gray-800 dark:text-gray-300"
+          "alert"
         end
       end
 
@@ -44,27 +43,20 @@ module Nav
         end
       end
 
-      def close_button_classes
-        case type
-        when "alert"
-          "bg-red-50 text-red-500 focus:ring-red-400 p-1.5 hover:bg-red-200 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
-        when "info"
-          "bg-blue-50 text-blue-500 focus:ring-blue-400 hover:bg-blue-200 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700"
-        when "success"
-          "bg-green-50 text-green-500 focus:ring-green-400 hover:bg-green-200 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
-        when "notice"
-          "bg-yellow-50 text-yellow-500 focus:ring-yellow-400 hover:bg-yellow-200 dark:bg-gray-800 dark:text-yellow-300 dark:hover:bg-gray-700"
+      def controller_data
+        attrs = { controller: "notification" }
+        if dismiss_flash_timeout.positive?
+          attrs.merge!(
+            "notification-delay-value": DEFAULT_TIMEOUT * 1000,
+            "transition-enter-from": "opacity-0 translate-x-6",
+            "transition-enter-to": "opacity-100 translate-x-0",
+            "transition-leave-from": "opacity-100 translate-x-0",
+            "transition-leave-to": "opacity-0 translate-x-6"
+          )
         else
-          "bg-gray-50 text-gray-500 focus:ring-gray-400 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"
+          attrs[:"notification-dismiss-value"] = false
         end
-      end
-
-      def flash_message_controller_data
-        {
-          controller: "flash-messages",
-          "flash-messages-target": "flash",
-          "flash-messages-dismiss-flash-timeout-value": dismiss_flash_timeout
-        }
+        attrs
       end
     end
   end

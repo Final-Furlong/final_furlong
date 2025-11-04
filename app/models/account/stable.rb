@@ -24,6 +24,8 @@ module Account
     validates :name, :miles_from_track, presence: true
     validates :name, uniqueness: { case_sensitive: false }
 
+    scope :with_name, ->(name) { where("#{arel_table.name}.name ILIKE ?", "%#{name}%") }
+
     def self.ransackable_attributes(_auth_object = nil)
       %w[bred_horses_count description horses_count name unborn_horses_count]
     end

@@ -6,7 +6,8 @@ devise_for :users, class_name: "Account::User", path: "", path_names: {
   confirmation: "confirm-account",
   unlock: "unlock"
 }, controllers: {
-  registrations: "users/registrations"
+  registrations: "users/registrations",
+  sessions: "users/sessions"
 }
 
 get "/activation_required", to: "pages#activation", as: :activation
