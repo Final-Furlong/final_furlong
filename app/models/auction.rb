@@ -16,6 +16,7 @@ class Auction < ApplicationRecord
 
   after_commit :schedule_deletion, on: %i[create update]
   after_commit :unschedule_deletion, on: :destroy
+  after_commit :unconsign_legacy_horses, on: :destroy
 
   validates :start_time, :end_time, :hours_until_sold, :title, presence: true
   validates :title, length: { in: 10..500 }
@@ -56,6 +57,13 @@ class Auction < ApplicationRecord
 
   def unschedule_deletion
     deletion_job.destroy_all if deletion_job.exists?
+  end
+
+  def unconsign_legacy_horses
+    Legacy::Horse.where(consigned_auction_id: id).find_each do |horse|
+      horse.consigned_auction_id = nil
+      horse.save(validate: false)
+    end
   end
 
   def deletion_job

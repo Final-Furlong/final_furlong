@@ -105,7 +105,8 @@ module Auctions
           Owner: buyer.legacy_id,
           SalePrice: -1,
           SellTo: 0,
-          can_be_sold: 0
+          can_be_sold: 0,
+          consigned_auction_id: nil
         )
         Legacy::ViewTrainingSchedules.where(horse_id: horse.legacy_id).update(
           training_schedule_id: nil, training_schedule_horse_id: nil, owner: buyer.legacy_id
