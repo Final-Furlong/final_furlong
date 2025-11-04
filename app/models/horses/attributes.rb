@@ -28,7 +28,7 @@ end
 # Database name: primary
 #
 #  id                                                    :bigint           not null, primary key
-#  breeding_record(none, bronze, silver, gold, platinum) :enum             default("None"), not null
+#  breeding_record(none, bronze, silver, gold, platinum) :enum             default("none"), not null
 #  dosage_text                                           :string
 #  string                                                :string
 #  title                                                 :string
