@@ -150,6 +150,13 @@ RSpec.describe Auction do
         end.to change(SolidQueue::Job, :count).by(-1)
         expect(SolidQueue::Job.exists?(id: last_job.id)).to be false
       end
+
+      it "updates consignment id for legacy horses" do
+        auction = create(:auction)
+        legacy_horse = create(:legacy_horse, consigned_auction_id: auction.id)
+        auction.destroy
+        expect(legacy_horse.reload.consigned_auction_id).to be_nil
+      end
     end
   end
 

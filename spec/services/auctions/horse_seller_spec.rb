@@ -84,7 +84,8 @@ RSpec.describe Auctions::HorseSeller do
         Owner: buyer.legacy_id,
         SalePrice: -1,
         SellTo: 0,
-        can_be_sold: false
+        can_be_sold: false,
+        consigned_auction_id: nil
       )
     end
 
@@ -559,7 +560,7 @@ RSpec.describe Auctions::HorseSeller do
     @legacy_stable_buyer = create(:legacy_user)
     @bid.bidder.update(legacy_id: legacy_stable_buyer.ID)
     @legacy_stable_seller = create(:legacy_user)
-    @legacy_horse = create(:legacy_horse, Owner: legacy_stable_seller)
+    @legacy_horse = create(:legacy_horse, Owner: legacy_stable_seller, consignd_auction_id: auction.id)
     @horse = @auction_horse.horse
     @buyer = bid.bidder
     @seller = horse.owner

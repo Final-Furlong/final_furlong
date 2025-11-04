@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :legacy_horse, class: "Legacy::Horse" do
     Breeder factory: :legacy_user
-    ID { Faker::Number.number(digits: 5) }
     can_be_sold { false }
     last_modified { Time.current }
     rails_id { SecureRandom.uuid }
