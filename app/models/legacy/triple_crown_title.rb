@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_tcbs_titles
+# Database name: legacy
 #
 #  ID    :integer          not null, primary key
 #  Title :string(255)      not null

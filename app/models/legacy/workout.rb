@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_workouts
+# Database name: legacy
 #
 #  Activity1  :integer          not null
 #  Activity2  :integer

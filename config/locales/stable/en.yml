@@ -6,6 +6,51 @@ en:
         last_online: 'Last online at: %{date}'
         no_description: No description
   current_stable:
+    budgets:
+      index:
+        available_balance: 'Available: %{amount}'
+        category:
+          activity_points: Activity Points
+          all_breeding: All Breeding
+          all_nominations: All Nominations
+          all_racing: All Racing
+          boarded_horse: Boarded Horse
+          bought_horse: Bought Horses
+          bred_mare: Bred Mares
+          bred_stud: Bred Studs
+          claimed_horse: Claimed Horses
+          color_war: Color War
+          consigned_auction: Consigned To Auction
+          donation: Donated To FF
+          entered_race: Entered Races
+          game_activity: Game Activity
+          jockey_fee: Jockey Fees
+          leased_horse: Leased Horses
+          misc: Misc
+          nominated_breeders_series: Nominated Breeders' Series
+          nominated_racehorse: Nominated Racehorses
+          nominated_stallion: Nominated Stallions
+          race_winnings: Won Races
+          shipped_horse: Shipped Horses
+          sold_horse: Sold Horses
+          sold_or_bought: Sold/Bought/Leased
+        no_transactions: Could not find any transactions.
+        title: Budget
+        title_with_available: 'Budget: (%{total}, %{available} available)'
+        title_with_total: 'Budget: (%{total})'
+        total_balance: 'Total: %{amount}'
+      search:
+        category: Category
+        date_from: Date From
+        date_to: Date To
+        description: Description
+        description_hint: Quotes ("search term") will search a phrase
+      table:
+        balance_disclaimer: Balance shown is at the time of the transaction, it will not reflect the amounts displayed if you are searching/sorting.
+        total_earned: Total Money Earned
+        total_gained: Total Money Gained
+        total_lost: Total Money Lost
+        total_spent: Total Money Spent
     horses:
       index:
         title: Horses

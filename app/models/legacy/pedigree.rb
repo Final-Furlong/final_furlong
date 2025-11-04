@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: ff_pedigrees
+# Database name: legacy
 #
 #  id        :integer          not null, primary key
 #  dam       :string(18)       not null

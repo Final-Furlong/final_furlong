@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_futureentries
+# Database name: legacy
 #
 #  AutoEnter    :boolean          default(FALSE), not null
 #  AutoShip     :boolean          default(FALSE), not null

@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_sctrials
+# Database name: legacy
 #
 #  Comment   :integer          not null
 #  Condition :integer          not null, indexed => [Horse, Jockey, Location]

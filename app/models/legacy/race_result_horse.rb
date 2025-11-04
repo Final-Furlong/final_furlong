@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_raceresults_oof
+# Database name: legacy
 #
 #  Equip     :integer          indexed
 #  Fractions :string(255)

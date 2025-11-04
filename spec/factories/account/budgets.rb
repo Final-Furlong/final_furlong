@@ -12,6 +12,7 @@ end
 # == Schema Information
 #
 # Table name: budget_transactions
+# Database name: primary
 #
 #  id                                                                                                                                                                                           :bigint           not null, primary key
 #  activity_type(sold_horse, bought_horse, bred_mare, bred_stud, claimed_horse, entered_race, shipped_horse, race_winnings, jockey_fee, nominated_racehorse, nominated_stallion, boarded_horse) :enum             indexed
@@ -22,6 +23,7 @@ end
 #  updated_at                                                                                                                                                                                   :datetime         not null
 #  legacy_budget_id                                                                                                                                                                             :integer          default(0), indexed
 #  legacy_stable_id                                                                                                                                                                             :integer          default(0), indexed
+#  old_id                                                                                                                                                                                       :uuid             indexed
 #  stable_id                                                                                                                                                                                    :bigint           not null, indexed
 #
 # Indexes

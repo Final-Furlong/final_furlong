@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_skins
+# Database name: legacy
 #
 #  Active          :boolean          default(FALSE), not null
 #  BackgroundImage :string(200)

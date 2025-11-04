@@ -1,20 +1,44 @@
-.navbar.bg-base-100.shadow-sm.border-primary.border-b-1#breadcrumbs
-  .flex-1
-    .breadcrumbs aria-label="breadcrumb"
-      ul.inline-flex
-        - styled_links.each do |link|
-          li
-            - if link[:last]
-              span= link[:name]
+#breadcrumbs
+  - if styled_mobile_links.any?
+    .navbar.bg-base-100.shadow-sm.border-primary.border-b-1 class="sm:hidden"
+      .flex-1
+        .breadcrumbs aria-label="breadcrumb"
+          ul.inline-flex
+            - styled_mobile_links.each do |link|
+              - if link[:last] || link[:title]
+                li class=link[:classes]
+                  = link[:name]
+              - else
+                li
+                  = link_to link[:name], link[:href], class: link[:classes]
+            - if styled_mobile_links.empty? && @title.present?
+              li
+                h1.font-bold
+                  = @title
+          - if badge
+            = render badge
+      .flex-none#breadcrumb-actions
+        - actions&.each do |action|
+          - if allowed_action?(action)
+            = render_action(action, regular_classes(action))
+  .navbar.bg-base-100.shadow-sm.border-primary.border-b-1 class=("hidden sm:block" if styled_mobile_links.any?)
+    .flex-1
+      .breadcrumbs aria-label="breadcrumb"
+        ul.inline-flex
+          - styled_links.each do |link|
+            - if link[:last] || link[:title]
+              li class=link[:classes]
+                = link[:name]
             - else
-              = link_to link[:name], link[:href], class: link[:classes]
-        - if styled_links.empty? && @title.present?
-          li
-            h1.font-bold
-              = @title
-      - if badge
-        = render badge
-  .flex-none#breadcrumb-actions
-    - actions&.each do |action|
-      - if allowed_action?(action)
-        = render_action(action, regular_classes(action))
+              li
+                = link_to link[:name], link[:href], class: link[:classes]
+          - if styled_links.empty? && @title.present?
+            li
+              h1.font-bold
+                = @title
+        - if badge
+          = render badge
+    .flex-none#breadcrumb-actions
+      - actions&.each do |action|
+        - if allowed_action?(action)
+          = render_action(action, regular_classes(action))

@@ -38,6 +38,7 @@ end
 # == Schema Information
 #
 # Table name: race_schedules
+# Database name: primary
 #
 #  id                                                                                                             :bigint           not null, primary key
 #  age(2, 2+, 3, 3+, 4, 4+)                                                                                       :enum             default("2"), not null, indexed
@@ -55,6 +56,7 @@ end
 #  race_type(maiden, claiming, starter_allowance, nw1_allowance, nw2_allowance, nw3_allowance, allowance, stakes) :enum             default("maiden"), not null, indexed
 #  created_at                                                                                                     :datetime         not null
 #  updated_at                                                                                                     :datetime         not null
+#  old_id                                                                                                         :uuid             indexed
 #  surface_id                                                                                                     :bigint           not null, indexed
 #
 # Indexes

@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_colorwar
+# Database name: legacy
 #
 #  Activity :string(255)
 #  ID       :integer          not null, primary key

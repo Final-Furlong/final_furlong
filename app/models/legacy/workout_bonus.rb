@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_workout_bonuses
+# Database name: legacy
 #
 #  Bonus :integer          not null
 #  Horse :integer          default(0), not null

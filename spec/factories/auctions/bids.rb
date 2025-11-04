@@ -18,6 +18,7 @@ end
 # == Schema Information
 #
 # Table name: auction_bids
+# Database name: primary
 #
 #  id               :bigint           not null, primary key
 #  comment          :text
@@ -29,6 +30,7 @@ end
 #  auction_id       :bigint           not null, indexed
 #  bidder_id        :bigint           not null, indexed
 #  horse_id         :bigint           not null, indexed
+#  old_id           :uuid             indexed
 #
 # Indexes
 #

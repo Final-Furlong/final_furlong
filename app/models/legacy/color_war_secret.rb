@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_cw_secrets
+# Database name: legacy
 #
 #  active     :boolean          not null
 #  guessed    :boolean          not null

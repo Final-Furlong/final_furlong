@@ -14,6 +14,7 @@ end
 # == Schema Information
 #
 # Table name: ff_races
+# Database name: legacy
 #
 #  Age      :integer          not null, indexed
 #  Date     :date             not null, indexed

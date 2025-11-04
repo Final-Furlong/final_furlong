@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_horse_jockeys
+# Database name: legacy
 #
 #  Happy  :integer          default(0), not null
 #  Horse  :integer          default(0), not null, indexed => [Jockey]

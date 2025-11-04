@@ -15,6 +15,7 @@ end
 # == Schema Information
 #
 # Table name: activity_points
+# Database name: primary
 #
 #  id                                                                                       :bigint           not null, primary key
 #  activity_type(color_war, auction, selling, buying, breeding, claiming, entering, redeem) :enum             not null, indexed
@@ -24,6 +25,7 @@ end
 #  updated_at                                                                               :datetime         not null
 #  budget_id                                                                                :bigint           indexed
 #  legacy_stable_id                                                                         :integer          default(0), not null, indexed
+#  old_budget_id                                                                            :uuid             indexed
 #  stable_id                                                                                :bigint           not null, indexed
 #
 # Indexes

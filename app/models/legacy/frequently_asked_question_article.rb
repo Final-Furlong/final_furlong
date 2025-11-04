@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_faq_articles
+# Database name: legacy
 #
 #  Approved    :string(1)        default("N")
 #  Articledata :text(4294967295)

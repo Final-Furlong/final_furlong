@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_jockey_records
+# Database name: legacy
 #
 #  Earnings  :integer          default(0), not null
 #  Fourths   :integer          default(0), not null

@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_jockey_instructions
+# Database name: legacy
 #
 #  ID           :integer          not null, primary key
 #  Instructions :string(255)      not null

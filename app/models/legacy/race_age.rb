@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_race_ages
+# Database name: legacy
 #
 #  Age :string(10)       not null
 #  ID  :integer          not null, primary key

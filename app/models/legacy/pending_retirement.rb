@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: pending_retirements
+# Database name: legacy
 #
 #  id         :integer          unsigned, not null, primary key
 #  created_at :datetime

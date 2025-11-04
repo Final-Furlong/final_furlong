@@ -1,7 +1,39 @@
 {
   "ignored_warnings": [
-
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "1eb0580255e50011422bbdb892b48c0b0535a8ee67670430a4b371b36352991e",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/current_stable/budgets/index.html.slim",
+      "line": 29,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "Dashboard::Budget.new(:query => policy_scope(Account::Budget).ransack(params[:q]), :transactions => transactions, :pagy => pagy, :query_result => policy_scope(Account::Budget).ransack(params[:q]).result).pagy.series_nav(:slots => (mobile_variant? ? (3) : (9)))",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "CurrentStable::BudgetsController",
+          "method": "index",
+          "line": 9,
+          "file": "app/controllers/current_stable/budgets_controller.rb",
+          "rendered": {
+            "name": "current_stable/budgets/index",
+            "file": "app/views/current_stable/budgets/index.html.slim"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "current_stable/budgets/index"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
+    }
   ],
-  "updated": "2024-03-06 19:29:10 +0000",
-  "brakeman_version": "6.1.2"
+  "brakeman_version": "7.1.0"
 }

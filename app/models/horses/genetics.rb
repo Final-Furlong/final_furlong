@@ -11,12 +11,14 @@ end
 # == Schema Information
 #
 # Table name: horse_genetics
+# Database name: primary
 #
 #  id         :bigint           not null, primary key
 #  allele     :string(32)       not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  horse_id   :bigint           not null, uniquely indexed
+#  old_id     :uuid             indexed
 #
 # Indexes
 #

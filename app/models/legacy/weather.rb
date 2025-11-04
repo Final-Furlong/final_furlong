@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_weather
+# Database name: legacy
 #
 #  Condition :integer          not null
 #  Day       :integer          not null

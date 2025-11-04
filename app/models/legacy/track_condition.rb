@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_track_conditions
+# Database name: legacy
 #
 #  Condition :string(255)      not null
 #  ID        :integer          not null, primary key

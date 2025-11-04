@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_raceresults
+# Database name: legacy
 #
 #  Age       :integer          default(0), not null, indexed
 #  Condition :integer          default(0), not null, indexed

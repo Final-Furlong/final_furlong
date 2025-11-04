@@ -10,6 +10,7 @@ end
 # == Schema Information
 #
 # Table name: racetracks
+# Database name: primary
 #
 #  id          :bigint           not null, primary key
 #  latitude    :decimal(, )      not null

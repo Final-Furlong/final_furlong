@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_odds
+# Database name: legacy
 #
 #  Dec  :float(53)        not null
 #  ID   :integer          not null, primary key

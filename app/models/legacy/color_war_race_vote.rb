@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_cw_race_votes
+# Database name: legacy
 #
 #  Date   :datetime         not null
 #  Entry  :integer          not null

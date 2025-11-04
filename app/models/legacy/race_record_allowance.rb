@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: ff_racerecords_allowance
+# Database name: legacy
 #
 #  id    :integer          not null, primary key
 #  horse :integer          default(0), not null, uniquely indexed

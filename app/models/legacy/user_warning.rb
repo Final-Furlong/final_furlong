@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_userwarnings
+# Database name: legacy
 #
 #  DateFulfilled :date
 #  DateGiven     :date

@@ -1,0 +1,13 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: current_stable.name, href: current_stable_path },
+          { name: @horse.name, href: "#" }])
+.header
+  h1= @horse.name
+
+.name
+  strong= Horses::Horse.human_attribute_name(:name)
+  = @horse.name
+
+.status
+  strong= Horses::Horse.human_attribute_name(:status)
+  = @horse.status

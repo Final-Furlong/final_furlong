@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_futureshipping
+# Database name: legacy
 #
 #  Date                         :date             not null, uniquely indexed => [Horse, ToTrack]
 #  Horse                        :integer          not null, uniquely indexed => [ToTrack, Date]

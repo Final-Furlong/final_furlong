@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_nominations
+# Database name: legacy
 #
 #  Horse :integer          default(0), not null, indexed => [Race], uniquely indexed => [Race, Year]
 #  ID    :integer          not null, primary key

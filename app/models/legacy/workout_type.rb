@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_workout_types
+# Database name: legacy
 #
 #  ID   :integer          not null, primary key
 #  Type :string(255)      not null

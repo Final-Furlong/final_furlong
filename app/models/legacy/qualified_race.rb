@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: ff_qual_races
+# Database name: legacy
 #
 #  id      :integer          not null, primary key
 #  race_id :integer          not null

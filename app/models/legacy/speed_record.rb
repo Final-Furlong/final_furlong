@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_speedrecords
+# Database name: legacy
 #
 #  Distance :float(53)        indexed
 #  Gender   :string(50)       indexed

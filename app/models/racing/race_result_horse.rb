@@ -30,6 +30,7 @@ end
 # == Schema Information
 #
 # Table name: race_result_horses
+# Database name: primary
 #
 #  id              :bigint           not null, primary key
 #  equipment       :integer          default(0), not null
@@ -46,6 +47,9 @@ end
 #  jockey_id       :bigint           indexed
 #  legacy_horse_id :integer          default(0), not null, indexed
 #  odd_id          :bigint           indexed
+#  old_id          :uuid             indexed
+#  old_jockey_id   :uuid             indexed
+#  old_odd_id      :uuid             indexed
 #  race_id         :bigint           not null, indexed
 #
 # Indexes

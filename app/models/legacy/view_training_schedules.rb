@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: horse_training_schedules_mv
+# Database name: legacy
 #
 #  age                        :integer
 #  default_equipment          :string(20)

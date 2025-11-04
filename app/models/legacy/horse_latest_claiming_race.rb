@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: ff_horse_latest_claiming_race
+# Database name: legacy
 #
 #  id      :integer          not null, primary key
 #  date    :date             not null

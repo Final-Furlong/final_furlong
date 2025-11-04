@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_donations
+# Database name: legacy
 #
 #  amount  :float(24)        not null
 #  date    :date             not null

@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_tcbs_winners
+# Database name: legacy
 #
 #  ID     :integer          not null, primary key
 #  TCBS   :string(2)        not null

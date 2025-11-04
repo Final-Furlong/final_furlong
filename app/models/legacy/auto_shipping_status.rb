@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: auto_shipping_status
+# Database name: legacy
 #
 #  id        :integer          not null, primary key
 #  location  :integer          not null

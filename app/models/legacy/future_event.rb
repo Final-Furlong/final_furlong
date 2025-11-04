@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_futureevents
+# Database name: legacy
 #
 #  Date  :date             indexed => [Event]
 #  Event :string(255)      indexed => [Date]

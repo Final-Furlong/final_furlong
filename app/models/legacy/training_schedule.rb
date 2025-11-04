@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_training_schedules
+# Database name: legacy
 #
 #  Description :string(255)
 #  Horse       :integer          indexed

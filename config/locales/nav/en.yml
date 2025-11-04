@@ -27,6 +27,7 @@ en:
       search_aria_label: Search
       search_placeholder: Search...
       stable:
+        budget: Budget
         horses: My horses
         racing_divider: Racing
         training_schedules: Training Schedules

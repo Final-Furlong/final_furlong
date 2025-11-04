@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_cw_scores
+# Database name: legacy
 #
 #  Activity    :integer          not null
 #  Date        :datetime         not null

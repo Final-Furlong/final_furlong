@@ -54,6 +54,7 @@ end
 # == Schema Information
 #
 # Table name: ff_horses
+# Database name: legacy
 #
 #  Acceleration            :integer
 #  Allele                  :string(50)

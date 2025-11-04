@@ -48,6 +48,7 @@ end
 # == Schema Information
 #
 # Table name: auction_consignment_configs
+# Database name: primary
 #
 #  id             :bigint           not null, primary key
 #  horse_type     :string           not null
@@ -58,6 +59,7 @@ end
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  auction_id     :bigint           not null, indexed
+#  old_id         :uuid             indexed
 #
 # Indexes
 #

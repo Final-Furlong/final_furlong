@@ -16,6 +16,7 @@ end
 # == Schema Information
 #
 # Table name: activations
+# Database name: primary
 #
 #  id           :bigint           not null, primary key
 #  activated_at :datetime

@@ -1,0 +1,42 @@
+/# locals: (dashboard:)
+- query = dashboard.query
+= turbo_frame_tag "stable-budget-search" do
+  .budget-search-results
+    - if dashboard.transactions.empty?
+      h4.text-muted.text-center.my-2
+        small= t("current_stable.budgets.index.no_transactions")
+    - else
+      .w-full
+        .text-center
+          .stats.border.border-neutral-content/50.shadow.stats-vertical class="md:stats-horizontal"
+            .stat
+              .stat-value.text-success.text-sm class="md:text-xl lg:text-3xl"
+                = Game::MoneyFormatter.new(dashboard.total_positive).to_s
+              .stat-desc= t(".total_earned")
+            .stat
+              .stat-value.text-error.text-sm class="md:text-xl lg:text-3xl"
+                = Game::MoneyFormatter.new(dashboard.total_negative).to_s
+              .stat-desc= t(".total_spent")
+            .stat
+              .stat-value.text-sm class=(dashboard.total_diff.positive? ? 'text-success' : 'text-error') class="md:text-xl lg:text-3xl"
+                = Game::MoneyFormatter.new(dashboard.total_diff).to_s
+              .stat-desc= dashboard.total_diff.positive? ? t(".total_gained") : t(".total_lost")
+        span.w-full.my-2.hint class="sm:flex sm:justify-center sm:items-center"
+          = t(".balance_disclaimer")
+      .mx-auto.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100.w-full
+        .table-responsive-md
+          table.table.table-responsive.table-zebra
+            thead
+              tr
+                th= sort_link query, :created_at, Account::Budget.human_attribute_name("created_at")
+                th= sort_link query, :description, Account::Budget.human_attribute_name("description")
+                th= sort_link query, :amount, Account::Budget.human_attribute_name("amount")
+                th= sort_link query, :balance, Account::Budget.human_attribute_name("balance")
+              tbody.table-group-divider
+                - dashboard.transactions.each do |transaction|
+                  tr
+                    td.wb-break-all= l(transaction.created_at.to_date)
+                    td.wb-break-all= transaction.description
+                    td class=('text-error' if transaction.amount.negative?)
+                      = Game::MoneyFormatter.new(transaction.amount).to_s
+                    td= Game::MoneyFormatter.new(transaction.balance).to_s

@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_stablerrs
+# Database name: legacy
 #
 #  Fourth       :integer          default(0), not null
 #  ID           :integer          not null, primary key

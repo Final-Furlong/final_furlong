@@ -23,6 +23,7 @@ end
 # == Schema Information
 #
 # Table name: annual_race_records
+# Database name: primary
 #
 #  earnings       :decimal(, )
 #  fourths        :bigint
@@ -37,6 +38,6 @@ end
 #  thirds         :bigint
 #  wins           :bigint
 #  year           :integer          primary key
-#  horse_id       :uuid             primary key
+#  horse_id       :bigint           primary key
 #
 

@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_breedings
+# Database name: legacy
 #
 #  CustomFee    :integer          default(0)
 #  Date         :date

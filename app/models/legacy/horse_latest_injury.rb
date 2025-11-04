@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_horse_latest_injuries
+# Database name: legacy
 #
 #  Date   :date             not null, indexed, indexed => [Horse], indexed => [Horse]
 #  Horse  :integer          not null, uniquely indexed, indexed => [Injury], indexed => [Date], indexed => [Date]

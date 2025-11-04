@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_claims
+# Database name: legacy
 #
 #  Claimer :integer          indexed, uniquely indexed => [RaceDay]
 #  Date    :date

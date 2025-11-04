@@ -38,6 +38,7 @@ end
 # == Schema Information
 #
 # Table name: ff_users
+# Database name: legacy
 #
 #  Admin              :boolean          default(FALSE), not null
 #  Approval           :boolean          default(FALSE), not null

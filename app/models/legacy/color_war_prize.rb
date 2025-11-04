@@ -7,6 +7,7 @@ end
 # == Schema Information
 #
 # Table name: ff_cw_prizes
+# Database name: legacy
 #
 #  id      :integer          not null, primary key
 #  type    :integer          not null

@@ -8,6 +8,7 @@ end
 # == Schema Information
 #
 # Table name: ff_track_weather
+# Database name: legacy
 #
 #  FFast :integer          not null
 #  FGood :integer          not null

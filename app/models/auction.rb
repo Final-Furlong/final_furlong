@@ -98,6 +98,7 @@ end
 # == Schema Information
 #
 # Table name: auctions
+# Database name: primary
 #
 #  id                            :bigint           not null, primary key
 #  broodmare_allowed             :boolean          default(FALSE), not null

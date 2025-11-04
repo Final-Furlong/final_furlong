@@ -11,12 +11,14 @@ end
 # == Schema Information
 #
 # Table name: race_odds
+# Database name: primary
 #
 #  id         :bigint           not null, primary key
 #  display    :string           not null, indexed
 #  value      :decimal(3, 1)    not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  old_id     :uuid             indexed
 #
 # Indexes
 #
