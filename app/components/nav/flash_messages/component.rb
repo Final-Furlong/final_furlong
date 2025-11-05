@@ -1,7 +1,7 @@
 module Nav
   module FlashMessages
     class Component < ViewComponent::Base
-      DEFAULT_TIMEOUT = 5
+      DEFAULT_TIMEOUT = 3
       NO_DISMISS = -1
 
       attr_reader :type, :message, :index, :dismiss_flash_timeout

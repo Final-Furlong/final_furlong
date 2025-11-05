@@ -1,18 +1,20 @@
-import { Application } from "@hotwired/stimulus"
 import Notification from "@stimulus-components/notification"
-
-const application = Application.start()
-application.register("notification", Notification)
 
 export default class extends Notification {
   static values = {
-    delay: { type: Number, default: 5000 },
+    delay: { type: Number, default: 3000 },
     hidden: { type: Boolean, default: false },
     dismiss: { type: Boolean, default: true }
   }
 
   connect() {
     super.connect()
+  }
+
+  async remove() {
+    await this.leave()
+
+    this.element.remove()
   }
 
   async hide() {
