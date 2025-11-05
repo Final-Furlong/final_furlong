@@ -1,5 +1,5 @@
-/# locals: (horse:)
-.mx-auto.overflow-x-auto.border.rounded-md.w-full class="sm:w-3/4"
+/# locals: (dashboard:, dob_year:)
+.hidden.mx-auto.overflow-x-auto.border.rounded-md.w-full class="sm:block sm:w-3/4"
   table.table.table-zebra
     thead
       tr.border-b-1 class="border-gray-400 dark:border-neutral-600"
@@ -13,13 +13,13 @@
         th= t(".points")
     tbody
       tr
-        - if horse.annual_race_records.empty?
+        - if dashboard.annual_race_records.empty?
           td colspan=8
             .text-secondary-content.text-center= t(".unraced")
         - else
-          - horse.annual_race_records.ordered.each do |record|
+          - dashboard.annual_race_records.each do |record|
             tr
-              td= t(".race_year", age: record.year - horse.date_of_birth.year, year: record.year)
+              td= t(".race_year", age: record.year - dob_year, year: record.year)
               td= record.starts_string
               td= record.wins_string
               td= record.seconds_string
@@ -27,8 +27,7 @@
               td= record.fourths_string
               td.text-right= record.earnings_string
               td.text-right= record.points
-    - record = horse.lifetime_race_record
-    - if record
+    - if (record = dashboard.lifetime_race_record)
       tfoot
         tr.border-t-1 class="border-gray-400 dark:border-neutral-600"
           td= t(".lifetime")

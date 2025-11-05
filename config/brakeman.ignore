@@ -7,7 +7,7 @@
       "check_name": "CrossSiteScripting",
       "message": "Unescaped model attribute",
       "file": "app/views/current_stable/budgets/index.html.slim",
-      "line": 29,
+      "line": 30,
       "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
       "code": "Dashboard::Budget.new(:query => policy_scope(Account::Budget).ransack(params[:q]), :transactions => transactions, :pagy => pagy, :query_result => policy_scope(Account::Budget).ransack(params[:q]).result).pagy.series_nav(:slots => (mobile_variant? ? (3) : (9)))",
       "render_path": [
@@ -33,7 +33,41 @@
         79
       ],
       "note": ""
+    },
+    {
+      "warning_type": "File Access",
+      "warning_code": 16,
+      "fingerprint": "9eaa72231454a57305995ab6275f173df5e5175c04d488af5d65927c5d6eda71",
+      "check_name": "FileAccess",
+      "message": "Model attribute used in file name",
+      "file": "app/views/horse/images/index.html.slim",
+      "line": 3,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "File.read(Horses::Horse.find(params[:id]).appearance.image(:max_width => 500, :max_height => 300))",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "Horse::ImagesController",
+          "method": "index",
+          "line": 8,
+          "file": "app/controllers/horse/images_controller.rb",
+          "rendered": {
+            "name": "horse/images/index",
+            "file": "app/views/horse/images/index.html.slim"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "horse/images/index"
+      },
+      "user_input": "Horses::Horse.find(params[:id]).appearance.image(:max_width => 500, :max_height => 300)",
+      "confidence": "Medium",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
     }
   ],
-  "brakeman_version": "7.1.0"
+  "brakeman_version": "7.1.1"
 }

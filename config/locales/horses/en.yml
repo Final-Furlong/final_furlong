@@ -3,6 +3,45 @@ en:
   horse:
     created: Created
     foal_due: Foal Due
+    foals:
+      dam_foal_list:
+        gender: Gender
+        name: Name
+        record: Record
+        sire: Sire
+        status: Status
+        year_of_birth: YOB
+      dam_foal_summary:
+        average_earnings: Ave. Earnings
+        breed_ranking: Breed Ranking
+        foals: Foals
+        millionaires: Millionaires
+        multi_stakes_winners: Mult. Stakes Winners
+        racers: Racers
+        stakes_winners: Stakes Winners
+        winners: Winners
+      dam_foals:
+        foals: Foals
+        summary: Summary
+      sire_foal_list:
+        dam: Dam
+        gender: Gender
+        name: Name
+        record: Record
+        status: Status
+        year_of_birth: YOB
+      sire_foal_summary:
+        average_earnings: Ave. Earnings
+        crops: Foal Crops
+        foals: Foals
+        millionaires: Millionaires
+        multi_stakes_winners: Mult. Stakes Winners
+        racers: Racers
+        stakes_winners: Stakes Winners
+        winners: Winners
+      sire_foals:
+        foals: Foals
+        summary: Summary
     height: "%{height}h"
     in_foal: in foal
     markings:
@@ -16,6 +55,30 @@ en:
       star_stripe_snip: star, stripe, snip
       stripe: stripe
       stripe_snip: stripe, snip
+    races:
+      desktop:
+        earnings: Earnings
+        fourths: Fourths
+        lifetime: Lifetime
+        points: Points
+        race_year: "%{age}yo (%{year})"
+        seconds: Seconds
+        starts: Starts
+        thirds: Thirds
+        unraced: Unraced
+        wins: Wins
+        year: Year
+      mobile:
+        earnings: Earnings
+        fourths: Fourths
+        lifetime: Lifetime
+        points: Points
+        race_year: "%{age}yo (%{year})"
+        seconds: Seconds
+        starts: Starts
+        thirds: Thirds
+        unraced: Unraced
+        wins: Wins
     titles:
       abbr:
         final_furlong: FFCh.
@@ -44,25 +107,6 @@ en:
       yearling: yearling
     unnamed: Unnamed
   horses:
-    dam_foal_list:
-      gender: Gender
-      name: Name
-      record: Record
-      sire: Sire
-      status: Status
-      year_of_birth: YOB
-    dam_foal_summary:
-      average_earnings: Ave. Earnings
-      breed_ranking: Breed Ranking
-      foals: Foals
-      millionaires: Millionaires
-      multi_stakes_winners: Mult. Stakes Winners
-      racers: Racers
-      stakes_winners: Stakes Winners
-      winners: Winners
-    dam_foals:
-      foals: Foals
-      summary: Summary
     info:
       breeder: Breeder
       breeding_record: Breeding Record
@@ -84,51 +128,13 @@ en:
       scheduled_race: Scheduled Race
       status: Status
       track_record: Track Record
-    races:
-      earnings: Earnings
-      fourths: Fourths
-      lifetime: Lifetime
-      points: Points
-      race_year: "%{age}yo (%{year})"
-      seconds: Seconds
-      starts: Starts
-      thirds: Thirds
-      unraced: Unraced
-      wins: Wins
-      year: Year
-    races_mobile:
-      earnings: Earnings
-      fourths: Fourths
-      lifetime: Lifetime
-      points: Points
-      race_year: "%{age}yo (%{year})"
-      seconds: Seconds
-      starts: Starts
-      thirds: Thirds
-      unraced: Unraced
-      wins: Wins
     show:
       foals: Foals
       info: Info
+      loading_foals: Loading foals...
+      loading_images: Loading images...
+      loading_pedigree: Loading pedigree...
+      loading_races: Loading race records...
       pedigree: Pedigree
       photos: Photos
       races: Races
-    sire_foal_list:
-      dam: Dam
-      gender: Gender
-      name: Name
-      record: Record
-      status: Status
-      year_of_birth: YOB
-    sire_foal_summary:
-      average_earnings: Ave. Earnings
-      crops: Foal Crops
-      foals: Foals
-      millionaires: Millionaires
-      multi_stakes_winners: Mult. Stakes Winners
-      racers: Racers
-      stakes_winners: Stakes Winners
-      winners: Winners
-    sire_foals:
-      foals: Foals
-      summary: Summary

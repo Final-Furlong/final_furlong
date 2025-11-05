@@ -1,4 +1,4 @@
-/# locals: (horse:)
+/# locals: (dashboard:)
 .mx-auto.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100.w-full[
   class="sm:w-3/4 dark:border-neutral-100"
 ]
@@ -12,25 +12,24 @@
         th.uppercase= t(".status")
         th.uppercase= t(".record")
     tbody
-      - horse.foals.born.order(date_of_birth: :asc).each do |foal|
+      - dashboard.born_foals.each do |foal|
         - pedigree = Horses::PedigreeDisplayService.new(foal)
         tr
           td= link_to (foal.name || t("horse.unnamed")), horse_path(foal)
           td= foal.date_of_birth.year
           td= foal.gender.titleize
-          td= pedigree.sire_display(tag: true)
+          td= pedigree.sire_display(tag: true, target: '_top')
           td= foal.status.titleize
           td
             - if foal.stillborn?
               em= t("horse.type.stillborn").titleize
             - else
               = foal.track_record
-      - unborn_foal = horse.foals.unborn.order(date_of_birth: :asc).first
-      - if unborn_foal
+      - if (unborn_foal = dashboard.unborn_foal)
         tr
           td= t("horse.in_foal").titleize
           td= unborn_foal.date_of_birth.year
           td= t("common.dash")
-          td= link_to unborn_foal.sire.name, horse_path(unborn_foal.sire)
+          td= link_to unborn_foal.sire.name, horse_path(unborn_foal.sire), target: '_top'
           td colspan=2
             = "due date here"

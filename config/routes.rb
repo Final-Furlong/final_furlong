@@ -14,6 +14,12 @@ Rails.application.routes.draw do
     member do
       get :image
       get :thumbnail
+      scope module: :horse do
+        resources :races, only: :index
+        resources :foals, only: :index
+        resources :images, only: :index
+        resource :pedigree, only: :show
+      end
     end
   end
 

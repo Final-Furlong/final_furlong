@@ -9,9 +9,9 @@ module Horses
       @routes = Rails.application.routes.url_helpers
     end
 
-    def sire_display(tag: false)
+    def sire_display(tag: false, target: nil)
       if horse.sire.present?
-        link_to horse.sire.name, routes.horse_path(horse.sire.slug)
+        link_to(horse.sire.name, routes.horse_path(horse.sire.slug), target:)
       else
         display_created(tag)
       end

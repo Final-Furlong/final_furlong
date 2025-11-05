@@ -74,7 +74,7 @@ class HorsesController < ApplicationController
   end
 
   def set_horse
-    @horse = Horses::Horse.find(params[:id])
+    @horse = Horses::Horse.includes(:horse_attributes).find(params[:id])
   end
 
   def set_horse_by_legacy_id

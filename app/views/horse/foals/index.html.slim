@@ -1,0 +1,5 @@
+= turbo_frame_tag "#{@dashboard.horse.slug}-foals" do
+  - if @dashboard.horse.female?
+    = render "dam_foals", dashboard: @dashboard
+  - else
+    = render "sire_foals", dashboard: @dashboard

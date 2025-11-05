@@ -110,6 +110,7 @@ group :development do
   gem "bcrypt_pbkdf" # required for capistran
   gem "benchmark"
   gem "better_errors"
+  gem "bullet"
   gem "byebug"
   gem "capistrano", "~> 3.17", require: false
   gem "capistrano-bundler", "~> 2.0", require: false
@@ -139,7 +140,6 @@ group :development, :test do
   gem "active_record_doctor"
   gem "binding_of_caller"
   gem "brakeman", require: false
-  gem "bullet"
   gem "bundler-audit", require: false
   gem "debug"
   gem "factory_bot-awesome_linter", require: false

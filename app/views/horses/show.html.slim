@@ -19,22 +19,30 @@
 
   input type="radio" name="horse" class="tab" aria-label=t(".pedigree") disabled=@horse.created?
   .tab-content.border-base-400.bg-base-100.p-2 class="sm:p-4"
-    = render "horses/pedigree", horse: @horse
+    = turbo_frame_tag "#{@horse.slug}-pedigree", src: pedigree_path(@horse), loading: "lazy" do
+      .w-full.text-center
+        p.mx-auto= t(".loading_pedigree")
+        .mt-2.mx-auto.skeleton.w-full
 
   input type="radio" name="horse" class="tab" aria-label=t(".races") disabled=!horse.lifetime_race_record
   .tab-content.border-base-400.bg-base-100.p-2 class="sm:p-4"
-    - if mobile_variant?
-      = render "horses/races_mobile", horse: @horse
-    - else
-      = render "horses/races", horse: @horse
+    = turbo_frame_tag "#{@horse.slug}-races", src: races_path(@horse), loading: "lazy" do
+      .w-full.text-center
+        p.mx-auto= t(".loading_races")
+        .mt-2.mx-auto.skeleton.h-32.w-32 class="sm:w-3/4"
 
   input[ type="radio" name="horse" class="tab" aria-label=t(".foals")
     disabled=(horse.foals.empty? && horse.stud_foals.empty?)
   ]
   .tab-content.border-base-400.bg-base-100.p-2 class="sm:p-4"
-    = render "horses/dam_foals", horse: @horse if horse.female?
-    = render "horses/sire_foals", horse: @horse if horse.male?
+    = turbo_frame_tag "#{@horse.slug}-foals", src: foals_path(@horse), loading: "lazy" do
+      .w-full.text-center
+        p.mx-auto= t(".loading_foals")
+        .mt-2.mx-auto.skeleton.w-full
 
-  input type="radio" name="horse" class="tab" aria-label=t(".photos")
+  input type="radio" name="horse" class="tab" aria-label=t(".photos") diabled=!horse.appearance.image.present?
   .tab-content.border-base-400.bg-base-100.p-2 class="sm:p-4"
-    = render "horses/photos", horse: @horse
+    = turbo_frame_tag "#{@horse.slug}-images", src: images_path(@horse), loading: "lazy" do
+      .w-full.text-center
+        p.mx-auto= t(".loading_images")
+        .mt-2.mx-auto.skeleton.w-full

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "~lightgallery/scss/lightgallery";
 
 /* stylelint-disable */
 @plugin "daisyui" {

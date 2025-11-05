@@ -1,5 +1,4 @@
-/# locals: (horse:)
-- unborn_foals = horse.stud_foals.unborn.order_by_dam.select(:date_of_birth, :dam_id)
+/# locals: (dashboard:)
 .m-2.mx-auto.overflow-x-auto.rounded-box.border.bg-base-100.w-full.border-base-content/70[
   class="sm:w-3/4 dark:border-neutral-100"
 ]
@@ -13,7 +12,7 @@
         th.uppercase= t(".status")
         th.uppercase= t(".record")
     tbody
-      - horse.stud_foals.born.includes(:dam).order_by_yob.order(name: :asc).each do |foal|
+      - dashboard.born_foals.each do |foal|
         - pedigree = Horses::PedigreeDisplayService.new(foal)
         tr
           td= link_to (foal.name || t("horse.unnamed")), horse_path(foal)
@@ -27,11 +26,12 @@
             - else
               = foal.track_record
 
-    - unborn_foals.each do |unborn_foal|
-      tr
-        td= t("horse.foal_due").titleize
-        td= unborn_foal.date_of_birth.year
-        td= t("common.dash")
-        td= link_to unborn_foal.dam.name, horse_path(unborn_foal.dam)
-        td colspan=2
-          = "due date here"
+    - unless dashboard.unborn_foals.blank?
+      - dashboard.unborn_foals.each do |unborn_foal|
+        tr
+          td= t("horse.foal_due").titleize
+          td= unborn_foal.date_of_birth.year
+          td= t("common.dash")
+          td= link_to unborn_foal.dam.name, horse_path(unborn_foal.dam)
+          td colspan=2
+            = "due date here"

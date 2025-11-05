@@ -1,4 +1,4 @@
-/# locals: (horse:)
+/# locals: (dashboard:)
 .m-2.mx-auto.overflow-x-auto.rounded-box.border.bg-base-100.w-full.border-base-content/30[
   class="sm:w-1/2"
 ]
@@ -11,10 +11,9 @@
           = t(".crops")
       tr.text-center
         td
-          = horse.stud_foals.born.count - horse.stud_foals.born.stillborn.count
+          = dashboard.born_foals_count - dashboard.stillborn_foals_count
         td
-          - crops = horse.stud_foals.born.group("TO_CHAR(date_of_birth, 'YYYY')").count
-          = crops.values.count
+          = dashboard.crops_count
       tr
         th.uppercase.text-center
           = t(".racers")

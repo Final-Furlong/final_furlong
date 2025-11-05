@@ -1,0 +1,5 @@
+= turbo_frame_tag "#{@horse.slug}-images" do
+  div data-controller="lightbox"
+    - data = Base64.encode64(File.read(@horse.appearance.image(max_width: 500, max_height: 300)))
+    - image_alt = @horse.slug.presence || @horse.public_id
+    img src="data:image/png;base64,#{data}" alt=image_alt width=500

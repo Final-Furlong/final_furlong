@@ -1,17 +1,16 @@
-/# locals: (horse:)
-.mx-auto.overflow-x-auto.border.rounded-md.w-full
-  - if horse.annual_race_records.empty?
+/# locals: (dashboard:, dob_year:)
+.mx-auto.overflow-x-auto.border.rounded-md.w-full class="sm:hidden"
+  - if dashboard.annual_race_records.empty?
     table.table
       thead
         td.text-secondary-content.text-center= t(".unraced")
   - else
-    .join.join-vertical.bg-base-100
+    .join.join-vertical.bg-base-100.w-full
       .collapse.collapse-arrow.join-item.border-base-300.border
         input type="radio" name="race-record" checked="checked"
         .collapse-title.font-semibold= t(".lifetime")
         .collapse-content.text-sm
-          - record = horse.lifetime_race_record
-          - if record
+          - if (record = dashboard.lifetime_race_record)
             table.table.table-zebra
               tbody
                 tr
@@ -36,8 +35,8 @@
                   td= t(".points")
                   td.text-right= record.points
 
-        - horse.annual_race_records.ordered.each do |record|
-          - description = t(".race_year", age: record.year - horse.date_of_birth.year, year: record.year)
+        - dashboard.annual_race_records.each do |record|
+          - description = t(".race_year", age: record.year - dob_year, year: record.year)
           .collapse.collapse-arrow.join-item.border-base-300.border
             input type="radio" name="race-record"
             .collapse-title.font-semibold= description

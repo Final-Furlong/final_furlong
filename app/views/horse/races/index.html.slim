@@ -1,0 +1,4 @@
+= turbo_frame_tag "#{@dashboard.horse.slug}-races" do
+  - dob_year = @dashboard.horse.date_of_birth.year
+  = render 'mobile', dashboard: @dashboard, dob_year: dob_year
+  = render 'desktop', dashboard: @dashboard, dob_year: dob_year
