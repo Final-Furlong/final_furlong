@@ -3,6 +3,7 @@ class Location < ApplicationRecord
 
   validates :name, :country, presence: true
   validates :name, uniqueness: { scope: :country }
+  validates :has_farm, inclusion: { in: [true, false] }
 
   scope :boardable, -> { where(has_farm: true) }
 end
@@ -15,7 +16,7 @@ end
 #  id         :bigint           not null, primary key
 #  country    :string           not null, uniquely indexed => [name]
 #  county     :string
-#  has_farm   :boolean          default(TRUE)
+#  has_farm   :boolean          default(TRUE), not null
 #  name       :string           not null, uniquely indexed => [country], indexed
 #  state      :string
 #  created_at :datetime         not null

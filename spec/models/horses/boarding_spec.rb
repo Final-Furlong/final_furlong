@@ -29,3 +29,4 @@ RSpec.describe Horses::Boarding do
     end
   end
 end
+

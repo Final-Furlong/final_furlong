@@ -21,7 +21,7 @@ module Api
         desc "Updates a boarding entry for a horse with end date"
         route_param :id do
           put "/" do
-            boarding = Horses::Boarding.find_by!(id: params[:id])
+            boarding = Horses::Boarding.find(params[:id])
             error!({ error: "invalid", detail: I18n.t("services.boarding.completion.already_ended") }, 500) if boarding.end_date
 
             boarding.update(end_date: Date.current)
@@ -33,7 +33,7 @@ module Api
         desc "Delete a boarding entry for a horse"
         route_param :id do
           delete "/" do
-            boarding = Horses::Boarding.find_by!(id: params[:id])
+            boarding = Horses::Boarding.find(params[:id])
             error!({ error: "invalid", detail: I18n.t("services.boarding.deletion.in_progress") }, 500) unless boarding.today?
 
             boarding.destroy!

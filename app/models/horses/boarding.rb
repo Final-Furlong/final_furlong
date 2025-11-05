@@ -7,10 +7,10 @@ module Horses
     validates :end_date, comparison: { greater_than_or_equal_to: :start_date }, allow_nil: true
     validates :days, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 30 }
 
-    scope :current, -> { where('start_date < ?', Date.current).where(end_date: nil) }
+    scope :current, -> { where(start_date: ...Date.current).where(end_date: nil) }
     scope :current_year, -> do
-      where('start_date <= ?', Date.current).
-        where('end_date IS NULL OR end_date > ?', Date.new(Date.current.year, 1, 1))
+      where(start_date: ..Date.current)
+        .where("end_date IS NULL OR end_date > ?", Date.new(Date.current.year, 1, 1))
     end
 
     def today?
@@ -30,13 +30,12 @@ end
 #  start_date  :date             not null, uniquely indexed => [horse_id, location_id], indexed
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  horse_id    :bigint           not null, indexed, uniquely indexed => [location_id, start_date]
+#  horse_id    :bigint           not null, uniquely indexed => [location_id, start_date]
 #  location_id :bigint           not null, uniquely indexed => [horse_id, start_date], indexed
 #
 # Indexes
 #
 #  index_boardings_on_end_date                                 (end_date)
-#  index_boardings_on_horse_id                                 (horse_id)
 #  index_boardings_on_horse_id_and_location_id_and_start_date  (horse_id,location_id,start_date) UNIQUE
 #  index_boardings_on_location_id                              (location_id)
 #  index_boardings_on_start_date                               (start_date)

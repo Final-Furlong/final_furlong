@@ -52,7 +52,6 @@ RSpec.describe Horses::BoardingCreator do
             travel_to Date.new(Date.current.year, 3, 1)
             create(:boarding, :current, horse:, location:, start_date: Date.current - 40.days, end_date: Date.current - 10.days)
           end
-          after { travel_back }
 
           let(:message) { error("max_days_reached") }
         end
@@ -65,7 +64,6 @@ RSpec.describe Horses::BoardingCreator do
             create(:boarding, :current, horse:, location:, start_date: Date.current - 40.days, end_date: Date.current - 25.days)
             create(:boarding, :current, horse:, location:, start_date: Date.current - 25.days, end_date: Date.current - 10.days)
           end
-          after { travel_back }
 
           let(:message) { error("max_days_reached") }
         end
@@ -79,7 +77,6 @@ RSpec.describe Horses::BoardingCreator do
             create(:boarding, :current, horse:, location:, start_date: dec_20, end_date: dec_20 + 30.days)
             create(:boarding, :current, horse:, location:, start_date: Date.current - 25.days, end_date: Date.current - 6.days)
           end
-          after { travel_back }
 
           let(:message) { error("max_days_reached") }
         end
@@ -99,7 +96,7 @@ RSpec.describe Horses::BoardingCreator do
       it "allows booking" do
         travel_to Date.new(Date.current.year, 3, 1) do
           start_date = Date.current - 1.year
-          create(:boarding, horse:, start_date: start_date, end_date: start_date + 30.days)
+          create(:boarding, horse:, start_date:, end_date: start_date + 30.days)
           expect { described_class.new.start_boarding(horse:, legacy_racetrack:) }.to change(Horses::Boarding, :count).by(1)
         end
       end
@@ -118,10 +115,12 @@ RSpec.describe Horses::BoardingCreator do
 
     context "when boarding creation fails" do
       it "allows booking" do
+        # rubocop:disable RSpec/AnyInstance
         allow_any_instance_of(Horses::Boarding).to receive(:save!).and_return false
         result = described_class.new.start_boarding(horse:, legacy_racetrack:)
         expect(result.created?).to be false
         expect(result.boarding).to be_a Horses::Boarding
+        # rubocop:enable RSpec/AnyInstance
       end
     end
   end
@@ -148,3 +147,4 @@ RSpec.describe Horses::BoardingCreator do
     I18n.t("services.boarding.creator.#{key}")
   end
 end
+

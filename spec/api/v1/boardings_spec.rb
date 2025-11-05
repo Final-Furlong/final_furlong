@@ -23,12 +23,12 @@ RSpec.describe Api::V1::Boardings do
 
         expect(Horses::Boarding.count).to eq 1
         expect(Horses::Boarding.order(id: :asc).last).to have_attributes(
-                                                           horse:,
-                                                           location:,
-                                                           start_date: Date.current,
-                                                           end_date: nil,
-                                                           days: 0
-                                                         )
+          horse:,
+          location:,
+          start_date: Date.current,
+          end_date: nil,
+          days: 0
+        )
       end
     end
 
@@ -101,7 +101,7 @@ RSpec.describe Api::V1::Boardings do
 
         expect do
           put "/api/v1/boardings/#{boarding.id}"
-        end.not_to change { boarding.reload }
+        end.not_to change(boarding, :reload)
       end
 
       it "returns error" do
@@ -160,7 +160,7 @@ RSpec.describe Api::V1::Boardings do
   def params
     {
       legacy_horse_id: legacy_horse.ID,
-      legacy_racetrack_id: legacy_racetrack.ID,
+      legacy_racetrack_id: legacy_racetrack.ID
     }
   end
 

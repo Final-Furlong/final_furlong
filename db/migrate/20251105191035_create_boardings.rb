@@ -14,3 +14,4 @@ class CreateBoardings < ActiveRecord::Migration[8.1]
     add_index :boardings, %i[horse_id location_id start_date], unique: true, algorithm: :concurrently
   end
 end
+

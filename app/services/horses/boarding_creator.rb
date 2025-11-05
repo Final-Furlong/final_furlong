@@ -5,7 +5,7 @@ module Horses
     def start_boarding(horse:, legacy_racetrack:)
       location = Location.joins(:racetrack).find_by(racetracks: { name: legacy_racetrack.Name })
 
-      result = Result.new(created: false, horse: horse)
+      result = Result.new(created: false, horse:)
       unless location
         result.error = error("location_not_found")
         return result
