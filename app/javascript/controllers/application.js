@@ -7,6 +7,6 @@ const application = Application.start()
 application.debug = false
 window.Stimulus = application
 
-Stimulus.register("notification", Notification)
+application.register("notification", Notification)
 
 export { application }
