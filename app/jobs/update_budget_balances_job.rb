@@ -4,6 +4,7 @@ class UpdateBudgetBalancesJob < ApplicationJob
   include ActiveJob::Continuable
 
   def perform
+    # date last ran: Nov 5, 2025
     step :update_all_stables, start: [nil, nil] do |step|
       Account::Stable.find_each(start: step.cursor[0]) do |stable|
         balance = 0

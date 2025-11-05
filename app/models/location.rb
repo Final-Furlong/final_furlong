@@ -1,8 +1,10 @@
 class Location < ApplicationRecord
-  has_many :racetracks, class_name: "Racing::Racetrack", dependent: :restrict_with_exception
+  has_one :racetrack, class_name: "Racing::Racetrack", dependent: :restrict_with_exception
 
   validates :name, :country, presence: true
   validates :name, uniqueness: { scope: :country }
+
+  scope :boardable, -> { where(has_farm: true) }
 end
 
 # == Schema Information
@@ -13,6 +15,7 @@ end
 #  id         :bigint           not null, primary key
 #  country    :string           not null, uniquely indexed => [name]
 #  county     :string
+#  has_farm   :boolean          default(TRUE)
 #  name       :string           not null, uniquely indexed => [country], indexed
 #  state      :string
 #  created_at :datetime         not null

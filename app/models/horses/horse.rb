@@ -23,6 +23,8 @@ module Horses
     has_many :race_result_finishes, class_name: "Racing::RaceResultHorse", inverse_of: :horse, dependent: :delete_all
     has_many :race_results, class_name: "Racing::RaceResult", source: :race, through: :race_result_finishes
     has_many :race_records, class_name: "Racing::RaceRecord", inverse_of: :horse, dependent: :delete_all
+    has_one :current_boarding, -> { where(end_date: nil) }, class_name: "Horses::Boarding"
+    has_many :boardings, -> { where.not(end_date: nil) }, class_name: "Horses::Boarding"
     # rubocop:disable Rails/HasManyOrHasOneDependent
     has_many :annual_race_records, class_name: "Racing::AnnualRaceRecord", inverse_of: :horse
     has_one :lifetime_race_record, class_name: "Racing::LifetimeRaceRecord", inverse_of: :horse

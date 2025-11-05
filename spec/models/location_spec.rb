@@ -1,6 +1,6 @@
 RSpec.describe Location do
   describe "associations" do
-    it { is_expected.to have_many(:racetracks) }
+    it { is_expected.to have_one(:racetrack) }
   end
 end
 

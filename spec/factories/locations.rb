@@ -14,6 +14,7 @@ end
 #  id         :bigint           not null, primary key
 #  country    :string           not null, uniquely indexed => [name]
 #  county     :string
+#  has_farm   :boolean          default(TRUE)
 #  name       :string           not null, uniquely indexed => [country], indexed
 #  state      :string
 #  created_at :datetime         not null

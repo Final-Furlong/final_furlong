@@ -5,7 +5,7 @@ module Racing
 
     friendly_id :name, use: [:slugged, :finders]
 
-    belongs_to :location, inverse_of: :racetracks
+    belongs_to :location, inverse_of: :racetrack
 
     has_many :surfaces, class_name: "TrackSurface", dependent: :restrict_with_exception
     has_many :scheduled_races, through: :surfaces
@@ -14,9 +14,9 @@ module Racing
     validates :name, uniqueness: { case_sensitive: false }
 
     validates :longitude, presence: true,
-      numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180 }
+              numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180 }
     validates :latitude, presence: true,
-      numericality: { less_than_or_equal_to: 90, greater_than_or_equal_to: -90 }
+              numericality: { less_than_or_equal_to: 90, greater_than_or_equal_to: -90 }
   end
 end
 

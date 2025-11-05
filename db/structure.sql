@@ -1,6 +1,7 @@
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
@@ -485,22 +486,22 @@ COMMENT ON COLUMN public.race_records.result_type IS 'dirt, turf, steeplechase';
 --
 
 CREATE MATERIALIZED VIEW public.annual_race_records AS
- SELECT race_records.year,
-    race_records.horse_id,
-    sum(race_records.starts) AS starts,
-    sum(race_records.stakes_starts) AS stakes_starts,
-    sum(race_records.wins) AS wins,
-    sum(race_records.stakes_wins) AS stakes_wins,
-    sum(race_records.seconds) AS seconds,
-    sum(race_records.stakes_seconds) AS stakes_seconds,
-    sum(race_records.thirds) AS thirds,
-    sum(race_records.stakes_thirds) AS stakes_thirds,
-    sum(race_records.fourths) AS fourths,
-    sum(race_records.stakes_fourths) AS stakes_fourths,
-    sum(race_records.points) AS points,
-    sum(race_records.earnings) AS earnings
+ SELECT year,
+    horse_id,
+    sum(starts) AS starts,
+    sum(stakes_starts) AS stakes_starts,
+    sum(wins) AS wins,
+    sum(stakes_wins) AS stakes_wins,
+    sum(seconds) AS seconds,
+    sum(stakes_seconds) AS stakes_seconds,
+    sum(thirds) AS thirds,
+    sum(stakes_thirds) AS stakes_thirds,
+    sum(fourths) AS fourths,
+    sum(stakes_fourths) AS stakes_fourths,
+    sum(points) AS points,
+    sum(earnings) AS earnings
    FROM public.race_records
-  GROUP BY race_records.year, race_records.horse_id
+  GROUP BY year, horse_id
   WITH NO DATA;
 
 
@@ -680,6 +681,22 @@ ALTER SEQUENCE public.auctions_id_seq OWNED BY public.auctions.id;
 
 
 --
+-- Name: boardings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.boardings (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    horse_id bigint NOT NULL,
+    location_id bigint NOT NULL,
+    start_date date NOT NULL,
+    end_date date,
+    days integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
 -- Name: broodmare_foal_records; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -690,7 +707,7 @@ CREATE TABLE public.broodmare_foal_records (
     horse_id bigint NOT NULL,
     millionaire_foals_count integer DEFAULT 0 NOT NULL,
     multi_millionaire_foals_count integer DEFAULT 0 NOT NULL,
-    multi_stakes_winning_foals_count integer DEFAULT 0 NOT NULL,
+    multi_stakes_winning_foals_count integer DEFAULT 0 CONSTRAINT broodmare_foal_records_multi_stakes_winning_foals_coun_not_null NOT NULL,
     raced_foals_count integer DEFAULT 0 NOT NULL,
     stakes_winning_foals_count integer DEFAULT 0 NOT NULL,
     stillborn_foals_count integer DEFAULT 0 NOT NULL,
@@ -1180,21 +1197,21 @@ ALTER SEQUENCE public.jockeys_id_seq OWNED BY public.jockeys.id;
 --
 
 CREATE MATERIALIZED VIEW public.lifetime_race_records AS
- SELECT race_records.horse_id,
-    sum(race_records.starts) AS starts,
-    sum(race_records.stakes_starts) AS stakes_starts,
-    sum(race_records.wins) AS wins,
-    sum(race_records.stakes_wins) AS stakes_wins,
-    sum(race_records.seconds) AS seconds,
-    sum(race_records.stakes_seconds) AS stakes_seconds,
-    sum(race_records.thirds) AS thirds,
-    sum(race_records.stakes_thirds) AS stakes_thirds,
-    sum(race_records.fourths) AS fourths,
-    sum(race_records.stakes_fourths) AS stakes_fourths,
-    sum(race_records.points) AS points,
-    sum(race_records.earnings) AS earnings
+ SELECT horse_id,
+    sum(starts) AS starts,
+    sum(stakes_starts) AS stakes_starts,
+    sum(wins) AS wins,
+    sum(stakes_wins) AS stakes_wins,
+    sum(seconds) AS seconds,
+    sum(stakes_seconds) AS stakes_seconds,
+    sum(thirds) AS thirds,
+    sum(stakes_thirds) AS stakes_thirds,
+    sum(fourths) AS fourths,
+    sum(stakes_fourths) AS stakes_fourths,
+    sum(points) AS points,
+    sum(earnings) AS earnings
    FROM public.race_records
-  GROUP BY race_records.horse_id
+  GROUP BY horse_id
   WITH NO DATA;
 
 
@@ -1210,7 +1227,8 @@ CREATE TABLE public.locations (
     state character varying,
     old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    has_farm boolean DEFAULT true
 );
 
 
@@ -2621,6 +2639,14 @@ ALTER TABLE ONLY public.auctions
 
 
 --
+-- Name: boardings boardings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.boardings
+    ADD CONSTRAINT boardings_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: broodmare_foal_records broodmare_foal_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3117,6 +3143,41 @@ CREATE INDEX index_auctions_on_start_time ON public.auctions USING btree (start_
 --
 
 CREATE UNIQUE INDEX index_auctions_on_title ON public.auctions USING btree (lower((title)::text));
+
+
+--
+-- Name: index_boardings_on_end_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_boardings_on_end_date ON public.boardings USING btree (end_date);
+
+
+--
+-- Name: index_boardings_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_boardings_on_horse_id ON public.boardings USING btree (horse_id);
+
+
+--
+-- Name: index_boardings_on_horse_id_and_location_id_and_start_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_boardings_on_horse_id_and_location_id_and_start_date ON public.boardings USING btree (horse_id, location_id, start_date);
+
+
+--
+-- Name: index_boardings_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_boardings_on_location_id ON public.boardings USING btree (location_id);
+
+
+--
+-- Name: index_boardings_on_start_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_boardings_on_start_date ON public.boardings USING btree (start_date);
 
 
 --
@@ -4560,6 +4621,14 @@ ALTER TABLE ONLY public.track_surfaces
 
 
 --
+-- Name: boardings fk_rails_91c5c287e6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.boardings
+    ADD CONSTRAINT fk_rails_91c5c287e6 FOREIGN KEY (location_id) REFERENCES public.locations(id);
+
+
+--
 -- Name: horses fk_rails_99146e7c92; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4629,6 +4698,14 @@ ALTER TABLE ONLY public.auction_bids
 
 ALTER TABLE ONLY public.horses
     ADD CONSTRAINT fk_rails_b1757e50ec FOREIGN KEY (breeder_id) REFERENCES public.stables(id) ON UPDATE CASCADE ON DELETE RESTRICT NOT VALID;
+
+
+--
+-- Name: boardings fk_rails_b7a9ec2495; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.boardings
+    ADD CONSTRAINT fk_rails_b7a9ec2495 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
 
 
 --
@@ -4742,6 +4819,8 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251105191035'),
+('20251105190103'),
 ('20251104131317'),
 ('20251103195539'),
 ('20251103195523'),
