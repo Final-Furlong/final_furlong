@@ -7,6 +7,7 @@ pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 pin "@rails/actioncable", to: "actioncable.esm.js"
 pin "@rails/activestorage", to: "activestorage.esm.js"
 
+pin "stimulus-use" # @0.52.3
 pin "@stimulus-components/notification", to: "@stimulus-components--notification.js" # @3.0.0
 
 pin_all_from "app/javascript/controllers", under: "controllers"

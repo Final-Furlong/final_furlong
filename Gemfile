@@ -81,6 +81,7 @@ gem "turnout"
 gem "uuid"
 gem "view_component"
 gem "view_component-contrib"
+gem "vite_rails"
 gem "web-push"
 gem "whenever", require: false
 gem "yaaf"
