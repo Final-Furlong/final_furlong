@@ -172,9 +172,6 @@ end
 #  dam_id                                                                                                             :bigint           indexed
 #  legacy_id                                                                                                          :integer          indexed
 #  location_bred_id                                                                                                   :bigint           not null, indexed
-#  old_dam_id                                                                                                         :uuid             indexed
-#  old_id                                                                                                             :uuid             indexed
-#  old_sire_id                                                                                                        :uuid             indexed
 #  owner_id                                                                                                           :bigint           not null, indexed
 #  public_id                                                                                                          :string(12)       indexed
 #  sire_id                                                                                                            :bigint           indexed
@@ -190,9 +187,6 @@ end
 #  index_horses_on_legacy_id         (legacy_id)
 #  index_horses_on_location_bred_id  (location_bred_id)
 #  index_horses_on_name              (name)
-#  index_horses_on_old_dam_id        (old_dam_id)
-#  index_horses_on_old_id            (old_id)
-#  index_horses_on_old_sire_id       (old_sire_id)
 #  index_horses_on_owner_id          (owner_id)
 #  index_horses_on_public_id         (public_id)
 #  index_horses_on_sire_id           (sire_id)

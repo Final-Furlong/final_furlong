@@ -93,7 +93,6 @@ end
 #  created_at                       :datetime         not null
 #  updated_at                       :datetime         not null
 #  horse_id                         :bigint           not null, uniquely indexed
-#  old_id                           :uuid             indexed
 #
 # Indexes
 #
@@ -103,7 +102,6 @@ end
 #  index_broodmare_foal_records_on_horse_id                       (horse_id) UNIQUE
 #  index_broodmare_foal_records_on_millionaire_foals_count        (millionaire_foals_count)
 #  index_broodmare_foal_records_on_multi_millionaire_foals_count  (multi_millionaire_foals_count)
-#  index_broodmare_foal_records_on_old_id                         (old_id)
 #  index_broodmare_foal_records_on_raced_foals_count              (raced_foals_count)
 #  index_broodmare_foal_records_on_stakes_winning_foals_count     (stakes_winning_foals_count)
 #  index_broodmare_foal_records_on_stillborn_foals_count          (stillborn_foals_count)

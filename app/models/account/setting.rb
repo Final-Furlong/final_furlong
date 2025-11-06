@@ -14,12 +14,10 @@ end
 #  theme      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  old_id     :uuid             indexed
 #  user_id    :bigint           not null, uniquely indexed
 #
 # Indexes
 #
-#  index_settings_on_old_id   (old_id)
 #  index_settings_on_user_id  (user_id) UNIQUE
 #
 # Foreign Keys

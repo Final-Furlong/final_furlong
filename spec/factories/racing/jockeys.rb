@@ -86,7 +86,6 @@ end
 #  created_at                           :datetime         not null
 #  updated_at                           :datetime         not null
 #  legacy_id                            :integer          not null, indexed
-#  old_id                               :uuid             indexed
 #  public_id                            :string(12)       indexed
 #
 # Indexes
@@ -98,7 +97,6 @@ end
 #  index_jockeys_on_jockey_type               (jockey_type)
 #  index_jockeys_on_last_name                 (last_name)
 #  index_jockeys_on_legacy_id                 (legacy_id)
-#  index_jockeys_on_old_id                    (old_id)
 #  index_jockeys_on_public_id                 (public_id)
 #  index_jockeys_on_slug                      (slug)
 #  index_jockeys_on_status                    (status)

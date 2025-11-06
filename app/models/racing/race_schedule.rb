@@ -56,7 +56,6 @@ end
 #  race_type(maiden, claiming, starter_allowance, nw1_allowance, nw2_allowance, nw3_allowance, allowance, stakes) :enum             default("maiden"), not null, indexed
 #  created_at                                                                                                     :datetime         not null
 #  updated_at                                                                                                     :datetime         not null
-#  old_id                                                                                                         :uuid             indexed
 #  surface_id                                                                                                     :bigint           not null, indexed
 #
 # Indexes
@@ -70,7 +69,6 @@ end
 #  index_race_schedules_on_male_only               (male_only)
 #  index_race_schedules_on_name                    (name)
 #  index_race_schedules_on_number                  (number)
-#  index_race_schedules_on_old_id                  (old_id)
 #  index_race_schedules_on_qualification_required  (qualification_required)
 #  index_race_schedules_on_race_type               (race_type)
 #  index_race_schedules_on_surface_id              (surface_id)

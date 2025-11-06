@@ -30,14 +30,12 @@ end
 #  auction_id       :bigint           not null, indexed
 #  bidder_id        :bigint           not null, indexed
 #  horse_id         :bigint           not null, indexed
-#  old_id           :uuid             indexed
 #
 # Indexes
 #
 #  index_auction_bids_on_auction_id  (auction_id)
 #  index_auction_bids_on_bidder_id   (bidder_id)
 #  index_auction_bids_on_horse_id    (horse_id)
-#  index_auction_bids_on_old_id      (old_id)
 #
 # Foreign Keys
 #

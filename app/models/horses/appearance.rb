@@ -100,12 +100,10 @@ end
 #  created_at                                                                                                                                                                                                             :datetime         not null
 #  updated_at                                                                                                                                                                                                             :datetime         not null
 #  horse_id                                                                                                                                                                                                               :bigint           not null, uniquely indexed
-#  old_id                                                                                                                                                                                                                 :uuid             indexed
 #
 # Indexes
 #
 #  index_horse_appearances_on_horse_id  (horse_id) UNIQUE
-#  index_horse_appearances_on_old_id    (old_id)
 #
 # Foreign Keys
 #

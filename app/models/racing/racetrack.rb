@@ -33,14 +33,12 @@ end
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  location_id :bigint           not null, uniquely indexed
-#  old_id      :uuid             indexed
 #  public_id   :string(12)       indexed
 #
 # Indexes
 #
 #  index_racetracks_on_location_id  (location_id) UNIQUE
 #  index_racetracks_on_name         (lower((name)::text)) UNIQUE
-#  index_racetracks_on_old_id       (old_id)
 #  index_racetracks_on_public_id    (public_id)
 #  index_racetracks_on_slug         (slug)
 #

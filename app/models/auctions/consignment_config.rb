@@ -59,13 +59,11 @@ end
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  auction_id     :bigint           not null, indexed
-#  old_id         :uuid             indexed
 #
 # Indexes
 #
 #  index_auction_configs_on_horse_type              (auction_id, lower((horse_type)::text)) UNIQUE
 #  index_auction_consignment_configs_on_auction_id  (auction_id)
-#  index_auction_consignment_configs_on_old_id      (old_id)
 #
 # Foreign Keys
 #

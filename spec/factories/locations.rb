@@ -19,12 +19,10 @@ end
 #  state      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  old_id     :uuid             indexed
 #
 # Indexes
 #
 #  index_locations_on_country_and_name  (country,name) UNIQUE
 #  index_locations_on_name              (name)
-#  index_locations_on_old_id            (old_id)
 #
 
