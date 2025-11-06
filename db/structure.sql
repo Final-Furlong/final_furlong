@@ -1,7 +1,6 @@
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
-SET transaction_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
@@ -51,7 +50,7 @@ CREATE TYPE public.activity_type AS ENUM (
     'claiming',
     'entering',
     'redeem'
-);
+    );
 
 
 --
@@ -63,7 +62,7 @@ CREATE TYPE public.breed_rankings AS ENUM (
     'silver',
     'gold',
     'platinum'
-);
+    );
 
 
 --
@@ -76,7 +75,7 @@ CREATE TYPE public.breed_record AS ENUM (
     'silver',
     'gold',
     'platinum'
-);
+    );
 
 
 --
@@ -107,7 +106,7 @@ CREATE TYPE public.budget_activity_type AS ENUM (
     'donation',
     'won_breeders_series',
     'misc'
-);
+    );
 
 
 --
@@ -133,7 +132,7 @@ CREATE TYPE public.horse_color AS ENUM (
     'mahogany_bay',
     'red_chestnut',
     'strawberry_roan'
-);
+    );
 
 
 --
@@ -150,7 +149,7 @@ CREATE TYPE public.horse_face_marking AS ENUM (
     'star_stripe_snip',
     'stripe',
     'stripe_snip'
-);
+    );
 
 
 --
@@ -163,7 +162,7 @@ CREATE TYPE public.horse_gender AS ENUM (
     'mare',
     'stallion',
     'gelding'
-);
+    );
 
 
 --
@@ -175,7 +174,7 @@ CREATE TYPE public.horse_leg_marking AS ENUM (
     'ermine',
     'sock',
     'stocking'
-);
+    );
 
 
 --
@@ -193,7 +192,7 @@ CREATE TYPE public.horse_status AS ENUM (
     'retired_broodmare',
     'retired_stud',
     'deceased'
-);
+    );
 
 
 --
@@ -203,7 +202,7 @@ CREATE TYPE public.horse_status AS ENUM (
 CREATE TYPE public.jockey_gender AS ENUM (
     'male',
     'female'
-);
+    );
 
 
 --
@@ -214,7 +213,7 @@ CREATE TYPE public.jockey_status AS ENUM (
     'apprentice',
     'veteran',
     'retired'
-);
+    );
 
 
 --
@@ -224,7 +223,7 @@ CREATE TYPE public.jockey_status AS ENUM (
 CREATE TYPE public.jockey_type AS ENUM (
     'flat',
     'jump'
-);
+    );
 
 
 --
@@ -238,7 +237,7 @@ CREATE TYPE public.race_age AS ENUM (
     '3+',
     '4',
     '4+'
-);
+    );
 
 
 --
@@ -250,7 +249,7 @@ CREATE TYPE public.race_grade AS ENUM (
     'Grade 3',
     'Grade 2',
     'Grade 1'
-);
+    );
 
 
 --
@@ -261,7 +260,7 @@ CREATE TYPE public.race_result_types AS ENUM (
     'dirt',
     'turf',
     'steeplechase'
-);
+    );
 
 
 --
@@ -271,7 +270,7 @@ CREATE TYPE public.race_result_types AS ENUM (
 CREATE TYPE public.race_splits AS ENUM (
     '4Q',
     '2F'
-);
+    );
 
 
 --
@@ -287,7 +286,7 @@ CREATE TYPE public.race_type AS ENUM (
     'nw3_allowance',
     'allowance',
     'stakes'
-);
+    );
 
 
 --
@@ -299,7 +298,7 @@ CREATE TYPE public.track_condition AS ENUM (
     'good',
     'slow',
     'wet'
-);
+    );
 
 
 --
@@ -310,7 +309,7 @@ CREATE TYPE public.track_surface AS ENUM (
     'dirt',
     'turf',
     'steeplechase'
-);
+    );
 
 
 --
@@ -322,7 +321,7 @@ CREATE TYPE public.user_status AS ENUM (
     'active',
     'deleted',
     'banned'
-);
+    );
 
 
 SET default_tablespace = '';
@@ -333,13 +332,14 @@ SET default_table_access_method = heap;
 -- Name: activations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.activations (
-    id bigint NOT NULL,
+CREATE TABLE public.activations
+(
+    id           bigint                      NOT NULL,
     activated_at timestamp with time zone,
-    created_at timestamp(6) with time zone NOT NULL,
-    token character varying NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL,
-    user_id bigint NOT NULL
+    created_at   timestamp(6) with time zone NOT NULL,
+    token        character varying           NOT NULL,
+    updated_at   timestamp(6) with time zone NOT NULL,
+    user_id      bigint                      NOT NULL
 );
 
 
@@ -366,13 +366,14 @@ ALTER SEQUENCE public.activations_id_seq OWNED BY public.activations.id;
 -- Name: active_storage_attachments; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.active_storage_attachments (
-    id bigint NOT NULL,
-    blob_id bigint NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    name character varying NOT NULL,
-    record_id bigint NOT NULL,
-    record_type character varying NOT NULL
+CREATE TABLE public.active_storage_attachments
+(
+    id          bigint                                 NOT NULL,
+    blob_id     bigint                                 NOT NULL,
+    created_at  timestamp with time zone DEFAULT now() NOT NULL,
+    name        character varying                      NOT NULL,
+    record_id   bigint                                 NOT NULL,
+    record_type character varying                      NOT NULL
 );
 
 
@@ -399,16 +400,17 @@ ALTER SEQUENCE public.active_storage_attachments_id_seq OWNED BY public.active_s
 -- Name: active_storage_blobs; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.active_storage_blobs (
-    id bigint NOT NULL,
-    byte_size bigint NOT NULL,
-    checksum character varying,
+CREATE TABLE public.active_storage_blobs
+(
+    id           bigint                                 NOT NULL,
+    byte_size    bigint                                 NOT NULL,
+    checksum     character varying,
     content_type character varying,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    filename character varying NOT NULL,
-    key character varying NOT NULL,
-    metadata text,
-    service_name character varying NOT NULL
+    created_at   timestamp with time zone DEFAULT now() NOT NULL,
+    filename     character varying                      NOT NULL,
+    key          character varying                      NOT NULL,
+    metadata     text,
+    service_name character varying                      NOT NULL
 );
 
 
@@ -435,9 +437,10 @@ ALTER SEQUENCE public.active_storage_blobs_id_seq OWNED BY public.active_storage
 -- Name: active_storage_variant_records; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.active_storage_variant_records (
-    id bigint NOT NULL,
-    blob_id bigint NOT NULL,
+CREATE TABLE public.active_storage_variant_records
+(
+    id               bigint            NOT NULL,
+    blob_id          bigint            NOT NULL,
     variation_digest character varying NOT NULL
 );
 
@@ -465,16 +468,17 @@ ALTER SEQUENCE public.active_storage_variant_records_id_seq OWNED BY public.acti
 -- Name: activity_points; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.activity_points (
-    id bigint NOT NULL,
-    activity_type public.activity_type NOT NULL,
-    amount integer DEFAULT 0 NOT NULL,
-    balance bigint DEFAULT 0 NOT NULL,
-    budget_id bigint,
-    created_at timestamp(6) with time zone NOT NULL,
-    legacy_stable_id integer DEFAULT 0 NOT NULL,
-    stable_id bigint NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+CREATE TABLE public.activity_points
+(
+    id               bigint                      NOT NULL,
+    activity_type    public.activity_type        NOT NULL,
+    amount           integer DEFAULT 0           NOT NULL,
+    balance          bigint  DEFAULT 0           NOT NULL,
+    budget_id        bigint,
+    created_at       timestamp(6) with time zone NOT NULL,
+    legacy_stable_id integer DEFAULT 0           NOT NULL,
+    stable_id        bigint                      NOT NULL,
+    updated_at       timestamp(6) with time zone NOT NULL
 );
 
 
@@ -508,25 +512,26 @@ ALTER SEQUENCE public.activity_points_id_seq OWNED BY public.activity_points.id;
 -- Name: race_records; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.race_records (
-    id bigint NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    earnings bigint DEFAULT 0 NOT NULL,
-    fourths integer DEFAULT 0 NOT NULL,
-    horse_id bigint NOT NULL,
-    points integer DEFAULT 0 NOT NULL,
-    result_type public.race_result_types DEFAULT 'dirt'::public.race_result_types,
-    seconds integer DEFAULT 0 NOT NULL,
-    stakes_fourths integer DEFAULT 0 NOT NULL,
-    stakes_seconds integer DEFAULT 0 NOT NULL,
-    stakes_starts integer DEFAULT 0 NOT NULL,
-    stakes_thirds integer DEFAULT 0 NOT NULL,
-    stakes_wins integer DEFAULT 0 NOT NULL,
-    starts integer DEFAULT 0 NOT NULL,
-    thirds integer DEFAULT 0 NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL,
-    wins integer DEFAULT 0 NOT NULL,
-    year integer DEFAULT 1996 NOT NULL
+CREATE TABLE public.race_records
+(
+    id             bigint                                NOT NULL,
+    created_at     timestamp(6) with time zone           NOT NULL,
+    earnings       bigint                   DEFAULT 0    NOT NULL,
+    fourths        integer                  DEFAULT 0    NOT NULL,
+    horse_id       bigint                                NOT NULL,
+    points         integer                  DEFAULT 0    NOT NULL,
+    result_type    public.race_result_types DEFAULT 'dirt'::public.race_result_types,
+    seconds        integer                  DEFAULT 0    NOT NULL,
+    stakes_fourths integer                  DEFAULT 0    NOT NULL,
+    stakes_seconds integer                  DEFAULT 0    NOT NULL,
+    stakes_starts  integer                  DEFAULT 0    NOT NULL,
+    stakes_thirds  integer                  DEFAULT 0    NOT NULL,
+    stakes_wins    integer                  DEFAULT 0    NOT NULL,
+    starts         integer                  DEFAULT 0    NOT NULL,
+    thirds         integer                  DEFAULT 0    NOT NULL,
+    updated_at     timestamp(6) with time zone           NOT NULL,
+    wins           integer                  DEFAULT 0    NOT NULL,
+    year           integer                  DEFAULT 1996 NOT NULL
 );
 
 
@@ -542,32 +547,33 @@ COMMENT ON COLUMN public.race_records.result_type IS 'dirt, turf, steeplechase';
 --
 
 CREATE MATERIALIZED VIEW public.annual_race_records AS
- SELECT year,
-    horse_id,
-    sum(starts) AS starts,
-    sum(stakes_starts) AS stakes_starts,
-    sum(wins) AS wins,
-    sum(stakes_wins) AS stakes_wins,
-    sum(seconds) AS seconds,
-    sum(stakes_seconds) AS stakes_seconds,
-    sum(thirds) AS thirds,
-    sum(stakes_thirds) AS stakes_thirds,
-    sum(fourths) AS fourths,
-    sum(stakes_fourths) AS stakes_fourths,
-    sum(points) AS points,
-    sum(earnings) AS earnings
-   FROM public.race_records
-  GROUP BY year, horse_id
-  WITH NO DATA;
+SELECT year,
+       horse_id,
+       sum(starts)         AS starts,
+       sum(stakes_starts)  AS stakes_starts,
+       sum(wins)           AS wins,
+       sum(stakes_wins)    AS stakes_wins,
+       sum(seconds)        AS seconds,
+       sum(stakes_seconds) AS stakes_seconds,
+       sum(thirds)         AS thirds,
+       sum(stakes_thirds)  AS stakes_thirds,
+       sum(fourths)        AS fourths,
+       sum(stakes_fourths) AS stakes_fourths,
+       sum(points)         AS points,
+       sum(earnings)       AS earnings
+FROM public.race_records
+GROUP BY year, horse_id
+WITH NO DATA;
 
 
 --
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.ar_internal_metadata (
-    key character varying NOT NULL,
-    value character varying,
+CREATE TABLE public.ar_internal_metadata
+(
+    key        character varying           NOT NULL,
+    value      character varying,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -577,17 +583,18 @@ CREATE TABLE public.ar_internal_metadata (
 -- Name: auction_bids; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.auction_bids (
-    id bigint NOT NULL,
-    auction_id bigint NOT NULL,
-    bidder_id bigint NOT NULL,
-    comment text,
-    created_at timestamp(6) with time zone NOT NULL,
-    current_bid integer DEFAULT 0 NOT NULL,
-    horse_id bigint NOT NULL,
-    maximum_bid integer,
-    notify_if_outbid boolean DEFAULT false NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+CREATE TABLE public.auction_bids
+(
+    id               bigint                      NOT NULL,
+    auction_id       bigint                      NOT NULL,
+    bidder_id        bigint                      NOT NULL,
+    comment          text,
+    created_at       timestamp(6) with time zone NOT NULL,
+    current_bid      integer DEFAULT 0           NOT NULL,
+    horse_id         bigint                      NOT NULL,
+    maximum_bid      integer,
+    notify_if_outbid boolean DEFAULT false       NOT NULL,
+    updated_at       timestamp(6) with time zone NOT NULL
 );
 
 
@@ -614,16 +621,17 @@ ALTER SEQUENCE public.auction_bids_id_seq OWNED BY public.auction_bids.id;
 -- Name: auction_consignment_configs; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.auction_consignment_configs (
-    id bigint NOT NULL,
-    auction_id bigint NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    horse_type character varying NOT NULL,
-    maximum_age integer DEFAULT 0 NOT NULL,
-    minimum_age integer DEFAULT 0 NOT NULL,
-    minimum_count integer DEFAULT 0 NOT NULL,
-    stakes_quality boolean DEFAULT false NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+CREATE TABLE public.auction_consignment_configs
+(
+    id             bigint                      NOT NULL,
+    auction_id     bigint                      NOT NULL,
+    created_at     timestamp(6) with time zone NOT NULL,
+    horse_type     character varying           NOT NULL,
+    maximum_age    integer DEFAULT 0           NOT NULL,
+    minimum_age    integer DEFAULT 0           NOT NULL,
+    minimum_count  integer DEFAULT 0           NOT NULL,
+    stakes_quality boolean DEFAULT false       NOT NULL,
+    updated_at     timestamp(6) with time zone NOT NULL
 );
 
 
@@ -650,18 +658,19 @@ ALTER SEQUENCE public.auction_consignment_configs_id_seq OWNED BY public.auction
 -- Name: auction_horses; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.auction_horses (
-    id bigint NOT NULL,
-    auction_id bigint NOT NULL,
-    comment text,
-    created_at timestamp(6) with time zone NOT NULL,
-    horse_id bigint NOT NULL,
+CREATE TABLE public.auction_horses
+(
+    id            bigint                      NOT NULL,
+    auction_id    bigint                      NOT NULL,
+    comment       text,
+    created_at    timestamp(6) with time zone NOT NULL,
+    horse_id      bigint                      NOT NULL,
     maximum_price integer,
-    public_id character varying(12),
+    public_id     character varying(12),
     reserve_price integer,
-    slug character varying,
-    sold_at timestamp with time zone,
-    updated_at timestamp(6) with time zone NOT NULL
+    slug          character varying,
+    sold_at       timestamp with time zone,
+    updated_at    timestamp(6) with time zone NOT NULL
 );
 
 
@@ -688,28 +697,29 @@ ALTER SEQUENCE public.auction_horses_id_seq OWNED BY public.auction_horses.id;
 -- Name: auctions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.auctions (
-    id bigint NOT NULL,
-    auctioneer_id bigint NOT NULL,
-    broodmare_allowed boolean DEFAULT false NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    end_time timestamp with time zone NOT NULL,
+CREATE TABLE public.auctions
+(
+    id                            bigint                      NOT NULL,
+    auctioneer_id                 bigint                      NOT NULL,
+    broodmare_allowed             boolean DEFAULT false       NOT NULL,
+    created_at                    timestamp(6) with time zone NOT NULL,
+    end_time                      timestamp with time zone    NOT NULL,
     horse_purchase_cap_per_stable integer,
-    hours_until_sold integer DEFAULT 12 NOT NULL,
-    outside_horses_allowed boolean DEFAULT false NOT NULL,
-    public_id character varying(12),
-    racehorse_allowed_2yo boolean DEFAULT false NOT NULL,
-    racehorse_allowed_3yo boolean DEFAULT false NOT NULL,
-    racehorse_allowed_older boolean DEFAULT false NOT NULL,
-    reserve_pricing_allowed boolean DEFAULT false NOT NULL,
-    slug character varying,
-    spending_cap_per_stable integer,
-    stallion_allowed boolean DEFAULT false NOT NULL,
-    start_time timestamp with time zone NOT NULL,
-    title character varying(500) NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL,
-    weanling_allowed boolean DEFAULT false NOT NULL,
-    yearling_allowed boolean DEFAULT false NOT NULL
+    hours_until_sold              integer DEFAULT 12          NOT NULL,
+    outside_horses_allowed        boolean DEFAULT false       NOT NULL,
+    public_id                     character varying(12),
+    racehorse_allowed_2yo         boolean DEFAULT false       NOT NULL,
+    racehorse_allowed_3yo         boolean DEFAULT false       NOT NULL,
+    racehorse_allowed_older       boolean DEFAULT false       NOT NULL,
+    reserve_pricing_allowed       boolean DEFAULT false       NOT NULL,
+    slug                          character varying,
+    spending_cap_per_stable       integer,
+    stallion_allowed              boolean DEFAULT false       NOT NULL,
+    start_time                    timestamp with time zone    NOT NULL,
+    title                         character varying(500)      NOT NULL,
+    updated_at                    timestamp(6) with time zone NOT NULL,
+    weanling_allowed              boolean DEFAULT false       NOT NULL,
+    yearling_allowed              boolean DEFAULT false       NOT NULL
 );
 
 
@@ -736,15 +746,16 @@ ALTER SEQUENCE public.auctions_id_seq OWNED BY public.auctions.id;
 -- Name: boardings; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.boardings (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    days integer DEFAULT 0 NOT NULL,
-    end_date date,
-    horse_id bigint NOT NULL,
-    location_id bigint NOT NULL,
-    start_date date NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+CREATE TABLE public.boardings
+(
+    id          uuid    DEFAULT gen_random_uuid() NOT NULL,
+    created_at  timestamp(6) with time zone       NOT NULL,
+    days        integer DEFAULT 0                 NOT NULL,
+    end_date    date,
+    horse_id    bigint                            NOT NULL,
+    location_id bigint                            NOT NULL,
+    start_date  date                              NOT NULL,
+    updated_at  timestamp(6) with time zone       NOT NULL
 );
 
 
@@ -752,24 +763,26 @@ CREATE TABLE public.boardings (
 -- Name: broodmare_foal_records; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.broodmare_foal_records (
-    id bigint NOT NULL,
-    born_foals_count integer DEFAULT 0 NOT NULL,
-    breed_ranking character varying,
-    created_at timestamp(6) with time zone NOT NULL,
-    horse_id bigint NOT NULL,
-    millionaire_foals_count integer DEFAULT 0 NOT NULL,
-    multi_millionaire_foals_count integer DEFAULT 0 NOT NULL,
-    multi_stakes_winning_foals_count integer DEFAULT 0 CONSTRAINT broodmare_foal_records_multi_stakes_winning_foals_coun_not_null NOT NULL,
-    raced_foals_count integer DEFAULT 0 NOT NULL,
-    stakes_winning_foals_count integer DEFAULT 0 NOT NULL,
-    stillborn_foals_count integer DEFAULT 0 NOT NULL,
-    total_foal_earnings bigint DEFAULT 0 NOT NULL,
-    total_foal_points integer DEFAULT 0 NOT NULL,
-    total_foal_races integer DEFAULT 0 NOT NULL,
-    unborn_foals_count integer DEFAULT 0 NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL,
-    winning_foals_count integer DEFAULT 0 NOT NULL
+CREATE TABLE public.broodmare_foal_records
+(
+    id                               bigint                      NOT NULL,
+    born_foals_count                 integer DEFAULT 0           NOT NULL,
+    breed_ranking                    character varying,
+    created_at                       timestamp(6) with time zone NOT NULL,
+    horse_id                         bigint                      NOT NULL,
+    millionaire_foals_count          integer DEFAULT 0           NOT NULL,
+    multi_millionaire_foals_count    integer DEFAULT 0           NOT NULL,
+    multi_stakes_winning_foals_count integer DEFAULT 0
+        CONSTRAINT broodmare_foal_records_multi_stakes_winning_foals_coun_not_null NOT NULL,
+    raced_foals_count                integer DEFAULT 0           NOT NULL,
+    stakes_winning_foals_count       integer DEFAULT 0           NOT NULL,
+    stillborn_foals_count            integer DEFAULT 0           NOT NULL,
+    total_foal_earnings              bigint  DEFAULT 0           NOT NULL,
+    total_foal_points                integer DEFAULT 0           NOT NULL,
+    total_foal_races                 integer DEFAULT 0           NOT NULL,
+    unborn_foals_count               integer DEFAULT 0           NOT NULL,
+    updated_at                       timestamp(6) with time zone NOT NULL,
+    winning_foals_count              integer DEFAULT 0           NOT NULL
 );
 
 
@@ -796,17 +809,18 @@ ALTER SEQUENCE public.broodmare_foal_records_id_seq OWNED BY public.broodmare_fo
 -- Name: budget_transactions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.budget_transactions (
-    id bigint NOT NULL,
-    activity_type public.budget_activity_type,
-    amount integer DEFAULT 0 NOT NULL,
-    balance integer DEFAULT 0 NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    description text NOT NULL,
+CREATE TABLE public.budget_transactions
+(
+    id               bigint                      NOT NULL,
+    activity_type    public.budget_activity_type,
+    amount           integer DEFAULT 0           NOT NULL,
+    balance          integer DEFAULT 0           NOT NULL,
+    created_at       timestamp(6) with time zone NOT NULL,
+    description      text                        NOT NULL,
     legacy_budget_id integer DEFAULT 0,
     legacy_stable_id integer DEFAULT 0,
-    stable_id bigint NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    stable_id        bigint                      NOT NULL,
+    updated_at       timestamp(6) with time zone NOT NULL
 );
 
 
@@ -840,7 +854,8 @@ ALTER SEQUENCE public.budget_transactions_id_seq OWNED BY public.budget_transact
 -- Name: data_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.data_migrations (
+CREATE TABLE public.data_migrations
+(
     version character varying NOT NULL
 );
 
@@ -849,14 +864,15 @@ CREATE TABLE public.data_migrations (
 -- Name: game_activity_points; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.game_activity_points (
-    id bigint NOT NULL,
-    activity_type public.activity_type NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    first_year_points integer DEFAULT 0 NOT NULL,
-    older_year_points integer DEFAULT 0 NOT NULL,
-    second_year_points integer DEFAULT 0 NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+CREATE TABLE public.game_activity_points
+(
+    id                 bigint                      NOT NULL,
+    activity_type      public.activity_type        NOT NULL,
+    created_at         timestamp(6) with time zone NOT NULL,
+    first_year_points  integer DEFAULT 0           NOT NULL,
+    older_year_points  integer DEFAULT 0           NOT NULL,
+    second_year_points integer DEFAULT 0           NOT NULL,
+    updated_at         timestamp(6) with time zone NOT NULL
 );
 
 
@@ -890,15 +906,16 @@ ALTER SEQUENCE public.game_activity_points_id_seq OWNED BY public.game_activity_
 -- Name: game_alerts; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.game_alerts (
-    id bigint NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    display_to_newbies boolean DEFAULT true NOT NULL,
-    display_to_non_newbies boolean DEFAULT true NOT NULL,
-    end_time timestamp with time zone,
-    message text NOT NULL,
-    start_time timestamp with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+CREATE TABLE public.game_alerts
+(
+    id                     bigint                      NOT NULL,
+    created_at             timestamp(6) with time zone NOT NULL,
+    display_to_newbies     boolean DEFAULT true        NOT NULL,
+    display_to_non_newbies boolean DEFAULT true        NOT NULL,
+    end_time               timestamp with time zone,
+    message                text                        NOT NULL,
+    start_time             timestamp with time zone    NOT NULL,
+    updated_at             timestamp(6) with time zone NOT NULL
 );
 
 
@@ -925,25 +942,26 @@ ALTER SEQUENCE public.game_alerts_id_seq OWNED BY public.game_alerts.id;
 -- Name: horse_appearances; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.horse_appearances (
-    id bigint NOT NULL,
-    birth_height numeric(4,2) DEFAULT 0.0 NOT NULL,
-    color public.horse_color DEFAULT 'bay'::public.horse_color NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    current_height numeric(4,2) DEFAULT 0.0 NOT NULL,
-    face_image character varying,
-    face_marking public.horse_face_marking,
-    horse_id bigint NOT NULL,
-    lf_leg_image character varying,
+CREATE TABLE public.horse_appearances
+(
+    id             bigint                                               NOT NULL,
+    birth_height   numeric(4, 2)      DEFAULT 0.0                       NOT NULL,
+    color          public.horse_color DEFAULT 'bay'::public.horse_color NOT NULL,
+    created_at     timestamp(6) with time zone                          NOT NULL,
+    current_height numeric(4, 2)      DEFAULT 0.0                       NOT NULL,
+    face_image     character varying,
+    face_marking   public.horse_face_marking,
+    horse_id       bigint                                               NOT NULL,
+    lf_leg_image   character varying,
     lf_leg_marking public.horse_leg_marking,
-    lh_leg_image character varying,
+    lh_leg_image   character varying,
     lh_leg_marking public.horse_leg_marking,
-    max_height numeric(4,2) DEFAULT 0.0 NOT NULL,
-    rf_leg_image character varying,
+    max_height     numeric(4, 2)      DEFAULT 0.0                       NOT NULL,
+    rf_leg_image   character varying,
     rf_leg_marking public.horse_leg_marking,
-    rh_leg_image character varying,
+    rh_leg_image   character varying,
     rh_leg_marking public.horse_leg_marking,
-    updated_at timestamp(6) with time zone NOT NULL,
+    updated_at     timestamp(6) with time zone                          NOT NULL,
     CONSTRAINT current_height_must_be_valid CHECK ((current_height >= birth_height)),
     CONSTRAINT max_height_must_be_valid CHECK ((max_height >= current_height))
 );
@@ -1014,16 +1032,17 @@ ALTER SEQUENCE public.horse_appearances_id_seq OWNED BY public.horse_appearances
 -- Name: horse_attributes; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.horse_attributes (
-    id bigint NOT NULL,
-    breeding_record public.breed_record DEFAULT 'none'::public.breed_record NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    dosage_text character varying,
-    horse_id bigint NOT NULL,
-    string character varying,
-    title character varying,
-    track_record character varying DEFAULT 'Unraced'::character varying NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+CREATE TABLE public.horse_attributes
+(
+    id              bigint                                                   NOT NULL,
+    breeding_record public.breed_record DEFAULT 'none'::public.breed_record  NOT NULL,
+    created_at      timestamp(6) with time zone                              NOT NULL,
+    dosage_text     character varying,
+    horse_id        bigint                                                   NOT NULL,
+    string          character varying,
+    title           character varying,
+    track_record    character varying   DEFAULT 'Unraced'::character varying NOT NULL,
+    updated_at      timestamp(6) with time zone                              NOT NULL
 );
 
 
@@ -1057,11 +1076,12 @@ ALTER SEQUENCE public.horse_attributes_id_seq OWNED BY public.horse_attributes.i
 -- Name: horse_genetics; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.horse_genetics (
-    id bigint NOT NULL,
-    allele character varying(32) NOT NULL,
+CREATE TABLE public.horse_genetics
+(
+    id         bigint                      NOT NULL,
+    allele     character varying(32)       NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
-    horse_id bigint NOT NULL,
+    horse_id   bigint                      NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
 
@@ -1089,24 +1109,25 @@ ALTER SEQUENCE public.horse_genetics_id_seq OWNED BY public.horse_genetics.id;
 -- Name: horses; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.horses (
-    id bigint NOT NULL,
-    age integer DEFAULT 0 NOT NULL,
-    breeder_id bigint NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    dam_id bigint,
-    date_of_birth date NOT NULL,
-    date_of_death date,
-    gender public.horse_gender NOT NULL,
-    legacy_id integer,
-    location_bred_id bigint NOT NULL,
-    name character varying(18),
-    owner_id bigint NOT NULL,
-    public_id character varying(12),
-    sire_id bigint,
-    slug character varying,
-    status public.horse_status DEFAULT 'unborn'::public.horse_status NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+CREATE TABLE public.horses
+(
+    id               bigint                                                    NOT NULL,
+    age              integer             DEFAULT 0                             NOT NULL,
+    breeder_id       bigint                                                    NOT NULL,
+    created_at       timestamp(6) with time zone                               NOT NULL,
+    dam_id           bigint,
+    date_of_birth    date                                                      NOT NULL,
+    date_of_death    date,
+    gender           public.horse_gender                                       NOT NULL,
+    legacy_id        integer,
+    location_bred_id bigint                                                    NOT NULL,
+    name             character varying(18),
+    owner_id         bigint                                                    NOT NULL,
+    public_id        character varying(12),
+    sire_id          bigint,
+    slug             character varying,
+    status           public.horse_status DEFAULT 'unborn'::public.horse_status NOT NULL,
+    updated_at       timestamp(6) with time zone                               NOT NULL
 );
 
 
@@ -1147,49 +1168,50 @@ ALTER SEQUENCE public.horses_id_seq OWNED BY public.horses.id;
 -- Name: jockeys; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.jockeys (
-    id bigint NOT NULL,
-    acceleration integer NOT NULL,
-    average_speed integer NOT NULL,
-    break_speed integer NOT NULL,
-    closing integer NOT NULL,
-    consistency integer NOT NULL,
-    courage integer NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    date_of_birth date NOT NULL,
-    dirt integer NOT NULL,
-    experience integer NOT NULL,
-    experience_rate integer NOT NULL,
-    fast integer NOT NULL,
-    first_name character varying NOT NULL,
-    gender public.jockey_gender,
-    good integer NOT NULL,
-    height_in_inches integer NOT NULL,
-    jockey_type public.jockey_type,
-    last_name character varying NOT NULL,
-    "leading" integer NOT NULL,
-    legacy_id integer NOT NULL,
-    loaf_threshold integer NOT NULL,
-    looking integer NOT NULL,
-    max_speed integer NOT NULL,
-    midpack integer NOT NULL,
-    min_speed integer NOT NULL,
-    off_pace integer NOT NULL,
-    pissy integer NOT NULL,
-    public_id character varying(12),
-    rating integer NOT NULL,
-    slow integer NOT NULL,
-    slug character varying,
-    status public.jockey_status,
-    steeplechase integer NOT NULL,
-    strength integer NOT NULL,
-    traffic integer NOT NULL,
-    turf integer NOT NULL,
-    turning integer NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL,
-    weight integer NOT NULL,
-    wet integer NOT NULL,
-    whip_seconds integer NOT NULL
+CREATE TABLE public.jockeys
+(
+    id               bigint                      NOT NULL,
+    acceleration     integer                     NOT NULL,
+    average_speed    integer                     NOT NULL,
+    break_speed      integer                     NOT NULL,
+    closing          integer                     NOT NULL,
+    consistency      integer                     NOT NULL,
+    courage          integer                     NOT NULL,
+    created_at       timestamp(6) with time zone NOT NULL,
+    date_of_birth    date                        NOT NULL,
+    dirt             integer                     NOT NULL,
+    experience       integer                     NOT NULL,
+    experience_rate  integer                     NOT NULL,
+    fast             integer                     NOT NULL,
+    first_name       character varying           NOT NULL,
+    gender           public.jockey_gender,
+    good             integer                     NOT NULL,
+    height_in_inches integer                     NOT NULL,
+    jockey_type      public.jockey_type,
+    last_name        character varying           NOT NULL,
+    "leading"        integer                     NOT NULL,
+    legacy_id        integer                     NOT NULL,
+    loaf_threshold   integer                     NOT NULL,
+    looking          integer                     NOT NULL,
+    max_speed        integer                     NOT NULL,
+    midpack          integer                     NOT NULL,
+    min_speed        integer                     NOT NULL,
+    off_pace         integer                     NOT NULL,
+    pissy            integer                     NOT NULL,
+    public_id        character varying(12),
+    rating           integer                     NOT NULL,
+    slow             integer                     NOT NULL,
+    slug             character varying,
+    status           public.jockey_status,
+    steeplechase     integer                     NOT NULL,
+    strength         integer                     NOT NULL,
+    traffic          integer                     NOT NULL,
+    turf             integer                     NOT NULL,
+    turning          integer                     NOT NULL,
+    updated_at       timestamp(6) with time zone NOT NULL,
+    weight           integer                     NOT NULL,
+    wet              integer                     NOT NULL,
+    whip_seconds     integer                     NOT NULL
 );
 
 
@@ -1238,36 +1260,37 @@ ALTER SEQUENCE public.jockeys_id_seq OWNED BY public.jockeys.id;
 --
 
 CREATE MATERIALIZED VIEW public.lifetime_race_records AS
- SELECT horse_id,
-    sum(starts) AS starts,
-    sum(stakes_starts) AS stakes_starts,
-    sum(wins) AS wins,
-    sum(stakes_wins) AS stakes_wins,
-    sum(seconds) AS seconds,
-    sum(stakes_seconds) AS stakes_seconds,
-    sum(thirds) AS thirds,
-    sum(stakes_thirds) AS stakes_thirds,
-    sum(fourths) AS fourths,
-    sum(stakes_fourths) AS stakes_fourths,
-    sum(points) AS points,
-    sum(earnings) AS earnings
-   FROM public.race_records
-  GROUP BY horse_id
-  WITH NO DATA;
+SELECT horse_id,
+       sum(starts)         AS starts,
+       sum(stakes_starts)  AS stakes_starts,
+       sum(wins)           AS wins,
+       sum(stakes_wins)    AS stakes_wins,
+       sum(seconds)        AS seconds,
+       sum(stakes_seconds) AS stakes_seconds,
+       sum(thirds)         AS thirds,
+       sum(stakes_thirds)  AS stakes_thirds,
+       sum(fourths)        AS fourths,
+       sum(stakes_fourths) AS stakes_fourths,
+       sum(points)         AS points,
+       sum(earnings)       AS earnings
+FROM public.race_records
+GROUP BY horse_id
+WITH NO DATA;
 
 
 --
 -- Name: locations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.locations (
-    id bigint NOT NULL,
-    country character varying NOT NULL,
-    county character varying,
+CREATE TABLE public.locations
+(
+    id         bigint                      NOT NULL,
+    country    character varying           NOT NULL,
+    county     character varying,
     created_at timestamp(6) with time zone NOT NULL,
-    has_farm boolean DEFAULT true NOT NULL,
-    name character varying NOT NULL,
-    state character varying,
+    has_farm   boolean DEFAULT true        NOT NULL,
+    name       character varying           NOT NULL,
+    state      character varying,
     updated_at timestamp(6) with time zone NOT NULL
 );
 
@@ -1295,12 +1318,13 @@ ALTER SEQUENCE public.locations_id_seq OWNED BY public.locations.id;
 -- Name: motor_alert_locks; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.motor_alert_locks (
-    id bigint NOT NULL,
-    alert_id bigint NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    lock_timestamp character varying NOT NULL,
-    updated_at timestamp with time zone NOT NULL
+CREATE TABLE public.motor_alert_locks
+(
+    id             bigint                                 NOT NULL,
+    alert_id       bigint                                 NOT NULL,
+    created_at     timestamp with time zone DEFAULT now() NOT NULL,
+    lock_timestamp character varying                      NOT NULL,
+    updated_at     timestamp with time zone               NOT NULL
 );
 
 
@@ -1327,19 +1351,20 @@ ALTER SEQUENCE public.motor_alert_locks_id_seq OWNED BY public.motor_alert_locks
 -- Name: motor_alerts; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.motor_alerts (
-    id bigint NOT NULL,
-    author_id bigint,
+CREATE TABLE public.motor_alerts
+(
+    id          bigint                                 NOT NULL,
+    author_id   bigint,
     author_type character varying,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    deleted_at timestamp with time zone,
+    created_at  timestamp with time zone DEFAULT now() NOT NULL,
+    deleted_at  timestamp with time zone,
     description text,
-    is_enabled boolean DEFAULT true NOT NULL,
-    name character varying NOT NULL,
-    preferences text NOT NULL,
-    query_id bigint NOT NULL,
-    to_emails text NOT NULL,
-    updated_at timestamp with time zone NOT NULL
+    is_enabled  boolean                  DEFAULT true  NOT NULL,
+    name        character varying                      NOT NULL,
+    preferences text                                   NOT NULL,
+    query_id    bigint                                 NOT NULL,
+    to_emails   text                                   NOT NULL,
+    updated_at  timestamp with time zone               NOT NULL
 );
 
 
@@ -1366,16 +1391,17 @@ ALTER SEQUENCE public.motor_alerts_id_seq OWNED BY public.motor_alerts.id;
 -- Name: motor_api_configs; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.motor_api_configs (
-    id bigint NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    credentials text NOT NULL,
-    deleted_at timestamp with time zone,
+CREATE TABLE public.motor_api_configs
+(
+    id          bigint                                 NOT NULL,
+    created_at  timestamp with time zone DEFAULT now() NOT NULL,
+    credentials text                                   NOT NULL,
+    deleted_at  timestamp with time zone,
     description text,
-    name character varying NOT NULL,
-    preferences text NOT NULL,
-    updated_at timestamp with time zone NOT NULL,
-    url character varying NOT NULL
+    name        character varying                      NOT NULL,
+    preferences text                                   NOT NULL,
+    updated_at  timestamp with time zone               NOT NULL,
+    url         character varying                      NOT NULL
 );
 
 
@@ -1402,23 +1428,24 @@ ALTER SEQUENCE public.motor_api_configs_id_seq OWNED BY public.motor_api_configs
 -- Name: motor_audits; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.motor_audits (
-    id bigint NOT NULL,
-    action character varying,
-    associated_id character varying,
+CREATE TABLE public.motor_audits
+(
+    id              bigint                                 NOT NULL,
+    action          character varying,
+    associated_id   character varying,
     associated_type character varying,
-    auditable_id character varying,
-    auditable_type character varying,
+    auditable_id    character varying,
+    auditable_type  character varying,
     audited_changes text,
-    comment text,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    remote_address character varying,
-    request_uuid character varying,
-    updated_at timestamp with time zone NOT NULL,
-    user_id bigint,
-    user_type character varying,
-    username character varying,
-    version bigint DEFAULT 0
+    comment         text,
+    created_at      timestamp with time zone DEFAULT now() NOT NULL,
+    remote_address  character varying,
+    request_uuid    character varying,
+    updated_at      timestamp with time zone               NOT NULL,
+    user_id         bigint,
+    user_type       character varying,
+    username        character varying,
+    version         bigint                   DEFAULT 0
 );
 
 
@@ -1445,12 +1472,13 @@ ALTER SEQUENCE public.motor_audits_id_seq OWNED BY public.motor_audits.id;
 -- Name: motor_configs; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.motor_configs (
-    id bigint NOT NULL,
+CREATE TABLE public.motor_configs
+(
+    id         bigint                                 NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
-    key character varying NOT NULL,
-    updated_at timestamp with time zone NOT NULL,
-    value text NOT NULL
+    key        character varying                      NOT NULL,
+    updated_at timestamp with time zone               NOT NULL,
+    value      text                                   NOT NULL
 );
 
 
@@ -1477,16 +1505,17 @@ ALTER SEQUENCE public.motor_configs_id_seq OWNED BY public.motor_configs.id;
 -- Name: motor_dashboards; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.motor_dashboards (
-    id bigint NOT NULL,
-    author_id bigint,
+CREATE TABLE public.motor_dashboards
+(
+    id          bigint                                 NOT NULL,
+    author_id   bigint,
     author_type character varying,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    deleted_at timestamp with time zone,
+    created_at  timestamp with time zone DEFAULT now() NOT NULL,
+    deleted_at  timestamp with time zone,
     description text,
-    preferences text NOT NULL,
-    title character varying NOT NULL,
-    updated_at timestamp with time zone NOT NULL
+    preferences text                                   NOT NULL,
+    title       character varying                      NOT NULL,
+    updated_at  timestamp with time zone               NOT NULL
 );
 
 
@@ -1513,19 +1542,20 @@ ALTER SEQUENCE public.motor_dashboards_id_seq OWNED BY public.motor_dashboards.i
 -- Name: motor_forms; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.motor_forms (
-    id bigint NOT NULL,
-    api_config_name character varying NOT NULL,
-    api_path text NOT NULL,
-    author_id bigint,
-    author_type character varying,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    deleted_at timestamp with time zone,
-    description text,
-    http_method character varying NOT NULL,
-    name character varying NOT NULL,
-    preferences text NOT NULL,
-    updated_at timestamp with time zone NOT NULL
+CREATE TABLE public.motor_forms
+(
+    id              bigint                                 NOT NULL,
+    api_config_name character varying                      NOT NULL,
+    api_path        text                                   NOT NULL,
+    author_id       bigint,
+    author_type     character varying,
+    created_at      timestamp with time zone DEFAULT now() NOT NULL,
+    deleted_at      timestamp with time zone,
+    description     text,
+    http_method     character varying                      NOT NULL,
+    name            character varying                      NOT NULL,
+    preferences     text                                   NOT NULL,
+    updated_at      timestamp with time zone               NOT NULL
 );
 
 
@@ -1552,17 +1582,18 @@ ALTER SEQUENCE public.motor_forms_id_seq OWNED BY public.motor_forms.id;
 -- Name: motor_queries; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.motor_queries (
-    id bigint NOT NULL,
-    author_id bigint,
+CREATE TABLE public.motor_queries
+(
+    id          bigint                                 NOT NULL,
+    author_id   bigint,
     author_type character varying,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    deleted_at timestamp with time zone,
+    created_at  timestamp with time zone DEFAULT now() NOT NULL,
+    deleted_at  timestamp with time zone,
     description text,
-    name character varying NOT NULL,
-    preferences text NOT NULL,
-    sql_body text NOT NULL,
-    updated_at timestamp with time zone NOT NULL
+    name        character varying                      NOT NULL,
+    preferences text                                   NOT NULL,
+    sql_body    text                                   NOT NULL,
+    updated_at  timestamp with time zone               NOT NULL
 );
 
 
@@ -1589,12 +1620,13 @@ ALTER SEQUENCE public.motor_queries_id_seq OWNED BY public.motor_queries.id;
 -- Name: motor_resources; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.motor_resources (
-    id bigint NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    name character varying NOT NULL,
-    preferences text NOT NULL,
-    updated_at timestamp with time zone NOT NULL
+CREATE TABLE public.motor_resources
+(
+    id          bigint                                 NOT NULL,
+    created_at  timestamp with time zone DEFAULT now() NOT NULL,
+    name        character varying                      NOT NULL,
+    preferences text                                   NOT NULL,
+    updated_at  timestamp with time zone               NOT NULL
 );
 
 
@@ -1621,13 +1653,14 @@ ALTER SEQUENCE public.motor_resources_id_seq OWNED BY public.motor_resources.id;
 -- Name: motor_taggable_tags; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.motor_taggable_tags (
-    id bigint NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    tag_id bigint NOT NULL,
-    taggable_id bigint NOT NULL,
-    taggable_type character varying NOT NULL,
-    updated_at timestamp with time zone NOT NULL
+CREATE TABLE public.motor_taggable_tags
+(
+    id            bigint                                 NOT NULL,
+    created_at    timestamp with time zone DEFAULT now() NOT NULL,
+    tag_id        bigint                                 NOT NULL,
+    taggable_id   bigint                                 NOT NULL,
+    taggable_type character varying                      NOT NULL,
+    updated_at    timestamp with time zone               NOT NULL
 );
 
 
@@ -1654,11 +1687,12 @@ ALTER SEQUENCE public.motor_taggable_tags_id_seq OWNED BY public.motor_taggable_
 -- Name: motor_tags; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.motor_tags (
-    id bigint NOT NULL,
+CREATE TABLE public.motor_tags
+(
+    id         bigint                                 NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
-    name character varying NOT NULL,
-    updated_at timestamp with time zone NOT NULL
+    name       character varying                      NOT NULL,
+    updated_at timestamp with time zone               NOT NULL
 );
 
 
@@ -1685,12 +1719,13 @@ ALTER SEQUENCE public.motor_tags_id_seq OWNED BY public.motor_tags.id;
 -- Name: race_odds; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.race_odds (
-    id bigint NOT NULL,
+CREATE TABLE public.race_odds
+(
+    id         bigint                      NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
-    display character varying NOT NULL,
+    display    character varying           NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
-    value numeric(3,1) NOT NULL
+    value      numeric(3, 1)               NOT NULL
 );
 
 
@@ -1736,23 +1771,24 @@ ALTER SEQUENCE public.race_records_id_seq OWNED BY public.race_records.id;
 -- Name: race_result_horses; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.race_result_horses (
-    id bigint NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    equipment integer DEFAULT 0 NOT NULL,
-    finish_position integer DEFAULT 1 NOT NULL,
-    fractions character varying,
-    horse_id bigint NOT NULL,
-    jockey_id bigint,
-    legacy_horse_id integer DEFAULT 0 NOT NULL,
-    margins character varying NOT NULL,
-    odd_id bigint,
-    positions character varying NOT NULL,
-    post_parade integer DEFAULT 1 NOT NULL,
-    race_id bigint NOT NULL,
-    speed_factor integer DEFAULT 0 NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL,
-    weight integer DEFAULT 0 NOT NULL
+CREATE TABLE public.race_result_horses
+(
+    id              bigint                      NOT NULL,
+    created_at      timestamp(6) with time zone NOT NULL,
+    equipment       integer DEFAULT 0           NOT NULL,
+    finish_position integer DEFAULT 1           NOT NULL,
+    fractions       character varying,
+    horse_id        bigint                      NOT NULL,
+    jockey_id       bigint,
+    legacy_horse_id integer DEFAULT 0           NOT NULL,
+    margins         character varying           NOT NULL,
+    odd_id          bigint,
+    positions       character varying           NOT NULL,
+    post_parade     integer DEFAULT 1           NOT NULL,
+    race_id         bigint                      NOT NULL,
+    speed_factor    integer DEFAULT 0           NOT NULL,
+    updated_at      timestamp(6) with time zone NOT NULL,
+    weight          integer DEFAULT 0           NOT NULL
 );
 
 
@@ -1779,26 +1815,27 @@ ALTER SEQUENCE public.race_result_horses_id_seq OWNED BY public.race_result_hors
 -- Name: race_results; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.race_results (
-    id bigint NOT NULL,
-    age public.race_age DEFAULT '2'::public.race_age NOT NULL,
-    claiming_price integer,
-    condition public.track_condition,
-    created_at timestamp(6) with time zone NOT NULL,
-    date date NOT NULL,
-    distance numeric(3,1) DEFAULT 5.0 NOT NULL,
-    female_only boolean DEFAULT false NOT NULL,
-    grade public.race_grade,
-    male_only boolean DEFAULT false NOT NULL,
-    name character varying,
-    number integer DEFAULT 1 NOT NULL,
-    purse bigint DEFAULT 0 NOT NULL,
-    race_type public.race_type DEFAULT 'maiden'::public.race_type NOT NULL,
-    slug character varying,
-    split public.race_splits,
-    surface_id bigint NOT NULL,
-    time_in_seconds numeric(7,3) DEFAULT 0.0 NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+CREATE TABLE public.race_results
+(
+    id              bigint                                              NOT NULL,
+    age             public.race_age  DEFAULT '2'::public.race_age       NOT NULL,
+    claiming_price  integer,
+    condition       public.track_condition,
+    created_at      timestamp(6) with time zone                         NOT NULL,
+    date            date                                                NOT NULL,
+    distance        numeric(3, 1)    DEFAULT 5.0                        NOT NULL,
+    female_only     boolean          DEFAULT false                      NOT NULL,
+    grade           public.race_grade,
+    male_only       boolean          DEFAULT false                      NOT NULL,
+    name            character varying,
+    number          integer          DEFAULT 1                          NOT NULL,
+    purse           bigint           DEFAULT 0                          NOT NULL,
+    race_type       public.race_type DEFAULT 'maiden'::public.race_type NOT NULL,
+    slug            character varying,
+    split           public.race_splits,
+    surface_id      bigint                                              NOT NULL,
+    time_in_seconds numeric(7, 3)    DEFAULT 0.0                        NOT NULL,
+    updated_at      timestamp(6) with time zone                         NOT NULL
 );
 
 
@@ -1860,24 +1897,25 @@ ALTER SEQUENCE public.race_results_id_seq OWNED BY public.race_results.id;
 -- Name: race_schedules; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.race_schedules (
-    id bigint NOT NULL,
-    age public.race_age DEFAULT '2'::public.race_age NOT NULL,
-    claiming_price integer,
-    created_at timestamp(6) with time zone NOT NULL,
-    date date NOT NULL,
-    day_number integer DEFAULT 1 NOT NULL,
-    distance numeric(3,1) DEFAULT 5.0 NOT NULL,
-    female_only boolean DEFAULT false NOT NULL,
-    grade public.race_grade,
-    male_only boolean DEFAULT false NOT NULL,
-    name character varying,
-    number integer DEFAULT 1 NOT NULL,
-    purse bigint DEFAULT 0 NOT NULL,
-    qualification_required boolean DEFAULT false NOT NULL,
-    race_type public.race_type DEFAULT 'maiden'::public.race_type NOT NULL,
-    surface_id bigint NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+CREATE TABLE public.race_schedules
+(
+    id                     bigint                                              NOT NULL,
+    age                    public.race_age  DEFAULT '2'::public.race_age       NOT NULL,
+    claiming_price         integer,
+    created_at             timestamp(6) with time zone                         NOT NULL,
+    date                   date                                                NOT NULL,
+    day_number             integer          DEFAULT 1                          NOT NULL,
+    distance               numeric(3, 1)    DEFAULT 5.0                        NOT NULL,
+    female_only            boolean          DEFAULT false                      NOT NULL,
+    grade                  public.race_grade,
+    male_only              boolean          DEFAULT false                      NOT NULL,
+    name                   character varying,
+    number                 integer          DEFAULT 1                          NOT NULL,
+    purse                  bigint           DEFAULT 0                          NOT NULL,
+    qualification_required boolean          DEFAULT false                      NOT NULL,
+    race_type              public.race_type DEFAULT 'maiden'::public.race_type NOT NULL,
+    surface_id             bigint                                              NOT NULL,
+    updated_at             timestamp(6) with time zone                         NOT NULL
 );
 
 
@@ -1925,16 +1963,17 @@ ALTER SEQUENCE public.race_schedules_id_seq OWNED BY public.race_schedules.id;
 -- Name: racetracks; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.racetracks (
-    id bigint NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    latitude numeric NOT NULL,
-    location_id bigint NOT NULL,
-    longitude numeric NOT NULL,
-    name character varying NOT NULL,
-    public_id character varying(12),
-    slug character varying,
-    updated_at timestamp(6) with time zone NOT NULL
+CREATE TABLE public.racetracks
+(
+    id          bigint                      NOT NULL,
+    created_at  timestamp(6) with time zone NOT NULL,
+    latitude    numeric                     NOT NULL,
+    location_id bigint                      NOT NULL,
+    longitude   numeric                     NOT NULL,
+    name        character varying           NOT NULL,
+    public_id   character varying(12),
+    slug        character varying,
+    updated_at  timestamp(6) with time zone NOT NULL
 );
 
 
@@ -1961,7 +2000,8 @@ ALTER SEQUENCE public.racetracks_id_seq OWNED BY public.racetracks.id;
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.schema_migrations (
+CREATE TABLE public.schema_migrations
+(
     version character varying NOT NULL
 );
 
@@ -1970,13 +2010,14 @@ CREATE TABLE public.schema_migrations (
 -- Name: sessions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.sessions (
-    id bigint NOT NULL,
+CREATE TABLE public.sessions
+(
+    id         bigint                      NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
-    data text,
-    session_id character varying NOT NULL,
+    data       text,
+    session_id character varying           NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
-    user_id integer
+    user_id    integer
 );
 
 
@@ -2003,13 +2044,14 @@ ALTER SEQUENCE public.sessions_id_seq OWNED BY public.sessions.id;
 -- Name: settings; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.settings (
-    id bigint NOT NULL,
+CREATE TABLE public.settings
+(
+    id         bigint                      NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
-    locale character varying,
-    theme character varying,
+    locale     character varying,
+    theme      character varying,
     updated_at timestamp(6) with time zone NOT NULL,
-    user_id bigint NOT NULL
+    user_id    bigint                      NOT NULL
 );
 
 
@@ -2036,21 +2078,22 @@ ALTER SEQUENCE public.settings_id_seq OWNED BY public.settings.id;
 -- Name: stables; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.stables (
-    id bigint NOT NULL,
-    available_balance bigint DEFAULT 0,
-    created_at timestamp(6) with time zone NOT NULL,
-    description text,
-    last_online_at timestamp with time zone,
-    legacy_id integer,
-    miles_from_track integer DEFAULT 1 NOT NULL,
-    name character varying NOT NULL,
-    public_id character varying(12),
-    racetrack_id bigint,
-    slug character varying,
-    total_balance bigint DEFAULT 0,
-    updated_at timestamp(6) with time zone NOT NULL,
-    user_id bigint NOT NULL
+CREATE TABLE public.stables
+(
+    id                bigint                      NOT NULL,
+    available_balance bigint  DEFAULT 0,
+    created_at        timestamp(6) with time zone NOT NULL,
+    description       text,
+    last_online_at    timestamp with time zone,
+    legacy_id         integer,
+    miles_from_track  integer DEFAULT 1           NOT NULL,
+    name              character varying           NOT NULL,
+    public_id         character varying(12),
+    racetrack_id      bigint,
+    slug              character varying,
+    total_balance     bigint  DEFAULT 0,
+    updated_at        timestamp(6) with time zone NOT NULL,
+    user_id           bigint                      NOT NULL
 );
 
 
@@ -2077,19 +2120,20 @@ ALTER SEQUENCE public.stables_id_seq OWNED BY public.stables.id;
 -- Name: track_surfaces; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.track_surfaces (
-    id bigint NOT NULL,
-    banking integer NOT NULL,
-    condition public.track_condition DEFAULT 'fast'::public.track_condition NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    jumps integer DEFAULT 0 NOT NULL,
-    length integer NOT NULL,
-    racetrack_id bigint NOT NULL,
-    surface public.track_surface DEFAULT 'dirt'::public.track_surface NOT NULL,
-    turn_distance integer NOT NULL,
-    turn_to_finish_length integer NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL,
-    width integer NOT NULL
+CREATE TABLE public.track_surfaces
+(
+    id                    bigint                                                        NOT NULL,
+    banking               integer                                                       NOT NULL,
+    condition             public.track_condition DEFAULT 'fast'::public.track_condition NOT NULL,
+    created_at            timestamp(6) with time zone                                   NOT NULL,
+    jumps                 integer                DEFAULT 0                              NOT NULL,
+    length                integer                                                       NOT NULL,
+    racetrack_id          bigint                                                        NOT NULL,
+    surface               public.track_surface   DEFAULT 'dirt'::public.track_surface   NOT NULL,
+    turn_distance         integer                                                       NOT NULL,
+    turn_to_finish_length integer                                                       NOT NULL,
+    updated_at            timestamp(6) with time zone                                   NOT NULL,
+    width                 integer                                                       NOT NULL
 );
 
 
@@ -2130,21 +2174,22 @@ ALTER SEQUENCE public.track_surfaces_id_seq OWNED BY public.track_surfaces.id;
 -- Name: training_schedules; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.training_schedules (
-    id bigint NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    description text,
-    friday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
-    horses_count integer DEFAULT 0 NOT NULL,
-    monday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
-    name character varying NOT NULL,
-    saturday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
-    stable_id bigint NOT NULL,
-    sunday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
-    thursday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
-    tuesday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL,
-    wednesday_activities jsonb DEFAULT '{}'::jsonb NOT NULL
+CREATE TABLE public.training_schedules
+(
+    id                   bigint                      NOT NULL,
+    created_at           timestamp(6) with time zone NOT NULL,
+    description          text,
+    friday_activities    jsonb   DEFAULT '{}'::jsonb NOT NULL,
+    horses_count         integer DEFAULT 0           NOT NULL,
+    monday_activities    jsonb   DEFAULT '{}'::jsonb NOT NULL,
+    name                 character varying           NOT NULL,
+    saturday_activities  jsonb   DEFAULT '{}'::jsonb NOT NULL,
+    stable_id            bigint                      NOT NULL,
+    sunday_activities    jsonb   DEFAULT '{}'::jsonb NOT NULL,
+    thursday_activities  jsonb   DEFAULT '{}'::jsonb NOT NULL,
+    tuesday_activities   jsonb   DEFAULT '{}'::jsonb NOT NULL,
+    updated_at           timestamp(6) with time zone NOT NULL,
+    wednesday_activities jsonb   DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -2152,12 +2197,13 @@ CREATE TABLE public.training_schedules (
 -- Name: training_schedules_horses; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.training_schedules_horses (
-    id bigint NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    horse_id bigint NOT NULL,
-    training_schedule_id bigint NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+CREATE TABLE public.training_schedules_horses
+(
+    id                   bigint                      NOT NULL,
+    created_at           timestamp(6) with time zone NOT NULL,
+    horse_id             bigint                      NOT NULL,
+    training_schedule_id bigint                      NOT NULL,
+    updated_at           timestamp(6) with time zone NOT NULL
 );
 
 
@@ -2203,15 +2249,16 @@ ALTER SEQUENCE public.training_schedules_id_seq OWNED BY public.training_schedul
 -- Name: user_push_subscriptions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.user_push_subscriptions (
-    id bigint NOT NULL,
-    auth_key character varying,
+CREATE TABLE public.user_push_subscriptions
+(
+    id         bigint                      NOT NULL,
+    auth_key   character varying,
     created_at timestamp(6) with time zone NOT NULL,
-    endpoint character varying,
+    endpoint   character varying,
     p256dh_key character varying,
     updated_at timestamp(6) with time zone NOT NULL,
     user_agent character varying,
-    user_id bigint NOT NULL
+    user_id    bigint                      NOT NULL
 );
 
 
@@ -2238,36 +2285,37 @@ ALTER SEQUENCE public.user_push_subscriptions_id_seq OWNED BY public.user_push_s
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.users (
-    id bigint NOT NULL,
-    admin boolean DEFAULT false NOT NULL,
-    confirmation_sent_at timestamp with time zone,
-    confirmation_token character varying,
-    confirmed_at timestamp with time zone,
-    created_at timestamp(6) with time zone NOT NULL,
-    current_sign_in_at timestamp with time zone,
-    current_sign_in_ip character varying,
-    developer boolean DEFAULT false NOT NULL,
-    discarded_at timestamp with time zone,
-    discourse_id integer,
-    email character varying DEFAULT ''::character varying NOT NULL,
-    encrypted_password character varying DEFAULT ''::character varying NOT NULL,
-    failed_attempts integer DEFAULT 0 NOT NULL,
-    last_sign_in_at timestamp with time zone,
-    last_sign_in_ip character varying,
-    locked_at timestamp with time zone,
-    name character varying NOT NULL,
-    public_id character varying(12),
-    remember_created_at timestamp with time zone,
+CREATE TABLE public.users
+(
+    id                     bigint                                                   NOT NULL,
+    admin                  boolean            DEFAULT false                         NOT NULL,
+    confirmation_sent_at   timestamp with time zone,
+    confirmation_token     character varying,
+    confirmed_at           timestamp with time zone,
+    created_at             timestamp(6) with time zone                              NOT NULL,
+    current_sign_in_at     timestamp with time zone,
+    current_sign_in_ip     character varying,
+    developer              boolean            DEFAULT false                         NOT NULL,
+    discarded_at           timestamp with time zone,
+    discourse_id           integer,
+    email                  character varying  DEFAULT ''::character varying         NOT NULL,
+    encrypted_password     character varying  DEFAULT ''::character varying         NOT NULL,
+    failed_attempts        integer            DEFAULT 0                             NOT NULL,
+    last_sign_in_at        timestamp with time zone,
+    last_sign_in_ip        character varying,
+    locked_at              timestamp with time zone,
+    name                   character varying                                        NOT NULL,
+    public_id              character varying(12),
+    remember_created_at    timestamp with time zone,
     reset_password_sent_at timestamp with time zone,
-    reset_password_token character varying,
-    sign_in_count integer DEFAULT 0 NOT NULL,
-    slug character varying,
-    status public.user_status DEFAULT 'pending'::public.user_status NOT NULL,
-    unconfirmed_email character varying,
-    unlock_token character varying,
-    updated_at timestamp(6) with time zone NOT NULL,
-    username character varying NOT NULL
+    reset_password_token   character varying,
+    sign_in_count          integer            DEFAULT 0                             NOT NULL,
+    slug                   character varying,
+    status                 public.user_status DEFAULT 'pending'::public.user_status NOT NULL,
+    unconfirmed_email      character varying,
+    unlock_token           character varying,
+    updated_at             timestamp(6) with time zone                              NOT NULL,
+    username               character varying                                        NOT NULL
 );
 
 
@@ -2301,308 +2349,352 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 -- Name: activations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.activations ALTER COLUMN id SET DEFAULT nextval('public.activations_id_seq'::regclass);
+ALTER TABLE ONLY public.activations
+    ALTER COLUMN id SET DEFAULT nextval('public.activations_id_seq'::regclass);
 
 
 --
 -- Name: active_storage_attachments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.active_storage_attachments ALTER COLUMN id SET DEFAULT nextval('public.active_storage_attachments_id_seq'::regclass);
+ALTER TABLE ONLY public.active_storage_attachments
+    ALTER COLUMN id SET DEFAULT nextval('public.active_storage_attachments_id_seq'::regclass);
 
 
 --
 -- Name: active_storage_blobs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.active_storage_blobs ALTER COLUMN id SET DEFAULT nextval('public.active_storage_blobs_id_seq'::regclass);
+ALTER TABLE ONLY public.active_storage_blobs
+    ALTER COLUMN id SET DEFAULT nextval('public.active_storage_blobs_id_seq'::regclass);
 
 
 --
 -- Name: active_storage_variant_records id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.active_storage_variant_records ALTER COLUMN id SET DEFAULT nextval('public.active_storage_variant_records_id_seq'::regclass);
+ALTER TABLE ONLY public.active_storage_variant_records
+    ALTER COLUMN id SET DEFAULT nextval('public.active_storage_variant_records_id_seq'::regclass);
 
 
 --
 -- Name: activity_points id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.activity_points ALTER COLUMN id SET DEFAULT nextval('public.activity_points_id_seq'::regclass);
+ALTER TABLE ONLY public.activity_points
+    ALTER COLUMN id SET DEFAULT nextval('public.activity_points_id_seq'::regclass);
 
 
 --
 -- Name: auction_bids id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.auction_bids ALTER COLUMN id SET DEFAULT nextval('public.auction_bids_id_seq'::regclass);
+ALTER TABLE ONLY public.auction_bids
+    ALTER COLUMN id SET DEFAULT nextval('public.auction_bids_id_seq'::regclass);
 
 
 --
 -- Name: auction_consignment_configs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.auction_consignment_configs ALTER COLUMN id SET DEFAULT nextval('public.auction_consignment_configs_id_seq'::regclass);
+ALTER TABLE ONLY public.auction_consignment_configs
+    ALTER COLUMN id SET DEFAULT nextval('public.auction_consignment_configs_id_seq'::regclass);
 
 
 --
 -- Name: auction_horses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.auction_horses ALTER COLUMN id SET DEFAULT nextval('public.auction_horses_id_seq'::regclass);
+ALTER TABLE ONLY public.auction_horses
+    ALTER COLUMN id SET DEFAULT nextval('public.auction_horses_id_seq'::regclass);
 
 
 --
 -- Name: auctions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.auctions ALTER COLUMN id SET DEFAULT nextval('public.auctions_id_seq'::regclass);
+ALTER TABLE ONLY public.auctions
+    ALTER COLUMN id SET DEFAULT nextval('public.auctions_id_seq'::regclass);
 
 
 --
 -- Name: broodmare_foal_records id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.broodmare_foal_records ALTER COLUMN id SET DEFAULT nextval('public.broodmare_foal_records_id_seq'::regclass);
+ALTER TABLE ONLY public.broodmare_foal_records
+    ALTER COLUMN id SET DEFAULT nextval('public.broodmare_foal_records_id_seq'::regclass);
 
 
 --
 -- Name: budget_transactions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.budget_transactions ALTER COLUMN id SET DEFAULT nextval('public.budget_transactions_id_seq'::regclass);
+ALTER TABLE ONLY public.budget_transactions
+    ALTER COLUMN id SET DEFAULT nextval('public.budget_transactions_id_seq'::regclass);
 
 
 --
 -- Name: game_activity_points id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.game_activity_points ALTER COLUMN id SET DEFAULT nextval('public.game_activity_points_id_seq'::regclass);
+ALTER TABLE ONLY public.game_activity_points
+    ALTER COLUMN id SET DEFAULT nextval('public.game_activity_points_id_seq'::regclass);
 
 
 --
 -- Name: game_alerts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.game_alerts ALTER COLUMN id SET DEFAULT nextval('public.game_alerts_id_seq'::regclass);
+ALTER TABLE ONLY public.game_alerts
+    ALTER COLUMN id SET DEFAULT nextval('public.game_alerts_id_seq'::regclass);
 
 
 --
 -- Name: horse_appearances id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.horse_appearances ALTER COLUMN id SET DEFAULT nextval('public.horse_appearances_id_seq'::regclass);
+ALTER TABLE ONLY public.horse_appearances
+    ALTER COLUMN id SET DEFAULT nextval('public.horse_appearances_id_seq'::regclass);
 
 
 --
 -- Name: horse_attributes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.horse_attributes ALTER COLUMN id SET DEFAULT nextval('public.horse_attributes_id_seq'::regclass);
+ALTER TABLE ONLY public.horse_attributes
+    ALTER COLUMN id SET DEFAULT nextval('public.horse_attributes_id_seq'::regclass);
 
 
 --
 -- Name: horse_genetics id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.horse_genetics ALTER COLUMN id SET DEFAULT nextval('public.horse_genetics_id_seq'::regclass);
+ALTER TABLE ONLY public.horse_genetics
+    ALTER COLUMN id SET DEFAULT nextval('public.horse_genetics_id_seq'::regclass);
 
 
 --
 -- Name: horses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.horses ALTER COLUMN id SET DEFAULT nextval('public.horses_id_seq'::regclass);
+ALTER TABLE ONLY public.horses
+    ALTER COLUMN id SET DEFAULT nextval('public.horses_id_seq'::regclass);
 
 
 --
 -- Name: jockeys id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.jockeys ALTER COLUMN id SET DEFAULT nextval('public.jockeys_id_seq'::regclass);
+ALTER TABLE ONLY public.jockeys
+    ALTER COLUMN id SET DEFAULT nextval('public.jockeys_id_seq'::regclass);
 
 
 --
 -- Name: locations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.locations ALTER COLUMN id SET DEFAULT nextval('public.locations_id_seq'::regclass);
+ALTER TABLE ONLY public.locations
+    ALTER COLUMN id SET DEFAULT nextval('public.locations_id_seq'::regclass);
 
 
 --
 -- Name: motor_alert_locks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.motor_alert_locks ALTER COLUMN id SET DEFAULT nextval('public.motor_alert_locks_id_seq'::regclass);
+ALTER TABLE ONLY public.motor_alert_locks
+    ALTER COLUMN id SET DEFAULT nextval('public.motor_alert_locks_id_seq'::regclass);
 
 
 --
 -- Name: motor_alerts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.motor_alerts ALTER COLUMN id SET DEFAULT nextval('public.motor_alerts_id_seq'::regclass);
+ALTER TABLE ONLY public.motor_alerts
+    ALTER COLUMN id SET DEFAULT nextval('public.motor_alerts_id_seq'::regclass);
 
 
 --
 -- Name: motor_api_configs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.motor_api_configs ALTER COLUMN id SET DEFAULT nextval('public.motor_api_configs_id_seq'::regclass);
+ALTER TABLE ONLY public.motor_api_configs
+    ALTER COLUMN id SET DEFAULT nextval('public.motor_api_configs_id_seq'::regclass);
 
 
 --
 -- Name: motor_audits id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.motor_audits ALTER COLUMN id SET DEFAULT nextval('public.motor_audits_id_seq'::regclass);
+ALTER TABLE ONLY public.motor_audits
+    ALTER COLUMN id SET DEFAULT nextval('public.motor_audits_id_seq'::regclass);
 
 
 --
 -- Name: motor_configs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.motor_configs ALTER COLUMN id SET DEFAULT nextval('public.motor_configs_id_seq'::regclass);
+ALTER TABLE ONLY public.motor_configs
+    ALTER COLUMN id SET DEFAULT nextval('public.motor_configs_id_seq'::regclass);
 
 
 --
 -- Name: motor_dashboards id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.motor_dashboards ALTER COLUMN id SET DEFAULT nextval('public.motor_dashboards_id_seq'::regclass);
+ALTER TABLE ONLY public.motor_dashboards
+    ALTER COLUMN id SET DEFAULT nextval('public.motor_dashboards_id_seq'::regclass);
 
 
 --
 -- Name: motor_forms id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.motor_forms ALTER COLUMN id SET DEFAULT nextval('public.motor_forms_id_seq'::regclass);
+ALTER TABLE ONLY public.motor_forms
+    ALTER COLUMN id SET DEFAULT nextval('public.motor_forms_id_seq'::regclass);
 
 
 --
 -- Name: motor_queries id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.motor_queries ALTER COLUMN id SET DEFAULT nextval('public.motor_queries_id_seq'::regclass);
+ALTER TABLE ONLY public.motor_queries
+    ALTER COLUMN id SET DEFAULT nextval('public.motor_queries_id_seq'::regclass);
 
 
 --
 -- Name: motor_resources id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.motor_resources ALTER COLUMN id SET DEFAULT nextval('public.motor_resources_id_seq'::regclass);
+ALTER TABLE ONLY public.motor_resources
+    ALTER COLUMN id SET DEFAULT nextval('public.motor_resources_id_seq'::regclass);
 
 
 --
 -- Name: motor_taggable_tags id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.motor_taggable_tags ALTER COLUMN id SET DEFAULT nextval('public.motor_taggable_tags_id_seq'::regclass);
+ALTER TABLE ONLY public.motor_taggable_tags
+    ALTER COLUMN id SET DEFAULT nextval('public.motor_taggable_tags_id_seq'::regclass);
 
 
 --
 -- Name: motor_tags id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.motor_tags ALTER COLUMN id SET DEFAULT nextval('public.motor_tags_id_seq'::regclass);
+ALTER TABLE ONLY public.motor_tags
+    ALTER COLUMN id SET DEFAULT nextval('public.motor_tags_id_seq'::regclass);
 
 
 --
 -- Name: race_odds id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.race_odds ALTER COLUMN id SET DEFAULT nextval('public.race_odds_id_seq'::regclass);
+ALTER TABLE ONLY public.race_odds
+    ALTER COLUMN id SET DEFAULT nextval('public.race_odds_id_seq'::regclass);
 
 
 --
 -- Name: race_records id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.race_records ALTER COLUMN id SET DEFAULT nextval('public.race_records_id_seq'::regclass);
+ALTER TABLE ONLY public.race_records
+    ALTER COLUMN id SET DEFAULT nextval('public.race_records_id_seq'::regclass);
 
 
 --
 -- Name: race_result_horses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.race_result_horses ALTER COLUMN id SET DEFAULT nextval('public.race_result_horses_id_seq'::regclass);
+ALTER TABLE ONLY public.race_result_horses
+    ALTER COLUMN id SET DEFAULT nextval('public.race_result_horses_id_seq'::regclass);
 
 
 --
 -- Name: race_results id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.race_results ALTER COLUMN id SET DEFAULT nextval('public.race_results_id_seq'::regclass);
+ALTER TABLE ONLY public.race_results
+    ALTER COLUMN id SET DEFAULT nextval('public.race_results_id_seq'::regclass);
 
 
 --
 -- Name: race_schedules id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.race_schedules ALTER COLUMN id SET DEFAULT nextval('public.race_schedules_id_seq'::regclass);
+ALTER TABLE ONLY public.race_schedules
+    ALTER COLUMN id SET DEFAULT nextval('public.race_schedules_id_seq'::regclass);
 
 
 --
 -- Name: racetracks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.racetracks ALTER COLUMN id SET DEFAULT nextval('public.racetracks_id_seq'::regclass);
+ALTER TABLE ONLY public.racetracks
+    ALTER COLUMN id SET DEFAULT nextval('public.racetracks_id_seq'::regclass);
 
 
 --
 -- Name: sessions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.sessions ALTER COLUMN id SET DEFAULT nextval('public.sessions_id_seq'::regclass);
+ALTER TABLE ONLY public.sessions
+    ALTER COLUMN id SET DEFAULT nextval('public.sessions_id_seq'::regclass);
 
 
 --
 -- Name: settings id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.settings ALTER COLUMN id SET DEFAULT nextval('public.settings_id_seq'::regclass);
+ALTER TABLE ONLY public.settings
+    ALTER COLUMN id SET DEFAULT nextval('public.settings_id_seq'::regclass);
 
 
 --
 -- Name: stables id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.stables ALTER COLUMN id SET DEFAULT nextval('public.stables_id_seq'::regclass);
+ALTER TABLE ONLY public.stables
+    ALTER COLUMN id SET DEFAULT nextval('public.stables_id_seq'::regclass);
 
 
 --
 -- Name: track_surfaces id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.track_surfaces ALTER COLUMN id SET DEFAULT nextval('public.track_surfaces_id_seq'::regclass);
+ALTER TABLE ONLY public.track_surfaces
+    ALTER COLUMN id SET DEFAULT nextval('public.track_surfaces_id_seq'::regclass);
 
 
 --
 -- Name: training_schedules id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.training_schedules ALTER COLUMN id SET DEFAULT nextval('public.training_schedules_id_seq'::regclass);
+ALTER TABLE ONLY public.training_schedules
+    ALTER COLUMN id SET DEFAULT nextval('public.training_schedules_id_seq'::regclass);
 
 
 --
 -- Name: training_schedules_horses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.training_schedules_horses ALTER COLUMN id SET DEFAULT nextval('public.training_schedules_horses_id_seq'::regclass);
+ALTER TABLE ONLY public.training_schedules_horses
+    ALTER COLUMN id SET DEFAULT nextval('public.training_schedules_horses_id_seq'::regclass);
 
 
 --
 -- Name: user_push_subscriptions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.user_push_subscriptions ALTER COLUMN id SET DEFAULT nextval('public.user_push_subscriptions_id_seq'::regclass);
+ALTER TABLE ONLY public.user_push_subscriptions
+    ALTER COLUMN id SET DEFAULT nextval('public.user_push_subscriptions_id_seq'::regclass);
 
 
 --
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+ALTER TABLE ONLY public.users
+    ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
@@ -4296,7 +4388,7 @@ CREATE UNIQUE INDEX motor_tags_name_unique_index ON public.motor_tags USING btre
 --
 
 ALTER TABLE ONLY public.race_results
-    ADD CONSTRAINT fk_rails_06818a8fab FOREIGN KEY (surface_id) REFERENCES public.track_surfaces(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_rails_06818a8fab FOREIGN KEY (surface_id) REFERENCES public.track_surfaces (id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
@@ -4304,7 +4396,7 @@ ALTER TABLE ONLY public.race_results
 --
 
 ALTER TABLE ONLY public.race_schedules
-    ADD CONSTRAINT fk_rails_0831641203 FOREIGN KEY (surface_id) REFERENCES public.track_surfaces(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_rails_0831641203 FOREIGN KEY (surface_id) REFERENCES public.track_surfaces (id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
@@ -4312,7 +4404,7 @@ ALTER TABLE ONLY public.race_schedules
 --
 
 ALTER TABLE ONLY public.auction_horses
-    ADD CONSTRAINT fk_rails_0ff758e7f8 FOREIGN KEY (auction_id) REFERENCES public.auctions(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_0ff758e7f8 FOREIGN KEY (auction_id) REFERENCES public.auctions (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4320,7 +4412,7 @@ ALTER TABLE ONLY public.auction_horses
 --
 
 ALTER TABLE ONLY public.horse_genetics
-    ADD CONSTRAINT fk_rails_10e493203b FOREIGN KEY (horse_id) REFERENCES public.horses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_10e493203b FOREIGN KEY (horse_id) REFERENCES public.horses (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4328,7 +4420,7 @@ ALTER TABLE ONLY public.horse_genetics
 --
 
 ALTER TABLE ONLY public.race_result_horses
-    ADD CONSTRAINT fk_rails_1fdef5dc32 FOREIGN KEY (race_id) REFERENCES public.race_results(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_1fdef5dc32 FOREIGN KEY (race_id) REFERENCES public.race_results (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4336,7 +4428,7 @@ ALTER TABLE ONLY public.race_result_horses
 --
 
 ALTER TABLE ONLY public.user_push_subscriptions
-    ADD CONSTRAINT fk_rails_2762779401 FOREIGN KEY (user_id) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_2762779401 FOREIGN KEY (user_id) REFERENCES public.users (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4344,7 +4436,7 @@ ALTER TABLE ONLY public.user_push_subscriptions
 --
 
 ALTER TABLE ONLY public.auction_consignment_configs
-    ADD CONSTRAINT fk_rails_2d96c0c08a FOREIGN KEY (auction_id) REFERENCES public.auctions(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_2d96c0c08a FOREIGN KEY (auction_id) REFERENCES public.auctions (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4352,7 +4444,7 @@ ALTER TABLE ONLY public.auction_consignment_configs
 --
 
 ALTER TABLE ONLY public.stables
-    ADD CONSTRAINT fk_rails_337ce4ea4d FOREIGN KEY (user_id) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_rails_337ce4ea4d FOREIGN KEY (user_id) REFERENCES public.users (id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
@@ -4360,7 +4452,7 @@ ALTER TABLE ONLY public.stables
 --
 
 ALTER TABLE ONLY public.motor_alert_locks
-    ADD CONSTRAINT fk_rails_38d1b2960e FOREIGN KEY (alert_id) REFERENCES public.motor_alerts(id);
+    ADD CONSTRAINT fk_rails_38d1b2960e FOREIGN KEY (alert_id) REFERENCES public.motor_alerts (id);
 
 
 --
@@ -4368,7 +4460,7 @@ ALTER TABLE ONLY public.motor_alert_locks
 --
 
 ALTER TABLE ONLY public.settings
-    ADD CONSTRAINT fk_rails_5676777bf1 FOREIGN KEY (user_id) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_5676777bf1 FOREIGN KEY (user_id) REFERENCES public.users (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4376,7 +4468,7 @@ ALTER TABLE ONLY public.settings
 --
 
 ALTER TABLE ONLY public.training_schedules_horses
-    ADD CONSTRAINT fk_rails_5699b9eba5 FOREIGN KEY (horse_id) REFERENCES public.horses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_5699b9eba5 FOREIGN KEY (horse_id) REFERENCES public.horses (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4384,7 +4476,7 @@ ALTER TABLE ONLY public.training_schedules_horses
 --
 
 ALTER TABLE ONLY public.race_result_horses
-    ADD CONSTRAINT fk_rails_5a43ac707f FOREIGN KEY (horse_id) REFERENCES public.horses(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_rails_5a43ac707f FOREIGN KEY (horse_id) REFERENCES public.horses (id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
@@ -4392,7 +4484,7 @@ ALTER TABLE ONLY public.race_result_horses
 --
 
 ALTER TABLE ONLY public.budget_transactions
-    ADD CONSTRAINT fk_rails_5fead07b30 FOREIGN KEY (stable_id) REFERENCES public.stables(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_5fead07b30 FOREIGN KEY (stable_id) REFERENCES public.stables (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4400,7 +4492,7 @@ ALTER TABLE ONLY public.budget_transactions
 --
 
 ALTER TABLE ONLY public.auction_horses
-    ADD CONSTRAINT fk_rails_68ba859655 FOREIGN KEY (horse_id) REFERENCES public.horses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_68ba859655 FOREIGN KEY (horse_id) REFERENCES public.horses (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4408,7 +4500,7 @@ ALTER TABLE ONLY public.auction_horses
 --
 
 ALTER TABLE ONLY public.stables
-    ADD CONSTRAINT fk_rails_6c0fff5a3e FOREIGN KEY (racetrack_id) REFERENCES public.racetracks(id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT fk_rails_6c0fff5a3e FOREIGN KEY (racetrack_id) REFERENCES public.racetracks (id) ON UPDATE CASCADE ON DELETE SET NULL;
 
 
 --
@@ -4416,7 +4508,7 @@ ALTER TABLE ONLY public.stables
 --
 
 ALTER TABLE ONLY public.racetracks
-    ADD CONSTRAINT fk_rails_7135862009 FOREIGN KEY (location_id) REFERENCES public.locations(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_rails_7135862009 FOREIGN KEY (location_id) REFERENCES public.locations (id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
@@ -4424,7 +4516,7 @@ ALTER TABLE ONLY public.racetracks
 --
 
 ALTER TABLE ONLY public.race_result_horses
-    ADD CONSTRAINT fk_rails_7254168319 FOREIGN KEY (odd_id) REFERENCES public.race_results(id) ON UPDATE CASCADE ON DELETE SET NULL NOT VALID;
+    ADD CONSTRAINT fk_rails_7254168319 FOREIGN KEY (odd_id) REFERENCES public.race_results (id) ON UPDATE CASCADE ON DELETE SET NULL NOT VALID;
 
 
 --
@@ -4432,7 +4524,7 @@ ALTER TABLE ONLY public.race_result_horses
 --
 
 ALTER TABLE ONLY public.motor_alerts
-    ADD CONSTRAINT fk_rails_8828951644 FOREIGN KEY (query_id) REFERENCES public.motor_queries(id);
+    ADD CONSTRAINT fk_rails_8828951644 FOREIGN KEY (query_id) REFERENCES public.motor_queries (id);
 
 
 --
@@ -4440,7 +4532,7 @@ ALTER TABLE ONLY public.motor_alerts
 --
 
 ALTER TABLE ONLY public.track_surfaces
-    ADD CONSTRAINT fk_rails_8a3fdd3bd1 FOREIGN KEY (racetrack_id) REFERENCES public.racetracks(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_8a3fdd3bd1 FOREIGN KEY (racetrack_id) REFERENCES public.racetracks (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4448,7 +4540,7 @@ ALTER TABLE ONLY public.track_surfaces
 --
 
 ALTER TABLE ONLY public.boardings
-    ADD CONSTRAINT fk_rails_91c5c287e6 FOREIGN KEY (location_id) REFERENCES public.locations(id);
+    ADD CONSTRAINT fk_rails_91c5c287e6 FOREIGN KEY (location_id) REFERENCES public.locations (id);
 
 
 --
@@ -4456,7 +4548,7 @@ ALTER TABLE ONLY public.boardings
 --
 
 ALTER TABLE ONLY public.horses
-    ADD CONSTRAINT fk_rails_99146e7c92 FOREIGN KEY (owner_id) REFERENCES public.stables(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_rails_99146e7c92 FOREIGN KEY (owner_id) REFERENCES public.stables (id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
@@ -4464,7 +4556,7 @@ ALTER TABLE ONLY public.horses
 --
 
 ALTER TABLE ONLY public.activity_points
-    ADD CONSTRAINT fk_rails_9921842c69 FOREIGN KEY (budget_id) REFERENCES public.budget_transactions(id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT fk_rails_9921842c69 FOREIGN KEY (budget_id) REFERENCES public.budget_transactions (id) ON UPDATE CASCADE ON DELETE SET NULL;
 
 
 --
@@ -4472,7 +4564,7 @@ ALTER TABLE ONLY public.activity_points
 --
 
 ALTER TABLE ONLY public.active_storage_variant_records
-    ADD CONSTRAINT fk_rails_993965df05 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
+    ADD CONSTRAINT fk_rails_993965df05 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs (id);
 
 
 --
@@ -4480,7 +4572,7 @@ ALTER TABLE ONLY public.active_storage_variant_records
 --
 
 ALTER TABLE ONLY public.activity_points
-    ADD CONSTRAINT fk_rails_a3b05b12f2 FOREIGN KEY (stable_id) REFERENCES public.stables(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_a3b05b12f2 FOREIGN KEY (stable_id) REFERENCES public.stables (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4488,7 +4580,7 @@ ALTER TABLE ONLY public.activity_points
 --
 
 ALTER TABLE ONLY public.training_schedules_horses
-    ADD CONSTRAINT fk_rails_a48e7af8f9 FOREIGN KEY (training_schedule_id) REFERENCES public.training_schedules(id) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
+    ADD CONSTRAINT fk_rails_a48e7af8f9 FOREIGN KEY (training_schedule_id) REFERENCES public.training_schedules (id) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -4496,7 +4588,7 @@ ALTER TABLE ONLY public.training_schedules_horses
 --
 
 ALTER TABLE ONLY public.auction_bids
-    ADD CONSTRAINT fk_rails_a66160d8e4 FOREIGN KEY (auction_id) REFERENCES public.auctions(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_a66160d8e4 FOREIGN KEY (auction_id) REFERENCES public.auctions (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4504,7 +4596,7 @@ ALTER TABLE ONLY public.auction_bids
 --
 
 ALTER TABLE ONLY public.horse_attributes
-    ADD CONSTRAINT fk_rails_a783c29acc FOREIGN KEY (horse_id) REFERENCES public.horses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_a783c29acc FOREIGN KEY (horse_id) REFERENCES public.horses (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4512,7 +4604,7 @@ ALTER TABLE ONLY public.horse_attributes
 --
 
 ALTER TABLE ONLY public.auction_bids
-    ADD CONSTRAINT fk_rails_ad9350f9f6 FOREIGN KEY (bidder_id) REFERENCES public.stables(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_ad9350f9f6 FOREIGN KEY (bidder_id) REFERENCES public.stables (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4520,7 +4612,7 @@ ALTER TABLE ONLY public.auction_bids
 --
 
 ALTER TABLE ONLY public.horses
-    ADD CONSTRAINT fk_rails_b1757e50ec FOREIGN KEY (breeder_id) REFERENCES public.stables(id) ON UPDATE CASCADE ON DELETE RESTRICT NOT VALID;
+    ADD CONSTRAINT fk_rails_b1757e50ec FOREIGN KEY (breeder_id) REFERENCES public.stables (id) ON UPDATE CASCADE ON DELETE RESTRICT NOT VALID;
 
 
 --
@@ -4528,7 +4620,7 @@ ALTER TABLE ONLY public.horses
 --
 
 ALTER TABLE ONLY public.boardings
-    ADD CONSTRAINT fk_rails_b7a9ec2495 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+    ADD CONSTRAINT fk_rails_b7a9ec2495 FOREIGN KEY (horse_id) REFERENCES public.horses (id);
 
 
 --
@@ -4536,7 +4628,7 @@ ALTER TABLE ONLY public.boardings
 --
 
 ALTER TABLE ONLY public.motor_taggable_tags
-    ADD CONSTRAINT fk_rails_ba9ebe2280 FOREIGN KEY (tag_id) REFERENCES public.motor_tags(id);
+    ADD CONSTRAINT fk_rails_ba9ebe2280 FOREIGN KEY (tag_id) REFERENCES public.motor_tags (id);
 
 
 --
@@ -4544,7 +4636,7 @@ ALTER TABLE ONLY public.motor_taggable_tags
 --
 
 ALTER TABLE ONLY public.race_records
-    ADD CONSTRAINT fk_rails_c25fca6795 FOREIGN KEY (horse_id) REFERENCES public.horses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_c25fca6795 FOREIGN KEY (horse_id) REFERENCES public.horses (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4552,7 +4644,7 @@ ALTER TABLE ONLY public.race_records
 --
 
 ALTER TABLE ONLY public.active_storage_attachments
-    ADD CONSTRAINT fk_rails_c3b3935057 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
+    ADD CONSTRAINT fk_rails_c3b3935057 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs (id);
 
 
 --
@@ -4560,7 +4652,7 @@ ALTER TABLE ONLY public.active_storage_attachments
 --
 
 ALTER TABLE ONLY public.training_schedules
-    ADD CONSTRAINT fk_rails_c52806e045 FOREIGN KEY (stable_id) REFERENCES public.stables(id) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
+    ADD CONSTRAINT fk_rails_c52806e045 FOREIGN KEY (stable_id) REFERENCES public.stables (id) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -4568,7 +4660,7 @@ ALTER TABLE ONLY public.training_schedules
 --
 
 ALTER TABLE ONLY public.auction_bids
-    ADD CONSTRAINT fk_rails_c7783844e2 FOREIGN KEY (horse_id) REFERENCES public.auction_horses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_c7783844e2 FOREIGN KEY (horse_id) REFERENCES public.auction_horses (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4576,7 +4668,7 @@ ALTER TABLE ONLY public.auction_bids
 --
 
 ALTER TABLE ONLY public.activations
-    ADD CONSTRAINT fk_rails_c968676a56 FOREIGN KEY (user_id) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_c968676a56 FOREIGN KEY (user_id) REFERENCES public.users (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4584,7 +4676,7 @@ ALTER TABLE ONLY public.activations
 --
 
 ALTER TABLE ONLY public.horses
-    ADD CONSTRAINT fk_rails_d484f5dff4 FOREIGN KEY (sire_id) REFERENCES public.horses(id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT fk_rails_d484f5dff4 FOREIGN KEY (sire_id) REFERENCES public.horses (id) ON UPDATE CASCADE ON DELETE SET NULL;
 
 
 --
@@ -4592,7 +4684,7 @@ ALTER TABLE ONLY public.horses
 --
 
 ALTER TABLE ONLY public.horses
-    ADD CONSTRAINT fk_rails_e50f0d1f41 FOREIGN KEY (location_bred_id) REFERENCES public.locations(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_rails_e50f0d1f41 FOREIGN KEY (location_bred_id) REFERENCES public.locations (id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
@@ -4600,7 +4692,7 @@ ALTER TABLE ONLY public.horses
 --
 
 ALTER TABLE ONLY public.auctions
-    ADD CONSTRAINT fk_rails_eb22f53e21 FOREIGN KEY (auctioneer_id) REFERENCES public.stables(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_eb22f53e21 FOREIGN KEY (auctioneer_id) REFERENCES public.stables (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4608,7 +4700,7 @@ ALTER TABLE ONLY public.auctions
 --
 
 ALTER TABLE ONLY public.horse_appearances
-    ADD CONSTRAINT fk_rails_edfc2b0987 FOREIGN KEY (horse_id) REFERENCES public.horses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_edfc2b0987 FOREIGN KEY (horse_id) REFERENCES public.horses (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4616,7 +4708,7 @@ ALTER TABLE ONLY public.horse_appearances
 --
 
 ALTER TABLE ONLY public.broodmare_foal_records
-    ADD CONSTRAINT fk_rails_f03f5afd0c FOREIGN KEY (horse_id) REFERENCES public.horses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT fk_rails_f03f5afd0c FOREIGN KEY (horse_id) REFERENCES public.horses (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4624,7 +4716,7 @@ ALTER TABLE ONLY public.broodmare_foal_records
 --
 
 ALTER TABLE ONLY public.race_result_horses
-    ADD CONSTRAINT fk_rails_f05befc048 FOREIGN KEY (jockey_id) REFERENCES public.jockeys(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_rails_f05befc048 FOREIGN KEY (jockey_id) REFERENCES public.jockeys (id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
@@ -4632,7 +4724,7 @@ ALTER TABLE ONLY public.race_result_horses
 --
 
 ALTER TABLE ONLY public.horses
-    ADD CONSTRAINT fk_rails_fc5ea1ce34 FOREIGN KEY (dam_id) REFERENCES public.horses(id) ON UPDATE CASCADE ON DELETE SET NULL NOT VALID;
+    ADD CONSTRAINT fk_rails_fc5ea1ce34 FOREIGN KEY (dam_id) REFERENCES public.horses (id) ON UPDATE CASCADE ON DELETE SET NULL NOT VALID;
 
 
 --
@@ -4641,6 +4733,6 @@ ALTER TABLE ONLY public.horses
 
 SET search_path TO "$user", public;
 
-INSERT INTO "schema_migrations" (version) VALUES
-('20251106205042');
+INSERT INTO "schema_migrations" (version)
+VALUES ('20251106205042');
 
