@@ -39,9 +39,9 @@ RSpec.describe Auctions::Bid do
   end
 
   describe "callbacks" do
-    before do
-      ActiveJob::Base.queue_adapter = :solid_queue
-    end
+    before { ActiveJob::Base.queue_adapter = :solid_queue }
+
+    after { ActiveJob::Base.queue_adapter = :test }
 
     context "when bid is created" do
       it "enqueues the process auction sale job" do

@@ -2,7 +2,7 @@ module Horses
   class BroodmareFoalRecordCreator < ApplicationService
     attr_reader :horse
 
-    def create_record(horse)
+    def create_record(horse:)
       return unless horse.female?
 
       record = horse.broodmare_foal_record || horse.build_broodmare_foal_record

@@ -106,9 +106,9 @@ RSpec.describe Auction do
   end
 
   describe "callbacks" do
-    before do
-      ActiveJob::Base.queue_adapter = :solid_queue
-    end
+    before { ActiveJob::Base.queue_adapter = :solid_queue }
+
+    after { ActiveJob::Base.queue_adapter = :test }
 
     context "when auction is created" do
       it "enqueues the auction deletion job" do

@@ -4,7 +4,7 @@ class PopulateBroodmareFoalRecordsService
     query.find_each(cursor: [:id], order: [:asc]) do |horse|
       next unless horse.female?
 
-      result = Horses::BroodmareFoalRecordCreator.new.create_record(horse)
+      result = Horses::BroodmareFoalRecordCreator.new.create_record(horse:)
       raise "Could not handle horse #{horse.id}, error: #{result.error}" unless result.created?
     end
   rescue => e
