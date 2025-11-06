@@ -52,8 +52,6 @@ en:
         auction_not_future: Auction is not in the future
         horse_not_found: Could not find horse
     boarding:
-      completion:
-        already_ended: This boarding has already ended
       creator:
         horse_currently_boarded: Horse is already being boarded
         horse_not_racehorse: Non-racehorses cannot be boarded
@@ -62,3 +60,6 @@ en:
         max_days_reached: Horse has spent the max time boarded at this location
       deletion:
         in_progress: Cannot cancel a boarding that is already running
+      updator:
+        already_ended: This boarding has already ended
+        budget_description: Board for %{name} for %{days}

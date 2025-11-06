@@ -80,11 +80,12 @@ RSpec.describe Api::V1::Boardings do
     end
 
     context "when boarding has not ended" do
-      it "ends boarding" do
+      before { boarding.update(start_date: Date.current - 1) }
+
+      it "does not delete boarding" do
         expect do
           put "/api/v1/boardings/#{boarding.id}"
         end.not_to change(Horses::Boarding, :count)
-        expect(boarding.reload.end_date).to eq Date.current
       end
 
       it "returns completed" do
@@ -110,7 +111,7 @@ RSpec.describe Api::V1::Boardings do
         put "/api/v1/boardings/#{boarding.id}"
 
         expect(response).to have_http_status :internal_server_error
-        expect(json_body[:detail]).to eq I18n.t("services.boarding.completion.already_ended")
+        expect(json_body[:detail]).to eq I18n.t("services.boarding.updator.already_ended")
       end
     end
   end

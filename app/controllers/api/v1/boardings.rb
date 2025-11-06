@@ -22,9 +22,8 @@ module Api
         route_param :id do
           put "/" do
             boarding = Horses::Boarding.find(params[:id])
-            error!({ error: "invalid", detail: I18n.t("services.boarding.completion.already_ended") }, 500) if boarding.end_date
-
-            boarding.update(end_date: Date.current)
+            result = Horses::BoardingUpdator.new.stop_boarding(boarding:)
+            error!({ error: "invalid", detail: result.error }, 500) unless result.updated?
 
             { completed: true }
           end

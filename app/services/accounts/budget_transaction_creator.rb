@@ -8,7 +8,7 @@ module Accounts
         amount:,
         balance: (previous_budget&.balance || 0) + amount,
         legacy_stable_id: stable.legacy_id,
-        activity_type: activity_type(description)
+        activity_type: budget_activity_type(description)
       }
       attrs[:created_at] = date if date.present?
       attrs[:legacy_budget_id] = legacy_budget_id if legacy_budget_id.present?
@@ -26,7 +26,7 @@ module Accounts
 
     private
 
-    def activity_type(description)
+    def budget_activity_type(description)
       if description.starts_with?("Entry Fee:")
         "entered_race"
       elsif description.starts_with?("Race Winnings:")
