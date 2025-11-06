@@ -142,6 +142,7 @@ ActiveRecordDoctor.configure do
     "Legacy::Shipping",
     "Legacy::Skin",
     "Legacy::SpeedRecord",
+    "Legacy::StableBalance",
     "Legacy::StableNote",
     "Legacy::StableRaceRecord",
     "Legacy::TrackCondition",

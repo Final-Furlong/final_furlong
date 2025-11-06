@@ -1,6 +1,8 @@
 module Legacy
   class Boarding < Record
     self.table_name = "ff_boarding"
+
+    belongs_to :farm, class_name: "Legacy::Farm"
   end
 end
 
