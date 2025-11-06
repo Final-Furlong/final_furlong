@@ -4,7 +4,6 @@ FactoryBot.define do
     amount { 1000 }
     balance { 10_000 }
     description { "Spent some money" }
-    legacy_budget_id { rand(1..999_999) }
     legacy_stable_id { stable.legacy_id }
   end
 end

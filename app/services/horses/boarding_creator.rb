@@ -32,9 +32,9 @@ module Horses
         start_date = [Date.new(Date.current.year, 1, 1), boarding.start_date].max
         end_date = boarding.end_date || Date.current
 
-        total_days_in_location += end_date - start_date
+        total_days_in_location += (end_date - start_date).to_i
       end
-      if total_days_in_location >= 30
+      if total_days_in_location >= Horses::Boarding::MAX_YEARLY_DAYS
         result.error = error("max_days_reached")
         return result
       end

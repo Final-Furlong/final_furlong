@@ -16,10 +16,8 @@ module Api
           attrs = {
             stable:,
             description: params[:description],
-            amount: params[:amount],
-            date: Date.current
+            amount: params[:amount]
           }
-          attrs[:legacy_budget_id] = params[:legacy_budget_id] if params[:legacy_budget_id].present?
           attrs[:activity_type] = params[:activity_type] if params[:activity_type].present?
           budget = Accounts::BudgetTransactionCreator.new.create_transaction(**attrs)
           error!({ error: "invalid", detail: budget.errors.full_messages.to_sentence }, 500) unless budget

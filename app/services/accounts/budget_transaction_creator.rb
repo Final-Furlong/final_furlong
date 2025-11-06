@@ -1,6 +1,6 @@
 module Accounts
   class BudgetTransactionCreator < ApplicationService
-    def create_transaction(stable:, description:, amount:, date: nil, legacy_budget_id: nil, activity_type: nil)
+    def create_transaction(stable:, description:, amount:, activity_type: nil, increment_available_balance: false)
       previous_budget = Account::Budget.where(stable:).recent.first
       attrs = {
         stable:,
@@ -10,12 +10,10 @@ module Accounts
         legacy_stable_id: stable.legacy_id,
         activity_type: budget_activity_type(description)
       }
-      attrs[:created_at] = date if date.present?
-      attrs[:legacy_budget_id] = legacy_budget_id if legacy_budget_id.present?
       ActiveRecord::Base.transaction do
         new_budget = Account::Budget.create!(attrs)
         stable.total_balance += amount
-        stable.available_balance += amount
+        stable.available_balance += increment_available_balance ? amount.abs : amount
         stable.save!
 
         Accounts::ActivityTransactionCreator.new.create_transaction(stable:, activity_type:, budget: new_budget) if activity_type
@@ -64,7 +62,7 @@ module Accounts
       elsif description.starts_with?("Board for ")
         "boarded_horse"
       elsif color_war_entry?(description)
-        "leased_horse"
+        "color_war"
       elsif activity_entry?(description)
         "activity_points"
       elsif donation_entry?(description)

@@ -1,7 +1,5 @@
 module Horses
   class BoardingUpdator < ApplicationService
-    attr_reader :horse, :location
-
     def stop_boarding(boarding:)
       result = Result.new(updated: false, boarding:)
       if boarding.end_date
@@ -10,7 +8,7 @@ module Horses
       end
 
       legacy_horse = Legacy::Horse.find_by(ID: boarding.horse.legacy_id)
-      stable = if legacy_horse.Leased
+      stable = if legacy_horse&.Leased
         Account::Stable.find_by(legacy_id: legacy_horse.leaser)
       else
         boarding.horse.owner
@@ -24,9 +22,11 @@ module Horses
           description = I18n.t("services.boarding.updator.budget_description", name: boarding.horse.name, days: days_string)
           amount = boarding.days * 100 * -1
           Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount:)
+          result.boarding = boarding
         else
           boarding.destroy!
         end
+        legacy_horse&.update(boarding_id: nil)
         result.updated = true
       rescue ActiveRecord::ActiveRecordError => e
         result.updated = false
@@ -36,8 +36,7 @@ module Horses
     end
 
     class Result
-      attr_reader :boarding
-      attr_accessor :updated, :error
+      attr_accessor :updated, :boarding, :error
 
       def initialize(updated:, boarding:)
         @updated = updated

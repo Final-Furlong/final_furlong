@@ -11,6 +11,27 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: public; Type: SCHEMA; Schema: -; Owner: -
+--
+
+-- *not* creating schema, since initdb creates it
+
+
+--
+-- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
+
+
+--
 -- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -320,12 +341,12 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.activations (
-    id bigint CONSTRAINT new_activations_id_not_null NOT NULL,
+    id bigint NOT NULL,
     activated_at timestamp with time zone,
-    token character varying CONSTRAINT new_activations_token_not_null NOT NULL,
+    token character varying NOT NULL,
     user_id bigint NOT NULL,
-    created_at timestamp(6) with time zone CONSTRAINT new_activations_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_activations_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -353,7 +374,7 @@ ALTER SEQUENCE public.activations_id_seq OWNED BY public.activations.id;
 --
 
 CREATE TABLE public.active_storage_attachments (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     name character varying NOT NULL,
     record_type character varying NOT NULL,
     record_id uuid NOT NULL,
@@ -367,7 +388,7 @@ CREATE TABLE public.active_storage_attachments (
 --
 
 CREATE TABLE public.active_storage_blobs (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     key character varying NOT NULL,
     filename character varying NOT NULL,
     content_type character varying,
@@ -384,7 +405,7 @@ CREATE TABLE public.active_storage_blobs (
 --
 
 CREATE TABLE public.active_storage_variant_records (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     blob_id uuid NOT NULL,
     variation_digest character varying NOT NULL
 );
@@ -395,16 +416,16 @@ CREATE TABLE public.active_storage_variant_records (
 --
 
 CREATE TABLE public.activity_points (
-    id bigint CONSTRAINT new_activity_points_id_not_null NOT NULL,
-    activity_type public.activity_type CONSTRAINT new_activity_points_activity_type_not_null NOT NULL,
-    amount integer DEFAULT 0 CONSTRAINT new_activity_points_amount_not_null NOT NULL,
-    balance bigint DEFAULT 0 CONSTRAINT new_activity_points_balance_not_null NOT NULL,
+    id bigint NOT NULL,
+    activity_type public.activity_type NOT NULL,
+    amount integer DEFAULT 0 NOT NULL,
+    balance bigint DEFAULT 0 NOT NULL,
     budget_id bigint,
     old_budget_id uuid,
-    legacy_stable_id integer DEFAULT 0 CONSTRAINT new_activity_points_legacy_stable_id_not_null NOT NULL,
-    stable_id bigint CONSTRAINT activity_points_stable_id_not_null1 NOT NULL,
-    created_at timestamp(6) with time zone CONSTRAINT new_activity_points_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_activity_points_updated_at_not_null NOT NULL
+    legacy_stable_id integer DEFAULT 0 NOT NULL,
+    stable_id bigint NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -439,24 +460,24 @@ ALTER SEQUENCE public.activity_points_id_seq OWNED BY public.activity_points.id;
 --
 
 CREATE TABLE public.race_records (
-    id bigint CONSTRAINT new_race_records_id_not_null NOT NULL,
-    horse_id bigint CONSTRAINT race_records_horse_id_not_null1 NOT NULL,
-    year integer DEFAULT 1996 CONSTRAINT new_race_records_year_not_null NOT NULL,
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    year integer DEFAULT 1996 NOT NULL,
     result_type public.race_result_types DEFAULT 'dirt'::public.race_result_types,
-    starts integer DEFAULT 0 CONSTRAINT new_race_records_starts_not_null NOT NULL,
-    stakes_starts integer DEFAULT 0 CONSTRAINT new_race_records_stakes_starts_not_null NOT NULL,
-    wins integer DEFAULT 0 CONSTRAINT new_race_records_wins_not_null NOT NULL,
-    stakes_wins integer DEFAULT 0 CONSTRAINT new_race_records_stakes_wins_not_null NOT NULL,
-    seconds integer DEFAULT 0 CONSTRAINT new_race_records_seconds_not_null NOT NULL,
-    stakes_seconds integer DEFAULT 0 CONSTRAINT new_race_records_stakes_seconds_not_null NOT NULL,
-    thirds integer DEFAULT 0 CONSTRAINT new_race_records_thirds_not_null NOT NULL,
-    stakes_thirds integer DEFAULT 0 CONSTRAINT new_race_records_stakes_thirds_not_null NOT NULL,
-    fourths integer DEFAULT 0 CONSTRAINT new_race_records_fourths_not_null NOT NULL,
-    stakes_fourths integer DEFAULT 0 CONSTRAINT new_race_records_stakes_fourths_not_null NOT NULL,
-    points integer DEFAULT 0 CONSTRAINT new_race_records_points_not_null NOT NULL,
-    earnings bigint DEFAULT 0 CONSTRAINT new_race_records_earnings_not_null NOT NULL,
-    created_at timestamp(6) with time zone CONSTRAINT new_race_records_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_race_records_updated_at_not_null NOT NULL
+    starts integer DEFAULT 0 NOT NULL,
+    stakes_starts integer DEFAULT 0 NOT NULL,
+    wins integer DEFAULT 0 NOT NULL,
+    stakes_wins integer DEFAULT 0 NOT NULL,
+    seconds integer DEFAULT 0 NOT NULL,
+    stakes_seconds integer DEFAULT 0 NOT NULL,
+    thirds integer DEFAULT 0 NOT NULL,
+    stakes_thirds integer DEFAULT 0 NOT NULL,
+    fourths integer DEFAULT 0 NOT NULL,
+    stakes_fourths integer DEFAULT 0 NOT NULL,
+    points integer DEFAULT 0 NOT NULL,
+    earnings bigint DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -508,17 +529,17 @@ CREATE TABLE public.ar_internal_metadata (
 --
 
 CREATE TABLE public.auction_bids (
-    id bigint CONSTRAINT new_auction_bids_id_not_null NOT NULL,
-    auction_id bigint CONSTRAINT auction_bids_auction_id_not_null1 NOT NULL,
-    bidder_id bigint CONSTRAINT auction_bids_bidder_id_not_null1 NOT NULL,
+    id bigint NOT NULL,
+    auction_id bigint NOT NULL,
+    bidder_id bigint NOT NULL,
     comment text,
-    current_bid integer DEFAULT 0 CONSTRAINT new_auction_bids_current_bid_not_null NOT NULL,
-    notify_if_outbid boolean DEFAULT false CONSTRAINT new_auction_bids_notify_if_outbid_not_null NOT NULL,
-    horse_id bigint CONSTRAINT auction_bids_horse_id_not_null1 NOT NULL,
+    current_bid integer DEFAULT 0 NOT NULL,
+    notify_if_outbid boolean DEFAULT false NOT NULL,
+    horse_id bigint NOT NULL,
     maximum_bid integer,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_auction_bids_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_auction_bids_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -546,16 +567,16 @@ ALTER SEQUENCE public.auction_bids_id_seq OWNED BY public.auction_bids.id;
 --
 
 CREATE TABLE public.auction_consignment_configs (
-    id bigint CONSTRAINT new_auction_consignment_configs_id_not_null NOT NULL,
-    auction_id bigint CONSTRAINT auction_consignment_configs_auction_id_not_null1 NOT NULL,
-    horse_type character varying CONSTRAINT new_auction_consignment_configs_horse_type_not_null NOT NULL,
-    maximum_age integer DEFAULT 0 CONSTRAINT new_auction_consignment_configs_maximum_age_not_null NOT NULL,
-    minimum_age integer DEFAULT 0 CONSTRAINT new_auction_consignment_configs_minimum_age_not_null NOT NULL,
-    minimum_count integer DEFAULT 0 CONSTRAINT new_auction_consignment_configs_minimum_count_not_null NOT NULL,
-    stakes_quality boolean DEFAULT false CONSTRAINT new_auction_consignment_configs_stakes_quality_not_null NOT NULL,
+    id bigint NOT NULL,
+    auction_id bigint NOT NULL,
+    horse_type character varying NOT NULL,
+    maximum_age integer DEFAULT 0 NOT NULL,
+    minimum_age integer DEFAULT 0 NOT NULL,
+    minimum_count integer DEFAULT 0 NOT NULL,
+    stakes_quality boolean DEFAULT false NOT NULL,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_auction_consignment_configs_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_auction_consignment_configs_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -583,17 +604,17 @@ ALTER SEQUENCE public.auction_consignment_configs_id_seq OWNED BY public.auction
 --
 
 CREATE TABLE public.auction_horses (
-    id bigint CONSTRAINT new_auction_horses_id_not_null NOT NULL,
-    auction_id bigint CONSTRAINT auction_horses_auction_id_not_null1 NOT NULL,
+    id bigint NOT NULL,
+    auction_id bigint NOT NULL,
     comment text,
-    horse_id bigint CONSTRAINT auction_horses_horse_id_not_null1 NOT NULL,
+    horse_id bigint NOT NULL,
     maximum_price integer,
     reserve_price integer,
     sold_at timestamp with time zone,
     public_id character varying(12),
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_auction_horses_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_auction_horses_updated_at_not_null NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL,
     slug character varying
 );
 
@@ -622,27 +643,27 @@ ALTER SEQUENCE public.auction_horses_id_seq OWNED BY public.auction_horses.id;
 --
 
 CREATE TABLE public.auctions (
-    id bigint CONSTRAINT new_auctions_id_not_null NOT NULL,
-    auctioneer_id bigint CONSTRAINT auctions_auctioneer_id_not_null1 NOT NULL,
-    broodmare_allowed boolean DEFAULT false CONSTRAINT new_auctions_broodmare_allowed_not_null NOT NULL,
-    end_time timestamp with time zone CONSTRAINT new_auctions_end_time_not_null NOT NULL,
+    id bigint NOT NULL,
+    auctioneer_id bigint NOT NULL,
+    broodmare_allowed boolean DEFAULT false NOT NULL,
+    end_time timestamp with time zone NOT NULL,
     horse_purchase_cap_per_stable integer,
-    hours_until_sold integer DEFAULT 12 CONSTRAINT new_auctions_hours_until_sold_not_null NOT NULL,
-    outside_horses_allowed boolean DEFAULT false CONSTRAINT new_auctions_outside_horses_allowed_not_null NOT NULL,
-    racehorse_allowed_2yo boolean DEFAULT false CONSTRAINT new_auctions_racehorse_allowed_2yo_not_null NOT NULL,
-    racehorse_allowed_3yo boolean DEFAULT false CONSTRAINT new_auctions_racehorse_allowed_3yo_not_null NOT NULL,
-    racehorse_allowed_older boolean DEFAULT false CONSTRAINT new_auctions_racehorse_allowed_older_not_null NOT NULL,
-    reserve_pricing_allowed boolean DEFAULT false CONSTRAINT new_auctions_reserve_pricing_allowed_not_null NOT NULL,
+    hours_until_sold integer DEFAULT 12 NOT NULL,
+    outside_horses_allowed boolean DEFAULT false NOT NULL,
+    racehorse_allowed_2yo boolean DEFAULT false NOT NULL,
+    racehorse_allowed_3yo boolean DEFAULT false NOT NULL,
+    racehorse_allowed_older boolean DEFAULT false NOT NULL,
+    reserve_pricing_allowed boolean DEFAULT false NOT NULL,
     spending_cap_per_stable integer,
-    stallion_allowed boolean DEFAULT false CONSTRAINT new_auctions_stallion_allowed_not_null NOT NULL,
-    start_time timestamp with time zone CONSTRAINT new_auctions_start_time_not_null NOT NULL,
-    title character varying(500) CONSTRAINT new_auctions_title_not_null NOT NULL,
-    weanling_allowed boolean DEFAULT false CONSTRAINT new_auctions_weanling_allowed_not_null NOT NULL,
-    yearling_allowed boolean DEFAULT false CONSTRAINT new_auctions_yearling_allowed_not_null NOT NULL,
+    stallion_allowed boolean DEFAULT false NOT NULL,
+    start_time timestamp with time zone NOT NULL,
+    title character varying(500) NOT NULL,
+    weanling_allowed boolean DEFAULT false NOT NULL,
+    yearling_allowed boolean DEFAULT false NOT NULL,
     public_id character varying(12),
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_auctions_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_auctions_updated_at_not_null NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL,
     slug character varying
 );
 
@@ -687,24 +708,24 @@ CREATE TABLE public.boardings (
 --
 
 CREATE TABLE public.broodmare_foal_records (
-    id bigint CONSTRAINT new_broodmare_foal_records_id_not_null NOT NULL,
-    born_foals_count integer DEFAULT 0 CONSTRAINT new_broodmare_foal_records_born_foals_count_not_null NOT NULL,
+    id bigint NOT NULL,
+    born_foals_count integer DEFAULT 0 NOT NULL,
     breed_ranking character varying,
-    horse_id bigint CONSTRAINT broodmare_foal_records_horse_id_not_null1 NOT NULL,
-    millionaire_foals_count integer DEFAULT 0 CONSTRAINT new_broodmare_foal_records_millionaire_foals_count_not_null NOT NULL,
-    multi_millionaire_foals_count integer DEFAULT 0 CONSTRAINT new_broodmare_foal_records_multi_millionaire_foals_cou_not_null NOT NULL,
-    multi_stakes_winning_foals_count integer DEFAULT 0 CONSTRAINT new_broodmare_foal_records_multi_stakes_winning_foals__not_null NOT NULL,
-    raced_foals_count integer DEFAULT 0 CONSTRAINT new_broodmare_foal_records_raced_foals_count_not_null NOT NULL,
-    stakes_winning_foals_count integer DEFAULT 0 CONSTRAINT new_broodmare_foal_records_stakes_winning_foals_count_not_null NOT NULL,
-    stillborn_foals_count integer DEFAULT 0 CONSTRAINT new_broodmare_foal_records_stillborn_foals_count_not_null NOT NULL,
-    total_foal_earnings bigint DEFAULT 0 CONSTRAINT new_broodmare_foal_records_total_foal_earnings_not_null NOT NULL,
-    total_foal_points integer DEFAULT 0 CONSTRAINT new_broodmare_foal_records_total_foal_points_not_null NOT NULL,
-    total_foal_races integer DEFAULT 0 CONSTRAINT new_broodmare_foal_records_total_foal_races_not_null NOT NULL,
-    unborn_foals_count integer DEFAULT 0 CONSTRAINT new_broodmare_foal_records_unborn_foals_count_not_null NOT NULL,
-    winning_foals_count integer DEFAULT 0 CONSTRAINT new_broodmare_foal_records_winning_foals_count_not_null NOT NULL,
+    horse_id bigint NOT NULL,
+    millionaire_foals_count integer DEFAULT 0 NOT NULL,
+    multi_millionaire_foals_count integer DEFAULT 0 NOT NULL,
+    multi_stakes_winning_foals_count integer DEFAULT 0 CONSTRAINT broodmare_foal_records_multi_stakes_winning_foals_coun_not_null NOT NULL,
+    raced_foals_count integer DEFAULT 0 NOT NULL,
+    stakes_winning_foals_count integer DEFAULT 0 NOT NULL,
+    stillborn_foals_count integer DEFAULT 0 NOT NULL,
+    total_foal_earnings bigint DEFAULT 0 NOT NULL,
+    total_foal_points integer DEFAULT 0 NOT NULL,
+    total_foal_races integer DEFAULT 0 NOT NULL,
+    unborn_foals_count integer DEFAULT 0 NOT NULL,
+    winning_foals_count integer DEFAULT 0 NOT NULL,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_broodmare_foal_records_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_broodmare_foal_records_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -732,17 +753,17 @@ ALTER SEQUENCE public.broodmare_foal_records_id_seq OWNED BY public.broodmare_fo
 --
 
 CREATE TABLE public.budget_transactions (
-    id bigint CONSTRAINT new_budget_transactions_id_not_null NOT NULL,
+    id bigint NOT NULL,
     activity_type public.budget_activity_type,
-    amount integer DEFAULT 0 CONSTRAINT new_budget_transactions_amount_not_null NOT NULL,
-    balance integer DEFAULT 0 CONSTRAINT new_budget_transactions_balance_not_null NOT NULL,
-    description text CONSTRAINT new_budget_transactions_description_not_null NOT NULL,
+    amount integer DEFAULT 0 NOT NULL,
+    balance integer DEFAULT 0 NOT NULL,
+    description text NOT NULL,
     legacy_budget_id integer DEFAULT 0,
     legacy_stable_id integer DEFAULT 0,
     stable_id bigint NOT NULL,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_budget_transactions_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_budget_transactions_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -786,14 +807,14 @@ CREATE TABLE public.data_migrations (
 --
 
 CREATE TABLE public.game_activity_points (
-    id bigint CONSTRAINT new_game_activity_points_id_not_null NOT NULL,
-    activity_type public.activity_type CONSTRAINT new_game_activity_points_activity_type_not_null NOT NULL,
-    first_year_points integer DEFAULT 0 CONSTRAINT new_game_activity_points_first_year_points_not_null NOT NULL,
-    older_year_points integer DEFAULT 0 CONSTRAINT new_game_activity_points_older_year_points_not_null NOT NULL,
-    second_year_points integer DEFAULT 0 CONSTRAINT new_game_activity_points_second_year_points_not_null NOT NULL,
+    id bigint NOT NULL,
+    activity_type public.activity_type NOT NULL,
+    first_year_points integer DEFAULT 0 NOT NULL,
+    older_year_points integer DEFAULT 0 NOT NULL,
+    second_year_points integer DEFAULT 0 NOT NULL,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_game_activity_points_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_game_activity_points_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -828,15 +849,15 @@ ALTER SEQUENCE public.game_activity_points_id_seq OWNED BY public.game_activity_
 --
 
 CREATE TABLE public.game_alerts (
-    id bigint CONSTRAINT new_game_alerts_id_not_null NOT NULL,
-    display_to_newbies boolean DEFAULT true CONSTRAINT new_game_alerts_display_to_newbies_not_null NOT NULL,
-    display_to_non_newbies boolean DEFAULT true CONSTRAINT new_game_alerts_display_to_non_newbies_not_null NOT NULL,
+    id bigint NOT NULL,
+    display_to_newbies boolean DEFAULT true NOT NULL,
+    display_to_non_newbies boolean DEFAULT true NOT NULL,
     end_time timestamp with time zone,
-    message text CONSTRAINT new_game_alerts_message_not_null NOT NULL,
-    start_time timestamp with time zone CONSTRAINT new_game_alerts_start_time_not_null NOT NULL,
+    message text NOT NULL,
+    start_time timestamp with time zone NOT NULL,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_game_alerts_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_game_alerts_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -864,25 +885,25 @@ ALTER SEQUENCE public.game_alerts_id_seq OWNED BY public.game_alerts.id;
 --
 
 CREATE TABLE public.horse_appearances (
-    id bigint CONSTRAINT new_horse_appearances_id_not_null NOT NULL,
-    birth_height numeric(4,2) DEFAULT 0.0 CONSTRAINT horse_appearances_birth_height_not_null1 NOT NULL,
-    current_height numeric(4,2) DEFAULT 0.0 CONSTRAINT horse_appearances_current_height_not_null1 NOT NULL,
-    max_height numeric(4,2) DEFAULT 0.0 CONSTRAINT horse_appearances_max_height_not_null1 NOT NULL,
-    color public.horse_color DEFAULT 'bay'::public.horse_color CONSTRAINT new_horse_appearances_color_not_null NOT NULL,
+    id bigint NOT NULL,
+    birth_height numeric(4,2) DEFAULT 0.0 NOT NULL,
+    current_height numeric(4,2) DEFAULT 0.0 NOT NULL,
+    max_height numeric(4,2) DEFAULT 0.0 NOT NULL,
+    color public.horse_color DEFAULT 'bay'::public.horse_color NOT NULL,
     rf_leg_marking public.horse_leg_marking,
     lf_leg_marking public.horse_leg_marking,
     rh_leg_marking public.horse_leg_marking,
     lh_leg_marking public.horse_leg_marking,
     face_marking public.horse_face_marking,
     face_image character varying,
-    horse_id bigint CONSTRAINT horse_appearances_horse_id_not_null1 NOT NULL,
+    horse_id bigint NOT NULL,
     lf_leg_image character varying,
     lh_leg_image character varying,
     rf_leg_image character varying,
     rh_leg_image character varying,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_horse_appearances_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_horse_appearances_updated_at_not_null NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL,
     CONSTRAINT current_height_must_be_valid CHECK ((current_height >= birth_height)),
     CONSTRAINT max_height_must_be_valid CHECK ((max_height >= current_height))
 );
@@ -954,16 +975,16 @@ ALTER SEQUENCE public.horse_appearances_id_seq OWNED BY public.horse_appearances
 --
 
 CREATE TABLE public.horse_attributes (
-    id bigint CONSTRAINT new_horse_attributes_id_not_null NOT NULL,
-    track_record character varying DEFAULT 'Unraced'::character varying CONSTRAINT new_horse_attributes_track_record_not_null NOT NULL,
+    id bigint NOT NULL,
+    track_record character varying DEFAULT 'Unraced'::character varying NOT NULL,
     title character varying,
-    breeding_record public.breed_record DEFAULT 'none'::public.breed_record CONSTRAINT new_horse_attributes_breeding_record_not_null NOT NULL,
+    breeding_record public.breed_record DEFAULT 'none'::public.breed_record NOT NULL,
     dosage_text character varying,
     string character varying,
-    horse_id bigint CONSTRAINT horse_attributes_horse_id_not_null1 NOT NULL,
+    horse_id bigint NOT NULL,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_horse_attributes_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_horse_attributes_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -998,12 +1019,12 @@ ALTER SEQUENCE public.horse_attributes_id_seq OWNED BY public.horse_attributes.i
 --
 
 CREATE TABLE public.horse_genetics (
-    id bigint CONSTRAINT new_horse_genetics_id_not_null NOT NULL,
-    allele character varying(32) CONSTRAINT new_horse_genetics_allele_not_null NOT NULL,
-    horse_id bigint CONSTRAINT horse_genetics_horse_id_not_null1 NOT NULL,
+    id bigint NOT NULL,
+    allele character varying(32) NOT NULL,
+    horse_id bigint NOT NULL,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_horse_genetics_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_horse_genetics_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -1031,15 +1052,15 @@ ALTER SEQUENCE public.horse_genetics_id_seq OWNED BY public.horse_genetics.id;
 --
 
 CREATE TABLE public.horses (
-    id bigint CONSTRAINT new_horses_id_not_null NOT NULL,
+    id bigint NOT NULL,
     public_id character varying(12),
     name character varying(18),
     slug character varying,
-    date_of_birth date CONSTRAINT new_horses_date_of_birth_not_null NOT NULL,
+    date_of_birth date NOT NULL,
     date_of_death date,
-    age integer DEFAULT 0 CONSTRAINT new_horses_age_not_null NOT NULL,
-    gender public.horse_gender CONSTRAINT new_horses_gender_not_null NOT NULL,
-    status public.horse_status DEFAULT 'unborn'::public.horse_status CONSTRAINT new_horses_status_not_null NOT NULL,
+    age integer DEFAULT 0 NOT NULL,
+    gender public.horse_gender NOT NULL,
+    status public.horse_status DEFAULT 'unborn'::public.horse_status NOT NULL,
     sire_id bigint,
     old_sire_id uuid,
     dam_id bigint,
@@ -1047,10 +1068,10 @@ CREATE TABLE public.horses (
     owner_id bigint NOT NULL,
     breeder_id bigint NOT NULL,
     legacy_id integer,
-    location_bred_id bigint CONSTRAINT horses_location_bred_id_not_null1 NOT NULL,
+    location_bred_id bigint NOT NULL,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_horses_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_horses_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -1092,49 +1113,49 @@ ALTER SEQUENCE public.horses_id_seq OWNED BY public.horses.id;
 --
 
 CREATE TABLE public.jockeys (
-    id bigint CONSTRAINT new_jockeys_id_not_null NOT NULL,
+    id bigint NOT NULL,
     public_id character varying(12),
-    first_name character varying CONSTRAINT new_jockeys_first_name_not_null NOT NULL,
-    last_name character varying CONSTRAINT new_jockeys_last_name_not_null NOT NULL,
-    date_of_birth date CONSTRAINT new_jockeys_date_of_birth_not_null NOT NULL,
+    first_name character varying NOT NULL,
+    last_name character varying NOT NULL,
+    date_of_birth date NOT NULL,
     status public.jockey_status,
     jockey_type public.jockey_type,
-    height_in_inches integer CONSTRAINT new_jockeys_height_in_inches_not_null NOT NULL,
-    weight integer CONSTRAINT new_jockeys_weight_not_null NOT NULL,
+    height_in_inches integer NOT NULL,
+    weight integer NOT NULL,
     slug character varying,
     gender public.jockey_gender,
-    acceleration integer CONSTRAINT new_jockeys_acceleration_not_null NOT NULL,
-    average_speed integer CONSTRAINT new_jockeys_average_speed_not_null NOT NULL,
-    break_speed integer CONSTRAINT new_jockeys_break_speed_not_null NOT NULL,
-    closing integer CONSTRAINT new_jockeys_closing_not_null NOT NULL,
-    consistency integer CONSTRAINT new_jockeys_consistency_not_null NOT NULL,
-    courage integer CONSTRAINT new_jockeys_courage_not_null NOT NULL,
-    dirt integer CONSTRAINT new_jockeys_dirt_not_null NOT NULL,
-    experience integer CONSTRAINT new_jockeys_experience_not_null NOT NULL,
-    experience_rate integer CONSTRAINT new_jockeys_experience_rate_not_null NOT NULL,
-    fast integer CONSTRAINT new_jockeys_fast_not_null NOT NULL,
-    good integer CONSTRAINT new_jockeys_good_not_null NOT NULL,
-    "leading" integer CONSTRAINT new_jockeys_leading_not_null NOT NULL,
-    legacy_id integer CONSTRAINT new_jockeys_legacy_id_not_null NOT NULL,
-    loaf_threshold integer CONSTRAINT new_jockeys_loaf_threshold_not_null NOT NULL,
-    looking integer CONSTRAINT new_jockeys_looking_not_null NOT NULL,
-    max_speed integer CONSTRAINT new_jockeys_max_speed_not_null NOT NULL,
-    midpack integer CONSTRAINT new_jockeys_midpack_not_null NOT NULL,
-    min_speed integer CONSTRAINT new_jockeys_min_speed_not_null NOT NULL,
-    off_pace integer CONSTRAINT new_jockeys_off_pace_not_null NOT NULL,
-    pissy integer CONSTRAINT new_jockeys_pissy_not_null NOT NULL,
-    rating integer CONSTRAINT new_jockeys_rating_not_null NOT NULL,
-    slow integer CONSTRAINT new_jockeys_slow_not_null NOT NULL,
-    steeplechase integer CONSTRAINT new_jockeys_steeplechase_not_null NOT NULL,
-    strength integer CONSTRAINT new_jockeys_strength_not_null NOT NULL,
-    traffic integer CONSTRAINT new_jockeys_traffic_not_null NOT NULL,
-    turf integer CONSTRAINT new_jockeys_turf_not_null NOT NULL,
-    turning integer CONSTRAINT new_jockeys_turning_not_null NOT NULL,
-    wet integer CONSTRAINT new_jockeys_wet_not_null NOT NULL,
-    whip_seconds integer CONSTRAINT new_jockeys_whip_seconds_not_null NOT NULL,
+    acceleration integer NOT NULL,
+    average_speed integer NOT NULL,
+    break_speed integer NOT NULL,
+    closing integer NOT NULL,
+    consistency integer NOT NULL,
+    courage integer NOT NULL,
+    dirt integer NOT NULL,
+    experience integer NOT NULL,
+    experience_rate integer NOT NULL,
+    fast integer NOT NULL,
+    good integer NOT NULL,
+    "leading" integer NOT NULL,
+    legacy_id integer NOT NULL,
+    loaf_threshold integer NOT NULL,
+    looking integer NOT NULL,
+    max_speed integer NOT NULL,
+    midpack integer NOT NULL,
+    min_speed integer NOT NULL,
+    off_pace integer NOT NULL,
+    pissy integer NOT NULL,
+    rating integer NOT NULL,
+    slow integer NOT NULL,
+    steeplechase integer NOT NULL,
+    strength integer NOT NULL,
+    traffic integer NOT NULL,
+    turf integer NOT NULL,
+    turning integer NOT NULL,
+    wet integer NOT NULL,
+    whip_seconds integer NOT NULL,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_jockeys_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_jockeys_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -1206,14 +1227,14 @@ CREATE MATERIALIZED VIEW public.lifetime_race_records AS
 --
 
 CREATE TABLE public.locations (
-    id bigint CONSTRAINT new_locations_id_not_null NOT NULL,
-    country character varying CONSTRAINT new_locations_country_not_null NOT NULL,
+    id bigint NOT NULL,
+    country character varying NOT NULL,
     county character varying,
-    name character varying CONSTRAINT new_locations_name_not_null NOT NULL,
+    name character varying NOT NULL,
     state character varying,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_locations_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_locations_updated_at_not_null NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL,
     has_farm boolean DEFAULT true NOT NULL
 );
 
@@ -1632,12 +1653,12 @@ ALTER SEQUENCE public.motor_tags_id_seq OWNED BY public.motor_tags.id;
 --
 
 CREATE TABLE public.race_odds (
-    id bigint CONSTRAINT new_race_odds_id_not_null NOT NULL,
-    display character varying CONSTRAINT new_race_odds_display_not_null NOT NULL,
-    value numeric(3,1) CONSTRAINT new_race_odds_value_not_null NOT NULL,
+    id bigint NOT NULL,
+    display character varying NOT NULL,
+    value numeric(3,1) NOT NULL,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_race_odds_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_race_odds_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -1684,25 +1705,25 @@ ALTER SEQUENCE public.race_records_id_seq OWNED BY public.race_records.id;
 --
 
 CREATE TABLE public.race_result_horses (
-    id bigint CONSTRAINT new_race_result_horses_id_not_null NOT NULL,
-    race_id bigint CONSTRAINT race_result_horses_race_id_not_null1 NOT NULL,
-    horse_id bigint CONSTRAINT race_result_horses_horse_id_not_null1 NOT NULL,
-    legacy_horse_id integer DEFAULT 0 CONSTRAINT new_race_result_horses_legacy_horse_id_not_null NOT NULL,
-    post_parade integer DEFAULT 1 CONSTRAINT new_race_result_horses_post_parade_not_null NOT NULL,
-    finish_position integer DEFAULT 1 CONSTRAINT new_race_result_horses_finish_position_not_null NOT NULL,
-    positions character varying CONSTRAINT new_race_result_horses_positions_not_null NOT NULL,
-    margins character varying CONSTRAINT new_race_result_horses_margins_not_null NOT NULL,
+    id bigint NOT NULL,
+    race_id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    legacy_horse_id integer DEFAULT 0 NOT NULL,
+    post_parade integer DEFAULT 1 NOT NULL,
+    finish_position integer DEFAULT 1 NOT NULL,
+    positions character varying NOT NULL,
+    margins character varying NOT NULL,
     fractions character varying,
     jockey_id bigint,
     old_jockey_id uuid,
-    equipment integer DEFAULT 0 CONSTRAINT new_race_result_horses_equipment_not_null NOT NULL,
+    equipment integer DEFAULT 0 NOT NULL,
     odd_id bigint,
     old_odd_id uuid,
-    speed_factor integer DEFAULT 0 CONSTRAINT new_race_result_horses_speed_factor_not_null NOT NULL,
-    weight integer DEFAULT 0 CONSTRAINT new_race_result_horses_weight_not_null NOT NULL,
+    speed_factor integer DEFAULT 0 NOT NULL,
+    weight integer DEFAULT 0 NOT NULL,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_race_result_horses_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_race_result_horses_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -1730,26 +1751,26 @@ ALTER SEQUENCE public.race_result_horses_id_seq OWNED BY public.race_result_hors
 --
 
 CREATE TABLE public.race_results (
-    id bigint CONSTRAINT new_race_results_id_not_null NOT NULL,
-    date date CONSTRAINT new_race_results_date_not_null NOT NULL,
-    number integer DEFAULT 1 CONSTRAINT new_race_results_number_not_null NOT NULL,
-    race_type public.race_type DEFAULT 'maiden'::public.race_type CONSTRAINT new_race_results_race_type_not_null NOT NULL,
-    age public.race_age DEFAULT '2'::public.race_age CONSTRAINT new_race_results_age_not_null NOT NULL,
-    male_only boolean DEFAULT false CONSTRAINT new_race_results_male_only_not_null NOT NULL,
-    female_only boolean DEFAULT false CONSTRAINT new_race_results_female_only_not_null NOT NULL,
-    distance numeric(3,1) DEFAULT 5.0 CONSTRAINT new_race_results_distance_not_null NOT NULL,
+    id bigint NOT NULL,
+    date date NOT NULL,
+    number integer DEFAULT 1 NOT NULL,
+    race_type public.race_type DEFAULT 'maiden'::public.race_type NOT NULL,
+    age public.race_age DEFAULT '2'::public.race_age NOT NULL,
+    male_only boolean DEFAULT false NOT NULL,
+    female_only boolean DEFAULT false NOT NULL,
+    distance numeric(3,1) DEFAULT 5.0 NOT NULL,
     grade public.race_grade,
-    surface_id bigint CONSTRAINT race_results_surface_id_not_null1 NOT NULL,
+    surface_id bigint NOT NULL,
     condition public.track_condition,
     name character varying,
-    purse bigint DEFAULT 0 CONSTRAINT new_race_results_purse_not_null NOT NULL,
+    purse bigint DEFAULT 0 NOT NULL,
     claiming_price integer,
     split public.race_splits,
-    time_in_seconds numeric(7,3) DEFAULT 0.0 CONSTRAINT new_race_results_time_in_seconds_not_null NOT NULL,
+    time_in_seconds numeric(7,3) DEFAULT 0.0 NOT NULL,
     slug character varying,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_race_results_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_race_results_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -1812,24 +1833,24 @@ ALTER SEQUENCE public.race_results_id_seq OWNED BY public.race_results.id;
 --
 
 CREATE TABLE public.race_schedules (
-    id bigint CONSTRAINT new_race_schedules_id_not_null NOT NULL,
-    day_number integer DEFAULT 1 CONSTRAINT new_race_schedules_day_number_not_null NOT NULL,
-    date date CONSTRAINT new_race_schedules_date_not_null NOT NULL,
-    number integer DEFAULT 1 CONSTRAINT new_race_schedules_number_not_null NOT NULL,
-    race_type public.race_type DEFAULT 'maiden'::public.race_type CONSTRAINT new_race_schedules_race_type_not_null NOT NULL,
-    age public.race_age DEFAULT '2'::public.race_age CONSTRAINT new_race_schedules_age_not_null NOT NULL,
-    male_only boolean DEFAULT false CONSTRAINT new_race_schedules_male_only_not_null NOT NULL,
-    female_only boolean DEFAULT false CONSTRAINT new_race_schedules_female_only_not_null NOT NULL,
-    distance numeric(3,1) DEFAULT 5.0 CONSTRAINT new_race_schedules_distance_not_null NOT NULL,
+    id bigint NOT NULL,
+    day_number integer DEFAULT 1 NOT NULL,
+    date date NOT NULL,
+    number integer DEFAULT 1 NOT NULL,
+    race_type public.race_type DEFAULT 'maiden'::public.race_type NOT NULL,
+    age public.race_age DEFAULT '2'::public.race_age NOT NULL,
+    male_only boolean DEFAULT false NOT NULL,
+    female_only boolean DEFAULT false NOT NULL,
+    distance numeric(3,1) DEFAULT 5.0 NOT NULL,
     grade public.race_grade,
-    surface_id bigint CONSTRAINT race_schedules_surface_id_not_null1 NOT NULL,
+    surface_id bigint NOT NULL,
     name character varying,
-    purse bigint DEFAULT 0 CONSTRAINT new_race_schedules_purse_not_null NOT NULL,
+    purse bigint DEFAULT 0 NOT NULL,
     claiming_price integer,
-    qualification_required boolean DEFAULT false CONSTRAINT new_race_schedules_qualification_required_not_null NOT NULL,
+    qualification_required boolean DEFAULT false NOT NULL,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_race_schedules_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_race_schedules_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -1878,16 +1899,16 @@ ALTER SEQUENCE public.race_schedules_id_seq OWNED BY public.race_schedules.id;
 --
 
 CREATE TABLE public.racetracks (
-    id bigint CONSTRAINT new_racetracks_id_not_null NOT NULL,
-    name character varying CONSTRAINT new_racetracks_name_not_null NOT NULL,
+    id bigint NOT NULL,
+    name character varying NOT NULL,
     slug character varying,
     public_id character varying(12),
-    latitude numeric CONSTRAINT new_racetracks_latitude_not_null NOT NULL,
-    longitude numeric CONSTRAINT new_racetracks_longitude_not_null NOT NULL,
-    location_id bigint CONSTRAINT racetracks_location_id_not_null1 NOT NULL,
+    latitude numeric NOT NULL,
+    longitude numeric NOT NULL,
+    location_id bigint NOT NULL,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_racetracks_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_racetracks_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -1924,14 +1945,14 @@ CREATE TABLE public.schema_migrations (
 --
 
 CREATE TABLE public.sessions (
-    id bigint CONSTRAINT new_sessions_id_not_null NOT NULL,
-    session_id character varying CONSTRAINT new_sessions_session_id_not_null NOT NULL,
+    id bigint NOT NULL,
+    session_id character varying NOT NULL,
     user_id integer,
     old_user_id uuid,
     data text,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_sessions_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_sessions_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -1959,13 +1980,13 @@ ALTER SEQUENCE public.sessions_id_seq OWNED BY public.sessions.id;
 --
 
 CREATE TABLE public.settings (
-    id bigint CONSTRAINT new_settings_id_not_null NOT NULL,
-    user_id bigint CONSTRAINT settings_user_id_not_null1 NOT NULL,
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
     theme character varying,
     locale character varying,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_settings_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_settings_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -1993,8 +2014,8 @@ ALTER SEQUENCE public.settings_id_seq OWNED BY public.settings.id;
 --
 
 CREATE TABLE public.stables (
-    id bigint CONSTRAINT new_stables_id_not_null NOT NULL,
-    name character varying CONSTRAINT new_stables_name_not_null NOT NULL,
+    id bigint NOT NULL,
+    name character varying NOT NULL,
     legacy_id integer,
     slug character varying,
     public_id character varying(12),
@@ -2002,12 +2023,12 @@ CREATE TABLE public.stables (
     total_balance bigint DEFAULT 0,
     last_online_at timestamp with time zone,
     description text,
-    miles_from_track integer DEFAULT 1 CONSTRAINT new_stables_miles_from_track_not_null NOT NULL,
+    miles_from_track integer DEFAULT 1 NOT NULL,
     racetrack_id bigint,
     old_racetrack_id uuid,
     user_id bigint NOT NULL,
-    created_at timestamp(6) with time zone CONSTRAINT new_stables_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_stables_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -2035,19 +2056,19 @@ ALTER SEQUENCE public.stables_id_seq OWNED BY public.stables.id;
 --
 
 CREATE TABLE public.track_surfaces (
-    id bigint CONSTRAINT new_track_surfaces_id_not_null NOT NULL,
-    surface public.track_surface DEFAULT 'dirt'::public.track_surface CONSTRAINT new_track_surfaces_surface_not_null NOT NULL,
-    condition public.track_condition DEFAULT 'fast'::public.track_condition CONSTRAINT new_track_surfaces_condition_not_null NOT NULL,
-    racetrack_id bigint CONSTRAINT track_surfaces_racetrack_id_not_null1 NOT NULL,
-    banking integer CONSTRAINT new_track_surfaces_banking_not_null NOT NULL,
-    jumps integer DEFAULT 0 CONSTRAINT new_track_surfaces_jumps_not_null NOT NULL,
-    length integer CONSTRAINT new_track_surfaces_length_not_null NOT NULL,
-    turn_distance integer CONSTRAINT new_track_surfaces_turn_distance_not_null NOT NULL,
-    turn_to_finish_length integer CONSTRAINT new_track_surfaces_turn_to_finish_length_not_null NOT NULL,
-    width integer CONSTRAINT new_track_surfaces_width_not_null NOT NULL,
+    id bigint NOT NULL,
+    surface public.track_surface DEFAULT 'dirt'::public.track_surface NOT NULL,
+    condition public.track_condition DEFAULT 'fast'::public.track_condition NOT NULL,
+    racetrack_id bigint NOT NULL,
+    banking integer NOT NULL,
+    jumps integer DEFAULT 0 NOT NULL,
+    length integer NOT NULL,
+    turn_distance integer NOT NULL,
+    turn_to_finish_length integer NOT NULL,
+    width integer NOT NULL,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_track_surfaces_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_track_surfaces_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -2089,20 +2110,20 @@ ALTER SEQUENCE public.track_surfaces_id_seq OWNED BY public.track_surfaces.id;
 --
 
 CREATE TABLE public.training_schedules (
-    id bigint CONSTRAINT training_schedules_id_not_null1 NOT NULL,
-    stable_id bigint CONSTRAINT training_schedules_stable_id_not_null1 NOT NULL,
-    name character varying CONSTRAINT training_schedules_name_not_null1 NOT NULL,
-    horses_count integer DEFAULT 0 CONSTRAINT training_schedules_horses_count_not_null1 NOT NULL,
+    id bigint NOT NULL,
+    stable_id bigint NOT NULL,
+    name character varying NOT NULL,
+    horses_count integer DEFAULT 0 NOT NULL,
     description text,
-    sunday_activities jsonb DEFAULT '{}'::jsonb CONSTRAINT training_schedules_sunday_activities_not_null1 NOT NULL,
-    monday_activities jsonb DEFAULT '{}'::jsonb CONSTRAINT training_schedules_monday_activities_not_null1 NOT NULL,
-    tuesday_activities jsonb DEFAULT '{}'::jsonb CONSTRAINT training_schedules_tuesday_activities_not_null1 NOT NULL,
-    wednesday_activities jsonb DEFAULT '{}'::jsonb CONSTRAINT training_schedules_wednesday_activities_not_null1 NOT NULL,
-    thursday_activities jsonb DEFAULT '{}'::jsonb CONSTRAINT training_schedules_thursday_activities_not_null1 NOT NULL,
-    friday_activities jsonb DEFAULT '{}'::jsonb CONSTRAINT training_schedules_friday_activities_not_null1 NOT NULL,
-    saturday_activities jsonb DEFAULT '{}'::jsonb CONSTRAINT training_schedules_saturday_activities_not_null1 NOT NULL,
-    created_at timestamp(6) with time zone CONSTRAINT training_schedules_created_at_not_null1 NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT training_schedules_updated_at_not_null1 NOT NULL
+    sunday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
+    monday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
+    tuesday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
+    wednesday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
+    thursday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
+    friday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
+    saturday_activities jsonb DEFAULT '{}'::jsonb NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -2111,12 +2132,12 @@ CREATE TABLE public.training_schedules (
 --
 
 CREATE TABLE public.training_schedules_horses (
-    id bigint CONSTRAINT new_training_schedules_horses_id_not_null NOT NULL,
-    horse_id bigint CONSTRAINT training_schedules_horses_horse_id_not_null1 NOT NULL,
-    training_schedule_id bigint CONSTRAINT training_schedules_horses_training_schedule_id_not_null1 NOT NULL,
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    training_schedule_id bigint NOT NULL,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_training_schedules_horses_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_training_schedules_horses_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -2163,15 +2184,15 @@ ALTER SEQUENCE public.training_schedules_id_seq OWNED BY public.training_schedul
 --
 
 CREATE TABLE public.user_push_subscriptions (
-    id bigint CONSTRAINT new_user_push_subscriptions_id_not_null NOT NULL,
-    user_id bigint CONSTRAINT user_push_subscriptions_user_id_not_null1 NOT NULL,
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
     user_agent character varying,
     auth_key character varying,
     endpoint character varying,
     p256dh_key character varying,
     old_id uuid,
-    created_at timestamp(6) with time zone CONSTRAINT new_user_push_subscriptions_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_user_push_subscriptions_updated_at_not_null NOT NULL
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -2199,23 +2220,23 @@ ALTER SEQUENCE public.user_push_subscriptions_id_seq OWNED BY public.user_push_s
 --
 
 CREATE TABLE public.users (
-    id bigint CONSTRAINT new_users_id_not_null NOT NULL,
+    id bigint NOT NULL,
     slug character varying,
-    username character varying CONSTRAINT new_users_username_not_null NOT NULL,
+    username character varying NOT NULL,
     public_id character varying(12),
-    status public.user_status DEFAULT 'pending'::public.user_status CONSTRAINT new_users_status_not_null NOT NULL,
+    status public.user_status DEFAULT 'pending'::public.user_status NOT NULL,
     discourse_id integer,
-    email character varying DEFAULT ''::character varying CONSTRAINT new_users_email_not_null NOT NULL,
-    name character varying CONSTRAINT new_users_name_not_null NOT NULL,
-    admin boolean DEFAULT false CONSTRAINT new_users_admin_not_null NOT NULL,
-    developer boolean DEFAULT false CONSTRAINT new_users_developer_not_null NOT NULL,
+    email character varying DEFAULT ''::character varying NOT NULL,
+    name character varying NOT NULL,
+    admin boolean DEFAULT false NOT NULL,
+    developer boolean DEFAULT false NOT NULL,
     discarded_at timestamp with time zone,
-    sign_in_count integer DEFAULT 0 CONSTRAINT new_users_sign_in_count_not_null NOT NULL,
+    sign_in_count integer DEFAULT 0 NOT NULL,
     current_sign_in_at timestamp with time zone,
     current_sign_in_ip character varying,
     unconfirmed_email character varying,
     remember_created_at timestamp with time zone,
-    failed_attempts integer DEFAULT 0 CONSTRAINT new_users_failed_attempts_not_null NOT NULL,
+    failed_attempts integer DEFAULT 0 NOT NULL,
     last_sign_in_at timestamp with time zone,
     last_sign_in_ip character varying,
     locked_at timestamp with time zone,
@@ -2225,9 +2246,9 @@ CREATE TABLE public.users (
     confirmation_sent_at timestamp with time zone,
     confirmation_token character varying,
     confirmed_at timestamp with time zone,
-    encrypted_password character varying DEFAULT ''::character varying CONSTRAINT new_users_encrypted_password_not_null NOT NULL,
-    created_at timestamp(6) with time zone CONSTRAINT new_users_created_at_not_null NOT NULL,
-    updated_at timestamp(6) with time zone CONSTRAINT new_users_updated_at_not_null NOT NULL
+    encrypted_password character varying DEFAULT ''::character varying NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -4882,6 +4903,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220722201433'),
 ('20220722200044'),
 ('20220722173334'),
+('20220721204945'),
 ('20220717190341'),
 ('20220717121209'),
 ('20220717024945'),

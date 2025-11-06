@@ -1,5 +1,8 @@
 module Horses
   class Boarding < ApplicationRecord
+    DAILY_BOARDING_FEE = 100
+    MAX_YEARLY_DAYS = 30
+
     belongs_to :horse
     belongs_to :location
 

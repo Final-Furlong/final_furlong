@@ -37,7 +37,7 @@ en:
         no_transactions: Could not find any transactions.
         title: Budget
         title_with_available: 'Budget: (%{total}, %{available} available)'
-        title_with_total: 'Budget: (%{total})'
+        title_with_total: 'Budget: %{total}'
         total_balance: 'Total: %{amount}'
       search:
         category: Category

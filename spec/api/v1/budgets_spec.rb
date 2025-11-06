@@ -7,7 +7,7 @@ RSpec.describe Api::V1::Budgets do
         post("/api/v1/budgets", params:)
 
         expect(response).to have_http_status :created
-        expect(json_body).to eq({ budget_id: Account::Budget.recent.last.id })
+        expect(json_body).to eq({ budget_id: Account::Budget.recent.first.id })
       end
 
       it "creates budget" do
@@ -22,44 +22,12 @@ RSpec.describe Api::V1::Budgets do
         post("/api/v1/budgets", params:)
 
         expect(Account::Budget.count).to eq 2
-        expect(Account::Budget.recent.last).to have_attributes(
+        expect(Account::Budget.recent.first).to have_attributes(
           stable:,
           amount: -5000,
           balance: 245_000,
           description: params[:description],
           legacy_stable_id: params[:legacy_stable_id]
-        )
-      end
-    end
-
-    context "when budget has legacy budget id" do
-      it "returns budget ID" do
-        initial_budget
-
-        post("/api/v1/budgets", params: params.merge(legacy_budget_id: 1))
-
-        expect(response).to have_http_status :created
-        expect(json_body).to eq({ budget_id: Account::Budget.recent.last.id })
-      end
-
-      it "creates budget" do
-        initial_budget
-
-        expect { post("/api/v1/budgets", params: params.merge(legacy_budget_id: 1)) }.to change(Account::Budget, :count).by(1)
-      end
-
-      it "sets correct data on budget" do
-        initial_budget
-
-        post("/api/v1/budgets", params: params.merge(legacy_budget_id: 1))
-
-        expect(Account::Budget.recent.last).to have_attributes(
-          stable:,
-          amount: -5000,
-          balance: 245_000,
-          description: params[:description],
-          legacy_stable_id: params[:legacy_stable_id],
-          legacy_budget_id: 1
         )
       end
     end
@@ -71,7 +39,7 @@ RSpec.describe Api::V1::Budgets do
         post("/api/v1/budgets", params: params.merge(amount: 10_000))
 
         expect(response).to have_http_status :created
-        expect(json_body).to eq({ budget_id: Account::Budget.recent.last.id })
+        expect(json_body).to eq({ budget_id: Account::Budget.recent.first.id })
       end
 
       it "creates budget" do
@@ -85,7 +53,7 @@ RSpec.describe Api::V1::Budgets do
 
         post("/api/v1/budgets", params: params.merge(amount: 10_000))
 
-        expect(Account::Budget.recent.last).to have_attributes(
+        expect(Account::Budget.recent.first).to have_attributes(
           stable:,
           amount: 10_000,
           balance: 260_000,
@@ -146,7 +114,7 @@ RSpec.describe Api::V1::Budgets do
   end
 
   def initial_budget
-    @initial_budget ||= Account::Budget.create(stable:, description: "Opening Balance", amount: 250_000, balance: 250_000)
+    @initial_budget ||= Account::Budget.create(stable:, created_at: 1.day.ago, description: "Opening Balance", amount: 250_000, balance: 250_000)
   end
 end
 
