@@ -1,6 +1,7 @@
 module Horses
   class BroodmareFoalRecord < ApplicationRecord
     self.table_name = "broodmare_foal_records"
+    self.ignored_columns += ["old_id"]
 
     belongs_to :mare, class_name: "Horse", foreign_key: :horse_id, inverse_of: :broodmare_foal_record
 
@@ -102,6 +103,7 @@ end
 #  index_broodmare_foal_records_on_horse_id                       (horse_id) UNIQUE
 #  index_broodmare_foal_records_on_millionaire_foals_count        (millionaire_foals_count)
 #  index_broodmare_foal_records_on_multi_millionaire_foals_count  (multi_millionaire_foals_count)
+#  index_broodmare_foal_records_on_old_id                         (old_id)
 #  index_broodmare_foal_records_on_raced_foals_count              (raced_foals_count)
 #  index_broodmare_foal_records_on_stakes_winning_foals_count     (stakes_winning_foals_count)
 #  index_broodmare_foal_records_on_stillborn_foals_count          (stillborn_foals_count)

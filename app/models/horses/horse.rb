@@ -1,5 +1,7 @@
 module Horses
   class Horse < ApplicationRecord
+    self.ignored_columns += ["old_id", "old_dam_id", "old_sire_id"]
+
     include PublicIdGenerator
     include FinalFurlong::Horses::Validation
     include FriendlyId
@@ -188,6 +190,9 @@ end
 #  index_horses_on_legacy_id         (legacy_id)
 #  index_horses_on_location_bred_id  (location_bred_id)
 #  index_horses_on_name              (name)
+#  index_horses_on_old_dam_id        (old_dam_id)
+#  index_horses_on_old_id            (old_id)
+#  index_horses_on_old_sire_id       (old_sire_id)
 #  index_horses_on_owner_id          (owner_id)
 #  index_horses_on_public_id         (public_id)
 #  index_horses_on_sire_id           (sire_id)

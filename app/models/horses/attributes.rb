@@ -1,6 +1,7 @@
 module Horses
   class Attributes < ApplicationRecord
     self.table_name = "horse_attributes"
+    self.ignored_columns += ["old_id"]
 
     TITLES = ["Final Furlong", "World", "International", "National", "Grand", "Normal"].freeze
 
@@ -40,6 +41,7 @@ end
 # Indexes
 #
 #  index_horse_attributes_on_horse_id  (horse_id) UNIQUE
+#  index_horse_attributes_on_old_id    (old_id)
 #
 # Foreign Keys
 #

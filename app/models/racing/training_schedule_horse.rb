@@ -1,6 +1,7 @@
 module Racing
   class TrainingScheduleHorse < ApplicationRecord
     self.table_name = "training_schedules_horses"
+    self.ignored_columns += ["old_id"]
 
     belongs_to :training_schedule, class_name: "Racing::TrainingSchedule"
     belongs_to :horse, class_name: "Horses::Horse"
@@ -27,6 +28,7 @@ end
 # Indexes
 #
 #  index_training_schedules_horses_on_horse_id              (horse_id) UNIQUE
+#  index_training_schedules_horses_on_old_id                (old_id)
 #  index_training_schedules_horses_on_training_schedule_id  (training_schedule_id)
 #
 # Foreign Keys

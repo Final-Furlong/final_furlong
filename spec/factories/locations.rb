@@ -24,5 +24,6 @@ end
 #
 #  index_locations_on_country_and_name  (country,name) UNIQUE
 #  index_locations_on_name              (name)
+#  index_locations_on_old_id            (old_id)
 #
 

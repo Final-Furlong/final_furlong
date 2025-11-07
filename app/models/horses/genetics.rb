@@ -1,6 +1,7 @@
 module Horses
   class Genetics < ApplicationRecord
     self.table_name = "horse_genetics"
+    self.ignored_columns += ["old_id"]
 
     belongs_to :horse, class_name: "Horse"
 
@@ -22,6 +23,7 @@ end
 # Indexes
 #
 #  index_horse_genetics_on_horse_id  (horse_id) UNIQUE
+#  index_horse_genetics_on_old_id    (old_id)
 #
 # Foreign Keys
 #

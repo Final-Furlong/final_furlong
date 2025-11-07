@@ -1,6 +1,7 @@
 module Account
   class Budget < ApplicationRecord
     self.table_name = "budget_transactions"
+    self.ignored_columns += ["old_id"]
 
     DEFAULT_SORT = "id desc".freeze
     ACTIVITY_TYPES = %w[
@@ -98,6 +99,7 @@ end
 #  index_budget_transactions_on_description       (description)
 #  index_budget_transactions_on_legacy_budget_id  (legacy_budget_id)
 #  index_budget_transactions_on_legacy_stable_id  (legacy_stable_id)
+#  index_budget_transactions_on_old_id            (old_id)
 #  index_budget_transactions_on_stable_id         (stable_id)
 #
 # Foreign Keys

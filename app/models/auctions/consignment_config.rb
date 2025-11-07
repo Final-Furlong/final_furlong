@@ -1,6 +1,7 @@
 module Auctions
   class ConsignmentConfig < ApplicationRecord
     self.table_name = "auction_consignment_configs"
+    self.ignored_columns += ["old_id"]
 
     HORSE_TYPES = %w[racehorse stud broodmare yearling weanling].freeze
 
@@ -64,6 +65,7 @@ end
 #
 #  index_auction_configs_on_horse_type              (auction_id, lower((horse_type)::text)) UNIQUE
 #  index_auction_consignment_configs_on_auction_id  (auction_id)
+#  index_auction_consignment_configs_on_old_id      (old_id)
 #
 # Foreign Keys
 #

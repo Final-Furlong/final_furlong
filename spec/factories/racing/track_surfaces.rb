@@ -32,6 +32,7 @@ end
 #
 # Indexes
 #
+#  index_track_surfaces_on_old_id                    (old_id)
 #  index_track_surfaces_on_racetrack_id_and_surface  (racetrack_id,surface) UNIQUE
 #
 # Foreign Keys

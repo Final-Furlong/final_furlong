@@ -1,6 +1,7 @@
 module Racing
   class RaceResult < ApplicationRecord
     self.table_name = "race_results"
+    self.ignored_columns += ["old_id"]
 
     SPLITS = %w[4Q 2F].freeze
 
@@ -69,6 +70,7 @@ end
 #  index_race_results_on_grade            (grade)
 #  index_race_results_on_name             (name)
 #  index_race_results_on_number           (number)
+#  index_race_results_on_old_id           (old_id)
 #  index_race_results_on_purse            (purse)
 #  index_race_results_on_race_type        (race_type)
 #  index_race_results_on_slug             (slug)

@@ -42,6 +42,7 @@ end
 #
 #  index_auction_horses_on_auction_id  (auction_id)
 #  index_auction_horses_on_horse_id    (horse_id) UNIQUE
+#  index_auction_horses_on_old_id      (old_id)
 #  index_auction_horses_on_slug        (slug) UNIQUE
 #  index_auction_horses_on_sold_at     (sold_at)
 #

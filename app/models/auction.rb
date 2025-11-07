@@ -2,6 +2,8 @@ class Auction < ApplicationRecord
   include PublicIdGenerator
   include FriendlyId
 
+  self.ignored_columns += ["old_id"]
+
   friendly_id :title, use: [:slugged, :finders]
 
   MINIMUM_DELAY = 7
@@ -134,6 +136,7 @@ end
 #
 #  index_auctions_on_auctioneer_id  (auctioneer_id)
 #  index_auctions_on_end_time       (end_time)
+#  index_auctions_on_old_id         (old_id)
 #  index_auctions_on_slug           (slug) UNIQUE
 #  index_auctions_on_start_time     (start_time)
 #  index_auctions_on_title          (lower((title)::text)) UNIQUE

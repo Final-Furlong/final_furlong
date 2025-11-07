@@ -1,5 +1,7 @@
 module Racing
   class Racetrack < ApplicationRecord
+    self.ignored_columns += ["old_id"]
+
     include PublicIdGenerator
     include FriendlyId
 
@@ -39,6 +41,7 @@ end
 #
 #  index_racetracks_on_location_id  (location_id) UNIQUE
 #  index_racetracks_on_name         (lower((name)::text)) UNIQUE
+#  index_racetracks_on_old_id       (old_id)
 #  index_racetracks_on_public_id    (public_id)
 #  index_racetracks_on_slug         (slug)
 #
