@@ -65,7 +65,7 @@
           td Not Yet Added
       tr
         th= t(".breeding_record")
-        td Not Yet Added
+        td= horse.breed_ranking_string
       - if Horses::Status::FEMALE_BREEDING_STATUSES.include?(horse.status)
         tr
           th= t(".last_foal")

@@ -15,7 +15,7 @@
       - dashboard.born_foals.each do |foal|
         - pedigree = Horses::PedigreeDisplayService.new(foal)
         tr
-          td= link_to (foal.name || t("horse.unnamed")), horse_path(foal)
+          td= link_to (foal.name || t("horse.unnamed")), horse_path(foal), target: '_top'
           td= foal.date_of_birth.year
           td= foal.gender.titleize
           td= pedigree.sire_display(tag: true, target: '_top')

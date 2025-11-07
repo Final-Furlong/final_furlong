@@ -18,7 +18,7 @@
           td= link_to (foal.name || t("horse.unnamed")), horse_path(foal)
           td= foal.date_of_birth.year
           td= foal.gender.titleize
-          td= pedigree.dam_display(tag: true)
+          td= pedigree.dam_display(tag: true, target: "_top")
           td= foal.status.titleize
           td
             - if foal.stillborn?

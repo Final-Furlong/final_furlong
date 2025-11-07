@@ -7,17 +7,17 @@
           td.border-1 rowspan=4 class=@horse.gender
             = @horse.name || t("horse.unnamed")
           td.stallion.border-1 rowspan=2
-            = pedigree.sire_display(tag: true)
+            = pedigree.sire_display(tag: true, target: '_top')
           td.stallion.border-1
-            = pedigree.sire_sire_display(tag: true)
+            = pedigree.sire_sire_display(tag: true, target: '_top')
         tr
           td.mare.border-1
-            = pedigree.sire_dam_display(tag: true)
+            = pedigree.sire_dam_display(tag: true, target: "_top")
         tr
           td.mare.border-1 rowspan=2
-            = pedigree.dam_display(tag: true)
+            = pedigree.dam_display(tag: true, target: "_top")
           td.stallion.border-1
-            = pedigree.dam_sire_display(tag: true)
+            = pedigree.dam_sire_display(tag: true, target: "_top")
         tr
           td.mare.border-1
-            = pedigree.dam_dam_display(tag: true)
+            = pedigree.dam_dam_display(tag: true, target: "_top")

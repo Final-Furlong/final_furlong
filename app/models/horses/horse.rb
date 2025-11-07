@@ -54,6 +54,7 @@ module Horses
     scope :order_by_dam, -> { includes(:dam).order("dams_horses.name ASC") }
 
     delegate :title, :breeding_record, :dosage_text, :track_record, to: :horse_attributes, allow_nil: true
+    delegate :breed_ranking_string, to: :broodmare_foal_record, allow_nil: true
 
     # broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
 
