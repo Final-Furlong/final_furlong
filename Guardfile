@@ -29,58 +29,47 @@ guard :bundler do
   files.each { |file| watch(helper.real_path(file)) }
 end
 
-group :spec, halt_on_fail: true do
-  # NOTE: The cmd option is now required due to the increasing number of ways
-  #       rspec may be run, below are examples of the most common uses.
-  #  * bundler: 'bundle exec rspec'
-  #  * bundler binstubs: 'bin/rspec'
-  #  * spring: 'bin/rspec' (This will use spring if running and you have
-  #                          installed the spring binstubs per the docs)
-  #  * zeus: 'zeus rspec' (requires the server to be started separately)
-  #  * 'just' rspec: 'rspec'
+guard :rubocop, all_on_start: true, cli: ["--autocorrect"] do
+  watch(/.+\.rb$/)
+  watch(%r{(?:.+/)?\.rubocop(?:_todo)?\.yml$}) { |m| File.dirname(m[0]) }
+end
 
-  guard :rspec, cmd: "bin/rspec", all_after_start: true, title: "Final Furlong Tests" do
-    require "guard/rspec/dsl"
-    dsl = Guard::RSpec::Dsl.new(self)
+guard :rspec, cmd: "bin/rspec", all_after_start: false, halt_on_fail: true, title: "Final Furlong Tests" do
+  require "guard/rspec/dsl"
+  dsl = Guard::RSpec::Dsl.new(self)
 
-    # RSpec files
-    rspec = dsl.rspec
-    watch(rspec.spec_helper) { rspec.spec_dir }
-    watch(rspec.spec_support) { rspec.spec_dir }
-    watch(rspec.spec_files)
+  # RSpec files
+  rspec = dsl.rspec
+  watch(rspec.spec_helper) { rspec.spec_dir }
+  watch(rspec.spec_support) { rspec.spec_dir }
+  watch(rspec.spec_files)
 
-    # Ruby files
-    ruby = dsl.ruby
-    dsl.watch_spec_files_for(ruby.lib_files)
+  # Ruby files
+  ruby = dsl.ruby
+  dsl.watch_spec_files_for(ruby.lib_files)
 
-    # Rails files
-    rails = dsl.rails(view_extensions: %w[erb haml slim])
-    dsl.watch_spec_files_for(rails.app_files)
-    dsl.watch_spec_files_for(rails.views)
+  # Rails files
+  rails = dsl.rails(view_extensions: %w[erb haml slim])
+  dsl.watch_spec_files_for(rails.app_files)
+  dsl.watch_spec_files_for(rails.views)
 
-    watch(rails.controllers) do |m|
-      [
-        rspec.spec.call("routing/#{m[1]}_routing"),
-        rspec.spec.call("controllers/#{m[1]}_controller")
-      ]
-    end
-
-    watch(%r{^app/components/(.+)\.rb$}) { |m| "spec/components/#{m[1]}_spec.rb" }
-
-    # Rails config changes
-    watch(rails.spec_helper) { rspec.spec_dir }
-    watch(rails.routes) { "#{rspec.spec_dir}/routing" }
-    watch(rails.app_controller) { "#{rspec.spec_dir}/controllers" }
-
-    # System specs
-    watch(rails.view_dirs) { |m| rspec.spec.call("system/#{m[1]}") }
-    watch(rails.layouts) { |m| rspec.spec.call("system/#{m[1]}") }
+  watch(rails.controllers) do |m|
+    [
+      rspec.spec.call("routing/#{m[1]}_routing"),
+      rspec.spec.call("controllers/#{m[1]}_controller")
+    ]
   end
 
-  guard :rubocop, all_on_start: true, cli: ["--autocorrect"] do
-    watch(/.+\.rb$/)
-    watch(%r{(?:.+/)?\.rubocop(?:_todo)?\.yml$}) { |m| File.dirname(m[0]) }
-  end
+  watch(%r{^app/components/(.+)\.rb$}) { |m| "spec/components/#{m[1]}_spec.rb" }
+
+  # Rails config changes
+  watch(rails.spec_helper) { rspec.spec_dir }
+  watch(rails.routes) { "#{rspec.spec_dir}/routing" }
+  watch(rails.app_controller) { "#{rspec.spec_dir}/controllers" }
+
+  # System specs
+  watch(rails.view_dirs) { |m| rspec.spec.call("system/#{m[1]}") }
+  watch(rails.layouts) { |m| rspec.spec.call("system/#{m[1]}") }
 end
 
 # Guard-HamlLint supports a lot options with default values:

@@ -6,10 +6,6 @@ class MigrateLegacyHorseService # rubocop:disable Metrics/ClassLength
   end
 
   def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-    if Racing::Racetrack.count < 21
-      MigrateLegacyRacetrackService.new.call
-    end
-
     return unless legacy_horse
     horse = Horses::Horse.find_or_initialize_by(legacy_id: legacy_horse.id)
     update_attrs = {

@@ -19,7 +19,9 @@ class PopulateHorseAttributesService # rubocop:disable Metrics/ClassLength
   def update_horse(horse)
     horse_attributes = horse.horse_attributes || horse.build_horse_attributes
     record = horse.lifetime_race_record
-    track_record = if record.stakes_wins > 1 && record.stakes_places > 1
+    track_record = if record.starts.zero?
+      "Unraced"
+    elsif record.stakes_wins > 1 && record.stakes_places > 1
       "Mult. Stakes Winner, Mult. Stakes Placed"
     elsif record.stakes_wins > 1 && record.stakes_places == 1
       "Mult. Stakes Winner, Stakes Placed"

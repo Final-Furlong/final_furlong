@@ -52,7 +52,7 @@
           td Not Yet Added
       tr
         th= t(".track_record")
-        td= horse.track_record
+        td= horse.track_record || t("horse.unraced")
       - if horse.racehorse?
         tr
           th= t(".last_race")

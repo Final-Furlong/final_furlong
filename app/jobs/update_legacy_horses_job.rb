@@ -2,6 +2,9 @@ class UpdateLegacyHorsesJob < ApplicationJob
   queue_as :low_priority
 
   def perform
+    if Racing::Racetrack.count < 21
+      MigrateLegacyRacetrackService.new.call
+    end
     Legacy::Horse.where(rails_id: nil).limit(50).find_each do |legacy_horse|
       migrate_legacy_horse(legacy_horse:)
     end
