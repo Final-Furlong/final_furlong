@@ -75,7 +75,6 @@ export default class extends Controller {
   }
 
   async trySubscribe() {
-    console.log("trySubscribe")
     this.setError(null)
     this.subscribeButtonTarget.disabled = true
 
@@ -89,14 +88,11 @@ export default class extends Controller {
   }
 
   async unsubscribe() {
-    console.log("unsubscribe", "start")
-    const result = await unsubscribe()
+    await unsubscribe()
     this.resetSubscriptionStatus()
-    console.log("unsubscribe", "finish", result)
   }
 
   async subscribe() {
-    console.log("subscribe", "start")
     const subscription = (await getSubscription()) || (await createSubscription())
 
     if (subscription) {
@@ -104,13 +100,9 @@ export default class extends Controller {
     } else {
       console.error("Web push subscription failed")
     }
-
-    console.log("subscribe", "finish", subscription)
   }
 
   async setStatusSubscribed(subscription) {
-    console.log("setSubscriptionStatusSubscribed", subscription.toJSON())
-
     this.dispatch("subscription-changed", { detail: { subscription } })
 
     const {

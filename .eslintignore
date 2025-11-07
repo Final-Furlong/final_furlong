@@ -1,7 +1,0 @@
-# Ignore precompiled assets
-**/public/assets
-**/public/packs
-**/public/packs-test
-**/vendor/bundle
-**/vendor/javascript
-node_modules

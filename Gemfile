@@ -4,99 +4,90 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.4.5"
 
 gem "rails", "~> 8.1"
-# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
-gem "propshaft"
-# Use postgresql as the database for Active Record
-gem "pg"
-# Use the Puma web server [https://github.com/puma/puma]
-gem "puma"
-# Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
-gem "importmap-rails"
-# Hotwire"s SPA-like page accelerator [https://turbo.hotwired.dev]
-gem "turbo-rails"
-# Hotwire"s modest JavaScript framework [https://stimulus.hotwired.dev]
-gem "stimulus-rails"
-# Build JSON APIs with ease [https://github.com/rails/jbuilder]
-gem "jbuilder"
 
-# Reduces boot times through caching; required in config/boot.rb
-gem "bootsnap", require: false
+gem "solid_cable" # A database-backed ActionCable backend [https://github.com/rails/solid_cable]
+gem "solid_cache" # A database-backed ActiveSupport::Cache::Store [https://github.com/rails/solid_cache]
+gem "solid_queue" # A database-backed ActiveJob backend [https://github.com/rails/solid_queue]
 
-# Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
-gem "thruster", require: false
+# Backend
+gem "bootsnap", require: false # Reduces boot times through caching; required in config/boot.rb
+gem "puma" # Use the Puma web server [https://github.com/puma/puma]
 
+# Asset management
+gem "fastimage"
+gem "image_processing" # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
+gem "jbuilder" # Build JSON APIs with ease [https://github.com/rails/jbuilder]
+gem "propshaft" # Deliver assets for Rails [https://github.com/rails/propshaft]
+gem "stimulus-rails" # Hotwire"s modest JavaScript framework [https://stimulus.hotwired.dev]
+gem "turbo-rails" # Hotwire"s SPA-like page accelerator [https://turbo.hotwired.dev]
+
+# Authentication/Authorization
 gem "devise"
 gem "devise-i18n"
-gem "responders"
+gem "pundit"
 
-gem "action_policy"
+# Operations
 gem "active_interaction"
-gem "activerecord_json_validator"
-gem "active_storage_validations"
+gem "dry-validation"
+gem "yaaf"
+
+# Utilities
 gem "base64", "0.1.1"
 gem "browser"
-gem "counter_culture"
-gem "data_migrate"
-gem "discard"
 gem "dotenv-rails"
 gem "dotenv_validator"
-gem "dry-validation"
-gem "fastimage"
-gem "flag_shih_tzu" # bit mask
-gem "friendly_id"
+gem "lograge"
+gem "mailtrap"
+gem "mission_control-jobs"
+gem "net-ssh"
+gem "rack-cors"
+gem "rails-i18n"
+gem "ransack"
+gem "requestjs-rails"
+gem "responders"
+gem "sentry-rails"
+gem "sentry-ruby"
+gem "turnout"
+gem "web-push"
+gem "whenever", require: false
+
+# API
 gem "grape"
 gem "grape-active_model_serializers"
 gem "grape-entity"
 gem "grape_logging"
 gem "grape_on_rails_routes"
-gem "image_processing"
-gem "lograge"
-gem "mailtrap"
-gem "mission_control-jobs"
+
+# Admin
 gem "motor-admin"
-gem "mysql2"
-gem "nanoid"
-gem "net-ssh"
-gem "pagy"
-gem "pghero"
-gem "pg_query", ">= 2"
 gem "pretender"
-gem "pundit"
-gem "rack-cors"
-gem "rails-i18n"
-gem "rails-pg-extras"
-gem "ransack"
-gem "redis"
-gem "requestjs-rails"
-gem "scenic" # versioned views
-gem "sentry-rails"
-gem "sentry-ruby"
+
+# UI
+gem "pagy"
 gem "simple_form"
 gem "slim-rails"
-gem "solid_queue"
-gem "store_model"
-gem "strong_migrations"
 gem "tailwindcss-rails"
-gem "turnout"
-gem "uuid"
 gem "view_component"
 gem "view_component-contrib"
 gem "vite_rails"
-gem "web-push"
-gem "whenever", require: false
-gem "yaaf"
 
-# Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
-# gem "kredis"
-
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[windows jruby]
-
-# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
+# Database
+gem "activerecord_json_validator"
+gem "active_storage_validations"
+gem "counter_culture"
+gem "data_migrate"
+gem "discard"
+gem "flag_shih_tzu" # bit mask
+gem "friendly_id"
+gem "mysql2"
+gem "nanoid"
+gem "pg" # Use postgresql as the database for Active Record
+gem "pghero"
+gem "pg_query", ">= 2"
+gem "rails-pg-extras"
+gem "scenic" # versioned views
+gem "store_model"
+gem "strong_migrations"
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]

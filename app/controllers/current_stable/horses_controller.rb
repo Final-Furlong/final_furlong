@@ -5,7 +5,7 @@ module CurrentStable
     before_action :set_status_counts, only: :index
 
     def index
-      @query = policy_scope(Horses::Horse, policy_scope_class: CurrentStable::HorsePolicy::Scope).ransack(params[:q])
+      @query = policy_scope(Horses::Horse, policy_scope_class: CurrentStable::HorsePolicy::Scope).includes(:owner).ransack(params[:q])
       @query.sorts = "name asc" if @query.sorts.blank?
 
       @pagy, @horses = pagy(@query.result)
