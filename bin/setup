@@ -22,7 +22,7 @@ def setup(test_mode = false)
       # Note that the very first time this runs, db:reset
       # will fail, but this failure is fixed by
       # doing a db:migrate
-      system! "bin/rails db:reset || bin/rails db:migrate:with_data && bin/rails db:seed"
+      system! "USE_LIVE_DB=false bin/rails db:reset || USE_LIVE_DB=false bin/rails db:migrate:with_data && bin/rails db:seed"
     end
 
     log "Dropping & recreating the test database"
