@@ -3,7 +3,7 @@ FactoryBot.define do
     Breeder factory: :legacy_user
     can_be_sold { false }
     last_modified { Time.current }
-    rails_id { SecureRandom.uuid }
+    sequence(:rails_id)
     Gender { "M" }
     DOB { Date.current }
     Retire { 2.years.from_now }
