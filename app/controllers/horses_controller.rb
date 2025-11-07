@@ -78,11 +78,7 @@ class HorsesController < ApplicationController
   end
 
   def set_horse_by_legacy_id
-    @horse = if UUID.validate(params[:id].to_s)
-      Horses::Horse.find_by(id: params[:id])
-    else
-      Horses::Horse.find_by(legacy_id: params[:id])
-    end
+    @horse = Horses::Horse.find_by(legacy_id: params[:id])
   end
 
   def horse_params
