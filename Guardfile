@@ -17,18 +17,6 @@
 
 notification :terminal_notifier if /Darwin/.match?(`uname`)
 
-guard :bundler do
-  require "guard/bundler"
-  require "guard/bundler/verify"
-  helper = Guard::Bundler::Verify.new
-
-  files = ["Gemfile"]
-  files += Dir["*.gemspec"] if files.any? { |f| helper.uses_gemspec?(f) }
-
-  # Assume files are symlinked from somewhere
-  files.each { |file| watch(helper.real_path(file)) }
-end
-
 guard :rubocop, all_on_start: true, cli: ["--autocorrect"] do
   watch(/.+\.rb$/)
   watch(%r{(?:.+/)?\.rubocop(?:_todo)?\.yml$}) { |m| File.dirname(m[0]) }
@@ -70,14 +58,5 @@ guard :rspec, cmd: "bin/rspec", all_after_start: false, halt_on_fail: true, titl
   # System specs
   watch(rails.view_dirs) { |m| rspec.spec.call("system/#{m[1]}") }
   watch(rails.layouts) { |m| rspec.spec.call("system/#{m[1]}") }
-end
-
-# Guard-HamlLint supports a lot options with default values:
-# all_on_start: true        # Check all files at Guard startup. default: true
-# haml_dires: ['app/views'] # Check Directories. default: 'app/views' or '.'
-# cli: '--fail-fast --no-color' # Additional command line options to haml-lint.
-guard :haml_lint, cli: "--fail-fast" do
-  watch(/.+\.html.*\.haml$/)
-  watch(%r{(?:.+/)?\.haml-lint\.yml$}) { |m| File.dirname(m[0]) }
 end
 
