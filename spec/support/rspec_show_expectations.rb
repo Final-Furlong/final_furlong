@@ -31,3 +31,4 @@ unless RSpec::Expectations.respond_to?(:expectation_count)
   RSpec::Matchers.prepend(RSpecPatch::Matchers)
   RSpec::Core::Notifications::SummaryNotification.prepend(RSpecPatch::SummaryNotification)
 end
+
