@@ -8,6 +8,7 @@ ActiveRecordDoctor.configure do
     "active_storage_attachments",
     "active_storage_blobs",
     "solid_cable_messages",
+    "solid_cache_entries",
     "solid_queue_blocked_executions",
     "solid_queue_claimed_executions",
     "solid_queue_failed_executions",
