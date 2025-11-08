@@ -105,7 +105,7 @@ jobs:
           bin/ci
 
       - name: Publish Coverage
-        uses: paambaati/codeclimate-action@v5.0.0
+        uses: paambaati/codeclimate-action@v9.0.0
         continue-on-error: true
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.code-climate-token }}
