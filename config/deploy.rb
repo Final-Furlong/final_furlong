@@ -1,8 +1,6 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.19.0"
 
-ENV['RUBYOPT'] = ""
-
 server "ffdeploy", user: "www", roles: %i[web app db], primary: true
 
 set :application, "final_furlong"
