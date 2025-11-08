@@ -1,5 +1,5 @@
 = turbo_frame_tag "messages" do
-  .toast#messages
+  .toast.toast-end#messages
     - flash.each do |name, messages|
       - case messages.class.name.to_s
       - when "String"

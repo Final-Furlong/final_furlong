@@ -51,6 +51,9 @@ en:
       success:
         en: Your language is now American English
         en-GB: Your language is now British English
+      success_full: Your settings have been updated.
+    new:
+      title: Update Settings
   simple_form:
     hints:
       stable:

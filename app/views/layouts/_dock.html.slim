@@ -1,0 +1,12 @@
+.dock.border-t-1.border-neutral-content/50 class="md:hidden"
+  button
+    i.fa-solid.fa-home
+    = link_to t(".home"), root_path
+
+  / button.dock-active
+  /   i.fa-solid.fa-bell
+  /   span.dock-label= t(".notifications")
+
+  button
+    i.fa-solid.fa-gear
+    = link_to t(".settings"), settings_path

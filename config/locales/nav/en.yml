@@ -11,6 +11,9 @@ en:
       new_version: New version available!
       offline: You are offline - Content may be outdated
       upgrade_action: Upgrade
+    dock:
+      home: Home
+      settings: Settings
     nav:
       join: Join
       login: Log in
@@ -26,6 +29,7 @@ en:
       notifications: Notifications
       search_aria_label: Search
       search_placeholder: Search...
+      settings: Settings
       stable:
         budget: Budget
         horses: My horses

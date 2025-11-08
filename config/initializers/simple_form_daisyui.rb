@@ -88,16 +88,15 @@ SimpleForm.setup do |config|
   end
 
   # vertical input for select
-  config.wrappers :vertical_select, tag: "fieldset", class: "fieldset mt-[4]" do |b|
+  config.wrappers :vertical_select, tag: "fieldset", class: "fieldset" do |b|
     b.use :html5
-    b.use :placeholder
+    b.optional :placeholder
     b.optional :readonly
-    b.use :label, class: "fieldset-legend", error_class: "text-error"
-    b.use :input, class: "select w-full", error_class: "select-error", valid_class: "select-success"
+    b.use :label, class: "block font-medium"
+    b.use :input, class: "", error_class: "select-error", valid_class: "select-success"
+    b.use :hint, wrap_with: { tag: :span, class: :hint }
+    b.use :error, wrap_with: { tag: :span, class: :error }
     b.use :full_error, wrap_with: { tag: "p", class: "mt-2 text-error text-xs italic" }
-    b.wrapper tag: "label", class: "label hint" do |ba|
-      ba.use :hint, wrap_with: { tag: "span", class: "label-text-alt" }
-    end
   end
 
   # vertical input for boolean (aka checkboxes)

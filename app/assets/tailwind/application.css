@@ -2,7 +2,7 @@
 
 /* stylelint-disable */
 @plugin "daisyui" {
-  themes: nord --default, night --prefersdark;
+  themes: nord --default, night --prefersdark, all;
 }
 /* stylelint-enable */
 

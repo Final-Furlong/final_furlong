@@ -2034,7 +2034,9 @@ CREATE TABLE public.settings (
     theme character varying,
     locale character varying,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    dark_theme character varying,
+    dark_mode boolean DEFAULT false NOT NULL
 );
 
 
@@ -4778,6 +4780,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251108220626'),
 ('20251108095210'),
 ('20251107213855'),
 ('20251106205042'),

@@ -3,12 +3,11 @@ module Accounts
     attr_reader :cookies, :user
 
     def call(cookies: nil)
-      @user = Current.user
       return unless cookies
 
       @cookies = cookies
 
-      if cookies[:locale] && user
+      if cookies[:locale] && Current.user
         sync_cookie_locale_to_user
       else
         clear_cookie_locale
@@ -20,7 +19,7 @@ module Accounts
     def sync_cookie_locale_to_user
       return unless valid_locale?(cookies[:locale])
 
-      Accounts::SettingsUpdater.new.call(locale: cookies[:locale], cookies:)
+      Accounts::SettingsUpdater.new.call(params: { locale: cookies[:locale] }, cookies:)
     end
 
     def clear_cookie_locale

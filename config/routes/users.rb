@@ -13,7 +13,7 @@ devise_for :users, class_name: "Account::User", path: "", path_names: {
 get "/activation_required", to: "pages#activation", as: :activation
 
 resources :users
-resources :settings, only: :create
+resources :settings, only: %i[new create]
 
 namespace :pwa do
   resources :web_pushes, only: [:create]

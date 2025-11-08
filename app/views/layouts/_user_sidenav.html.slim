@@ -1,8 +1,8 @@
 / User Sidebar
 li
-  a.flex.items-center.w-full.p-2.text-gray-900.transition.duration-75.rounded-lg[
+  a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
     href=current_stable_path
-    class="hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+    class="hover:bg-gray-100 dark:hover:bg-gray-700"
   ]
     i.fa.fa-solid.fa-house
     span.ms-3= t("layouts.sidenav.my_stable")
@@ -11,16 +11,16 @@ li
     summary= t("layouts.sidenav.my_stable")
     ul
       li
-        a.flex.items-center.w-full.p-2.text-gray-900.transition.duration-75.rounded-lg[
+        a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
           href=stable_horses_path
-          class="hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+          class="hover:bg-gray-100 dark:hover:bg-gray-700"
         ]
           i.fa-solid.fa-horse-head
           span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.stable.horses")
       li
-        a.flex.items-center.w-full.p-2.text-gray-900.transition.duration-75.rounded-lg[
+        a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
           href=stable_budgets_path
-          class="hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+          class="hover:bg-gray-100 dark:hover:bg-gray-700"
         ]
           i.fa-solid.fa-coins
           span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.stable.budget")

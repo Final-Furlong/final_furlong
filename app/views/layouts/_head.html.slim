@@ -1,7 +1,7 @@
 head
   meta content="text/html; charset=UTF-8" http-equiv="Content-Type"
   title= content_for?(:title) ? yield(:title) : "Final Furlong"
-  meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0" name="viewport"
+  meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, viewport-fit=cover" name="viewport"
   meta content="yes" name="apple-mobile-web-app-capable"
   meta content="yes" name="mobile-web-app-capable"
 
@@ -24,6 +24,11 @@ head
   meta name="vapid-public-key" content=Rails.configuration.x.vapid.public_key
   = vite_client_tag
   = vite_javascript_tag 'application'
+
+  = render "layouts/theme_selector"
+
+  - if content_for? :head
+    = yield :head
 
   script src="https://kit.fontawesome.com/a2bbd059ad.js" crossorigin="anonymous"
   script src="https://cdn.jsdelivr.net/npm/lightgallery@2.9.0/lightgallery.umd.min.js"

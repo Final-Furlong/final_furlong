@@ -3,6 +3,10 @@ module Account
     def create?
       true
     end
+
+    def new?
+      Current.user.present?
+    end
   end
 end
 

@@ -4,7 +4,7 @@
     role="button"
     tabindex=0
     class="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer \
-      dark:hover:text-white dark:text-gray-400 hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600"
+      dark:hover:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600"
     aria-label=t(".language_selector")
   ]
     span.me-2.fi class=(american_locale? ? "fi-us" : "fi-gb")
@@ -18,14 +18,14 @@
       = form_with scope: :settings, url: settings_path, method: :post do |form|
         = form.hidden_field :locale, value: "en", id: "settings_locale_us_mobile"
         = button_tag class: "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 \
-          dark:hover:text-white dark:text-gray-300 dark:hover:bg-gray-600" do
+          dark:hover:text-white dark:hover:bg-gray-600" do
           .inline-flex.items-center
             span.me-2.fi.fi-us
     li
       = form_with scope: :settings, url: settings_path, method: :post do |form|
         = form.hidden_field :locale, value: "en-GB", id: "settings_locale_gb_mobile"
         = button_tag class: "block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 \
-          dark:hover:text-white dark:text-gray-300 dark:hover:bg-gray-600" do
+          dark:hover:text-white dark:hover:bg-gray-600" do
           .inline-flex.items-center
             span.me-2.fi.fi-gb
 

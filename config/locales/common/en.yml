@@ -34,11 +34,49 @@ en:
     search_form:
       action: Search
       reset_filters: Reset filters
+  daisy_ui:
+    abyss: Abyss
+    acid: Acid
+    aqua: Aqua
+    autumn: Autumn
+    black: Black
+    bumblebee: Bumblebee
+    business: Business
+    caramellatte: Caramel Latte
+    coffee: Coffee
+    corporate: Corporate
+    cupcake: Cupcake
+    cyberpunk: Cyber Punk
+    dark: Dark
+    dim: Dim
+    dracula: Dracula
+    emerald: Emerald
+    fantasy: Fantasy
+    forest: Forest
+    garden: Garden
+    halloween: Halloween
+    lemonade: Lemonade
+    light: Light
+    lofi: Lofi
+    luxury: Luxury
+    night: Night
+    nord: Nord
+    pastel: Pastel
+    retro: Retro
+    silk: Silk
+    sunset: Sunset
+    synthwave: Synth Wave
+    valentine: Valentine
+    winter: Winter
+    wireframe: Wireframe
   date:
     formats:
       default: "%Y-%m-%d"
       long: "%B %-d, %Y"
       short: "%b %d"
+  i18n:
+    en_gb_language: British English
+    en_language: US English
   time:
     am: am
     formats:

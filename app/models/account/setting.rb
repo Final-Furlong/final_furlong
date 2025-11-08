@@ -5,6 +5,7 @@ module Account
     belongs_to :user
 
     validates :locale, inclusion: { in: I18n.available_locales.map(&:to_s), message: :invalid }
+    validates :dark_mode, inclusion: { in: [true, false] }
 
     def time_zone
       nil
@@ -18,6 +19,8 @@ end
 # Database name: primary
 #
 #  id         :bigint           not null, primary key
+#  dark_mode  :boolean          default(FALSE), not null
+#  dark_theme :string
 #  locale     :string
 #  theme      :string
 #  created_at :datetime         not null

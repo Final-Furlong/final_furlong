@@ -1,0 +1,6 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t("layouts.dock.home"), href: root_path },
+        { name: t(".title"), href: "#" }])
+
+.mx-auto.my-4.p-4.w-full.border.rounded-sm class="sm:w-1/2"
+  = render "form", setting: @settings

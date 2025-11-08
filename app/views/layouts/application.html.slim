@@ -1,18 +1,20 @@
 doctype html
 html(lang= I18n.locale)
   = render "layouts/head"
-  body class="dark:bg-gray-900"
+  body
     .drawer class="lg:h-screen lg:drawer-open"
       main.drawer-content
         label for="sidebar-drawer" class="float-left btn drawer-button lg:hidden"
           span.sr-only= t("layouts.nav.open_main_menu")
           i.fa-solid.fa-bars.fa-xl#icon-show-sidenav
-        .float-right
-          = render Nav::I18n::Component.new(locale: I18n.locale, version: :phone, variants: request.variant)
+        - unless signed_in?
+          .float-right
+            = render Nav::I18n::Component.new(locale: I18n.locale, version: :phone, variants: request.variant)
         = yield :breadcrumbs
         .container.p-6.clear-both class="sm:p-4"
           = render Users::ImpersonatingBanner::Component.new
           = render partial: "layouts/flash"
           = yield
+        = render "layouts/dock"
       = render "layouts/sidenav"
     script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"

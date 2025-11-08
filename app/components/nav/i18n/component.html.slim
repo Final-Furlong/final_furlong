@@ -1,6 +1,6 @@
 ruby:
   flag_class = american_locale? ? "fi-us" : "fi-gb"
-  flag_label = american_locale? ? t("view_components.nav.i18n.us_language") : t("view_components.nav.i18n.uk_language")
+  flag_label = american_locale? ? t("i18n.en_language") : t("i18n.en_gb_language")
 .dropdown.dropdown-top.hidden.mx-auto class="sm:block"
   .m-1 tabindex="0" role="button" aria-label=t("view_components.nav.i18n.language_selector")
     span.me-2.fi[ class=flag_class aria-label=flag_label ]

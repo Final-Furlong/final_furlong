@@ -1,5 +1,5 @@
 input#sidebar-drawer type="checkbox" class="drawer-toggle"
-nav.drawer-side.h-full.border-0#sidebar class="sm:border-r-1 border-gray-500/50 dark:border-neutral-100/50"
+nav.drawer-side.h-full.border-0#sidebar class="sm:border-r-1 border-neutral-content/50"
   label for="sidebar-drawer" aria-label="close sidebar" class="drawer-overlay"
   ul.menu.bg-base-200.text-base-content.min-h-full.w-80.p-4.border-r-1.border-gray-500/50[
     class="sm:border-0 dark:border-neutral-100/50"
@@ -7,7 +7,7 @@ nav.drawer-side.h-full.border-0#sidebar class="sm:border-r-1 border-gray-500/50 
     li
       a.flex.items-center.p-2.rounded-lg[
         href=root_path
-        class="dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+        class="hover:bg-gray-100 dark:hover:bg-gray-700"
       ]
         = image_tag "logo_dark.png", class: "h-6 md:h-12 w-auto block dark:hidden", alt: "Final Furlong Logo"
         = image_tag "logo_light.png", class: "h-6 md:h-12 w-auto hidden dark:block", alt: "Final Furlong Logo"
@@ -31,6 +31,13 @@ nav.drawer-side.h-full.border-0#sidebar class="sm:border-r-1 border-gray-500/50 
             ]
               i.fa-solid.fa-horse-head
               span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.all_horses")
+          li
+            a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
+              href=new_setting_path
+              class="hover:bg-gray-100 dark:hover:bg-gray-700"
+            ]
+              i.fa-solid.fa-gear
+              span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.settings")
     = render "layouts/admin_sidenav" if signed_in? && Current.user.admin?
     - if signed_in?
       li
@@ -46,18 +53,19 @@ nav.drawer-side.h-full.border-0#sidebar class="sm:border-r-1 border-gray-500/50 
         ]
           i.fas.fa-arrow-right-from-bracket.mr-2
           span.flex-1.ms-3.whitespace-nowrap= t("layouts.nav.login")
-    li
-      = link_to "https://www.finalfurlong.org/", class: "flex items-center p-2 rounded-lg \
-                hover:bg-gray-100 dark:hover:bg-gray-700" do
-        i.fa-solid.fa-delete-left
-        span.flex-1.ms-3.whitespace-nowrap= t(".main_app")
+    - unless Rails.env.development?
+      li
+        = link_to "https://www.finalfurlong.org/", class: "flex items-center p-2 rounded-lg \
+                  hover:bg-gray-100 dark:hover:bg-gray-700" do
+          i.fa-solid.fa-delete-left
+          span.flex-1.ms-3.whitespace-nowrap= t(".main_app")
 
     li
       .hidden.mt-4.border.rounded-md class="md:block"
         form.flex.p-2 role="search"
           input[type="search" disabled=true placeholder=t(".search_placeholder") aria-label=t(".search_aria_label")]
 
-    li.hidden.justify-center.p-4.space-x-4.w-full[ class="lg:flex z-20" ]
+    li.hidden.justify-center.p-4.space-x-4.w-full
       - if signed_in? && false
         a.inline-flex.justify-center.p-2.rounded.cursor-pointer[
           href="#"
@@ -76,4 +84,5 @@ nav.drawer-side.h-full.border-0#sidebar class="sm:border-r-1 border-gray-500/50 
         ]
           i.fa-solid.fa-gear.tooltip data-top=t("layouts.sidenav.view_notifications")
 
+    - unless signed_in?
       = render Nav::I18n::Component.new(locale: I18n.locale, version: :tablet, variants: request.variant)

@@ -12,7 +12,10 @@ en:
   activerecord:
     attributes:
       setting:
-        locale: Locale
+        dark_mode: Dark Mode
+        dark_theme: Dark Mode Theme
+        locale: Language
+        theme: Light Mode Theme
       user:
         admin: Admin
         confirmation_sent_at: Confirmation sent

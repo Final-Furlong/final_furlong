@@ -1,0 +1,34 @@
+javascript:
+  function getCookie (cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+  // const darkMode = (window.matchMedia('(prefers-color-scheme: dark)').matches) || getCookie('dark_mode')
+  const darkMode = getCookie('dark_mode')
+  let colorTheme = '';
+  if (darkMode) {
+    colorTheme = localStorage.getItem('color-theme') || getCookie('dark_theme')
+  } else {
+    colorTheme = localStorage.getItem('color-theme') || getCookie('light_theme')
+  }
+  if (colorTheme) {
+    console.log('set color theme')
+    document.documentElement.setAttribute('data-theme', colorTheme)
+  }
+  if (darkMode) {
+    console.log('set dark color theme')
+    document.documentElement.setAttribute('data-theme', colorTheme)
+    document.documentElement.classList.add('dark')
+  }
