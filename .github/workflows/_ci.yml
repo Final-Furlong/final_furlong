@@ -7,9 +7,6 @@ on:
       code-climate-token:
         description: 'API key to report to Code Climate'
         required: true
-      cypress-record-key:
-        description: 'API key to report to Cypress Cloud'
-        required: true
 
 env:
   CI: true
