@@ -21,7 +21,7 @@ production:
   auction_create_monthly_auction:
     class: CreateMonthlyAuctionJob
     queue: low_priority
-    schedule: 1 0 1 1,3,4,5,7,9,10 * # first day of every month that does not have another auction
+    schedule: 1 0 1 1,3,4,5,7,9,10,12 * # first day of every month that does not have another auction
   auction_create_two_year_old:
     class: CreateTwoYearOldAuctionJob
     queue: low_priority
