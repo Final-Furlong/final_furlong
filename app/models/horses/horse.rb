@@ -19,6 +19,8 @@ module Horses
     has_one :genetics, class_name: "Genetics", dependent: :delete
 
     has_one :auction_horse, class_name: "Auctions::Horse", dependent: :destroy
+    has_one :current_lease, -> { where(active: true) }, class_name: "Horses::Lease", inverse_of: :horse, dependent: :delete
+    has_one :past_leases, -> { where.not(active: true) }, class_name: "Horses::Lease", inverse_of: :horse, dependent: :delete
 
     has_one :training_schedules_horse, class_name: "Racing::TrainingScheduleHorse", dependent: :destroy
     has_one :training_schedule, class_name: "Racing::TrainingSchedule", through: :training_schedules_horse
@@ -77,6 +79,10 @@ module Horses
 
     def male?
       !female?
+    end
+
+    def manager
+      current_lease ? current_lease.leaser : owner
     end
 
     def location_bred_name

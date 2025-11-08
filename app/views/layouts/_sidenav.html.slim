@@ -31,7 +31,7 @@ nav.drawer-side.h-full.border-0#sidebar class="sm:border-r-1 border-gray-500/50 
             ]
               i.fa-solid.fa-horse-head
               span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.all_horses")
-    = render "layouts/admin_sidenav" if signed_in? && current_user.admin?
+    = render "layouts/admin_sidenav" if signed_in? && Current.user.admin?
     - if signed_in?
       li
         = button_to destroy_user_session_path, method: :delete, data: { turbo: false },

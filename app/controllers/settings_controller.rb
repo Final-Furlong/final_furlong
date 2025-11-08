@@ -2,34 +2,22 @@ class SettingsController < ApplicationController
   def create
     authorize %i[account settings]
 
-    if outcome.valid?
-      locale = save_locale_cookie(outcome)
-
-      flash[:success] = t(".success.#{locale}")
+    result = Accounts::SettingsUpdater.new.call(locale: update_params[:locale], cookies:)
+    if result.updated?
+      flash.now[:success] = t(".success.#{result.locale}")
     else
-      flash[:alert] = errors
+      flash.now[:alert] = result.error
     end
-    redirect_to root_path
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: helpers.render_turbo_stream_flash_messages }
+      format.html { redirect_to root_path }
+    end
   end
 
   private
 
-  def errors
-    outcome.errors.full_messages.to_sentence
-  end
-
-  def outcome
-    @outcome ||= Users::UpdateLocale.run(update_params)
-  end
-
   def update_params
-    params.expect(settings: [:locale]).merge(user: current_user)
-  end
-
-  def save_locale_cookie(outcome)
-    locale = outcome.result
-    cookies.permanent[:locale] = locale
-    locale
+    params.expect(settings: [:locale])
   end
 end
 

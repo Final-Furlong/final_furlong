@@ -12,12 +12,12 @@ module CurrentStable
     end
 
     def show
-      @horse = current_stable.horses.find(params[:id])
+      @horse = Current.stable.horses.find(params[:id])
       authorize @horse, policy_class: CurrentStable::HorsePolicy
     end
 
     def edit
-      @horse = current_stable.horses.find(params[:id])
+      @horse = Current.stable.horses.find(params[:id])
     end
 
     def update

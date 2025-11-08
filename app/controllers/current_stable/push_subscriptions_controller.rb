@@ -1,8 +1,8 @@
 class CurrentStable::PushSubscriptionsController < AuthenticatedController
   def create
     authorize %i[current_stable push_subscriptions]
-    params = push_subscription_params.merge(user_agent: request.user_agent, user_id: current_user.id)
-    if (subscription = current_user.push_subscriptions.find_or_create_by(params))
+    params = push_subscription_params.merge(user_agent: request.user_agent, user_id: Current.user.id)
+    if (subscription = Current.user.push_subscriptions.find_or_create_by(params))
       subscription.update(updated_at: Time.current)
     else
       Account::PushSubscription.create! params
@@ -14,7 +14,7 @@ class CurrentStable::PushSubscriptionsController < AuthenticatedController
   def change
     authorize %i[current_stable push_subscriptions]
 
-    subscription = current_user.push_subscriptions.find_by!(endpoint: params[:old_endpoint])
+    subscription = Current.user.push_subscriptions.find_by!(endpoint: params[:old_endpoint])
 
     subscription.endpoint = new_endpoint if params[:new_endpoint]
     subscription.p256dh_key = new_p256dh if params[:new_p256dh]

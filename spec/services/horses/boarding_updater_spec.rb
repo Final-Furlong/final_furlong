@@ -1,4 +1,4 @@
-RSpec.describe Horses::BoardingUpdator do
+RSpec.describe Horses::BoardingUpdater do
   describe "#stop_boarding" do
     context "when boarding has already ended" do
       before { boarding.update(start_date: 5.days.ago, end_date: 2.days.ago, days: 3) }
@@ -115,7 +115,7 @@ RSpec.describe Horses::BoardingUpdator do
   end
 
   def i18n(key)
-    I18n.t("services.boarding.updator.#{key}")
+    I18n.t("services.boarding.updater.#{key}")
   end
 end
 

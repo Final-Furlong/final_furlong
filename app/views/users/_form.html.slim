@@ -8,5 +8,5 @@
     = f.input :password
     = f.input :password_confirmation
   = f.input :stable_name, disabled: form.persisted?
-  = link_to t("forms.cancel"), users_path, class: "button is-light"
+  = link_to t("common.actions.cancel"), users_path, class: "button is-light"
   = f.submit class: "button is-primary"

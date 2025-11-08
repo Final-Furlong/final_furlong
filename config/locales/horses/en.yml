@@ -44,6 +44,7 @@ en:
         summary: Summary
     height: "%{height}h"
     in_foal: in foal
+    leased_html: Leased to %{stable} until %{date}
     markings:
       bald_face: bald face
       blaze: blaze
@@ -118,6 +119,7 @@ en:
       height: Height
       last_foal: Last Foal
       last_race: Last Race
+      lease_status: Lease Status
       location: Location
       location_bred: Location Bred
       markings: Markings

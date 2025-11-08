@@ -10,7 +10,7 @@ module CurrentStable
 
     def index
       authorize schedule, :view_horses?
-      @horses = Horses::HorsesQuery.with_training_schedule(schedule).owned_by(current_stable)
+      @horses = Horses::HorsesQuery.with_training_schedule(schedule).owned_by(Current.stable)
     end
 
     def new
@@ -32,7 +32,7 @@ module CurrentStable
     def destroy
       authorize schedule
 
-      @horse = current_stable.horses.find(params[:id])
+      @horse = Current.stable.horses.find(params[:id])
       training_schedule_horse = Racing::TrainingScheduleHorse.find_by!(training_schedule: schedule, horse:)
       if training_schedule_horse.destroy!
         delete_message = t("current_stable.training_schedules.horse.deleted", name: horse.name)
@@ -46,7 +46,7 @@ module CurrentStable
     private
 
     def set_schedule
-      @schedule = current_stable.training_schedules.find(params[:training_schedule_id])
+      @schedule = Current.stable.training_schedules.find(params[:training_schedule_id])
       weekday = Time.zone.today.strftime("%A")
       @daily_activities = schedule.send(:"#{weekday.downcase}_activities")
       @schedule
@@ -57,7 +57,7 @@ module CurrentStable
     end
 
     def set_stable_horses
-      @horses = Horses::HorsesQuery.without_training_schedules.owned_by(current_stable)
+      @horses = Horses::HorsesQuery.without_training_schedules.owned_by(Current.stable)
     end
 
     def schedule_params

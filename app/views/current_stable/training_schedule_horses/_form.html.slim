@@ -3,5 +3,5 @@
   = f.input :training_schedule_id, as: :hidden, value: schedule.id, required: true
   = f.input :horse_id, collection: horses, required: true
   .form-actions
-    = link_to t("forms.cancel"), stable_training_schedules_path, class: "btn btn-outline-secondary"
+    = link_to t("common.actions.cancel"), stable_training_schedules_path, class: "btn btn-outline-secondary"
     = f.submit t("common.actions.save"), class: "btn btn-primary"

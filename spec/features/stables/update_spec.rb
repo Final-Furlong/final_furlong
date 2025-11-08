@@ -16,7 +16,7 @@ RSpec.describe "Update Stable Description" do
       updated_description = "Test description"
       expect(page).to have_current_path edit_current_stable_path, ignore_query: true
       fill_in "stable[description]", with: updated_description
-      click_on t("forms.cancel")
+      click_on t("common.actions.cancel")
       expect(page).to have_current_path current_stable_path, ignore_query: true
       visit edit_current_stable_path
       fill_in "stable[description]", with: updated_description

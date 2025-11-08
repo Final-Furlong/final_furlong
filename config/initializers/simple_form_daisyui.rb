@@ -88,7 +88,7 @@ SimpleForm.setup do |config|
   end
 
   # vertical input for select
-  config.wrappers :vertical_select, tag: "fieldset", class: "fieldset" do |b|
+  config.wrappers :vertical_select, tag: "fieldset", class: "fieldset mt-[4]" do |b|
     b.use :html5
     b.use :placeholder
     b.optional :readonly

@@ -190,6 +190,7 @@ end
 #  rails_uuid              :string(36)       indexed
 #  slug                    :string(255)
 #  consigned_auction_id    :bigint
+#  rails_boarding_id       :bigint
 #  rails_id                :bigint
 #
 # Indexes

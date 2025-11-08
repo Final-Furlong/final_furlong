@@ -12,8 +12,7 @@ html(lang= I18n.locale)
         = yield :breadcrumbs
         .container.p-6.clear-both class="sm:p-4"
           = render Users::ImpersonatingBanner::Component.new
-          .toast.toast-top#messages
-            = render partial: "layouts/flash"
+          = render partial: "layouts/flash"
           = yield
       = render "layouts/sidenav"
     script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"

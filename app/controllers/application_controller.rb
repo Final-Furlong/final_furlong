@@ -9,10 +9,12 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  impersonates :user, method: :current_user, with: ->(id) { Account::User.find_by(id:) }
-
   protect_from_forgery prepend: true
 
+  allow_browser versions: :modern
+  impersonates :user, method: :current_user, with: ->(id) { Account::User.find_by(id:) }
+
+  before_action :set_current_user
   before_action :setup_sentry
   before_action :set_variant
   before_action :update_stable_online, unless: :impersonating?
@@ -20,8 +22,6 @@ class ApplicationController < ActionController::Base
   around_action :switch_locale
 
   after_action :verify_pundit_authorization
-
-  helper_method :current_stable
 
   protected
 
@@ -53,25 +53,19 @@ class ApplicationController < ActionController::Base
     root_path
   end
 
-  def current_stable
-    return unless signed_in?
-
-    @current_stable ||= current_user.stable
-  end
-
   def switch_locale(&)
     I18n.with_locale(wanted_locale, &)
   end
 
   def wanted_locale
-    Users::SyncLocale.run(user: current_user, cookies:)
-    cookies[:locale] || current_user.try(:locale) || I18n.default_locale
+    Accounts::CookieLocaleSyncer.new.call(cookies:)
+    cookies[:locale] || Current.user.try(:locale) || I18n.default_locale
   end
 
   def setup_sentry
-    return unless current_user
+    return unless Current.user
 
-    Sentry.set_user(username: current_user.username)
+    Sentry.set_user(username: Current.user.username)
   end
 
   def set_variant
@@ -88,11 +82,17 @@ class ApplicationController < ActionController::Base
   end
 
   def impersonating?
-    true_user != current_user
+    true_user != Current.user
   end
 
   def update_stable_online
-    SessionsRepository.update_last_online(stable: current_stable)
+    SessionsRepository.update_last_online(stable: Current.stable)
+  end
+
+  def set_current_user
+    return unless current_user
+
+    Current.user = current_user
   end
 end
 

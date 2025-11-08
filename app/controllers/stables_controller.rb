@@ -38,7 +38,7 @@ class StablesController < AuthenticatedController
   private
 
   def update_params
-    { stable: current_stable }.reverse_merge(stable_params)
+    { stable: Current.stable }.reverse_merge(stable_params)
   end
 
   def stable_params
@@ -46,7 +46,7 @@ class StablesController < AuthenticatedController
   end
 
   def load_stable
-    params[:id] ? find_stable! : current_stable
+    params[:id] ? find_stable! : Current.stable
   end
 
   def find_stable!

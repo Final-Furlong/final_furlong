@@ -8,7 +8,7 @@ export default defineConfig(configEnv => ({
     Rails({
       envVars: { RAILS_ENV: process.env.RAILS_ENV || "development" },
       fullReload: {
-        additionalPaths: ["app/assets/**/*", "app/content/**/*"]
+        additionalPaths: ["app/assets/**/*", "app/content/**/*", "config/locales/**/*", "app/views/**/*"]
       }
     }),
     VitePluginRadar({

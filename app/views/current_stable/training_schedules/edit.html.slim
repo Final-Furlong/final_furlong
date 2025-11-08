@@ -1,6 +1,6 @@
 - content_for :breadcrumbs do
   - index_title = t("current_stable.training_schedules.index.title")
-  = render Nav::Breadcrumbs::Component.new(links: [{ name: current_stable.name, href: current_stable_path },
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: Current.stable.name, href: current_stable_path },
                                                    { name: index_title, href: stable_training_schedules_path },
                                                    { name: schedule.name, href: "#" },
                                                    { name: t("common.actions.edit"), href: "#" }])

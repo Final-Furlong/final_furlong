@@ -60,6 +60,6 @@ en:
         max_days_reached: Horse has spent the max time boarded at this location
       deletion:
         in_progress: Cannot cancel a boarding that is already running
-      updator:
+      updater:
         already_ended: This boarding has already ended
         budget_description: Board for %{name} for %{days}

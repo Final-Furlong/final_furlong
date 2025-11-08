@@ -56,11 +56,11 @@ module CurrentStable
     end
 
     def set_schedule
-      @schedule = current_stable.training_schedules.find(params[:id])
+      @schedule = Current.stable.training_schedules.find(params[:id])
     end
 
     def new_schedule
-      @schedule = current_stable.training_schedules.build
+      @schedule = Current.stable.training_schedules.build
     end
 
     def schedule_params
@@ -71,7 +71,7 @@ module CurrentStable
                                                              thursday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3],
                                                              friday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3],
                                                              saturday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3]])
-        .merge(stable: current_stable)
+        .merge(stable: Current.stable)
     end
 
     def schedule_errors

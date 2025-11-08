@@ -1,31 +1,31 @@
-RSpec.describe Horses::AutoBoardingUpdator do
+RSpec.describe Horses::AutoBoardingUpdater do
   describe "#call" do
     it "ends boarding for horses who started 30 days ago" do
-      allow(Horses::BoardingUpdator).to receive(:new).and_return mock_updator
+      allow(Horses::BoardingUpdater).to receive(:new).and_return mock_updater
       boarding = create(:boarding, start_date: 30.days.ago, end_date: nil, days: 0)
 
       described_class.new.call
 
-      expect(mock_updator).to have_received(:stop_boarding).with(boarding:).at_least(:once)
+      expect(mock_updater).to have_received(:stop_boarding).with(boarding:).at_least(:once)
     end
 
     it "ends boarding for horses who have reached 30 days total this year" do
       travel_to Date.new(Date.current.year, 3, 1) do
-        allow(Horses::BoardingUpdator).to receive(:new).and_return mock_updator
+        allow(Horses::BoardingUpdater).to receive(:new).and_return mock_updater
         old_boarding = create(:boarding, horse:, start_date: 50.days.ago, end_date: 30.days.ago, days: 20)
         boarding = create(:boarding, horse:, start_date: 10.days.ago, end_date: nil, location: old_boarding.location)
         described_class.new.call
-        expect(mock_updator).to have_received(:stop_boarding).with(boarding:)
+        expect(mock_updater).to have_received(:stop_boarding).with(boarding:)
       end
     end
 
     it "does not ends boarding for horses who have not reached 30 days total this year" do
       travel_to Date.new(Date.current.year, 3, 1) do
-        allow(Horses::BoardingUpdator).to receive(:new).and_return mock_updator
+        allow(Horses::BoardingUpdater).to receive(:new).and_return mock_updater
         old_boarding = create(:boarding, horse:, start_date: 50.days.ago, end_date: 40.days.ago, days: 10)
         boarding = create(:boarding, horse:, start_date: 10.days.ago, end_date: nil, location: old_boarding.location)
         described_class.new.call
-        expect(mock_updator).not_to have_received(:stop_boarding).with(boarding:)
+        expect(mock_updater).not_to have_received(:stop_boarding).with(boarding:)
       end
     end
 
@@ -42,23 +42,12 @@ RSpec.describe Horses::AutoBoardingUpdator do
 
   private
 
-  def mock_updator
-    @mock_updator ||= instance_double(Horses::BoardingUpdator, stop_boarding: true)
+  def mock_updater
+    @mock_updater ||= instance_double(Horses::BoardingUpdater, stop_boarding: true)
   end
 
   def horse
     @horse ||= create(:horse)
   end
 end
-#       Horses::Boarding.where('start_date <= ?', Date.current - 30.days).where(end_date: nil).each do |boarding|
-#         Horses::BoardingUpdator.new.stop_boarding(boarding:)
-#       end
-#       Account::Stable.joins(horses: :current_boarding).each do |stable|
-#         num_boarded = horses.where.associated(:current_boarding).uniq.count
-#
-#         stable.available_balance -= num_boarded * 100
-#         stable.save
-#       end
-#     end
-#   end
 

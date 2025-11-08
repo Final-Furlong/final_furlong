@@ -38,6 +38,7 @@ end
 #  wins_count             :integer          default(0), not null
 #  horse_id               :integer          not null, primary key, uniquely indexed
 #  last_race_id           :integer
+#  rails_boarding_id      :bigint
 #
 # Indexes
 #

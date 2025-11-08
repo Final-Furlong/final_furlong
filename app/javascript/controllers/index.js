@@ -12,3 +12,6 @@ application.register("pwa--web-push-demo", Pwa__WebPushDemoController)
 
 import Pwa__WebPushSubscriptionController from "./pwa/web_push_subscription_controller"
 application.register("pwa--web-push-subscription", Pwa__WebPushSubscriptionController)
+
+import SearchController from "./search_controller"
+application.register("search", SearchController)

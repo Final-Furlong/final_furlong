@@ -22,7 +22,7 @@ module Api
         route_param :id do
           put "/" do
             boarding = Horses::Boarding.find(params[:id])
-            result = Horses::BoardingUpdator.new.stop_boarding(boarding:)
+            result = Horses::BoardingUpdater.new.stop_boarding(boarding:)
             error!({ error: "invalid", detail: result.error }, 500) unless result.updated?
 
             { completed: true }

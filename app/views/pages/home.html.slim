@@ -2,3 +2,7 @@
   h1.display-5.fw-bold= t(".hello")
   .col-lg-6.mx-auto
     p.lead.mb-4= t(".bay_description")
+    p
+      strong
+        = "Your Local Time is:"
+      = time_tag Time.now, "data-local": "time"

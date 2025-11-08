@@ -7,10 +7,10 @@ RSpec.describe Horses::UpdateBoardingJob, :perform_enqueued_jobs do
     end
 
     it "triggers service for each auction" do
-      mock_updator = instance_double(Horses::AutoBoardingUpdator, call: true)
-      allow(Horses::AutoBoardingUpdator).to receive(:new).and_return mock_updator
+      mock_updater = instance_double(Horses::AutoBoardingUpdater, call: true)
+      allow(Horses::AutoBoardingUpdater).to receive(:new).and_return mock_updater
       described_class.perform_later
-      expect(mock_updator).to have_received(:call)
+      expect(mock_updater).to have_received(:call)
     end
   end
 end

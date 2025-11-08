@@ -6,8 +6,7 @@ module NonNumericIdOnly
   end
 
   def validate_non_numeric_id
-    # raise ActiveRecord::RecordNotFound if !current_user&.admin? && numeric_param?
-    raise ActiveRecord::RecordNotFound if numeric_param?
+    raise ActiveRecord::RecordNotFound if !Current.user&.admin? && numeric_param?
   end
 
   def numeric_param?

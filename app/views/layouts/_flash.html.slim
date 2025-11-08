@@ -1,8 +1,10 @@
-- flash.each do |name, messages|
-  - case messages.class.name.to_s
-  - when "String"
-    = render Nav::FlashMessages::Component.new(type: name, message: messages)
-  - when "Array"
-    - messages.compact.each_with_index do |message, index|
-      = render Nav::FlashMessages::Component.new(type: name, message:, index:)
-- flash.clear
+= turbo_frame_tag "messages" do
+  .toast#messages
+    - flash.each do |name, messages|
+      - case messages.class.name.to_s
+      - when "String"
+        = render Nav::FlashMessages::Component.new(type: name, message: messages)
+      - when "Array"
+        - messages.compact.each_with_index do |message, index|
+          = render Nav::FlashMessages::Component.new(type: name, message:, index:)
+  - flash.clear

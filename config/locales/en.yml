@@ -1,28 +1,7 @@
 ---
 en:
-  action_policy:
-    policy:
-      racing/training_schedule_horse:
-        already_exists: This horse is already assigned to the training schedule
-        not_owner: You do not own this horse
-  forms:
-    cancel: Cancel
   game_title: Final Furlong
-  helpers:
-    page_entries_info:
-      more_pages:
-        display_entries: Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> in total
-      one_page:
-        display_entries:
-          one: Displaying <b>1</b> %{entry_name}
-          other: Displaying <b>all %{count}</b> %{entry_name}
-          zero: No %{entry_name} found
-    submit:
-      user:
-        create: Create user
-        update: Update user
   horses:
-    default_name: Unnamed
     genders:
       colt: Colt
       female: Filly / Mare

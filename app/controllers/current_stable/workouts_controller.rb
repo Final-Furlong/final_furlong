@@ -15,7 +15,7 @@ module CurrentStable
     private
 
     def set_horse
-      @horse = current_stable.horses.find(workout_params[:horse_id])
+      @horse = Current.stable.horses.find(workout_params[:horse_id])
     end
 
     def workout_params

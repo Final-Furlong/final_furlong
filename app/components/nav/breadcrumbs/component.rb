@@ -40,9 +40,9 @@ module Nav
       end
 
       def allowed_action?(action)
-        return false unless action[:user] && action[:object]
+        return false unless action[:object]
 
-        Pundit.policy!(action[:user], action[:object]).send("#{action[:name]}?")
+        Pundit.policy!(Current.user, action[:object]).send("#{action[:name]}?")
       end
 
       def styled_links

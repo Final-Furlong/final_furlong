@@ -1,5 +1,5 @@
 - content_for :breadcrumbs do
-  = render Nav::Breadcrumbs::Component.new(links: [{ name: current_stable.name, href: current_stable_path },
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: Current.stable.name, href: current_stable_path },
                                                    { name: t(".title"), href: "#" }])
 
 .card.card-border.mt-2.p-2.shadow-md class="dark:border-1 dark:border-neutral-100"

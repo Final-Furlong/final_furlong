@@ -11,6 +11,8 @@ en:
         weak: 'must be at least 8 characters long and contain: an upper case character, a lower case character, a digit and a non-alphabet character.'
   activerecord:
     attributes:
+      setting:
+        locale: Locale
       user:
         admin: Admin
         confirmation_sent_at: Confirmation sent

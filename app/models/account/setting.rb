@@ -3,6 +3,12 @@ module Account
     self.ignored_columns += ["old_id"]
 
     belongs_to :user
+
+    validates :locale, inclusion: { in: I18n.available_locales.map(&:to_s), message: :invalid }
+
+    def time_zone
+      nil
+    end
   end
 end
 

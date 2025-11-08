@@ -17,7 +17,7 @@
             tbody.table-group-divider
               - horses.each do |horse|
                 tr
-                  td.wb-break-all= horse.name || t("horses.default_name")
+                  td.wb-break-all= horse.name || t("horse.unnamed")
                   td.wb-break-all= horse.age
                   td= t("horses.genders.#{horse.gender}")
                   td= horse.owner.name

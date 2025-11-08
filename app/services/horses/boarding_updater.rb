@@ -1,5 +1,5 @@
 module Horses
-  class BoardingUpdator < ApplicationService
+  class BoardingUpdater < ApplicationService
     def stop_boarding(boarding:)
       result = Result.new(updated: false, boarding:)
       if boarding.end_date
@@ -19,7 +19,7 @@ module Horses
         if boarding.days > 0
           days_string = "#{boarding.days} "
           days_string += "day".pluralize(boarding.days)
-          description = I18n.t("services.boarding.updator.budget_description", name: boarding.horse.name, days: days_string)
+          description = I18n.t("services.boarding.updater.budget_description", name: boarding.horse.name, days: days_string)
           amount = boarding.days * 100 * -1
           Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount:)
           result.boarding = boarding
@@ -52,7 +52,7 @@ module Horses
     private
 
     def error(key)
-      I18n.t("services.boarding.updator.#{key}")
+      I18n.t("services.boarding.updater.#{key}")
     end
   end
 end

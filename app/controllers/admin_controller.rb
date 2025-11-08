@@ -7,7 +7,7 @@ class AdminController < AuthenticatedController
   private
 
   def verify_admin!
-    redirect_to root_path unless current_user.admin? || true_user&.admin?
+    redirect_to root_path unless Current.user.admin? || true_user&.admin?
   end
 end
 

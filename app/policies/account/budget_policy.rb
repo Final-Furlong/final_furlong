@@ -7,7 +7,7 @@ module Account
     end
 
     def index?
-      current_user.active?
+      Current.user.active?
     end
   end
 end

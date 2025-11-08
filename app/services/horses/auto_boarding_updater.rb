@@ -1,8 +1,8 @@
 module Horses
-  class AutoBoardingUpdator
+  class AutoBoardingUpdater
     def call
       Horses::Boarding.where(start_date: ..(Date.current - Horses::Boarding::MAX_YEARLY_DAYS.days)).where(end_date: nil).find_each do |boarding|
-        Horses::BoardingUpdator.new.stop_boarding(boarding:)
+        Horses::BoardingUpdater.new.stop_boarding(boarding:)
       end
       Horses::Boarding.current.find_each do |boarding|
         start_date = [Date.new(Date.current.year, 1, 1), boarding.start_date].max
@@ -12,7 +12,7 @@ module Horses
         horse = boarding.horse
         current_year_days += horse.boardings.current_year.where(location: boarding.location).sum(:days)
         if current_year_days >= Horses::Boarding::MAX_YEARLY_DAYS
-          Horses::BoardingUpdator.new.stop_boarding(boarding:)
+          Horses::BoardingUpdater.new.stop_boarding(boarding:)
         end
       end
       Account::Stable.joins(horses: :current_boarding).find_each do |stable|
