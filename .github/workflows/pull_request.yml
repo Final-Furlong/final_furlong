@@ -14,7 +14,7 @@ jobs:
       should-skip: ${{ steps.check.outputs.should-skip }}
     steps:
       - id: check
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             // Function to sleep for a given number of milliseconds
