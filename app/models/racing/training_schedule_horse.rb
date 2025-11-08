@@ -28,7 +28,6 @@ end
 # Indexes
 #
 #  index_training_schedules_horses_on_horse_id              (horse_id) UNIQUE
-#  index_training_schedules_horses_on_old_id                (old_id)
 #  index_training_schedules_horses_on_training_schedule_id  (training_schedule_id)
 #
 # Foreign Keys

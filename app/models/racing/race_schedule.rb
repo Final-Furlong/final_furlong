@@ -70,7 +70,6 @@ end
 #  index_race_schedules_on_male_only               (male_only)
 #  index_race_schedules_on_name                    (name)
 #  index_race_schedules_on_number                  (number)
-#  index_race_schedules_on_old_id                  (old_id)
 #  index_race_schedules_on_qualification_required  (qualification_required)
 #  index_race_schedules_on_race_type               (race_type)
 #  index_race_schedules_on_surface_id              (surface_id)

@@ -421,7 +421,6 @@ CREATE TABLE public.activity_points (
     amount integer DEFAULT 0 NOT NULL,
     balance bigint DEFAULT 0 NOT NULL,
     budget_id bigint,
-    old_budget_id uuid,
     legacy_stable_id integer DEFAULT 0 NOT NULL,
     stable_id bigint NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
@@ -537,7 +536,6 @@ CREATE TABLE public.auction_bids (
     notify_if_outbid boolean DEFAULT false NOT NULL,
     horse_id bigint NOT NULL,
     maximum_bid integer,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -574,7 +572,6 @@ CREATE TABLE public.auction_consignment_configs (
     minimum_age integer DEFAULT 0 NOT NULL,
     minimum_count integer DEFAULT 0 NOT NULL,
     stakes_quality boolean DEFAULT false NOT NULL,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -612,7 +609,6 @@ CREATE TABLE public.auction_horses (
     reserve_price integer,
     sold_at timestamp with time zone,
     public_id character varying(12),
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
     slug character varying
@@ -661,7 +657,6 @@ CREATE TABLE public.auctions (
     weanling_allowed boolean DEFAULT false NOT NULL,
     yearling_allowed boolean DEFAULT false NOT NULL,
     public_id character varying(12),
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
     slug character varying
@@ -723,7 +718,6 @@ CREATE TABLE public.broodmare_foal_records (
     total_foal_races integer DEFAULT 0 NOT NULL,
     unborn_foals_count integer DEFAULT 0 NOT NULL,
     winning_foals_count integer DEFAULT 0 NOT NULL,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -761,7 +755,6 @@ CREATE TABLE public.budget_transactions (
     legacy_budget_id integer DEFAULT 0,
     legacy_stable_id integer DEFAULT 0,
     stable_id bigint NOT NULL,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -812,7 +805,6 @@ CREATE TABLE public.game_activity_points (
     first_year_points integer DEFAULT 0 NOT NULL,
     older_year_points integer DEFAULT 0 NOT NULL,
     second_year_points integer DEFAULT 0 NOT NULL,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -855,7 +847,6 @@ CREATE TABLE public.game_alerts (
     end_time timestamp with time zone,
     message text NOT NULL,
     start_time timestamp with time zone NOT NULL,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -901,7 +892,6 @@ CREATE TABLE public.horse_appearances (
     lh_leg_image character varying,
     rf_leg_image character varying,
     rh_leg_image character varying,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
     CONSTRAINT current_height_must_be_valid CHECK ((current_height >= birth_height)),
@@ -982,7 +972,6 @@ CREATE TABLE public.horse_attributes (
     dosage_text character varying,
     string character varying,
     horse_id bigint NOT NULL,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -1022,7 +1011,6 @@ CREATE TABLE public.horse_genetics (
     id bigint NOT NULL,
     allele character varying(32) NOT NULL,
     horse_id bigint NOT NULL,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -1062,14 +1050,11 @@ CREATE TABLE public.horses (
     gender public.horse_gender NOT NULL,
     status public.horse_status DEFAULT 'unborn'::public.horse_status NOT NULL,
     sire_id bigint,
-    old_sire_id uuid,
     dam_id bigint,
-    old_dam_id uuid,
     owner_id bigint NOT NULL,
     breeder_id bigint NOT NULL,
     legacy_id integer,
     location_bred_id bigint NOT NULL,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -1153,7 +1138,6 @@ CREATE TABLE public.jockeys (
     turning integer NOT NULL,
     wet integer NOT NULL,
     whip_seconds integer NOT NULL,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -1305,7 +1289,6 @@ CREATE TABLE public.locations (
     county character varying,
     name character varying NOT NULL,
     state character varying,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
     has_farm boolean DEFAULT true NOT NULL
@@ -1729,7 +1712,6 @@ CREATE TABLE public.race_odds (
     id bigint NOT NULL,
     display character varying NOT NULL,
     value numeric(3,1) NOT NULL,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -1788,13 +1770,10 @@ CREATE TABLE public.race_result_horses (
     margins character varying NOT NULL,
     fractions character varying,
     jockey_id bigint,
-    old_jockey_id uuid,
     equipment integer DEFAULT 0 NOT NULL,
     odd_id bigint,
-    old_odd_id uuid,
     speed_factor integer DEFAULT 0 NOT NULL,
     weight integer DEFAULT 0 NOT NULL,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -1841,7 +1820,6 @@ CREATE TABLE public.race_results (
     split public.race_splits,
     time_in_seconds numeric(7,3) DEFAULT 0.0 NOT NULL,
     slug character varying,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -1921,7 +1899,6 @@ CREATE TABLE public.race_schedules (
     purse bigint DEFAULT 0 NOT NULL,
     claiming_price integer,
     qualification_required boolean DEFAULT false NOT NULL,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -1979,7 +1956,6 @@ CREATE TABLE public.racetracks (
     latitude numeric NOT NULL,
     longitude numeric NOT NULL,
     location_id bigint NOT NULL,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -2057,7 +2033,6 @@ CREATE TABLE public.settings (
     user_id bigint NOT NULL,
     theme character varying,
     locale character varying,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -2098,7 +2073,6 @@ CREATE TABLE public.stables (
     description text,
     miles_from_track integer DEFAULT 1 NOT NULL,
     racetrack_id bigint,
-    old_racetrack_id uuid,
     user_id bigint NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
@@ -2139,7 +2113,6 @@ CREATE TABLE public.track_surfaces (
     turn_distance integer NOT NULL,
     turn_to_finish_length integer NOT NULL,
     width integer NOT NULL,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -2208,7 +2181,6 @@ CREATE TABLE public.training_schedules_horses (
     id bigint NOT NULL,
     horse_id bigint NOT NULL,
     training_schedule_id bigint NOT NULL,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -2263,7 +2235,6 @@ CREATE TABLE public.user_push_subscriptions (
     auth_key character varying,
     endpoint character varying,
     p256dh_key character varying,
-    old_id uuid,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -3116,13 +3087,6 @@ CREATE INDEX index_activity_points_on_legacy_stable_id ON public.activity_points
 
 
 --
--- Name: index_activity_points_on_old_budget_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_activity_points_on_old_budget_id ON public.activity_points USING btree (old_budget_id);
-
-
---
 -- Name: index_activity_points_on_stable_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3151,13 +3115,6 @@ CREATE INDEX index_auction_bids_on_horse_id ON public.auction_bids USING btree (
 
 
 --
--- Name: index_auction_bids_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_auction_bids_on_old_id ON public.auction_bids USING btree (old_id);
-
-
---
 -- Name: index_auction_configs_on_horse_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3172,13 +3129,6 @@ CREATE INDEX index_auction_consignment_configs_on_auction_id ON public.auction_c
 
 
 --
--- Name: index_auction_consignment_configs_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_auction_consignment_configs_on_old_id ON public.auction_consignment_configs USING btree (old_id);
-
-
---
 -- Name: index_auction_horses_on_auction_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3190,13 +3140,6 @@ CREATE INDEX index_auction_horses_on_auction_id ON public.auction_horses USING b
 --
 
 CREATE UNIQUE INDEX index_auction_horses_on_horse_id ON public.auction_horses USING btree (horse_id);
-
-
---
--- Name: index_auction_horses_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_auction_horses_on_old_id ON public.auction_horses USING btree (old_id);
 
 
 --
@@ -3225,13 +3168,6 @@ CREATE INDEX index_auctions_on_auctioneer_id ON public.auctions USING btree (auc
 --
 
 CREATE INDEX index_auctions_on_end_time ON public.auctions USING btree (end_time);
-
-
---
--- Name: index_auctions_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_auctions_on_old_id ON public.auctions USING btree (old_id);
 
 
 --
@@ -3319,13 +3255,6 @@ CREATE INDEX index_broodmare_foal_records_on_multi_millionaire_foals_count ON pu
 
 
 --
--- Name: index_broodmare_foal_records_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_broodmare_foal_records_on_old_id ON public.broodmare_foal_records USING btree (old_id);
-
-
---
 -- Name: index_broodmare_foal_records_on_raced_foals_count; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3403,13 +3332,6 @@ CREATE INDEX index_budget_transactions_on_legacy_stable_id ON public.budget_tran
 
 
 --
--- Name: index_budget_transactions_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_budget_transactions_on_old_id ON public.budget_transactions USING btree (old_id);
-
-
---
 -- Name: index_budget_transactions_on_stable_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3421,13 +3343,6 @@ CREATE INDEX index_budget_transactions_on_stable_id ON public.budget_transaction
 --
 
 CREATE INDEX index_game_activity_points_on_activity_type ON public.game_activity_points USING btree (activity_type);
-
-
---
--- Name: index_game_activity_points_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_game_activity_points_on_old_id ON public.game_activity_points USING btree (old_id);
 
 
 --
@@ -3452,13 +3367,6 @@ CREATE INDEX index_game_alerts_on_end_time ON public.game_alerts USING btree (en
 
 
 --
--- Name: index_game_alerts_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_game_alerts_on_old_id ON public.game_alerts USING btree (old_id);
-
-
---
 -- Name: index_game_alerts_on_start_time; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3473,13 +3381,6 @@ CREATE UNIQUE INDEX index_horse_appearances_on_horse_id ON public.horse_appearan
 
 
 --
--- Name: index_horse_appearances_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_horse_appearances_on_old_id ON public.horse_appearances USING btree (old_id);
-
-
---
 -- Name: index_horse_attributes_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3487,24 +3388,10 @@ CREATE UNIQUE INDEX index_horse_attributes_on_horse_id ON public.horse_attribute
 
 
 --
--- Name: index_horse_attributes_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_horse_attributes_on_old_id ON public.horse_attributes USING btree (old_id);
-
-
---
 -- Name: index_horse_genetics_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_horse_genetics_on_horse_id ON public.horse_genetics USING btree (horse_id);
-
-
---
--- Name: index_horse_genetics_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_horse_genetics_on_old_id ON public.horse_genetics USING btree (old_id);
 
 
 --
@@ -3568,27 +3455,6 @@ CREATE INDEX index_horses_on_location_bred_id ON public.horses USING btree (loca
 --
 
 CREATE INDEX index_horses_on_name ON public.horses USING btree (name);
-
-
---
--- Name: index_horses_on_old_dam_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_horses_on_old_dam_id ON public.horses USING btree (old_dam_id);
-
-
---
--- Name: index_horses_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_horses_on_old_id ON public.horses USING btree (old_id);
-
-
---
--- Name: index_horses_on_old_sire_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_horses_on_old_sire_id ON public.horses USING btree (old_sire_id);
 
 
 --
@@ -3673,13 +3539,6 @@ CREATE INDEX index_jockeys_on_last_name ON public.jockeys USING btree (last_name
 --
 
 CREATE INDEX index_jockeys_on_legacy_id ON public.jockeys USING btree (legacy_id);
-
-
---
--- Name: index_jockeys_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_jockeys_on_old_id ON public.jockeys USING btree (old_id);
 
 
 --
@@ -3792,13 +3651,6 @@ CREATE UNIQUE INDEX index_locations_on_country_and_name ON public.locations USIN
 --
 
 CREATE INDEX index_locations_on_name ON public.locations USING btree (name);
-
-
---
--- Name: index_locations_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_locations_on_old_id ON public.locations USING btree (old_id);
 
 
 --
@@ -3935,13 +3787,6 @@ CREATE INDEX index_race_odds_on_display ON public.race_odds USING btree (display
 
 
 --
--- Name: index_race_odds_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_odds_on_old_id ON public.race_odds USING btree (old_id);
-
-
---
 -- Name: index_race_records_on_horse_id_and_year_and_result_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4026,27 +3871,6 @@ CREATE INDEX index_race_result_horses_on_odd_id ON public.race_result_horses USI
 
 
 --
--- Name: index_race_result_horses_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_result_horses_on_old_id ON public.race_result_horses USING btree (old_id);
-
-
---
--- Name: index_race_result_horses_on_old_jockey_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_result_horses_on_old_jockey_id ON public.race_result_horses USING btree (old_jockey_id);
-
-
---
--- Name: index_race_result_horses_on_old_odd_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_result_horses_on_old_odd_id ON public.race_result_horses USING btree (old_odd_id);
-
-
---
 -- Name: index_race_result_horses_on_race_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4107,13 +3931,6 @@ CREATE INDEX index_race_results_on_name ON public.race_results USING btree (name
 --
 
 CREATE INDEX index_race_results_on_number ON public.race_results USING btree (number);
-
-
---
--- Name: index_race_results_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_results_on_old_id ON public.race_results USING btree (old_id);
 
 
 --
@@ -4215,13 +4032,6 @@ CREATE INDEX index_race_schedules_on_number ON public.race_schedules USING btree
 
 
 --
--- Name: index_race_schedules_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_schedules_on_old_id ON public.race_schedules USING btree (old_id);
-
-
---
 -- Name: index_race_schedules_on_qualification_required; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4254,13 +4064,6 @@ CREATE UNIQUE INDEX index_racetracks_on_location_id ON public.racetracks USING b
 --
 
 CREATE UNIQUE INDEX index_racetracks_on_name ON public.racetracks USING btree (lower((name)::text));
-
-
---
--- Name: index_racetracks_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_racetracks_on_old_id ON public.racetracks USING btree (old_id);
 
 
 --
@@ -4306,13 +4109,6 @@ CREATE INDEX index_sessions_on_user_id ON public.sessions USING btree (user_id);
 
 
 --
--- Name: index_settings_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_settings_on_old_id ON public.settings USING btree (old_id);
-
-
---
 -- Name: index_settings_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4345,13 +4141,6 @@ CREATE INDEX index_stables_on_legacy_id ON public.stables USING btree (legacy_id
 --
 
 CREATE UNIQUE INDEX index_stables_on_name ON public.stables USING btree (lower((name)::text));
-
-
---
--- Name: index_stables_on_old_racetrack_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_stables_on_old_racetrack_id ON public.stables USING btree (old_racetrack_id);
 
 
 --
@@ -4390,13 +4179,6 @@ CREATE UNIQUE INDEX index_stables_on_user_id ON public.stables USING btree (user
 
 
 --
--- Name: index_track_surfaces_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_track_surfaces_on_old_id ON public.track_surfaces USING btree (old_id);
-
-
---
 -- Name: index_track_surfaces_on_racetrack_id_and_surface; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4408,13 +4190,6 @@ CREATE UNIQUE INDEX index_track_surfaces_on_racetrack_id_and_surface ON public.t
 --
 
 CREATE UNIQUE INDEX index_training_schedules_horses_on_horse_id ON public.training_schedules_horses USING btree (horse_id);
-
-
---
--- Name: index_training_schedules_horses_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_training_schedules_horses_on_old_id ON public.training_schedules_horses USING btree (old_id);
 
 
 --
@@ -4485,13 +4260,6 @@ CREATE INDEX index_training_schedules_on_tuesday_activities ON public.training_s
 --
 
 CREATE INDEX index_training_schedules_on_wednesday_activities ON public.training_schedules USING gin (wednesday_activities);
-
-
---
--- Name: index_user_push_subscriptions_on_old_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_user_push_subscriptions_on_old_id ON public.user_push_subscriptions USING btree (old_id);
 
 
 --
@@ -5010,6 +4778,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251108095210'),
 ('20251107213855'),
 ('20251106205042'),
 ('20251105225706'),

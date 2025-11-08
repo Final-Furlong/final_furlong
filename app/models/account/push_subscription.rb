@@ -31,7 +31,6 @@ end
 #
 # Indexes
 #
-#  index_user_push_subscriptions_on_old_id   (old_id)
 #  index_user_push_subscriptions_on_user_id  (user_id)
 #
 # Foreign Keys

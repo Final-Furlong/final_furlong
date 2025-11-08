@@ -30,7 +30,6 @@ end
 #  index_game_alerts_on_display_to_newbies      (display_to_newbies)
 #  index_game_alerts_on_display_to_non_newbies  (display_to_non_newbies)
 #  index_game_alerts_on_end_time                (end_time)
-#  index_game_alerts_on_old_id                  (old_id)
 #  index_game_alerts_on_start_time              (start_time)
 #
 

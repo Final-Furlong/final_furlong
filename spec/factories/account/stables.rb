@@ -32,7 +32,6 @@ end
 #  index_stables_on_last_online_at     (last_online_at)
 #  index_stables_on_legacy_id          (legacy_id)
 #  index_stables_on_name               (lower((name)::text)) UNIQUE
-#  index_stables_on_old_racetrack_id   (old_racetrack_id)
 #  index_stables_on_public_id          (public_id)
 #  index_stables_on_racetrack_id       (racetrack_id)
 #  index_stables_on_slug               (slug)

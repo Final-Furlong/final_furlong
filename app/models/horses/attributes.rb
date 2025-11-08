@@ -41,7 +41,6 @@ end
 # Indexes
 #
 #  index_horse_attributes_on_horse_id  (horse_id) UNIQUE
-#  index_horse_attributes_on_old_id    (old_id)
 #
 # Foreign Keys
 #

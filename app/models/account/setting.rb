@@ -20,7 +20,6 @@ end
 #
 # Indexes
 #
-#  index_settings_on_old_id   (old_id)
 #  index_settings_on_user_id  (user_id) UNIQUE
 #
 # Foreign Keys

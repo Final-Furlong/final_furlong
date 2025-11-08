@@ -36,6 +36,5 @@ end
 # Indexes
 #
 #  index_game_activity_points_on_activity_type  (activity_type)
-#  index_game_activity_points_on_old_id         (old_id)
 #
 

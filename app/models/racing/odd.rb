@@ -23,6 +23,5 @@ end
 # Indexes
 #
 #  index_race_odds_on_display  (display)
-#  index_race_odds_on_old_id   (old_id)
 #
 

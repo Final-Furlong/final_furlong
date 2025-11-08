@@ -33,7 +33,6 @@ end
 #  index_activity_points_on_activity_type     (activity_type)
 #  index_activity_points_on_budget_id         (budget_id)
 #  index_activity_points_on_legacy_stable_id  (legacy_stable_id)
-#  index_activity_points_on_old_budget_id     (old_budget_id)
 #  index_activity_points_on_stable_id         (stable_id)
 #
 # Foreign Keys
