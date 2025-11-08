@@ -14,31 +14,31 @@ production:
     class: Horses::UpdateBoardingJob
     queue: default
     schedule: 2 0 * * *
-  migrate_legacy_horses:
+  horse_legacy_migrate:
     class: UpdateLegacyHorsesJob
     queue: low_priority
-    schedule: every 10 minutes
-  auto_create_monthly_auction:
+    schedule: every 30 minutes
+  auction_create_monthly_auction:
     class: CreateMonthlyAuctionJob
     queue: low_priority
-    schedule: 1 0 1 * * # first day of every month
-  auto_create_two_year_old_auction:
+    schedule: 1 0 1 1,2,4,5,6,8,10,11 * # first day of every month that does not have another auction
+  auction_create_two_year_old:
     class: CreateTwoYearOldAuctionJob
     queue: low_priority
     schedule: 9 0 1 2 * # first day of Feb
-  auto_create_mixed_auction:
+  auction_create_mixed:
     class: CreateMixedAuctionJob
     queue: low_priority
     schedule: 9 0 1 6 * # first day of June
-  auto_create_select_auction:
+  auction_create_select:
     class: CreateSelectAuctionJob
     queue: low_priority
     schedule: 9 0 1 8 * # first day of August
-  auto_create_foal_auction:
+  auction_create_foal:
     class: CreateFoalAuctionJob
     queue: low_priority
     schedule: 9 0 1 11 * # first day of November
-  delete_empty_auctions:
+  auction_delete_empty:
     class: DeleteEmptyAuctionsJob
     queue: low_priority
     schedule: at 11:45pm every day
