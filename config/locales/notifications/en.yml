@@ -1,0 +1,29 @@
+---
+en:
+  notifications:
+    destroy:
+      success: Notification was successfully deleted
+    index:
+      info: Info
+      no_notifications: You have no notifications.
+      notification_deletion: Notifications that have been marked read will be automatically deleted after 30 days.
+      warning: Attention
+    lease_acceptance_notification:
+      title: Lease Started
+    lease_offer_notification:
+      title: Horse for Lease
+    notification:
+      confirm_delete: Are you sure you wish to delete this notification?
+      delete: Delete
+      info: Info
+      mark_as_read: Mark as Read
+      mark_as_unread: Mark as Unread
+      status:
+        read: read
+        unread: unread
+      title: Something happened
+    shared:
+      view_horse:
+        link: View horse
+    update:
+      success: Notification was marked as %{status}

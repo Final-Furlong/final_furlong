@@ -8,13 +8,37 @@ module Horses
       @horse = horse
       actions.select do |action|
         CurrentStable::HorsePolicy.new(Current.user, horse).send("#{action}?")
-      end.map { |action| { action:, url: action_url(action) } }
+      end.map { |action| { action:, url: action_url(action), requires_form: !idempotent?(action), method: form_method(action) } }
     end
 
     private
 
+    def form_method(action)
+      case action.to_s.downcase
+      when "accept_lease_offer"
+        :post
+      when "cancel_lease_offer"
+        :delete
+      end
+    end
+
+    def idempotent?(action)
+      case action.to_s.downcase
+      when "accept_lease_offer", "cancel_lease_offer"
+        false
+      else
+        true
+      end
+    end
+
     def action_url(action)
       case action.to_s.downcase
+      when "accept_lease_offer"
+        lease_offer_acceptance_path(horse)
+      when "create_lease_offer"
+        new_lease_offer_path(horse)
+      when "cancel_lease_offer"
+        lease_offer_path(horse)
       when "terminate_lease"
         new_lease_termination_path(horse)
       else
@@ -30,7 +54,9 @@ module Horses
         change_owner
         set_for_sale
         unset_for_sale
-        set_for_lease
+        create_lease_offer
+        accept_lease_offer
+        reject_lease_offer
         cancel_lease_offer
         terminate_lease
         consign_to_auction

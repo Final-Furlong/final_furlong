@@ -30,7 +30,10 @@ en:
       6_furlongs: 6 Furlongs
       8_furlongs: 1 Mile
     edit: Edit
+    error: Something went wrong
+    failed_validation: Please fix the errors to continue
     none: None
+    or: Or
     search_form:
       action: Search
       reset_filters: Reset filters

@@ -2,6 +2,7 @@ require "simplecov_json_formatter"
 require "simplecov-cobertura"
 require "simplecov-json"
 require "simplecov-lcov"
+require 'simplecov-tailwindcss'
 
 SimpleCov.profiles.define 'common' do
   load_profile "test_frameworks"
@@ -47,8 +48,8 @@ SimpleCov.profiles.define 'local' do
   formatter SimpleCov::Formatter::MultiFormatter.new(
     [
       SimpleCov::Formatter::SimpleFormatter,
-      SimpleCov::Formatter::HTMLFormatter,
-      SimpleCov::Formatter::LcovFormatter
+      SimpleCov::Formatter::LcovFormatter,
+      SimpleCov::Formatter::TailwindFormatter
     ]
   )
 end

@@ -348,5 +348,25 @@ RSpec.describe Horses::Horse do
       end
     end
   end
+
+  describe "#manager" do
+    context "when horse has a current lease" do
+      it "is the leaser" do
+        lease = create(:lease)
+        horse = lease.horse
+
+        expect(horse.manager).to eq lease.leaser
+      end
+    end
+
+    context "when horse does not a current lease" do
+      it "is the leaser" do
+        lease = create(:lease, active: false)
+        horse = lease.horse
+
+        expect(horse.manager).to eq horse.owner
+      end
+    end
+  end
 end
 

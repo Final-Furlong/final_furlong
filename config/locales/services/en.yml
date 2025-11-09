@@ -63,3 +63,6 @@ en:
       updater:
         already_ended: This boarding has already ended
         budget_description: Board for %{name} for %{days}
+    lease_creator:
+      description_leaser: 'Lease Fee: %{horse} from %{stable} [%{start_date} to %{end_date}]'
+      description_owner: Leased %{horse} to %{stable} [%{start_date} to %{end_date}]

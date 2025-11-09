@@ -2,24 +2,26 @@
 en:
   horse:
     actions:
+      accept_lease_offer: Accept Lease
       board_horse: Board
       breed_mare: Breed
       cancel_lease_offer: Cancel Lease Offer
       change_owner: Update Owner
       change_status: Update Status
       consign_to_auction: Consign to Auction
+      create_lease_offer: Set for Lease
       enter_race: Enter Race
       geld: Geld
       manage_bookings: Manage Bookings
       nominate_racehorse: Nominate
       nominate_stud: Nominate
       nominate_weanling: Nominate
+      reject_lease_offer: Reject Lease
       remove_from_auction: Remove from Auction
       rename: Rename
       run_jump_trial: Run Jump Trial
       run_workout: Run Workout
       scratch_race: Scratch from Race
-      set_for_lease: Set for Lease
       set_for_sale: Set for Sale
       stop_boarding: Stop Boarding
       terminate_lease: End Lease Early
@@ -72,6 +74,31 @@ en:
         summary: Summary
     height: "%{height}h"
     in_foal: in foal
+    lease_offer_acceptances:
+      create:
+        success: Lease was accepted
+    lease_offers:
+      create:
+        success: Lease offer was successfully created
+      destroy:
+        success: Lease offer was successfully deleted
+      new:
+        all_members: Offer to all members
+        duration:
+          broodmare: Broodmares are leased for 1 year. Broodmares are only available to lease if they are not in foal.
+          racehorse: Racehorses are leased from 3 months to 1 year.
+          stud: Stallions are leased for 1 year.
+        duration_months: Duration (months)
+        fee: Lease Fee
+        leaser: Lease To
+        max_amount: Maximum $1,000,000
+        new_members_only: Offer to new members only
+        offer_start_date: Display Lease From
+        rules:
+          broodmare: The leasing stable may not retire the horse.
+          racehorse: The leasing stable may not geld or retire the horse, but they may switch it to steeplechasing.
+          stud: The leasing stable may not geld or retire the horse, but they may change his stud fee.
+        title: Offer for Lease
     lease_terminations:
       create:
         success: Successfully requested to end the lease
@@ -157,6 +184,7 @@ en:
       date_of_death: Date of Death
       gender: Gender
       height: Height
+      id: ID
       last_foal: Last Foal
       last_race: Last Race
       lease_status: Lease Status
@@ -167,12 +195,14 @@ en:
       name: Name
       next_foal: Next Foal
       next_race: Next Race
+      offered_for_lease: 'Offered for lease (Fee: %{fee})'
       owner: Owner
       sale_status: Sale Status
       scheduled_race: Scheduled Race
       status: Status
       track_record: Track Record
     show:
+      actions: Actions
       foals: Foals
       info: Info
       loading_foals: Loading foals...

@@ -826,6 +826,8 @@ GEM
       json
       simplecov
     simplecov-lcov (0.9.0)
+    simplecov-tailwindcss (2.3.0)
+      simplecov (~> 0.16)
     simplecov_json_formatter (0.1.4)
     simpleidn (0.2.3)
     slim (5.2.1)
@@ -1141,6 +1143,7 @@ DEPENDENCIES
   simplecov-cobertura
   simplecov-json
   simplecov-lcov
+  simplecov-tailwindcss
   slim-rails
   slim_lint
   solargraph
@@ -1484,6 +1487,7 @@ CHECKSUMS
   simplecov-html (0.13.2) sha256=bd0b8e54e7c2d7685927e8d6286466359b6f16b18cb0df47b508e8d73c777246
   simplecov-json (0.2.3) sha256=c63823b5dfc95c85ff4cb94251765f08a166bdd68098f259368cbfe738e281f7
   simplecov-lcov (0.9.0) sha256=7a77a31e200a595ed4b0249493056efd0c920601f53d2ef135ca34ee796346cd
+  simplecov-tailwindcss (2.3.0) sha256=e0522c4e00c61d5524ea2e3505427adf2ecdfb667dc6a3b4abb45a9227bee45a
   simplecov_json_formatter (0.1.4) sha256=529418fbe8de1713ac2b2d612aa3daa56d316975d307244399fa4838c601b428
   simpleidn (0.2.3) sha256=08ce96f03fa1605286be22651ba0fc9c0b2d6272c9b27a260bc88be05b0d2c29
   slim (5.2.1) sha256=72351dff7e2ff20e2d5c393cfc385bb9142cef5db059141628fd7163ac3c13e7

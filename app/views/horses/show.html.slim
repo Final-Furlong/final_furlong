@@ -46,9 +46,13 @@
         p.mx-auto= t(".loading_images")
         .mt-2.mx-auto.skeleton.w-full
   - if (actions = Horses::ActionsListGenerator.new.call(horse:)).any?
-    details.dropdown.dropdown-end.ml-auto
-      summary.btn.m-1 Actions
-      ul.menu.dropdown-content.bg-base-100.rounded-box.z-1.w-52.p-2.shadow-sm
+    .dropdown.dropdown-end.ml-auto
+      .btn.m-1 tabindex="0" role="button" = t(".actions")
+      ul.dropdown-content.menu.bg-base-100.rounded-box.z-1.w-52.p-2.shadow-sm tabindex="-1"
+        - pd actions
         - actions.each do |action_hash|
           li
-            = link_to t("horse.actions.#{action_hash[:action]}"), action_hash[:url], target: '_top'
+            - if action_hash[:requires_form]
+              = button_to t("horse.actions.#{action_hash[:action]}"), action_hash[:url], method: action_hash[:method], target: '_top'
+            - else
+              = link_to t("horse.actions.#{action_hash[:action]}"), action_hash[:url], target: '_top'

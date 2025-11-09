@@ -50,20 +50,52 @@ module CurrentStable
       false
     end
 
-    def set_for_lease?
-      # TODO: implement lease creation
-      false
+    def create_lease_offer?
+      return false unless owner?
+      return false unless Horses::Status::LEASEABLE_STATUSES.include?(record.status)
+      unless record.racehorse?
+        return false unless Game::BreedingSeason.pre_breeding_season_date?(Date.current, Horses::LeaseOffer::MAX_OFFER_PERIOD_DAYS)
+        return false if record.broodmare? && record.foals.unborn.exists?
+
+        return true
+      end
+
+      true
+    end
+
+    def accept_lease_offer?
+      return false if record.lease_offer.blank?
+      offer = record.lease_offer
+      return false unless Date.current > offer.offer_start_date
+      return false unless stable == offer.leaser
+
+      true
+    end
+
+    def destroy_lease_offer?
+      return false if record.lease_offer.blank?
+      offer = record.lease_offer
+      return false unless [offer.leaser, offer.owner].include?(stable)
+
+      true
     end
 
     def cancel_lease_offer?
-      # TODO: implement lease creation
-      false
+      return false unless destroy_lease_offer?
+
+      owner?
+    end
+
+    def reject_lease_offer?
+      return false unless destroy_lease_offer?
+
+      !owner?
     end
 
     def terminate_lease?
       lease = record.current_lease
       return false if lease.blank?
-      return false unless lease.leaser == stable || admin? || owner?
+      return false unless lease.leaser == stable || owner?
       unless lease.active?
         @error_message_key = :lease_not_active
         return false

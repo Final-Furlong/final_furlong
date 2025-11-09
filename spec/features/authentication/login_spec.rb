@@ -3,7 +3,7 @@ RSpec.describe "Login Spec" do
     admin = create(:admin)
 
     visit root_path
-    within("#sidebar") do
+    within("#top_nav") do
       click_on t("layouts.nav.login")
     end
     expect(page).to have_current_path new_user_session_path, ignore_query: true

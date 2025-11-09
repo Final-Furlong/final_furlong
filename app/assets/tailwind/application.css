@@ -12,6 +12,10 @@
   --gelded-horse-color: #b3ebb3;
 }
 
+i {
+  vertical-align: middle;
+}
+
 @layer components {
   .turbo-progress-bar {
     @apply bg-gradient-to-r from-indigo-500 via-purple-400 to-pink-500;

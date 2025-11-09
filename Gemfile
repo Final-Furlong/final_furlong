@@ -177,6 +177,7 @@ group :test do
   gem "simplecov-cobertura", require: false
   gem "simplecov-json", require: false
   gem "simplecov-lcov", require: false
+  gem "simplecov-tailwindcss", require: false
   gem "undercover", require: false
   gem "whenever-test"
 end

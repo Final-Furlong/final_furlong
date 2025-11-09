@@ -7,7 +7,7 @@ RSpec.describe "Stable Index" do
   it "allows viewing as user" do
     sign_in(create(:user))
     visit stables_path
-    within("#sidebar") do
+    within("#top_nav") do
       expect(page).not_to have_link t("layouts.nav.login")
     end
     expect(page).to have_text t("stables.index.all")

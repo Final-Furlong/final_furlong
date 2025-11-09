@@ -14,6 +14,8 @@ module Account
     has_one :stable, dependent: :destroy
     has_one :activation, class_name: "Account::Activation", dependent: :delete
     has_one :setting, dependent: :delete
+
+    has_many :notifications, inverse_of: :user, dependent: :destroy
     has_many :push_subscriptions, inverse_of: :user, dependent: :delete_all
 
     # Include default devise modules. Others available are:

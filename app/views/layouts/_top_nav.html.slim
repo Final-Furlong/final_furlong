@@ -1,0 +1,43 @@
+.navbar.bg-base-100.shadow-sm.border-neutral-content/80.border-b-1#top_nav
+  .flex-1
+    ul
+      li
+        label.float-left.btn.drawer-button.lg:hidden for="sidebar-toggle"
+          span.sr-only= t("layouts.nav.open_main_menu")
+          i.fa-solid.fa-bars.fa-xl#icon-show-sidenav
+  .flex.gap-2
+    ul.menu-horizontal.bg-base-200.text-base-content.min-h-full[
+      class="sm:border-0 dark:border-neutral-100/50"
+    ]
+      li.pr-4
+        .hidden.border.rounded-md.md:block
+          form.flex.p-2 role="search"
+            input[type="search" disabled=true placeholder=t(".search_placeholder") aria-label=t(".search_aria_label")]
+      - if signed_in?
+        li.px-2.pt-2
+          = link_to root_path do
+            i.fa-xl.fa-solid.fa-home alt=t(".home")
+            span.sr-only= t(".home")
+
+        li
+          = turbo_stream_from current_user, :notifications
+          = render "layouts/notifications"
+
+        li.px-2.pt-2
+          = link_to new_setting_path do
+            i.fa-xl.fa-solid.fa-gear alt=t(".settings")
+            span.sr-only= t(".settings")
+
+        li.pl-2.pt-1
+          = button_to destroy_user_session_path, method: :delete, data: { turbo: false },
+                  form_class: "p-0", class: "flex items-center w-full p-2 text-base transition rounded-lg" do
+            i.fas.fa-arrow-right-from-bracket.mr-2
+            span.sr-only= t("layouts.sidenav.logout")
+      - else
+        li.pl-2.pt-1
+          a.flex.items-center.w-full.p-2.text-base.transition.rounded-lg[
+            href=new_user_session_path
+            class="hover:bg-gray-100 dark:hover:bg-gray-700"
+          ]
+            i.fas.fa-arrow-right-from-bracket.mr-2
+            span.flex-1.ms-3.whitespace-nowrap= t("layouts.nav.login")

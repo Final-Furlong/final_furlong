@@ -35,9 +35,9 @@ module Racing
             raise ActiveRecord::Rollback, race_horse.errors.full_messages.to_sentence
           end
         end
+        trigger_view_updates
         trigger_horse_attribute_updates(horses:)
         trigger_broodmare_updates(horses:)
-        trigger_view_updates
         return result
       rescue => e
         race_result.destroy if race_result.persisted?

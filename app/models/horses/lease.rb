@@ -1,5 +1,8 @@
 module Horses
   class Lease < ApplicationRecord
+    RACEHORSE_TIME = 3.months
+    NON_RACEHORSE_TIME = 1.year
+
     belongs_to :horse, class_name: "Horse"
     belongs_to :owner, class_name: "Account::Stable"
     belongs_to :leaser, class_name: "Account::Stable"
@@ -8,9 +11,22 @@ module Horses
 
     validates :start_date, :end_date, :fee, presence: true
     validates :active, inclusion: { in: [true, false] }
+    validates :end_date, comparison: { greater_than_or_equal_to: :start_date_plus_minimum_duration }, if: -> { start_date && horse }
+    validates :end_date, comparison: { less_than_or_equal_to: :start_date_plus_maximum_duration }, if: :start_date
 
     def total_days
       (end_date - start_date).to_i
+    end
+
+    private
+
+    def start_date_plus_minimum_duration
+      minimum_time = horse.racehorse? ? RACEHORSE_TIME : NON_RACEHORSE_TIME
+      start_date + minimum_time
+    end
+
+    def start_date_plus_maximum_duration
+      start_date + 1.year
     end
   end
 end

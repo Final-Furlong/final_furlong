@@ -13,25 +13,24 @@ en:
       upgrade_action: Upgrade
     dock:
       home: Home
+      notifications: Notifications
       settings: Settings
     nav:
       join: Join
       login: Log in
       open_main_menu: Open Main Menu
+    notifications:
+      notification_icon: Notification Icon
+      notifications: Notifications
     sidenav:
       admin_divider: Admin
       all_horses: Horses
       close_menu: Close Menu
       game_divider: Game Links
-      home: Home
       jobs: Jobs
       logout: Log out
       main_app: Main app
       my_stable: My stable
-      notifications: Notifications
-      search_aria_label: Search
-      search_placeholder: Search...
-      settings: Settings
       stable:
         budget: Budget
         horses: My horses
@@ -39,3 +38,8 @@ en:
         training_schedules: Training Schedules
       stables: Stables
       view_notifications: View Notifications
+    top_nav:
+      home: Home
+      search_aria_label: Search
+      search_placeholder: Search...
+      settings: Settings

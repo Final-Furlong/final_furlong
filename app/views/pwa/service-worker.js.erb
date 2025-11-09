@@ -21,17 +21,6 @@ async function cacheFirst(request) {
   }
 }
 
-self.addEventListener('fetch', function(event) {
-  const url = new URL(event.request.url);
-
-  if (url.protocol === 'chrome-extension:') {
-    return;
-  }
-
-  return fetch(event.request);
-  // event.respondWith(cacheFirst(event.request))
-});
-
 self.addEventListener('message', (event) => {
   if (event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();

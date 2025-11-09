@@ -59,6 +59,10 @@ en:
           attributes:
             name:
               non_unique: has already been taken
+        horses/lease_offer:
+          attributes:
+            new_members_only:
+              inclusion: cannot be selected when you have picked a specific stable
         horses/lease_termination_request:
           attributes:
             owner_accepted_end:

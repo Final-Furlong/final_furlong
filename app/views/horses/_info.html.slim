@@ -2,6 +2,10 @@
 .overflow-x-auto
   table.table
     tbody
+      - if Current.user&.admin? || true_user&.admin?
+        tr
+          th= t(".id")
+          td= horse.id
       tr
         th= t(".name")
         td= horse.name || t("horse.unnamed")
@@ -59,7 +63,9 @@
         - else
           tr
             th= t(".sale_status")
-            td Not Yet Added
+            td
+              - if (offer = horse.lease_offer)
+                = t(".offered_for_lease", fee: Game::MoneyFormatter.new(offer.fee).to_s)
       tr
         th= t(".track_record")
         td= horse.track_record || t("horse.unraced")

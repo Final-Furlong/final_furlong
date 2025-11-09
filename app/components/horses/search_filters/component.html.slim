@@ -2,7 +2,7 @@
   .card-body#horses-search data-turbo-permanent=""
     = search_form_for query, url: horses_path, html: { class: "d-flex flex-column", autocomplete: "off" },
                              data: { turbo_action: "replace", controller: "auto-submit" } do |f|
-      .grid.grid-cols-4.mb-2.gap-4
+      .grid.grid-cols-1.sm:grid-cols-4.mb-2.gap-4
         div
           label for="q_name_i_cont_all"= I18n.t("horses.search.name")
           = f.input :name_i_cont_all, label: false, required: false,

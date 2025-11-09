@@ -1184,6 +1184,43 @@ ALTER SEQUENCE public.jockeys_id_seq OWNED BY public.jockeys.id;
 
 
 --
+-- Name: lease_offers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.lease_offers (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    owner_id bigint NOT NULL,
+    leaser_id bigint,
+    new_members_only boolean DEFAULT false NOT NULL,
+    offer_start_date date NOT NULL,
+    duration_months integer NOT NULL,
+    fee integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: lease_offers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.lease_offers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: lease_offers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.lease_offers_id_seq OWNED BY public.lease_offers.id;
+
+
+--
 -- Name: lease_termination_requests; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1702,6 +1739,40 @@ CREATE SEQUENCE public.motor_tags_id_seq
 --
 
 ALTER SEQUENCE public.motor_tags_id_seq OWNED BY public.motor_tags.id;
+
+
+--
+-- Name: notifications; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.notifications (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    read_at timestamp(6) with time zone,
+    params jsonb,
+    type character varying,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.notifications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.notifications_id_seq OWNED BY public.notifications.id;
 
 
 --
@@ -2430,6 +2501,13 @@ ALTER TABLE ONLY public.jockeys ALTER COLUMN id SET DEFAULT nextval('public.jock
 
 
 --
+-- Name: lease_offers id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.lease_offers ALTER COLUMN id SET DEFAULT nextval('public.lease_offers_id_seq'::regclass);
+
+
+--
 -- Name: lease_termination_requests id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2525,6 +2603,13 @@ ALTER TABLE ONLY public.motor_taggable_tags ALTER COLUMN id SET DEFAULT nextval(
 --
 
 ALTER TABLE ONLY public.motor_tags ALTER COLUMN id SET DEFAULT nextval('public.motor_tags_id_seq'::regclass);
+
+
+--
+-- Name: notifications id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications ALTER COLUMN id SET DEFAULT nextval('public.notifications_id_seq'::regclass);
 
 
 --
@@ -2794,6 +2879,14 @@ ALTER TABLE ONLY public.jockeys
 
 
 --
+-- Name: lease_offers lease_offers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.lease_offers
+    ADD CONSTRAINT lease_offers_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: lease_termination_requests lease_termination_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2903,6 +2996,14 @@ ALTER TABLE ONLY public.motor_taggable_tags
 
 ALTER TABLE ONLY public.motor_tags
     ADD CONSTRAINT motor_tags_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: notifications notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT notifications_pkey PRIMARY KEY (id);
 
 
 --
@@ -3579,6 +3680,34 @@ CREATE INDEX index_jockeys_on_weight ON public.jockeys USING btree (weight);
 
 
 --
+-- Name: index_lease_offers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_lease_offers_on_horse_id ON public.lease_offers USING btree (horse_id);
+
+
+--
+-- Name: index_lease_offers_on_leaser_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_lease_offers_on_leaser_id ON public.lease_offers USING btree (leaser_id);
+
+
+--
+-- Name: index_lease_offers_on_offer_start_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_lease_offers_on_offer_start_date ON public.lease_offers USING btree (offer_start_date);
+
+
+--
+-- Name: index_lease_offers_on_owner_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_lease_offers_on_owner_id ON public.lease_offers USING btree (owner_id);
+
+
+--
 -- Name: index_lease_termination_requests_on_lease_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3779,6 +3908,13 @@ CREATE INDEX index_motor_resources_on_updated_at ON public.motor_resources USING
 --
 
 CREATE INDEX index_motor_taggable_tags_on_tag_id ON public.motor_taggable_tags USING btree (tag_id);
+
+
+--
+-- Name: index_notifications_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notifications_on_user_id ON public.notifications USING btree (user_id);
 
 
 --
@@ -4638,6 +4774,14 @@ ALTER TABLE ONLY public.auction_bids
 
 
 --
+-- Name: notifications fk_rails_b080fb4855; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk_rails_b080fb4855 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: horses fk_rails_b1757e50ec; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4651,6 +4795,14 @@ ALTER TABLE ONLY public.horses
 
 ALTER TABLE ONLY public.leases
     ADD CONSTRAINT fk_rails_b1c449ef3a FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
+-- Name: lease_offers fk_rails_b25d1a1f1b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.lease_offers
+    ADD CONSTRAINT fk_rails_b25d1a1f1b FOREIGN KEY (owner_id) REFERENCES public.stables(id);
 
 
 --
@@ -4726,6 +4878,14 @@ ALTER TABLE ONLY public.leases
 
 
 --
+-- Name: lease_offers fk_rails_e4810d6ca8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.lease_offers
+    ADD CONSTRAINT fk_rails_e4810d6ca8 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
 -- Name: horses fk_rails_e50f0d1f41; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4766,6 +4926,14 @@ ALTER TABLE ONLY public.race_result_horses
 
 
 --
+-- Name: lease_offers fk_rails_fb816dc261; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.lease_offers
+    ADD CONSTRAINT fk_rails_fb816dc261 FOREIGN KEY (leaser_id) REFERENCES public.stables(id);
+
+
+--
 -- Name: horses fk_rails_fc5ea1ce34; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4780,6 +4948,10 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251111175717'),
+('20251111151941'),
+('20251111151940'),
+('20251109221006'),
 ('20251108220626'),
 ('20251108095210'),
 ('20251107213855'),

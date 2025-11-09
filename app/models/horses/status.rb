@@ -15,6 +15,7 @@ module Horses
     FEMALE_BREEDING_STATUSES = %w[broodmare retired_broodmare]
     RETIRED_STATUSES = %w[retired retired_broodmare retired_stud]
     SEARCH_STATUSES = %w[racehorse broodmare stud weanling yearling retired deceased]
+    LEASEABLE_STATUSES = %w[racehorse broodmare stud]
 
     def initialize(status)
       @status = status.to_s

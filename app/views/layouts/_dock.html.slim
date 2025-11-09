@@ -3,10 +3,15 @@
     i.fa-solid.fa-home
     = t(".home")
 
-  / button.dock-active
-  /   i.fa-solid.fa-bell
-  /   span.dock-label= t(".notifications")
+  - if signed_in?
+    = turbo_stream_from "notification_dot_#{Current.user.id}"
+    = link_to notifications_path, class: 'btn' do
+      i.fa-solid.fa-bell
+      - if current_user.notifications.unread.any?
+        span class="notification-dot"
+          i.fa-solid.fa-circle
+      = t(".notifications")
 
-  = link_to new_setting_path, class: 'btn' do
-    i.fa-solid.fa-gear
-    = t(".settings")
+    = link_to new_setting_path, class: 'btn' do
+      i.fa-solid.fa-gear
+      = t(".settings")

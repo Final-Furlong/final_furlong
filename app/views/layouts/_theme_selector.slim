@@ -15,7 +15,8 @@ javascript:
     return "";
   }
 
-  const darkMode = (window.matchMedia('(prefers-color-scheme: dark)').matches) || getCookie('dark_mode')
+  // const darkMode = (window.matchMedia('(prefers-color-scheme: dark)').matches) || getCookie('dark_mode')
+  const darkMode = getCookie('dark_mode')
   let colorTheme = '';
   if (darkMode) {
     colorTheme = localStorage.getItem('color-theme') || getCookie('dark_theme')

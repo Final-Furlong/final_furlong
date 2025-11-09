@@ -27,6 +27,7 @@ head
 
   = render "layouts/theme_selector"
 
+  = turbo_refreshes_with method: :morph, scroll: :preserve
   - if content_for? :head
     = yield :head
 

@@ -3,13 +3,12 @@ html(lang= I18n.locale)
   = render "layouts/head"
   body
     .drawer.h-screen.lg:drawer-open
+      input id="sidebar-toggle" type="checkbox" class="drawer-toggle"
       main.drawer-content
-        label.float-left.btn.drawer-button.lg:hidden for="sidebar"
-          span.sr-only= t("layouts.nav.open_main_menu")
-          i.fa-solid.fa-bars.fa-xl#icon-show-sidenav
         - unless signed_in?
           .float-right
             = render Nav::I18n::Component.new(locale: I18n.locale, version: :phone, variants: request.variant)
+        = render "layouts/top_nav"
         = yield :breadcrumbs
         .container.p-6.clear-both.sm:p-4
           = render Users::ImpersonatingBanner::Component.new
