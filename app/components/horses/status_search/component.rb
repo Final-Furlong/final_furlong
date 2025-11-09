@@ -32,8 +32,15 @@ module Horses
         else
           set_unretired_status
         end
+        update_genders_list
 
         send(path_name.to_sym, q: params[:q])
+      end
+
+      def update_genders_list
+        return unless params.dig(:q, :gender_in)
+
+        params[:q][:gender_in] = params[:q][:gender_in].join(",")
       end
 
       def set_unretired_status
