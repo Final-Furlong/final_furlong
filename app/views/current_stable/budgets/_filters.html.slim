@@ -1,9 +1,9 @@
 /# locals: (dashboard:)
-.card.card-border.shadow-md.my-4 class="dark:border-1 dark:border-neutral-100/50"
+.card.card-border.shadow-md.my-4.dark:border-1.dark:border-neutral-100/50
   .card-body
     = search_form_for dashboard.query, url: stable_budgets_path, html: { class: "d-flex flex-column", autocomplete: "off" },
             data: { controller: "search", 'search-target': "form", 'turbo-frame' => "stable-budget-search" } do |f|
-      .grid.grid-cols-1.mb-2.gap-4 class="md:grid-cols-4"
+      .grid.grid-cols-1.mb-2.gap-4.md:grid-cols-4
         div
           = f.input :budget_description, label: false, required: false, placeholder: I18n.t("current_stable.budgets.search.description"),
                   hint: I18n.t("current_stable.budgets.search.description_hint"),

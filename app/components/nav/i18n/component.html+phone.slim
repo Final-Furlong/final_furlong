@@ -1,16 +1,14 @@
-.dropdown.dropdown-end class="sm:hidden"
-  button[
+.dropdown.dropdown-end.sm:hidden
+  button.inline-flex.justify-center.p-2.text-gray-500.rounded.cursor-pointer[
     type="button"
     role="button"
+    class="dark:hover:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600"
     tabindex=0
-    class="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer \
-      dark:hover:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600"
     aria-label=t(".language_selector")
   ]
     span.me-2.fi class=(american_locale? ? "fi-us" : "fi-gb")
 
-  ul.dropdown-content.menu.py-1.z-50.my-4.bg-white.rounded.shadow[
-    class="dark:bg-gray-700"
+  ul.dropdown-content.menu.py-1.z-50.my-4.bg-white.rounded.shadow.dark:bg-gray-700[
     role="none"
     tabindex=0
   ]

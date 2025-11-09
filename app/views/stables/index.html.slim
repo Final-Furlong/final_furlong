@@ -3,7 +3,7 @@
 
 = turbo_frame_tag "stables" do
   - @stables.in_groups_of(4) do |list|
-    .grid.grid-cols-1.mb-2 class="sm:grid-cols-2 lg:grid-cols-4"
+    .grid.grid-cols-1.mb-2.sm:grid-cols-2.lg:grid-cols-4
       - list.each do |stable|
         .col
           = render stable if stable

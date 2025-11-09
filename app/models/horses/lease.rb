@@ -4,8 +4,14 @@ module Horses
     belongs_to :owner, class_name: "Account::Stable"
     belongs_to :leaser, class_name: "Account::Stable"
 
+    has_one :termination_request, class_name: "LeaseTerminationRequest", inverse_of: :lease, dependent: :delete
+
     validates :start_date, :end_date, :fee, presence: true
     validates :active, inclusion: { in: [true, false] }
+
+    def total_days
+      (end_date - start_date).to_i
+    end
   end
 end
 

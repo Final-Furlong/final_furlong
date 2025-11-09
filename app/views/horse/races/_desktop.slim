@@ -1,8 +1,8 @@
 /# locals: (dashboard:, dob_year:)
-.hidden.mx-auto.overflow-x-auto.border.rounded-md.w-full class="sm:block sm:w-3/4"
+.hidden.mx-auto.overflow-x-auto.border.rounded-md.w-full.sm:block.sm:w-3/4
   table.table.table-zebra
     thead
-      tr.border-b-1 class="border-gray-400 dark:border-neutral-600"
+      tr.border-b-1.border-gray-400.dark:border-neutral-600
         th= t(".year")
         th= t(".starts")
         th= t(".wins")
@@ -29,7 +29,7 @@
               td.text-right= record.points
     - if (record = dashboard.lifetime_race_record)
       tfoot
-        tr.border-t-1 class="border-gray-400 dark:border-neutral-600"
+        tr.border-t-1.border-gray-400.dark:border-neutral-600
           td= t(".lifetime")
           td= record.starts_string
           td= record.wins_string

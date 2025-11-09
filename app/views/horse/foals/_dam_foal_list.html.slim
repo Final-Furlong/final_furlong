@@ -1,6 +1,57 @@
 /# locals: (dashboard:)
-.mx-auto.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100.w-full[
-  class="sm:w-3/4 dark:border-neutral-100"
+.mt-4.mx-auto.overflow-x-auto.w-full.sm:hidden
+  - dashboard.born_foals.each do |foal|
+    - pedigree = Horses::PedigreeDisplayService.new(foal)
+    .card.card-border.bg-base-100.w-full.px-2.rounded-none
+      .card-body.p-0.rounded-none
+        .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+          input type="checkbox"
+          .collapse-title.font-semibold.font-medium
+            span class="text-#{foal.gender.downcase}"
+              = foal.name || t("horse.unnamed")
+            span.float-right
+              = foal.date_of_birth.year
+          .collapse-content.text-sm.border-t-1.border-base-content/40
+            p
+              span= t(".gender")
+              span.float-right= foal.gender.titleize
+            p
+              span= t(".sire")
+              span.float-right= pedigree.sire_display(tag: true, target: '_top')
+            p
+              span= t(".status")
+              span.float-right= foal.status.titleize
+            - unless foal.weanling? || foal.yearling?
+              p
+                span= t(".record")
+                span.float-right
+                  - if foal.stillborn?
+                    em= t("horse.type.stillborn").titleize
+                  - else
+                    = foal.track_record
+            - unless foal.stillborn?
+              p.text-center
+                = link_to t("common.actions.view"), horse_path(foal), class: 'btn btn-neutral', target: '_top'
+  - if (unborn_foal = dashboard.unborn_foal)
+    - pedigree = Horses::PedigreeDisplayService.new(unborn_foal)
+    .card.card-border.bg-base-100.w-full.px-2.rounded-none
+      .card-body.p-0.rounded-none
+        .collapse.collapse-open.bg-base-100.border-base-content/50.border.border-1.rounded-none
+          input type="checkbox"
+          .collapse-title.font-semibold.font-medium
+            span= t("horse.in_foal").titleize
+            span.float-right= "Due date year"
+          .collapse-content.text-sm.border-t-1.border-base-content/40
+            p
+              span= t(".sire")
+              span.float-right= pedigree.sire_display(tag: true, target: '_top')
+            p
+              span= t(".due_date")
+              span.float-right= "due date here"
+            p.text-center
+              = link_to unborn_foal.sire.name, horse_path(unborn_foal.sire), class: 'btn btn-neutral', target: '_top'
+.hidden.mx-auto.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100.w-full[
+  class="sm:block sm:w-3/4 dark:border-neutral-100"
 ]
   table.table.table-sm
     thead
@@ -15,7 +66,8 @@
       - dashboard.born_foals.each do |foal|
         - pedigree = Horses::PedigreeDisplayService.new(foal)
         tr
-          td= link_to (foal.name || t("horse.unnamed")), horse_path(foal), target: '_top'
+          td class="text-#{foal.gender}"
+            = link_to (foal.name || t("horse.unnamed")), horse_path(foal), target: '_top'
           td= foal.date_of_birth.year
           td= foal.gender.titleize
           td= pedigree.sire_display(tag: true, target: '_top')

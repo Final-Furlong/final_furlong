@@ -4,24 +4,13 @@ Rails.application.routes.draw do
   draw(:admin)
   draw(:users)
   draw(:current_stable)
+  draw(:horses)
 
   match "/404", to: "errors#not_found", via: :all
   match "/422", to: "errors#unprocessable", via: :all
   match "/500", to: "errors#internal_error", via: :all
 
   resources :stables, only: %i[index show]
-  resources :horses, except: %i[new create destroy] do
-    member do
-      get :image
-      get :thumbnail
-      scope module: :horse do
-        resources :races, only: :index
-        resources :foals, only: :index
-        resources :images, only: :index
-        resource :pedigree, only: :show
-      end
-    end
-  end
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   get "manifest" => "rails/pwa#manifest", :as => :pwa_manifest

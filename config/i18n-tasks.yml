@@ -134,9 +134,10 @@ ignore_unused:
   - 'view_components.*'
   - 'views.pagination.*'
   - '{date,time,number}.*'
-  - '{devise,pagy,helpers}.*'
+  - '{devise,pagy,helpers,pundit}.*'
   - 'current_stable.training_schedules.{create,update}.success'
   - 'horse.type.*'
+  - 'horse.lease_terminations.new.*'
   - 'users.{create,update}.success'
 
 ## Exclude these keys from the `i18n-tasks eq-base' report:

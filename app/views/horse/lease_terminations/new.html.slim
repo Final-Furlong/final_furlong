@@ -1,0 +1,89 @@
+ruby:
+  horse = @current_lease.horse
+  time_left = (@current_lease.end_date - Date.current).to_i
+  percentage_left = time_left.fdiv(@current_lease.total_days)
+  refund_fee = (@current_lease.fee * percentage_left).to_i
+  @termination_request ||= @current_lease.build_termination_request
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t("horses.index.title"), href: stable_horses_path },
+          { name: horse.name, href: horse_path(horse) },
+          { name: t(".title"), href: "#" }])
+
+.text-center.mb-4
+  h1.text-2xl= t(".confirm")
+
+.mx-auto.sm:w-3/5.lg:w-2/3
+  .alert.alert-info
+    p= t(".end_date", date: l(@current_lease.end_date, format: :text), fee: Game::MoneyFormatter.new(@current_lease.fee).to_s)
+
+  = form_with model: @termination_request, url: lease_termination_path(horse), html: { class: "form", novalidate: true }, data: { turbo: false }, method: :post do |f|
+    - if Current.stable == @current_lease.owner
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        label.label
+          = f.checkbox :owner_accepted_end, class: 'toggle validator', required: true
+          = t(".accept_termination")
+        - if @termination_request.errors[:owner_accepted_end]
+          p.text-error= @termination_request.errors.where(:owner_accepted_end).map(&:full_message).join(', ')
+      - if refund_fee.positive?
+        fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+          label.label
+            = f.checkbox :owner_accepted_refund, class: 'toggle validator', required: true
+            = t(".offer_refund", amount: Game::MoneyFormatter.new(refund_fee).to_s)
+          - if @termination_request.errors[:owner_accepted_refund]
+            p.text-error= @termination_request.errors.where(:owner_accepted_refund).map(&:full_message).join(', ')
+    - else
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        label.label
+          = f.checkbox :leaser_accepted_end, class: 'toggle validator'
+          = t(".accept_termination")
+        - if @termination_request.errors[:leaser_accepted_end]
+          p.text-error= @termination_request.errors.where(:leaser_accepted_end).map(&:full_message).join(', ')
+      - if refund_fee.positive?
+        fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+          label.label
+            = f.checkbox :leaser_accepted_refund, class: 'toggle validator', required: true
+            - refund_key = @termination_request.owner_accepted_refund? ? ".accept_refund" : ".request_refund"
+            = t(refund_key, amount: Game::MoneyFormatter.new(refund_fee).to_s)
+          - if @termination_request.errors[:leaser_accepted_refund]
+            p.text-error= @termination_request.errors.where(:leaser_accepted_refund).map(&:full_message).join(', ')
+    = f.submit t("common.actions.save"), class: "btn btn-primary"
+
+    /  leaser_accepted_refund :boolean          default(FALSE), not null
+    /  owner_accepted_refund  :boolean          default(FALSE), not null
+
+
+
+/ Would you like to offer <a href="stableview.php?stable=<?php echo $_POST['stableid']; ?>"><?php echo $_POST['stable']; ?></a> a refund to terminate the lease on <a href="viewhorse.php?horse=<?php echo $_POST['horse']; ?>"><?php echo $_POST['name']; ?></a>?<br />
+/ <br />
+/ <br />
+/ <table border="0" cellpadding="0" cellspacing="0">
+/ <tr>
+/   <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+/   <td colspan="2">Offer Refund:</td>
+/   <td><input type="hidden" name="action" value="end" />
+/   <input type="hidden" name="confirm" value="yes" />
+/   <input type="hidden" name="role" value="owner" />
+/   <select name="refund">
+/     <option value="1">Yes</option>
+/     <option value="0">No</option>
+/   </select>
+/   <input type="hidden" name="id" value="<?php echo $_POST['id']; ?>" />
+/   <input type="hidden" name="horse" value="<?php echo $_POST['horse']; ?>" />
+/   <input type="hidden" name="name" value="<?php echo $_POST['name']; ?>" />
+/   <input type="hidden" name="stableid" value="<?php echo $_POST['stableid']; ?>" />
+/   <input type="hidden" name="stable" value="<?php echo $_POST['stable']; ?>" />
+/   <input type="hidden" name="start" value="<?php echo $_POST['start']; ?>" />
+/   <input type="hidden" name="end" value="<?php echo $_POST['end']; ?>" />
+/   <input type="hidden" name="price" value="<?php echo $_POST['price']; ?>" />
+/   </td>
+/ </tr>
+/ <tr>
+/   <td><input type="submit" value="Terminate Lease" />
+/ </form></td>
+/   <td>&nbsp; or &nbsp;</td>
+/   <td>
+/ <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+/   <input type="submit" value="Cancel Termination" />
+/ </form></td>
+/ </tr>
+/ </table>

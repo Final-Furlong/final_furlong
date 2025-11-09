@@ -66,7 +66,6 @@ module Horses
           markings << "RF #{rf_leg_marking.titleize}" if rf_leg_marking.present?
           markings << "LH #{lh_leg_marking.titleize}" if lh_leg_marking.present?
           markings << "RH #{rh_leg_marking.titleize}" if rh_leg_marking.present?
-          Rails.logger.info "not same markings everywhere"
         end
         markings.join(", ")
       end

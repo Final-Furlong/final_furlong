@@ -29,10 +29,19 @@ class ApplicationController < ActionController::Base
     render "errors/not_found"
   end
 
-  def user_not_authorized
-    flash[:alert] = I18n.t("errors.not_authorized", locale: wanted_locale)
+  def user_not_authorized(exception)
+    policy = exception.policy
+    policy_name = policy.class.to_s.underscore
 
-    redirect_to unauthorized_path
+    error_key = policy.error_message_key || exception.query
+    error_message_18n_params = policy.error_message_18n_params || {}
+
+    msg = t("#{policy_name}.#{error_key}", scope: "pundit", default: :default, **error_message_18n_params)
+    flash[:error] = msg # rubocop:disable Rails/ActionControllerFlashBeforeRender
+    respond_to do |format|
+      format.html { redirect_to(request.referer || root_path) }
+      format.js { render js: } # e.g. use your standard js notify application }
+    end
   end
 
   def verify_pundit_authorization

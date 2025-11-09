@@ -1,19 +1,18 @@
-input#sidebar-drawer type="checkbox" class="drawer-toggle"
-nav.drawer-side.h-full.border-0#sidebar class="sm:border-r-1 border-neutral-content/50"
-  label for="sidebar-drawer" aria-label="close sidebar" class="drawer-overlay"
-  ul.menu.bg-base-200.text-base-content.min-h-full.w-80.p-4.border-r-1.border-gray-500/50[
+input.drawer-toggle#sidebar-drawer type="checkbox"
+nav.drawer-side.overflow-scroll.h-full.border-0.sm:border-r-1.border-neutral-content/50#sidebar
+  label.drawer-overlay for="sidebar-drawer" aria-label="close sidebar"
+  ul.menu.bg-base-200.text-base-content.min-h-full.w-80.py-4.px-0.border-r-1.border-gray-500/50[
     class="sm:border-0 dark:border-neutral-100/50"
   ]
-    li
-      a.flex.items-center.p-2.rounded-lg[
+    li.px-4
+      a.flex.items-center.p-2.rounded-lg.hover:bg-gray-100.dark:hover:bg-gray-700[
         href=root_path
-        class="hover:bg-gray-100 dark:hover:bg-gray-700"
       ]
         = image_tag "logo_dark.png", class: "h-6 md:h-12 w-auto block dark:hidden", alt: "Final Furlong Logo"
         = image_tag "logo_light.png", class: "h-6 md:h-12 w-auto hidden dark:block", alt: "Final Furlong Logo"
         span.font-semibold.ms-3.text-lg= t("game_title")
     = render "layouts/user_sidenav" if signed_in?
-    li
+    li.px-2
       details open=true
         summary= t("layouts.sidenav.game_divider")
         ul
@@ -31,22 +30,15 @@ nav.drawer-side.h-full.border-0#sidebar class="sm:border-r-1 border-neutral-cont
             ]
               i.fa-solid.fa-horse-head
               span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.all_horses")
-          li
-            a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
-              href=new_setting_path
-              class="hover:bg-gray-100 dark:hover:bg-gray-700"
-            ]
-              i.fa-solid.fa-gear
-              span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.settings")
     = render "layouts/admin_sidenav" if signed_in? && Current.user.admin?
     - if signed_in?
-      li
+      li.px-4
         = button_to destroy_user_session_path, method: :delete, data: { turbo: false },
                 form_class: "p-0", class: "flex items-center w-full p-2 text-base transition rounded-lg" do
           i.fas.fa-arrow-right-from-bracket.mr-2
           span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.logout")
     - else
-      li
+      li.px-4
         a.flex.items-center.w-full.p-2.text-base.transition.rounded-lg[
           href=new_user_session_path
           class="hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -54,18 +46,18 @@ nav.drawer-side.h-full.border-0#sidebar class="sm:border-r-1 border-neutral-cont
           i.fas.fa-arrow-right-from-bracket.mr-2
           span.flex-1.ms-3.whitespace-nowrap= t("layouts.nav.login")
     - unless Rails.env.development?
-      li
+      li.px-4
         = link_to "https://www.finalfurlong.org/", class: "flex items-center p-2 rounded-lg \
                   hover:bg-gray-100 dark:hover:bg-gray-700" do
           i.fa-solid.fa-delete-left
           span.flex-1.ms-3.whitespace-nowrap= t(".main_app")
 
-    li
-      .hidden.mt-4.border.rounded-md class="md:block"
+    li.px-4
+      .hidden.mt-4.border.rounded-md.md:block
         form.flex.p-2 role="search"
           input[type="search" disabled=true placeholder=t(".search_placeholder") aria-label=t(".search_aria_label")]
 
-    li.hidden.justify-center.p-4.space-x-4.w-full
+    li.px-4.hidden.justify-center.p-4.space-x-4.w-full
       - if signed_in? && false
         a.inline-flex.justify-center.p-2.rounded.cursor-pointer[
           href="#"
@@ -84,5 +76,15 @@ nav.drawer-side.h-full.border-0#sidebar class="sm:border-r-1 border-neutral-cont
         ]
           i.fa-solid.fa-gear.tooltip data-top=t("layouts.sidenav.view_notifications")
 
-    - unless signed_in?
+    - if signed_in?
+      - dock_classes = "btn cursor-pointer flex-col"
+      .hidden.flex-row.justify-around.items-center.border-t-1.border-neutral-content/50.mt-2.pt-2.sm:flex
+        = link_to root_path, class: dock_classes do
+          i.fa-solid.fa-home
+          = t(".home")
+
+        = link_to new_setting_path, class: dock_classes do
+          i.fa-solid.fa-gear
+          = t(".settings")
+    - else
       = render Nav::I18n::Component.new(locale: I18n.locale, version: :tablet, variants: request.variant)

@@ -11,6 +11,8 @@ en:
         weak: 'must be at least 8 characters long and contain: an upper case character, a lower case character, a digit and a non-alphabet character.'
   activerecord:
     attributes:
+      horses/lease_termination_request:
+        owner_accepted_end: Owner
       setting:
         dark_mode: Dark Mode
         dark_theme: Dark Mode Theme
@@ -57,6 +59,10 @@ en:
           attributes:
             name:
               non_unique: has already been taken
+        horses/lease_termination_request:
+          attributes:
+            owner_accepted_end:
+              blank: must agree to end the lease
         racing/training_schedule:
           attributes:
             base:

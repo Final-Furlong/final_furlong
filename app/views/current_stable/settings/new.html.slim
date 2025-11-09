@@ -10,31 +10,29 @@
     data-pwa--web-push-demo-browser-subscribed-value=t(".browser_subscribed")
     data-pwa--web-push-demo-browser-unsubscribed-value=t(".browser_unsubscribed")
   ]
-    div data-controller="pwa--web-push-subscription" class="pwa-web-push-subscription flex gap-2"
+    .pwa-web-push-subscription.flex.gap-2 data-controller="pwa--web-push-subscription"
       div
-        button[
+        button.subscribe.bg-blue-500.hover:bg-blue-700.text-white.font-bold.py-2.px-4.rounded[
           data-action="pwa--web-push-subscription#trySubscribe"
           data-pwa--web-push-subscription-target="subscribeButton"
-          class="subscribe bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           disabled: false
         ]
           = t(".subscribe_action")
       div
-        button[
+        button.unsubscribe.bg-blue-500.hover:bg-blue-700.text-white.font-bold.py-2.px-4.rounded[
           data-action="pwa--web-push-subscription#unsubscribe"
           data-pwa--web-push-subscription-target="unsubscribeButton"
-          class="unsubscribe bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         ]
           = t(".unsubscribe_action")
-    p data-pwa--web-push-demo-target="status" class="mt-6 mb-4 italic"
-    p data-pwa--web-push-demo-target="error" class="mt-6 mb-4 italic bg-red-100 border-red-400 text-red-700"
+    p.mt-6.mb-4.italic data-pwa--web-push-demo-target="status"
+    p.mt-6.mb-4.italic.bg-red-100.border-red-400.text-red-700 data-pwa--web-push-demo-target="error"
 
     p.mt-6.mb-4
       = t(".instructions")
     = simple_form_for :web_push, url: pwa_web_pushes_path,
             data: { "pwa--web-push-demo-target": "sendDemoPushForm" } do |f|
       = f.hidden_field :subscription, data: { "pwa--web-push-demo-target": "subscriptionField" }
-      fieldset data-pwa--web-push-demo-target="sendPushDemoFieldset" class="flex flex-wrap gap-2"
+      fieldset.flex.flex-wrap.gap-2 data-pwa--web-push-demo-target="sendPushDemoFieldset"
         = f.text_field :title, as: :text, value: t("game_title"), class: "border rounded-md p-1"
         = f.text_field :message, value: t(".notification"), class: "border rounded-md p-1"
         = f.submit t(".send"), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",

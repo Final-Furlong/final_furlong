@@ -19,7 +19,7 @@ div class="sm:hidden"
     p= t(".available_balance", amount: available_money)
 
 = render 'filters', dashboard: @dashboard
-.card.card-border.mt-2.p-2.shadow-md class="dark:border-1 dark:border-neutral-100"
+.card.card-border.mt-2.p-2.shadow-md.dark:border-1.dark:border-neutral-100
   = turbo_stream_from "budgets"
   .card-body
     = turbo_frame_tag "budgets" do

@@ -3,6 +3,7 @@ module Nav
     class Component < ViewComponent::Base
       DEFAULT_TIMEOUT = 3
       NO_DISMISS = -1
+      ERROR_TYPES = %w[alert error]
 
       attr_reader :type, :message, :index, :dismiss_flash_timeout
 
@@ -10,12 +11,12 @@ module Nav
         super()
         @type = type.to_s
         @message = message
-        @dismiss_flash_timeout = (@type != "alert") ? delay : NO_DISMISS
+        @dismiss_flash_timeout = ERROR_TYPES.exclude?(@type) ? delay : NO_DISMISS
       end
 
       def alert_classes
         case type
-        when "alert"
+        when "alert", "error"
           "alert alert-error"
         when "info"
           "alert alert-info"

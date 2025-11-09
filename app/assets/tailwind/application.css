@@ -6,6 +6,12 @@
 }
 /* stylelint-enable */
 
+:root {
+  --female-horse-color: #ffcccc;
+  --male-horse-color: #ccccff;
+  --gelded-horse-color: #b3ebb3;
+}
+
 @layer components {
   .turbo-progress-bar {
     @apply bg-gradient-to-r from-indigo-500 via-purple-400 to-pink-500;
@@ -20,20 +26,39 @@
   color: hsl(var(--color-base-200));
 }
 
+.text-filly,
+.text-mare,
+.text-filly a,
+.text-mare a {
+  color: var(--female-horse-color);
+}
+
+.text-colt,
+.text-stallion,
+.text-colt a,
+.text-stallion a {
+  color: var(--male-horse-color);
+}
+
+.text-gelding,
+.text-gelding a {
+  color: var(--gelded-horse-color);
+}
+
 td.mare,
 td.filly {
-  background-color: #ffcccc;
+  background-color: var(--female-horse-color);
   color: #000000;
 }
 
 td.stallion,
 td.colt {
-  background-color: #ccccff;
+  background-color: var(--male-horse-color);
   color: #000000;
 }
 
 td.gelding {
-  background-color: #b3ebb3;
+  background-color: var(--gelded-horse-color);
   color: #000000;
 }
 

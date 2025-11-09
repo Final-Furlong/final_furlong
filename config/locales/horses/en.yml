@@ -1,10 +1,37 @@
 ---
 en:
   horse:
+    actions:
+      board_horse: Board
+      breed_mare: Breed
+      cancel_lease_offer: Cancel Lease Offer
+      change_owner: Update Owner
+      change_status: Update Status
+      consign_to_auction: Consign to Auction
+      enter_race: Enter Race
+      geld: Geld
+      manage_bookings: Manage Bookings
+      nominate_racehorse: Nominate
+      nominate_stud: Nominate
+      nominate_weanling: Nominate
+      remove_from_auction: Remove from Auction
+      rename: Rename
+      run_jump_trial: Run Jump Trial
+      run_workout: Run Workout
+      scratch_race: Scratch from Race
+      set_for_lease: Set for Lease
+      set_for_sale: Set for Sale
+      stop_boarding: Stop Boarding
+      terminate_lease: End Lease Early
+      unset_for_sale: Remove from Sale
+      update_racing_options: Set Racing Options
+      update_stud_options: Set Stud Options
+      view_comments: View Comments
     created: Created
     foal_due: Foal Due
     foals:
       dam_foal_list:
+        due_date: Due Date
         gender: Gender
         name: Name
         record: Record
@@ -22,6 +49,7 @@ en:
         winners: Winners
       dam_foals:
         foals: Foals
+        foals_with_count: Foals (%{count})
         summary: Summary
       sire_foal_list:
         dam: Dam
@@ -44,6 +72,18 @@ en:
         summary: Summary
     height: "%{height}h"
     in_foal: in foal
+    lease_terminations:
+      create:
+        success: Successfully requested to end the lease
+        success_with_termination: Successfully terminated the lease
+      new:
+        accept_refund: I would like to accept a refund of approximately %{amount}
+        accept_termination: I would like to request to end this lease
+        confirm: Confirm Lease Termination
+        end_date: 'The lease is currently scheduled to end on %{date}. Original Fee: %{fee}'
+        offer_refund: I would like to offer a refund of approximately %{amount}
+        request_refund: I would like to request a refund of approximately %{amount}
+        title: End Lease
     leased_html: Leased to %{stable} until %{date}
     markings:
       bald_face: bald face
@@ -120,6 +160,7 @@ en:
       last_foal: Last Foal
       last_race: Last Race
       lease_status: Lease Status
+      lease_termination_requested: Termination Requested
       location: Location
       location_bred: Location Bred
       markings: Markings

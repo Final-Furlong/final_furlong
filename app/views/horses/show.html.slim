@@ -11,37 +11,44 @@
                                                        responsive_classes: "w-100",
                                                        type: :link }])
 
-.tabs.tabs-border role="tablist" class="dark:border-neutral-400"
-  input type="radio" name="horse" class="tab" aria-label=t(".info") checked="checked"
-  .tab-content.border-base-400.bg-base-100.p-2 class="sm:p-4"
+.tabs.tabs-border.dark:border-neutral-400 role="tablist"
+  input.tab type="radio" name="horse" aria-label=t(".info") checked="checked"
+  .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
     = render "horses/info", horse: @horse
 
-  input type="radio" name="horse" class="tab" aria-label=t(".pedigree") disabled=@horse.created?
-  .tab-content.border-base-400.bg-base-100.p-2 class="sm:p-4"
+  input.tab type="radio" name="horse" aria-label=t(".pedigree") disabled=@horse.created?
+  .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
     = turbo_frame_tag "#{@horse.slug}-pedigree", src: pedigree_path(@horse), loading: "lazy" do
       .w-full.text-center
         p.mx-auto= t(".loading_pedigree")
         .mt-2.mx-auto.skeleton.w-full
 
-  input type="radio" name="horse" class="tab" aria-label=t(".races") disabled=!horse.lifetime_race_record
-  .tab-content.border-base-400.bg-base-100.p-2 class="sm:p-4"
+  input.tab type="radio" name="horse" aria-label=t(".races") disabled=!horse.lifetime_race_record
+  .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
     = turbo_frame_tag "#{@horse.slug}-races", src: races_path(@horse), loading: "lazy" do
       .w-full.text-center
         p.mx-auto= t(".loading_races")
-        .mt-2.mx-auto.skeleton.h-32.w-32 class="sm:w-3/4"
+        .mt-2.mx-auto.skeleton.h-32.w-32.sm:w-3/4
 
-  input[ type="radio" name="horse" class="tab" aria-label=t(".foals")
+  input.tab[ type="radio" name="horse" aria-label=t(".foals")
     disabled=(horse.foals.empty? && horse.stud_foals.empty?)
   ]
-  .tab-content.border-base-400.bg-base-100.p-2 class="sm:p-4"
+  .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
     = turbo_frame_tag "#{@horse.slug}-foals", src: foals_path(@horse), loading: "lazy" do
       .w-full.text-center
         p.mx-auto= t(".loading_foals")
         .mt-2.mx-auto.skeleton.w-full
 
-  input type="radio" name="horse" class="tab" aria-label=t(".photos") diabled=!horse.appearance.image.present?
-  .tab-content.border-base-400.bg-base-100.p-2 class="sm:p-4"
+  input.tab type="radio" name="horse" aria-label=t(".photos") diabled=!horse.appearance.image.present?
+  .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
     = turbo_frame_tag "#{@horse.slug}-images", src: images_path(@horse), loading: "lazy" do
       .w-full.text-center
         p.mx-auto= t(".loading_images")
         .mt-2.mx-auto.skeleton.w-full
+  - if (actions = Horses::ActionsListGenerator.new.call(horse:)).any?
+    details.dropdown.dropdown-end.ml-auto
+      summary.btn.m-1 Actions
+      ul.menu.dropdown-content.bg-base-100.rounded-box.z-1.w-52.p-2.shadow-sm
+        - actions.each do |action_hash|
+          li
+            = link_to t("horse.actions.#{action_hash[:action]}"), action_hash[:url], target: '_top'

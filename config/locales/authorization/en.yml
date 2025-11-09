@@ -1,0 +1,7 @@
+---
+en:
+  pundit:
+    current_stable/horse_policy:
+      lease_already_terminated: You have already requested to end this lease
+      lease_not_active: This lease is no longer active
+    default: You cannot perform this action.

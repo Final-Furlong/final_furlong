@@ -2,16 +2,16 @@ doctype html
 html(lang= I18n.locale)
   = render "layouts/head"
   body
-    .drawer class="lg:h-screen lg:drawer-open"
+    .drawer.lg:h-screen.lg:drawer-open
       main.drawer-content
-        label for="sidebar-drawer" class="float-left btn drawer-button lg:hidden"
+        label.float-left.btn.drawer-button.lg:hidden for="sidebar-drawer"
           span.sr-only= t("layouts.nav.open_main_menu")
           i.fa-solid.fa-bars.fa-xl#icon-show-sidenav
         - unless signed_in?
           .float-right
             = render Nav::I18n::Component.new(locale: I18n.locale, version: :phone, variants: request.variant)
         = yield :breadcrumbs
-        .container.p-6.clear-both class="sm:p-4"
+        .container.p-6.clear-both.sm:p-4
           = render Users::ImpersonatingBanner::Component.new
           = render partial: "layouts/flash"
           = yield

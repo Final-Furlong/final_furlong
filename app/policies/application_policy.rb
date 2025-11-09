@@ -1,5 +1,5 @@
 class ApplicationPolicy
-  attr_reader :user, :record
+  attr_reader :user, :record, :error_message_key, :error_message_18n_params
 
   def initialize(user, record)
     @user = user
@@ -38,6 +38,10 @@ class ApplicationPolicy
 
   def admin?
     user&.admin?
+  end
+
+  def stable
+    user&.stable
   end
 
   class Scope
