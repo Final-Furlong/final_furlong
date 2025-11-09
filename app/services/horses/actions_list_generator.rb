@@ -40,6 +40,9 @@ module Horses
         breed_mare
         manage_bookings
         view_comments
+        view_sales
+        view_highlights
+        view_shipping
         nominate_racehorse
         nominate_stud
         nominate_weanling

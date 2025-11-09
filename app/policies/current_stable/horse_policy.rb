@@ -118,6 +118,21 @@ module CurrentStable
       false
     end
 
+    def view_sales?
+      # TODO: migrate sales
+      false
+    end
+
+    def view_highlights?
+      # TODO: migrate highlights
+      false
+    end
+
+    def view_shipping?
+      # TODO: migrate shipping
+      false
+    end
+
     def nominate_racehorse?
       # TODO: migrate racehorse noms + implement them
       false
