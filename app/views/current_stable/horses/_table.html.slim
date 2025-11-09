@@ -10,17 +10,45 @@
           thead
             tr
               th= sort_link query, :name, Horses::Horse.human_attribute_name("name")
-              th= sort_link query, :age, Horses::Horse.human_attribute_name("age")
-              th= sort_link query, :gender, Horses::Horse.human_attribute_name("gender")
-              th= sort_link query, :owner, Horses::Horse.human_attribute_name("owner")
+              - unless @active_status.to_s == 'yearling' || @active_status.to_s == 'weanling'
+                th= sort_link query, :age, Horses::Horse.human_attribute_name("age")
+              - unless @active_status.to_s == 'broodmare' || @active_status.to_s == 'stud'
+                th= sort_link query, :gender, Horses::Horse.human_attribute_name("gender")
+              - if @active_status.to_s == 'racehorse'
+                th= Horses::Horse.human_attribute_name("track_record")
+              - elsif @active_status.to_s == 'broodmare' || @active_status.to_s == 'stud'
+                th= Horses::Horse.human_attribute_name("breed_record")
+                th= Horses::Horse.human_attribute_name("next_foal")
+              - elsif @active_status.to_s == 'yearling' || @active_status.to_s == 'weanling'
+                th= Horses::Horse.human_attribute_name("sire")
+                th= Horses::Horse.human_attribute_name("dam")
               th= t("common.actions.title")
             tbody.table-group-divider
               - horses.each do |horse|
                 tr
                   td.wb-break-all= horse.name || t("horse.unnamed")
-                  td.wb-break-all= horse.age
-                  td= t("horses.genders.#{horse.gender}")
-                  td= horse.owner.name
+                  - unless @active_status.to_s == 'yearling' || @active_status.to_s == 'weanling'
+                    td.wb-break-all= horse.age
+                  - unless @active_status.to_s == 'broodmare'
+                    td= t("horses.genders.#{horse.gender}")
+                  - if @active_status.to_s == 'yearling' || @active_status.to_s == 'weanling'
+                    - pedigree = Horses::PedigreeDisplayService.new(horse)
+                    td.wb-break-all= pedigree.sire_display(tag: true, target: '_top')
+                    td.wb-break-all= pedigree.dam_display(tag: true, target: '_top')
+                  - unless @active_status.to_s == 'yearling' || @active_status.to_s == 'weanling'
+                    - if @active_status.to_s == 'racehorse'
+                      td
+                        = horse.track_record
+                    - if @active_status.to_s == 'broodmare'
+                      td
+                        = horse.breed_ranking_string
+                      td
+                        = "next foal info"
+                    - if @active_status.to_s == 'stud'
+                      td
+                        = "breed ranking"
+                      td
+                        = "foal crop info"
                   td.actions-column.demo-navbar-user.nav-item.dropdown
                     = link_to horse_path(horse), class: "btn btn-sm btn-soft btn-primary",
                                                  data: { turbo_frame: "_top" } do

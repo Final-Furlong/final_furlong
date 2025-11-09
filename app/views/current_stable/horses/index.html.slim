@@ -2,8 +2,13 @@
   = render Nav::Breadcrumbs::Component.new(links: [{ name: Current.stable.name, href: current_stable_path },
                                                    { name: t(".title"), href: "#" }])
 
+= render Horses::SearchFilters::Component.new(version: request_variant, path_name: "stable_horses_path", params:, query: @query,
+        active_status: @active_status)
+
 .card.card-border.mt-2.p-2.shadow-md.dark:border-1.dark:border-neutral-100
   = turbo_stream_from "horses"
+  = render Horses::StatusList::Component.new(version: request_variant, variants: [:desktop], statuses: @statuses, active_status: @active_status,
+          params:, path_name: "stable_horses_path")
   .card-body
     = turbo_frame_tag "horses" do
       = render "table", horses: @horses, query: @query

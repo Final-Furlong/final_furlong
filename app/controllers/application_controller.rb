@@ -102,6 +102,7 @@ class ApplicationController < ActionController::Base
     return unless current_user
 
     Current.user = current_user
+    Current.stable = current_user.stable
   end
 end
 

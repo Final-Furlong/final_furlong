@@ -64,13 +64,13 @@ module Horses
     def set_owner_name_query
       return if query["owner_name_i_cont_all"].blank?
 
-      @horse_query = horse_query.joins(:owner).merge(Account::Stable.with_name(query["owne_name_i_cont_all"]))
+      @horse_query = horse_query.joins(:owner).merge(Account::Stable.with_name(query["owner_name_i_cont_all"]))
     end
 
     def set_breeder_name_query
       return if query["breeder_name_i_cont_all"].blank?
 
-      @horse_query = horse_query.joins(:breeder).merge(Account::Stable.with_name(query["owne_name_i_cont_all"]))
+      @horse_query = horse_query.joins(:breeder).merge(Account::Stable.with_name(query["breeder_name_i_cont_all"]))
     end
 
     def set_min_age_name_query

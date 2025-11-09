@@ -4,37 +4,37 @@
                              data: { turbo_action: "replace", controller: "auto-submit" } do |f|
       .grid.grid-cols-4.mb-2.gap-4
         div
-          label.visually-hidden for="q_name_i_cont_all"= I18n.t("horses.search.name")
+          label for="q_name_i_cont_all"= I18n.t("horses.search.name")
           = f.input :name_i_cont_all, label: false, required: false,
                                       input_html: { data: { action: 'keyup->auto-submit#submit' } }
         div
-          label.visually-hidden for="q_gender_in"= I18n.t("horses.search.gender")
+          label for="q_gender_in"= I18n.t("horses.search.gender")
           = f.input :gender_in, label: false, required: false, collection: Horses::Gender.localised_filter_options,
                                 selected: params.dig("q", "gender_in")&.join(",") || "",
                                 include_blank: true,
                                 input_html: { data: { action: 'auto-submit#submit' } }
         div
-          label.visually-hidden for="q_sire_name_i_cont_all"= I18n.t("horses.search.sire")
+          label for="q_sire_name_i_cont_all"= I18n.t("horses.search.sire")
           = f.input :sire_name_i_cont_all, label: false, required: false,
                   input_html: { data: { action: 'keyup->auto-submit#submit' } }
         div
-          label.visually-hidden for="q_dam_name_i_cont_all"= I18n.t("horses.search.dam")
+          label for="q_dam_name_i_cont_all"= I18n.t("horses.search.dam")
           = f.input :dam_name_i_cont_all, label: false, required: false,
                   input_html: { data: { action: 'keyup->auto-submit#submit' } }
         div
-          label.visually-hidden for="q_owner_name_i_cont_all"= I18n.t("horses.search.owner")
+          label for="q_owner_name_i_cont_all"= I18n.t("horses.search.owner")
           = f.input :owner_name_i_cont_all, label: false, required: false,
                   input_html: { data: { action: 'keyup->auto-submit#submit' } }
         div
-          label.visually-hidden for="q_breeder_name_i_cont_all"= I18n.t("horses.search.breeder")
+          label for="q_breeder_name_i_cont_all"= I18n.t("horses.search.breeder")
           = f.input :breeder_name_i_cont_all, label: false, required: false,
                   input_html: { data: { action: 'keyup->auto-submit#submit' } }
         div
-          label.visually-hidden for="q_age_gteq"= I18n.t("horses.search.min_age")
+          label for="q_age_gteq"= I18n.t("horses.search.min_age")
           = f.input :age_gteq, label: false, required: false, placeholder: "0",
                   input_html: { data: { action: 'keyup->auto-submit#submit' } }
         div
-          label.visually-hidden for="q_age_lteq"= I18n.t("horses.search.max_age")
+          label for="q_age_lteq"= I18n.t("horses.search.max_age")
           = f.input :age_lteq, label: false, required: false, placeholder: "10",
                   input_html: { data: { action: 'keyup->auto-submit#submit' } }
 

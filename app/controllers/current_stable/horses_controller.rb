@@ -5,7 +5,18 @@ module CurrentStable
     before_action :set_status_counts, only: :index
 
     def index
-      @query = policy_scope(Horses::Horse, policy_scope_class: CurrentStable::HorsePolicy::Scope).includes(:owner).ransack(params[:q])
+      set_status_counts
+      set_active_status
+      @query = policy_scope(Horses::Horse, policy_scope_class: CurrentStable::HorsePolicy::Scope)
+      case @active_status
+      when :racehorse
+        @query = @query.includes(:horse_attributes)
+      when :broodmare
+        @query = @query.includes(:broodmare_foal_record)
+      when :yearling, :weanling
+        @query = @query.includes(:sire, :dam)
+      end
+      @query = @query.ransack(params[:q])
       @query.sorts = "name asc" if @query.sorts.blank?
 
       @pagy, @horses = pagy(@query.result)
@@ -55,9 +66,9 @@ module CurrentStable
     end
 
     def set_first_status
-      return :racehorse if statuses.fetch(:racehorse, 0).positive?
+      return :racehorse if @statuses.fetch(:racehorse, 0).positive?
 
-      statuses.keys.first&.to_sym || :racehorse
+      @statuses.keys.first&.to_sym || :racehorse
     end
 
     def set_gender_select
@@ -65,8 +76,8 @@ module CurrentStable
     end
 
     def set_status_counts
-      query = params.to_unsafe_hash["q"].symbolize_keys if params[:q]
-      @statuses = Horses::SearchStatusCount.run(query:).result
+      params.to_unsafe_hash["q"].symbolize_keys if params[:q]
+      @statuses = Horses::SearchStatusCount.run(query: { owner_name_i_cont_all: Current.stable.name }).result
     end
   end
 end
