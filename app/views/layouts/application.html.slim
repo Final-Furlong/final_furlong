@@ -2,9 +2,10 @@ doctype html
 html(lang= I18n.locale)
   = render "layouts/head"
   body
-    .drawer.lg:h-screen.lg:drawer-open
+    .drawer.h-screen.lg:drawer-open
+      input.drawer-toggle#sidebar type="checkbox"
       main.drawer-content
-        label.float-left.btn.drawer-button.lg:hidden for="sidebar-drawer"
+        label.float-left.btn.drawer-button.lg:hidden for="sidebar"
           span.sr-only= t("layouts.nav.open_main_menu")
           i.fa-solid.fa-bars.fa-xl#icon-show-sidenav
         - unless signed_in?
