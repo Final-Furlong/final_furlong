@@ -1,11 +1,12 @@
 .navbar.bg-base-100.shadow-sm.border-neutral-content/80.border-b-1#top_nav
-  .flex-1
+  .flex-none
     ul
       li
         label.float-left.btn.drawer-button.lg:hidden for="sidebar-toggle"
           span.sr-only= t("layouts.nav.open_main_menu")
           i.fa-solid.fa-bars.fa-xl#icon-show-sidenav
-  .flex.gap-2
+  .flex-1
+  .flex-none.gap-2
     ul.menu-horizontal.bg-base-200.text-base-content.min-h-full[
       class="sm:border-0 dark:border-neutral-100/50"
     ]

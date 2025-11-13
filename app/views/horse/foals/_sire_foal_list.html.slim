@@ -1,6 +1,27 @@
 /# locals: (dashboard:)
-.m-2.mx-auto.overflow-x-auto.rounded-box.border.bg-base-100.w-full.border-base-content/70[
-  class="sm:w-3/4 dark:border-neutral-100"
+.mt-4.mx-auto.overflow-x-auto.w-full.sm:hidden
+  - dashboard.crops_list.each do |crop|
+    .card.card-border.bg-base-100.w-full.px-2.rounded-none
+      .card-body.p-0.rounded-none
+        .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+          input type="checkbox"
+          .collapse-title.font-semibold.font-medium
+            span= "#{crop.first.to_i} (#{crop.last.to_i})"
+          .collapse-content.text-sm.border-t-1.border-base-content/40
+            - dashboard.born_foals.with_yob(crop.first.to_i).each do |foal|
+              = render "sire_foal_collapse", foal:, unborn: false
+  - if (unborn_foals = dashboard.unborn_foals).count.positive?
+    .card.card-border.bg-base-100.w-full.px-2.rounded-none
+      .card-body.p-0.rounded-none
+        .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+          input type="checkbox"
+          .collapse-title.font-semibold.font-medium
+            span= "#{t(".unborn")} (#{dashboard.unborn_foals.count})"
+          .collapse-content.text-sm.border-t-1.border-base-content/40
+            - unborn_foals.each do |foal|
+              = render "sire_foal_collapse", foal:, unborn: true
+.hidden.mx-auto.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100.w-full[
+  class="sm:block sm:w-3/4 dark:border-neutral-100"
 ]
   table.table.table-sm
     thead

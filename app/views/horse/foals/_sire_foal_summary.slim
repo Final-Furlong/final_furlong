@@ -1,5 +1,6 @@
 /# locals: (dashboard:)
-.m-2.mx-auto.overflow-x-auto.rounded-box.border.bg-base-100.w-full.border-base-content/30[
+- record = dashboard.breeding_record
+.mt-4.mx-auto.overflow-x-auto.rounded-box.border.bg-base-100.w-full.border-base-content/30[
   class="sm:w-1/2"
 ]
   table.table.table-sm
@@ -8,12 +9,10 @@
         th.uppercase.text-center
           = t(".foals")
         th.uppercase.text-center
-          = t(".crops")
+          = t(".breed_ranking")
       tr.text-center
-        td
-          = dashboard.born_foals_count - dashboard.stillborn_foals_count
-        td
-          = dashboard.crops_count
+        td= record.living_foals_string
+        td= record.breed_ranking_string
       tr
         th.uppercase.text-center
           = t(".racers")
@@ -21,9 +20,9 @@
           = t(".winners")
       tr
         td.text-center
-          = "x (y%)"
+          = record.raced_foals_string
         td.text-center
-          = "x (y%)"
+          = record.winning_foals_string
       tr
         th.uppercase.text-center
           = t(".stakes_winners")
@@ -31,9 +30,9 @@
           = t(".multi_stakes_winners")
       tr
         td.text-center
-          = "x (y%)"
+          = record.stakes_winning_foals_string
         td.text-center
-          = "x (y%)"
+          = record.multi_stakes_winning_foals_string
       tr
         th.uppercase.text-center
           = t(".millionaires")
@@ -41,6 +40,6 @@
           = t(".average_earnings")
       tr
         td.text-center
-          = "x (y%)"
+          = record.millionaire_foals_string
         td.text-center
-          = "$x"
+          = record.earnings_string

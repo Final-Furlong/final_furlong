@@ -2172,6 +2172,51 @@ ALTER SEQUENCE public.stables_id_seq OWNED BY public.stables.id;
 
 
 --
+-- Name: stud_foal_records; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.stud_foal_records (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    born_foals_count integer DEFAULT 0 NOT NULL,
+    raced_foals_count integer DEFAULT 0 NOT NULL,
+    winning_foals_count integer DEFAULT 0 NOT NULL,
+    stakes_winning_foals_count integer DEFAULT 0 NOT NULL,
+    multi_stakes_winning_foals_count integer DEFAULT 0 NOT NULL,
+    millionaire_foals_count integer DEFAULT 0 NOT NULL,
+    multi_millionaire_foals_count integer DEFAULT 0 NOT NULL,
+    total_foal_earnings bigint DEFAULT 0 NOT NULL,
+    total_foal_points integer DEFAULT 0 NOT NULL,
+    total_foal_races integer DEFAULT 0 NOT NULL,
+    breed_ranking character varying,
+    unborn_foals_count integer DEFAULT 0 NOT NULL,
+    stillborn_foals_count integer DEFAULT 0 NOT NULL,
+    crops_count integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: stud_foal_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.stud_foal_records_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: stud_foal_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.stud_foal_records_id_seq OWNED BY public.stud_foal_records.id;
+
+
+--
 -- Name: track_surfaces; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2676,6 +2721,13 @@ ALTER TABLE ONLY public.stables ALTER COLUMN id SET DEFAULT nextval('public.stab
 
 
 --
+-- Name: stud_foal_records id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stud_foal_records ALTER COLUMN id SET DEFAULT nextval('public.stud_foal_records_id_seq'::regclass);
+
+
+--
 -- Name: track_surfaces id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3084,6 +3136,14 @@ ALTER TABLE ONLY public.settings
 
 ALTER TABLE ONLY public.stables
     ADD CONSTRAINT stables_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: stud_foal_records stud_foal_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stud_foal_records
+    ADD CONSTRAINT stud_foal_records_pkey PRIMARY KEY (id);
 
 
 --
@@ -4317,6 +4377,20 @@ CREATE UNIQUE INDEX index_stables_on_user_id ON public.stables USING btree (user
 
 
 --
+-- Name: index_stud_foal_records_on_born_foals_count; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_stud_foal_records_on_born_foals_count ON public.stud_foal_records USING btree (born_foals_count);
+
+
+--
+-- Name: index_stud_foal_records_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_stud_foal_records_on_horse_id ON public.stud_foal_records USING btree (horse_id);
+
+
+--
 -- Name: index_track_surfaces_on_racetrack_id_and_surface; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4710,6 +4784,14 @@ ALTER TABLE ONLY public.boardings
 
 
 --
+-- Name: stud_foal_records fk_rails_97dfbe062f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stud_foal_records
+    ADD CONSTRAINT fk_rails_97dfbe062f FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
 -- Name: horses fk_rails_99146e7c92; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4948,9 +5030,8 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251113202832'),
 ('20251111175717'),
-('20251111151941'),
-('20251111151940'),
 ('20251109221006'),
 ('20251108220626'),
 ('20251108095210'),

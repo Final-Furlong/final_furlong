@@ -1,5 +1,5 @@
 /# locals: (dashboard:)
-.mx-auto
+.mx-auto.sm:hidden
   .tabs.tabs-border.sm:hidden.dark:border-neutral-400 role="tablist"
     input.tab type="radio" name="foals" aria-label=t(".summary")
     .tab-content.border-base-300.bg-base-100
@@ -8,6 +8,7 @@
     input.tab type="radio" name="foals" aria-label=t(".foals") checked="checked"
     .tab-content.border-base-300.bg-base-100
       = render "sire_foal_list", dashboard: dashboard
-= render "sire_foal_summary", dashboard: dashboard
-.mt-4
-  = render "sire_foal_list", dashboard: dashboard
+.hidden.sm:block
+  = render "sire_foal_summary", dashboard: dashboard
+  .mt-4
+    = render "sire_foal_list", dashboard: dashboard

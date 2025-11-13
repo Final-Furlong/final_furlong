@@ -49,7 +49,6 @@
     .dropdown.dropdown-end.ml-auto
       .btn.m-1 tabindex="0" role="button" = t(".actions")
       ul.dropdown-content.menu.bg-base-100.rounded-box.z-1.w-52.p-2.shadow-sm tabindex="-1"
-        - pd actions
         - actions.each do |action_hash|
           li
             - if action_hash[:requires_form]

@@ -1,16 +1,15 @@
 module Horses
-  class BroodmareFoalRecord < ApplicationRecord
-    self.table_name = "broodmare_foal_records"
-    self.ignored_columns += ["old_id"]
+  class StudFoalRecord < ApplicationRecord
+    self.table_name = "stud_foal_records"
 
-    belongs_to :mare, class_name: "Horse", foreign_key: :horse_id, inverse_of: :broodmare_foal_record
+    belongs_to :stud, class_name: "Horse", foreign_key: :horse_id, inverse_of: :stud_foal_record
 
-    validates :born_foals_count, :stillborn_foals_count, :unborn_foals_count,
+    validates :crops_count, :born_foals_count, :stillborn_foals_count, :unborn_foals_count,
       :raced_foals_count, :winning_foals_count, :stakes_winning_foals_count,
       :multi_stakes_winning_foals_count, :millionaire_foals_count,
       :multi_millionaire_foals_count, :total_foal_earnings,
       :total_foal_races, :total_foal_points, presence: true
-    validates :born_foals_count, :stillborn_foals_count, :unborn_foals_count,
+    validates :crops_count, :born_foals_count, :stillborn_foals_count, :unborn_foals_count,
       :raced_foals_count, :winning_foals_count, :stakes_winning_foals_count,
       :multi_stakes_winning_foals_count, :millionaire_foals_count,
       :multi_millionaire_foals_count, :total_foal_earnings,
@@ -32,6 +31,14 @@ module Horses
 
     def living_foals_count
       born_foals_count - stillborn_foals_count
+    end
+
+    def living_foals_string
+      value = living_foals_count.to_s
+      if crops_count.positive?
+        value += " (#{crops_count} #{"crop".pluralize(crops_count)})"
+      end
+      value
     end
 
     def raced_foals_string
@@ -73,45 +80,35 @@ end
 
 # == Schema Information
 #
-# Table name: broodmare_foal_records
+# Table name: stud_foal_records
 # Database name: primary
 #
 #  id                               :bigint           not null, primary key
 #  born_foals_count                 :integer          default(0), not null, indexed
-#  breed_ranking                    :string           indexed
-#  millionaire_foals_count          :integer          default(0), not null, indexed
-#  multi_millionaire_foals_count    :integer          default(0), not null, indexed
-#  multi_stakes_winning_foals_count :integer          default(0), not null, indexed
-#  raced_foals_count                :integer          default(0), not null, indexed
-#  stakes_winning_foals_count       :integer          default(0), not null, indexed
-#  stillborn_foals_count            :integer          default(0), not null, indexed
+#  breed_ranking                    :string
+#  crops_count                      :integer          default(0), not null
+#  millionaire_foals_count          :integer          default(0), not null
+#  multi_millionaire_foals_count    :integer          default(0), not null
+#  multi_stakes_winning_foals_count :integer          default(0), not null
+#  raced_foals_count                :integer          default(0), not null
+#  stakes_winning_foals_count       :integer          default(0), not null
+#  stillborn_foals_count            :integer          default(0), not null
 #  total_foal_earnings              :bigint           default(0), not null
-#  total_foal_points                :integer          default(0), not null, indexed
-#  total_foal_races                 :integer          default(0), not null, indexed
-#  unborn_foals_count               :integer          default(0), not null, indexed
-#  winning_foals_count              :integer          default(0), not null, indexed
+#  total_foal_points                :integer          default(0), not null
+#  total_foal_races                 :integer          default(0), not null
+#  unborn_foals_count               :integer          default(0), not null
+#  winning_foals_count              :integer          default(0), not null
 #  created_at                       :datetime         not null
 #  updated_at                       :datetime         not null
-#  horse_id                         :bigint           not null, uniquely indexed
+#  horse_id                         :bigint           not null, indexed
 #
 # Indexes
 #
-#  idx_on_multi_stakes_winning_foals_count_d86a3500a8             (multi_stakes_winning_foals_count)
-#  index_broodmare_foal_records_on_born_foals_count               (born_foals_count)
-#  index_broodmare_foal_records_on_breed_ranking                  (breed_ranking)
-#  index_broodmare_foal_records_on_horse_id                       (horse_id) UNIQUE
-#  index_broodmare_foal_records_on_millionaire_foals_count        (millionaire_foals_count)
-#  index_broodmare_foal_records_on_multi_millionaire_foals_count  (multi_millionaire_foals_count)
-#  index_broodmare_foal_records_on_raced_foals_count              (raced_foals_count)
-#  index_broodmare_foal_records_on_stakes_winning_foals_count     (stakes_winning_foals_count)
-#  index_broodmare_foal_records_on_stillborn_foals_count          (stillborn_foals_count)
-#  index_broodmare_foal_records_on_total_foal_points              (total_foal_points)
-#  index_broodmare_foal_records_on_total_foal_races               (total_foal_races)
-#  index_broodmare_foal_records_on_unborn_foals_count             (unborn_foals_count)
-#  index_broodmare_foal_records_on_winning_foals_count            (winning_foals_count)
+#  index_stud_foal_records_on_born_foals_count  (born_foals_count)
+#  index_stud_foal_records_on_horse_id          (horse_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (horse_id => horses.id) ON DELETE => cascade ON UPDATE => cascade
+#  fk_rails_...  (horse_id => horses.id)
 #
 

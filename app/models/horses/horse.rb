@@ -39,6 +39,7 @@ module Horses
     has_many :foals, class_name: "Horses::Horse", inverse_of: :dam, dependent: :nullify
     has_many :stud_foals, class_name: "Horses::Horse", inverse_of: :sire, dependent: :nullify
     has_one :broodmare_foal_record, inverse_of: :mare, dependent: :delete
+    has_one :stud_foal_record, inverse_of: :stud, dependent: :delete
 
     enum :status, Status::STATUSES
     enum :gender, Gender::VALUES
@@ -56,13 +57,21 @@ module Horses
     scope :not_stillborn, -> { where(date_of_death: nil).or(where("date_of_death > date_of_birth")) }
     scope :female, -> { where(gender: Gender::FEMALE_GENDERS) }
     scope :not_female, -> { where.not(gender: Gender::FEMALE_GENDERS) }
+    scope :with_yob, ->(year) { where("DATE_PART('Year', date_of_birth) = ?", year) }
     scope :order_by_yob, -> { order(Arel.sql("TO_CHAR(date_of_birth, 'YYYY') ASC")) }
     scope :order_by_dam, -> { includes(:dam).order("dams_horses.name ASC") }
 
     delegate :title, :breeding_record, :dosage_text, :track_record, to: :horse_attributes, allow_nil: true
-    delegate :breed_ranking_string, to: :broodmare_foal_record, allow_nil: true
 
     # broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
+
+    def breed_ranking_string
+      if broodmare_foal_record
+        broodmare_foal_record.breed_ranking_string
+      elsif stud_foal_record
+        stud_foal_record.breed_ranking_string
+      end
+    end
 
     def age
       return 0 if stillborn?
@@ -76,7 +85,7 @@ module Horses
     end
 
     def female?
-      Gender::FEMALE_GENDERS.include?(gender)
+      ::Horses::Gender::FEMALE_GENDERS.include?(gender)
     end
 
     def male?

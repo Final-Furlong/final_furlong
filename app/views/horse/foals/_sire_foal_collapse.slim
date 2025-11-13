@@ -1,0 +1,42 @@
+/# locals: (foal:, unborn:)
+- pedigree = Horses::PedigreeDisplayService.new(foal)
+.card.card-border.bg-base-100.w-full.px-2.rounded-none
+  .card-body.p-0.rounded-none
+    .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+      input type="checkbox"
+      .collapse-title.font-semibold.font-medium
+        - if unborn
+          span= t("horse.in_foal").titleize
+          span.float-right= "Due date year"
+        - else
+          span class="text-#{foal.gender.downcase}"
+            = foal.name || t("horse.unnamed")
+      .collapse-content.text-sm.border-t-1.border-base-content/40
+        - unless unborn
+          p
+            span= t("horse.foals.sire_foal_list.gender")
+            span.float-right= foal.gender.titleize
+        p
+          span= t("horse.foals.sire_foal_list.dam")
+          span.float-right= pedigree.dam_display(tag: true, target: '_top')
+        - if unborn
+          p
+            span= t("horse.foals.dam_foal_list.due_date")
+            span.float-right= "due date here"
+          p.text-center
+            = link_to foal.dam.name, horse_path(foal.dam), class: 'btn btn-neutral', target: '_top'
+        - else
+          p
+            span= t("horse.foals.sire_foal_list.status")
+            span.float-right= foal.status.titleize
+          - unless foal.weanling? || foal.yearling?
+            p
+              span= t("horse.foals.sire_foal_list.record")
+              span.float-right
+          - if foal.stillborn?
+            em= t("horse.type.stillborn").titleize
+          - else
+            = foal.track_record
+          - unless foal.stillborn?
+            p.text-center
+              = link_to t("common.actions.view"), horse_path(foal), class: 'btn btn-neutral', target: '_top'
