@@ -1,6 +1,8 @@
 # Final Furlong
 
-[![CI](https://github.com/Final-Furlong/final_furlong/actions/workflows/test.yml/badge.svg)](https://github.com/Final-Furlong/final_furlong/actions/workflows/test.yml) | [![Maintainability](https://api.codeclimate.com/v1/badges/83d464b7f230d7c654c6/maintainability)](https://codeclimate.com/repos/6277f8245c68b90ca1004642/maintainability) | [![Test Coverage](https://api.codeclimate.com/v1/badges/83d464b7f230d7c654c6/test_coverage)](https://codeclimate.com/repos/6277f8245c68b90ca1004642/test_coverage)
+[![CI](https://github.com/Final-Furlong/final_furlong/actions/workflows/main.yml/badge.svg)](https://github.com/Final-Furlong/final_furlong/actions/workflows/main.yml)
+
+**Final Furlong** is a platform to run an online horse racing game.
 
 ## Setup
 
@@ -21,3 +23,11 @@
 
 * Rails logging is done via lograge.
   Run `bin/setup help` to learn how to run this locally.
+
+## Contributing
+
+- [Build details](BUILD_DETAIL.md)
+- [Detailed contributing guide](CONTRIBUTING.md)
+
+Once you’ve cloned the repo and set up the environment,
+you can run the specs, or submit a pull request.
