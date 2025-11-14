@@ -35,9 +35,8 @@ module Racing
             raise ActiveRecord::Rollback, race_horse.errors.full_messages.to_sentence
           end
         end
-        trigger_view_updates
         trigger_horse_attribute_updates(horses:)
-        trigger_broodmare_updates(horses:)
+        RaceDayUpdatorJob.perform_later if max_race?(date:, number:)
         return result
       rescue => e
         race_result.destroy if race_result.persisted?
@@ -63,9 +62,8 @@ module Racing
 
     private
 
-    def trigger_view_updates
-      Racing::AnnualRaceRecord.refresh
-      Racing::LifetimeRaceRecord.refresh
+    def max_race?(date:, number:)
+      number == Racing::RaceSchedule.where(date:).maximum(:number)
     end
 
     def trigger_horse_attribute_updates(horses:)
@@ -75,16 +73,6 @@ module Racing
         next if horse_hash[:finish_position] > 5 && !horse.horse_attributes
 
         Horses::UpdateHorseAttributesJob.perform_later(horse)
-      end
-    end
-
-    def trigger_broodmare_updates(horses:)
-      horses.each do |horse_hash|
-        horse = Horses::Horse.find_by(legacy_id: horse_hash[:legacy_id])
-        next unless horse
-        next if horse.dam_id.blank?
-
-        Horses::UpdateBroodmareFoalRecordJob.perform_later(horse.dam)
       end
     end
 

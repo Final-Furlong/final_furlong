@@ -58,8 +58,16 @@ module Horses
     scope :female, -> { where(gender: Gender::FEMALE_GENDERS) }
     scope :not_female, -> { where.not(gender: Gender::FEMALE_GENDERS) }
     scope :with_yob, ->(year) { where("DATE_PART('Year', date_of_birth) = ?", year) }
-    scope :order_by_yob, -> { order(Arel.sql("TO_CHAR(date_of_birth, 'YYYY') ASC")) }
-    scope :order_by_dam, -> { includes(:dam).order("dams_horses.name ASC") }
+    scope :with_sire, -> { where.associated(:sire) }
+    scope :with_dam, -> { where.associated(:dam) }
+    scope :order_by_yob, ->(dir = "asc") do
+      dir = "ASC" unless %w[asc desc].include?(dir.downcase)
+      order(Arel.sql("DATE_PART('Year', date_of_birth) #{dir.upcase}"))
+    end
+    scope :order_by_dam, ->(dir = "asc") do
+      dir = "ASC" unless %w[asc desc].include?(dir.downcase)
+      includes(:dam).order("dams_horses.name #{dir.upcase}")
+    end
 
     delegate :title, :breeding_record, :dosage_text, :track_record, to: :horse_attributes, allow_nil: true
 

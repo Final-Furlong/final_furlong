@@ -24,18 +24,6 @@ RSpec.describe Racing::RaceResultCreator do
         end.to change(Racing::RaceResultHorse, :count).by(1)
       end
 
-      it "triggers view updates" do
-        new_params = params.dup
-        new_params[:horses] = horses.slice(0, 1)
-        allow(Racing::AnnualRaceRecord).to receive(:refresh)
-        allow(Racing::LifetimeRaceRecord).to receive(:refresh)
-
-        described_class.new.create_result(**new_params)
-
-        expect(Racing::AnnualRaceRecord).to have_received(:refresh)
-        expect(Racing::LifetimeRaceRecord).to have_received(:refresh)
-      end
-
       it "triggers horse attribute job" do
         new_params = params.dup
         new_params[:horses] = horses.slice(0, 1)
@@ -63,35 +51,11 @@ RSpec.describe Racing::RaceResultCreator do
         end.to change(Racing::RaceResultHorse, :count).by(2)
       end
 
-      it "triggers view updates" do
-        allow(Racing::AnnualRaceRecord).to receive(:refresh)
-        allow(Racing::LifetimeRaceRecord).to receive(:refresh)
-
-        described_class.new.create_result(**params)
-
-        expect(Racing::AnnualRaceRecord).to have_received(:refresh)
-        expect(Racing::LifetimeRaceRecord).to have_received(:refresh)
-      end
-
       it "triggers horse attributes job for each horse" do
         described_class.new.create_result(**params)
 
         expect(Horses::UpdateHorseAttributesJob).to have_been_enqueued.with(horse1)
         expect(Horses::UpdateHorseAttributesJob).to have_been_enqueued.with(horse2)
-      end
-
-      context "when horses have dams" do
-        before do
-          horse1.update(dam: create(:horse, :broodmare))
-          horse2.update(dam: create(:horse, :broodmare))
-        end
-
-        it "triggers broodmare foal record update for each dam" do
-          described_class.new.create_result(**params)
-
-          expect(Horses::UpdateBroodmareFoalRecordJob).to have_been_enqueued.with(horse1.dam)
-          expect(Horses::UpdateBroodmareFoalRecordJob).to have_been_enqueued.with(horse2.dam)
-        end
       end
     end
 

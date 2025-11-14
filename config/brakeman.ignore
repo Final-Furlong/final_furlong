@@ -35,6 +35,29 @@
       "note": ""
     },
     {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "2eb02d2e98da541f4a97c986283506fb30341eee4612fc3c391ac1f8ed9ce0ad",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/horses/horse.rb",
+      "line": 65,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "Arel.sql(\"DATE_PART('Year', date_of_birth) #{(dir or \"ASC\").upcase}\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Horse",
+        "method": null
+      },
+      "user_input": "(dir or \"ASC\").upcase",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
       "warning_type": "File Access",
       "warning_code": 16,
       "fingerprint": "9eaa72231454a57305995ab6275f173df5e5175c04d488af5d65927c5d6eda71",

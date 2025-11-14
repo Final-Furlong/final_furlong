@@ -21,9 +21,6 @@ inherit_gem:
   standard-performance: config/base.yml
   standard-rails: config/base.yml
 
-inherit_from:
-  - .rubocop_strict.yml
-
 AllCops:
   DisplayCopNames: true
   Exclude:
@@ -65,6 +62,8 @@ Layout/SpaceInsideHashLiteralBraces:
 Layout/TrailingEmptyLines:
   Enabled: true
   EnforcedStyle: final_blank_line
+Lint/Debugger:
+  Enabled: true
 Lint/InterpolationCheck:
   Enabled: false
 Lint/SuppressedException:
@@ -96,15 +95,21 @@ Naming/InclusiveLanguage:
   Enabled: true
 Rails/BulkChangeTable:
   Enabled: false
+Rails/FindEach:
+  Enabled: true
 Rails/InverseOf:
   Exclude:
     - "app/models/legacy/*.rb"
 Rails/Output:
   Exclude:
     - "db/seeds.rb"
+Rails/UniqBeforePluck: # uniq.pluck and not pluck.uniq
+  Enabled: true
 Rails/WhereEquals:
   Exclude:
     - 'app/services/migrate_legacy_*.rb'
+RSpec/Focus:
+  Enabled: true
 Style/ClassAndModuleChildren:
   EnforcedStyle: nested
 Style/Documentation:

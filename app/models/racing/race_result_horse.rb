@@ -18,6 +18,7 @@ module Racing
 
     scope :by_finish, ->(position) { where(finish_position: position) }
     scope :by_max_finish, ->(position) { where(finish_position: ..position) }
+    scope :by_date, ->(date) { joins(:race).merge(RaceResult.by_date(date)) }
 
     has_flags 1 => :blinkers,
       2 => :shadow_roll,

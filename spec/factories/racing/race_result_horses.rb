@@ -1,39 +1,14 @@
-module Racing
-  class RaceResult < ApplicationRecord
-    self.table_name = "race_results"
-    self.ignored_columns += ["old_id"]
-
-    SPLITS = %w[4Q 2F].freeze
-
-    belongs_to :track_surface, class_name: "Racing::TrackSurface", foreign_key: :surface_id, inverse_of: :completed_races
-
-    has_many :horses, class_name: "Racing::RaceResultHorse", inverse_of: :race, dependent: :delete_all
-
-    validates :date, :number, :race_type, :age, :distance, :purse, :time_in_seconds, presence: true
-    validates :number, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 50 }
-    validates :time_in_seconds, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1_000 }
-    validates :split, inclusion: { in: SPLITS }
-    validates :race_type, inclusion: { in: Racing::RaceSchedule::RACE_TYPES }
-    validates :age, inclusion: { in: Racing::RaceSchedule::RACE_AGES }
-    validates :condition, inclusion: { in: Racing::TrackSurface::CONDITIONS }
-    validates :male_only, inclusion: { in: [true, false] }
-    validates :female_only, inclusion: { in: [true, false] }
-    validates :distance, numericality: { greater_than_or_equal_to: 5.0, less_than_or_equal_to: 24.0 }
-    validates :grade, inclusion: { in: Racing::RaceSchedule::RACE_GRADES }, allow_blank: true
-    validates :name, presence: true, if: :grade
-    validates :purse, numericality: { only_integer: true, greater_than_or_equal_to: 10_000, less_than_or_equal_to: 20_000_000 }
-    validates :claiming_price, numericality: { only_integer: true, greater_than_or_equal_to: 5_000, less_than_or_equal_to: 50_000 }, if: :claiming?
-
-    scope :by_year, ->(year) { where("DATE_PART('Year', date) = ?", year) }
-    scope :by_track, ->(track) { joins(:track_surface).merge(TrackSurface.send(track.to_sym)) }
-    scope :by_type, ->(type) { where(race_type: type) }
-    scope :by_date, ->(date) { where(date:) }
-
-    delegate :racetrack, to: :track_surface
-
-    def claiming?
-      race_type.to_s.casecmp("claiming").zero?
-    end
+FactoryBot.define do
+  factory :race_result_horse, class: "Racing::RaceResultHorse" do
+    race { association :race_result }
+    horse
+    legacy_horse_id { horse.legacy_id || Faker::Number.number(digits: 5) }
+    post_parade { 1 }
+    margins { "1|1|1|1" }
+    positions { "1|1|1|1" }
+    finish_position { 1 }
+    weight { 100 }
+    speed_factor { 100 }
   end
 end
 
