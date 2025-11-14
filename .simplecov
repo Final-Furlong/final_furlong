@@ -38,8 +38,8 @@ SimpleCov.profiles.define 'ci' do
     [
       SimpleCov::Formatter::JSONFormatter,
       SimpleCov::Formatter::CoberturaFormatter,
-      SimpleCov::Formatter::HTMLFormatter,
-      SimpleCov::Formatter::LcovFormatter
+      SimpleCov::Formatter::LcovFormatter,
+      SimpleCov::Formatter::Undercover
     ]
   )
 end
@@ -49,7 +49,8 @@ SimpleCov.profiles.define 'local' do
     [
       SimpleCov::Formatter::SimpleFormatter,
       SimpleCov::Formatter::LcovFormatter,
-      SimpleCov::Formatter::TailwindFormatter
+      SimpleCov::Formatter::TailwindFormatter,
+      SimpleCov::Formatter::Undercover
     ]
   )
 end
