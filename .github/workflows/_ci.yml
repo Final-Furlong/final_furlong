@@ -4,9 +4,6 @@ on:
       lcov-token:
         description: 'Github token for ff-bot'
         required: true
-      code-climate-token:
-        description: 'API key to report to Code Climate'
-        required: true
 
 env:
   CI: true
@@ -124,3 +121,9 @@ jobs:
           indicators: true
           output: both
           thresholds: '38 66'
+
+      - name: Publish Code Coverage
+        uses: qltysh/qlty-action/coverage@v2
+        with:
+          token: {{secrets.QLTY_COVERAGE_TOKEN}}
+          files: coverage/.resultset.json
