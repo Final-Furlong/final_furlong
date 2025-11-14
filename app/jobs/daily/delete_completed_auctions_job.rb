@@ -1,4 +1,4 @@
-class DeleteCompletedAuctionsJob < ApplicationJob
+class Daily::DeleteCompletedAuctionsJob < ApplicationJob
   queue_as :low_priority
 
   def perform(auction:)

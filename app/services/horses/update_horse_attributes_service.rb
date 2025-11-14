@@ -9,7 +9,9 @@ module Horses
     def update_horse(horse)
       horse_attributes = horse.horse_attributes || horse.build_horse_attributes
       record = horse.lifetime_race_record
-      track_record = if record.stakes_wins > 1 && record.stakes_places > 1
+      track_record = if record.blank?
+        "Unraced"
+      elsif record.stakes_wins > 1 && record.stakes_places > 1
         "Mult. Stakes Winner, Mult. Stakes Placed"
       elsif record.stakes_wins > 1 && record.stakes_places == 1
         "Mult. Stakes Winner, Stakes Placed"
@@ -44,9 +46,9 @@ module Horses
       else
         "Unplaced"
       end
-      if record.earnings >= 2_000_000
+      if record&.earnings&.>= 2_000_000
         track_record += ", Multi-Millionaire"
-      elsif record.earnings >= 1_000_000
+      elsif record&.earnings&.>= 1_000_000
         track_record += ", Millionaire"
       end
       horse_attributes.update(track_record:)

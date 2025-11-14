@@ -49,24 +49,11 @@ SimpleCov.profiles.define 'local' do
     [
       SimpleCov::Formatter::SimpleFormatter,
       SimpleCov::Formatter::LcovFormatter,
+      SimpleCov::Formatter::HTMLFormatter,
       SimpleCov::Formatter::TailwindFormatter,
       SimpleCov::Formatter::Undercover
     ]
   )
-end
-
-SimpleCov.profiles.define 'unit' do
-  coverage_dir 'coverage_unit'
-
-end
-
-SimpleCov.profiles.define 'system' do
-  coverage_dir 'coverage_system'
-
-  add_filter "app/controllers/api"
-  add_filter "app/lib/url_helpers_with_default_url_options.rb"
-  add_filter "app/validation"
-  add_filter "lib/core_extensions"
 end
 
 SimpleCov.profiles.define "default" do

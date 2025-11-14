@@ -26,7 +26,6 @@ CI.run do
   if success?
     unless limited_ci
       step "Tests: Rails", "bin/rspec"
-      step "Tests: Coverage", "undercover --simplecov coverage/coverage.json --compare origin/main" if external_ci
       step "Tests: Seeds", "env RAILS_ENV=test bin/rails db:seed:replant"
     end
   end

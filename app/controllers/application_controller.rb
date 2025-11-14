@@ -1,6 +1,8 @@
 require "browser/aliases"
 
 class ApplicationController < ActionController::Base
+  protect_from_forgery with: :exception
+
   include Pagy::Method
   include Devise::Controllers::Helpers
   include DeviseHooks
@@ -8,8 +10,6 @@ class ApplicationController < ActionController::Base
 
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-
-  protect_from_forgery prepend: true
 
   allow_browser versions: :modern
   impersonates :user, method: :current_user, with: ->(id) { Account::User.find_by(id:) }

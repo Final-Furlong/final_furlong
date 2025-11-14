@@ -1,4 +1,4 @@
-class ConsignAuctionHorsesJob < ApplicationJob
+class Auctions::ConsignHorsesJob < ApplicationJob
   queue_as :low_priority
 
   class AuctionNotCreated < StandardError; end

@@ -33,13 +33,13 @@ module Auctions
     end
 
     def schedule_job
-      ProcessAuctionSaleJob.set(wait: auction.hours_until_sold.hours).perform_later(
+      Auctions::ProcessSalesJob.set(wait: auction.hours_until_sold.hours).perform_later(
         bid: self, horse:, auction:, bidder:
       )
     end
 
     def sale_job
-      SolidQueue::Job.where(class_name: "ProcessAuctionSaleJob")
+      SolidQueue::Job.where(class_name: "Auctions::ProcessSalesJob")
         .where("arguments LIKE ?", "%#{horse_id}%")
         .where("arguments LIKE ?", "%#{auction_id}%")
     end

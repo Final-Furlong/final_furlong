@@ -1,4 +1,4 @@
-RSpec.describe CreateMixedAuctionJob, :perform_enqueued_jobs do
+RSpec.describe Auctions::CreateTwoYearOldAuctionJob, :perform_enqueued_jobs do
   describe "#perform" do
     it "uses low_priority queue", perform_enqueueed_jobs: false do
       expect do
@@ -9,7 +9,7 @@ RSpec.describe CreateMixedAuctionJob, :perform_enqueued_jobs do
     context "when auction already exists" do
       it "does not create auction" do
         final_furlong
-        travel_to Time.zone.local(2025, 6, 1, 0, 0, 0) do
+        travel_to Time.zone.local(2025, 2, 1, 0, 0, 0) do
           described_class.perform_later
 
           expect do
@@ -22,17 +22,17 @@ RSpec.describe CreateMixedAuctionJob, :perform_enqueued_jobs do
     context "when auction does not exist" do
       it "creates auction" do
         final_furlong
-        travel_to Time.zone.local(2025, 6, 1, 0, 0, 0) do
+        travel_to Time.zone.local(2025, 2, 1, 0, 0, 0) do
           expect do
             described_class.perform_later
           end.to change(Auction, :count).by(1)
         end
       end
 
-      context "when current date is later than June 15" do
+      context "when current date is later than Feb 15" do
         it "does not create auction" do
           final_furlong
-          travel_to Time.zone.local(2025, 6, 16, 0, 0, 0) do
+          travel_to Time.zone.local(2025, 2, 16, 0, 0, 0) do
             expect do
               described_class.perform_later
             end.not_to change(Auction, :count)
@@ -44,10 +44,10 @@ RSpec.describe CreateMixedAuctionJob, :perform_enqueued_jobs do
         it "does not create auction" do
           auction = build_stubbed(:auction, title: nil)
           auction.valid?
-          result = instance_double(Auctions::MixedAuctionCreator::Result, created?: false, auction:)
-          allow_any_instance_of(Auctions::MixedAuctionCreator).to receive(:create_auction).and_return result # rubocop:disable RSpec/AnyInstance
+          result = instance_double(Auctions::TwoYearOldAuctionCreator::Result, created?: false, auction:)
+          allow_any_instance_of(Auctions::TwoYearOldAuctionCreator).to receive(:create_auction).and_return result # rubocop:disable RSpec/AnyInstance
           final_furlong
-          travel_to Time.zone.local(2025, 6, 1, 0, 0, 0) do
+          travel_to Time.zone.local(2025, 2, 1, 0, 0, 0) do
             expect do
               described_class.perform_later
             end.to raise_error described_class::AuctionNotCreated, "Title can't be blank and Title is too short (minimum is 10 characters)"
