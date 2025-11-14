@@ -4387,7 +4387,7 @@ CREATE INDEX index_stud_foal_records_on_born_foals_count ON public.stud_foal_rec
 -- Name: index_stud_foal_records_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_stud_foal_records_on_horse_id ON public.stud_foal_records USING btree (horse_id);
+CREATE UNIQUE INDEX index_stud_foal_records_on_horse_id ON public.stud_foal_records USING btree (horse_id);
 
 
 --
@@ -5030,6 +5030,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251114085550'),
 ('20251113202832'),
 ('20251111175717'),
 ('20251109221006'),

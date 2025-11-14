@@ -13,6 +13,8 @@ en:
     attributes:
       horses/lease_termination_request:
         owner_accepted_end: Owner
+      horses/stud_foal_record:
+        crop: Crop
       setting:
         dark_mode: Dark Mode
         dark_theme: Dark Mode Theme

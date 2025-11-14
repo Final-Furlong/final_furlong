@@ -54,8 +54,6 @@ en:
         foals_with_count: Foals (%{count})
         summary: Summary
       sire_foal_list:
-        all: All
-        crops: Crops
         dam: Dam
         gender: Gender
         name: Name
@@ -66,7 +64,6 @@ en:
       sire_foal_summary:
         average_earnings: Ave. Earnings
         breed_ranking: Breed Ranking
-        crops: Foal Crops
         foals: Foals
         millionaires: Millionaires
         multi_stakes_winners: Mult. Stakes Winners

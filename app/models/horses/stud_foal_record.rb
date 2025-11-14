@@ -36,7 +36,8 @@ module Horses
     def living_foals_string
       value = living_foals_count.to_s
       if crops_count.positive?
-        value += " (#{crops_count} #{"crop".pluralize(crops_count)})"
+        crop_string = I18n.t("activerecord.attributes.horses/stud_foal_record.crop")
+        value += " (#{crops_count} #{crop_string.downcase.pluralize(crops_count)})"
       end
       value
     end
@@ -100,12 +101,12 @@ end
 #  winning_foals_count              :integer          default(0), not null
 #  created_at                       :datetime         not null
 #  updated_at                       :datetime         not null
-#  horse_id                         :bigint           not null, indexed
+#  horse_id                         :bigint           not null, uniquely indexed
 #
 # Indexes
 #
 #  index_stud_foal_records_on_born_foals_count  (born_foals_count)
-#  index_stud_foal_records_on_horse_id          (horse_id)
+#  index_stud_foal_records_on_horse_id          (horse_id) UNIQUE
 #
 # Foreign Keys
 #
