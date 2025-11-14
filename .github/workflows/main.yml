@@ -17,4 +17,4 @@ jobs:
     uses: Final-Furlong/final_furlong/.github/workflows/_ci.yml@main
     secrets:
       lcov-token: ${{ secrets.LCOV_GITHUB_TOKEN }}
-      code-climate-token: ${{ secrets.CC_TEST_REPORTER_ID }}
+      QLTY_COVERAGE_TOKEN: ${{ secrets.QLTY_COVERAGE_TOKEN }}
