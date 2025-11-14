@@ -1,6 +1,7 @@
 # Final Furlong
 
 [![CI](https://github.com/Final-Furlong/final_furlong/actions/workflows/main.yml/badge.svg)](https://github.com/Final-Furlong/final_furlong/actions/workflows/main.yml)
+[![Maintainability](https://qlty.sh/badges/5d217b6a-2125-461f-98c2-9b6c82cae534/maintainability.svg)](https://qlty.sh/gh/Final-Furlong/projects/final_furlong)
 
 **Final Furlong** is a platform to run an online horse racing game.
 

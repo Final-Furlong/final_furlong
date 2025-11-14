@@ -4,6 +4,9 @@ on:
       lcov-token:
         description: 'Github token for ff-bot'
         required: true
+      QLTY_COVERAGE_TOKEN:
+        description: 'Unique token for Qlty'
+        required: true
 
 env:
   CI: true
@@ -124,6 +127,7 @@ jobs:
 
       - name: Publish Code Coverage
         uses: qltysh/qlty-action/coverage@v2
+        env:
+          QLTY_COVERAGE_TOKEN: ${{ secrets.QLTY_COVERAGE_TOKEN }}
         with:
-          token: {{secrets.QLTY_COVERAGE_TOKEN}}
           files: coverage/.resultset.json
