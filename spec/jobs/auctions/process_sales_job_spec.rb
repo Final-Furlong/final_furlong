@@ -1,4 +1,4 @@
-RSpec.describe ProcessAuctionSaleJob, :perform_enqueued_jobs do
+RSpec.describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
   describe "#perform" do
     before do
       allow(Auctions::HorseSeller).to receive(:new).and_return mock_seller

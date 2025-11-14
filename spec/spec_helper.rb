@@ -2,6 +2,7 @@
 if ENV.fetch("COVERAGE", false) || ENV.fetch("CI", false)
   require "simplecov"
   require "undercover/simplecov_formatter"
+  SimpleCov.start "rails"
 end
 
 require "capybara/rspec"

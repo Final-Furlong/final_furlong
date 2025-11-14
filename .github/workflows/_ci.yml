@@ -103,6 +103,10 @@ jobs:
       - name: CI Run
         run: |
           bin/ci
+          ruby -e "$(curl -s https://undercover-ci.com/uploader.rb)" -- \
+            --repo ${{ github.repository }} \
+            --commit ${{ github.event.pull_request.head.sha || github.sha }} \
+            --simplecov coverage/coverage.json
 
       - name: Coverage Report
         if: github.event.pull_request

@@ -1,16 +1,16 @@
-class CreateSelectAuctionJob < ApplicationJob
+class Auctions::CreateTwoYearOldAuctionJob < ApplicationJob
   queue_as :low_priority
 
   class AuctionNotCreated < StandardError; end
 
   def perform
     return if Auction.exists?(start_time:, end_time:, title:, auctioneer: final_furlong)
-    return if Date.current > Date.new(Date.current.year, 8, 15)
+    return if Date.current > Date.new(Date.current.year, 2, 15)
 
-    result = Auctions::SelectAuctionCreator.new.create_auction(auction_params)
+    result = Auctions::TwoYearOldAuctionCreator.new.create_auction(auction_params)
     raise AuctionNotCreated, result.auction.errors.full_messages.to_sentence unless result.created?
 
-    ConsignAuctionHorsesJob.set(wait: 5.minutes).perform_later(auction: result.auction)
+    Auctions::ConsignHorsesJob.set(wait: 5.minutes).perform_later(auction: result.auction)
   end
 
   private
@@ -22,13 +22,14 @@ class CreateSelectAuctionJob < ApplicationJob
       hours_until_sold: 48,
       outside_horses_allowed: true,
       racehorse_allowed_2yo: true,
-      racehorse_allowed_3yo: true,
-      racehorse_allowed_older: true,
-      broodmare_allowed: true,
-      stallion_allowed: true,
-      yearling_allowed: true,
-      weanling_allowed: true,
-      reserve_pricing_allowed: true,
+      racehorse_allowed_3yo: false,
+      racehorse_allowed_older: false,
+      broodmare_allowed: false,
+      stallion_allowed: false,
+      yearling_allowed: false,
+      weanling_allowed: false,
+      reserve_pricing_allowed: false,
+      spending_cap_per_stable: 100_000,
       auctioneer: final_furlong,
       title:
     }
@@ -39,7 +40,7 @@ class CreateSelectAuctionJob < ApplicationJob
   end
 
   def start_time
-    @start_time ||= date_of_third_saturday(month: 9, year: Date.current.year).beginning_of_day
+    @start_time ||= date_of_third_saturday(month: 3, year: Date.current.year).beginning_of_day
   end
 
   def end_time
@@ -47,7 +48,7 @@ class CreateSelectAuctionJob < ApplicationJob
   end
 
   def title
-    @title ||= "#{Date.current.year} Select Auction"
+    @title ||= "#{Date.current.year} Two Year Old Auction"
   end
 
   def date_of_third_saturday(month:, year:)

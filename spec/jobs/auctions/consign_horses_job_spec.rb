@@ -1,4 +1,4 @@
-RSpec.describe ConsignAuctionHorsesJob, :perform_enqueued_jobs do
+RSpec.describe Auctions::ConsignHorsesJob, :perform_enqueued_jobs do
   describe "#perform" do
     it "uses low_priority queue", perform_enqueueed_jobs: false do
       expect do

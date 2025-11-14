@@ -1,16 +1,16 @@
-class CreateMixedAuctionJob < ApplicationJob
+class Auctions::CreateFoalAuctionJob < ApplicationJob
   queue_as :low_priority
 
   class AuctionNotCreated < StandardError; end
 
   def perform
     return if Auction.exists?(start_time:, end_time:, title:, auctioneer: final_furlong)
-    return if Date.current > Date.new(Date.current.year, 6, 15)
+    return if Date.current > Date.new(Date.current.year, 11, 15)
 
-    result = Auctions::MixedAuctionCreator.new.create_auction(auction_params)
+    result = Auctions::FoalAuctionCreator.new.create_auction(auction_params)
     raise AuctionNotCreated, result.auction.errors.full_messages.to_sentence unless result.created?
 
-    ConsignAuctionHorsesJob.set(wait: 5.minutes).perform_later(auction: result.auction)
+    Auctions::ConsignHorsesJob.set(wait: 5.minutes).perform_later(auction: result.auction)
   end
 
   private
@@ -21,11 +21,11 @@ class CreateMixedAuctionJob < ApplicationJob
       end_time:,
       hours_until_sold: 24,
       outside_horses_allowed: true,
-      racehorse_allowed_2yo: true,
-      racehorse_allowed_3yo: true,
-      racehorse_allowed_older: true,
-      broodmare_allowed: true,
-      stallion_allowed: true,
+      racehorse_allowed_2yo: false,
+      racehorse_allowed_3yo: false,
+      racehorse_allowed_older: false,
+      broodmare_allowed: false,
+      stallion_allowed: false,
       yearling_allowed: true,
       weanling_allowed: true,
       reserve_pricing_allowed: false,
@@ -40,7 +40,7 @@ class CreateMixedAuctionJob < ApplicationJob
   end
 
   def start_time
-    @start_time ||= date_of_third_saturday(month: 7, year: Date.current.year).beginning_of_day
+    @start_time ||= date_of_third_saturday(month: 12, year: Date.current.year).beginning_of_day
   end
 
   def end_time
@@ -48,7 +48,7 @@ class CreateMixedAuctionJob < ApplicationJob
   end
 
   def title
-    @title ||= "#{Date.current.year} Mixed Auction"
+    @title ||= "#{Date.current.year} Foal Auction"
   end
 
   def date_of_third_saturday(month:, year:)

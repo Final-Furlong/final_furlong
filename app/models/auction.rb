@@ -69,11 +69,11 @@ class Auction < ApplicationRecord
   end
 
   def deletion_job
-    SolidQueue::Job.where(class_name: "DeleteCompletedAuctionsJob").where("arguments LIKE ?", "%#{global_id_string}%")
+    SolidQueue::Job.where(class_name: "Daily::DeleteCompletedAuctionsJob").where("arguments LIKE ?", "%#{global_id_string}%")
   end
 
   def schedule_job
-    DeleteCompletedAuctionsJob.set(wait_until: end_time + 1.minute).perform_later(auction: self)
+    Daily::DeleteCompletedAuctionsJob.set(wait_until: end_time + 1.minute).perform_later(auction: self)
   end
 
   def today_plus_min_duration
