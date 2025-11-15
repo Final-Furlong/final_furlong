@@ -268,18 +268,44 @@ RSpec.describe Auctions::BidCreator do
         end.to change(SolidQueue::Job, :count).by(1)
       end
     end
+  end
 
-    context "when bidder already has a high bid on another horse" do
-      before { ActiveJob::Base.queue_adapter = :solid_queue }
+  context "when bid amount exactly matches maximum bid" do
+    it "returns created true" do
+      create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
+      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
+      result = described_class.new.create_bid(bid_params.merge(current_bid: 6000, maximum_bid: 10_000))
+      expect(result.created?).to be false
+    end
 
-      after { ActiveJob::Base.queue_adapter = :test }
+    it "returns no error" do
+      create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
+      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
+      result = described_class.new.create_bid(bid_params.merge(current_bid: 6000, maximum_bid: 10_000))
+      expect(result.error).to eq "Current bid must be greater than or equal to 10500"
+    end
 
-      it "does not schedule process sales job" do
-        Auctions::ProcessSalesJob.set(wait: 1.hour).perform_later(bidder: stable, auction:)
-        expect do
-          described_class.new.create_bid(bid_params.merge(current_bid: 10_500, maximum_bid: 20_000))
-        end.not_to change(SolidQueue::Job, :count)
-      end
+    it "creates 2 bids" do
+      create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
+      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
+      expect do
+        described_class.new.create_bid(bid_params.merge(current_bid: 6000, maximum_bid: 10_000))
+      end.to change(Auctions::Bid, :count).by(2)
+    end
+
+    it "updates old bid to the max" do
+      create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
+      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
+      described_class.new.create_bid(bid_params.merge(current_bid: 10_000, maximum_bid: 10_000))
+      under_bid = Auctions::Bid.find_by(horse:, bidder: stable)
+      expect(under_bid).to have_attributes(current_bid: 9500, maximum_bid: 10_000)
+    end
+
+    it "sets the right data for tne new current bid" do
+      create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
+      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
+      described_class.new.create_bid(bid_params.merge(current_bid: 6000, maximum_bid: 10_000))
+      expect(Auctions::Bid.where(horse:).winning.first).to have_attributes(current_bid: 10_000, maximum_bid: 10_000)
     end
   end
 

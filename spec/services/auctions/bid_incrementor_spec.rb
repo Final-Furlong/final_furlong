@@ -56,17 +56,17 @@ RSpec.describe Auctions::BidIncrementor do
 
     it "sets correct attributes for new bid for high bidder" do
       freeze_time
-      described_class.new.increment_bid(bid_params.merge(current_bid: 5000))
-      new_bid = Auctions::Bid.where.not(id: bid.id).find_by(bidder: bid.bidder)
+      described_class.new.increment_bid(bid_params.merge(current_bid: 3500, maximum_bid: 5000))
+      new_bid = Auctions::Bid.where(bidder: bid.bidder, horse:).current_high_bid.first
       expect(new_bid).to have_attributes(current_bid: 5000, maximum_bid: 5000, bidder: bid.bidder,
         created_at: Time.current, updated_at: Time.current, current_high_bid: true)
     end
 
     it "sets correct attributes for new bid for under-bidder" do
       freeze_time
-      described_class.new.increment_bid(bid_params.merge(current_bid: 5000))
-      new_bid = Auctions::Bid.where.not(bidder: bid.bidder).find_by(horse: bid.horse)
-      expect(new_bid).to have_attributes(current_bid: 5000, maximum_bid: nil, bidder: stable,
+      described_class.new.increment_bid(bid_params.merge(current_bid: 3500, maximum_bid: 5000))
+      new_bid = Auctions::Bid.where(bidder: stable).find_by(horse: bid.horse)
+      expect(new_bid).to have_attributes(current_bid: 4500, maximum_bid: 5000, bidder: stable,
         created_at: 1.second.ago, updated_at: 1.second.ago, current_high_bid: false)
     end
   end

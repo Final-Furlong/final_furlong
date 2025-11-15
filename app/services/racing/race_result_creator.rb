@@ -36,7 +36,7 @@ module Racing
           end
         end
         trigger_horse_attribute_updates(horses:)
-        Racing::RaceDayUpdaterJob.perform_later if max_race?(date:, number:)
+        Racing::RaceDayUpdaterJob.perform_later(date:) if max_race?(date:, number:)
         return result
       rescue => e
         race_result.destroy if race_result.persisted?
