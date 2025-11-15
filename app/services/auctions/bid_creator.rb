@@ -106,14 +106,15 @@ module Auctions
           current_bid: bid_params[:current_bid],
           maximum_bid: bid_params[:maximum_bid].presence,
           comment: bid_params[:comment],
-          notify_if_outbid: false
+          notify_if_outbid: false,
+          current_high_bid: true
         )
 
         if bid.valid?
           result.created = bid.save
           if result.created?
-            bid.unschedule_sale
-            schedule_job(bid)
+            unschedule_previous_bid_job(bid)
+            schedule_sale_job(bid)
           end
         else
           result.error = bid.errors.full_messages.to_sentence
@@ -144,9 +145,30 @@ module Auctions
 
     private
 
-    def schedule_job(bid)
+    def unschedule_previous_bid_job(bid)
+      old_bid = Auctions::Bid.where(auction: bid.auction, horse: bid.horse).where.not(id: bid.id).winning.first
+      return unless old_bid
+
+      return if Auctions::Bid.where(auction: bid.auction, bidder: old_bid.bidder).where.not(horse: bid.horse).current_high_bid.exists?
+
+      SolidQueue::Job.where(class_name: "Auctions::ProcessSalesJob")
+        .where("arguments LIKE ?", "%#{old_bid.bidder_id}%")
+        .where("arguments LIKE ?", "%#{bid.auction.id}%")
+        .delete_all
+    end
+
+    def schedule_sale_job(bid)
       sale_time = bid.updated_at + bid.auction.hours_until_sold.hours
-      Auctions::ProcessSalesJob.set(wait_until: sale_time).perform_later(bid:, horse: bid.horse)
+      return if schedule_exists?(bid.auction, bid.bidder, sale_time)
+
+      Auctions::ProcessSalesJob.set(wait_until: sale_time).perform_later(bidder: bid.bidder, auction: bid.auction)
+    end
+
+    def schedule_exists?(auction, bidder, time)
+      SolidQueue::Job.where(class_name: "Auctions::ProcessSalesJob")
+        .where("arguments LIKE ?", "%#{bidder.id}%")
+        .where("arguments LIKE ?", "%#{auction.id}%")
+        .exists?(["scheduled_at < ?", time])
     end
 
     def money_spent(bidder_id)

@@ -37,29 +37,5 @@ RSpec.describe Auctions::Bid do
       end
     end
   end
-
-  describe "callbacks" do
-    before { ActiveJob::Base.queue_adapter = :solid_queue }
-
-    after { ActiveJob::Base.queue_adapter = :test }
-
-    context "when bid is destroyed" do
-      it "deletes enqueued process auction sale job" do
-        bid = create(:auction_bid)
-        Auctions::ProcessSalesJob.set(wait: bid.auction.hours_until_sold.hours).perform_later(bid:, horse: bid.horse)
-        last_job = SolidQueue::Job.order(id: :desc).first
-        expect do
-          bid.destroy
-        end.to change(SolidQueue::Job, :count).by(-1)
-        expect(SolidQueue::Job.exists?(id: last_job.id)).to be false
-      end
-    end
-  end
-
-  private
-
-  def global_id_string(object)
-    object.to_global_id.to_s
-  end
 end
 

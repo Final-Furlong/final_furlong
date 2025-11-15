@@ -8,6 +8,7 @@ module Auctions
       ActiveRecord::Base.transaction do
         new_current_bid = [bid_params[:current_bid].to_i, bid_params[:maximum_bid].to_i].max
         new_maximum_bid = bid_params[:maximum_bid].to_i if bid_params[:maximum_bid].to_i >= new_current_bid
+        original_bid.update(current_high_bid: false)
         Auctions::Bid.create!(
           auction: original_bid.auction,
           horse: original_bid.horse,
@@ -30,10 +31,9 @@ module Auctions
           current_bid: update_current_bid,
           maximum_bid: original_bid.maximum_bid,
           notify_if_outbid: false,
-          updated_at: Time.current
+          updated_at: Time.current,
+          current_high_bid: true
         )
-        bid.unschedule_sale
-        schedule_job(bid)
         return Result.new(created: true, current_bid: bid)
       end
     rescue ActiveRecord::ActiveRecordError
@@ -51,13 +51,6 @@ module Auctions
       def created?
         @created
       end
-    end
-
-    private
-
-    def schedule_job(bid)
-      sale_time = bid.updated_at + bid.auction.hours_until_sold.hours
-      Auctions::ProcessSalesJob.set(wait_until: sale_time).perform_later(bid:, horse: bid.horse)
     end
   end
 end

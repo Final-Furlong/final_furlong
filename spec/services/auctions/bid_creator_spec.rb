@@ -230,12 +230,49 @@ RSpec.describe Auctions::BidCreator do
       )
     end
 
-    it "enqueues one sale job" do
-      create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
-      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
-      expect do
-        described_class.new.create_bid(bid_params.merge(current_bid: 10_500, maximum_bid: 20_000))
-      end.to have_enqueued_job(Auctions::ProcessSalesJob)
+    context "when previous bidder does no has a high bid on another horse" do
+      before { ActiveJob::Base.queue_adapter = :solid_queue }
+
+      after { ActiveJob::Base.queue_adapter = :test }
+
+      it "does not modify process sales job" do
+        old_bidder = create(:stable)
+        create(:auction_bid, horse:, auction:, bidder: old_bidder, current_high_bid: true, current_bid: 2000)
+        Auctions::ProcessSalesJob.set(wait: 1.hour).perform_later(bidder: old_bidder, auction:)
+        expect do
+          described_class.new.create_bid(bid_params.merge(current_bid: 10_500, maximum_bid: 20_000))
+        end.not_to change(SolidQueue::Job, :count)
+      end
+    end
+
+    context "when previous bidder already has a high bid on another horse" do
+      before { ActiveJob::Base.queue_adapter = :solid_queue }
+
+      after { ActiveJob::Base.queue_adapter = :test }
+
+      it "does not modify process sales job" do
+        horse2 = create(:auction_horse, auction:)
+        old_bidder = create(:stable)
+        create(:auction_bid, horse: horse2, auction:, bidder: old_bidder, current_high_bid: true)
+        create(:auction_bid, horse:, auction:, bidder: old_bidder, current_high_bid: true, current_bid: 2000)
+        Auctions::ProcessSalesJob.set(wait: 1.hour).perform_later(bidder: old_bidder, auction:)
+        expect do
+          described_class.new.create_bid(bid_params.merge(current_bid: 10_500, maximum_bid: 20_000))
+        end.to change(SolidQueue::Job, :count).by(1)
+      end
+    end
+
+    context "when bidder already has a high bid on another horse" do
+      before { ActiveJob::Base.queue_adapter = :solid_queue }
+
+      after { ActiveJob::Base.queue_adapter = :test }
+
+      it "does not schedule process sales job" do
+        Auctions::ProcessSalesJob.set(wait: 1.hour).perform_later(bidder: stable, auction:)
+        expect do
+          described_class.new.create_bid(bid_params.merge(current_bid: 10_500, maximum_bid: 20_000))
+        end.not_to change(SolidQueue::Job, :count)
+      end
     end
   end
 
@@ -380,6 +417,20 @@ RSpec.describe Auctions::BidCreator do
       expect do
         described_class.new.create_bid(bid_params.merge(auction_id: auction.id, current_bid: 5_000, maximum_bid: 7_500))
       end.to change(Auctions::Bid, :count).by(1)
+    end
+
+    context "when bidder already has a high bid on another horse" do
+      before { ActiveJob::Base.queue_adapter = :solid_queue }
+
+      after { ActiveJob::Base.queue_adapter = :test }
+
+      it "schedules process sales job" do
+        auction = create(:auction, :current, spending_cap_per_stable: 10_000)
+        horse.update(auction:)
+        expect do
+          described_class.new.create_bid(bid_params.merge(auction_id: auction.id, current_bid: 5_000, maximum_bid: 7_500))
+        end.to change(SolidQueue::Job, :count).by(1)
+      end
     end
   end
 

@@ -6,37 +6,18 @@ RSpec.describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
 
     it "uses low_priority queue", perform_enqueueed_jobs: false do
       expect do
-        described_class.perform_later(bid:, horse:)
+        described_class.perform_later(bidder, auction)
       end.to have_enqueued_job.on_queue("default")
     end
 
-    context "when horse is sold" do
-      it "does not trigger horse seller" do
-        horse.update(sold_at: Time.current)
-        described_class.perform_later(bid:, horse:)
-        expect(Auctions::HorseSeller).not_to have_received(:new)
-      end
-    end
-
-    context "when winning bid is not equal to params bid" do
-      before do
-        result = insert_bid({ auction_id: auction.id,
-                              horse_id: horse.id,
-                              bidder_id: create(:stable).id,
-                              current_bid: 15_000 })
-        @winning_bid = Auctions::Bid.find(result.rows.flatten.first)
-      end
-
-      it "trigger horse seller with other bid" do
-        described_class.perform_later(bid:, horse:)
-        expect(mock_seller).to have_received(:process_sale).with(bid: @winning_bid)
-      end
-    end
-
-    context "when winning bid is equal to params bid" do
-      it "triggers horse seller" do
-        described_class.perform_later(bid:, horse:)
+    context "when bidder has high bids on horses" do
+      it "triggers horse seller for each horse" do
+        bid
+        bid2
+        allow(Auctions::HorseSeller).to receive(:new).and_return mock_seller
+        described_class.perform_later(bidder, auction)
         expect(mock_seller).to have_received(:process_sale).with(bid:)
+        expect(mock_seller).to have_received(:process_sale).with(bid: bid2)
       end
     end
   end
@@ -52,9 +33,23 @@ RSpec.describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
     result = insert_bid({ auction_id: auction.id,
                           horse_id: horse.id,
                           bidder_id: bidder.id,
-                          current_bid: 10_000 })
+                          current_bid: 10_000,
+                          current_high_bid: true,
+                          updated_at: DateTime.current - auction.hours_until_sold.hours - 1.second })
 
     @bid = Auctions::Bid.find(result.rows.flatten.first)
+  end
+
+  def bid2
+    return @bid2 if @bid2
+    result = insert_bid({ auction_id: auction.id,
+                          horse_id: horse2.id,
+                          bidder_id: bidder.id,
+                          current_bid: 10_000,
+                          current_high_bid: true,
+                          updated_at: DateTime.current - auction.hours_until_sold.hours - 1.second })
+
+    @bid2 = Auctions::Bid.find(result.rows.flatten.first)
   end
 
   def insert_bid(attrs)
@@ -69,6 +64,10 @@ RSpec.describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
 
   def horse
     @horse ||= create(:auction_horse, auction:)
+  end
+
+  def horse2
+    @horse2 ||= create(:auction_horse, auction:)
   end
 
   def bidder

@@ -21,7 +21,7 @@ module Account
     has_many :training_schedules, class_name: "Racing::TrainingSchedule", inverse_of: :stable,
       dependent: :restrict_with_exception
     has_many :auctions, class_name: "Auction", inverse_of: :auctioneer, dependent: :restrict_with_exception
-    has_many :auction_bids, class_name: "Auctions::Bid", inverse_of: :bidder, dependent: :destroy
+    has_many :auction_bids, class_name: "Auctions::Bid", inverse_of: :bidder, dependent: :delete_all
 
     validates :name, :miles_from_track, presence: true
     validates :name, uniqueness: { case_sensitive: false }

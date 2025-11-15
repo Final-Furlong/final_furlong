@@ -13,7 +13,7 @@ class Auction < ApplicationRecord
 
   belongs_to :auctioneer, class_name: "Account::Stable"
   has_many :horses, class_name: "Auctions::Horse", dependent: :destroy
-  has_many :bids, class_name: "Auctions::Bid", dependent: :destroy
+  has_many :bids, class_name: "Auctions::Bid", dependent: :delete_all
   has_many :consignment_configs, class_name: "Auctions::ConsignmentConfig", dependent: :delete_all
 
   after_commit :schedule_deletion, on: %i[create update]

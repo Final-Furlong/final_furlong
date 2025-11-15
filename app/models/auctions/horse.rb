@@ -10,7 +10,8 @@ module Auctions
 
     belongs_to :auction, class_name: "::Auction"
     belongs_to :horse, class_name: "Horses::Horse"
-    has_many :bids, class_name: "Auctions::Bid", dependent: :destroy
+    has_many :bids, class_name: "Auctions::Bid", dependent: :delete_all
+    has_one :winning_bid, -> { Auctions::Bid.current_high_bid }, class_name: "Auctions::Bid", dependent: :delete, inverse_of: :horse
 
     validates :maximum_price, numericality: { greater_than_or_equal_to: :reserve_price }, if: :reserve_price, allow_blank: true
     validates :horse_id, uniqueness: true

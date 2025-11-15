@@ -537,7 +537,8 @@ CREATE TABLE public.auction_bids (
     horse_id bigint NOT NULL,
     maximum_bid integer,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    current_high_bid boolean DEFAULT false NOT NULL
 );
 
 
@@ -3271,6 +3272,13 @@ CREATE INDEX index_auction_bids_on_bidder_id ON public.auction_bids USING btree 
 
 
 --
+-- Name: index_auction_bids_on_current_high_bid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_auction_bids_on_current_high_bid ON public.auction_bids USING btree (current_high_bid);
+
+
+--
 -- Name: index_auction_bids_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5030,6 +5038,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251115124230'),
 ('20251114085550'),
 ('20251113202832'),
 ('20251111175717'),
