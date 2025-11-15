@@ -19,7 +19,7 @@ speedups:
   setter_vs_attr_writer: true
 
 exclude_paths:
-  - "vendor/**/*.rb"
-  - "db/schema.rb"
-  - "config/initializers/**/*rb"
-  - "config/routes/*.rb"
+  - vendor/**/*.rb
+  - db/schema.rb
+  - config/initializers/**/*rb
+  - config/routes/*.rb

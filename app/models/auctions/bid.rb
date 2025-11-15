@@ -30,6 +30,7 @@ end
 #  id               :bigint           not null, primary key
 #  comment          :text
 #  current_bid      :integer          default(0), not null
+#  current_high_bid :boolean          default(FALSE), not null, indexed
 #  maximum_bid      :integer
 #  notify_if_outbid :boolean          default(FALSE), not null
 #  created_at       :datetime         not null

@@ -34,7 +34,9 @@ class Auctions::CreateMonthlyAuctionJob < ApplicationJob
   end
 
   def final_furlong
-    @final_furlong ||= Account::Stable.find_by(name: "Final Furlong")
+    return @final_furlong if defined?(@final_furlong)
+
+    @final_furlong = Account::Stable.find_by(name: "Final Furlong")
   end
 
   def start_month

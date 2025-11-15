@@ -7,20 +7,20 @@ DryBundlerInCapistranoCheck: { }
 #HashSyntaxCheck: { }
 IsolateSeedDataCheck: { }
 KeepFindersOnTheirOwnModelCheck: { }
-LawOfDemeterCheck: { ignored_files: [ 'app/forms' ] }
+LawOfDemeterCheck: { ignored_files: [ app/forms ] }
 #LongLineCheck: { max_line_length: 80 }
 MoveCodeIntoControllerCheck: { }
 MoveCodeIntoHelperCheck: { array_count: 3 }
 MoveCodeIntoModelCheck: { use_count: 2 }
 MoveFinderToNamedScopeCheck: { }
 MoveModelLogicIntoModelCheck: { use_count: 4 }
-NeedlessDeepNestingCheck: { nested_count: 2, ignored_files: [ 'config/routes' ] }
+NeedlessDeepNestingCheck: { nested_count: 2, ignored_files: [ config/routes ] }
 NotRescueExceptionCheck: { }
 NotUseDefaultRouteCheck: { }
 NotUseTimeAgoInWordsCheck: { }
 #OveruseRouteCustomizationsCheck: { customize_count: 3 }
 #ProtectMassAssignmentCheck: { }
-RemoveEmptyHelpersCheck: { ignored_files: [ 'application_helper' ] }
+RemoveEmptyHelpersCheck: { ignored_files: [ application_helper ] }
 #RemoveTabCheck: { }
 RemoveTrailingWhitespaceCheck: { }
 #RemoveUnusedMethodsInControllersCheck: { except_methods: [] }

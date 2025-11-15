@@ -27,13 +27,14 @@ end
 
 # == Route Map
 #
+# Routes for application:
 #                                   Prefix Verb   URI Pattern                                                                                       Controller#Action
 #                                 api_base        /                                                                                                 Api::Base
 #                        admin_impersonate DELETE /admin/impersonate(.:format)                                                                      admin/impersonates#destroy
 #                                          POST   /admin/impersonate(.:format)                                                                      admin/impersonates#create
-#                         new_user_session GET    /login(.:format)                                                                                  devise/sessions#new
-#                             user_session POST   /login(.:format)                                                                                  devise/sessions#create
-#                     destroy_user_session DELETE /logout(.:format)                                                                                 devise/sessions#destroy
+#                         new_user_session GET    /login(.:format)                                                                                  users/sessions#new
+#                             user_session POST   /login(.:format)                                                                                  users/sessions#create
+#                     destroy_user_session DELETE /logout(.:format)                                                                                 users/sessions#destroy
 #                        new_user_password GET    /forgot-password/new(.:format)                                                                    devise/passwords#new
 #                       edit_user_password GET    /forgot-password/edit(.:format)                                                                   devise/passwords#edit
 #                            user_password PATCH  /forgot-password(.:format)                                                                        devise/passwords#update
@@ -61,7 +62,12 @@ end
 #                                          PATCH  /users/:id(.:format)                                                                              users#update
 #                                          PUT    /users/:id(.:format)                                                                              users#update
 #                                          DELETE /users/:id(.:format)                                                                              users#destroy
+#                            notifications GET    /notifications(.:format)                                                                          notifications#index
+#                             notification PATCH  /notifications/:id(.:format)                                                                      notifications#update
+#                                          PUT    /notifications/:id(.:format)                                                                      notifications#update
+#                                          DELETE /notifications/:id(.:format)                                                                      notifications#destroy
 #                                 settings POST   /settings(.:format)                                                                               settings#create
+#                              new_setting GET    /settings/new(.:format)                                                                           settings#new
 #                           pwa_web_pushes POST   /pwa/web_pushes(.:format)                                                                         pwa/web_pushes#create
 #                       push_subscriptions POST   /push_subscriptions(.:format)                                                                     current_stable/push_subscriptions#create
 #                     change_notifications POST   /push_subscriptions/change(.:format)                                                              current_stable/push_subscriptions#change
@@ -69,6 +75,7 @@ end
 #                           current_stable GET    /stable(.:format)                                                                                 stables#show
 #                                          PATCH  /stable(.:format)                                                                                 stables#update
 #                                          PUT    /stable(.:format)                                                                                 stables#update
+#                           stable_budgets GET    /stable/budgets(.:format)                                                                         current_stable/budgets#index
 #                            stable_horses GET    /stable/horses(.:format)                                                                          current_stable/horses#index
 #                        edit_stable_horse GET    /stable/horses/:id/edit(.:format)                                                                 current_stable/horses#edit
 #                             stable_horse GET    /stable/horses/:id(.:format)                                                                      current_stable/horses#show
@@ -88,18 +95,28 @@ end
 #                                          DELETE /stable/training_schedules/:id(.:format)                                                          current_stable/training_schedules#destroy
 #                          stable_workouts POST   /stable/workouts(.:format)                                                                        current_stable/workouts#create
 #                       new_stable_setting GET    /stable/settings/new(.:format)                                                                    current_stable/settings#new
-#                                                 /404(.:format)                                                                                    errors#not_found
-#                                                 /422(.:format)                                                                                    errors#unprocessable
-#                                                 /500(.:format)                                                                                    errors#internal_error
-#                                  stables GET    /stables(.:format)                                                                                stables#index
-#                                   stable GET    /stables/:id(.:format)                                                                            stables#show
 #                              image_horse GET    /horses/:id/image(.:format)                                                                       horses#image
 #                          thumbnail_horse GET    /horses/:id/thumbnail(.:format)                                                                   horses#thumbnail
+#                          new_lease_offer GET    /horses/:id/lease_offer/new(.:format)                                                             horse/lease_offers#new
+#                              lease_offer DELETE /horses/:id/lease_offer(.:format)                                                                 horse/lease_offers#destroy
+#                                          POST   /horses/:id/lease_offer(.:format)                                                                 horse/lease_offers#create
+#                   lease_offer_acceptance POST   /horses/:id/lease_offer_acceptance(.:format)                                                      horse/lease_offer_acceptances#create
+#                    new_lease_termination GET    /horses/:id/lease_termination/new(.:format)                                                       horse/lease_terminations#new
+#                        lease_termination POST   /horses/:id/lease_termination(.:format)                                                           horse/lease_terminations#create
+#                                    races GET    /horses/:id/races(.:format)                                                                       horse/races#index
+#                                    foals GET    /horses/:id/foals(.:format)                                                                       horse/foals#index
+#                                   images GET    /horses/:id/images(.:format)                                                                      horse/images#index
+#                                 pedigree GET    /horses/:id/pedigree(.:format)                                                                    horse/pedigrees#show
 #                                   horses GET    /horses(.:format)                                                                                 horses#index
 #                               edit_horse GET    /horses/:id/edit(.:format)                                                                        horses#edit
 #                                    horse GET    /horses/:id(.:format)                                                                             horses#show
 #                                          PATCH  /horses/:id(.:format)                                                                             horses#update
 #                                          PUT    /horses/:id(.:format)                                                                             horses#update
+#                                                 /404(.:format)                                                                                    errors#not_found
+#                                                 /422(.:format)                                                                                    errors#unprocessable
+#                                                 /500(.:format)                                                                                    errors#internal_error
+#                                  stables GET    /stables(.:format)                                                                                stables#index
+#                                   stable GET    /stables/:id(.:format)                                                                            stables#show
 #                             pwa_manifest GET    /manifest(.:format)                                                                               rails/pwa#manifest
 #                       pwa_service_worker GET    /service-worker(.:format)                                                                         rails/pwa#service_worker
 #                                     root GET    /                                                                                                 pages#home
@@ -132,10 +149,13 @@ end
 #                     rails_direct_uploads POST   /rails/active_storage/direct_uploads(.:format)                                                    active_storage/direct_uploads#create
 #
 # Routes for Motor::Admin:
+#                                 Prefix Verb   URI Pattern                                             Controller#Action
 #
 # Routes for MissionControl::Jobs::Engine:
+#                      Prefix Verb   URI Pattern                                                    Controller#Action
 #
 # Routes for PgHero::Engine:
+#                    Prefix Verb URI Pattern                                      Controller#Action
 #              system_stats GET  (/:database)/system_stats(.:format)              redirect(301, system)
 #               query_stats GET  (/:database)/query_stats(.:format)               redirect(301, queries)
 

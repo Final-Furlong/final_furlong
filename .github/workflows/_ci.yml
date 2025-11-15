@@ -2,10 +2,10 @@ on:
   workflow_call:
     secrets:
       lcov-token:
-        description: 'Github token for ff-bot'
+        description: Github token for ff-bot
         required: true
       QLTY_COVERAGE_TOKEN:
-        description: 'Unique token for Qlty'
+        description: Unique token for Qlty
         required: true
 
 env:
@@ -15,7 +15,6 @@ env:
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/final_furlong_test
   CACHE_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/final_furlong_test_cache
   QUEUE_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/final_furlong_test_queue
-  REDIS_URL: redis://localhost:6379/0
   COVERAGE: true
   MAILTRAP_API_KEY: foo
 
@@ -30,7 +29,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-        ports: [ "5432:5432" ]
+        ports: [ 5432:5432 ]
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -50,10 +49,6 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
-      redis:
-        image: redis
-        ports: [ '6379:6379' ]
-        options: --entrypoint redis-server
 
     steps:
       - name: Checkout code
@@ -104,7 +99,7 @@ jobs:
         run: |
           bin/ci
           ruby -e "$(curl -s https://undercover-ci.com/uploader.rb)" -- \
-            --repo ${{ github.repository }} \
+            --repo Final-Furlong/final_furlong \
             --commit ${{ github.event.pull_request.head.sha || github.sha }} \
             --simplecov coverage/coverage.json
 
@@ -113,7 +108,7 @@ jobs:
         uses: ewjoachim/coverage-comment-action@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COVERAGE_FILE: "coverage/coverage.xml"
+          COVERAGE_FILE: coverage/coverage.xml
 
       - name: Code Coverage Summary Report
         if: github.event.pull_request
@@ -127,7 +122,7 @@ jobs:
           hide_complexity: false
           indicators: true
           output: both
-          thresholds: '38 66'
+          thresholds: 38 66
 
       - name: Publish Code Coverage
         uses: qltysh/qlty-action/coverage@v2

@@ -106,9 +106,11 @@ search:
 # - '{devise,simple_form}.*'
 ignore_missing:
   en:
-    - 'errors.messages.{accepted,blank,invalid,too_short,too_long}'
-    - '{devise,simple_form}.*'
-    - '{components,view_components}.*'
+    - errors.messages.{accepted,blank,invalid,too_short,too_long}
+    - devise.*
+    - simple_form..*
+    - components.*
+    - view_components.*
   'en-GB':
     - '*'
 
@@ -120,25 +122,30 @@ ignore_missing:
 # - 'simple_form.{placeholders,hints,labels}.*'
 # - 'simple_form.{error_notification,required}.:'
 ignore_unused:
-  - 'action_policy.policy.*'
-  - 'activemodel.{attributes,errors}.*'
-  - 'activerecord.{attributes,models,errors}.*'
-  - 'breadcrumbs.*'
-  - 'common.distances.*'
-  - 'errors.messages.*'
-  - 'errors.messages.not_saved.{one,other}' # devise
-  - 'errors.messages.{already_confirmed,confirmation_period_expired,expired,not_found,not_locked}' # devise
-  - 'simple_form.{error_notification,required}.:'
-  - 'simple_form.{placeholders,helpers,hints,labels}.*'
-  - 'simple_form.{yes,no}'
-  - 'view_components.*'
-  - 'views.pagination.*'
-  - '{date,time,number}.*'
-  - '{devise,pagy,helpers,pundit}.*'
-  - 'current_stable.training_schedules.{create,update}.success'
-  - 'horse.type.*'
-  - 'horse.lease_terminations.new.*'
-  - 'users.{create,update}.success'
+  - action_policy.policy.*
+  - activemodel.{attributes,errors}.*
+  - activerecord.{attributes,models,errors}.*
+  - breadcrumbs.*
+  - common.distances.*
+  - errors.messages.*
+  - errors.messages.not_saved.{one,other} # devise
+  - errors.messages.{already_confirmed,confirmation_period_expired,expired,not_found,not_locked} # devise
+  - simple_form.{error_notification,required}.
+  - simple_form.{placeholders,helpers,hints,labels}.*
+  - simple_form.{yes,no}
+  - view_components.*
+  - views.pagination.*
+  - date.*
+  - time.*
+  - number.*
+  - devise.*
+  - pagy.*
+  - helpers.*
+  - pundit.*
+  - current_stable.training_schedules.{create,update}.success
+  - horse.type.*
+  - horse.lease_terminations.new.*
+  - users.{create,update}.success
 
 ## Exclude these keys from the `i18n-tasks eq-base' report:
 # ignore_eq_base:

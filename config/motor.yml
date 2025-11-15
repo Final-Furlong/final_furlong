@@ -178,10 +178,10 @@ resources:
 configs:
 - key: header.links
   value:
-  - name: "⭐ Star on GitHub"
+  - name: ⭐ Star on GitHub
     path: https://github.com/motor-admin/motor-admin-rails
   - name: Home
-    path: "/"
+    path: /
     link_type: header
   updated_at: 2022-08-03 18:02:29.231692000 +00:00
 - key: resources.horse.columns.order
@@ -223,7 +223,7 @@ alerts: []
 api_configs:
 - id: 1
   name: origin
-  url: "/"
+  url: /
   preferences: {}
   description:
   updated_at: 2022-08-03 17:11:13.727494000 +00:00

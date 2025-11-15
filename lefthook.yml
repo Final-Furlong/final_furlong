@@ -16,7 +16,7 @@ pre-commit:
     annotate-controllers:
       tags: backend
       files: git diff --name-only --staged
-      glob: "app/controllers/**/*.rb"
+      glob: app/controllers/**/*.rb
       run: bundle exec annotaterb routes && git add {staged_files}
     active-record-doctor:
       tags: linter
@@ -34,7 +34,7 @@ pre-commit:
     i18n-check:
       tags: backend style
       files: git diff --name-only --staged
-      glob: "config/locales/**/*.yml"
+      glob: config/locales/**/*.yml
       run: bundle exec i18n-tasks normalize && git add {staged_files}
     image_optim:
       tags: backend performance
