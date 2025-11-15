@@ -1,5 +1,5 @@
 inherit_from:
-  - '../../../.rubocop.yml'
+  - ../../../.rubocop.yml
 
 Metrics/BlockLength:
   Enabled: false

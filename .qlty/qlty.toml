@@ -46,6 +46,14 @@ test_patterns = [
   "**/spec_*.*",
 ]
 
+[[exclude]]
+plugins = ["yamllint"]
+file_patterns = [".github/**"]
+
+[[exclude]]
+plugins = ["eslint"]
+file_patterns = ["vite.config.mjs"]
+
 [smells]
 mode = "comment"
 

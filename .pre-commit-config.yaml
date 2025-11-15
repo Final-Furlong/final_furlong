@@ -13,7 +13,7 @@ repos:
       - id: codespell
         name: check spelling
         files: ^(app|spec)/ # Only application + test code
-        args: [ "--exclude-file=yarn.lock" ]
+        args: [ --exclude-file=yarn.lock ]
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.24.2
     hooks:
@@ -23,7 +23,7 @@ repos:
     rev: v1.81.1
     hooks:
       - id: rubocop
-        name: 'run rubocop'
+        name: run rubocop
         additional_dependencies:
           - rubocop-capybara
           - rubocop-factory_bot
@@ -34,7 +34,7 @@ repos:
           - rubocop-rspec
           - rubocop-rspec_rails
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: "v4.0.0-alpha.8"
+    rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
         name: run prettier

@@ -24,23 +24,23 @@ inherit_gem:
 AllCops:
   DisplayCopNames: true
   Exclude:
-    - "bin/**/*"
-    - "db/**/schema.rb"
-    - "db/migrate/20220722173334_remove_new_tables.rb"
-    - "db/migrate/20220814180246_add_counter_culture_columns.rb"
-    - "node_modules/**/*"
-    - "tmp/**/*"
-    - "vendor/**/*"
-    - ".git/**/*"
-    - ".simplecov"
-    - "app/models/legacy_*.rb"
+    - bin/**/*
+    - db/**/schema.rb
+    - db/migrate/20220722173334_remove_new_tables.rb
+    - db/migrate/20220814180246_add_counter_culture_columns.rb
+    - node_modules/**/*
+    - tmp/**/*
+    - vendor/**/*
+    - .git/**/*
+    - .simplecov
+    - app/models/legacy_*.rb
   NewCops: enable
 
 Bundler/OrderedGems:
   Enabled: true
 Layout/CommentIndentation:
   Exclude:
-    - "app/views/**/*"
+    - app/views/**/*
 Layout/IndentationConsistency:
   Enabled: true
   EnforcedStyle: normal
@@ -50,12 +50,12 @@ Layout/LineEndStringConcatenationIndentation:
 Layout/LineLength:
   Max: 120
   Exclude:
-    - "config/initializers/**/*.rb"
-    - "config/routes.rb"
-    - "db/migrate/**/*.rb"
-    - "Gemfile"
-    - "app/models/legacy/*.rb"
-    - "app/services/migrate_legacy_*.rb"
+    - config/initializers/**/*.rb
+    - config/routes.rb
+    - db/migrate/**/*.rb
+    - Gemfile
+    - app/models/legacy/*.rb
+    - app/services/migrate_legacy_*.rb
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
   EnforcedStyle: space
@@ -68,29 +68,29 @@ Lint/InterpolationCheck:
   Enabled: false
 Lint/SuppressedException:
   Exclude:
-    - "Rakefile"
+    - Rakefile
 Lint/SymbolConversion:
   Enabled: true
   EnforcedStyle: strict
 Metrics/AbcSize:
   Exclude:
-    - "db/data/**/*.rb"
-    - "db/migrate/**/*.rb"
+    - db/data/**/*.rb
+    - db/migrate/**/*.rb
 Metrics/BlockLength:
   Exclude:
-    - "Gemfile*"
-    - "Guardfile"
-    - "config/**/*.rb"
-    - "db/migrate/**/*.rb"
-    - "lib/tasks/**/*.rake"
+    - Gemfile*
+    - Guardfile
+    - config/**/*.rb
+    - db/migrate/**/*.rb
+    - lib/tasks/**/*.rake
 Metrics/ClassLength:
   Exclude:
-    - "db/migrate/**/*.rb"
+    - db/migrate/**/*.rb
 Metrics/MethodLength:
   Exclude:
-    - "db/data/**/*.rb"
-    - "db/migrate/**/*.rb"
-    - "app/models/legacy/*.rb"
+    - db/data/**/*.rb
+    - db/migrate/**/*.rb
+    - app/models/legacy/*.rb
 Naming/InclusiveLanguage:
   Enabled: true
 Rails/BulkChangeTable:
@@ -99,15 +99,15 @@ Rails/FindEach:
   Enabled: true
 Rails/InverseOf:
   Exclude:
-    - "app/models/legacy/*.rb"
+    - app/models/legacy/*.rb
 Rails/Output:
   Exclude:
-    - "db/seeds.rb"
+    - db/seeds.rb
 Rails/UniqBeforePluck: # uniq.pluck and not pluck.uniq
   Enabled: true
 Rails/WhereEquals:
   Exclude:
-    - 'app/services/migrate_legacy_*.rb'
+    - app/services/migrate_legacy_*.rb
 RSpec/Focus:
   Enabled: true
 Style/ClassAndModuleChildren:
