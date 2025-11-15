@@ -22,7 +22,8 @@ module Auctions
       end
 
       if DateTime.current < bid.updated_at + auction.hours_until_sold.hours && DateTime.current < auction.end_time
-        Auctions::ProcessSalesJob.set(wait_until: bid.updated_at + auction.hours_until_sold.hours).perform_later(bid:)
+        sale_time = bid.updated_at + auction.hours_until_sold.hours
+        Auctions::ProcessSalesJob.set(wait_until: sale_time).perform_later(bid:, horse: auction_horse)
         result.error = error("bid_timeout_not_met")
         return result
       end

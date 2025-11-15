@@ -56,9 +56,8 @@ module Auctions
     private
 
     def schedule_job(bid)
-      Auctions::ProcessSalesJob.set(wait: bid.auction.hours_until_sold.hours).perform_later(
-        bid:, horse: bid.horse, auction: bid.auction, bidder: bid.bidder
-      )
+      sale_time = bid.updated_at + bid.auction.hours_until_sold.hours
+      Auctions::ProcessSalesJob.set(wait_until: sale_time).perform_later(bid:, horse: bid.horse)
     end
   end
 end

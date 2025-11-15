@@ -29,7 +29,6 @@ module Auctions
     def sale_job
       SolidQueue::Job.where(class_name: "Auctions::ProcessSalesJob")
         .where("arguments LIKE ?", "%#{horse_id}%")
-        .where("arguments LIKE ?", "%#{auction_id}%")
     end
   end
 end

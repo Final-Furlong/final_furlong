@@ -6,14 +6,14 @@ RSpec.describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
 
     it "uses low_priority queue", perform_enqueueed_jobs: false do
       expect do
-        described_class.perform_later(bid:, auction:, horse:, bidder:)
+        described_class.perform_later(bid:, horse:)
       end.to have_enqueued_job.on_queue("default")
     end
 
     context "when horse is sold" do
       it "does not trigger horse seller" do
         horse.update(sold_at: Time.current)
-        described_class.perform_later(bid:, auction:, horse:, bidder:)
+        described_class.perform_later(bid:, horse:)
         expect(Auctions::HorseSeller).not_to have_received(:new)
       end
     end
@@ -28,14 +28,14 @@ RSpec.describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
       end
 
       it "trigger horse seller with other bid" do
-        described_class.perform_later(bid:, auction:, horse:, bidder:)
+        described_class.perform_later(bid:, horse:)
         expect(mock_seller).to have_received(:process_sale).with(bid: @winning_bid)
       end
     end
 
     context "when winning bid is equal to params bid" do
       it "triggers horse seller" do
-        described_class.perform_later(bid:, auction:, horse:, bidder:)
+        described_class.perform_later(bid:, horse:)
         expect(mock_seller).to have_received(:process_sale).with(bid:)
       end
     end

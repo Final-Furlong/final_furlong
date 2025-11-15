@@ -46,9 +46,7 @@ RSpec.describe Auctions::Bid do
     context "when bid is destroyed" do
       it "deletes enqueued process auction sale job" do
         bid = create(:auction_bid)
-        Auctions::ProcessSalesJob.set(wait: bid.auction.hours_until_sold.hours).perform_later(
-          bid:, horse: bid.horse, auction: bid.auction, bidder: bid.bidder
-        )
+        Auctions::ProcessSalesJob.set(wait: bid.auction.hours_until_sold.hours).perform_later(bid:, horse: bid.horse)
         last_job = SolidQueue::Job.order(id: :desc).first
         expect do
           bid.destroy
