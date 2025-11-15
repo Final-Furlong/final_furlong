@@ -229,6 +229,14 @@ RSpec.describe Auctions::BidCreator do
         maximum_bid: 20_000
       )
     end
+
+    it "enqueues one sale job" do
+      create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
+      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
+      expect do
+        described_class.new.create_bid(bid_params.merge(current_bid: 10_500, maximum_bid: 20_000))
+      end.to have_enqueued_job(Auctions::ProcessSalesJob)
+    end
   end
 
   context "when bidder owns the horse" do

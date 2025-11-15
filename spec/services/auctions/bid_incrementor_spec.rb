@@ -129,6 +129,12 @@ RSpec.describe Auctions::BidIncrementor do
         updated_at: 1.second.ago
       )
     end
+
+    it "enqueues one sale job" do
+      expect do
+        described_class.new.increment_bid(bid_params.merge(current_bid: 5000))
+      end.to have_enqueued_job(Auctions::ProcessSalesJob)
+    end
   end
 
   context "when new maximum bid is well under to previous maximum bid" do

@@ -10,7 +10,6 @@ module Auctions
     belongs_to :horse, class_name: "Auctions::Horse"
     belongs_to :bidder, class_name: "Account::Stable"
 
-    after_commit :schedule_sale, on: %i[create update]
     after_commit :unschedule_sale, on: :destroy
 
     validates :current_bid, presence: true
@@ -26,17 +25,6 @@ module Auctions
     end
 
     private
-
-    def schedule_sale
-      unschedule_sale
-      schedule_job
-    end
-
-    def schedule_job
-      Auctions::ProcessSalesJob.set(wait: auction.hours_until_sold.hours).perform_later(
-        bid: self, horse:, auction:, bidder:
-      )
-    end
 
     def sale_job
       SolidQueue::Job.where(class_name: "Auctions::ProcessSalesJob")

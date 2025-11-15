@@ -32,6 +32,8 @@ module Auctions
           notify_if_outbid: false,
           updated_at: Time.current
         )
+        bid.unschedule_sale
+        schedule_job(bid)
         return Result.new(created: true, current_bid: bid)
       end
     rescue ActiveRecord::ActiveRecordError
@@ -49,6 +51,14 @@ module Auctions
       def created?
         @created
       end
+    end
+
+    private
+
+    def schedule_job(bid)
+      Auctions::ProcessSalesJob.set(wait: bid.auction.hours_until_sold.hours).perform_later(
+        bid:, horse: bid.horse, auction: bid.auction, bidder: bid.bidder
+      )
     end
   end
 end

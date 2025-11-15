@@ -65,7 +65,7 @@ module Auctions
 
       horse_max = auction.horse_purchase_cap_per_stable.to_i
       if horse_max.positive?
-        if horses_bought(bid_params[:bidder_id]) >= horse_max
+        if horses_bought(auction, bid_params[:bidder_id]) >= horse_max
           result.error = error("bought_max_horses")
           return result
         end
@@ -111,6 +111,10 @@ module Auctions
 
         if bid.valid?
           result.created = bid.save
+          if result.created?
+            bid.unschedule_sale
+            schedule_job(bid)
+          end
         else
           result.error = bid.errors.full_messages.to_sentence
         end
@@ -140,6 +144,12 @@ module Auctions
 
     private
 
+    def schedule_job(bid)
+      Auctions::ProcessSalesJob.set(wait: bid.auction.hours_until_sold.hours).perform_later(
+        bid:, horse: bid.horse, auction: bid.auction, bidder: bid.bidder
+      )
+    end
+
     def money_spent(bidder_id)
       money = 0
       Auctions::Horse.joins(:bids).where(bids: { bidder_id: }).sold.find_each do |horse|
@@ -148,8 +158,8 @@ module Auctions
       money
     end
 
-    def horses_bought(bidder_id)
-      Auctions::Horse.joins(:bids).where(bids: { bidder_id: }).sold.count
+    def horses_bought(auction, bidder_id)
+      auction.horses.joins(:bids).where(bids: { bidder_id: }).sold.count
     end
 
     def previous_bid
