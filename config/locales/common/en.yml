@@ -77,7 +77,7 @@ en:
       default: "%Y-%m-%d"
       long: "%B %-d, %Y"
       short: "%b %d"
-      text: "%B -d, %Y"
+      text: "%B %-d, %Y"
   i18n:
     en_gb_language: British English
     en_language: US English

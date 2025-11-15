@@ -11,6 +11,10 @@ en:
         weak: 'must be at least 8 characters long and contain: an upper case character, a lower case character, a digit and a non-alphabet character.'
   activerecord:
     attributes:
+      horses/lease:
+        end_date: End Date
+      horses/lease_offer:
+        duration_months: Duration
       horses/lease_termination_request:
         owner_accepted_end: Owner
       horses/stud_foal_record:

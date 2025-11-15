@@ -10,8 +10,8 @@
 #     schedule: at 5am every day
 
 production:
-  daily_boarding_update:
-    class: Horses::UpdateBoardingJob
+  daily_update:
+    class: Daily::MorningUpdatesJob
     queue: default
     schedule: 2 0 * * *
   horse_legacy_migrate:

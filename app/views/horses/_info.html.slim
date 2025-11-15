@@ -5,7 +5,9 @@
       - if Current.user&.admin? || true_user&.admin?
         tr
           th= t(".id")
-          td= horse.id
+          td
+            = horse.id
+            = t(".legacy_id", id: horse.legacy_id)
       tr
         th= t(".name")
         td= horse.name || t("horse.unnamed")
@@ -65,7 +67,9 @@
             th= t(".sale_status")
             td
               - if (offer = horse.lease_offer)
-                = t(".offered_for_lease", fee: Game::MoneyFormatter.new(offer.fee).to_s)
+                = t(".offered_for_lease", duration: offer.duration_months, fee: Game::MoneyFormatter.new(offer.fee).to_s)
+              - else
+                = "Not Yet Added"
       tr
         th= t(".track_record")
         td= horse.track_record || t("horse.unraced")

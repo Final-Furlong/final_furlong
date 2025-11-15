@@ -23,6 +23,10 @@ class Notification < ApplicationRecord
     I18n.t("notifications.notification.title")
   end
 
+  def message
+    I18n.t("notifications.notification.default_message")
+  end
+
   def actions
     []
   end

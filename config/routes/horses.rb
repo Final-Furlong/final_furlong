@@ -1,3 +1,7 @@
+namespace :horses, module: "horses" do
+  resources :lease_offers, only: :index
+end
+
 resources :horses, except: %i[new create destroy] do
   member do
     get :image

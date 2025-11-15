@@ -1,182 +1,8 @@
 ---
 en:
-  horse:
-    actions:
-      accept_lease_offer: Accept Lease
-      board_horse: Board
-      breed_mare: Breed
-      cancel_lease_offer: Cancel Lease Offer
-      change_owner: Update Owner
-      change_status: Update Status
-      consign_to_auction: Consign to Auction
-      create_lease_offer: Set for Lease
-      enter_race: Enter Race
-      geld: Geld
-      manage_bookings: Manage Bookings
-      nominate_racehorse: Nominate
-      nominate_stud: Nominate
-      nominate_weanling: Nominate
-      reject_lease_offer: Reject Lease
-      remove_from_auction: Remove from Auction
-      rename: Rename
-      run_jump_trial: Run Jump Trial
-      run_workout: Run Workout
-      scratch_race: Scratch from Race
-      set_for_sale: Set for Sale
-      stop_boarding: Stop Boarding
-      terminate_lease: End Lease Early
-      unset_for_sale: Remove from Sale
-      update_racing_options: Set Racing Options
-      update_stud_options: Set Stud Options
-      view_comments: View Comments
-    created: Created
-    foal_due: Foal Due
-    foals:
-      dam_foal_list:
-        due_date: Due Date
-        gender: Gender
-        name: Name
-        record: Record
-        sire: Sire
-        status: Status
-        year_of_birth: YOB
-      dam_foal_summary:
-        average_earnings: Ave. Earnings
-        breed_ranking: Breed Ranking
-        foals: Foals
-        millionaires: Millionaires
-        multi_stakes_winners: Mult. Stakes Winners
-        racers: Racers
-        stakes_winners: Stakes Winners
-        winners: Winners
-      dam_foals:
-        foals: Foals
-        foals_with_count: Foals (%{count})
-        summary: Summary
-      sire_foal_list:
-        dam: Dam
-        gender: Gender
-        name: Name
-        record: Record
-        status: Status
-        unborn: Unborn
-        year_of_birth: YOB
-      sire_foal_summary:
-        average_earnings: Ave. Earnings
-        breed_ranking: Breed Ranking
-        foals: Foals
-        millionaires: Millionaires
-        multi_stakes_winners: Mult. Stakes Winners
-        racers: Racers
-        stakes_winners: Stakes Winners
-        winners: Winners
-      sire_foals:
-        foals: Foals
-        summary: Summary
-    height: "%{height}h"
-    in_foal: in foal
-    lease_offer_acceptances:
-      create:
-        success: Lease was accepted
-    lease_offers:
-      create:
-        success: Lease offer was successfully created
-      destroy:
-        success: Lease offer was successfully deleted
-      new:
-        all_members: Offer to all members
-        duration:
-          broodmare: Broodmares are leased for 1 year. Broodmares are only available to lease if they are not in foal.
-          racehorse: Racehorses are leased from 3 months to 1 year.
-          stud: Stallions are leased for 1 year.
-        duration_months: Duration (months)
-        fee: Lease Fee
-        leaser: Lease To
-        max_amount: Maximum $1,000,000
-        new_members_only: Offer to new members only
-        offer_start_date: Display Lease From
-        rules:
-          broodmare: The leasing stable may not retire the horse.
-          racehorse: The leasing stable may not geld or retire the horse, but they may switch it to steeplechasing.
-          stud: The leasing stable may not geld or retire the horse, but they may change his stud fee.
-        title: Offer for Lease
-    lease_terminations:
-      create:
-        success: Successfully requested to end the lease
-        success_with_termination: Successfully terminated the lease
-      new:
-        accept_refund: I would like to accept a refund of approximately %{amount}
-        accept_termination: I would like to request to end this lease
-        confirm: Confirm Lease Termination
-        end_date: 'The lease is currently scheduled to end on %{date}. Original Fee: %{fee}'
-        offer_refund: I would like to offer a refund of approximately %{amount}
-        request_refund: I would like to request a refund of approximately %{amount}
-        title: End Lease
-    leased_html: Leased to %{stable} until %{date}
-    markings:
-      bald_face: bald face
-      blaze: blaze
-      none: no markings
-      snip: snip
-      star: star
-      star_snip: star, snip
-      star_stripe: star, stripe
-      star_stripe_snip: star, stripe, snip
-      stripe: stripe
-      stripe_snip: stripe, snip
-    races:
-      desktop:
-        earnings: Earnings
-        fourths: Fourths
-        lifetime: Lifetime
-        points: Points
-        race_year: "%{age}yo (%{year})"
-        seconds: Seconds
-        starts: Starts
-        thirds: Thirds
-        unraced: Unraced
-        wins: Wins
-        year: Year
-      mobile:
-        earnings: Earnings
-        fourths: Fourths
-        lifetime: Lifetime
-        points: Points
-        race_year: "%{age}yo (%{year})"
-        seconds: Seconds
-        starts: Starts
-        thirds: Thirds
-        unraced: Unraced
-        wins: Wins
-    titles:
-      abbr:
-        final_furlong: FFCh.
-        grand: GCh.
-        international: ICh.
-        national: NCh.
-        normal: Ch.
-        world: WCh.
-      final_furlong: Final Furlong Champion
-      grand: Grand Champion
-      international: International Champion
-      national: National Champion
-      normal: Champion
-      world: World Champion
-    type:
-      broodmare: broodmare
-      generic: horse
-      racehorse: racehorse
-      retired: retired
-      retired_broodmare: retired broodmare
-      retired_stud: retired stallion
-      stallion: stallion
-      stillborn: stillborn
-      unborn: unborn
-      weanling: weanling
-      yearling: yearling
-    unnamed: Unnamed
-    unraced: Unraced
   horses:
+    index:
+      for_lease: For Lease (%{count})
     info:
       breeder: Breeder
       breeding_record: Breeding Record
@@ -190,18 +16,29 @@ en:
       last_race: Last Race
       lease_status: Lease Status
       lease_termination_requested: Termination Requested
+      legacy_id: " (Legacy: %{id})"
       location: Location
       location_bred: Location Bred
       markings: Markings
       name: Name
       next_foal: Next Foal
       next_race: Next Race
-      offered_for_lease: 'Offered for lease (Fee: %{fee})'
+      offered_for_lease: 'Offered for lease for %{duration} months (Fee: %{fee})'
       owner: Owner
       sale_status: Sale Status
       scheduled_race: Scheduled Race
       status: Status
       track_record: Track Record
+    lease_offers:
+      index:
+        title: Horses for Lease
+      table:
+        age_gender: Age/Gender
+        anyone: Anyone
+        duration: "%{duration} Months"
+        lease_to: Lease To
+        new_members_only: New Members
+        only_you: You
     show:
       actions: Actions
       foals: Foals

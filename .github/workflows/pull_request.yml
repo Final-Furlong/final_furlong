@@ -10,7 +10,7 @@ concurrency:
 jobs:
   run-ci:
     if: "!contains(github.event.commits[0].message, '[ci skip]') && !contains(github.event.commits[0].message, '[skip ci]')"
-    uses: Final-Furlong/final_furlong/.github/workflows/_ci.yml@main
+    uses: Final-Furlong/final_furlong/.github/workflows/_ci.yml@lease-ui
     secrets:
       lcov-token: ${{ secrets.LCOV_GITHUB_TOKEN }}
       QLTY_COVERAGE_TOKEN: ${{ secrets.QLTY_COVERAGE_TOKEN }}

@@ -125,9 +125,7 @@ RSpec.describe Auctions::HorseSeller do
   before { setup_data }
 
   context "when auction is not active" do
-    # rubocop:disable Rails/SkipsModelValidations
     before { auction.update_columns(start_time: DateTime.current - 10.days, end_time: DateTime.current - 1.day) }
-    # rubocop:enable Rails/SkipsModelValidations
 
     it "returns sold false" do
       result = described_class.new.process_sale(bid:)
@@ -159,12 +157,10 @@ RSpec.describe Auctions::HorseSeller do
   end
 
   context "when sale time has not been met" do
-    # rubocop:disable Rails/SkipsModelValidations
     before do
       bid.update(updated_at: DateTime.current - auction.hours_until_sold.hours + 5.minutes)
       auction.update_column(:end_time, DateTime.current + 2.days)
     end
-    # rubocop:enable Rails/SkipsModelValidations
 
     it "returns sold false" do
       result = described_class.new.process_sale(bid:)
@@ -180,12 +176,10 @@ RSpec.describe Auctions::HorseSeller do
   end
 
   context "when sale time has not been met but auction is ending" do
-    # rubocop:disable Rails/SkipsModelValidations
     before do
       bid.update(updated_at: DateTime.current - 1.hour)
       auction.update_column(:end_time, 5.minutes.ago)
     end
-    # rubocop:enable Rails/SkipsModelValidations
 
     it "returns sold true" do
       result = described_class.new.process_sale(bid:)

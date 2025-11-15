@@ -1,0 +1,37 @@
+/# locals: (leases:, role:)
+- if leases.empty?
+  h4.text-muted.text-center.my-2
+    small= t("horses.leases.index.no_leases")
+- else
+  .table-responsive-md
+    table.table.table-responsive.table-zebra
+      thead
+        tr
+          th= Horses::Horse.human_attribute_name("name")
+          th= t(".age_gender")
+          th
+            = role == "leaser" ? Horses::Lease.human_attribute_name("leaser") : Horses::Horse.human_attribute_name("owner")
+          th= Horses::Lease.human_attribute_name("end_date")
+          th= Horses::Lease.human_attribute_name("fee")
+          th= t("common.actions.title")
+        tbody.table-group-divider
+          - leases.each do |lease|
+            - horse = lease.horse
+            tr
+              td.wb-break-all= link_to horse.name || t("horse.unnamed"), horse_path(horse), target: "_top"
+              td.wb-break-all
+                = horse.age
+                = "yo "
+                = t("horses.genders.#{horse.gender}")
+              td
+                = role == "leaser" ? lease.leaser.name : horse.owner.name
+              td
+                = l(lease.end_date)
+                - if lease.termination_request
+                  p.ml-2.badge.badge-outline.badge-info= t("horses.info.lease_termination_requested")
+              td= Game::MoneyFormatter.new(lease.fee).to_s
+              td.actions-column.nav-item.dropdown
+                - if CurrentStable::LeasePolicy.new(Current.user, lease).terminate?
+                  - classes = 'text-red-800 border border-red-900 bg-transparent hover:bg-red-900 hover:text-white font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:hover:bg-red-600 dark:border-red-600 dark:text-red-500 dark:hover:text-white'
+                  = link_to new_lease_termination_path(horse), class: classes, target: '_top' do
+                    = t("horse.actions.current_lease.terminate")

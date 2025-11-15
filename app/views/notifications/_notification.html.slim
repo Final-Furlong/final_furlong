@@ -22,5 +22,5 @@ li id="#{dom_id(notification)}"
       = form_with model: notification, scope: :notification, url: notification_path(notification), method: :delete, data: { turbo_confirm: t(".confirm_delete") } do |f|
         = f.submit t(".delete"), class: button_classes
 
-      .flex-none.ml-auto.text-xs.dark:text-neutral-content
+      .items-end.ml-auto.text-xs.dark:text-neutral-content
         = time_ago_in_words(notification.created_at) + " ago"

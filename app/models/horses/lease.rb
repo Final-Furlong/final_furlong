@@ -14,6 +14,12 @@ module Horses
     validates :end_date, comparison: { greater_than_or_equal_to: :start_date_plus_minimum_duration }, if: -> { start_date && horse }
     validates :end_date, comparison: { less_than_or_equal_to: :start_date_plus_maximum_duration }, if: :start_date
 
+    scope :valid_for_stable, ->(stable) { active.where(leaser: stable).or(active.where(owner: stable)) }
+    scope :active, -> { where(active: true) }
+    scope :expired, -> { active.where(end_date: ..Date.current) }
+    scope :leased_by, ->(stable) { active.where(leaser: stable) }
+    scope :owned_by, ->(stable) { active.where(owner: stable) }
+
     def total_days
       (end_date - start_date).to_i
     end

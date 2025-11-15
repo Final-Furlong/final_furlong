@@ -1,0 +1,40 @@
+/# locals: (lease_offers:, query:)
+= turbo_frame_tag "all-horse-lease-offers-search" do
+  .lease-offers-search-results
+    - if lease_offers.empty?
+      h4.text-muted.text-center.my-2
+        small= t("horses.lease_offers.index.no_leases")
+    - else
+      .table-responsive-md
+        table.table.table-responsive.table-zebra
+          thead
+            tr
+              th= Horses::Horse.human_attribute_name("name")
+              th= t(".age_gender")
+              th= Horses::Horse.human_attribute_name("owner")
+              th= t(".lease_to")
+              th= Horses::LeaseOffer.human_attribute_name("duration_months")
+              th= t("common.actions.title")
+            tbody.table-group-divider
+              - lease_offers.each do |lease_offer|
+                - horse = lease_offer.horse
+                tr
+                  td.wb-break-all= horse.name || t("horse.unnamed")
+                  td.wb-break-all
+                    = horse.age
+                    = "yo "
+                    = t("horses.genders.#{horse.gender}")
+                  td= horse.owner.name
+                  td
+                    - if lease_offer.leaser == Current.stable
+                      = t(".only_you")
+                    - elsif lease_offer.new_members_only
+                      = t(".new_members_only")
+                    - else
+                      = t(".anyone")
+                  td= t(".duration", duration: lease_offer.duration_months)
+                  td.actions-column.nav-item.dropdown
+                    = link_to horse_path(horse), class: "btn btn-sm btn-soft btn-primary",
+                                                 data: { turbo_frame: "_top" } do
+                      i.fas.fa-eye
+                      = t("common.actions.view")

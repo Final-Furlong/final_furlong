@@ -17,6 +17,32 @@ module Horses
     validates :new_members_only, inclusion: { in: [true, false] }
     validates :new_members_only, inclusion: { in: [false] }, if: :leaser
 
+    # rubocop:disable Rails/WhereEquals
+    scope :active, -> { where(offer_start_date: ..Date.current) }
+    scope :expired, -> { where(offer_start_date: ..(Date.current - (MAX_OFFER_PERIOD_DAYS + 1).days)) }
+    scope :starts_today, -> { where(offer_start_date: Date.current) }
+    scope :with_leaser, -> { where.not(leaser_id: nil) }
+
+    scope :leased_to, ->(stable) {
+      where("lease_offers.leaser_id = :id", id: stable.id)
+    }
+    scope :with_owner, ->(owner) { where(owner:) }
+    scope :without_owner, ->(owner) { where.not(owner:) }
+    scope :new_members_only, -> { where("lease_offers.leaser_id IS NULL") }
+    scope :non_new_members_only, -> {
+      where("lease_offers.leaser_id IS NULL AND lease_offers.new_members_only = FALSE")
+    }
+    scope :valid_for_stable, ->(stable) {
+      if stable.newbie?
+        active.new_members_only.without_owner(stable)
+          .or(active.without_owner(stable).leased_to(stable))
+      else
+        active.non_new_members_only.without_owner(stable)
+          .or(active.without_owner(stable).leased_to(stable))
+      end
+    }
+    # rubocop:enable Rails/WhereEquals
+
     def maximum_offer_date
       Date.current + MAX_OFFER_PERIOD_DAYS.days
     end

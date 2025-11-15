@@ -47,11 +47,18 @@
         .mt-2.mx-auto.skeleton.w-full
   - if (actions = Horses::ActionsListGenerator.new.call(horse:)).any?
     .dropdown.dropdown-end.ml-auto
-      .btn.m-1 tabindex="0" role="button" = t(".actions")
+      button.btn.m-1 tabindex="0" role="button" = t(".actions")
       ul.dropdown-content.menu.bg-base-100.rounded-box.z-1.w-52.p-2.shadow-sm tabindex="-1"
         - actions.each do |action_hash|
           li
+            ruby:
+              i18n_key = if action_hash[:action][:object]
+                           "horse.actions.#{action_hash[:action][:object]}.#{action_hash[:action][:key]}"
+                         else
+                           "horse.actions.#{action_hash[:action][:key]}"
+                         end
             - if action_hash[:requires_form]
-              = button_to t("horse.actions.#{action_hash[:action]}"), action_hash[:url], method: action_hash[:method], target: '_top'
+              = form_with url: action_hash[:url], method: action_hash[:method], data: { turbo_confirm: action_hash[:confirm] } do |f|
+                = f.submit t(i18n_key)
             - else
-              = link_to t("horse.actions.#{action_hash[:action]}"), action_hash[:url], target: '_top'
+              = link_to t(i18n_key), action_hash[:url], target: '_top'

@@ -143,6 +143,7 @@ ignore_unused:
   - helpers.*
   - pundit.*
   - current_stable.training_schedules.{create,update}.success
+  - horse.actions.*
   - horse.type.*
   - horse.lease_terminations.new.*
   - users.{create,update}.success
