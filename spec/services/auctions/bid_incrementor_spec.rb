@@ -101,7 +101,7 @@ RSpec.describe Auctions::BidIncrementor do
     end
   end
 
-  context "when new maximum bid is well under to previous maximum bid" do
+  context "when new maximum bid is well under previous maximum bid" do
     before { bid.update(maximum_bid: 10_000) }
 
     it "returns created false" do

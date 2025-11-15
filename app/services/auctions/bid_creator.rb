@@ -96,6 +96,8 @@ module Auctions
           minimum_display_amount = [previous_bid.current_bid + increment, bid_params[:current_bid] - extra_invalid_amount.to_i].max
           result.error = I18n.t("services.auctions.bid_creator.bid_not_high_enough", number: minimum_display_amount)
           return result
+        elsif max_bid.positive? && bid_params[:maximum_bid].to_i > max_bid
+          bid_params[:current_bid] = previous_max_bid + Auctions::Bid::MINIMUM_INCREMENT
         end
 
         result.error = nil unless result.error == error("reserve_not_met")
@@ -113,6 +115,7 @@ module Auctions
         if bid.valid?
           result.created = bid.save
           if result.created?
+            previous_bid.update(current_bid: previous_bid.maximum_bid) if previous_max_bid.positive?
             unschedule_previous_bid_job(bid)
             schedule_sale_job(bid)
           end
