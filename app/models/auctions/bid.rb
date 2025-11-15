@@ -14,8 +14,8 @@ module Auctions
     after_commit :unschedule_sale, on: :destroy
 
     validates :current_bid, presence: true
-    validates :current_bid, numericality: { greater_than_or_equal_to: MINIMUM_BID }, allow_blank: true
-    validates :maximum_bid, numericality: { greater_than_or_equal_to: :current_bid }, allow_blank: true
+    validates :current_bid, numericality: { greater_than_or_equal_to: MINIMUM_BID }, allow_nil: true
+    validates :maximum_bid, numericality: { greater_than_or_equal_to: :current_bid }, allow_nil: true
     validates :notify_if_outbid, inclusion: { in: [true, false] }
 
     scope :winning, -> { order(maximum_bid: :desc, current_bid: :desc, updated_at: :desc) }

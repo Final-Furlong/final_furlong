@@ -87,13 +87,13 @@ module Auctions
       ActiveRecord::Base.transaction do
         max_bid = previous_max_bid
         minimum_bid_amount = max_bid + increment if max_bid.positive?
-        if minimum_bid_amount && bid_params[:current_bid] <= minimum_bid_amount
+        if minimum_bid_amount && bid_params[:current_bid] <= minimum_bid_amount && bid_params[:maximum_bid].to_i <= minimum_bid_amount
           Auctions::BidIncrementor.new.increment_bid(
             original_bid_id: previous_bid.id, new_bidder_id: bid_params[:bidder_id],
             current_bid: bid_params[:current_bid], maximum_bid: bid_params[:maximum_bid]
           )
           extra_invalid_amount = bid_params[:current_bid] % increment
-          minimum_display_amount = [previous_bid.current_bid + increment, bid_params[:current_bid] - extra_invalid_amount + increment].max
+          minimum_display_amount = [previous_bid.current_bid + increment, bid_params[:current_bid] - extra_invalid_amount.to_i].max
           result.error = I18n.t("services.auctions.bid_creator.bid_not_high_enough", number: minimum_display_amount)
           return result
         end

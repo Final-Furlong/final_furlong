@@ -177,14 +177,14 @@ RSpec.describe Auctions::BidCreator do
     it "returns created false" do
       create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
       create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
-      result = described_class.new.create_bid(bid_params)
+      result = described_class.new.create_bid(bid_params.merge(current_bid: 6000, maximum_bid: 7000))
       expect(result.created?).to be false
     end
 
     it "returns error" do
       create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
       create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
-      result = described_class.new.create_bid(bid_params)
+      result = described_class.new.create_bid(bid_params.merge(current_bid: 6000, maximum_bid: 7000))
       expect(result.error).to eq "Current bid must be greater than or equal to #{5500 + Auctions::Bid::MINIMUM_INCREMENT}"
     end
 
@@ -192,8 +192,42 @@ RSpec.describe Auctions::BidCreator do
       create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
       create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
       expect do
-        described_class.new.create_bid(bid_params)
+        described_class.new.create_bid(bid_params.merge(current_bid: 6000, maximum_bid: 7000))
       end.to change(Auctions::Bid, :count).by(2)
+    end
+  end
+
+  context "when bid amount is higher than maximum bid" do
+    it "returns created true" do
+      create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
+      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
+      result = described_class.new.create_bid(bid_params.merge(current_bid: 10_500, maximum_bid: 20_000))
+      expect(result.created?).to be true
+    end
+
+    it "returns no error" do
+      create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
+      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
+      result = described_class.new.create_bid(bid_params.merge(current_bid: 10_500, maximum_bid: 20_000))
+      expect(result.error).to be_nil
+    end
+
+    it "creates 2 bids, one for current bidder + one for new current bid" do
+      create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
+      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
+      expect do
+        described_class.new.create_bid(bid_params.merge(current_bid: 10_500, maximum_bid: 20_000))
+      end.to change(Auctions::Bid, :count).by(1)
+    end
+
+    it "sets the right data for tne new current bid" do
+      create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
+      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
+      described_class.new.create_bid(bid_params.merge(current_bid: 10_500, maximum_bid: 20_000))
+      expect(Auctions::Bid.where(horse:).winning.first).to have_attributes(
+        current_bid: 10_500,
+        maximum_bid: 20_000
+      )
     end
   end
 
