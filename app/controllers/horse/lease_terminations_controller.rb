@@ -2,17 +2,17 @@ module Horse
   class LeaseTerminationsController < ApplicationController
     def new
       horse = Horses::Horse.find(params[:id])
-      authorize horse, :terminate_lease?, policy_class: CurrentStable::HorsePolicy
-
       @current_lease = horse.current_lease
+      authorize @current_lease, :terminate?, policy_class: CurrentStable::LeasePolicy
+
       @termination_request = @current_lease.termination_request
     end
 
     def create
       horse = Horses::Horse.find(params[:id])
-      authorize horse, :terminate_lease?, policy_class: CurrentStable::HorsePolicy
-
       @current_lease = horse.current_lease
+      authorize @current_lease, :terminate?, policy_class: CurrentStable::LeasePolicy
+
       result = Horses::LeaseTerminator.new.call(current_lease: @current_lease, stable: Current.stable, params: lease_params)
       if result.terminated?
         flash[:success] = t(".success_with_termination")

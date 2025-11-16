@@ -1,0 +1,11 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t("horses.index.title"), href: horses_path },
+          { name: t(".title"), href: "#" }])
+
+.card.card-border.p-2.shadow-md.border-1.border-base-100
+  .card-body
+    = turbo_frame_tag "horse-lease-offers" do
+      = render "table", lease_offers: @lease_offers, query: @query
+
+.float-right.mt-2
+  == @pagy.series_nav

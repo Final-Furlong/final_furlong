@@ -15,7 +15,8 @@ module Horses
           if offer.leaser
             duration = "#{offer.duration_months} #{"month".pluralize(offer.duration_months)}"
             if offer.offer_start_date <= Date.current
-              ::LeaseOfferNotification.create!(
+              Game::NotificationCreator.new.create_notification(
+                type: ::LeaseOfferNotification,
                 user: offer.leaser.user,
                 params: {
                   offer_id: offer.id,

@@ -2,7 +2,7 @@ module Horse
   class LeaseOfferAcceptancesController < ApplicationController
     def create
       @horse = Horses::Horse.find(params[:id])
-      authorize @horse, :accept_lease_offer?, policy_class: CurrentStable::HorsePolicy
+      authorize @horse.lease_offer, :accept?, policy_class: CurrentStable::LeaseOfferPolicy
 
       result = Horses::LeaseCreator.new.accept_offer(horse: @horse, stable: Current.stable)
       if result.created?

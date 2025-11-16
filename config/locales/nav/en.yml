@@ -18,6 +18,7 @@ en:
     nav:
       join: Join
       login: Log in
+      logout: Log out
       open_main_menu: Open Main Menu
     notifications:
       notification_icon: Notification Icon
@@ -28,7 +29,6 @@ en:
       close_menu: Close Menu
       game_divider: Game Links
       jobs: Jobs
-      logout: Log out
       main_app: Main app
       my_stable: My stable
       stable:

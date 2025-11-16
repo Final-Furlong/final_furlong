@@ -13,6 +13,9 @@ Lint/AmbiguousBlockAssociation:
 Metrics/BlockLength:
   Enabled: false
 
+Rails/SkipsModelValidations:
+  Enabled: false
+
 RSpec/BeEq:
   Enabled: true
 

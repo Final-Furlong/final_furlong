@@ -27,13 +27,17 @@ module Horses
       )
       ActiveRecord::Base.transaction do
         if lease.valid? && lease.save
-          description = i18n("description_leaser",
+          legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
+          legacy_horse&.update(Leased: 1, Leaser: stable.legacy_id)
+          Legacy::ViewRacehorses.find_by(horse_id: horse.legacy_id)&.update(leased: 1, leaser: stable.legacy_id)
+          Legacy::ViewTrainingSchedules.find_by(horse_id: horse.legacy_id)&.update(leased: 1, leaser: stable.legacy_id)
+          description = I18n.t("services.lease_creator.description_leaser",
             horse: horse.name,
             stable: horse.owner.name,
             start_date: I18n.l(Date.current, locale: horse.owner.user.locale || I18n.default_locale),
             end_date: I18n.l(lease.end_date, locale: horse.owner.user.locale || I18n.default_locale))
           Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: lease.fee.abs * -1)
-          description = i18n("description_owner",
+          description = I18n.t("services.lease_creator.description_owner",
             horse: horse.name,
             stable: stable.name,
             start_date: I18n.l(Date.current),
@@ -76,8 +80,8 @@ module Horses
       end
     end
 
-    def i18n(key, attrs)
-      I18n.t("services.lease_creator.#{key}", **attrs)
+    def i18n(key)
+      I18n.t("services.lease_creator.#{key}")
     end
   end
 end

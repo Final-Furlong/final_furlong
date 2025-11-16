@@ -98,20 +98,16 @@ jobs:
       - name: CI Run
         run: |
           bin/ci
-          ruby -e "$(curl -s https://undercover-ci.com/uploader.rb)" -- \
-            --repo Final-Furlong/final_furlong \
-            --commit ${{ github.event.pull_request.head.sha || github.sha }} \
-            --simplecov coverage/coverage.json
 
       - name: Coverage Report
-        if: github.event.pull_request
+        if: ${{ github.event.workflow_run.requested }}
         uses: ewjoachim/coverage-comment-action@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COVERAGE_FILE: coverage/coverage.xml
 
       - name: Code Coverage Summary Report
-        if: github.event.pull_request
+        if: ${{ github.event.workflow_run.requested }}
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
           filename: coverage/coverage.xml

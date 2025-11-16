@@ -13,6 +13,7 @@ module Horses
         if termination.valid?(validation_context) && termination.save
           if termination.reload.both_sides_accept?
             process_refund if termination.both_sides_accept_refund?
+            update_legacy_tables(lease.horse)
             lease.update(active: false, early_termination_date: Date.current)
             termination.destroy!
             result.terminated = true
@@ -51,6 +52,15 @@ module Horses
       def terminated?
         @terminated
       end
+    end
+
+    private
+
+    def update_legacy_tables(horse)
+      legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
+      legacy_horse&.update(Leased: 0, Leaser: 0)
+      Legacy::ViewRacehorses.find_by(horse_id: horse.legacy_id)&.update(leased: 0, leaser: 0)
+      Legacy::ViewTrainingSchedules.find_by(horse_id: horse.legacy_id)&.update(leased: 0, leaser: 0)
     end
 
     def process_refund

@@ -15,8 +15,7 @@ RSpec.describe Daily::DeleteEmptyAuctionsJob, :perform_enqueued_jobs do
       end
     end
 
-    # rubocop:disable Rails/SkipsModelValidations
-    context "when auctions start tomorrow" do # rubocop:disable Rails/SkipsModelValidations
+    context "when auctions start tomorrow" do
       it "triggers service for each auction" do
         auction1 = create(:auction, created_at: 5.days.ago)
         auction1.update_column(:start_time, Date.tomorrow.beginning_of_day)
@@ -28,7 +27,6 @@ RSpec.describe Daily::DeleteEmptyAuctionsJob, :perform_enqueued_jobs do
         expect(Auctions::DeleteEmptyAuctionService).to have_received(:call).with(auction: auction2)
       end
     end
-    # rubocop:enable Rails/SkipsModelValidations
   end
 end
 

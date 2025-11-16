@@ -10,10 +10,21 @@ en:
       warning: Attention
     lease_acceptance_notification:
       title: Lease Started
+    lease_expiry_notification:
+      title: Lease Ended
+    lease_offer_expiry_notification:
+      title: Lease Offer Expired
     lease_offer_notification:
+      accept_lease:
+        confirm: Are you sure you want to accept this lease?
+      reject_lease:
+        confirm: Are you sure you want to reject this lease?
       title: Horse for Lease
+    lease_rejection_notification:
+      title: Lease Declined
     notification:
       confirm_delete: Are you sure you wish to delete this notification?
+      default_message: We do not know how to describe what happened.
       delete: Delete
       info: Info
       mark_as_read: Mark as Read

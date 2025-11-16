@@ -64,5 +64,7 @@ en:
         already_ended: This boarding has already ended
         budget_description: Board for %{name} for %{days}
     lease_creator:
+      cannot_afford_lease: You cannot afford the lease fee
       description_leaser: 'Lease Fee: %{horse} from %{stable} [%{start_date} to %{end_date}]'
       description_owner: Leased %{horse} to %{stable} [%{start_date} to %{end_date}]
+      not_for_lease: This horse is not for lease

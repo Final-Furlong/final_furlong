@@ -16,24 +16,25 @@ ruby:
       div
         fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
           legend.fieldset-legend= t(".offer_start_date")
-          = f.date_field :offer_start_date, class: 'w-auto validator', required: true, value: @lease_offer.offer_start_date || Date.current, min: Date.current, max: @lease_offer.maximum_offer_date
+          = f.date_field :offer_start_date, class: 'input w-auto validator', required: true, value: @lease_offer.offer_start_date || Date.current, min: Date.current, max: @lease_offer.maximum_offer_date
+          p.label= t(".offer_start_date_hint", count: Horses::LeaseOffer::MAX_OFFER_PERIOD_DAYS)
         - if @lease_offer.errors[:offer_start_date]
           p.text-error= @lease_offer.errors.where(:offer_start_date).map(&:full_message).join(', ')
       div
         fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
           legend.fieldset-legend= t(".duration_months")
-          = f.select :duration_months, options_for_select(@lease_offer.options_for_duration_select, @lease_offer.duration_months), { class: 'select' }
+          = f.select :duration_months, options_for_select(@lease_offer.options_for_duration_select, @lease_offer.duration_months), {}, { class: 'select' }
         - if @lease_offer.errors[:duration_months]
           p.text-error= @lease_offer.errors.where(:duration_months).map(&:full_message).join(', ')
-    .flex.w-full
+    .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
       div
         fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
           legend.fieldset-legend= t(".leaser")
-          = f.select :leaser_id, options_for_select(Account::Stable.active.order(name: :asc).pluck(:name, :id), @lease_offer.leaser_id), { include_blank: true, class: 'select' }
+          = f.select :leaser_id, options_for_select(Account::Stable.active.order(name: :asc).pluck(:name, :id), @lease_offer.leaser_id), { include_blank: true }, { class: "select w-full" }
           - if @lease_offer.errors[:leaser_id]
             p.text-error= @lease_offer.errors.where(:leaser_id).map(&:full_message).join(', ')
-      .divider.sm:divider-horizontal= t("common.or")
-      .align-bottom
+      div.align-bottom
+        .divider-horizontal= t("common.or")
         label.label
           = f.radio_button :member_type, "all_members", checked: @lease_offer.duration_months && @lease_offer.leaser.blank? && !@lease_offer.new_members_only
           = f.label(:member_type, t(".all_members"), value: "all_members")

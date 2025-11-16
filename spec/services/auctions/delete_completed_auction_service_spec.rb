@@ -9,9 +9,7 @@ RSpec.describe Auctions::DeleteCompletedAuctionService do
     before { setup_data }
 
     context "when auction end time has not been met" do
-      # rubocop:disable Rails/SkipsModelValidations
       before { auction.update_column(:end_time, DateTime.current + 1.hour) }
-      # rubocop:enable Rails/SkipsModelValidations
 
       it "does not delete auction bids" do
         expect { described_class.call(auction:) }.not_to change(Auctions::Bid, :count)
@@ -27,9 +25,7 @@ RSpec.describe Auctions::DeleteCompletedAuctionService do
     end
 
     context "when auction end time has been met" do
-      # rubocop:disable Rails/SkipsModelValidations
       before { auction.update_column(:end_time, DateTime.current - 1.hour) }
-      # rubocop:enable Rails/SkipsModelValidations
 
       context "when there are unsold horses" do
         before { allow(Auctions::HorseSeller).to receive(:new).and_return mock_seller }
@@ -127,7 +123,7 @@ RSpec.describe Auctions::DeleteCompletedAuctionService do
     return @auction if @auction
 
     @auction = create(:auction)
-    @auction.update_column(:end_time, DateTime.current - 1.hour) # rubocop:disable Rails/SkipsModelValidations
+    @auction.update_column(:end_time, DateTime.current - 1.hour)
     @auction
   end
 end

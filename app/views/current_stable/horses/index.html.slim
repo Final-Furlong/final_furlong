@@ -5,6 +5,12 @@
 = render Horses::SearchFilters::Component.new(version: request_variant, path_name: "stable_horses_path", params:, query: @query,
         active_status: @active_status)
 
+.float-right
+  - if (count = Horses::LeasePolicy::Scope.new(Current.user, Horses::Lease).resolve.count).positive?
+    = link_to stable_leases_path, class: 'btn btn-neutral' do
+      = t(".leases", count: count)
+.clear-both
+
 .card.card-border.mt-2.p-2.shadow-md.dark:border-1.dark:border-neutral-100
   = turbo_stream_from "horses"
   = render Horses::StatusList::Component.new(version: request_variant, variants: [:desktop], statuses: @statuses, active_status: @active_status,

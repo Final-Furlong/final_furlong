@@ -116,5 +116,172 @@ RSpec.describe Horses::LeaseOffer do
       end
     end
   end
+
+  describe "scopes" do
+    describe ".active" do
+      it "returns correct results" do
+        lease1 = create(:lease_offer)
+        lease1.update_column(:offer_start_date, 1.day.ago)
+        lease2 = create(:lease_offer, offer_start_date: Date.current)
+        lease3 = create(:lease_offer, offer_start_date: 1.day.from_now)
+
+        result = described_class.active
+        expect(result).to include lease1, lease2
+        expect(result).not_to include lease3
+      end
+    end
+
+    describe ".leased_to" do
+      it "returns correct records" do
+        leaser = create(:stable)
+        lease1 = create(:lease_offer, leaser:)
+        lease2 = create(:lease_offer, leaser: nil)
+        lease3 = create(:lease_offer, leaser: create(:stable))
+
+        result = described_class.leased_to(leaser)
+        expect(result).to include lease1
+        expect(result).not_to include lease2, lease3
+      end
+    end
+
+    describe ".with_owner" do
+      it "returns correct records" do
+        owner = create(:stable)
+        lease1 = create(:lease_offer, owner:)
+        lease2 = create(:lease_offer, owner: create(:stable))
+
+        result = described_class.with_owner(owner)
+        expect(result).to include lease1
+        expect(result).not_to include lease2
+      end
+    end
+
+    describe ".without_owner" do
+      it "returns correct records" do
+        owner = create(:stable)
+        lease1 = create(:lease_offer, owner: create(:stable))
+        lease2 = create(:lease_offer, owner:)
+
+        result = described_class.without_owner(owner)
+        expect(result).to include lease1
+        expect(result).not_to include lease2
+      end
+    end
+
+    describe ".new_members_only" do
+      it "returns correct records" do
+        lease1 = create(:lease_offer, new_members_only: true)
+        lease2 = create(:lease_offer, new_members_only: false)
+
+        result = described_class.new_members_only
+        expect(result).to include lease1, lease2
+      end
+    end
+
+    describe ".non_new_members_only" do
+      it "returns correct records" do
+        lease1 = create(:lease_offer, new_members_only: false)
+        lease2 = create(:lease_offer, new_members_only: true)
+
+        result = described_class.non_new_members_only
+        expect(result).to include lease1
+        expect(result).not_to include lease2
+      end
+    end
+
+    describe ".valid_for_stable" do
+      context "when stable is newbie" do
+        it "includes active leases only" do
+          stable = create(:stable, created_at: 6.months.ago)
+          lease1 = create(:lease_offer, offer_start_date: Date.current, leaser: stable)
+          lease2 = create(:lease_offer, offer_start_date: 1.day.from_now, leaser: stable)
+
+          result = described_class.valid_for_stable(stable)
+          expect(result).to include lease1
+          expect(result).not_to include lease2
+        end
+
+        it "includes new member leases and non-new member leases" do
+          stable = create(:stable, created_at: 6.months.ago)
+          lease1 = create(:lease_offer, leaser: nil, new_members_only: true)
+          lease2 = create(:lease_offer, leaser: nil, new_members_only: false)
+
+          result = described_class.valid_for_stable(stable)
+          expect(result).to include lease1, lease2
+        end
+
+        it "includes leases for this stable" do
+          stable = create(:stable, created_at: 6.months.ago)
+          lease1 = create(:lease_offer, leaser: stable)
+          lease2 = create(:lease_offer, leaser: create(:stable))
+
+          result = described_class.valid_for_stable(stable)
+          expect(result).to include lease1
+          expect(result).not_to include lease2
+        end
+
+        it "excludes leases by this stable" do
+          stable = create(:stable, created_at: 6.months.ago)
+          lease1 = create(:lease_offer, leaser: stable)
+          lease2 = create(:lease_offer, owner: stable)
+
+          result = described_class.valid_for_stable(stable)
+          expect(result).to include lease1
+          expect(result).not_to include lease2
+        end
+      end
+
+      context "when stable is not newbie" do
+        it "includes active leases only" do
+          stable = create(:stable, created_at: 18.months.ago)
+          lease1 = create(:lease_offer, offer_start_date: Date.current, leaser: stable)
+          lease2 = create(:lease_offer, offer_start_date: 1.day.from_now, leaser: stable)
+
+          result = described_class.valid_for_stable(stable)
+          expect(result).to include lease1
+          expect(result).not_to include lease2
+        end
+
+        it "includes non-new member leases, excludes new member leases" do
+          stable = create(:stable, created_at: 18.months.ago)
+          lease1 = create(:lease_offer, new_members_only: false)
+          lease2 = create(:lease_offer, new_members_only: true)
+
+          result = described_class.valid_for_stable(stable)
+          expect(result).to include lease1
+          expect(result).not_to include lease2
+        end
+
+        it "includes leases for this stable" do
+          stable = create(:stable, created_at: 18.months.ago)
+          lease1 = create(:lease_offer, leaser: stable)
+          lease2 = create(:lease_offer, leaser: create(:stable))
+
+          result = described_class.valid_for_stable(stable)
+          expect(result).to include lease1
+          expect(result).not_to include lease2
+        end
+
+        it "excludes leases by this stable" do
+          stable = create(:stable, created_at: 18.months.ago)
+          lease1 = create(:lease_offer, leaser: stable)
+          lease2 = create(:lease_offer, owner: stable)
+
+          result = described_class.valid_for_stable(stable)
+          expect(result).to include lease1
+          expect(result).not_to include lease2
+        end
+      end
+    end
+    # 1    scope :valid_for_stable, ->(stable) {
+    #   then: 0      if stable.newbie?
+    #   active.new_members_only.without_owner(stable)
+    #         .or(active.without_owner(stable).leased_to(stable))
+    #   else: 0      else
+    #   active.non_new_members_only.without_owner(stable)
+    #         .or(active.without_owner(stable).leased_to(stable))
+    #   end
+    # }
+  end
 end
 

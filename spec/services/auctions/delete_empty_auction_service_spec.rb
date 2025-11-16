@@ -29,7 +29,7 @@ RSpec.describe Auctions::DeleteEmptyAuctionService do
 
     context "when auction starts after tomorrow" do
       before do
-        auction.update_column(:start_time, DateTime.current + 2.days) # rubocop:disable Rails/SkipsModelValidations
+        auction.update_column(:start_time, DateTime.current + 2.days)
         horses = create_list(:auction_horse, 1, auction:)
         horses.each do |horse|
           create(:auction_bid, auction:, horse:)
@@ -51,7 +51,7 @@ RSpec.describe Auctions::DeleteEmptyAuctionService do
 
     context "when auction has already started" do
       before do
-        auction.update_column(:start_time, DateTime.current - 1.day) # rubocop:disable Rails/SkipsModelValidations
+        auction.update_column(:start_time, DateTime.current - 1.day)
         horses = create_list(:auction_horse, 1, auction:)
         horses.each do |horse|
           create(:auction_bid, auction:, horse:)
@@ -124,7 +124,7 @@ RSpec.describe Auctions::DeleteEmptyAuctionService do
     return @auction if @auction
 
     @auction = create(:auction)
-    @auction.update_column(:start_time, DateTime.current + 1.day) # rubocop:disable Rails/SkipsModelValidations
+    @auction.update_column(:start_time, DateTime.current + 1.day)
     @auction
   end
 end

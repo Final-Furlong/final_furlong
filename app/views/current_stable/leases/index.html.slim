@@ -1,0 +1,24 @@
+ruby:
+  leased_by_count = Horses::Lease.leased_by(Current.stable).count
+  leased_class = "tab-disabled" if leased_by_count.zero?
+  leased_class ||= "tab-active" if params[:role].to_s == "leasee"
+  owned_by_count = Horses::Lease.owned_by(Current.stable).count
+  owned_class = "tab-disabled" if owned_by_count.zero?
+  owned_class ||= "tab-active" if params[:role].to_s == "leaser"
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t("horses.index.title"), href: stable_horses_path },
+          { name: t(".title"), href: "#" }])
+
+.card.card-border.p-2.shadow-md.border-1.border-base-100
+  .tabs.tabs-border role="tablist"
+    = link_to stable_leases_path(role: :leasee), class: "tab #{leased_class}" do
+      = "Leased To You"
+      - if leased_by_count.positive?
+        span.ml-2.badge.badge-info.px-1.ps-1.text-bg-light= Horses::Lease.leased_by(Current.stable).count
+    = link_to stable_leases_path(role: :leaser), class: "tab #{owned_class}" do
+      = "Leased By You"
+      - if owned_by_count.positive?
+        span.ml-2.badge.badge-info.px-1.ps-1.text-bg-light= Horses::Lease.owned_by(Current.stable).count
+  .card-body
+    = turbo_frame_tag "horse-leases" do
+      = render "table", leases: @leases, role: params[:role]

@@ -53,9 +53,7 @@ RSpec.describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
   end
 
   def insert_bid(attrs)
-    # rubocop:disable Rails/SkipsModelValidations
     Auctions::Bid.insert(attrs)
-    # rubocop:enable Rails/SkipsModelValidations
   end
 
   def auction

@@ -16,7 +16,9 @@ SimpleCov.profiles.define 'common' do
   add_filter(%r{^/test/})
 
   add_group "API", "app/controllers/api"
-  add_group "Controllers", "app/controllers"
+  add_group 'Controllers' do |file|
+    file.filename[%r'/app/controllers'].present? && file.filename[%r'/app/controllers/api'].blank?
+  end
   add_group "DB", %w[app/models app/repositories app/queries]
   add_group "Policies", "app/policies"
   add_group "Forms", "app/forms"
@@ -37,8 +39,7 @@ SimpleCov.profiles.define 'ci' do
     [
       SimpleCov::Formatter::JSONFormatter,
       SimpleCov::Formatter::CoberturaFormatter,
-      SimpleCov::Formatter::LcovFormatter,
-      SimpleCov::Formatter::Undercover
+      SimpleCov::Formatter::LcovFormatter
     ]
   )
 end
@@ -47,8 +48,7 @@ SimpleCov.profiles.define 'local' do
   formatter SimpleCov::Formatter::MultiFormatter.new(
     [
       SimpleCov::Formatter::SimpleFormatter,
-      SimpleCov::Formatter::HTMLFormatter,
-      SimpleCov::Formatter::Undercover
+      SimpleCov::Formatter::HTMLFormatter
     ]
   )
 end

@@ -6,7 +6,6 @@ RSpec.describe Daily::DeleteCompletedAuctionsJob, :perform_enqueued_jobs do
       end.to have_enqueued_job.on_queue("low_priority")
     end
 
-    # rubocop:disable Rails/SkipsModelValidations
     context "when no auctions have ended" do
       it "does not trigger service" do
         auction = create(:auction)
@@ -26,7 +25,6 @@ RSpec.describe Daily::DeleteCompletedAuctionsJob, :perform_enqueued_jobs do
         expect(Auctions::DeleteCompletedAuctionService).to have_received(:call).with(auction:)
       end
     end
-    # rubocop:enable Rails/SkipsModelValidations
   end
 end
 

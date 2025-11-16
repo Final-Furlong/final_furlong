@@ -33,7 +33,7 @@
           = button_to destroy_user_session_path, method: :delete, data: { turbo: false },
                   form_class: "p-0", class: "flex items-center w-full p-2 text-base transition rounded-lg" do
             i.fas.fa-arrow-right-from-bracket.mr-2
-            span.sr-only= t("layouts.sidenav.logout")
+            span.sr-only= t("layouts.nav.logout")
       - else
         li.pl-2.pt-1
           a.flex.items-center.w-full.p-2.text-base.transition.rounded-lg[
