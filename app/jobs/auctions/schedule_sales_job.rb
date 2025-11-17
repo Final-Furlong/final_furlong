@@ -19,7 +19,7 @@ class Auctions::ScheduleSalesJob < ApplicationJob
               times << bid.updated_at
             end
           end
-          Auctions::ProcessSalesJob.set(wait_until: times.min).perform_later(id, auction)
+          Auctions::ProcessSalesJob.set(wait_until: times.min).perform_later(stable, auction)
         end
       end
     end
