@@ -3,17 +3,17 @@ class Auctions::ScheduleSalesJob < ApplicationJob
 
   def perform
     Auction.current.find_each do |auction|
-      stable_ids = []
+      stables = []
       horses = auction.horses.where.associated(:bids).uniq
       horses.each do |horse|
         winning_bid = horse.bids.winning.first
-        stable_ids << winning_bid.bidder_id
+        stables << winning_bid.bidder
       end
 
-      stable_ids.each do |id|
-        unless job_exists?(auction.id, id)
+      stables.each do |stable|
+        unless job_exists?(auction.id, stable.id)
           times = []
-          Auctions::Bid.where(bidder: id, auction:).current_high_bid.each do |bid|
+          Auctions::Bid.where(bidder: stable, auction:).current_high_bid.each do |bid|
             winning_bid = Auctions::Bid.where(auction:, horse: bid.horse).sale_time_met.winning.first
             if bid == winning_bid
               times << bid.updated_at
