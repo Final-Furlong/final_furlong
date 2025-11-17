@@ -77,7 +77,6 @@ en:
         push_not_supported: Push messaging is not supported in your browser
         send: Send Notification
         subscribe_action: Subscribe
-        title: Settings
         unsubscribe_action: Unsubscribe
     shipments:
       index:
