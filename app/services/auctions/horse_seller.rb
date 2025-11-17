@@ -22,8 +22,8 @@ module Auctions
       end
 
       if DateTime.current < bid.updated_at + auction.hours_until_sold.hours && DateTime.current < auction.end_time
-        sale_time = bid.updated_at + auction.hours_until_sold.hours
-        Auctions::ProcessSalesJob.set(wait_until: sale_time).perform_later(bid:, horse: auction_horse)
+        _sale_time = bid.updated_at + auction.hours_until_sold.hours
+        # Auctions::ProcessSalesJob.set(wait_until: sale_time).perform_later(bid:, horse: auction_horse)
         result.error = error("bid_timeout_not_met")
         return result
       end
@@ -123,7 +123,7 @@ module Auctions
         end
         auction_horse.update(sold_at: Time.current)
         horse.update(owner: buyer)
-        schedule_next_sales_job(bidder: buyer, auction:)
+        # schedule_next_sales_job(bidder: buyer, auction:)
 
         result.sold = true
       rescue ActiveRecord::ActiveRecordError
@@ -180,7 +180,7 @@ module Auctions
     end
 
     def horses_bought(bidder_id)
-      Auctions::Horse.joins(:bids).where(bids: { bidder_id: }).sold.count
+      Auctions::Horse.joins(:horse).where(horses: { owner_id: bidder_id }).sold.count
     end
 
     def error(key)
