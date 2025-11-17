@@ -41,6 +41,7 @@ module Auctions
           updated_at: Time.current,
           current_high_bid: true
         )
+        Auctions::Bid.where(auction:, horse: original_bid.horse, created_at: ..bid.created_at).update_all(current_high_bid: false)
         return Result.new(created: true, current_bid: bid)
       end
     rescue ActiveRecord::ActiveRecordError

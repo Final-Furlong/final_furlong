@@ -116,6 +116,7 @@ module Auctions
         if bid.valid?
           result.created = bid.save
           if result.created?
+            Auctions::Bid.where(auction:, horse: auction_horse, created_at: ..bid.created_at).update_all(current_high_bid: false)
             previous_bid.update(current_bid: previous_bid.maximum_bid) if previous_max_bid.positive?
             unschedule_previous_bid_job(bid)
             schedule_sale_job(bid)
