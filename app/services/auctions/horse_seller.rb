@@ -157,8 +157,8 @@ module Auctions
       return if schedule_exists?(auction, bidder, next_updated_at)
 
       SolidQueue::Job.where(class_name: "Auctions::ProcessSalesJob")
-        .where("arguments LIKE ?", "%#{old_bid.bidder_id}%")
-        .where("arguments LIKE ?", "%#{bid.auction.id}%")
+        .where("arguments LIKE ?", "%#{bidder.id}%")
+        .where("arguments LIKE ?", "%#{auction.id}%")
         .where(["scheduled_at > ?", 5.minutes.from_now])
         .delete_all
       Auctions::ProcessSalesJob.set(wait_until: next_updated_at + auction.hours_until_sold.hours).perform_later(bidder, auction)
