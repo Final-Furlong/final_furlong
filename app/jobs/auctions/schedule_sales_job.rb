@@ -2,7 +2,7 @@ class Auctions::ScheduleSalesJob < ApplicationJob
   queue_as :default
 
   def perform
-    Auction.active.find_each do |auction|
+    Auction.current.find_each do |auction|
       stable_ids = []
       horses = auction.horses.where.associated(:bids).uniq
       horses.each do |horse|
