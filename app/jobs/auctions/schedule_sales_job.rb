@@ -30,7 +30,7 @@ class Auctions::ScheduleSalesJob < ApplicationJob
   def job_exists?(auction_id, bidder_id)
     SolidQueue::Job.where(class_name: "Auctions::ProcessSalesJob")
       .where("arguments LIKE ?", "%#{bidder_id}%")
-      .exists?("arguments LIKE ?", "%#{auction_id}%")
+      .exists?(["arguments LIKE ?", "%#{auction_id}%"])
   end
 end
 
