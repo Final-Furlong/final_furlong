@@ -1,39 +1,38 @@
-.w-full
-  h1.text-2xl.text-center= t(".title")
-.max-w.px-4.py-4
-  div[
-    data-controller="pwa--web-push-demo"
-    data-action="pwa--web-push-subscription:subscription-changed->pwa--web-push-demo#onSubscriptionChanged \
-      pwa--web-push-subscription:subscription-error->pwa--web-push-demo#onError"
-    data-pwa--web-push-demo-push-not-supported-value=t(".push_not_supported")
-    data-pwa--web-push-demo-notifications-not-supported-value=t(".notification_not_supported")
-    data-pwa--web-push-demo-browser-subscribed-value=t(".browser_subscribed")
-    data-pwa--web-push-demo-browser-unsubscribed-value=t(".browser_unsubscribed")
-  ]
-    .pwa-web-push-subscription.flex.gap-2 data-controller="pwa--web-push-subscription"
-      div
-        button.subscribe.bg-blue-500.hover:bg-blue-700.text-white.font-bold.py-2.px-4.rounded[
-          data-action="pwa--web-push-subscription#trySubscribe"
-          data-pwa--web-push-subscription-target="subscribeButton"
-          disabled: false
-        ]
-          = t(".subscribe_action")
-      div
-        button.unsubscribe.bg-blue-500.hover:bg-blue-700.text-white.font-bold.py-2.px-4.rounded[
-          data-action="pwa--web-push-subscription#unsubscribe"
-          data-pwa--web-push-subscription-target="unsubscribeButton"
-        ]
-          = t(".unsubscribe_action")
-    p.mt-6.mb-4.italic data-pwa--web-push-demo-target="status"
-    p.mt-6.mb-4.italic.bg-red-100.border-red-400.text-red-700 data-pwa--web-push-demo-target="error"
+= turbo_frame_tag "settings-notifications" do
+  .max-w.px-4.py-4
+    div[
+      data-controller="pwa--web-push-demo"
+      data-action="pwa--web-push-subscription:subscription-changed->pwa--web-push-demo#onSubscriptionChanged \
+        pwa--web-push-subscription:subscription-error->pwa--web-push-demo#onError"
+      data-pwa--web-push-demo-push-not-supported-value=t(".push_not_supported")
+      data-pwa--web-push-demo-notifications-not-supported-value=t(".notification_not_supported")
+      data-pwa--web-push-demo-browser-subscribed-value=t(".browser_subscribed")
+      data-pwa--web-push-demo-browser-unsubscribed-value=t(".browser_unsubscribed")
+    ]
+      .pwa-web-push-subscription.flex.gap-2 data-controller="pwa--web-push-subscription"
+        div
+          button.subscribe.bg-blue-500.hover:bg-blue-700.text-white.font-bold.py-2.px-4.rounded[
+            data-action="pwa--web-push-subscription#trySubscribe"
+            data-pwa--web-push-subscription-target="subscribeButton"
+            disabled: false
+          ]
+            = t(".subscribe_action")
+        div
+          button.unsubscribe.bg-blue-500.hover:bg-blue-700.text-white.font-bold.py-2.px-4.rounded[
+            data-action="pwa--web-push-subscription#unsubscribe"
+            data-pwa--web-push-subscription-target="unsubscribeButton"
+          ]
+            = t(".unsubscribe_action")
+      p.mt-6.mb-4.italic data-pwa--web-push-demo-target="status"
+      p.mt-6.mb-4.italic.bg-red-100.border-red-400.text-red-700 data-pwa--web-push-demo-target="error"
 
-    p.mt-6.mb-4
-      = t(".instructions")
-    = simple_form_for :web_push, url: pwa_web_pushes_path,
-            data: { "pwa--web-push-demo-target": "sendDemoPushForm" } do |f|
-      = f.hidden_field :subscription, data: { "pwa--web-push-demo-target": "subscriptionField" }
-      fieldset.flex.flex-wrap.gap-2 data-pwa--web-push-demo-target="sendPushDemoFieldset"
-        = f.text_field :title, as: :text, value: t("game_title"), class: "border rounded-md p-1"
-        = f.text_field :message, value: t(".notification"), class: "border rounded-md p-1"
-        = f.submit t(".send"), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
-                data: { "pwa--web-push-demo-target" => "notificationButton" }
+      p.mt-6.mb-4
+        = t(".instructions")
+      = simple_form_for :web_push, url: pwa_web_pushes_path,
+              data: { "pwa--web-push-demo-target": "sendDemoPushForm" } do |f|
+        = f.hidden_field :subscription, data: { "pwa--web-push-demo-target": "subscriptionField" }
+        fieldset.flex.flex-wrap.gap-2 data-pwa--web-push-demo-target="sendPushDemoFieldset"
+          = f.text_field :title, as: :text, value: t("game_title"), class: "border rounded-md p-1"
+          = f.text_field :message, value: t(".notification"), class: "border rounded-md p-1"
+          = f.submit t(".send"), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
+                  data: { "pwa--web-push-demo-target" => "notificationButton" }

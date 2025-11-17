@@ -53,7 +53,12 @@ en:
         en-GB: Your language is now British English
       success_full: Your settings have been updated. You will need to refresh the page to see the theme change.
     new:
+      game: Game
+      loading: Loading...
+      notifications: Notifications
+      security: Security
       title: Update Settings
+      website: Website
   simple_form:
     hints:
       stable:

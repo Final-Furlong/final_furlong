@@ -5,6 +5,7 @@ class SettingsController < ApplicationController
     @locales = locale_options
     @light_themes = light_theme_options
     @dark_themes = dark_theme_options
+    @current_tab = (params[:tab] || "security").to_s
   end
 
   def create
