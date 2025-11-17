@@ -1,0 +1,8 @@
+en:
+  form:
+    setting:
+      racing:
+        apply_minimums_for_future_races_hint: If yes, scheduled entries + upcoming races will apply these filters
+        min_days_delay_from_last_race_hint: This is a basic check, counting all days between the new race date and the previous race date
+        min_days_hint: Set to 0 to disable, max value 365
+        min_days_rest_between_races_hint: A rest day is any day the horse did not race or do a workout, and was at home or being boarded
