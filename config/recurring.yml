@@ -42,6 +42,10 @@ production:
     class: Daily::DeleteEmptyAuctionsJob
     queue: low_priority
     schedule: at 11:45pm every day
+  auction_sales_scheduling:
+    class: Auctions::ScheduleSalesJob
+    queue: default
+    schedule: 3 */6 * * * # at minute 3 past every 6th hour
   clear_solid_queue_finished_jobs:
     command: "SolidQueue::Job.clear_finished_in_batches(sleep_between_batches: 0.3)"
     schedule: every hour at minute 12
