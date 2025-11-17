@@ -10,7 +10,7 @@ en:
         bidder_has_high_bid: You already have the high bid on this horse
         bidder_is_owner: Cannot bid on your own horse
         bidder_not_found: Could not find stable
-        bought_max_horses: You have already bought the maximum horses allowed for this auction
+        bought_max_horses: You have already bought (or have the current bid on) the maximum horses allowed for this auction
         cannot_afford_bid: You cannot afford this bid
         horse_not_found: Could not find horse consigned to auction
         horse_sold: Horse is already sold

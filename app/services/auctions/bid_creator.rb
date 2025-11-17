@@ -185,7 +185,9 @@ module Auctions
     end
 
     def horses_bought(auction, bidder_id)
-      auction.horses.joins(:bids).where(bids: { bidder_id: }).sold.count
+      sold_horses = auction.horses.joins(:horse).where(horses: { owner_id: bidder_id }).sold.count
+      max_bid_horses = Auctions::Bid.joins(:horse).current_high_bid.merge(Auctions::Horse.unsold).where(bidder_id:).count
+      sold_horses + max_bid_horses
     end
 
     def previous_bid
