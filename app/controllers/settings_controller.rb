@@ -5,6 +5,8 @@ class SettingsController < ApplicationController
     @locales = locale_options
     @light_themes = light_theme_options
     @dark_themes = dark_theme_options
+    @modes = mode_options
+    @current_tab = (params[:tab] || "security").to_s
   end
 
   def create
@@ -31,22 +33,29 @@ class SettingsController < ApplicationController
   end
 
   def light_theme_options
-    %w[light cupcake bumblebee emerald corporate retro cyberpunk valentine garden
-      lofi pastel fantasy wireframe autumn acid lemonade winter nord caramellatte
-      silk].map do |theme|
+    Account::Settings::Website::LIGHT_THEMES.map do |theme|
       [theme, I18n.t("daisy_ui.#{theme}")]
     end.sort
   end
 
   def dark_theme_options
-    %w[dark synthwave halloween forest aqua black luxury dracula business acid
-      night coffee dim sunset abyss].map do |theme|
+    Account::Settings::Website::DARK_THEMES.map do |theme|
       [theme, I18n.t("daisy_ui.#{theme}")]
     end.sort
   end
 
+  def mode_options
+    Account::Settings::Website::MODES.map do |mode|
+      [mode, I18n.t("activerecord.attributes.setting.mode.#{mode}")]
+    end.sort
+  end
+
   def update_params
-    params.expect(settings: [:locale, :theme, :dark_theme, :dark_mode])
+    params.expect(settings: [:time_zone,
+      racing_attributes: [:min_energy_for_race_entry, :min_days_delay_from_last_race,
+        :min_days_delay_from_last_injury, :min_days_rest_between_races,
+        :min_workouts_between_races, :apply_minimums_for_future_races],
+      website_attributes: [:light_theme, :dark_theme, :mode, :locale]])
   end
 end
 

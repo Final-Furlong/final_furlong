@@ -29,10 +29,22 @@ en:
       horses/stud_foal_record:
         crop: Crop
       setting:
+        apply_minimums_for_future_races: Apply These Minimums For Future Races?
         dark_mode: Dark Mode
         dark_theme: Dark Mode Theme
+        light_mode: Light Mode
         locale: Language
+        min_days_delay_from_last_injury: Minimum Days Rest Post-Injury
+        min_days_delay_from_last_race: Minimum Days Between Races
+        min_days_rest_between_races: Minimum Days Rest Between Races
+        min_energy_for_race_entry: Minimum Energy for Entering Races
+        min_workouts_between_races: Minimum Number of Workouts Between Races
+        mode:
+          dark: Dark
+          light: Light
+        mode_title: Mode
         theme: Light Mode Theme
+        time_zone: Time Zone
       user:
         admin: Admin
         confirmation_sent_at: Confirmation sent

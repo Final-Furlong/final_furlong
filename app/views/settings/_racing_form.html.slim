@@ -1,0 +1,34 @@
+= form_with model: setting, scope: :settings, url: settings_path, method: :post do |f|
+  = render Forms::ErrorMessages::Component.new(object: setting)
+  = f.fields_for :racing do |rf|
+    fieldset.fieldset
+      legend.fieldset-legend= t("activerecord.attributes.setting.min_energy_for_race_entry")
+      - grades = Racing::RaceStats::GRADES
+      = rf.collection_select :min_energy_for_race_entry, grades, :first, :first, { include_blank: true }, class: 'select'
+    fieldset.fieldset
+      legend.fieldset-legend= t("activerecord.attributes.setting.min_days_delay_from_last_race")
+      = rf.text_field :min_days_delay_from_last_race, class: 'input'
+      p.label = t("form.setting.racing.min_days_hint")
+      p.label = t("form.setting.racing.min_days_delay_from_last_race_hint")
+    fieldset.fieldset
+      legend.fieldset-legend= t("activerecord.attributes.setting.min_days_rest_between_races")
+      = rf.text_field :min_days_rest_between_races, class: 'input'
+      p.label = t("form.setting.racing.min_days_hint")
+      p.label = t("form.setting.racing.min_days_rest_between_races_hint")
+    fieldset.fieldset
+      legend.fieldset-legend= t("activerecord.attributes.setting.min_workouts_between_races")
+      = rf.text_field :min_workouts_between_races, class: 'input'
+      p.label = t("form.setting.racing.min_days_hint")
+    fieldset.fieldset
+      legend.fieldset-legend= t("activerecord.attributes.setting.min_days_delay_from_last_injury")
+      = rf.text_field :min_days_delay_from_last_injury, class: 'input'
+      p.label = t("form.setting.racing.min_days_hint")
+    fieldset.fieldset
+      label.label
+        = rf.checkbox :apply_minimums_for_future_races, class: 'toggle'
+        = t("activerecord.attributes.setting.apply_minimums_for_future_races")
+      p.label = t("form.setting.racing.apply_minimums_for_future_races_hint")
+
+  .form-actions.mt-4
+    = link_to t("common.actions.cancel"), current_stable_path, class: "btn btn-outline-secondary"
+    = f.submit t("common.actions.save"), class: "btn btn-primary"

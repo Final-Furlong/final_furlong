@@ -1,0 +1,27 @@
+= form_with model: setting, scope: :settings, url: settings_path, method: :post do |f|
+  = render Forms::ErrorMessages::Component.new(object: setting)
+  = f.fields_for :website do |wf|
+    fieldset.fieldset
+      legend.fieldset-legend= t("activerecord.attributes.setting.theme")
+      = wf.collection_select :light_theme, @light_themes, :first, :last, {}, { class: 'select' }
+    fieldset.fieldset
+      legend.fieldset-legend= t("activerecord.attributes.setting.dark_theme")
+      = wf.collection_select :dark_theme, @dark_themes, :first, :last, {}, { class: 'select' }
+    fieldset.fieldset
+      legend.fieldset-legend
+        = I18n.t("activerecord.attributes.setting.locale")
+      = wf.collection_select :locale, @locales, :first, :last, {}, { class: 'select' }
+    fieldset.fieldset
+      legend.fieldset-legend
+        = I18n.t("activerecord.attributes.setting.mode_title")
+      = wf.collection_radio_buttons :mode, @modes, :first, :last  do |b|
+        - b.label(class: "label") { b.radio_button + b.text }
+  fieldset.fieldset
+    legend.fieldset-legend
+      = I18n.t("activerecord.attributes.setting.time_zone")
+    - zones = ActiveSupport::TimeZone.all.map { |tz| [tz.tzinfo.identifier, tz.to_s] }.uniq
+    = f.collection_select :time_zone, zones, :first, :last, {}, { class: "select" }
+
+  .form-actions.mt-4
+    = link_to t("common.actions.cancel"), current_stable_path, class: "btn btn-outline-secondary"
+    = f.submit t("common.actions.save"), class: "btn btn-primary"
