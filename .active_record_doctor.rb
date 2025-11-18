@@ -218,6 +218,7 @@ ActiveRecordDoctor.configure do
       "Account::User.encrypted_password",
       "Account::User.failed_attempts",
       "Account::User.sign_in_count",
+      "Auctions::Bid.bid_at", # default now() in db
       "Horses::Horse.foals_count",
       "Horses::Horse.unborn_foals_count",
       "Horses::Stallion.foals_count",
