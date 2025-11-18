@@ -28,14 +28,14 @@ global_job_config:
     - name: EXTERNAL_CI
       value: 'true'
     - name: DATABASE_URL
-      value: postgresql://postgres:@0.0.0.0:5432/final_furlong_test
+      value: 'postgresql://postgres:@0.0.0.0:5432/final_furlong_test'
     - name: CACHE_DATABASE_URL
-      value: postgresql://postgres:@0.0.0.0:5432/final_furlong_test_cache
+      value: 'postgresql://postgres:@0.0.0.0:5432/final_furlong_test_cache'
     - name: QUEUE_DATABASE_URL
-      value: postgresql://postgres:@0.0.0.0:5432/final_furlong_test_queue
+      value: 'postgresql://postgres:@0.0.0.0:5432/final_furlong_test_queue'
 blocks:
   - name: CI
-    dependencies: [ ]
+    dependencies: []
     task:
       prologue:
         commands:
@@ -46,9 +46,9 @@ blocks:
           - yarn install
           - cache store
           - cp config/database.yml.github_actions config/database.yml
-          - bin/rails db:create:primary db:schema:load:primary
-          - bin/rails db:create:queue db:schema:load:queue
-          - bin/rails db:create:cache db:schema:load:cache
+          - 'bin/rails db:create:primary db:schema:load:primary'
+          - 'bin/rails db:create:queue db:schema:load:queue'
+          - 'bin/rails db:create:cache db:schema:load:cache'
       jobs:
         - name: Run Linters
           env_vars:
@@ -75,13 +75,15 @@ blocks:
           commands:
             - bin/ci
             - .semaphore/lcov-to-md.sh
-            - artifact push job -d .semaphore/REPORT.md COVERAGE.md
-            - ruby -e "$(curl -s https://undercover-ci.com/uploader.rb)" -- --repo $SEMAPHORE_GIT_REPO_SLUG --commit $SEMAPHORE_GIT_SHA --simplecov coverage/coverage.json
-            - curl https://qlty.sh | sh
+            - artifact push workflow -d .semaphore/REPORT.md COVERAGE.md
+            - 'ruby -e "$(curl -s https://undercover-ci.com/uploader.rb)" -- --repo $SEMAPHORE_GIT_REPO_SLUG --commit $SEMAPHORE_GIT_SHA --simplecov coverage/coverage.json; return 0'
+            - 'curl https://qlty.sh | sh'
             - source /home/semaphore/.bash_profile
             - qlty coverage publish coverage/lcov.info
       secrets:
         - name: Qlty Code Coverage
+    run:
+      when: branch = 'main' OR branch = 'production' OR pull_request =~ '.*'
   - name: Reports
     dependencies:
       - CI
