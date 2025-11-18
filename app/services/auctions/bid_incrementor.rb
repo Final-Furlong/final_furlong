@@ -31,6 +31,7 @@ module Auctions
         else
           new_current_bid + Auctions::Bid::MINIMUM_INCREMENT
         end
+        update_old_bids(auction: original_bid.auction, horse: original_bid.horse)
         bid = Auctions::Bid.create!(
           auction: original_bid.auction,
           horse: original_bid.horse,
@@ -41,7 +42,6 @@ module Auctions
           updated_at: Time.current,
           current_high_bid: true
         )
-        Auctions::Bid.where(auction:, horse: original_bid.horse, created_at: ..bid.created_at).update_all(current_high_bid: false)
         return Result.new(created: true, current_bid: bid)
       end
     rescue ActiveRecord::ActiveRecordError
@@ -58,6 +58,14 @@ module Auctions
 
       def created?
         @created
+      end
+    end
+
+    private
+
+    def update_old_bids(auction:, horse:)
+      Auctions::Bid.where(auction:, horse:, updated_at: ..Time.current).find_each do |bid|
+        bid.update(current_high_bid: false)
       end
     end
   end
