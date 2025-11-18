@@ -1,0 +1,92 @@
+version: v1.0
+name: Final Furlong CI
+agent:
+  machine:
+    type: f1-standard-2
+    os_image: ubuntu2204
+auto_cancel:
+  running:
+    when: branch != 'master'
+  queued:
+    when: branch = 'master'
+global_job_config:
+  prologue:
+    commands:
+      - checkout
+      - sem-version ruby 3.4.5
+  epilogue:
+    always:
+      commands:
+        - '[[ -f report.xml ]] && test-results publish report.xml'
+  env_vars:
+    - name: MAILTRAP_API_KEY
+      value: foo
+    - name: RAILS_ENV
+      value: test
+    - name: COVERAGE
+      value: 'true'
+    - name: EXTERNAL_CI
+      value: 'true'
+    - name: DATABASE_URL
+      value: postgresql://postgres:@0.0.0.0:5432/final_furlong_test
+    - name: CACHE_DATABASE_URL
+      value: postgresql://postgres:@0.0.0.0:5432/final_furlong_test_cache
+    - name: QUEUE_DATABASE_URL
+      value: postgresql://postgres:@0.0.0.0:5432/final_furlong_test_queue
+blocks:
+  - name: CI
+    dependencies: [ ]
+    task:
+      prologue:
+        commands:
+          - sem-service start postgres 17
+          - sem-service start mysql 8 --username=developer --password=password --db=final_furlong_legacy_test
+          - cache restore
+          - bundle install --deployment --path vendor/bundle
+          - yarn install
+          - cache store
+          - cp config/database.yml.github_actions config/database.yml
+          - bin/rails db:create:primary db:schema:load:primary
+          - bin/rails db:create:queue db:schema:load:queue
+          - bin/rails db:create:cache db:schema:load:cache
+      jobs:
+        - name: Run Linters
+          env_vars:
+            - name: CI_TYPE
+              value: style
+          commands:
+            - bin/ci
+        - name: Security Checks
+          env_vars:
+            - name: CI_TYPE
+              value: security
+          commands:
+            - bin/ci
+        - name: Performance Checks
+          env_vars:
+            - name: CI_TYPE
+              value: performance
+          commands:
+            - bin/ci
+        - name: Tests
+          env_vars:
+            - name: CI_TYPE
+              value: tests
+          commands:
+            - bin/ci
+            - .semaphore/lcov-to-md.sh
+            - artifact push job -d .semaphore/REPORT.md COVERAGE.md
+            - ruby -e "$(curl -s https://undercover-ci.com/uploader.rb)" -- --repo $SEMAPHORE_GIT_REPO_SLUG --commit $SEMAPHORE_GIT_SHA --simplecov coverage/coverage.json
+            - curl https://qlty.sh | sh
+            - source /home/semaphore/.bash_profile
+            - qlty coverage publish coverage/lcov.info
+      secrets:
+        - name: Qlty Code Coverage
+  - name: Reports
+    dependencies:
+      - CI
+    task:
+      jobs:
+        - name: Merge reports
+          commands:
+            - test-results gen-pipeline-report

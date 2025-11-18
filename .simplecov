@@ -1,6 +1,4 @@
-require "simplecov_json_formatter"
 require "simplecov-cobertura"
-require "simplecov-json"
 require "simplecov-lcov"
 
 SimpleCov.profiles.define 'common' do
@@ -35,20 +33,25 @@ SimpleCov.profiles.define 'common' do
 end
 
 SimpleCov.profiles.define 'ci' do
+  require 'undercover/simplecov_formatter'
+
   formatter SimpleCov::Formatter::MultiFormatter.new(
     [
-      SimpleCov::Formatter::JSONFormatter,
       SimpleCov::Formatter::CoberturaFormatter,
-      SimpleCov::Formatter::LcovFormatter
+      SimpleCov::Formatter::LcovFormatter,
+      SimpleCov::Formatter::Undercover
     ]
   )
 end
 
 SimpleCov.profiles.define 'local' do
+  require 'undercover/simplecov_formatter'
+
   formatter SimpleCov::Formatter::MultiFormatter.new(
     [
       SimpleCov::Formatter::SimpleFormatter,
-      SimpleCov::Formatter::HTMLFormatter
+      SimpleCov::Formatter::HTMLFormatter,
+      SimpleCov::Formatter::Undercover
     ]
   )
 end
