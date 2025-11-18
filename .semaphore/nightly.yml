@@ -24,7 +24,7 @@ global_job_config:
       value: 'true'
 blocks:
   - name: CI
-    dependencies: [ ]
+    dependencies: []
     task:
       jobs:
         - name: Security Checks
