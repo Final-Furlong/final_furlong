@@ -21,6 +21,7 @@ end
 # Database name: primary
 #
 #  id               :bigint           not null, primary key
+#  bid_at           :datetime         not null, indexed
 #  comment          :text
 #  current_bid      :integer          default(0), not null
 #  current_high_bid :boolean          default(FALSE), not null, indexed
@@ -35,6 +36,7 @@ end
 # Indexes
 #
 #  index_auction_bids_on_auction_id        (auction_id)
+#  index_auction_bids_on_bid_at            (bid_at)
 #  index_auction_bids_on_bidder_id         (bidder_id)
 #  index_auction_bids_on_current_high_bid  (current_high_bid)
 #  index_auction_bids_on_horse_id          (horse_id) UNIQUE WHERE (current_high_bid = true)
