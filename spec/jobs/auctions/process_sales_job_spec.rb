@@ -6,16 +6,16 @@ RSpec.describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
 
     it "uses low_priority queue", perform_enqueueed_jobs: false do
       expect do
-        described_class.perform_later(bidder, auction)
+        described_class.perform_later(auction)
       end.to have_enqueued_job.on_queue("default")
     end
 
-    context "when bidder has high bids on horses" do
+    context "when there are current high bids on horses" do
       it "triggers horse seller for each horse" do
         bid
         bid2
         allow(Auctions::HorseSeller).to receive(:new).and_return mock_seller
-        described_class.perform_later(bidder, auction)
+        described_class.perform_later(auction)
         expect(mock_seller).to have_received(:process_sale).with(bid:)
         expect(mock_seller).to have_received(:process_sale).with(bid: bid2)
       end

@@ -28,11 +28,14 @@ RSpec.describe Auctions::DeleteCompletedAuctionService do
       before { auction.update_column(:end_time, DateTime.current - 1.hour) }
 
       context "when there are unsold horses" do
-        before { allow(Auctions::HorseSeller).to receive(:new).and_return mock_seller }
+        before do
+          unsold_horse_bid
+          allow(Auctions::HorseSeller).to receive(:new).and_return mock_seller
+        end
 
         it "processes sale" do
           described_class.call(auction:)
-          expect(mock_seller).to have_received(:process_sale).with(bid: unsold_horse_bid)
+          expect(mock_seller).to have_received(:process_sale).with(bid: unsold_horse_bid, disable_job_trigger: true)
         end
 
         it "deletes auction bid" do
@@ -57,7 +60,7 @@ RSpec.describe Auctions::DeleteCompletedAuctionService do
 
         it "tries to processes sale" do
           expect { described_class.call(auction:) }.to raise_error described_class::UnprocessedSaleError
-          expect(mock_seller_failure).to have_received(:process_sale).with(bid: unsold_horse_bid)
+          expect(mock_seller_failure).to have_received(:process_sale).with(bid: unsold_horse_bid, disable_job_trigger: true)
         end
 
         it "does not delete auction bid" do
@@ -108,7 +111,9 @@ RSpec.describe Auctions::DeleteCompletedAuctionService do
   end
 
   def unsold_horse_bid
-    @unsold_horse_bid ||= create(:auction_bid, auction:, horse: unsold_horse, updated_at: DateTime.current - 2.hours)
+    @unsold_horse_bid ||= create(:auction_bid, auction:, horse: unsold_horse,
+      updated_at: DateTime.current - 2.hours,
+      current_high_bid: true)
   end
 
   def sold_horse
@@ -116,7 +121,9 @@ RSpec.describe Auctions::DeleteCompletedAuctionService do
   end
 
   def sold_horse_bid
-    @sold_horse_bid ||= create(:auction_bid, auction:, horse: sold_horse, updated_at: DateTime.current - 12.hours)
+    @sold_horse_bid ||= create(:auction_bid, auction:, horse: sold_horse,
+      updated_at: DateTime.current - 12.hours,
+      current_high_bid: true)
   end
 
   def auction

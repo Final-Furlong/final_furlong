@@ -8,9 +8,11 @@ module Auctions
 
       ActiveRecord::Base.transaction do
         Auctions::Horse.unsold.where.associated(:bids).find_each do |horse|
-          winning_bid = Auctions::Bid.winning.find_by(horse:)
-          result = Auctions::HorseSeller.new.process_sale(bid: winning_bid)
-          raise UnprocessedSaleError, "Could not sell horse #{horse.id}" unless result.sold?
+          winning_bid = Auctions::Bid.current_high_bid.find_by(horse:)
+          if winning_bid
+            result = Auctions::HorseSeller.new.process_sale(bid: winning_bid, disable_job_trigger: true)
+            raise UnprocessedSaleError, "Could not sell horse #{horse.id}" unless result.sold?
+          end
         end
 
         Auctions::Bid.where(auction:).destroy_all

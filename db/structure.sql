@@ -3282,7 +3282,7 @@ CREATE INDEX index_auction_bids_on_current_high_bid ON public.auction_bids USING
 -- Name: index_auction_bids_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_auction_bids_on_horse_id ON public.auction_bids USING btree (horse_id);
+CREATE UNIQUE INDEX index_auction_bids_on_horse_id ON public.auction_bids USING btree (horse_id) WHERE (current_high_bid = true);
 
 
 --
@@ -5038,6 +5038,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251118103702'),
 ('20251115124230'),
 ('20251114085550'),
 ('20251113202832'),
