@@ -24,6 +24,8 @@ module Horses
     has_one :leaser, through: :current_lease, source: :leaser
     has_one :past_leases, -> { where.not(active: true) }, class_name: "Horses::Lease", inverse_of: :horse, dependent: :destroy
 
+    has_one :race_options, class_name: "Racing::RaceOption", dependent: :destroy
+    has_one :race_stats, class_name: "Racing::RaceStats", dependent: :destroy
     has_one :training_schedules_horse, class_name: "Racing::TrainingScheduleHorse", dependent: :destroy
     has_one :training_schedule, class_name: "Racing::TrainingSchedule", through: :training_schedules_horse
     has_many :race_result_finishes, class_name: "Racing::RaceResultHorse", inverse_of: :horse, dependent: :delete_all

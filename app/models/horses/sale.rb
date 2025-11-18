@@ -8,6 +8,7 @@ module Horses
 
     validates :date, :price, presence: true
     validates :buyer, comparison: { other_than: :seller }
+    validates :private, inclusion: { in: [true, false] }
   end
 end
 
