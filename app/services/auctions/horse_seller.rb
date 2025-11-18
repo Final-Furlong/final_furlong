@@ -2,7 +2,7 @@ module Auctions
   class HorseSeller < ApplicationService
     attr_reader :bid, :auction_horse, :horse, :seller
 
-    def process_sale(bid:)
+    def process_sale(bid:, disable_job_trigger: false)
       @bid = bid
       result = Result.new(sold: false, bid:, error: nil)
 
@@ -22,8 +22,6 @@ module Auctions
       end
 
       if DateTime.current < bid.updated_at + auction.hours_until_sold.hours && DateTime.current < auction.end_time
-        _sale_time = bid.updated_at + auction.hours_until_sold.hours
-        # Auctions::ProcessSalesJob.set(wait_until: sale_time).perform_later(bid:, horse: auction_horse)
         result.error = error("bid_timeout_not_met")
         return result
       end
@@ -123,7 +121,7 @@ module Auctions
         end
         auction_horse.update(sold_at: Time.current)
         horse.update(owner: buyer)
-        # schedule_next_sales_job(bidder: buyer, auction:)
+        schedule_next_sales_job(auction:, disabled: !disable_job_trigger)
 
         result.sold = true
       rescue ActiveRecord::ActiveRecordError
@@ -150,31 +148,27 @@ module Auctions
 
     private
 
-    def schedule_next_sales_job(bidder:, auction:)
-      return unless Auctions::Bid.where(bidder:, auction:).current_high_bid.sale_time_not_met.exists?
+    def schedule_next_sales_job(auction:, disabled: false)
+      return if disabled
 
-      next_updated_at = Auctions::Bid.where(bidder:, auction:).current_high_bid.sale_time_not_met.minimum(:updated_at)
-      return if schedule_exists?(auction, bidder, next_updated_at)
+      return unless Auctions::Bid.where(auction:).current_high_bid.sale_time_not_met.exists?
 
-      SolidQueue::Job.where(class_name: "Auctions::ProcessSalesJob")
-        .where("arguments LIKE ?", "%#{bidder.id}%")
-        .where("arguments LIKE ?", "%#{auction.id}%")
-        .where(["scheduled_at > ?", 5.minutes.from_now])
-        .delete_all
-      Auctions::ProcessSalesJob.set(wait_until: next_updated_at + auction.hours_until_sold.hours).perform_later(bidder, auction)
+      next_updated_at = Auctions::Bid.where(auction:).current_high_bid.sale_time_not_met.minimum(:updated_at)
+      return if schedule_exists?(auction:, time: next_updated_at + auction.hours_until_sold.hours)
+
+      Auctions::ProcessSalesJob.set(wait_until: next_updated_at + auction.hours_until_sold.hours).perform_later(auction)
     end
 
-    def schedule_exists?(auction, bidder, time)
+    def schedule_exists?(auction:, time:)
       SolidQueue::Job.where(class_name: "Auctions::ProcessSalesJob")
-        .where("arguments LIKE ?", "%#{bidder.id}%")
         .where("arguments LIKE ?", "%#{auction.id}%")
-        .exists?(["scheduled_at <= ?", time])
+        .exists?(["scheduled_at < ?", time])
     end
 
     def money_spent(bidder_id)
       money = 0
-      Auctions::Horse.joins(:bids).where(bids: { bidder_id: }).sold.find_each do |horse|
-        money += Auctions::Bid.winning.where(horse:, bidder_id:).first.current_bid
+      Auctions::Horse.joins(:horse).where(horses: { owner_id: bidder_id }).sold.find_each do |horse|
+        money += Auctions::Bid.current_high_bid.where(horse:, bidder_id:).first.current_bid
       end
       money
     end
