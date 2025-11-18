@@ -292,6 +292,7 @@ RSpec.describe Auctions::HorseSeller do
       auction.update(horse_purchase_cap_per_stable: 1)
       other_bid = create(:auction_bid, auction:, bidder: bid.bidder, current_bid: 10_000, maximum_bid: 10_000, updated_at: 1.day.ago)
       other_bid.horse.update(sold_at: Time.current)
+      other_bid.horse.horse.update(owner: bid.bidder)
     end
 
     it "returns sold false" do
