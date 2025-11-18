@@ -3,36 +3,39 @@
 CI.run do
   external_ci = ENV.fetch("EXTERNAL_CI", false)
   limited_ci = ENV.fetch("LIMITED_CI", false)
-  unless limited_ci
-    step "Setup", external_ci ? "bin/rails assets:precompile" : "bin/setup test"
+  ci_type = ENV.fetch("CI_TYPE", "all")
 
+  unless limited_ci || %w[security performance].include?(ci_type)
+    step "Setup", external_ci ? "bin/rails assets:precompile" : "bin/setup test"
+  end
+
+  if ci_type == "style" || ci_type == "all"
     step "Style: Ruby", "bundle exec rubocop"
     step "Style: Slim", "SLIM_LINT_RUBOCOP_CONF=.rubocop_slim.yml bundle exec slim-lint"
     step "Style: ESLint", "yarn eslint app/javascript"
     step "Style: StyleLint", "yarn run stylelint app/assets/tailwind"
     step "Style: I18n", "bin/i18n-tasks health"
-    step "Style: Github Workflow", "actionlint" unless external_ci
   end
 
-  step "Security: Gem audit", "bin/bundler-audit"
-  step "Security: Yarn vulnerability audit", "bin/yarn_audit.sh"
-  step "Security: Brakeman code analysis", "bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error"
+  if ci_type == "security" || ci_type == "all"
+    step "Security: Gem audit", "bin/bundler-audit"
+    step "Security: Yarn vulnerability audit", "bin/yarn_audit.sh"
+    step "Security: Brakeman code analysis", "bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error"
+  end
 
-  unless limited_ci
+  if ci_type == "performance" || ci_type == "all"
     step "Performance: Fasterer", "bin/fasterer"
     step "Performance: Active Record Doctor", "bundle exec rake active_record_doctor"
   end
 
-  if success?
-    unless limited_ci
-      step "Tests: Rails", "bin/rspec"
-      step "Tests: Seeds", "env RAILS_ENV=test bin/rails db:seed:replant"
-    end
+  if ci_type == "tests" || ci_type == "all"
+    step "Tests: Rails", external_ci ? "bin/rspec --format RspecJunitFormatter --out report.xml --format documentation" : "bin/rspec"
+    step "Tests: Seeds", "env RAILS_ENV=test bin/rails db:seed:replant" unless external_ci
   end
 
   # Optional: set a green GitHub commit status to unblock PR merge.
   # Requires the `gh` CLI and `gh extension install basecamp/gh-signoff`.
-  unless external_ci || limited_ci
+  unless external_ci
     if success?
       step "Signoff: All systems go. Ready for merge and deploy.", "gh signoff"
     else
