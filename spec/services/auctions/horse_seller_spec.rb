@@ -158,7 +158,7 @@ RSpec.describe Auctions::HorseSeller do
 
   context "when sale time has not been met" do
     before do
-      bid.update(updated_at: DateTime.current - auction.hours_until_sold.hours + 5.minutes)
+      bid.update(bid_at: DateTime.current - auction.hours_until_sold.hours + 5.minutes)
       auction.update_column(:end_time, DateTime.current + 2.days)
     end
 
@@ -177,7 +177,7 @@ RSpec.describe Auctions::HorseSeller do
 
   context "when sale time has not been met but auction is ending" do
     before do
-      bid.update(updated_at: DateTime.current - 1.hour)
+      bid.update(bid_at: DateTime.current - 1.hour)
       auction.update_column(:end_time, 5.minutes.ago)
     end
 
@@ -213,7 +213,7 @@ RSpec.describe Auctions::HorseSeller do
   context "when bidder has spent the max allowed in the auction" do
     before do
       auction.update(spending_cap_per_stable: 10_000)
-      other_bid = create(:auction_bid, auction:, bidder: bid.bidder, current_bid: 10_000, maximum_bid: 10_000, updated_at: 1.day.ago)
+      other_bid = create(:auction_bid, auction:, bidder: bid.bidder, current_bid: 10_000, maximum_bid: 10_000, bid_at: 1.day.ago)
       other_bid.horse.update(sold_at: Time.current)
     end
 
@@ -227,13 +227,20 @@ RSpec.describe Auctions::HorseSeller do
       expect(result.error).to eq error("spent_max_money")
     end
 
+    it "triggers deletion of bid" do
+      mock_deleter = instance_double(Auctions::BidDeleter, delete_bids: true)
+      allow(Auctions::BidDeleter).to receive(:new).and_return mock_deleter
+      described_class.new.process_sale(bid:)
+      expect(mock_deleter).to have_received(:delete_bids).with(bids: [bid])
+    end
+
     it_behaves_like "an unprocessed sale"
   end
 
   context "when bidder is spending more than the max allowed in the auction" do
     before do
       auction.update(spending_cap_per_stable: 10_000)
-      bid.update(current_bid: 10_500, updated_at: Time.current - auction.hours_until_sold.hours - 1.minute)
+      bid.update(current_bid: 10_500, bid_at: Time.current - auction.hours_until_sold.hours - 1.minute)
     end
 
     it "returns sold false" do
@@ -246,13 +253,20 @@ RSpec.describe Auctions::HorseSeller do
       expect(result.error).to eq error("spent_max_money")
     end
 
+    it "triggers deletion of bid" do
+      mock_deleter = instance_double(Auctions::BidDeleter, delete_bids: true)
+      allow(Auctions::BidDeleter).to receive(:new).and_return mock_deleter
+      described_class.new.process_sale(bid:)
+      expect(mock_deleter).to have_received(:delete_bids).with(bids: [bid])
+    end
+
     it_behaves_like "an unprocessed sale"
   end
 
   context "when bidder is spending exactly the max allowed in the auction" do
     before do
       auction.update(spending_cap_per_stable: 10_000)
-      bid.update(current_bid: 10_000, updated_at: Time.current - auction.hours_until_sold.hours - 1.minute)
+      bid.update(current_bid: 10_000, bid_at: Time.current - auction.hours_until_sold.hours - 1.minute)
     end
 
     it "returns sold true" do
@@ -271,7 +285,7 @@ RSpec.describe Auctions::HorseSeller do
   context "when bidder is spending less than the max allowed in the auction" do
     before do
       auction.update(spending_cap_per_stable: 10_000)
-      bid.update(current_bid: 9_000, updated_at: Time.current - auction.hours_until_sold.hours - 1.minute)
+      bid.update(current_bid: 9_000, bid_at: Time.current - auction.hours_until_sold.hours - 1.minute)
     end
 
     it "returns sold true" do
@@ -290,7 +304,7 @@ RSpec.describe Auctions::HorseSeller do
   context "when bidder has bought the max horses allowed in the auction" do
     before do
       auction.update(horse_purchase_cap_per_stable: 1)
-      other_bid = create(:auction_bid, auction:, bidder: bid.bidder, current_bid: 10_000, maximum_bid: 10_000, updated_at: 1.day.ago)
+      other_bid = create(:auction_bid, auction:, bidder: bid.bidder, current_bid: 10_000, maximum_bid: 10_000, bid_at: 1.day.ago)
       other_bid.horse.update(sold_at: Time.current)
       other_bid.horse.horse.update(owner: bid.bidder)
     end
@@ -305,13 +319,20 @@ RSpec.describe Auctions::HorseSeller do
       expect(result.error).to eq error("bought_max_horses")
     end
 
+    it "triggers deletion of bid" do
+      mock_deleter = instance_double(Auctions::BidDeleter, delete_bids: true)
+      allow(Auctions::BidDeleter).to receive(:new).and_return mock_deleter
+      described_class.new.process_sale(bid:)
+      expect(mock_deleter).to have_received(:delete_bids).with(bids: [bid])
+    end
+
     it_behaves_like "an unprocessed sale"
   end
 
   context "when bidder has not yet bought the max horses allowed in the auction" do
     before do
       auction.update(horse_purchase_cap_per_stable: 2)
-      other_bid = create(:auction_bid, auction:, bidder: bid.bidder, current_bid: 10_000, maximum_bid: 10_000, updated_at: 1.day.ago)
+      other_bid = create(:auction_bid, auction:, bidder: bid.bidder, current_bid: 10_000, maximum_bid: 10_000, bid_at: 1.day.ago)
       other_bid.horse.update(sold_at: Time.current)
     end
 
@@ -370,7 +391,7 @@ RSpec.describe Auctions::HorseSeller do
   context "when bidder has not met the reserve price" do
     before do
       auction_horse.update(reserve_price: 20_000)
-      bid.update(current_bid: 10_000, maximum_bid: 10_000, updated_at: Time.current - auction.hours_until_sold.hours - 1.minute)
+      bid.update(current_bid: 10_000, maximum_bid: 10_000, bid_at: Time.current - auction.hours_until_sold.hours - 1.minute)
     end
 
     it "returns sold false" do
@@ -389,7 +410,7 @@ RSpec.describe Auctions::HorseSeller do
   context "when bidder has met the reserve price" do
     before do
       auction_horse.update(reserve_price: 20_000)
-      bid.update(current_bid: 20_000, updated_at: Time.current - auction.hours_until_sold.hours - 1.minute)
+      bid.update(current_bid: 20_000, bid_at: Time.current - auction.hours_until_sold.hours - 1.minute)
     end
 
     it "returns sold true" do
@@ -408,7 +429,7 @@ RSpec.describe Auctions::HorseSeller do
   context "when horse has a maximum_price set" do
     before do
       auction_horse.update(maximum_price: 100_000)
-      bid.update(current_bid: 100_000, updated_at: Time.current - auction.hours_until_sold.hours - 1.minute)
+      bid.update(current_bid: 100_000, bid_at: Time.current - auction.hours_until_sold.hours - 1.minute)
     end
 
     context "when bidder is spending exactly the max price and is the only bidder" do
@@ -550,7 +571,7 @@ RSpec.describe Auctions::HorseSeller do
 
   def setup_data
     @auction = create(:auction, :current)
-    @bid = create(:auction_bid, auction:, updated_at: Time.current - auction.hours_until_sold.hours - 1.minute, current_high_bid: true)
+    @bid = create(:auction_bid, auction:, bid_at: Time.current - auction.hours_until_sold.hours - 1.minute, current_high_bid: true)
     @auction_horse = @bid.horse
     @legacy_stable_buyer = create(:legacy_user)
     @bid.bidder.update(legacy_id: legacy_stable_buyer.ID)

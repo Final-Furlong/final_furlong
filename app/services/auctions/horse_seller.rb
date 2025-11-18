@@ -21,7 +21,7 @@ module Auctions
         return result
       end
 
-      if DateTime.current < bid.updated_at + auction.hours_until_sold.hours && DateTime.current < auction.end_time
+      if DateTime.current < bid.bid_at + auction.hours_until_sold.hours && DateTime.current < auction.end_time
         result.error = error("bid_timeout_not_met")
         return result
       end
@@ -66,6 +66,7 @@ module Auctions
       horse_max = auction.horse_purchase_cap_per_stable.to_i
       if horse_max.positive?
         if horses_bought(buyer.id) >= horse_max
+          Auctions::BidDeleter.new.delete_bids(bids: [bid])
           result.error = error("bought_max_horses")
           return result
         end
@@ -74,6 +75,7 @@ module Auctions
       money_max = auction.spending_cap_per_stable.to_i
       if money_max.positive?
         if money_spent(buyer.id) + bid.current_bid > money_max
+          Auctions::BidDeleter.new.delete_bids(bids: [bid])
           result.error = error("spent_max_money")
           return result
         end
