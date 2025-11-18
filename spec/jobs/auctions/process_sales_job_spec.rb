@@ -35,7 +35,7 @@ RSpec.describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
                           bidder_id: bidder.id,
                           current_bid: 10_000,
                           current_high_bid: true,
-                          updated_at: DateTime.current - auction.hours_until_sold.hours - 1.second })
+                          bid_at: DateTime.current - auction.hours_until_sold.hours - 1.second })
 
     @bid = Auctions::Bid.find(result.rows.flatten.first)
   end
@@ -47,7 +47,7 @@ RSpec.describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
                           bidder_id: bidder.id,
                           current_bid: 10_000,
                           current_high_bid: true,
-                          updated_at: DateTime.current - auction.hours_until_sold.hours - 1.second })
+                          bid_at: DateTime.current - auction.hours_until_sold.hours - 1.second })
 
     @bid2 = Auctions::Bid.find(result.rows.flatten.first)
   end
