@@ -197,6 +197,45 @@ RSpec.describe Auctions::BidCreator do
     end
   end
 
+  context "when bid amount is higher than current bid" do
+    it "returns created true" do
+      create(:auction_bid, auction:, horse:, current_bid: 5500, updated_at: 1.minute.ago, current_high_bid: true)
+      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
+      result = described_class.new.create_bid(bid_params.merge(current_bid: 6000, maximum_bid: 20_000))
+      expect(result.created?).to be true
+    end
+
+    it "returns no error" do
+      create(:auction_bid, auction:, horse:, current_bid: 5500, updated_at: 1.minute.ago, current_high_bid: true)
+      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
+      result = described_class.new.create_bid(bid_params.merge(current_bid: 6000, maximum_bid: 20_000))
+      expect(result.error).to be_nil
+    end
+
+    it "creates 1 bid for new current bid" do
+      create(:auction_bid, auction:, horse:, current_bid: 5500, updated_at: 1.minute.ago, current_high_bid: true)
+      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
+      expect do
+        described_class.new.create_bid(bid_params.merge(current_bid: 6000, maximum_bid: 20_000))
+      end.to change(Auctions::Bid, :count).by(1)
+    end
+
+    it "updates old bid to not be the current high bid" do
+      old_bid = create(:auction_bid, auction:, horse:, current_bid: 5500, updated_at: 1.minute.ago, current_high_bid: true)
+      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
+      described_class.new.create_bid(bid_params.merge(current_bid: 6000, maximum_bid: 20_000))
+      expect(old_bid.reload.current_bid).to eq 5500
+      expect(old_bid.current_high_bid).to be false
+    end
+
+    it "sets the right data for tne new current bid" do
+      create(:auction_bid, auction:, horse:, current_bid: 5500, updated_at: 1.minute.ago, current_high_bid: true)
+      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: 2.minutes.ago)
+      result = described_class.new.create_bid(bid_params.merge(current_bid: 6000, maximum_bid: 20_000))
+      expect(result.bid).to have_attributes(current_bid: 6000, maximum_bid: 20_000, current_high_bid: true)
+    end
+  end
+
   context "when bid amount is higher than maximum bid" do
     it "returns created true" do
       create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
@@ -237,7 +276,7 @@ RSpec.describe Auctions::BidCreator do
       )
     end
 
-    context "when previous bidder does no has a high bid on another horse" do
+    context "when there is already a process sales job queued" do
       before { ActiveJob::Base.queue_adapter = :solid_queue }
 
       after { ActiveJob::Base.queue_adapter = :test }
@@ -252,18 +291,14 @@ RSpec.describe Auctions::BidCreator do
       end
     end
 
-    context "when previous bidder already has a high bid on another horse" do
+    context "when there is not a process sales job queued" do
       before { ActiveJob::Base.queue_adapter = :solid_queue }
 
       after { ActiveJob::Base.queue_adapter = :test }
 
       it "does not modify process sales job" do
-        pending("fix sales processing job")
-        horse2 = create(:auction_horse, auction:)
         old_bidder = create(:stable)
-        create(:auction_bid, horse: horse2, auction:, bidder: old_bidder, current_high_bid: true)
         create(:auction_bid, horse:, auction:, bidder: old_bidder, current_high_bid: true, current_bid: 2000)
-        Auctions::ProcessSalesJob.set(wait: 1.hour).perform_later(bidder: old_bidder, auction:)
         expect do
           described_class.new.create_bid(bid_params.merge(current_bid: 10_500, maximum_bid: 20_000))
         end.to change(SolidQueue::Job, :count).by(1)
@@ -459,7 +494,6 @@ RSpec.describe Auctions::BidCreator do
       after { ActiveJob::Base.queue_adapter = :test }
 
       it "schedules process sales job" do
-        pending("fix sale processing job")
         auction = create(:auction, :current, spending_cap_per_stable: 10_000)
         horse.update(auction:)
         expect do

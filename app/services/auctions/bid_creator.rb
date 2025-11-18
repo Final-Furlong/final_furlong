@@ -118,8 +118,7 @@ module Auctions
           result.created = bid.save
           if result.created?
             previous_bid.update(current_bid: previous_bid.maximum_bid) if previous_max_bid.positive?
-            # unschedule_previous_bid_job(bid)
-            # schedule_sale_job(bid)
+            schedule_sale_job(auction:)
           end
         else
           result.error = bid.errors.full_messages.to_sentence
@@ -156,28 +155,17 @@ module Auctions
       end
     end
 
-    def unschedule_previous_bid_job(bid)
-      old_bid = Auctions::Bid.where(auction: bid.auction, horse: bid.horse).where.not(id: bid.id).winning.first
-      return unless old_bid
+    def schedule_sale_job(auction:)
+      return unless Auctions::Bid.where(auction:).current_high_bid.sale_time_not_met.exists?
 
-      return if Auctions::Bid.where(auction: bid.auction, bidder: old_bid.bidder).where.not(horse: bid.horse).current_high_bid.exists?
+      next_updated_at = Auctions::Bid.where(auction:).current_high_bid.sale_time_not_met.minimum(:updated_at)
+      return if schedule_exists?(auction:, time: next_updated_at + auction.hours_until_sold.hours)
 
-      SolidQueue::Job.where(class_name: "Auctions::ProcessSalesJob")
-        .where("arguments LIKE ?", "%#{old_bid.bidder_id}%")
-        .where("arguments LIKE ?", "%#{bid.auction.id}%")
-        .delete_all
+      Auctions::ProcessSalesJob.set(wait_until: next_updated_at + auction.hours_until_sold.hours).perform_later(auction)
     end
 
-    def schedule_sale_job(bid)
-      sale_time = bid.updated_at + bid.auction.hours_until_sold.hours
-      return if schedule_exists?(bid.auction, bid.bidder, sale_time)
-
-      Auctions::ProcessSalesJob.set(wait_until: sale_time).perform_later(bidder: bid.bidder, auction: bid.auction)
-    end
-
-    def schedule_exists?(auction, bidder, time)
+    def schedule_exists?(auction:, time:)
       SolidQueue::Job.where(class_name: "Auctions::ProcessSalesJob")
-        .where("arguments LIKE ?", "%#{bidder.id}%")
         .where("arguments LIKE ?", "%#{auction.id}%")
         .exists?(["scheduled_at < ?", time])
     end

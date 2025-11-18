@@ -9,10 +9,11 @@ RSpec.describe Auctions::BidDeleter do
       expect(result.deleted?).to be true
     end
 
-    it "updates timestamp of most recent non-deleted bid" do
+    it "updates data of most recent non-deleted bid" do
       freeze_time
       described_class.new.delete_bids(bids: [bid])
       expect(previous_bid.reload.updated_at).to eq Time.current
+      expect(previous_bid.current_high_bid).to be true
     end
 
     it "does not modify bids earlier than the most recent non-deleted bid" do
