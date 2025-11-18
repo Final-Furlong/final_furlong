@@ -33,7 +33,7 @@ module Auctions
             max_bid.bidder.available_balance.to_i >= horse_max_price
           }
           if all_max_bidders.empty?
-            Auctions::BidDeleter.new.delete_bids(bids: Auctions::Bid.with_bid_matching(horse_max_price).to_a)
+            Auctions::BidDeleter.new.delete_bids(bids: Auctions::Bid.with_bid_matching(horse_max_price).to_a, disable_job_trigger:)
             result.error = error("cannot_afford_bid")
             return result
           else
@@ -45,7 +45,7 @@ module Auctions
 
       available_balance = buyer.available_balance
       if available_balance.nil? || available_balance < bid.current_bid
-        Auctions::BidDeleter.new.delete_bids(bids: [bid])
+        Auctions::BidDeleter.new.delete_bids(bids: [bid], disable_job_trigger:)
         result.error = error("cannot_afford_bid")
         return result
       end
@@ -66,7 +66,7 @@ module Auctions
       horse_max = auction.horse_purchase_cap_per_stable.to_i
       if horse_max.positive?
         if horses_bought(buyer.id) >= horse_max
-          Auctions::BidDeleter.new.delete_bids(bids: [bid])
+          Auctions::BidDeleter.new.delete_bids(bids: [bid], disable_job_trigger:)
           result.error = error("bought_max_horses")
           return result
         end
@@ -75,7 +75,7 @@ module Auctions
       money_max = auction.spending_cap_per_stable.to_i
       if money_max.positive?
         if money_spent(buyer.id) + bid.current_bid > money_max
-          Auctions::BidDeleter.new.delete_bids(bids: [bid])
+          Auctions::BidDeleter.new.delete_bids(bids: [bid], disable_job_trigger:)
           result.error = error("spent_max_money")
           return result
         end
@@ -164,6 +164,7 @@ module Auctions
     def schedule_exists?(auction:, time:)
       SolidQueue::Job.scheduled.where(class_name: "Auctions::ProcessSalesJob")
         .where("arguments LIKE ?", "%#{auction.id}%")
+        .where(["scheduled_at > ?", 10.minutes.from_now])
         .exists?(["scheduled_at < ?", time])
     end
 

@@ -16,8 +16,8 @@ RSpec.describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
         bid2
         allow(Auctions::HorseSeller).to receive(:new).and_return mock_seller
         described_class.perform_later(auction)
-        expect(mock_seller).to have_received(:process_sale).with(bid:)
-        expect(mock_seller).to have_received(:process_sale).with(bid: bid2)
+        expect(mock_seller).to have_received(:process_sale).with(bid: bid.reload)
+        expect(mock_seller).to have_received(:process_sale).with(bid: bid2.reload)
       end
     end
   end
