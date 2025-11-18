@@ -1,0 +1,35 @@
+version: v1.0
+name: Nightly CI
+agent:
+  machine:
+    type: f1-standard-2
+    os_image: ubuntu2204
+global_job_config:
+  prologue:
+    commands:
+      - checkout
+      - sem-version ruby 3.4.5
+      - cache restore
+      - bundle install --deployment --path vendor/bundle
+      - yarn install
+      - cache store
+  env_vars:
+    - name: MAILTRAP_API_KEY
+      value: foo
+    - name: RAILS_ENV
+      value: test
+    - name: EXTERNAL_CI
+      value: 'true'
+    - name: LIMITED_CI
+      value: 'true'
+blocks:
+  - name: CI
+    dependencies: []
+    task:
+      jobs:
+        - name: Security Checks
+          env_vars:
+            - name: CI_TYPE
+              value: security
+          commands:
+            - bin/ci

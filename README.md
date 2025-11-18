@@ -1,6 +1,6 @@
 # Final Furlong
 
-[![CI](https://github.com/Final-Furlong/final_furlong/actions/workflows/main.yml/badge.svg)](https://github.com/Final-Furlong/final_furlong/actions/workflows/main.yml)
+[![Build Status](https://finalfurlong.semaphoreci.com/badges/final_furlong/branches/main.svg?style=shields&key=3039b3ed-f657-4f3a-aca4-aa2ba22a1d7d)](https://finalfurlong.semaphoreci.com/projects/final_furlong)
 [![Maintainability](https://qlty.sh/badges/5d217b6a-2125-461f-98c2-9b6c82cae534/maintainability.svg)](https://qlty.sh/gh/Final-Furlong/projects/final_furlong)
 [![Code Coverage](https://qlty.sh/badges/5d217b6a-2125-461f-98c2-9b6c82cae534/coverage.svg)](https://qlty.sh/gh/Final-Furlong/projects/final_furlong)
 
