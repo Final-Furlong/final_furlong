@@ -9,7 +9,7 @@ module Auctions
 
         if Auctions::Bid.winning.exists?(horse:)
           previous_bid = Auctions::Bid.winning.find_by!(horse:)
-          previous_bid.update(updated_at: Time.current, current_high_bid: true)
+          previous_bid.update(bid_at: Time.current, current_high_bid: true)
         end
       end
       Result.new(deleted: true, bids:, error: nil)
