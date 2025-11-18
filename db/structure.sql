@@ -1038,6 +1038,42 @@ ALTER SEQUENCE public.horse_genetics_id_seq OWNED BY public.horse_genetics.id;
 
 
 --
+-- Name: horse_sales; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.horse_sales (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    date date NOT NULL,
+    seller_id bigint NOT NULL,
+    buyer_id bigint NOT NULL,
+    price integer DEFAULT 0 NOT NULL,
+    private boolean DEFAULT true NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: horse_sales_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.horse_sales_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: horse_sales_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.horse_sales_id_seq OWNED BY public.horse_sales.id;
+
+
+--
 -- Name: horses; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2534,6 +2570,13 @@ ALTER TABLE ONLY public.horse_genetics ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
+-- Name: horse_sales id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horse_sales ALTER COLUMN id SET DEFAULT nextval('public.horse_sales_id_seq'::regclass);
+
+
+--
 -- Name: horses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2914,6 +2957,14 @@ ALTER TABLE ONLY public.horse_attributes
 
 ALTER TABLE ONLY public.horse_genetics
     ADD CONSTRAINT horse_genetics_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: horse_sales horse_sales_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horse_sales
+    ADD CONSTRAINT horse_sales_pkey PRIMARY KEY (id);
 
 
 --
@@ -3571,6 +3622,34 @@ CREATE UNIQUE INDEX index_horse_attributes_on_horse_id ON public.horse_attribute
 --
 
 CREATE UNIQUE INDEX index_horse_genetics_on_horse_id ON public.horse_genetics USING btree (horse_id);
+
+
+--
+-- Name: index_horse_sales_on_buyer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horse_sales_on_buyer_id ON public.horse_sales USING btree (buyer_id);
+
+
+--
+-- Name: index_horse_sales_on_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horse_sales_on_date ON public.horse_sales USING btree (date);
+
+
+--
+-- Name: index_horse_sales_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horse_sales_on_horse_id ON public.horse_sales USING btree (horse_id);
+
+
+--
+-- Name: index_horse_sales_on_seller_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horse_sales_on_seller_id ON public.horse_sales USING btree (seller_id);
 
 
 --
@@ -4640,6 +4719,14 @@ ALTER TABLE ONLY public.race_schedules
 
 
 --
+-- Name: horse_sales fk_rails_0b809fb199; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horse_sales
+    ADD CONSTRAINT fk_rails_0b809fb199 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
 -- Name: auction_horses fk_rails_0ff758e7f8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4832,6 +4919,14 @@ ALTER TABLE ONLY public.active_storage_variant_records
 
 
 --
+-- Name: horse_sales fk_rails_9e272e949b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horse_sales
+    ADD CONSTRAINT fk_rails_9e272e949b FOREIGN KEY (seller_id) REFERENCES public.stables(id);
+
+
+--
 -- Name: activity_points fk_rails_a3b05b12f2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4901,6 +4996,14 @@ ALTER TABLE ONLY public.leases
 
 ALTER TABLE ONLY public.lease_offers
     ADD CONSTRAINT fk_rails_b25d1a1f1b FOREIGN KEY (owner_id) REFERENCES public.stables(id);
+
+
+--
+-- Name: horse_sales fk_rails_b43ef5c431; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horse_sales
+    ADD CONSTRAINT fk_rails_b43ef5c431 FOREIGN KEY (buyer_id) REFERENCES public.stables(id);
 
 
 --
@@ -5046,6 +5149,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251118135018'),
 ('20251118125017'),
 ('20251118103702'),
 ('20251115124230'),
