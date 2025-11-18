@@ -550,7 +550,7 @@ RSpec.describe Auctions::HorseSeller do
 
   def setup_data
     @auction = create(:auction, :current)
-    @bid = create(:auction_bid, auction:, updated_at: Time.current - auction.hours_until_sold.hours - 1.minute)
+    @bid = create(:auction_bid, auction:, updated_at: Time.current - auction.hours_until_sold.hours - 1.minute, current_high_bid: true)
     @auction_horse = @bid.horse
     @legacy_stable_buyer = create(:legacy_user)
     @bid.bidder.update(legacy_id: legacy_stable_buyer.ID)
