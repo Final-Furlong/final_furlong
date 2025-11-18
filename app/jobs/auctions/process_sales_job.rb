@@ -4,7 +4,7 @@ class Auctions::ProcessSalesJob < ApplicationJob
   def perform(auction)
     Auctions::Bid.joins(:horse).where(auction:).sale_time_met.merge(Auctions::Horse.unsold).each do |bid|
       winning_bid = Auctions::Bid.where(auction:, horse: bid.horse).sale_time_met.current_high_bid.first
-      Auctions::HorseSeller.new.process_sale(bid: winning_bid)
+      Auctions::HorseSeller.new.process_sale(bid: winning_bid) if winning_bid
     end
   end
 end
