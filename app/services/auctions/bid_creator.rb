@@ -158,7 +158,7 @@ module Auctions
     def schedule_sale_job(auction:)
       return unless Auctions::Bid.where(auction:).current_high_bid.sale_time_not_met.exists?
 
-      next_updated_at = Auctions::Bid.where(auction:).current_high_bid.sale_time_not_met.minimum(:updated_at)
+      next_updated_at = Auctions::Bid.where(auction:).current_high_bid.sale_time_not_met.minimum(:bid_at)
       return if schedule_exists?(auction:, time: next_updated_at + auction.hours_until_sold.hours)
 
       Auctions::ProcessSalesJob.set(wait_until: next_updated_at + auction.hours_until_sold.hours).perform_later(auction)
