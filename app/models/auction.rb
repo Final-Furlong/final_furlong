@@ -70,7 +70,7 @@ class Auction < ApplicationRecord
   end
 
   def deletion_job
-    SolidQueue::Job.where(class_name: "Daily::DeleteCompletedAuctionsJob").where("arguments LIKE ?", "%#{global_id_string}%")
+    SolidQueue::Job.scheduled.where(class_name: "Daily::DeleteCompletedAuctionsJob").where("arguments LIKE ?", "%#{global_id_string}%")
   end
 
   def schedule_job

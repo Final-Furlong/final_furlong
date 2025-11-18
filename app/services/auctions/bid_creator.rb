@@ -165,7 +165,7 @@ module Auctions
     end
 
     def schedule_exists?(auction:, time:)
-      SolidQueue::Job.where(class_name: "Auctions::ProcessSalesJob")
+      SolidQueue::Job.scheduled.where(class_name: "Auctions::ProcessSalesJob")
         .where("arguments LIKE ?", "%#{auction.id}%")
         .exists?(["scheduled_at < ?", time])
     end
