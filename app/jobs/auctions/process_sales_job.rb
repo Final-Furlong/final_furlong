@@ -6,6 +6,10 @@ class Auctions::ProcessSalesJob < ApplicationJob
     Auctions::Horse.where(auction:).where.associated(:bids).distinct.each do |ah|
       next if ah.sold_at.present?
       wb = ah.bids.current_high_bid.first
+      if wb.nil?
+        wb = ah.bids.winning.first
+        wb.update(current_high_bid: true)
+      end
       next unless wb.bid_at < Time.current - auction.hours_until_sold.hours
 
       horses << { id: ah.id, bid_id: wb.id, time: wb.bid_at }
@@ -16,6 +20,16 @@ class Auctions::ProcessSalesJob < ApplicationJob
       winning_bid = Auctions::Bid.find(horse_info[:bid_id])
       Auctions::HorseSeller.new.process_sale(bid: winning_bid)
     end
+    schedule_next_sales_job(auction:)
+  end
+
+  private
+
+  def schedule_next_sales_job(auction:)
+    return unless Auctions::Bid.where(auction:).current_high_bid.sale_time_not_met.exists?
+
+    next_updated_at = Auctions::Bid.where(auction:).current_high_bid.sale_time_not_met.minimum(:bid_at)
+    Auctions::ProcessSalesJob.set(wait_until: next_updated_at + auction.hours_until_sold.hours).perform_later(auction)
   end
 end
 

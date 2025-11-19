@@ -150,7 +150,7 @@ module Auctions
     private
 
     def update_old_bids(auction:, horse:)
-      Auctions::Bid.where(auction:, horse:, updated_at: ..Time.current).find_each do |bid|
+      Auctions::Bid.where(auction:, horse:, bid_at: ..Time.current).find_each do |bid|
         bid.update(current_high_bid: false)
       end
     end
