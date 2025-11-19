@@ -231,7 +231,8 @@ RSpec.describe Auctions::HorseSeller do
       mock_deleter = instance_double(Auctions::BidDeleter, delete_bids: true)
       allow(Auctions::BidDeleter).to receive(:new).and_return mock_deleter
       described_class.new.process_sale(bid:)
-      expect(mock_deleter).to have_received(:delete_bids).with(bids: [bid])
+      expect(mock_deleter).to have_received(:delete_bids).with(bids: [bid],
+        disable_job_trigger: false)
     end
 
     it_behaves_like "an unprocessed sale"
@@ -257,7 +258,8 @@ RSpec.describe Auctions::HorseSeller do
       mock_deleter = instance_double(Auctions::BidDeleter, delete_bids: true)
       allow(Auctions::BidDeleter).to receive(:new).and_return mock_deleter
       described_class.new.process_sale(bid:)
-      expect(mock_deleter).to have_received(:delete_bids).with(bids: [bid])
+      expect(mock_deleter).to have_received(:delete_bids).with(bids: [bid],
+        disable_job_trigger: false)
     end
 
     it_behaves_like "an unprocessed sale"
@@ -323,7 +325,8 @@ RSpec.describe Auctions::HorseSeller do
       mock_deleter = instance_double(Auctions::BidDeleter, delete_bids: true)
       allow(Auctions::BidDeleter).to receive(:new).and_return mock_deleter
       described_class.new.process_sale(bid:)
-      expect(mock_deleter).to have_received(:delete_bids).with(bids: [bid])
+      expect(mock_deleter).to have_received(:delete_bids).with(bids: [bid],
+        disable_job_trigger: false)
     end
 
     it_behaves_like "an unprocessed sale"
@@ -366,7 +369,8 @@ RSpec.describe Auctions::HorseSeller do
       mock_deleter = instance_double(Auctions::BidDeleter, delete_bids: true)
       allow(Auctions::BidDeleter).to receive(:new).and_return mock_deleter
       described_class.new.process_sale(bid:)
-      expect(mock_deleter).to have_received(:delete_bids).with(bids: [bid])
+      expect(mock_deleter).to have_received(:delete_bids).with(bids: [bid],
+        disable_job_trigger: false)
     end
 
     it_behaves_like "an unprocessed sale"
@@ -495,7 +499,8 @@ RSpec.describe Auctions::HorseSeller do
           mock_deleter = instance_double(Auctions::BidDeleter, delete_bids: true)
           allow(Auctions::BidDeleter).to receive(:new).and_return mock_deleter
           described_class.new.process_sale(bid:)
-          expect(mock_deleter).to have_received(:delete_bids).with(bids: [bid, @bid2])
+          expect(mock_deleter).to have_received(:delete_bids).with(bids: [bid, @bid2],
+            disable_job_trigger: false)
         end
 
         it_behaves_like "an unprocessed sale"
