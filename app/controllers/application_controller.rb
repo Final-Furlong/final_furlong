@@ -14,6 +14,8 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
   impersonates :user, method: :current_user, with: ->(id) { Account::User.find_by(id:) }
 
+  layout :pick_layout
+
   before_action :set_current_user
   before_action :setup_sentry
   before_action :set_variant
@@ -24,6 +26,10 @@ class ApplicationController < ActionController::Base
   after_action :verify_pundit_authorization
 
   protected
+
+  def pick_layout
+    (turbo_frame_request_id == "modal") ? "modal" : "application"
+  end
 
   def not_found
     render "errors/not_found"

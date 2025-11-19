@@ -25,7 +25,6 @@ Rails.application.routes.draw do
   end
 end
 
-
 # == Route Map
 #
 # Routes for application:
@@ -161,3 +160,4 @@ end
 #                    Prefix Verb URI Pattern                                      Controller#Action
 #              system_stats GET  (/:database)/system_stats(.:format)              redirect(301, system)
 #               query_stats GET  (/:database)/query_stats(.:format)               redirect(301, queries)
+

@@ -1,23 +1,11 @@
 - content_for :breadcrumbs do
-  - rep = SessionsRepository.online?(resource: @stable)
+  ruby:
+    rep = SessionsRepository.online?(resource: @stable)
+    actions = Accounts::Stable::ActionsListGenerator.new.call(stable: @stable)
+
   = render Nav::Breadcrumbs::Component.new(links: [{ name: t("stables.index.all"), href: stables_path },
                                                    { name: @stable.name, href: "#" }],
-                                           badge: Users::OnlineBadge::Component.new(online: rep),
-                                           actions: [{ name: "impersonate",
-                                                       link: admin_impersonate_path(id: @stable.user_id),
-                                                       i18n_key: ".impersonate",
-                                                       object: @stable,
-                                                       base_classes: "btn btn-error btn-outline btn-sm",
-                                                       classes: " d-none d-md-inline",
-                                                       responsive_classes: "w-100",
-                                                       type: :form },
-                                                     { name: "edit",
-                                                       link: edit_current_stable_path,
-                                                       i18n_key: "common.edit",
-                                                       object: @stable,
-                                                       base_classes: "btn btn-success btn-outline btn-sm",
-                                                       classes: "ms-3 me-3",
-                                                       responsive_classes: "w-100",
-                                                       type: :link }])
+                                           badge: Users::OnlineBadge::Component.new(online: rep)) do
+    = render Nav::Breadcrumbs::Actions::Component.new(actions: actions, path: "/stables/actions/", object: @stable)
 = turbo_frame_tag @stable do
   = render "stable", stable: @stable

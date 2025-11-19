@@ -17,8 +17,13 @@ module Horse
         flash[:success] = t(".success")
         redirect_to horse_path(@horse)
       else
-        flash[:error] = t("common.failed_validation")
-        render :new
+        respond_to do |format|
+          format.html { render :new, status: :unprocessable_entity }
+
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.replace("lease-offer-form", partial: "horse/lease_offers/form", locals: { lease_offer: @lease_offer, horse: @horse })
+          end
+        end
       end
     end
 
@@ -34,8 +39,10 @@ module Horse
         end
         flash[:success] = t(".success") # rubocop:disable Rails/ActionControllerFlashBeforeRender
       end
-
-      redirect_to horse_path(@horse)
+      respond_to do |format|
+        format.turbo_stream { render :destroy }
+        format.html { redirect_to horse_path(@horse), success: t(".success") }
+      end
     end
 
     private

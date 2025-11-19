@@ -1,0 +1,10 @@
+#breadcrumb-actions
+  - if actions.count == 1
+    = render action_path(first_action), object: object, single_action: true
+  - else
+    button.btn.ml-auto#breadcrumb-actions-list-anchor popovertarget="breadcrumb-actions-list"
+      = t(".title")
+    ul.dropdown.menu.w-52.rounded-box.bg-base-100.shadow-sm#breadcrumb-actions-list popover=true
+      - actions.each do |action|
+        li
+          = render action_path(action), object: object, single_action: false

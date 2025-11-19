@@ -1,0 +1,36 @@
+/# locals: (termination_request:, current_lease:)
+ruby:
+  time_left = (current_lease.end_date - Date.current).to_i
+  percentage_left = time_left.fdiv(current_lease.total_days)
+  refund_fee = (current_lease.fee * percentage_left).to_i
+= form_with model: termination_request, url: lease_termination_path(current_lease.horse), id: "lease-termination-form", html: { class: "form", novalidate: true }, method: :post, data: { turbo_frame: "_top" } do |f|
+  - if Current.stable == current_lease.owner
+    fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+      label.label
+        = f.checkbox :owner_accepted_end, class: 'toggle validator', required: true
+        = t(".accept_termination")
+      - if termination_request.errors[:owner_accepted_end]
+        p.text-error= termination_request.errors.where(:owner_accepted_end).map(&:full_message).join(', ')
+    - if refund_fee.positive?
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        label.label
+          = f.checkbox :owner_accepted_refund, class: 'toggle validator', required: true
+          = t(".offer_refund", amount: Game::MoneyFormatter.new(refund_fee).to_s)
+        - if termination_request.errors[:owner_accepted_refund]
+          p.text-error= termination_request.errors.where(:owner_accepted_refund).map(&:full_message).join(', ')
+  - else
+    fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+      label.label
+        = f.checkbox :leaser_accepted_end, class: 'toggle validator'
+        = t(".accept_termination")
+      - if termination_request.errors[:leaser_accepted_end]
+        p.text-error= termination_request.errors.where(:leaser_accepted_end).map(&:full_message).join(', ')
+    - if refund_fee.positive?
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        label.label
+          = f.checkbox :leaser_accepted_refund, class: 'toggle validator', required: true
+          - refund_key = termination_request.owner_accepted_refund? ? ".accept_refund" : ".request_refund"
+          = t(refund_key, amount: Game::MoneyFormatter.new(refund_fee).to_s)
+        - if termination_request.errors[:leaser_accepted_refund]
+          p.text-error= termination_request.errors.where(:leaser_accepted_refund).map(&:full_message).join(', ')
+  = f.submit t("common.actions.save"), class: "btn btn-primary"
