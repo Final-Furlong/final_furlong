@@ -9,8 +9,13 @@ module Horse
         flash[:success] = t(".success")
         redirect_to horse_path(@horse)
       else
-        flash[:error] = t("common.failed_validation")
-        render :new
+        respond_to do |format|
+          format.html { render :new, status: :unprocessable_entity }
+
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.replace("messages", partial: "layouts/flash")
+          end
+        end
       end
     end
   end

@@ -16,4 +16,6 @@ html(lang= I18n.locale)
           = yield
         = render "layouts/dock"
       = render "layouts/sidenav"
+    = render "layouts/confirm_dialog"
+    = turbo_frame_tag "modal"
     script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"
