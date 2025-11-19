@@ -290,20 +290,6 @@ RSpec.describe Auctions::BidCreator do
         end.not_to change(SolidQueue::Job, :count)
       end
     end
-
-    context "when there is not a process sales job queued" do
-      before { ActiveJob::Base.queue_adapter = :solid_queue }
-
-      after { ActiveJob::Base.queue_adapter = :test }
-
-      it "does not modify process sales job" do
-        old_bidder = create(:stable)
-        create(:auction_bid, horse:, auction:, bidder: old_bidder, current_high_bid: true, current_bid: 2000)
-        expect do
-          described_class.new.create_bid(bid_params.merge(current_bid: 10_500, maximum_bid: 20_000))
-        end.to change(SolidQueue::Job, :count).by(1)
-      end
-    end
   end
 
   context "when bid amount exactly matches maximum bid" do
@@ -486,20 +472,6 @@ RSpec.describe Auctions::BidCreator do
       expect do
         described_class.new.create_bid(bid_params.merge(auction_id: auction.id, current_bid: 5_000, maximum_bid: 7_500))
       end.to change(Auctions::Bid, :count).by(1)
-    end
-
-    context "when bidder already has a high bid on another horse" do
-      before { ActiveJob::Base.queue_adapter = :solid_queue }
-
-      after { ActiveJob::Base.queue_adapter = :test }
-
-      it "schedules process sales job" do
-        auction = create(:auction, :current, spending_cap_per_stable: 10_000)
-        horse.update(auction:)
-        expect do
-          described_class.new.create_bid(bid_params.merge(auction_id: auction.id, current_bid: 5_000, maximum_bid: 7_500))
-        end.to change(SolidQueue::Job, :count).by(1)
-      end
     end
   end
 

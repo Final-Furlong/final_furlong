@@ -118,7 +118,6 @@ module Auctions
           result.created = bid.save
           if result.created?
             previous_bid.update(current_bid: previous_bid.maximum_bid) if previous_max_bid.positive?
-            schedule_sale_job(auction:)
           end
         else
           result.error = bid.errors.full_messages.to_sentence
@@ -153,22 +152,6 @@ module Auctions
       Auctions::Bid.where(auction:, horse:, bid_at: ..Time.current).find_each do |bid|
         bid.update(current_high_bid: false)
       end
-    end
-
-    def schedule_sale_job(auction:)
-      return unless Auctions::Bid.where(auction:).current_high_bid.sale_time_not_met.exists?
-
-      next_updated_at = Auctions::Bid.where(auction:).current_high_bid.sale_time_not_met.minimum(:bid_at)
-      return if schedule_exists?(auction:, time: next_updated_at + auction.hours_until_sold.hours)
-
-      Auctions::ProcessSalesJob.set(wait_until: next_updated_at + auction.hours_until_sold.hours).perform_later(auction)
-    end
-
-    def schedule_exists?(auction:, time:)
-      SolidQueue::Job.scheduled.where(class_name: "Auctions::ProcessSalesJob")
-        .where("arguments LIKE ?", "%#{auction.id}%")
-        .where(["scheduled_at > ?", 10.minutes.from_now])
-        .exists?(["scheduled_at < ?", time])
     end
 
     def money_spent(bidder_id)
