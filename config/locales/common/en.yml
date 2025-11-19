@@ -9,6 +9,10 @@ en:
       save: Save
       title: Actions
       view: View
+    confirm:
+      default_message: Are you sure you want to do this?
+      title: Are you sure?
+      "yes": Yes, go ahead
     confirmation:
       delete_with_name: Are you sure you want to delete %{name}?
     create: Create

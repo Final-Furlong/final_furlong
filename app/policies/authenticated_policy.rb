@@ -33,11 +33,5 @@ class AuthenticatedPolicy < ApplicationPolicy
   def destroy?
     logged_in?
   end
-
-  private
-
-  def logged_in?
-    user.present?
-  end
 end
 

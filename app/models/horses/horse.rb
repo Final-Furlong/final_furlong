@@ -75,6 +75,8 @@ module Horses
 
     # broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
 
+    def to_key = [slug]
+
     def breed_ranking_string
       if broodmare_foal_record
         broodmare_foal_record.breed_ranking_string
