@@ -76,7 +76,8 @@ blocks:
             - bin/ci
             - .semaphore/lcov-to-md.sh
             - artifact push workflow -d .semaphore/REPORT.md COVERAGE.md
-            - ruby -e "$(curl -s https://undercover-ci.com/uploader.rb)" -- --repo $SEMAPHORE_GIT_REPO_SLUG --commit $SEMAPHORE_GIT_SHA --simplecov coverage/coverage.json; return 0
+            - artifact push job tmp/capybara; return 0
+            - ruby -e "$(curl -s https://undercover-ci.com/uploader.rb)" -- --repo $SEMAPHORE_GIT_REPO_SLUG --commit $SEMAPHORE_GIT_PR_SHA --simplecov coverage/coverage.json; return 0
             - curl https://qlty.sh | sh
             - source /home/semaphore/.bash_profile
             - qlty coverage publish coverage/lcov.info

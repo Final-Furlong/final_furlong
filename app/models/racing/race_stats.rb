@@ -9,6 +9,8 @@ module Racing
     belongs_to :horse, class_name: "Horses::Horse"
     belongs_to :racetrack, class_name: "Racing::Racetrack"
 
+    validates :energy, :fitness, :natural_energy, :energy_regain_rate, :natural_energy_loss_rate,
+      :natural_energy_regain_rate, :desired_equipment, :mature_at, :hasbeen_at, presence: true
     validates :energy_grade, :fitness_grade, inclusion: { in: GRADES }
     validates :at_home, :in_transit, inclusion: { in: [true, false] }
 
@@ -45,7 +47,7 @@ end
 #  natural_energy_regain_rate :decimal(3, 2)    default(0.0), not null, indexed
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
-#  horse_id                   :bigint           not null, indexed
+#  horse_id                   :bigint           not null, uniquely indexed
 #  racetrack_id               :bigint           not null, indexed
 #
 # Indexes
@@ -57,7 +59,7 @@ end
 #  index_racehorse_stats_on_energy_regain_rate          (energy_regain_rate)
 #  index_racehorse_stats_on_fitness                     (fitness)
 #  index_racehorse_stats_on_fitness_grade               (fitness_grade)
-#  index_racehorse_stats_on_horse_id                    (horse_id)
+#  index_racehorse_stats_on_horse_id                    (horse_id) UNIQUE
 #  index_racehorse_stats_on_in_transit                  (in_transit)
 #  index_racehorse_stats_on_last_raced_at               (last_raced_at)
 #  index_racehorse_stats_on_last_rested_at              (last_rested_at)
