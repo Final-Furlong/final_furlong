@@ -2292,6 +2292,42 @@ ALTER SEQUENCE public.racetracks_id_seq OWNED BY public.racetracks.id;
 
 
 --
+-- Name: sale_offers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sale_offers (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    owner_id bigint NOT NULL,
+    buyer_id bigint,
+    new_members_only boolean DEFAULT false NOT NULL,
+    offer_start_date date NOT NULL,
+    price integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: sale_offers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sale_offers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sale_offers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sale_offers_id_seq OWNED BY public.sale_offers.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2961,6 +2997,13 @@ ALTER TABLE ONLY public.racetracks ALTER COLUMN id SET DEFAULT nextval('public.r
 
 
 --
+-- Name: sale_offers id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sale_offers ALTER COLUMN id SET DEFAULT nextval('public.sale_offers_id_seq'::regclass);
+
+
+--
 -- Name: sessions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3389,6 +3432,14 @@ ALTER TABLE ONLY public.racehorse_stats
 
 ALTER TABLE ONLY public.racetracks
     ADD CONSTRAINT racetracks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sale_offers sale_offers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sale_offers
+    ADD CONSTRAINT sale_offers_pkey PRIMARY KEY (id);
 
 
 --
@@ -4336,7 +4387,7 @@ CREATE INDEX index_race_options_on_first_jockey_id ON public.race_options USING 
 -- Name: index_race_options_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_race_options_on_horse_id ON public.race_options USING btree (horse_id);
+CREATE UNIQUE INDEX index_race_options_on_horse_id ON public.race_options USING btree (horse_id);
 
 
 --
@@ -4707,7 +4758,7 @@ CREATE INDEX index_racehorse_stats_on_fitness_grade ON public.racehorse_stats US
 -- Name: index_racehorse_stats_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_racehorse_stats_on_horse_id ON public.racehorse_stats USING btree (horse_id);
+CREATE UNIQUE INDEX index_racehorse_stats_on_horse_id ON public.racehorse_stats USING btree (horse_id);
 
 
 --
@@ -4792,6 +4843,34 @@ CREATE INDEX index_racetracks_on_public_id ON public.racetracks USING btree (pub
 --
 
 CREATE INDEX index_racetracks_on_slug ON public.racetracks USING btree (slug);
+
+
+--
+-- Name: index_sale_offers_on_buyer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sale_offers_on_buyer_id ON public.sale_offers USING btree (buyer_id);
+
+
+--
+-- Name: index_sale_offers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sale_offers_on_horse_id ON public.sale_offers USING btree (horse_id);
+
+
+--
+-- Name: index_sale_offers_on_offer_start_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sale_offers_on_offer_start_date ON public.sale_offers USING btree (offer_start_date);
+
+
+--
+-- Name: index_sale_offers_on_owner_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sale_offers_on_owner_id ON public.sale_offers USING btree (owner_id);
 
 
 --
@@ -5148,6 +5227,14 @@ ALTER TABLE ONLY public.race_schedules
 
 
 --
+-- Name: sale_offers fk_rails_09052401bc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sale_offers
+    ADD CONSTRAINT fk_rails_09052401bc FOREIGN KEY (owner_id) REFERENCES public.stables(id);
+
+
+--
 -- Name: horse_sales fk_rails_0b809fb199; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5260,6 +5347,14 @@ ALTER TABLE ONLY public.training_schedules_horses
 
 
 --
+-- Name: sale_offers fk_rails_58132ad6b6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sale_offers
+    ADD CONSTRAINT fk_rails_58132ad6b6 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
 -- Name: race_result_horses fk_rails_5a43ac707f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5305,6 +5400,14 @@ ALTER TABLE ONLY public.racetracks
 
 ALTER TABLE ONLY public.race_result_horses
     ADD CONSTRAINT fk_rails_7254168319 FOREIGN KEY (odd_id) REFERENCES public.race_results(id) ON UPDATE CASCADE ON DELETE SET NULL NOT VALID;
+
+
+--
+-- Name: sale_offers fk_rails_7486325072; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sale_offers
+    ADD CONSTRAINT fk_rails_7486325072 FOREIGN KEY (buyer_id) REFERENCES public.stables(id);
 
 
 --
@@ -5618,6 +5721,8 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251120144348'),
+('20251119150441'),
 ('20251118205558'),
 ('20251118164459'),
 ('20251118162700'),

@@ -54,14 +54,15 @@
           th= t(".location")
           td Not Yet Added
         - if horse.current_lease
-          tr
-            th= t(".lease_status")
-            td
-              - lease = horse.current_lease
-              - leaser_stable = link_to lease.leaser.name, stable_path(lease.leaser), target: "_top"
-              = I18n.t("horse.leased_html", stable: leaser_stable, date: l(lease.end_date)).html_safe
-              - if lease.termination_request
-                p.ml-2.badge.badge-outline.badge-info= t(".lease_termination_requested")
+          = turbo_frame_tag dom_id(horse) do
+            tr
+              th= t(".lease_status")
+              td
+                - lease = horse.current_lease
+                - leaser_stable = link_to lease.leaser.name, stable_path(lease.leaser), target: "_top"
+                = I18n.t("horse.leased_html", stable: leaser_stable, date: l(lease.end_date)).html_safe
+                - if lease.termination_request
+                  p.ml-2.badge.badge-outline.badge-info= t(".lease_termination_requested")
         - else
           tr
             th= t(".sale_status")

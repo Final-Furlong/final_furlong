@@ -60,8 +60,9 @@ module CurrentStable
     end
 
     def view_sales?
-      # TODO: migrate sales
       false
+
+      # logged_in?
     end
 
     def view_highlights?
