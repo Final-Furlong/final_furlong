@@ -1,6 +1,8 @@
 class Auctions::ProcessSalesJob < ApplicationJob
   queue_as :default
 
+  limits_concurrency to: 1, key: ->(auction) { auction }, duration: 5.minutes
+
   def perform(auction)
     horses = []
     Auctions::Horse.where(auction:).where.associated(:bids).distinct.each do |ah|
