@@ -16,13 +16,21 @@ module Horse
       result = Horses::LeaseTerminator.new.call(current_lease: @current_lease, stable: Current.stable, params: lease_params)
       if result.terminated?
         flash[:success] = t(".success_with_termination")
+        redirect_to horse_path(horse)
       elsif result.created?
         flash[:success] = t(".success")
+        redirect_to horse_path(horse)
       else
         @termination_request = result.termination
-        render :new and return
+        respond_to do |format|
+          format.html { render :new, status: :unprocessable_entity }
+
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.replace("lease-termination-form", partial: "horse/lease_terminations/form",
+              locals: { termination_request: @termination_request, current_lease: @current_lease })
+          end
+        end
       end
-      redirect_to horse_path(horse)
     end
 
     private

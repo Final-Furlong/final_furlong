@@ -15,7 +15,7 @@ class UpdateRacehorseStatsJob < ApplicationJob
     legacy_horse = Legacy::Horse.find(horse.legacy_id)
     last_raced_at = Racing::RaceResult.joins(:horses).where(race_result_horses: { horse_id: horse.id })
       .maximum(:date)
-    last_boarded_at = if Horses::Boarding.current.where(horse_id: horse.id).exists?
+    last_boarded_at = if Horses::Boarding.current.exists?(horse_id: horse.id)
       Date.current
     else
       Horses::Boarding.ended.where(horse_id: horse.id).maximum(:end_date)
