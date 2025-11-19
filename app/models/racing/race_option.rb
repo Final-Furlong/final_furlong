@@ -55,7 +55,7 @@ end
 #  created_at                                     :datetime         not null
 #  updated_at                                     :datetime         not null
 #  first_jockey_id                                :bigint           indexed
-#  horse_id                                       :bigint           not null, indexed
+#  horse_id                                       :bigint           not null, uniquely indexed
 #  second_jockey_id                               :bigint           indexed
 #  third_jockey_id                                :bigint           indexed
 #
@@ -64,7 +64,7 @@ end
 #  index_race_options_on_calculated_maximum_distance  (calculated_maximum_distance)
 #  index_race_options_on_calculated_minimum_distance  (calculated_minimum_distance)
 #  index_race_options_on_first_jockey_id              (first_jockey_id)
-#  index_race_options_on_horse_id                     (horse_id)
+#  index_race_options_on_horse_id                     (horse_id) UNIQUE
 #  index_race_options_on_maximum_distance             (maximum_distance)
 #  index_race_options_on_minimum_distance             (minimum_distance)
 #  index_race_options_on_next_race_note_created_at    (next_race_note_created_at)

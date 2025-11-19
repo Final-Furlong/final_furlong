@@ -17,10 +17,7 @@
                   = @title
           - if badge
             = render badge
-      .flex-none#breadcrumb-actions
-        - actions&.each do |action|
-          - if allowed_action?(action)
-            = render_action(action, regular_classes(action))
+      = content
   .navbar.bg-base-100.shadow-sm.border-primary.border-b-1 class=("hidden sm:block" if styled_mobile_links.any?)
     .flex-1
       .breadcrumbs aria-label="breadcrumb"
@@ -38,7 +35,4 @@
                 = @title
         - if badge
           = render badge
-    .flex-none#breadcrumb-actions
-      - actions&.each do |action|
-        - if allowed_action?(action)
-          = render_action(action, regular_classes(action))
+    = content

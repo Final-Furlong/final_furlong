@@ -3,7 +3,7 @@ class UpdateLegacyHorseSalesJob < ApplicationJob
 
   def perform
     min_date = Horses::Sale.maximum(:date) || Date.current - 30.years
-    Legacy::HorseSale.where("Date >= ?", min_date + 4.years).find_each do |legacy_sale|
+    Legacy::HorseSale.where(Date: (min_date + 4.years)..).find_each do |legacy_sale|
       migrate_legacy_sale(legacy_sale:)
     end
   end
