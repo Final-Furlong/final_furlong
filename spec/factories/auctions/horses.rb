@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :auction_horse, class: "Auctions::Horse" do
     auction factory: :auction
     horse
+    sold_at { nil }
   end
 
   trait :with_comment do
