@@ -1,0 +1,2 @@
+- classes = single_action ? "btn btn-light btn-sm border border-success text-success text-decoration-none" : ""
+= link_to t("horse.actions.lease_offer.accept"), lease_offer_acceptance_path(object), class: classes, data: { turbo_confirm: t("horse.lease_offers.accept.confirm"), turbo_method: :post, turbo_frame: "_top" }

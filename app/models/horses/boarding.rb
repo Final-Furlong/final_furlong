@@ -15,6 +15,7 @@ module Horses
       where(start_date: ..Date.current)
         .where("end_date IS NULL OR end_date > ?", Date.new(Date.current.year, 1, 1))
     end
+    scope :ended, -> { where.not(end_date: nil) }
 
     def today?
       start_date == Date.current

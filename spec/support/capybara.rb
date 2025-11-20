@@ -23,7 +23,14 @@ Capybara.register_driver(:cuprite) do |app|
   Capybara::Cuprite::Driver.new(app, options)
 end
 Capybara.javascript_driver = :cuprite
-Capybara.default_driver = :cuprite
+
+Capybara.register_driver :custom_rack_test do |app|
+  Capybara::RackTest::Driver.new(app,
+    respect_data_method: true,
+    follow_redirects: true,
+    redirect_limit: 10)
+end
+Capybara.default_driver = :custom_rack_test
 
 # options.add_argument("--force-device-scale-factor=0.95")
 # options.add_argument("--disable-gpu")

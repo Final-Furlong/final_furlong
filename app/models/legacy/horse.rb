@@ -72,6 +72,13 @@ module Legacy
   end
 end
 
+# migrated columns
+# Allele Boarded Breeder Color CurrentHeight Dam DamDam DamSire Die
+# Face FacePic FoalHeight Gender Height ID LFPic LFmarkings LHPic
+# LHmarkings LastRaceFinishers Leased LocBred Name Owner
+# RFPic RFmarkings RHPic RHmarkings Retire Sire SireDam SireSire
+# Status leaser slug last_synced_to_rails_at
+
 # == Schema Information
 #
 # Table name: ff_horses

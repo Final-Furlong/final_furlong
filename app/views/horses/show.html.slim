@@ -1,20 +1,11 @@
 - content_for :breadcrumbs do
-  - success_classes = "btn btn-light btn-sm border border-success text-success text-decoration-none"
-  = render Nav::Breadcrumbs::Component.new(links: [{ name: t("horses.index.title"), href: horses_path },
-                                                   { name: horse.name, href: "#" }],
-                                           actions: [{ name: "edit",
-                                                       link: edit_horse_path(horse),
-                                                       i18n_key: "common.edit",
-                                                       object: horse,
-                                                       base_classes: success_classes,
-                                                       classes: "ms-3 me-3",
-                                                       responsive_classes: "w-100",
-                                                       type: :link }])
+  = render "breadcrumbs", horse: @horse
 
 .tabs.tabs-border.dark:border-neutral-400 role="tablist"
   input.tab type="radio" name="horse" aria-label=t(".info") checked="checked"
   .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
-    = render "horses/info", horse: @horse
+    = turbo_frame_tag "#{@horse.slug}-info" do
+      = render "horses/info", horse: @horse
 
   input.tab type="radio" name="horse" aria-label=t(".pedigree") disabled=@horse.created?
   .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
@@ -45,20 +36,3 @@
       .w-full.text-center
         p.mx-auto= t(".loading_images")
         .mt-2.mx-auto.skeleton.w-full
-  - if (actions = Horses::ActionsListGenerator.new.call(horse:)).any?
-    .dropdown.dropdown-end.ml-auto
-      button.btn.m-1 tabindex="0" role="button" = t(".actions")
-      ul.dropdown-content.menu.bg-base-100.rounded-box.z-1.w-52.p-2.shadow-sm tabindex="-1"
-        - actions.each do |action_hash|
-          li
-            ruby:
-              i18n_key = if action_hash[:action][:object]
-                           "horse.actions.#{action_hash[:action][:object]}.#{action_hash[:action][:key]}"
-                         else
-                           "horse.actions.#{action_hash[:action][:key]}"
-                         end
-            - if action_hash[:requires_form]
-              = form_with url: action_hash[:url], method: action_hash[:method], data: { turbo_confirm: action_hash[:confirm] } do |f|
-                = f.submit t(i18n_key)
-            - else
-              = link_to t(i18n_key), action_hash[:url], target: '_top'
