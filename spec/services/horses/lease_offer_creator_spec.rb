@@ -43,13 +43,3 @@ RSpec.describe Horses::LeaseOfferCreator do
   end
 end
 
-#  duration_months  :integer          not null
-#  fee              :integer          default(0), not null
-#  new_members_only :boolean          default(FALSE), not null
-#  offer_start_date :date             not null, indexed
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  horse_id         :bigint           not null, uniquely indexed
-#  leaser_id        :bigint           indexed
-#  owner_id         :bigint           not null, indexed
-
