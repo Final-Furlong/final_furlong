@@ -141,7 +141,7 @@ GEM
     bindex (0.8.1)
     binding_of_caller (1.0.1)
       debug_inspector (>= 1.2.0)
-    bootsnap (1.18.6)
+    bootsnap (1.19.0)
       msgpack (~> 1.2)
     brakeman (7.1.1)
       racc
@@ -1205,7 +1205,7 @@ CHECKSUMS
   bigdecimal (3.3.1) sha256=eaa01e228be54c4f9f53bf3cc34fe3d5e845c31963e7fcc5bedb05a4e7d52218
   bindex (0.8.1) sha256=7b1ecc9dc539ed8bccfc8cb4d2732046227b09d6f37582ff12e50a5047ceb17e
   binding_of_caller (1.0.1) sha256=2b2902abff4246ddcfbc4da9b69bc4a019e22aeb300c2ff6289a173d4b90b29a
-  bootsnap (1.18.6) sha256=0ae2393c1e911e38be0f24e9173e7be570c3650128251bf06240046f84a07d00
+  bootsnap (1.19.0)
   brakeman (7.1.1) sha256=629426b5d6496c75e3ffa2299e1ab1bb3ba721fea03d8808414c083660439498
   browser (6.2.0) sha256=281d5295788825c9396427c292c2d2be0a5c91875c93c390fde6e5d61a5ace2d
   builder (3.3.0) sha256=497918d2f9dca528fdca4b88d84e4ef4387256d984b8154e9d5d3fe5a9c8835f
@@ -1355,7 +1355,7 @@ CHECKSUMS
   minitest (5.26.0) sha256=f5817ad09f863a4f7eac917707c1ca5c09cdc4a35e17d91171760178324d2c30
   mission_control-jobs (1.1.0) sha256=b13da9cde3344fec7c744b79d2a34c3ecd454f45d4d593d4c968ba762315e84c
   motor-admin (0.4.37) sha256=b700ecb4de2e36d6746e7005f0a86e31d7960ea89fec3ccef585974f43454003
-  msgpack (1.8.0) sha256=e64ce0212000d016809f5048b48eb3a65ffb169db22238fb4b72472fecb2d732
+  msgpack (1.8.0)
   multi_json (1.17.0) sha256=76581f6c96aebf2e85f8a8b9854829e0988f335e8671cd1a56a1036eb75e4a1b
   mustermann (3.0.4) sha256=85fadcb6b3c6493a8b511b42426f904b7f27b282835502233dd154daab13aa22
   mustermann-grape (1.1.0) sha256=8d258a986004c8f01ce4c023c0b037c168a9ed889cf5778068ad54398fa458c5
