@@ -2,16 +2,35 @@
 
 import "@hotwired/turbo-rails"
 
-import * as Turbo from "@hotwired/turbo"
+import TC from "@rolemodel/turbo-confirm"
+
+TC.start()
+
+/*
+Turbo.config.forms.confirm = (message, element) => {
+  let dialog = document.getElementById("turbo-confirm")
+  dialog.querySelector("p").textContent = message
+  if (element.dataset.confirmationIcon) {
+    dialog.querySelector("i").className = element.dataset.confirmationIcon
+  }
+  dialog.showModal()
+  return new Promise((resolve, reject) => {
+    dialog.addEventListener(
+      "close",
+      () => {
+        resolve(dialog.returnValue === "confirm")
+      },
+      { once: true }
+    )
+  })
+}
+ */
+
 Turbo.start()
 
-// The default of 500ms is too long and
-// users can lose the causal link between clicking
-// a link and seeing the browser respond
-// eslint-disable no-undef
-if (typeof Turbo.config !== "undefined") {
-  Turbo.config.drive.progressBarDelay = 100
-}
+// The default of 500ms is too long and users can lose the causal
+// link between clicking a link and seeing the browser respond
+Turbo.config.drive.progressBarDelay = 100
 
 import "../controllers"
 

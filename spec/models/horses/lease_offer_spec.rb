@@ -273,15 +273,6 @@ RSpec.describe Horses::LeaseOffer do
         end
       end
     end
-    # 1    scope :valid_for_stable, ->(stable) {
-    #   then: 0      if stable.newbie?
-    #   active.new_members_only.without_owner(stable)
-    #         .or(active.without_owner(stable).leased_to(stable))
-    #   else: 0      else
-    #   active.non_new_members_only.without_owner(stable)
-    #         .or(active.without_owner(stable).leased_to(stable))
-    #   end
-    # }
   end
 end
 

@@ -6,14 +6,17 @@
 }
 /* stylelint-enable */
 
-:root {
-  --female-horse-color: #ffcccc;
-  --male-horse-color: #ccccff;
-  --gelded-horse-color: #b3ebb3;
-}
+@import "./breadcrumbs.css";
+@import "./horse.css";
+@import "./pagy.css";
 
 i {
   vertical-align: middle;
+}
+
+[popover] {
+  transition: display 300ms;
+  transition-behavior: allow-discrete;
 }
 
 @layer components {
@@ -22,75 +25,6 @@ i {
   }
 }
 
-.breadcrumbs ul.inline-flex {
-  display: inline-flex !important;
-}
-
 .table :where(thead, tfoot) {
   color: hsl(var(--color-base-200));
-}
-
-.text-filly,
-.text-mare,
-.text-filly a,
-.text-mare a {
-  color: var(--female-horse-color);
-}
-
-.text-colt,
-.text-stallion,
-.text-colt a,
-.text-stallion a {
-  color: var(--male-horse-color);
-}
-
-.text-gelding,
-.text-gelding a {
-  color: var(--gelded-horse-color);
-}
-
-td.mare,
-td.filly {
-  background-color: var(--female-horse-color);
-  color: #000000;
-}
-
-td.stallion,
-td.colt {
-  background-color: var(--male-horse-color);
-  color: #000000;
-}
-
-td.gelding {
-  background-color: var(--gelded-horse-color);
-  color: #000000;
-}
-
-.pagy {
-  @apply flex space-x-1 font-semibold text-sm text-gray-500;
-
-  a:not(.gap) {
-    @apply block rounded-lg px-3 py-1 bg-gray-200;
-
-    &:hover {
-      @apply bg-gray-300;
-    }
-
-    &:not([href]) {
-      /* disabled links */
-      @apply text-gray-300 bg-gray-100 cursor-default;
-    }
-
-    &.current {
-      @apply text-white bg-gray-400;
-    }
-  }
-
-  label {
-    @apply inline-block whitespace-nowrap bg-gray-200 rounded-lg px-3 py-0.5;
-
-    input {
-      @apply bg-gray-100 border-none rounded-md;
-    }
-  }
 }

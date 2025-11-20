@@ -1,0 +1,15 @@
+.breadcrumbs ul.inline-flex {
+    display: inline-flex !important;
+}
+
+#breadcrumb-actions-list-anchor {
+    anchor-name: --breadcrumb-actions-list;
+}
+
+#breadcrumb-actions-list {
+    position-anchor: --breadcrumb-actions-list;
+    margin: 0;
+    inset: auto;
+    top: anchor(--breadcrumb-actions-list bottom);
+    justify-self: anchor-center;
+}

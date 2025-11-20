@@ -1,0 +1,5 @@
+ruby:
+  success_classes = "btn btn-light btn-sm border border-success text-success text-decoration-none"
+  actions = Horses::ActionsListGenerator.new.call(horse:)
+= render Nav::Breadcrumbs::Component.new(links: [{ name: t("horses.index.title"), href: horses_path }, { name: horse.name, href: "#" }]) do
+  = render Nav::Breadcrumbs::Actions::Component.new(actions: actions, path: "/horses/actions/", object: horse)

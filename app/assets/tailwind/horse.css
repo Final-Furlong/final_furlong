@@ -1,0 +1,42 @@
+:root {
+  --female-horse-color: #ffcccc;
+  --male-horse-color: #ccccff;
+  --gelded-horse-color: #b3ebb3;
+}
+
+
+.text-filly,
+.text-mare,
+.text-filly a,
+.text-mare a {
+  color: var(--female-horse-color);
+}
+
+.text-colt,
+.text-stallion,
+.text-colt a,
+.text-stallion a {
+  color: var(--male-horse-color);
+}
+
+.text-gelding,
+.text-gelding a {
+  color: var(--gelded-horse-color);
+}
+
+td.mare,
+td.filly {
+  background-color: var(--female-horse-color);
+  color: #000000;
+}
+
+td.stallion,
+td.colt {
+  background-color: var(--male-horse-color);
+  color: #000000;
+}
+
+td.gelding {
+  background-color: var(--gelded-horse-color);
+  color: #000000;
+}

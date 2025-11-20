@@ -9,6 +9,7 @@ en:
         accept: Accept Lease
         cancel: Cancel Lease Offer
         reject: Reject Lease
+      view_sales: Sales History
     created: Created
     foal_due: Foal Due
     foals:
@@ -59,23 +60,27 @@ en:
       create:
         success: Lease was accepted
     lease_offers:
+      accept:
+        confirm: Are you sure you want to accept this lease offer?
       create:
         success: Lease offer was successfully created
       destroy:
+        confirm: Are you sure you want to delete this lease offer?
         success: Lease offer was successfully deleted
-      new:
+      form:
+        offer_start_date: Display Lease From
+        offer_start_date_hint: Lease offers are valid for %{count} days.
         all_members: Offer to all members
-        duration:
-          broodmare: Broodmares are leased for 1 year. Broodmares are only available to lease if they are not in foal.
-          racehorse: Racehorses are leased from 3 months to 1 year.
-          stud: Stallions are leased for 1 year.
         duration_months: Duration (months)
         fee: Lease Fee
         leaser: Lease To
         max_amount: Maximum $1,000,000
         new_members_only: Offer to new members only
-        offer_start_date: Display Lease From
-        offer_start_date_hint: Lease offers are valid for %{count} days.
+      new:
+        duration:
+          broodmare: Broodmares are leased for 1 year. Broodmares are only available to lease if they are not in foal.
+          racehorse: Racehorses are leased from 3 months to 1 year.
+          stud: Stallions are leased for 1 year.
         rules:
           broodmare: The leasing stable may not retire the horse.
           racehorse: The leasing stable may not geld or retire the horse, but they may switch it to steeplechasing.
@@ -85,13 +90,14 @@ en:
       create:
         success: Successfully requested to end the lease
         success_with_termination: Successfully terminated the lease
-      new:
-        accept_refund: I would like to accept a refund of approximately %{amount}
+      form:
         accept_termination: I would like to request to end this lease
-        confirm: Confirm Lease Termination
-        end_date: 'The lease is currently scheduled to end on %{date}. Original Fee: %{fee}'
         offer_refund: I would like to offer a refund of approximately %{amount}
         request_refund: I would like to request a refund of approximately %{amount}
+      new:
+        accept_refund: I would like to accept a refund of approximately %{amount}
+        confirm: Confirm Lease Termination
+        end_date: 'The lease is currently scheduled to end on %{date}. Original Fee: %{fee}'
         title: End Lease
     leased_html: Leased to %{stable} until %{date}
     markings:
