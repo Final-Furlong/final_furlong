@@ -19,78 +19,11 @@ module Horses
           policy_class.new(Current.user, horse).send("#{action_hash[:key]}?")
         end
       end.map do |action|
-        hash = {
-          action:, url: action_url(action[:key], action[:object]),
-          requires_form: !idempotent?(action[:key], action[:object])
-        }
-        if hash[:requires_form]
-          hash[:method] = form_method(action[:key], action[:object])
-          hash[:confirm] = form_confirm(action[:key], action[:object])
-        end
-        hash
+        action[:object] ? [action[:key], action[:object]].join("_") : action[:key]
       end
     end
 
     private
-
-    def form_confirm(key, object)
-      case object.to_s.downcase
-      when "lease_offer"
-        case key.to_s.downcase
-        when "accept"
-          I18n.t("notifications.lease_offer_notification.accept_lease.confirm")
-        end
-      end
-    end
-
-    def form_method(key, object)
-      case object.to_s.downcase
-      when "lease_offer"
-        case key.to_s.downcase
-        when "accept"
-          :post
-        when "cancel"
-          :delete
-        end
-      end
-    end
-
-    def idempotent?(key, object)
-      case object.to_s.downcase
-      when "lease_offer"
-        case key.to_s.downcase
-        when "accept", "cancel"
-          false
-        else
-          true
-        end
-      else
-        true
-      end
-    end
-
-    def action_url(key, object)
-      case object.to_s.downcase
-      when "current_lease"
-        new_lease_termination_path(horse)
-      when "lease_offer"
-        case key.to_s.downcase
-        when "accept"
-          lease_offer_acceptance_path(horse)
-        when "cancel"
-          lease_offer_path(horse)
-        else
-          "#"
-        end
-      else
-        case key.to_s.downcase
-        when "create_lease_offer"
-          new_lease_offer_path(horse)
-        else
-          "#"
-        end
-      end
-    end
 
     def actions
       [

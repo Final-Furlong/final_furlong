@@ -16,7 +16,7 @@ RSpec.describe "Login Spec" do
     within(".badge") do
       expect(page).to have_text t("view_components.users.online_badge.online")
     end
-    expect(page.driver.cookies.keys).to include "_final_furlong_session"
+    expect(page.driver.request.cookies.keys).to include "_final_furlong_session"
   end
 
   it "allows login with username" do
@@ -31,7 +31,7 @@ RSpec.describe "Login Spec" do
     within(".badge") do
       expect(page).to have_text t("view_components.users.online_badge.online")
     end
-    expect(page.driver.cookies.keys).to include "_final_furlong_session"
+    expect(page.driver.request.cookies.keys).to include "_final_furlong_session"
   end
 
   it "supports remember me" do
@@ -43,7 +43,7 @@ RSpec.describe "Login Spec" do
     check "user_remember_me"
     click_on t("devise.sessions.new.sign_in")
     expect(page).to have_text t("devise.sessions.signed_in")
-    expect(page.driver.cookies.keys).to include "remember_user_token"
+    expect(page.driver.request.cookies.keys).to include "remember_user_token"
   end
 
   it "does not log in with empty values" do
