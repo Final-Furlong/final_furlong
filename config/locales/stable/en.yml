@@ -53,7 +53,9 @@ en:
         total_spent: Total Money Spent
     horses:
       index:
+        lease_offers: Lease Offers (%{count})
         leases: Leases (%{count})
+        sale_offers: Sale Offers (%{count})
         title: Horses
       update:
         success: "%{name} was successfully updated."
@@ -62,6 +64,9 @@ en:
         title: Leased Horses
       table:
         age_gender: Age/Gender
+    sale_offers:
+      index:
+        title: Horses Offered for Sale
     settings:
       new:
         browser_subscribed: 'Status: YES! Your browser is currently subscribed to push notifications'
