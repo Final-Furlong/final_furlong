@@ -1,0 +1,36 @@
+/# locals: (offers:)
+- if offers.blank?
+  h4.text-muted.text-center.my-2
+    small= t("horses.sale_offers.index.no_offers")
+- else
+  .table-responsive-md
+    table.table.table-responsive.table-zebra
+      thead
+        tr
+          th= Horses::Horse.human_attribute_name("name")
+          th= t("horses.sale_offers.table.age_gender")
+          th= Horses::SaleOffer.human_attribute_name("buyer")
+          th= Horses::SaleOffer.human_attribute_name("price")
+          th= t("common.actions.title")
+        tbody.table-group-divider
+          - offers.each do |offer|
+            - horse = offer.horse
+            tr
+              td.wb-break-all= link_to horse.name || t("horse.unnamed"), horse_path(horse), target: "_top"
+              td.wb-break-all
+                = horse.age
+                = "yo "
+                = t("horses.genders.#{horse.gender}")
+              td
+                - if offer.buyer
+                  = offer.buyer.name
+                - elsif offer.new_members_only
+                  = t("horses.sale_offers.table.new_members_only")
+                - else
+                  = t("horses.sale_offers.table.anyone")
+              td= Game::MoneyFormatter.new(offer.price).to_s
+              td.actions-column.nav-item.dropdown
+                - if CurrentStable::SaleOfferPolicy.new(Current.user, offer).destroy?
+                  - classes = 'text-red-800 border border-red-900 bg-transparent hover:bg-red-900 hover:text-white font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:hover:bg-red-600 dark:border-red-600 dark:text-red-500 dark:hover:text-white'
+                  = link_to horse_sale_offer_path(horse), class: classes, data: { turbo_confirm: t("horse.sale_offers.destroy.confirm"), turbo_method: :delete, turbo_frame: "modal" } do
+                    = t("horse.actions.sale_offer.cancel")
