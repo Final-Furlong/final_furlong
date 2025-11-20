@@ -2,8 +2,8 @@ version: v1.0
 name: Final Furlong CI
 agent:
   machine:
-    type: f1-standard-2
-    os_image: ubuntu2204
+    type: e1-standard-2
+    os_image: ubuntu2004
 auto_cancel:
   running:
     when: branch != 'master'
@@ -13,7 +13,7 @@ global_job_config:
   prologue:
     commands:
       - checkout
-      - sem-version ruby 3.4.5
+      - sem-version ruby 3.4.2
   epilogue:
     always:
       commands:
@@ -39,7 +39,9 @@ blocks:
     task:
       prologue:
         commands:
-          - sem-service start postgres 17
+          - sudo apt update
+          - sudo apt install -y libc6
+          - sem-service start postgres 17.6
           - sem-service start mysql 8 --username=developer --password=password --db=final_furlong_legacy_test
           - cache restore
           - bundle install --deployment --path vendor/bundle
