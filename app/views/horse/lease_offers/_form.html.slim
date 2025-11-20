@@ -1,5 +1,5 @@
 /# locals: (lease_offer:, horse:)
-= form_with model: lease_offer, url: lease_offer_path(horse), id: "lease-offer-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+= form_with model: lease_offer, url: horse_lease_offer_path(horse), id: "lease-offer-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
   .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
     div
       fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
