@@ -16,6 +16,7 @@ module CurrentStable
     end
 
     def accept?
+      return false if owner?
       return false if record.blank?
       return false unless Date.current >= offer.offer_start_date
       return true if offer.leaser && offer.leaser == stable

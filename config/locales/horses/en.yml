@@ -40,7 +40,6 @@ en:
         new_members_only: New Members
         only_you: You
     show:
-      actions: Actions
       foals: Foals
       info: Info
       loading_foals: Loading foals...
