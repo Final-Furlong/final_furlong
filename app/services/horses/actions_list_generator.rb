@@ -11,6 +11,7 @@ module Horses
         if action_hash[:object]
           begin
             subject = horse.send(action_hash[:object])
+            subject ||= horse.send("build_#{action_hash[:object]}")
             policy_class.new(Current.user, subject).send("#{action_hash[:key]}?")
           rescue
             false
@@ -38,6 +39,10 @@ module Horses
         { key: :reject, policy: CurrentStable::LeaseOfferPolicy, object: :lease_offer },
         { key: :cancel, policy: CurrentStable::LeaseOfferPolicy, object: :lease_offer },
         { key: :terminate, policy: CurrentStable::LeasePolicy, object: :current_lease },
+        { key: :create, policy: CurrentStable::SaleOfferPolicy, object: :sale_offer },
+        { key: :accept, policy: CurrentStable::SaleOfferPolicy, object: :sale_offer },
+        { key: :reject, policy: CurrentStable::SaleOfferPolicy, object: :sale_offer },
+        { key: :cancel, policy: CurrentStable::SaleOfferPolicy, object: :sale_offer },
         { key: :consign_to_auction },
         { key: :remove_from_auction },
         { key: :breed, policy: CurrentStable::BroodmarePolicy },
@@ -53,9 +58,6 @@ module Horses
         { key: :manage_bookings, policy: CurrentStable::StallionPolicy },
         { key: :nominate, policy: CurrentStable::StallionPolicy },
         { key: :view_comments },
-        { key: :view_sales },
-        { key: :view_highlights },
-        { key: :view_shipping },
         { key: :nominate_weanling }
       ]
     end

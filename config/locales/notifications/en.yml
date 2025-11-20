@@ -33,6 +33,12 @@ en:
         read: read
         unread: unread
       title: Something happened
+    sale_offer_notification:
+      buy_horse:
+        confirm: Are you sure you want to buy this horse?
+      reject_sale:
+        confirm: Are you sure you want to reject this offer?
+      title: Horse for Sale
     shared:
       view_horse:
         link: View horse
