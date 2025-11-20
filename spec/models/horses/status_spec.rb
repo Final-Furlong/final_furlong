@@ -13,8 +13,8 @@ RSpec.describe Horses::Status do
 
     it "defines statuses that are alive" do
       expect(described_class::LIVING_STATUSES).to eq(
-        %w[weanling yearling racehorse broodmare stud retired retired_broodmare retired_stud]
-      )
+                                                    %w[weanling yearling racehorse broodmare stud retired retired_broodmare retired_stud]
+                                                  )
     end
 
     it "defines statuses that are active (non-retired/non-foal)" do
@@ -27,8 +27,16 @@ RSpec.describe Horses::Status do
 
     it "defines statuses that include breeding + retired" do
       expect(described_class::BREEDING_STATUSES).to eq(
-        %w[broodmare stud retired_broodmare retired_stud]
-      )
+                                                      %w[broodmare stud retired_broodmare retired_stud]
+                                                    )
+    end
+
+    it "defines statuses that can be leased" do
+      expect(described_class::LEASEABLE_STATUSES).to eq(%w[racehorse broodmare stud])
+    end
+
+    it "defines statuses that can be sold" do
+      expect(described_class::SELLABLE_STATUSES).to eq(%w[racehorse broodmare stud yearling weanling])
     end
   end
 

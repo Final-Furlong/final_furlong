@@ -28,6 +28,7 @@ module Racing
     scope :by_track, ->(track) { joins(:track_surface).merge(TrackSurface.send(track.to_sym)) }
     scope :by_type, ->(type) { where(race_type: type) }
     scope :by_date, ->(date) { where(date:) }
+    scope :since_date, ->(date) { where(date: date..) }
 
     delegate :racetrack, to: :track_surface
 
