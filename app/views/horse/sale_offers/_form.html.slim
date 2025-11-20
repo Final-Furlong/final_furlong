@@ -1,0 +1,39 @@
+/# locals: (sale_offer:, horse:)
+= form_with model: sale_offer, url: horse_sale_offer_path(horse), id: "sale-offer-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+  div
+    fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+      legend.fieldset-legend= t(".offer_start_date")
+      = f.date_field :offer_start_date, class: 'input w-auto validator', required: true, value: sale_offer.offer_start_date || Date.current, min: Date.current, max: @sale_offer.maximum_offer_date
+      p.label= t(".offer_start_date_hint", count: Horses::SaleOffer::MAX_OFFER_PERIOD_DAYS)
+    - if sale_offer.errors[:offer_start_date]
+      p.text-error= sale_offer.errors.where(:offer_start_date).map(&:full_message).join(', ')
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".buyer")
+        = f.select :buyer_id, options_for_select(Account::Stable.active.order(name: :asc).pluck(:name, :id), sale_offer.buyer_id), { include_blank: true }, { class: "select w-full" }
+        - if sale_offer.errors[:buyer_id]
+          p.text-error= sale_offer.errors.where(:buyer_id).map(&:full_message).join(', ')
+    div.align-bottom
+      .divider-horizontal= t("common.or")
+      label.label
+        = f.radio_button :member_type, "all_members", checked: sale_offer.buyer.blank? && !sale_offer.new_members_only
+        = f.label(:member_type, t(".all_members"), value: "all_members")
+      br/
+      label.label
+        = f.radio_button :member_type, "new_members", checked: sale_offer.new_members_only
+        = f.label(:member_type, t(".new_members_only"), value: "new_members")
+      - if sale_offer.errors[:new_members_only]
+        p.text-error= sale_offer.errors.where(:new_members_only).map(&:full_message).join(', ')
+  fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+    legend.fieldset-legend= t(".price")
+    label.input
+      i.fa-solid.fa-dollar-sign
+      = f.text_field :price, value: (sale_offer.price.presence || nil), class: "grow"
+    p.label= t(".rules")
+    - if sale_offer.errors[:price]
+      p.text-error= sale_offer.errors.where(:price).map(&:full_message).join(', ')
+  .float-right
+    a.btn.btn-outline.mr-2.sm:hidden onclick="dialog.close();"
+      = t("common.actions.cancel")
+    = f.submit t("common.actions.save"), class: "btn btn-primary"

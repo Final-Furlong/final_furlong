@@ -45,15 +45,15 @@
         td= horse.appearance.height_display
       tr
         th= t(".breeder")
-        td= link_to horse.breeder.name, stable_path(horse.breeder)
+        td= link_to horse.breeder.name, stable_path(horse.breeder), target: "_top"
       tr
         th= t(".owner")
-        td= link_to horse.owner.name, stable_path(horse.owner)
+        td= link_to horse.owner.name, stable_path(horse.owner), target: "_top"
       - unless horse.dead?
         tr
           th= t(".location")
           td Not Yet Added
-        - if horse.current_lease
+        - if horse.current_lease&.persisted?
           = turbo_frame_tag dom_id(horse) do
             tr
               th= t(".lease_status")
@@ -67,10 +67,15 @@
           tr
             th= t(".sale_status")
             td
-              - if (offer = horse.lease_offer)
-                = t(".offered_for_lease", duration: offer.duration_months, fee: Game::MoneyFormatter.new(offer.fee).to_s)
+              - if (lease = horse.lease_offer)&.persisted?
+                = t(".offered_for_lease", duration: lease.duration_months, fee: Game::MoneyFormatter.new(lease.fee).to_s)
+              - elsif (sale = horse.sale_offer)&.persisted?
+                - if [horse.owner, sale.buyer].include?(Current.stable) || sale.buyer.nil?
+                  = t(".offered_for_sale", price: Game::MoneyFormatter.new(sale.price).to_s)
+                - else
+                  = t(".offered_for_sale_private_html")
               - else
-                = "Not Yet Added"
+                = t(".not_for_sale")
       tr
         th= t(".track_record")
         td= horse.track_record || t("horse.unraced")

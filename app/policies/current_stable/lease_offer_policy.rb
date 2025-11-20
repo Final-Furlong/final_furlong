@@ -1,5 +1,11 @@
 module CurrentStable
   class LeaseOfferPolicy < ApplicationPolicy
+    class Scope < ApplicationPolicy::Scope
+      def resolve
+        scope.with_owner(stable)
+      end
+    end
+
     def create_lease_offer?
       return false unless owner?
       return false unless Horses::Status::LEASEABLE_STATUSES.include?(record.status)
