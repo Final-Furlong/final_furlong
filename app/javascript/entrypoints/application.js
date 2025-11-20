@@ -1,31 +1,10 @@
 // import debug from "debug"
 
-import "@hotwired/turbo-rails"
+import * as Turbo from "@hotwired/turbo-rails"
 
 import TC from "@rolemodel/turbo-confirm"
 
 TC.start()
-
-/*
-Turbo.config.forms.confirm = (message, element) => {
-  let dialog = document.getElementById("turbo-confirm")
-  dialog.querySelector("p").textContent = message
-  if (element.dataset.confirmationIcon) {
-    dialog.querySelector("i").className = element.dataset.confirmationIcon
-  }
-  dialog.showModal()
-  return new Promise((resolve, reject) => {
-    dialog.addEventListener(
-      "close",
-      () => {
-        resolve(dialog.returnValue === "confirm")
-      },
-      { once: true }
-    )
-  })
-}
- */
-
 Turbo.start()
 
 // The default of 500ms is too long and users can lose the causal

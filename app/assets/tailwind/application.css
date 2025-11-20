@@ -1,14 +1,13 @@
 @import "tailwindcss";
-
-/* stylelint-disable */
-@plugin "daisyui" {
-  themes: nord --default, night --prefersdark, all;
-}
-/* stylelint-enable */
-
 @import "./breadcrumbs.css";
 @import "./horse.css";
 @import "./pagy.css";
+
+/* stylelint-disable scss/at-rule-no-unknown, property-no-unknown */
+@plugin "daisyui" {
+  themes: nord --default, night --prefersdark, all;
+}
+/* stylelint-enable scss/at-rule-no-unknown, property-no-unknown */
 
 i {
   vertical-align: middle;
@@ -16,7 +15,6 @@ i {
 
 [popover] {
   transition: display 300ms;
-  transition-behavior: allow-discrete;
 }
 
 @layer components {

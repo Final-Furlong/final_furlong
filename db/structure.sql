@@ -4387,7 +4387,7 @@ CREATE INDEX index_race_options_on_first_jockey_id ON public.race_options USING 
 -- Name: index_race_options_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_race_options_on_horse_id ON public.race_options USING btree (horse_id);
+CREATE UNIQUE INDEX index_race_options_on_horse_id ON public.race_options USING btree (horse_id);
 
 
 --
@@ -4758,7 +4758,7 @@ CREATE INDEX index_racehorse_stats_on_fitness_grade ON public.racehorse_stats US
 -- Name: index_racehorse_stats_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_racehorse_stats_on_horse_id ON public.racehorse_stats USING btree (horse_id);
+CREATE UNIQUE INDEX index_racehorse_stats_on_horse_id ON public.racehorse_stats USING btree (horse_id);
 
 
 --
@@ -5721,6 +5721,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251120144348'),
 ('20251119150441'),
 ('20251118205558'),
 ('20251118164459'),

@@ -145,7 +145,7 @@ ignore_unused:
   - current_stable.training_schedules.{create,update}.success
   - horse.actions.*
   - horse.type.*
-  - horse.lease_terminations.new.*
+  - horse.lease_terminations.form.*
   - users.{create,update}.success
 
 ## Exclude these keys from the `i18n-tasks eq-base' report:

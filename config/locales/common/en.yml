@@ -12,7 +12,7 @@ en:
     confirm:
       default_message: Are you sure you want to do this?
       title: Are you sure?
-      "yes": Yes, go ahead
+      'yes': Yes, go ahead
     confirmation:
       delete_with_name: Are you sure you want to delete %{name}?
     create: Create
@@ -35,7 +35,6 @@ en:
       8_furlongs: 1 Mile
     edit: Edit
     error: Something went wrong
-    failed_validation: Please fix the errors to continue
     none: None
     or: Or
     search_form:
