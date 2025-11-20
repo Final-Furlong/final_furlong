@@ -10,7 +10,6 @@ gem "solid_cache" # A database-backed ActiveSupport::Cache::Store [https://githu
 gem "solid_queue" # A database-backed ActiveJob backend [https://github.com/rails/solid_queue]
 
 # Backend
-gem "bootsnap", require: false # Reduces boot times through caching; required in config/boot.rb
 gem "puma" # Use the Puma web server [https://github.com/puma/puma]
 
 # Asset management
@@ -101,6 +100,7 @@ group :development do
   gem "bcrypt_pbkdf" # required for capistran
   gem "benchmark"
   gem "better_errors"
+  gem "bootsnap", require: false # Reduces boot times through caching; required in config/boot.rb
   gem "bullet"
   gem "byebug"
   gem "capistrano", "~> 3.17", require: false
