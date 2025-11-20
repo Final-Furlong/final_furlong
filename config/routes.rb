@@ -81,6 +81,7 @@ end
 #                             stable_horse GET    /stable/horses/:id(.:format)                                                                      current_stable/horses#show
 #                                          PATCH  /stable/horses/:id(.:format)                                                                      current_stable/horses#update
 #                                          PUT    /stable/horses/:id(.:format)                                                                      current_stable/horses#update
+#                            stable_leases GET    /stable/leases(.:format)                                                                          current_stable/leases#index
 #          stable_training_schedule_horses GET    /stable/training_schedules/:training_schedule_id/horses(.:format)                                 current_stable/training_schedule_horses#index
 #                                          POST   /stable/training_schedules/:training_schedule_id/horses(.:format)                                 current_stable/training_schedule_horses#create
 #       new_stable_training_schedule_horse GET    /stable/training_schedules/:training_schedule_id/horses/new(.:format)                             current_stable/training_schedule_horses#new
@@ -95,6 +96,7 @@ end
 #                                          DELETE /stable/training_schedules/:id(.:format)                                                          current_stable/training_schedules#destroy
 #                          stable_workouts POST   /stable/workouts(.:format)                                                                        current_stable/workouts#create
 #                       new_stable_setting GET    /stable/settings/new(.:format)                                                                    current_stable/settings#new
+#                      horses_lease_offers GET    /horses/lease_offers(.:format)                                                                    horses/lease_offers#index
 #                              image_horse GET    /horses/:id/image(.:format)                                                                       horses#image
 #                          thumbnail_horse GET    /horses/:id/thumbnail(.:format)                                                                   horses#thumbnail
 #                          new_lease_offer GET    /horses/:id/lease_offer/new(.:format)                                                             horse/lease_offers#new
