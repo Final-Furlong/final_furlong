@@ -2,8 +2,8 @@ version: v1.0
 name: Final Furlong CI
 agent:
   machine:
-    type: f1-standard-2
-    os_image: ubuntu2204
+    type: e1-standard-2
+    os_image: ubuntu2004
 auto_cancel:
   running:
     when: branch != 'master'
@@ -39,6 +39,7 @@ blocks:
     task:
       prologue:
         commands:
+          - rbenv install --list; return 1
           - sem-service start postgres 17
           - sem-service start mysql 8 --username=developer --password=password --db=final_furlong_legacy_test
           - cache restore
