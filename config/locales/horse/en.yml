@@ -3,14 +3,44 @@ en:
   horse:
     actions:
       create_lease_offer: Set for Lease
+      create_sale_offer: Set for Sale
       current_lease:
         terminate: End Lease Early
       lease_offer:
         accept: Accept Lease
         cancel: Cancel Lease Offer
         reject: Reject Lease
+      sale_offer:
+        accept: Buy Horse
+        cancel: Cancel Sale Offer
+        reject: Reject Sale
       view_sales: Sales History
     created: Created
+    events:
+      index:
+        boarding: Boarding
+        highlights: Highlights
+        loading_sales: Loading sales/leases...
+        no_sales: Sales/Leases
+        sales: Sales/Leases (%{count})
+        shipping: Shipping
+        workouts: Workouts
+      sales:
+        buyer: Buyer
+        date: Date
+        end_date: End Date
+        fee: Lease Fee
+        lease: Lease
+        leasee: Leasee
+        leaser: Leaser
+        old_stable: Seller/Owner
+        new_stable: Buyer/Leaser
+        price: Price
+        price_fee: Price/Fee
+        private_treaty: Private Treaty
+        sale: Sale
+        seller: Seller
+        type: Type
     foal_due: Foal Due
     foals:
       dam_foal_list:
@@ -135,6 +165,22 @@ en:
         thirds: Thirds
         unraced: Unraced
         wins: Wins
+    sale_offers:
+      create:
+        success: Sale offer was successfully created
+      destroy:
+        confirm: Are you sure you want to delete this sale offer?
+        success: Sale offer was successfully deleted
+      form:
+        all_members: Offer to all members
+        buyer: Sell To
+        new_members_only: Offer to new members only
+        price: Sale Price
+        offer_start_date: Offer For Sale From
+        offer_start_date_hint: Sale offers are valid for %{count} days.
+        rules: Price must be $50,000 or less if selling to new members.
+      new:
+        title: Offer for Sale
     titles:
       abbr:
         final_furlong: FFCh.

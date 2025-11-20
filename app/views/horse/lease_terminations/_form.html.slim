@@ -3,7 +3,7 @@ ruby:
   time_left = (current_lease.end_date - Date.current).to_i
   percentage_left = time_left.fdiv(current_lease.total_days)
   refund_fee = (current_lease.fee * percentage_left).to_i
-= form_with model: termination_request, url: lease_termination_path(current_lease.horse), id: "lease-termination-form", html: { class: "form", novalidate: true }, method: :post, data: { turbo_frame: "_top" } do |f|
+= form_with model: termination_request, url: horse_lease_termination_path(current_lease.horse), id: "lease-termination-form", html: { class: "form", novalidate: true }, method: :post, data: { turbo_frame: "_top" } do |f|
   - if Current.stable == current_lease.owner
     fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
       label.label

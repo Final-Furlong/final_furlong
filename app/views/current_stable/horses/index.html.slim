@@ -6,8 +6,14 @@
         active_status: @active_status)
 
 .float-right
+  - if (count = Horses::SaleOfferPolicy::Scope.new(Current.user, Horses::SaleOffer).resolve.count).positive?
+    = link_to stable_sale_offers_path, class: 'btn btn-neutral mx-2' do
+      = t(".sale_offers", count: count)
+  - if (count = Horses::LeaseOfferPolicy::Scope.new(Current.user, Horses::LeaseOffer).resolve.count).positive?
+    = link_to stable_lease_offers_path, class: 'btn btn-neutral mx-2' do
+      = t(".lease_offers", count: count)
   - if (count = Horses::LeasePolicy::Scope.new(Current.user, Horses::Lease).resolve.count).positive?
-    = link_to stable_leases_path, class: 'btn btn-neutral' do
+    = link_to stable_leases_path, class: 'btn btn-neutral mx-2' do
       = t(".leases", count: count)
 .clear-both
 
