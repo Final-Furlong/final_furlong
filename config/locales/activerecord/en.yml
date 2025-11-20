@@ -73,6 +73,14 @@ en:
           attributes:
             owner_accepted_end:
               blank: must agree to end the lease
+        horses/sale:
+          attributes:
+            buyer:
+              other_than: cannot be the same as the owner
+        horses/sale_offer:
+          attributes:
+            new_members_only:
+              inclusion: cannot be selected when you have picked a specific stable
         racing/training_schedule:
           attributes:
             base:

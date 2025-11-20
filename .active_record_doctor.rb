@@ -252,7 +252,8 @@ ActiveRecordDoctor.configure do
   detector :missing_foreign_keys,
     ignore_associations: [
       "Racing::AnnualRaceRecord.horse",
-      "Racing::LifetimeRaceRecord.horse"
+      "Racing::LifetimeRaceRecord.horse",
+      "Racing::RaceQualification.horse"
     ]
 
   detector :unindexed_foreign_keys,
