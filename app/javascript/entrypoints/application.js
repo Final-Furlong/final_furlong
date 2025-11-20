@@ -2,16 +2,13 @@
 
 import "@hotwired/turbo-rails"
 
-import * as Turbo from "@hotwired/turbo"
-Turbo.start()
+import TC from "@rolemodel/turbo-confirm"
 
-// The default of 500ms is too long and
-// users can lose the causal link between clicking
-// a link and seeing the browser respond
-// eslint-disable no-undef
-if (typeof Turbo.config !== "undefined") {
-  Turbo.config.drive.progressBarDelay = 100
-}
+TC.start()
+
+// The default of 500ms is too long and users can lose the causal
+// link between clicking a link and seeing the browser respond
+Turbo.config.drive.progressBarDelay = 100
 
 import "../controllers"
 
