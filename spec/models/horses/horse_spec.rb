@@ -14,8 +14,26 @@ RSpec.describe Horses::Horse do
     it { is_expected.to have_one(:training_schedule).class_name("Racing::TrainingSchedule").through(:training_schedules_horse) }
     it { is_expected.to have_one(:training_schedules_horse).class_name("Racing::TrainingScheduleHorse").dependent(:destroy) }
     it { is_expected.to have_one(:auction_horse).class_name("Auctions::Horse").dependent(:destroy) }
+    it { is_expected.to have_one(:lease_offer).class_name("Horses::LeaseOffer").dependent(:delete) }
+    it { is_expected.to have_one(:current_lease).class_name("Horses::Lease").dependent(:destroy) }
+    it { is_expected.to have_one(:leaser).through(:current_lease).source(:leaser) }
+    it { is_expected.to have_many(:past_leases).class_name("Horses::Lease").dependent(:destroy) }
+    it { is_expected.to have_one(:race_options).class_name("Racing::RaceOption").dependent(:delete) }
+    it { is_expected.to have_one(:race_stats).class_name("Racing::RaceStats").dependent(:delete) }
     it { is_expected.to have_many(:race_result_finishes).class_name("Racing::RaceResultHorse").dependent(:delete_all) }
     it { is_expected.to have_many(:race_results).class_name("Racing::RaceResult").through(:race_result_finishes) }
+    it { is_expected.to have_many(:race_records).class_name("Racing::RaceRecord").dependent(:delete_all) }
+    it { is_expected.to have_one(:sale_offer).class_name("Horses::SaleOffer").dependent(:delete) }
+    it { is_expected.to have_many(:sales).class_name("Horses::Sale").dependent(:delete_all) }
+    it { is_expected.to have_one(:current_boarding).class_name("Horses::Boarding").dependent(:delete) }
+    it { is_expected.to have_many(:boardings).class_name("Horses::Boarding").dependent(:delete_all) }
+    it { is_expected.to have_many(:annual_race_records).class_name("Racing::AnnualRaceRecord").inverse_of(:horse) }
+    it { is_expected.to have_one(:lifetime_race_record).class_name("Racing::LifetimeRaceRecord").inverse_of(:horse) }
+
+    it { is_expected.to have_many(:foals).class_name("Horses::Horse").inverse_of(:dam).dependent(:nullify) }
+    it { is_expected.to have_many(:stud_foals).class_name("Horses::Horse").inverse_of(:sire).dependent(:nullify) }
+    it { is_expected.to have_one(:broodmare_foal_record).inverse_of(:mare).dependent(:delete) }
+    it { is_expected.to have_one(:stud_foal_record).inverse_of(:stud).dependent(:delete) }
   end
 
   describe "validations" do
