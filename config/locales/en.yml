@@ -89,7 +89,9 @@ en:
   view_components:
     nav:
       breadcrumbs:
-        impersonate: Impersonate
+        actions:
+          impersonate: Impersonate
+          title: Actions
       i18n:
         english: English
         english_gb: English (UK)

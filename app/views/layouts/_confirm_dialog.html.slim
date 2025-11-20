@@ -1,0 +1,11 @@
+dialog.modal#confirm inert=true
+  .modal-box
+    h3.text-lg.font-bold#confirm-title
+      / Replaced by `data-turbo-confirm` attribute
+      = t("common.confirm.title")
+    #confirm-body
+      / Optionally replaced by `data-confirm-details` attribute
+      p= t("common.confirm.default_message")
+    .modal-action
+      button.btn.btn-outline.confirm-cancel = t("common.actions.cancel")
+      button.btn.btn-primary#confirm-accept = t("common.confirm.yes")
