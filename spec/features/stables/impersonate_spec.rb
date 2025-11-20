@@ -6,7 +6,7 @@ RSpec.describe "Impersonate Stable Index" do
     visit stables_path
     click_link stable.name
     expect(page).to have_current_path stable_path(stable), ignore_query: true
-    expect(page).not_to have_link t("view_components.nav.breadcrumbs.impersonate")
+    expect(page).not_to have_link t("view_components.nav.breadcrumbs.actions.impersonate")
   end
 
   it "does not allow impersonating as non-admin user" do
@@ -18,7 +18,7 @@ RSpec.describe "Impersonate Stable Index" do
     expect(page).to have_link stable.name, href: stable_path(stable)
     click_link stable.name
     expect(page).to have_current_path stable_path(stable), ignore_query: true
-    expect(page).not_to have_link t("view_components.nav.breadcrumbs.impersonate")
+    expect(page).not_to have_link t("view_components.nav.breadcrumbs.actions.impersonate")
   end
 
   it "does allow impersonating as admin user" do
@@ -31,8 +31,8 @@ RSpec.describe "Impersonate Stable Index" do
     visit stables_path
     click_link stable.name
     expect(page).to have_current_path stable_path(stable), ignore_query: true
-    within("#breadcrumb-actions") do
-      click_on t("view_components.nav.breadcrumbs.impersonate"), visible: true
+    within "#breadcrumb-actions" do
+      click_on t("view_components.nav.breadcrumbs.actions.impersonate")
     end
     expect(page).to have_css "#impersonation-alert"
     expect(page).to have_current_path root_path, ignore_query: true
