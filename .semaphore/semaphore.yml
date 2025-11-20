@@ -2,7 +2,7 @@ version: v1.0
 name: Final Furlong CI
 agent:
   machine:
-    type: f1-standard-2
+    type: a2-standard-4
     os_image: ubuntu2204
 auto_cancel:
   running:
