@@ -28,7 +28,7 @@
   fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
     legend.fieldset-legend= t(".price")
     label.input
-      i.fa-solid.fa-dollar-sign
+      i.ph.ph-currency-dollar
       = f.text_field :price, value: (sale_offer.price.presence || nil), class: "grow"
     p.label= t(".rules")
     - if sale_offer.errors[:price]

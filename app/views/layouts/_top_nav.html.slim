@@ -4,7 +4,7 @@
       li
         label.float-left.btn.drawer-button.lg:hidden for="sidebar-toggle"
           span.sr-only= t("layouts.nav.open_main_menu")
-          i.fa-solid.fa-bars.fa-xl#icon-show-sidenav
+          i.ph.ph-list.text-2xl#icon-show-sidenav
   .flex-1
   .flex-none.gap-2
     ul.menu-horizontal.bg-base-200.text-base-content.min-h-full[
@@ -17,7 +17,7 @@
       - if signed_in?
         li.px-2.pt-2
           = link_to root_path do
-            i.fa-xl.fa-solid.fa-home alt=t(".home")
+            i.ph-fill.ph-house.text-2xl alt=t(".home")
             span.sr-only= t(".home")
 
         li
@@ -26,13 +26,13 @@
 
         li.px-2.pt-2
           = link_to new_setting_path do
-            i.fa-xl.fa-solid.fa-gear alt=t(".settings")
+            i.ph-fill.ph-gear.text-2xl alt=t(".settings")
             span.sr-only= t(".settings")
 
         li.pl-2.pt-1
           = button_to destroy_user_session_path, method: :delete, data: { turbo: false },
                   form_class: "p-0", class: "flex items-center w-full p-2 text-base transition rounded-lg" do
-            i.fas.fa-arrow-right-from-bracket.mr-2
+            i.ph.ph-sign-out.text-2xl.mr-2
             span.sr-only= t("layouts.nav.logout")
       - else
         li.pl-2.pt-1
@@ -40,5 +40,5 @@
             href=new_user_session_path
             class="hover:bg-gray-100 dark:hover:bg-gray-700"
           ]
-            i.fas.fa-arrow-right-from-bracket.mr-2
+            i.ph.ph-sign-in.text-2xl.mr-2
             span.flex-1.ms-3.whitespace-nowrap= t("layouts.nav.login")
