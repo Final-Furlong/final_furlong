@@ -5,6 +5,7 @@ RSpec.describe "Leasing Journey" do
     sign_in(leaser_user)
 
     visit horse_path(horse)
+    click_on t("view_components.nav.breadcrumbs.actions.title")
     click_on t("horse.actions.create_lease_offer")
     within "dialog" do
       select "12", from: "horses_lease_offer[duration_months]"
@@ -79,7 +80,7 @@ RSpec.describe "Leasing Journey" do
 
     visit horse_path(horse)
     click_on t("horse.actions.create_lease_offer")
-    expect(page).to have_current_path new_lease_offer_path(horse), ignore_query: true
+    expect(page).to have_current_path new_horse_lease_offer_path(horse), ignore_query: true
     select "12", from: "horses_lease_offer[duration_months]"
     select leasee.name, from: "horses_lease_offer[leaser_id]"
     fill_in "horses_lease_offer[fee]", with: 10_000
