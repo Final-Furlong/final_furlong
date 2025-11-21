@@ -9,7 +9,7 @@
                                      class: "button is-light is-danger mb-0", id: "user-delete-#{user.id}",
                                      data: { turbo_frame: "_top" } do
           span.icon.is-small
-            i.fa-solid.fa-trash-can
+            i.ph-fill.ph-trash
         = link_to edit_user_path(user), class: "button is-light", id: "user-edit-#{user.id}" do
           span.icon.is-small
-            i.fa-solid.fa-pen-to-square
+            i.ph-fill.ph-pen

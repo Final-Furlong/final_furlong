@@ -32,15 +32,15 @@ module Nav
       def icon_class
         case type
         when "alert"
-          "fa-circle-exclamation"
+          "ph-warning-circle"
         when "info"
-          "fa-circle-info"
+          "ph-info"
         when "success"
-          "fa-circle-check"
+          "ph-check-circle"
         when "notice"
-          "fa-circle-info"
+          "ph-info"
         else
-          "fa-circle-info"
+          "ph-info"
         end
       end
 

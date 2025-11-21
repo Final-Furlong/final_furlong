@@ -1,17 +1,17 @@
 .dock.border-t-1.border-neutral-content/50.md:hidden
   = link_to root_path, class: 'btn' do
-    i.fa-solid.fa-home
+    i.ph-fill.ph-house
     = t(".home")
 
   - if signed_in?
     = turbo_stream_from "notification_dot_#{Current.user.id}"
     = link_to notifications_path, class: 'btn' do
-      i.fa-solid.fa-bell
+      i.ph-fill.ph-bell
       - if current_user.notifications.unread.any?
         span class="notification-dot"
-          i.fa-solid.fa-circle
+          i.ph-fill.ph-circle
       = t(".notifications")
 
     = link_to new_setting_path, class: 'btn' do
-      i.fa-solid.fa-gear
+      i.ph-fill.ph-gear
       = t(".settings")
