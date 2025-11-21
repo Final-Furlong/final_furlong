@@ -166,6 +166,8 @@ GEM
       capistrano (>= 3.7.0)
     capistrano-passenger (0.2.1)
       capistrano (~> 3.0)
+    capistrano-pnpm (1.0.1)
+      capistrano (>= 3.0.0)
     capistrano-rails (1.7.0)
       capistrano (~> 3.1)
       capistrano-bundler (>= 1.1, < 3)
@@ -174,8 +176,6 @@ GEM
       sshkit (~> 1.3)
     capistrano-solid_queue (0.1.2)
       capistrano (>= 3.0)
-    capistrano-yarn (2.0.2)
-      capistrano (~> 3.0)
     capybara (3.40.0)
       addressable
       matrix
@@ -1042,10 +1042,10 @@ DEPENDENCIES
   capistrano-bundler (~> 2.0)
   capistrano-deploytags (~> 1.0.0)
   capistrano-passenger
+  capistrano-pnpm
   capistrano-rails (~> 1.3)
   capistrano-rbenv (~> 2.2)
   capistrano-solid_queue
-  capistrano-yarn
   capybara (>= 2.15)
   capybara-screenshot
   colorize
@@ -1205,7 +1205,7 @@ CHECKSUMS
   bigdecimal (3.3.1) sha256=eaa01e228be54c4f9f53bf3cc34fe3d5e845c31963e7fcc5bedb05a4e7d52218
   bindex (0.8.1) sha256=7b1ecc9dc539ed8bccfc8cb4d2732046227b09d6f37582ff12e50a5047ceb17e
   binding_of_caller (1.0.1) sha256=2b2902abff4246ddcfbc4da9b69bc4a019e22aeb300c2ff6289a173d4b90b29a
-  bootsnap (1.19.0)
+  bootsnap (1.19.0) sha256=d3e54558c1a9ea10cb095eb1eb8e921ae83fd4d5764b8809f63aec18ce9f60b5
   brakeman (7.1.1) sha256=629426b5d6496c75e3ffa2299e1ab1bb3ba721fea03d8808414c083660439498
   browser (6.2.0) sha256=281d5295788825c9396427c292c2d2be0a5c91875c93c390fde6e5d61a5ace2d
   builder (3.3.0) sha256=497918d2f9dca528fdca4b88d84e4ef4387256d984b8154e9d5d3fe5a9c8835f
@@ -1217,10 +1217,10 @@ CHECKSUMS
   capistrano-bundler (2.1.1) sha256=c234a72c1698265885522ba7da77b522c683e2ca350f90ac94d7e84d6f8f4f94
   capistrano-deploytags (1.0.7) sha256=8b3d8ff1a192f551868496f6f5e7845d386a4b7650d35256db4bd68ffcba11c3
   capistrano-passenger (0.2.1) sha256=07a1d25edd5c1d909c19d4fe45fe2ea5f11200569f6967f6bff1d605ade98e13
+  capistrano-pnpm (1.0.1) sha256=02f144239cb3352c08195539e5f96d56145ccec6e10f287c5518bdebab8ca0ef
   capistrano-rails (1.7.0) sha256=aca57455e8c5435785e0f938e16aa5b79c263694a755e1dca1c5d1743b40aae7
   capistrano-rbenv (2.2.0) sha256=3c8f39b7c624f3806630dcb475484bb3579aef07a40efe85089d83f64b0c35f5
   capistrano-solid_queue (0.1.2) sha256=00579a106e94535bb4bf4bfca035cdf8fcdf3477151605c2df6c64d69228e257
-  capistrano-yarn (2.0.2) sha256=891e70fd932c6ba66cea9893083a0e0c8a25734d205912025a85ee608016affd
   capybara (3.40.0) sha256=42dba720578ea1ca65fd7a41d163dd368502c191804558f6e0f71b391054aeef
   capybara-screenshot (1.0.26) sha256=816b9370a07752097c82a05f568aaf5d3b7f45c3db5d3aab2014071e1b3c0c77
   case_transform (0.2) sha256=e2ad4418dceeb227cf474cc332cd5004c95c136c04186c1cceaad8ab8de6fe3b
@@ -1355,7 +1355,7 @@ CHECKSUMS
   minitest (5.26.0) sha256=f5817ad09f863a4f7eac917707c1ca5c09cdc4a35e17d91171760178324d2c30
   mission_control-jobs (1.1.0) sha256=b13da9cde3344fec7c744b79d2a34c3ecd454f45d4d593d4c968ba762315e84c
   motor-admin (0.4.37) sha256=b700ecb4de2e36d6746e7005f0a86e31d7960ea89fec3ccef585974f43454003
-  msgpack (1.8.0)
+  msgpack (1.8.0) sha256=e64ce0212000d016809f5048b48eb3a65ffb169db22238fb4b72472fecb2d732
   multi_json (1.17.0) sha256=76581f6c96aebf2e85f8a8b9854829e0988f335e8671cd1a56a1036eb75e4a1b
   mustermann (3.0.4) sha256=85fadcb6b3c6493a8b511b42426f904b7f27b282835502233dd154daab13aa22
   mustermann-grape (1.1.0) sha256=8d258a986004c8f01ce4c023c0b037c168a9ed889cf5778068ad54398fa458c5
