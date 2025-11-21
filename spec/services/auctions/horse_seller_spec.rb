@@ -75,7 +75,7 @@ RSpec.describe Auctions::HorseSeller do
     end
 
     it "creates horse sale transaction" do
-      expect { described_class.new.process_sale(bid:) }.to change(Legacy::HorseSale, :count).by(1)
+      expect { described_class.new.process_sale(bid:) }.to change(Horses::Sale, :count).by(1)
     end
 
     it "modifies legacy horse" do

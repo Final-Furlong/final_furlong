@@ -94,13 +94,13 @@ module Auctions
         # rubocop:disable Rails/SkipsModelValidations
         Legacy::ViewRacehorses.where(horse_id: horse.legacy_id).update_all("Owner = #{buyer.legacy_id}, can_be_sold = 0")
         # rubocop:enable Rails/SkipsModelValidations
-        Legacy::HorseSale.create!(
-          Date: Date.current + 4.years,
-          Horse: horse.legacy_id,
-          Seller: seller.legacy_id,
-          Buyer: buyer.legacy_id,
-          Price: bid.current_bid,
-          PT: false
+        Horses::Sale.create!(
+          date: Date.current,
+          seller:,
+          buyer:,
+          horse:,
+          price: bid.current_bid,
+          private: false
         )
         Legacy::Horse.where(ID: horse.legacy_id).update(
           Owner: buyer.legacy_id,
