@@ -1,6 +1,7 @@
 # Load DSL and set up stages
 require "capistrano/setup"
 require "capistrano/deploy"
+require "capistrano/pnpm"
 
 require "capistrano/rails"
 require "capistrano/bundler"
