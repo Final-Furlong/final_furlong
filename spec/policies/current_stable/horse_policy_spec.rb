@@ -10,15 +10,58 @@ RSpec.describe CurrentStable::HorsePolicy do
   end
 
   context "when user owns the horse" do
-    it "allows show" do
+    it "allows correct actions" do
       horse.owner = user.stable
-      expect(policy).to permit_action(:show)
+      expect(policy).to permit_actions(:show, :view_events, :view_sales,
+        :view_shipping, :view_workouts, :view_boarding)
+    end
+
+    context "when the horse is not a racehorse" do
+      before { horse.status = "broodmare" }
+
+      it "denies correct actions" do
+        horse.owner = user.stable
+        expect(policy).not_to permit_actions(:view_shipping, :view_workouts,
+          :view_boarding)
+      end
+    end
+  end
+
+  context "when user leases the horse" do
+    it "allows correct actions" do
+      create(:lease, horse:, leaser: user.stable)
+      expect(policy).to permit_actions(:show, :view_events, :view_sales,
+        :view_shipping, :view_workouts, :view_boarding)
+    end
+
+    context "when the horse is not a racehorse" do
+      before { horse.status = "broodmare" }
+
+      it "denies correct actions" do
+        create(:lease, horse:, leaser: user.stable)
+        expect(policy).not_to permit_actions(:view_shipping, :view_workouts,
+          :view_boarding)
+      end
     end
   end
 
   context "when user does not own the horse" do
-    it "allows show" do
-      expect(policy).not_to permit_action(:show)
+    it "allows correct actions" do
+      expect(policy).to permit_action(:view_sales)
+    end
+
+    it "denies correct actions" do
+      expect(policy).not_to permit_actions(:show, :view_shipping,
+        :view_workouts, :view_boarding)
+    end
+  end
+
+  context "when user is visitor" do
+    let(:user) { nil }
+
+    it "denies correct actions" do
+      expect(policy).not_to permit_actions(:show, :view_events, :view_sales,
+        :view_workouts, :view_boarding)
     end
   end
 

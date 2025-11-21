@@ -1,0 +1,40 @@
+/# locals: (sale_offers:, query:)
+= turbo_frame_tag "all-horse-sale-offers-search" do
+  .lease-offers-search-results
+    - if sale_offers.empty?
+      h4.text-muted.text-center.my-2
+        small= t("horses.sale_offers.index.no_sales")
+    - else
+      .table-responsive-md
+        table.table.table-responsive.table-zebra
+          thead
+            tr
+              th= Horses::Horse.human_attribute_name("name")
+              th= t(".age_gender")
+              th= Horses::Horse.human_attribute_name("owner")
+              th= t(".sell_to")
+              th= Horses::SaleOffer.human_attribute_name("price")
+              th= t("common.actions.title")
+            tbody.table-group-divider
+              - sale_offers.each do |sale_offer|
+                - horse = sale_offer.horse
+                tr
+                  td.wb-break-all= horse.name || t("horse.unnamed")
+                  td.wb-break-all
+                    = horse.age
+                    = "yo "
+                    = t("horses.genders.#{horse.gender}")
+                  td= horse.owner.name
+                  td
+                    - if sale_offer.buyer == Current.stable
+                      = t(".only_you")
+                    - elsif sale_offer.new_members_only
+                      = t(".new_members_only")
+                    - else
+                      = t(".anyone")
+                  td= Game::MoneyFormatter.new(sale_offer.price).to_s
+                  td.actions-column.nav-item.dropdown
+                    = link_to horse_path(horse), class: "btn btn-sm btn-soft btn-primary",
+                                                 data: { turbo_frame: "_top" } do
+                      i.fas.fa-eye
+                      = t("common.actions.view")
