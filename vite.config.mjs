@@ -1,9 +1,9 @@
-import { defineConfig } from "vite"
-import Rails from "vite-plugin-rails"
-import { VitePluginRadar } from "vite-plugin-radar"
 import tailwindcss from "@tailwindcss/vite"
+import { defineConfig } from "vite"
+import { VitePluginRadar } from "vite-plugin-radar"
+import Rails from "vite-plugin-rails"
 
-export default defineConfig(configEnv => ({
+export default defineConfig(_configEnv => ({
   plugins: [
     Rails({
       envVars: { RAILS_ENV: process.env.RAILS_ENV || "development" },

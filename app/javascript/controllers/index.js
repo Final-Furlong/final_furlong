@@ -5,16 +5,21 @@
 import { application } from "./application"
 
 import DropdownController from "./dropdown_controller"
+
 application.register("dropdown", DropdownController)
 
 import NotificationController from "./notification_controller"
+
 application.register("notification", NotificationController)
 
 import Pwa__WebPushDemoController from "./pwa/web_push_demo_controller"
+
 application.register("pwa--web-push-demo", Pwa__WebPushDemoController)
 
 import Pwa__WebPushSubscriptionController from "./pwa/web_push_subscription_controller"
+
 application.register("pwa--web-push-subscription", Pwa__WebPushSubscriptionController)
 
 import SearchController from "./search_controller"
+
 application.register("search", SearchController)
