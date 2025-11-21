@@ -3,6 +3,7 @@ en:
   horses:
     index:
       for_lease: For Lease (%{count})
+      for_sale: For Sale (%{count})
     info:
       breeder: Breeder
       breeding_record: Breeding Record
@@ -23,7 +24,10 @@ en:
       name: Name
       next_foal: Next Foal
       next_race: Next Race
+      not_for_sale: Not for Sale
       offered_for_lease: 'Offered for lease for %{duration} months (Fee: %{fee})'
+      offered_for_sale: 'Offered for sale (Price: %{price})'
+      offered_for_sale_private_html: Offered for sale <em>(Private Treaty)</em>
       owner: Owner
       sale_status: Sale Status
       scheduled_race: Scheduled Race
@@ -39,10 +43,22 @@ en:
         lease_to: Lease To
         new_members_only: New Members
         only_you: You
+    sale_offers:
+      index:
+        no_offers: You have no horses offered for sale.
+        title: Horses for Sale
+      table:
+        age_gender: Age/Gender
+        anyone: Anyone
+        new_members_only: New Members
+        only_you: You
+        sell_to: Available To
     show:
       foals: Foals
+      history: History
       info: Info
       loading_foals: Loading foals...
+      loading_history: Loading history...
       loading_images: Loading images...
       loading_pedigree: Loading pedigree...
       loading_races: Loading race records...

@@ -20,13 +20,13 @@ end
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  buyer_id         :bigint           indexed
-#  horse_id         :bigint           not null, indexed
+#  horse_id         :bigint           not null, uniquely indexed
 #  owner_id         :bigint           not null, indexed
 #
 # Indexes
 #
 #  index_sale_offers_on_buyer_id          (buyer_id)
-#  index_sale_offers_on_horse_id          (horse_id)
+#  index_sale_offers_on_horse_id          (horse_id) UNIQUE
 #  index_sale_offers_on_offer_start_date  (offer_start_date)
 #  index_sale_offers_on_owner_id          (owner_id)
 #
