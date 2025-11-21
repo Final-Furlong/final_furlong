@@ -1,0 +1,60 @@
+= turbo_frame_tag "#{@dashboard.horse.slug}-sales-history" do
+  - horse = @dashboard.horse
+  - if @dashboard.events.empty?
+    p= "no sales"
+  - else
+    .mx-auto.overflow-x-auto.w-full.sm:hidden
+      - @dashboard.events.each do |event|
+        .card.bg-base-100.w-full.px-2.rounded-none
+          .card-body.p-0.rounded-none
+            .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+              input type="checkbox"
+              .collapse-title.font-semibold.font-medium
+                - type = event[:date] ? :sale : :lease
+                span= type == :sale ? l(event[:date]) : l(event[:start_date])
+                span.float-right
+                  = type == :sale ? t(".sale") : t(".lease")
+              .collapse-content.text-sm
+                p
+                  span= type == :sale ? t(".seller") : t(".leaser")
+                  span.float-right= event[:old_stable]
+                p
+                  span= type == :sale ? t(".buyer") : t(".leasee")
+                  span.float-right= event[:new_stable]
+                p
+                  span= type == :sale ? t(".price") : t(".fee")
+                  span.float-right
+                    - if event[:public] || [event[:old_stable], event[:new_stable]].include?(Current.stable.name)
+                      = fee = Game::MoneyFormatter.new(event[:price]).to_s
+                    - else
+                      em= t(".private_treaty")
+                - if type == :lease
+                  p
+                    span= t(".end_date")
+                    span.float-right= event[:end_date]
+    .hidden.mx-auto.overflow-x-auto.border.rounded-md.w-full.sm:block.sm:w-5/6
+      table.table.table-zebra
+        thead
+          tr.border-b-1.border-gray-400.dark:border-neutral-600
+            th= t(".date")
+            th= t(".type")
+            th= t(".old_stable")
+            th= t(".new_stable")
+            th= t(".price_fee")
+        tbody
+          - @dashboard.events.each do |event|
+            tr
+              td
+                - if event[:start_date]
+                  = l(event[:start_date]) + "-" + l(event[:end_date])
+                - else
+                  = l(event[:date])
+              td= event[:start_date] ? t(".lease") : t(".sale")
+              td= event[:old_stable]
+              td= event[:new_stable]
+              td
+                - if event[:public] || [event[:old_stable], event[:new_stable]].include?(Current.stable.name)
+                  = fee = Game::MoneyFormatter.new(event[:price]).to_s
+                - else
+                  em= t(".private_treaty")
+
