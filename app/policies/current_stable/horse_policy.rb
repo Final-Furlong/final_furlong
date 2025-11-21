@@ -10,15 +10,6 @@ module CurrentStable
       owner? || leaser?
     end
 
-    def rename?
-      false # TODO: implement renaming
-      # return false unless owner? || admin?
-      # return true if record.weanling?
-      # return true if record.yearling?
-
-      # record.created? && record.race_records.empty?
-    end
-
     def geld?
       false # TODO: implement gelding
       # return false unless owner? || admin?

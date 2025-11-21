@@ -7,6 +7,7 @@ resources :horses, except: %i[new create destroy] do
   member do
     get :image
     get :thumbnail
+    get :edit_name
     scope module: :horse, as: "horse" do
       resource :lease_offer, only: %i[new create destroy]
       resource :lease_offer_acceptance, only: :create
