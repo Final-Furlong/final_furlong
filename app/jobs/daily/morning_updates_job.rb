@@ -4,6 +4,7 @@ class Daily::MorningUpdatesJob < ApplicationJob
   def perform
     Horses::UpdateBoardingJob.perform_later
     Horses::UpdateLeasesJob.perform_later
+    Horses::UpdateSalesJob.perform_later
   end
 end
 
