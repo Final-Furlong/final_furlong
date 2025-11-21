@@ -2,7 +2,7 @@ version: v1.0
 name: Final Furlong CI
 agent:
   machine:
-    type: e1-standard-2
+    type: e1-standard-4
     os_image: ubuntu2004
 auto_cancel:
   running:
@@ -15,7 +15,9 @@ global_job_config:
       - checkout
       - install-package openssl
       - install-package libssl-dev
-      - sem-version ruby 3.4.5
+      - git -C ~/.rbenv/plugins/ruby-build pull
+      - rbenv install --list
+      - rbenv install $(cat .ruby-version)
   epilogue:
     always:
       commands:
@@ -41,6 +43,8 @@ blocks:
     task:
       prologue:
         commands:
+          - sudo apt-get update
+          - sudo apt-get install --no-install-recommends -y curl libjemalloc2 libvips
           - sem-service start postgres 17.6
           - sem-service start mysql 8 --username=developer --password=password --db=final_furlong_legacy_test
           - cache restore
