@@ -68,3 +68,8 @@ en:
       description_leaser: 'Lease Fee: %{horse} from %{stable} [%{start_date} to %{end_date}]'
       description_owner: Leased %{horse} to %{stable} [%{start_date} to %{end_date}]
       not_for_lease: This horse is not for lease
+    sale_creator:
+      cannot_afford_purchase: You cannot afford the purchase price
+      description_buyer: Purchased %{horse} from %{stable}
+      description_seller: Sold %{horse} to %{stable}
+      not_for_sale: This horse is not for sale

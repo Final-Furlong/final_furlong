@@ -34,7 +34,7 @@ module CurrentStable
       return false if owner?
       return false if record.blank?
       return false unless Date.current >= offer.offer_start_date
-      return true if offer.leaser && offer.leaser == stable
+      return true if offer.buyer && offer.buyer == stable
       return false if offer.new_members_only && !stable.newbie?
 
       true
@@ -43,7 +43,7 @@ module CurrentStable
     def destroy?
       return false if record.blank?
       return true if offer.owner == stable
-      return true if offer.leaser == stable
+      return true if offer.buyer == stable
 
       false
     end

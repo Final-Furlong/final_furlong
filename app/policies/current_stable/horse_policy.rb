@@ -34,16 +34,6 @@ module CurrentStable
       # owner_not_leased? || admin?
     end
 
-    def set_for_sale?
-      # TODO: implement can be sold check
-      false
-    end
-
-    def unset_for_sale?
-      # TODO: migrate horse sale records
-      false
-    end
-
     def consign_to_auction?
       # TODO: implement auction consignment
       false

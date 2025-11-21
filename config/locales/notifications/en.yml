@@ -33,6 +33,8 @@ en:
         read: read
         unread: unread
       title: Something happened
+    sale_acceptance_notification:
+      title: Horse Sold
     sale_offer_expiry_notification:
       title: Sale Offer Expired
     sale_offer_notification:
@@ -41,6 +43,8 @@ en:
       reject_sale:
         confirm: Are you sure you want to reject this offer?
       title: Horse for Sale
+    sale_rejection_notification:
+      title: Sale Declined
     shared:
       view_horse:
         link: View horse

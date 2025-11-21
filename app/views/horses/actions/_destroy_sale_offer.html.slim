@@ -1,0 +1,2 @@
+- classes = single_action ? "btn btn-outline btn-error btn-outline btn-sm" : ""
+= link_to t("horse.actions.sale_offer.reject"), horse_sale_offer_path(object) , class: classes, data: { turbo_method: :delete, turbo_confirm: t("horse.sale_offers.destroy.confirm"), turbo_frame: "modal" }
