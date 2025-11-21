@@ -13,11 +13,7 @@ global_job_config:
   prologue:
     commands:
       - checkout
-      - install-package openssl
-      - install-package libssl-dev
-      - git -C ~/.rbenv/plugins/ruby-build pull
-      - rbenv install --list
-      - rbenv install $(cat .ruby-version)
+      - sem-version ruby 3.4.7
   epilogue:
     always:
       commands:
