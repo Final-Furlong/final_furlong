@@ -10,7 +10,11 @@
             = t(".legacy_id", id: horse.legacy_id)
       tr
         th= t(".name")
-        td= horse.name || t("horse.unnamed")
+        td
+          = turbo_frame_tag :horse_name do
+            = horse.name || t("horse.unnamed")
+            - if Horses::HorsePolicy.new(Current.user, horse).edit_name?
+              = link_to t("common.actions.edit"), edit_name_horse_path(horse), class: "btn btn-sm btn-outline btn-primary ml-2"
       tr
         th= t(".date_of_birth")
         td

@@ -21,6 +21,23 @@ module Horses
     def thumbnail?
       show?
     end
+
+    def edit_name?
+      return false unless record.owner == stable
+      return false if record.deceased?
+      return true if record.age < 2
+      return false if record.age >= 2 && !record.created?
+      return false if record.age >= 2 && record.name.present?
+      return false if record.race_result_finishes.exists?
+      return false if record.foals.exists?
+      return false if record.stud_foals.exists?
+
+      true
+    end
+
+    def update?
+      edit_name?
+    end
   end
 end
 
