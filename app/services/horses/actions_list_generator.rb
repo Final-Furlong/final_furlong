@@ -28,7 +28,6 @@ module Horses
 
     def actions
       [
-        { key: :rename },
         { key: :geld },
         { key: :change_status },
         { key: :change_owner, policy: Admin::HorsePolicy },

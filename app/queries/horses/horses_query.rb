@@ -4,8 +4,8 @@ module Horses
       def name_matches(name)
         return none if name.blank?
 
-        formatted_name = name.downcase.tr(" ", "").tr(".", "").tr("-", "").tr("&", "")
-        where("LOWER(TRANSLATE(\"name\", ' .-&''', '')) = ?", formatted_name)
+        formatted_name = name.downcase.tr(" ", "").tr(".", "").tr("-", "").tr("&", "").tr("'", "")
+        where("LOWER(REGEXP_REPLACE(name, '[^a-zA-Z0-9]+','', 'g')) = ?", formatted_name)
       end
 
       def born
