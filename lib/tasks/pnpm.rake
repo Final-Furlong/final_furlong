@@ -12,5 +12,3 @@ namespace :pnpm do
   end
 end
 
-before "deploy:updated", "pnpm:install"
-
