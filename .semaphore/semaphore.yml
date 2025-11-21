@@ -41,6 +41,8 @@ blocks:
     task:
       prologue:
         commands:
+          - sudo apt-get update
+          - sudo apt-get install --no-install-recommends -y curl libjemalloc2 libvips
           - sem-service start postgres 17.6
           - sem-service start mysql 8 --username=developer --password=password --db=final_furlong_legacy_test
           - cache restore
