@@ -7,7 +7,7 @@ module CurrentStable
     end
 
     def show?
-      owner?
+      owner? || leaser?
     end
 
     def rename?
@@ -59,20 +59,36 @@ module CurrentStable
       false
     end
 
-    def view_sales?
-      false
+    def view_events?
+      return true if owner?
 
-      # logged_in?
+      view_sales?
+    end
+
+    def view_sales?
+      logged_in?
     end
 
     def view_highlights?
-      # TODO: migrate highlights
       false
     end
 
     def view_shipping?
-      # TODO: migrate shipping
-      false
+      return false unless record.manager == stable
+
+      record.racehorse?
+    end
+
+    def view_workouts?
+      return false unless record.manager == stable
+
+      record.racehorse?
+    end
+
+    def view_boarding?
+      return false unless record.manager == stable
+
+      record.racehorse?
     end
 
     def nominate_weanling?
@@ -82,8 +98,10 @@ module CurrentStable
 
     private
 
-    def owner_not_leased?
-      owner? && record.current_lease.blank?
+    def leaser?
+      return false if record.current_lease.blank?
+
+      record.current_lease.leaser == user&.stable
     end
 
     def owner?
