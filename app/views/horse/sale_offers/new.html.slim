@@ -1,0 +1,8 @@
+ruby:
+  horse = @sale_offer.horse
+  content_for :title, t(".title")
+
+.text-center
+  h1.text-xl.font-bold= t(".title")
+
+= render "form", sale_offer: @sale_offer, horse: horse
