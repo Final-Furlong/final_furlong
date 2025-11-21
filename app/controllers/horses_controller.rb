@@ -28,15 +28,22 @@ class HorsesController < ApplicationController
   def edit
   end
 
+  def edit_name
+  end
+
   def update
-    if @horse.update(horse_params)
-      @horse.reload
-      respond_to do |format|
-        format.html { redirect_to horses_path, notice: t(".success", name: @horse.name) }
-        format.turbo_stream { flash.now[:success] = t(".success", name: @horse.name) }
-      end
+    result = Horses::NameUpdater.new.change_name(horse: @horse, params: horse_params)
+    @horse.reload
+    if result.updated?
+      redirect_to horse_path(@horse), success: t(".success", name: @horse.name)
     else
-      render :edit, status: :unprocessable_entity
+      respond_to do |format|
+        format.html { render :edit_name, status: :unprocessable_entity }
+
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update("horse_name", partial: "horses/edit_name_form", locals: { horse: @horse })
+        end
+      end
     end
   end
 
@@ -82,7 +89,7 @@ class HorsesController < ApplicationController
   end
 
   def horse_params
-    params.expect(horse: [:name, :date_of_birth])
+    params.expect(horse: [:name])
   end
 
   def set_active_status

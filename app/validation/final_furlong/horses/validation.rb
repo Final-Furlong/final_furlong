@@ -19,7 +19,6 @@ module FinalFurlong
         # end
         def validates_horse_name(*attr_names)
           validates_with FinalFurlong::Horses::Validation::NameValidator, _merge_attributes(attr_names)
-          validates(*attr_names, length: { maximum: 18 })
         end
       end
     end
