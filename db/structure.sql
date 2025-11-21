@@ -4856,7 +4856,7 @@ CREATE INDEX index_sale_offers_on_buyer_id ON public.sale_offers USING btree (bu
 -- Name: index_sale_offers_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_sale_offers_on_horse_id ON public.sale_offers USING btree (horse_id);
+CREATE UNIQUE INDEX index_sale_offers_on_horse_id ON public.sale_offers USING btree (horse_id);
 
 
 --
@@ -5721,6 +5721,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251121104735'),
 ('20251120144348'),
 ('20251119150441'),
 ('20251118205558'),
