@@ -6,6 +6,8 @@ module Horses
     include FinalFurlong::Horses::Validation
     include FriendlyId
 
+    NAME_LENGTH_MAX = 18
+
     friendly_id :name_and_foal_status, use: [:slugged, :finders]
 
     belongs_to :breeder, class_name: "Account::Stable"
@@ -50,6 +52,7 @@ module Horses
 
     validates :date_of_birth, :age, :gender, :status, presence: true
     validates :date_of_death, comparison: { greater_than_or_equal_to: :date_of_birth }, if: :date_of_death
+    validates :name, length: { maximum: NAME_LENGTH_MAX }
     validate :name_required, on: :update
     validates_horse_name :name, on: :update, if: :name_changed?
 
