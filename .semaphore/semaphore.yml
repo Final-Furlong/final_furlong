@@ -46,7 +46,8 @@ blocks:
           - bundle config set path vendor/bundle
           - bundle config set --local without 'development'
           - bundle install
-          - yarn install
+          - curl -fsSL https://get.pnpm.io/install.sh | sh -
+          - pnpm install
           - cache store
           - cp config/database.yml.github_actions config/database.yml
           - bin/rails db:create:primary db:schema:load:primary
