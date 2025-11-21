@@ -51,9 +51,8 @@
     "vite": "^5.0.0",
     "vite-plugin-ruby": "^5.1.0"
   },
-  "resolutions": {
-    "sass/**/glob-parent": "^6.0.1",
-    "stylelint/**/glob-parent": "^6.0.1"
+  "scripts": {
+    "preinstall": "npx only-allow pnpm"
   },
   "version": "0.0.0"
 }
