@@ -13,7 +13,6 @@ global_job_config:
   prologue:
     commands:
       - checkout
-      - sem-version ruby 3.4.7
   epilogue:
     always:
       commands:
@@ -41,6 +40,7 @@ blocks:
         commands:
           - sudo apt-get update
           - sudo apt-get install --no-install-recommends -y curl libjemalloc2 libvips
+          - sem-version ruby 3.4.7
           - sem-service start postgres 17.6
           - sem-service start mysql 8 --username=developer --password=password --db=final_furlong_legacy_test
           - cache restore
