@@ -8,7 +8,7 @@ def update
   system! "bundle check || bundle install"
 
   log "Updating node_modules"
-  system!("yarn install")
+  system! 'bin/pnpm', 'install', '--frozen-lockfile'
 
   log "Updating the development database"
   # Note that the very first time this runs, db:reset

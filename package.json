@@ -1,6 +1,7 @@
 {
   "name": "app",
   "private": "true",
+  "packageManager": "pnpm@10.23.0",
   "dependencies": {
     "@hotwired/stimulus": "3.2.2",
     "@hotwired/turbo-rails": "8.0.20",

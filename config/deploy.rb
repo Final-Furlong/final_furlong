@@ -16,6 +16,9 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpack
   "vendor", "storage", ".bundle", "public/uploads", "public/vite"
 append :assets_manifests, "public/vite/.vite/manifest*.*"
 
+# Important: pass strict install flags to pnpm
+set :pnpm_flags, %w[--frozen-lockfile]
+
 set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:stage)}" }
 
 after "deploy", "deploy:cleanup"
@@ -30,8 +33,6 @@ set :ssh_options, {
   auth_methods: %w[publickey],
   verify_host_key: :always
 }
-
-set :yarn_flags, "--production --pure-lockfile --no-emoji --no-progress --ignore-engines"
 
 before "deploy:migrate", "maintenance:start"
 after "deploy:migrate", "maintenance:stop"
