@@ -35,7 +35,7 @@
   fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
     legend.fieldset-legend= t(".fee")
     label.input
-      i.fa-solid.fa-dollar-sign
+      i.ph.ph-currency-dollar
       = f.text_field :fee, value: (lease_offer.fee.presence || nil), class: "grow", placeholder: t(".max_amount")
     - if lease_offer.errors[:fee]
       p.text-error= lease_offer.errors.where(:fee).map(&:full_message).join(', ')
