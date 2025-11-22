@@ -11,7 +11,9 @@ global_job_config:
       - sem-version ruby 3.4.5
       - cache restore
       - bundle install --deployment --path vendor/bundle
-      - yarn install
+      - curl -fsSL https://get.pnpm.io/install.sh | sh -
+      - source /home/semaphore/.bashrc
+      - pnpm install
       - cache store
   env_vars:
     - name: MAILTRAP_API_KEY
@@ -24,7 +26,7 @@ global_job_config:
       value: 'true'
 blocks:
   - name: CI
-    dependencies: []
+    dependencies: [ ]
     task:
       jobs:
         - name: Security Checks
