@@ -21,6 +21,8 @@ module Users
     private
 
     def set_flash_success
+      return unless flash[:notice]
+
       flash[:success] = flash[:notice]
       flash[:notice] = nil
     end
