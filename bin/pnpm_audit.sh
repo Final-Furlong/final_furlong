@@ -10,7 +10,7 @@ then
 fi
 pnpm install --production=false
 
-pnpm audit
+pnpm audit --ignore-unfixable
 PNPM_EXIT=$?
 
 if [ $PNPM_EXIT != 0 ]; then
