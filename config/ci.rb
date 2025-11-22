@@ -12,14 +12,14 @@ CI.run do
   if ci_type == "style" || ci_type == "all"
     step "Style: Ruby", "bundle exec rubocop"
     step "Style: Slim", "SLIM_LINT_RUBOCOP_CONF=.rubocop_slim.yml bundle exec slim-lint"
-    step "Style: ESLint", "yarn eslint app/javascript"
-    step "Style: StyleLint", "yarn run stylelint app/assets/tailwind"
+    step "Style: JS", "pnpm biome ci app/javascript"
+    step "Style: CSS", "pnpm biome ci app/assets"
     step "Style: I18n", "bin/i18n-tasks health"
   end
 
   if ci_type == "security" || ci_type == "all"
     step "Security: Gem audit", "bin/bundler-audit"
-    step "Security: Yarn vulnerability audit", "bin/yarn_audit.sh"
+    step "Security: PNPM vulnerability audit", "pnpm audit --ignore-unfixable --prod"
     step "Security: Brakeman code analysis", "bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error"
   end
 

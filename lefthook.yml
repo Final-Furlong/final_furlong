@@ -22,10 +22,10 @@ pre-commit:
       tags: linter
       files: git diff --name-only --staged
       run: bundle exec rake active_record_doctor
-    eslint:
+    lint:
       tags: frontend style
-      glob: "*.{js,ts,jsx,tsx}"
-      run: yarn eslint --fix {staged_files} && git add {staged_files}
+      glob: "*.{js,ts,jsx,tsx,css}"
+      run: pnpm biome check --fix {staged_files} && git add {staged_files}
     fasterer:
       tags: backend style
       files: git diff --name-only --staged
@@ -51,11 +51,6 @@ pre-commit:
       files: git diff --name-only --staged
       glob: "*.slim"
       run: SLIM_LINT_RUBOCOP_CONF=.rubocop_slim.yml bundle exec slim-lint {files}
-    stylelint:
-      tags: frontend style
-      files: git diff --name-only --staged
-      glob: "*.scss"
-      run: yarn run stylelint --fix {files} && git add {staged_files}
 
 post-checkout:
   skip:
@@ -93,9 +88,9 @@ lint:
       run: bundle exec rake active_record_doctor
     annotate-controllers:
       run: bundle exec annotaterb routes
-    eslint:
-      glob: "*.{js,ts,jsx,tsx}"
-      run: yarn eslint {staged_files} --fix
+    lint:
+      glob: "*.{js,ts,jsx,tsx,css}"
+      run: pnpm biome check {staged_files} --fix
     fasterer:
       run: fasterer
     i18n-check:
@@ -104,5 +99,3 @@ lint:
       run: bundle exec rubocop --server --autocorrect
     slim-lint:
       run: SLIM_LINT_RUBOCOP_CONF=.rubocop_slim.yml bundle exec slim-lint
-    stylelint:
-      run: yarn run stylelint --fix app/assets/stylesheets
