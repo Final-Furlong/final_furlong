@@ -8,18 +8,18 @@ if command -v asdf >/dev/null 2>&1
 then
   asdf set nodejs 25.1.0
 fi
-yarn install --production=false
+pnpm install --production=false
 
-yarn audit
-YARN_EXIT=$?
+pnpm audit --ignore-unfixable
+PNPM_EXIT=$?
 
-if [ $YARN_EXIT != 0 ]; then
-  if [ -f yarn-audit-known-issues ]; then
+if [ $PNPM_EXIT != 0 ]; then
+  if [ -f pnpm-audit-known-issues ]; then
     set +e
-    output=$(yarn audit --json)
+    output=$(pnpm audit --json)
     set -e
 
-    if echo "$output" | grep auditAdvisory | diff -q yarn-audit-known-issues - > /dev/null 2>&1; then
+    if echo "$output" | grep auditAdvisory | diff -q pnpm-audit-known-issues - > /dev/null 2>&1; then
       echo
       echo Ignorning known vulnerabilities
       exit 0
@@ -35,11 +35,11 @@ if [ $YARN_EXIT != 0 ]; then
   echo
   echo "To ignore these vulnerabilities, run:"
   echo
-  echo "yarn audit --json | grep auditAdvisory > yarn-audit-known-issues"
+  echo "pnpm audit --json | grep auditAdvisory > pnpm-audit-known-issues"
   echo
-  echo "and commit the yarn-audit-known-issues file"
+  echo "and commit the pnpm-audit-known-issues file"
 fi
 
 cd "$SCRIPT_DIR"
 
-exit $YARN_EXIT
+exit $PNPM_EXIT
