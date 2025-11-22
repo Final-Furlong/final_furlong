@@ -1,6 +1,6 @@
 :root {
-  --female-horse-color: #ffcccc;
-  --male-horse-color: #ccccff;
+  --female-horse-color: #fcc;
+  --male-horse-color: #ccf;
   --gelded-horse-color: #b3ebb3;
 }
 
@@ -26,16 +26,16 @@
 td.mare,
 td.filly {
   background-color: var(--female-horse-color);
-  color: #000000;
+  color: #000;
 }
 
 td.stallion,
 td.colt {
   background-color: var(--male-horse-color);
-  color: #000000;
+  color: #000;
 }
 
 td.gelding {
   background-color: var(--gelded-horse-color);
-  color: #000000;
+  color: #000;
 }
