@@ -11,5 +11,6 @@ namespace :stable, module: "current_stable" do
   end
   resources :workouts, only: %i[create]
   resources :settings, only: %i[new]
+  resources :shipments, only: :index
 end
 

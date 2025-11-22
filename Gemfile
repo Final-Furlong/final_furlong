@@ -28,6 +28,8 @@ gem "pundit"
 
 # Operations
 gem "active_interaction"
+gem "active_job-performs"
+gem "active_record-associated_object"
 gem "dry-validation"
 gem "yaaf"
 
