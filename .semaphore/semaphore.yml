@@ -17,16 +17,16 @@ global_job_config:
   epilogue:
     always:
       commands:
-        - '[[ -f report.xml ]] && test-results publish report.xml'
+        - "[[ -f report.xml ]] && test-results publish report.xml"
   env_vars:
     - name: MAILTRAP_API_KEY
       value: foo
     - name: RAILS_ENV
       value: test
     - name: COVERAGE
-      value: 'true'
+      value: "true"
     - name: EXTERNAL_CI
-      value: 'true'
+      value: "true"
     - name: DATABASE_URL
       value: postgresql://postgres:@0.0.0.0:5432/final_furlong_test
     - name: CACHE_DATABASE_URL
@@ -35,7 +35,7 @@ global_job_config:
       value: postgresql://postgres:@0.0.0.0:5432/final_furlong_test_queue
 blocks:
   - name: CI
-    dependencies: [ ]
+    dependencies: []
     task:
       prologue:
         commands:
