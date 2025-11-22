@@ -1,0 +1,32 @@
+/# locals: (shipment:, horse:)
+= form_with model: shipment, url: horse_shipments_path(horse), id: "shipment-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".current_location")
+        p.text-lg.pt-2= horse.racing.current_location_name
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".departure_date")
+        = f.date_field :departure_date, class: 'input w-auto validator',
+                required: true, value: shipment.departure_date || Date.current, min: Date.current, max: shipment.maximum_departure_date
+        p.label= t(".departure_date_hint", count: shipment.class::MAX_DELAYED_SHIPMENT_DAYS)
+      - if shipment.errors[:departure_date]
+        p.text-error= shipment.errors.where(:departure_date).map(&:full_message).join(', ')
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".destination")
+        = f.select :ending_location, options_for_select(shipment.options_for_destination_select(horse), shipment.ending_location), {}, { class: 'select' }
+      - if shipment.errors[:destination]
+        p.text-error= shipment.errors.where(:destination).map(&:full_message).join(', ')
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".mode")
+        = f.select :mode, options_for_select(shipment .options_for_mode_select, shipment.mode), {  }, { class: "select w-full" }
+        - if shipment.errors[:mode]
+          p.text-error= shipment.errors.where(:mode).map(&:full_message).join(', ')
+  .float-right
+    a.btn.btn-outline.mr-2.sm:hidden onclick="dialog.close();"
+      = t("common.actions.cancel")
+    = f.submit t("common.actions.save"), class: "btn btn-primary"

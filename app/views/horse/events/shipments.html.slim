@@ -1,0 +1,46 @@
+= turbo_frame_tag "#{@dashboard.horse.slug}-shipments-history" do
+  - horse = @dashboard.horse
+  - if @dashboard.shipments.empty?
+    p= t(".no_shipments")
+  - else
+    - if @dashboard.current_shipment
+      .text-center.border-neutral.p-2
+        span
+          i.ph.ph-info.text-info.mr-2
+          = t(".in_transit", arrival: l(@dashboard.current_shipment[:end_date]))
+    .mx-auto.overflow-x-auto.w-full.sm:hidden
+      - @dashboard.shipments.each do |shipment|
+        .card.bg-base-100.w-full.px-2.rounded-none
+          .card-body.p-0.rounded-none
+            .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+              input type="checkbox"
+              .collapse-title.font-semibold.font-medium
+                span= l(shipment[:start_date])
+                span.float-right= l(shipment[:end_date])
+              .collapse-content.text-sm
+                p
+                  span= t(".starting_location")
+                  span.float-right= shipment[:start_location]
+                p
+                  span= t(".ending_location")
+                  span.float-right= shipment[:end_location]
+                p
+                  span= t(".mode")
+                  span.float-right= t(".mode_#{shipment[:mode]}")
+    .hidden.mx-auto.overflow-x-auto.border.rounded-md.w-full.sm:block.sm:w-5/6
+      table.table.table-zebra.sortable
+        thead
+          tr.border-b-1.border-gray-400.dark:border-neutral-600
+            th= t(".departure_date")
+            th= t(".arrival_date")
+            th= t(".starting_location")
+            th= t(".ending_location")
+            th= t(".mode")
+        tbody
+          - @dashboard.shipments.each do |shipment|
+            tr
+              td data-sort=shipment[:start_date] = l(shipment[:start_date])
+              td data-sort=shipment[:end_date] = l(shipment[:end_date])
+              td= shipment[:start_location]
+              td= shipment[:end_location]
+              td= t(".mode_#{shipment[:mode]}")

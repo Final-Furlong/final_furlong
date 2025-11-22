@@ -797,9 +797,8 @@ CREATE TABLE public.broodmare_shipments (
     departure_date date NOT NULL,
     arrival_date date NOT NULL,
     mode public.shipping_mode,
-    starting_location_id bigint NOT NULL,
-    ending_location_id bigint NOT NULL,
-    current_farm_id bigint NOT NULL,
+    starting_farm_id bigint NOT NULL,
+    ending_farm_id bigint NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -4029,17 +4028,10 @@ CREATE INDEX index_broodmare_shipments_on_arrival_date ON public.broodmare_shipm
 
 
 --
--- Name: index_broodmare_shipments_on_current_farm_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_broodmare_shipments_on_ending_farm_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_broodmare_shipments_on_current_farm_id ON public.broodmare_shipments USING btree (current_farm_id);
-
-
---
--- Name: index_broodmare_shipments_on_ending_location_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_broodmare_shipments_on_ending_location_id ON public.broodmare_shipments USING btree (ending_location_id);
+CREATE INDEX index_broodmare_shipments_on_ending_farm_id ON public.broodmare_shipments USING btree (ending_farm_id);
 
 
 --
@@ -4057,10 +4049,10 @@ CREATE INDEX index_broodmare_shipments_on_mode ON public.broodmare_shipments USI
 
 
 --
--- Name: index_broodmare_shipments_on_starting_location_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_broodmare_shipments_on_starting_farm_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_broodmare_shipments_on_starting_location_id ON public.broodmare_shipments USING btree (starting_location_id);
+CREATE INDEX index_broodmare_shipments_on_starting_farm_id ON public.broodmare_shipments USING btree (starting_farm_id);
 
 
 --
@@ -5761,6 +5753,14 @@ ALTER TABLE ONLY public.sale_offers
 
 
 --
+-- Name: broodmare_shipments fk_rails_7e5650d355; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.broodmare_shipments
+    ADD CONSTRAINT fk_rails_7e5650d355 FOREIGN KEY (starting_farm_id) REFERENCES public.stables(id);
+
+
+--
 -- Name: motor_alerts fk_rails_8828951644; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5782,14 +5782,6 @@ ALTER TABLE ONLY public.track_surfaces
 
 ALTER TABLE ONLY public.boardings
     ADD CONSTRAINT fk_rails_91c5c287e6 FOREIGN KEY (location_id) REFERENCES public.locations(id);
-
-
---
--- Name: broodmare_shipments fk_rails_95caf72dd8; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.broodmare_shipments
-    ADD CONSTRAINT fk_rails_95caf72dd8 FOREIGN KEY (ending_location_id) REFERENCES public.locations(id);
 
 
 --
@@ -5873,11 +5865,11 @@ ALTER TABLE ONLY public.race_options
 
 
 --
--- Name: broodmare_shipments fk_rails_ac6265e31a; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: broodmare_shipments fk_rails_a92440001b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.broodmare_shipments
-    ADD CONSTRAINT fk_rails_ac6265e31a FOREIGN KEY (starting_location_id) REFERENCES public.locations(id);
+    ADD CONSTRAINT fk_rails_a92440001b FOREIGN KEY (ending_farm_id) REFERENCES public.stables(id);
 
 
 --
@@ -5934,14 +5926,6 @@ ALTER TABLE ONLY public.horse_sales
 
 ALTER TABLE ONLY public.boardings
     ADD CONSTRAINT fk_rails_b7a9ec2495 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
-
-
---
--- Name: broodmare_shipments fk_rails_ba47265e36; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.broodmare_shipments
-    ADD CONSTRAINT fk_rails_ba47265e36 FOREIGN KEY (current_farm_id) REFERENCES public.stables(id);
 
 
 --

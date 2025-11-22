@@ -16,10 +16,16 @@
         p= "boarding history here"
 
     - if policy.view_shipping?
-      / TODO: check if shipping exist
-      input.tab type="radio" name="horse-event" aria-label=t(".shipping")
-      .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
-        p= "shipping history here"
+      - shipments_count = horse.racehorse? ? horse.racing_shipments.count : horse.broodmare_shipments.count
+      - if shipments_count.zero?
+        input.tab type="radio" name="horse-event" aria-label=t(".no_shipping") disabled=true
+      - else
+        input.tab type="radio" name="horse-event" aria-label=t(".shipping", count: shipments_count)
+        .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+          = turbo_frame_tag "#{horse.slug}-shipments-history", src: horse_shipments_path(horse), loading: "lazy" do
+            .w-full.text-center
+              p.mx-auto= t(".loading_shipping")
+              .mt-2.mx-auto.skeleton.w-full
 
     - if policy.view_highlights?
       input.tab type="radio" name="horse-event" aria-label=t(".highlights")

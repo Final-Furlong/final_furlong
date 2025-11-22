@@ -93,9 +93,14 @@
         tr
           th= t(".scheduled_race")
           td Not Yet Added
-      tr
-        th= t(".breeding_record")
-        td= horse.breed_ranking_string
+      - if Horses::Status::BREEDING_STATUSES.include?(horse.status)
+        tr
+          th= t(".breeding_record")
+          td
+            - if horse.female?
+              = horse.broodmare.breed_ranking_string
+            - else
+              = horse.stud.breed_ranking_string
       - if Horses::Status::FEMALE_BREEDING_STATUSES.include?(horse.status)
         tr
           th= t(".last_foal")
