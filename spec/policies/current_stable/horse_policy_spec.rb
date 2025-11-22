@@ -14,15 +14,25 @@ RSpec.describe CurrentStable::HorsePolicy do
       horse.owner = user.stable
       expect(policy).to permit_actions(:show, :view_events, :view_sales,
         :view_shipping, :view_workouts, :view_boarding)
+      expect(policy).not_to permit_actions(:ship)
     end
 
-    context "when the horse is not a racehorse" do
+    context "when the horse is a broodmare" do
       before { horse.status = "broodmare" }
 
       it "denies correct actions" do
         horse.owner = user.stable
+        expect(policy).not_to permit_actions(:view_workouts, :view_boarding)
+      end
+    end
+
+    context "when the horse is a stud" do
+      before { horse.status = "stud" }
+
+      it "denies correct actions" do
+        horse.owner = user.stable
         expect(policy).not_to permit_actions(:view_shipping, :view_workouts,
-          :view_boarding)
+          :view_boarding, :ship)
       end
     end
   end
@@ -34,8 +44,17 @@ RSpec.describe CurrentStable::HorsePolicy do
         :view_shipping, :view_workouts, :view_boarding)
     end
 
-    context "when the horse is not a racehorse" do
+    context "when the horse is a broodmare" do
       before { horse.status = "broodmare" }
+
+      it "denies correct actions" do
+        create(:lease, horse:, leaser: user.stable)
+        expect(policy).not_to permit_actions(:view_workouts, :view_boarding)
+      end
+    end
+
+    context "when the horse is a stud" do
+      before { horse.status = "stud" }
 
       it "denies correct actions" do
         create(:lease, horse:, leaser: user.stable)
