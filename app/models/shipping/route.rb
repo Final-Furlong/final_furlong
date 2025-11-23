@@ -7,7 +7,10 @@ module Shipping
     belongs_to :starting_location, class_name: "Location"
     belongs_to :ending_location, class_name: "Location"
 
+    validates :miles, presence: true
     validates :ending_location, comparison: { other_than: :starting_location }, if: :starting_location
+    validates :air_cost, presence: true, if: :air_days
+    validates :road_cost, presence: true, if: :road_days
   end
 end
 

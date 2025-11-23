@@ -15,7 +15,7 @@ module Shipping
     validates :mode, inclusion: { in: Route::MODES }, if: :mode
     validates :shipping_type, inclusion: { in: SHIPPING_TYPES }
 
-    scope :current, -> { where("departure_date <= ?", Date.current) }
+    scope :current, -> { where(departure_date: ..Date.current) }
     scope :future, -> { where("departure_date > ?", Date.current) }
 
     def future?
@@ -54,8 +54,8 @@ end
 #  id                                                          :bigint           not null, primary key
 #  arrival_date                                                :date             not null, indexed
 #  departure_date                                              :date             not null, uniquely indexed => [horse_id]
-#  mode(road, air)                                             :enum             indexed
-#  shipping_type(track_to_track, farm_to_track, track_to_farm) :enum             indexed
+#  mode(road, air)                                             :enum             not null, indexed
+#  shipping_type(track_to_track, farm_to_track, track_to_farm) :enum             not null, indexed
 #  created_at                                                  :datetime         not null
 #  updated_at                                                  :datetime         not null
 #  ending_location_id                                          :bigint           not null, indexed

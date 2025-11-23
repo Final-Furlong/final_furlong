@@ -1,6 +1,6 @@
 module Horses
   module Broodmare
-    class FutureShipmentCreator
+    class FutureShipmentProcessor
       attr_reader :shipment, :horse
 
       def ship_horse(shipment:)

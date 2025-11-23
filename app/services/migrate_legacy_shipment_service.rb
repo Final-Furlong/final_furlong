@@ -3,7 +3,7 @@ class MigrateLegacyShipmentService
     shipments = if info[:status] == "racehorse"
       Legacy::HorseShipping.where(Horse: info.legacy_id)
     else
-      Legacy::HorseShipping.where(Horse: info.legacy_id).where.not(FromFarm: nil, ToFarm: nil)
+      Legacy::HorseShipping.where(Horse: info.legacy_id).where("FromFarm IS NOT NULL AND ToFarm IS NOT NULL")
     end
     shipments.find_each do |legacy_shipment|
       migrate_shipment(legacy_shipment:)
@@ -69,8 +69,6 @@ class MigrateLegacyShipmentService
       end
     end
     shipment.save!
-  rescue ActiveRecord::RecordInvalid => e
-    raise e
   end
 end
 

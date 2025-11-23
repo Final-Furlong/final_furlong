@@ -146,7 +146,6 @@ en:
         title: End Lease
     leased_html: Leased to %{stable} until %{date}
     location:
-      at_farm: "%{name}"
       at_racetrack: "%{name} Racetrack"
     markings:
       bald_face: bald face

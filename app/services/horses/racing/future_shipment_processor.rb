@@ -1,6 +1,6 @@
 module Horses
   module Racing
-    class FutureShipmentCreator
+    class FutureShipmentProcessor
       attr_reader :shipment, :horse
 
       def ship_horse(shipment:)

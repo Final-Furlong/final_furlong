@@ -9,7 +9,7 @@ class MigrateLegacyShipmentsService
         else
           Shipping::RacehorseShipment.where(horse_id: info.id).delete_all
           shipment_count = Shipping::BroodmareShipment.where(horse_id: info.id).count
-          legacy_count = Legacy::HorseShipping.where(Horse: info.legacy_id).where.not(FromFarm: nil, ToFarm: nil).count
+          legacy_count = Legacy::HorseShipping.where(Horse: info.legacy_id).where("FromFarm IS NOT NULL AND ToFarm IS NOT NULL").count
         end
 
         if legacy_count > shipment_count

@@ -8,14 +8,13 @@ module Shipping
     belongs_to :starting_farm, class_name: "Account::Stable"
     belongs_to :ending_farm, class_name: "Account::Stable"
 
-    validates :departure_date, :arrival_date, :mode, :starting_farm,
-      :ending_farm, presence: true
+    validates :departure_date, :arrival_date, :mode, presence: true
     validates :departure_date, comparison: { greater_than_or_equal_to: -> { Date.current }, less_than_or_equal_to: :maximum_departure_date }, if: :departure_date
     validates :arrival_date, comparison: { greater_than: :departure_date }, if: :departure_date
     validates :ending_farm, comparison: { other_than: :starting_farm }, if: :starting_farm
     validates :mode, inclusion: { in: Route::MODES }
 
-    scope :current, -> { where("departure_date <= ?", Date.current) }
+    scope :current, -> { where(departure_date: ..Date.current) }
     scope :future, -> { where("departure_date > ?", Date.current) }
 
     def future?
@@ -39,12 +38,11 @@ module Shipping
           stables << [Account::Stable.where(id: stable_id).pick(:name), stable_id]
         end
       end
-      stables.sort_by! { |stable| stable.first }
       Horses::Horse.where(owner: stable_ids).stud.where.associated(:current_lease).find_each do |stud|
         manager = stud.manager
         stables << [manager.name, manager.id]
       end
-      stables.sort_by { |stable| stable.first }
+      stables.sort_by(&:first)
     end
 
     def options_for_mode_select
@@ -61,7 +59,7 @@ end
 #  id                 :bigint           not null, primary key
 #  arrival_date       :date             not null, indexed
 #  departure_date     :date             not null, uniquely indexed => [horse_id]
-#  mode(road, air)    :enum             indexed
+#  mode(road, air)    :enum             not null, indexed
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  ending_farm_id     :bigint           not null, indexed

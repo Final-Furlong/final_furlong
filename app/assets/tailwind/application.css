@@ -5,7 +5,10 @@
 
 /* stylelint-disable scss/at-rule-no-unknown, property-no-unknown */
 @plugin "daisyui" {
-  themes: nord --default, night --prefersdark, all;
+  themes:
+    nord --default,
+    night --prefersdark,
+    all;
 }
 /* stylelint-enable scss/at-rule-no-unknown, property-no-unknown */
 

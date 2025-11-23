@@ -796,7 +796,7 @@ CREATE TABLE public.broodmare_shipments (
     horse_id bigint NOT NULL,
     departure_date date NOT NULL,
     arrival_date date NOT NULL,
-    mode public.shipping_mode,
+    mode public.shipping_mode NOT NULL,
     starting_farm_id bigint NOT NULL,
     ending_farm_id bigint NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
@@ -2280,10 +2280,10 @@ CREATE TABLE public.racehorse_shipments (
     horse_id bigint NOT NULL,
     departure_date date NOT NULL,
     arrival_date date NOT NULL,
-    mode public.shipping_mode,
+    mode public.shipping_mode NOT NULL,
     starting_location_id bigint NOT NULL,
     ending_location_id bigint NOT NULL,
-    shipping_type public.shipping_type,
+    shipping_type public.shipping_type NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );

@@ -9,8 +9,6 @@ RSpec.describe Shipping::BroodmareShipment do
     it { is_expected.to validate_presence_of(:departure_date) }
     it { is_expected.to validate_presence_of(:arrival_date) }
     it { is_expected.to validate_presence_of(:mode) }
-    it { is_expected.to validate_presence_of(:starting_farm) }
-    it { is_expected.to validate_presence_of(:ending_farm) }
     it { is_expected.to validate_inclusion_of(:mode).in_array(Shipping::Route::MODES) }
 
     describe "departure date" do
@@ -129,7 +127,7 @@ RSpec.describe Shipping::BroodmareShipment do
   end
 
   describe "#options_for_destination_select" do
-    it "returns correct array" do
+    it "returns correct array" do # rubocop:disable RSpec/ExampleLength
       stable_with_1_stud = create(:stable, name: "C Stable")
       create(:horse, :stallion, owner: stable_with_1_stud)
 
