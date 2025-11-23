@@ -20,7 +20,9 @@ resources :horses, except: %i[new create destroy] do
       resources :sales, only: :index
       resource :sale_offer, only: %i[new create destroy]
       resource :sale_offer_acceptance, only: :create
+      resources :shipments, only: %i[index new create]
     end
+    delete "shipments/:shipment_id", to: "horse/shipments#destroy", as: :shipment
   end
 end
 

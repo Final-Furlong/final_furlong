@@ -22,7 +22,7 @@ i {
 
 @layer components {
   .turbo-progress-bar {
-    @apply bg-gradient-to-r from-indigo-500 via-purple-400 to-pink-500;
+    @apply bg-linear-to-r from-indigo-500 via-purple-400 to-pink-500;
   }
 }
 

@@ -105,3 +105,12 @@ en:
               invalid_gallop: must be between 1/2 mile and 3 miles
               invalid_jog: must be between 1/2 mile and 5 miles
               invalid_walk: must be between 1/2 mile and 2 miles
+        shipping/broodmare_shipment:
+          attributes:
+            ending_farm:
+              other_than: cannot be the same as the starting farm
+        shipping/racehorse_shipment:
+          attributes:
+            mode:
+              cannot_afford: costs more than you can afford
+              invalid: is invalid for this route

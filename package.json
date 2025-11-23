@@ -24,6 +24,7 @@
     "stimulus-use": "^0.52.3",
     "stimulus-vite-helpers": "^3.1.0",
     "tailwindcss": "^4.1.17",
+    "tom-select": "^2.4.3",
     "vite-plugin-radar": "^0.10.1",
     "vite-plugin-rails": "^0.5.0"
   },
