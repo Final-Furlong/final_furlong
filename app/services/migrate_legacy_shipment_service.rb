@@ -70,9 +70,6 @@ class MigrateLegacyShipmentService
     end
     shipment.save!
   rescue ActiveRecord::RecordInvalid => e
-    pd e
-    pd legacy_shipment
-    pd shipment
     raise e
   end
 end

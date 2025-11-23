@@ -46,11 +46,14 @@ en:
         type: Type
       shipments:
         arrival_date: Arrival
+        confirm_delete: Are you sure you want to delete this scheduled shipment?
         departure_date: Departure
+        in_transit: This horse is in transit and will arrive on %{arrival}
         no_shipments: No shipments found.
         mode: Mode
         mode_air: Air
         mode_road: Road
+        scheduled: Scheduled
         starting_location: From
         ending_location: To
     foal_due: Foal Due
@@ -201,6 +204,11 @@ en:
       new:
         title: Offer for Sale
     shipments:
+      create:
+        success: Horse was successfully shipped
+        success_scheduled: Shipment was successfully scheduled
+      destroy:
+        success: Future shipment was successfully canceled
       form:
         current_location: Current Location
         departure_date: Departure Date

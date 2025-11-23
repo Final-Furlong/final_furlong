@@ -26,10 +26,14 @@ module CurrentStable
     end
 
     def ship?
-      return false unless manager?
-      return false unless view_shipping?
-
-      record.racehorse?
+      shipment = if record.racehorse?
+        Shipping::RacehorseShipment.new(horse: record)
+      elsif record.broodmare?
+        Shipping::BroodmareShipment.new(horse: record)
+      else
+        return false
+      end
+      HorseShipmentPolicy.new(user, shipment).create?
     end
 
     def consign_to_auction?

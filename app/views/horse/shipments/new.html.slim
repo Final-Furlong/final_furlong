@@ -5,4 +5,7 @@ ruby:
 .text-center
   h1.text-xl.font-bold= t(".title")
 
-= render "form", shipment: @shipment, horse: horse
+- if horse.racehorse?
+  = render "racing_form", shipment: @shipment, horse: horse
+- else
+  = render "broodmare_form", shipment: @shipment, horse: horse

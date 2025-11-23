@@ -16,7 +16,11 @@
               input type="checkbox"
               .collapse-title.font-semibold.font-medium
                 span= l(shipment[:start_date])
-                span.float-right= l(shipment[:end_date])
+                span.float-right
+                  - if shipment[:start_date] <= Date.current
+                    = l(shipment[:end_date])
+                  - else
+                    span.badge.badge-warning= t(".scheduled")
               .collapse-content.text-sm
                 p
                   span= t(".starting_location")
@@ -27,6 +31,9 @@
                 p
                   span= t(".mode")
                   span.float-right= t(".mode_#{shipment[:mode]}")
+                - if shipment[:start_date] > Date.current
+                  p.text-center
+                    = link_to t("common.actions.delete"), shipment_horse_path(horse, shipment[:id]), class: "btn btn-outline btn-error", data: { turbo_method: :delete, turbo_confirm: t(".confirm_delete"), turbo_frame: "_top" }
     .hidden.mx-auto.overflow-x-auto.border.rounded-md.w-full.sm:block.sm:w-5/6
       table.table.table-zebra.sortable
         thead
@@ -40,7 +47,13 @@
           - @dashboard.shipments.each do |shipment|
             tr
               td data-sort=shipment[:start_date] = l(shipment[:start_date])
-              td data-sort=shipment[:end_date] = l(shipment[:end_date])
+              td data-sort=shipment[:end_date]
+                - if shipment[:start_date] <= Date.current
+                  = l(shipment[:end_date])
+                - else
+                  span.badge.badge-warning= t(".scheduled")
+                  = link_to shipment_horse_path(horse, shipment[:id]), data: { turbo_method: :delete, turbo_confirm: t(".confirm_delete"), turbo_frame: "_top" } do
+                    i.ml-1.ph-fill.ph-trash.text-error.text-xl
               td= shipment[:start_location]
               td= shipment[:end_location]
               td= t(".mode_#{shipment[:mode]}")

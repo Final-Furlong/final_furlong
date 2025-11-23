@@ -50,6 +50,8 @@ module Horses
     has_many :foals, class_name: "Horses::Horse", inverse_of: :dam, dependent: :nullify
     has_many :broodmare_shipments, class_name: "Shipping::BroodmareShipment", dependent: :delete_all
 
+    has_many :stud_foals, class_name: "Horses::Horse", inverse_of: :sire, dependent: :nullify
+
     enum :status, Status::STATUSES
     enum :gender, Gender::VALUES
 
@@ -105,7 +107,7 @@ module Horses
     end
 
     def manager
-      current_lease ? current_lease.leaser : owner
+      current_lease&.persisted? ? current_lease.leaser : owner
     end
 
     def location_bred_name

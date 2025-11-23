@@ -12,18 +12,32 @@ module Shipping
     validates :departure_date, :arrival_date, :mode, :shipping_type, presence: true
     validates :departure_date, comparison: { greater_than_or_equal_to: -> { Date.current }, less_than_or_equal_to: :maximum_departure_date }, if: :departure_date
     validates :arrival_date, comparison: { greater_than: :departure_date }, if: :departure_date
-    validates :mode, inclusion: { in: Route::MODES }
+    validates :mode, inclusion: { in: Route::MODES }, if: :mode
     validates :shipping_type, inclusion: { in: SHIPPING_TYPES }
+
+    scope :current, -> { where("departure_date <= ?", Date.current) }
+    scope :future, -> { where("departure_date > ?", Date.current) }
+
+    def future?
+      departure_date > Date.current
+    end
 
     def maximum_departure_date
       Date.current + MAX_DELAYED_SHIPMENT_DAYS.days
     end
 
     def options_for_destination_select(horse)
-      pd horse.racing.at_farm?
-      Location.select(:name, :id).map do |location|
+      location_query = Location
+      list = []
+      unless horse.racing.at_farm?
+        list << [horse.manager.name, "Farm"]
+        location_query = location_query.where.not(id: horse.racing.current_location.id)
+      end
+      list += location_query.select(:id).map do |location|
         [Racing::Racetrack.where(location_id: location.id).pick(:name), location.id]
-      end.sort
+      end
+      list.delete_if { |location| location.first.blank? }
+      list.sort
     end
 
     def options_for_mode_select

@@ -54,9 +54,18 @@
         th= t(".owner")
         td= link_to horse.owner.name, stable_path(horse.owner), target: "_top"
       - unless horse.dead?
-        tr
-          th= t(".location")
-          td Not Yet Added
+        - if horse.racehorse? || horse.broodmare?
+          tr
+            th= t(".location")
+            td
+              - if horse.racehorse?
+                = horse.racing.current_location_name
+                - if horse.racing.in_transit?
+                  em.ml-2= t(".in_transit", date: l(horse.racing.last_shipment.arrival_date))
+              - else
+                = horse.broodmare.current_location_name
+                - if horse.broodmare.in_transit?
+                  em.ml-2= t(".in_transit", date: l(horse.broodmare.last_shipment.arrival_date))
         - if horse.current_lease&.persisted?
           = turbo_frame_tag dom_id(horse) do
             tr

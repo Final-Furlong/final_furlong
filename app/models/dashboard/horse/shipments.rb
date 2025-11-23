@@ -7,7 +7,7 @@ module Dashboard
         @horse = horse
         @shipments = []
         @shipments = load_shipments(horse.status)
-        @current_shipment = @shipments.first if @shipments.present? && @shipments.first[:end_date].future?
+        @current_shipment = @shipments.first if @shipments.present? && !@shipments.first[:start_date].future? && @shipments.first[:end_date].future?
       end
 
       private
@@ -26,6 +26,7 @@ module Dashboard
                        Shipping::BroodmareShipment.includes(:starting_farm, :ending_farm)
         class_name.where(horse:).order(departure_date: :desc).map do |shipment|
           hash = {
+            id: shipment.id,
             start_date: shipment.departure_date,
             end_date: shipment.arrival_date,
             mode: shipment.mode
