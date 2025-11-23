@@ -1,6 +1,1 @@
----
-en:
-  horse:
-    shipments:
-      destroy:
-        success: Future shipment was successfully cancelled
+--- {}

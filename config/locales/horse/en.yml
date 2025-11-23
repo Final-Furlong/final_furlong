@@ -48,14 +48,14 @@ en:
         arrival_date: Arrival
         confirm_delete: Are you sure you want to delete this scheduled shipment?
         departure_date: Departure
+        ending_location: To
         in_transit: This horse is in transit and will arrive on %{arrival}
-        no_shipments: No shipments found.
         mode: Mode
         mode_air: Air
         mode_road: Road
+        no_shipments: No shipments found.
         scheduled: Scheduled
         starting_location: From
-        ending_location: To
     foal_due: Foal Due
     foals:
       dam_foal_list:
