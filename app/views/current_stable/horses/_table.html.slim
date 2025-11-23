@@ -41,12 +41,12 @@
                         = horse.track_record
                     - if @active_status.to_s == 'broodmare'
                       td
-                        = horse.breed_ranking_string
+                        = horse.broodmare.breed_ranking_string
                       td
                         = "next foal info"
                     - if @active_status.to_s == 'stud'
                       td
-                        = "breed ranking"
+                        = horse.stud.breed_ranking_string
                       td
                         = "foal crop info"
                   td.actions-column.nav-item.dropdown

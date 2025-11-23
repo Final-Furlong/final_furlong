@@ -320,6 +320,27 @@ CREATE TYPE public.racing_style AS ENUM (
 
 
 --
+-- Name: shipping_mode; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.shipping_mode AS ENUM (
+    'road',
+    'air'
+);
+
+
+--
+-- Name: shipping_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.shipping_type AS ENUM (
+    'track_to_track',
+    'farm_to_track',
+    'track_to_farm'
+);
+
+
+--
 -- Name: track_condition; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -764,6 +785,49 @@ CREATE SEQUENCE public.broodmare_foal_records_id_seq
 --
 
 ALTER SEQUENCE public.broodmare_foal_records_id_seq OWNED BY public.broodmare_foal_records.id;
+
+
+--
+-- Name: broodmare_shipments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.broodmare_shipments (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    departure_date date NOT NULL,
+    arrival_date date NOT NULL,
+    mode public.shipping_mode NOT NULL,
+    starting_farm_id bigint NOT NULL,
+    ending_farm_id bigint NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN broodmare_shipments.mode; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.broodmare_shipments.mode IS 'road, air';
+
+
+--
+-- Name: broodmare_shipments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.broodmare_shipments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: broodmare_shipments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.broodmare_shipments_id_seq OWNED BY public.broodmare_shipments.id;
 
 
 --
@@ -2208,6 +2272,57 @@ ALTER SEQUENCE public.race_schedules_id_seq OWNED BY public.race_schedules.id;
 
 
 --
+-- Name: racehorse_shipments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.racehorse_shipments (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    departure_date date NOT NULL,
+    arrival_date date NOT NULL,
+    mode public.shipping_mode NOT NULL,
+    starting_location_id bigint NOT NULL,
+    ending_location_id bigint NOT NULL,
+    shipping_type public.shipping_type NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN racehorse_shipments.mode; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.racehorse_shipments.mode IS 'road, air';
+
+
+--
+-- Name: COLUMN racehorse_shipments.shipping_type; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.racehorse_shipments.shipping_type IS 'track_to_track, farm_to_track, track_to_farm';
+
+
+--
+-- Name: racehorse_shipments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.racehorse_shipments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: racehorse_shipments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.racehorse_shipments_id_seq OWNED BY public.racehorse_shipments.id;
+
+
+--
 -- Name: racehorse_stats; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2404,6 +2519,43 @@ CREATE SEQUENCE public.settings_id_seq
 --
 
 ALTER SEQUENCE public.settings_id_seq OWNED BY public.settings.id;
+
+
+--
+-- Name: shipment_routes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.shipment_routes (
+    id bigint NOT NULL,
+    starting_location_id bigint NOT NULL,
+    ending_location_id bigint NOT NULL,
+    miles integer DEFAULT 0 NOT NULL,
+    road_days integer,
+    road_cost integer,
+    air_days integer,
+    air_cost integer,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: shipment_routes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.shipment_routes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: shipment_routes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.shipment_routes_id_seq OWNED BY public.shipment_routes.id;
 
 
 --
@@ -2766,6 +2918,13 @@ ALTER TABLE ONLY public.broodmare_foal_records ALTER COLUMN id SET DEFAULT nextv
 
 
 --
+-- Name: broodmare_shipments id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.broodmare_shipments ALTER COLUMN id SET DEFAULT nextval('public.broodmare_shipments_id_seq'::regclass);
+
+
+--
 -- Name: budget_transactions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2983,6 +3142,13 @@ ALTER TABLE ONLY public.race_schedules ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
+-- Name: racehorse_shipments id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.racehorse_shipments ALTER COLUMN id SET DEFAULT nextval('public.racehorse_shipments_id_seq'::regclass);
+
+
+--
 -- Name: racehorse_stats id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3015,6 +3181,13 @@ ALTER TABLE ONLY public.sessions ALTER COLUMN id SET DEFAULT nextval('public.ses
 --
 
 ALTER TABLE ONLY public.settings ALTER COLUMN id SET DEFAULT nextval('public.settings_id_seq'::regclass);
+
+
+--
+-- Name: shipment_routes id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.shipment_routes ALTER COLUMN id SET DEFAULT nextval('public.shipment_routes_id_seq'::regclass);
 
 
 --
@@ -3160,6 +3333,14 @@ ALTER TABLE ONLY public.boardings
 
 ALTER TABLE ONLY public.broodmare_foal_records
     ADD CONSTRAINT broodmare_foal_records_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: broodmare_shipments broodmare_shipments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.broodmare_shipments
+    ADD CONSTRAINT broodmare_shipments_pkey PRIMARY KEY (id);
 
 
 --
@@ -3419,6 +3600,14 @@ ALTER TABLE ONLY public.race_schedules
 
 
 --
+-- Name: racehorse_shipments racehorse_shipments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.racehorse_shipments
+    ADD CONSTRAINT racehorse_shipments_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: racehorse_stats racehorse_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3464,6 +3653,14 @@ ALTER TABLE ONLY public.sessions
 
 ALTER TABLE ONLY public.settings
     ADD CONSTRAINT settings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: shipment_routes shipment_routes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.shipment_routes
+    ADD CONSTRAINT shipment_routes_pkey PRIMARY KEY (id);
 
 
 --
@@ -3527,6 +3724,13 @@ ALTER TABLE ONLY public.users
 --
 
 CREATE INDEX idx_on_multi_stakes_winning_foals_count_d86a3500a8 ON public.broodmare_foal_records USING btree (multi_stakes_winning_foals_count);
+
+
+--
+-- Name: idx_on_starting_location_id_ending_location_id_4088f67c10; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_starting_location_id_ending_location_id_4088f67c10 ON public.shipment_routes USING btree (starting_location_id, ending_location_id);
 
 
 --
@@ -3814,6 +4018,41 @@ CREATE INDEX index_broodmare_foal_records_on_unborn_foals_count ON public.broodm
 --
 
 CREATE INDEX index_broodmare_foal_records_on_winning_foals_count ON public.broodmare_foal_records USING btree (winning_foals_count);
+
+
+--
+-- Name: index_broodmare_shipments_on_arrival_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_broodmare_shipments_on_arrival_date ON public.broodmare_shipments USING btree (arrival_date);
+
+
+--
+-- Name: index_broodmare_shipments_on_ending_farm_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_broodmare_shipments_on_ending_farm_id ON public.broodmare_shipments USING btree (ending_farm_id);
+
+
+--
+-- Name: index_broodmare_shipments_on_horse_id_and_departure_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_broodmare_shipments_on_horse_id_and_departure_date ON public.broodmare_shipments USING btree (horse_id, departure_date);
+
+
+--
+-- Name: index_broodmare_shipments_on_mode; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_broodmare_shipments_on_mode ON public.broodmare_shipments USING btree (mode);
+
+
+--
+-- Name: index_broodmare_shipments_on_starting_farm_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_broodmare_shipments_on_starting_farm_id ON public.broodmare_shipments USING btree (starting_farm_id);
 
 
 --
@@ -4706,6 +4945,48 @@ CREATE INDEX index_race_schedules_on_surface_id ON public.race_schedules USING b
 
 
 --
+-- Name: index_racehorse_shipments_on_arrival_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_shipments_on_arrival_date ON public.racehorse_shipments USING btree (arrival_date);
+
+
+--
+-- Name: index_racehorse_shipments_on_ending_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_shipments_on_ending_location_id ON public.racehorse_shipments USING btree (ending_location_id);
+
+
+--
+-- Name: index_racehorse_shipments_on_horse_id_and_departure_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_racehorse_shipments_on_horse_id_and_departure_date ON public.racehorse_shipments USING btree (horse_id, departure_date);
+
+
+--
+-- Name: index_racehorse_shipments_on_mode; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_shipments_on_mode ON public.racehorse_shipments USING btree (mode);
+
+
+--
+-- Name: index_racehorse_shipments_on_shipping_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_shipments_on_shipping_type ON public.racehorse_shipments USING btree (shipping_type);
+
+
+--
+-- Name: index_racehorse_shipments_on_starting_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_shipments_on_starting_location_id ON public.racehorse_shipments USING btree (starting_location_id);
+
+
+--
 -- Name: index_racehorse_stats_on_at_home; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4906,6 +5187,27 @@ CREATE INDEX index_sessions_on_user_id ON public.sessions USING btree (user_id);
 --
 
 CREATE UNIQUE INDEX index_settings_on_user_id ON public.settings USING btree (user_id);
+
+
+--
+-- Name: index_shipment_routes_on_air_days; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_shipment_routes_on_air_days ON public.shipment_routes USING btree (air_days);
+
+
+--
+-- Name: index_shipment_routes_on_ending_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_shipment_routes_on_ending_location_id ON public.shipment_routes USING btree (ending_location_id);
+
+
+--
+-- Name: index_shipment_routes_on_road_days; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_shipment_routes_on_road_days ON public.shipment_routes USING btree (road_days);
 
 
 --
@@ -5259,6 +5561,22 @@ ALTER TABLE ONLY public.horse_genetics
 
 
 --
+-- Name: racehorse_shipments fk_rails_11743aea75; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.racehorse_shipments
+    ADD CONSTRAINT fk_rails_11743aea75 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
+-- Name: shipment_routes fk_rails_132893d71e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.shipment_routes
+    ADD CONSTRAINT fk_rails_132893d71e FOREIGN KEY (starting_location_id) REFERENCES public.locations(id);
+
+
+--
 -- Name: race_result_horses fk_rails_1fdef5dc32; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5299,6 +5617,14 @@ ALTER TABLE ONLY public.stables
 
 
 --
+-- Name: racehorse_shipments fk_rails_3480687307; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.racehorse_shipments
+    ADD CONSTRAINT fk_rails_3480687307 FOREIGN KEY (starting_location_id) REFERENCES public.locations(id);
+
+
+--
 -- Name: race_options fk_rails_380027c283; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5320,6 +5646,14 @@ ALTER TABLE ONLY public.motor_alert_locks
 
 ALTER TABLE ONLY public.lease_termination_requests
     ADD CONSTRAINT fk_rails_413af159d7 FOREIGN KEY (lease_id) REFERENCES public.leases(id);
+
+
+--
+-- Name: broodmare_shipments fk_rails_4b660bbb6a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.broodmare_shipments
+    ADD CONSTRAINT fk_rails_4b660bbb6a FOREIGN KEY (horse_id) REFERENCES public.horses(id);
 
 
 --
@@ -5371,6 +5705,14 @@ ALTER TABLE ONLY public.budget_transactions
 
 
 --
+-- Name: racehorse_shipments fk_rails_61598134a3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.racehorse_shipments
+    ADD CONSTRAINT fk_rails_61598134a3 FOREIGN KEY (ending_location_id) REFERENCES public.locations(id);
+
+
+--
 -- Name: auction_horses fk_rails_68ba859655; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5408,6 +5750,14 @@ ALTER TABLE ONLY public.race_result_horses
 
 ALTER TABLE ONLY public.sale_offers
     ADD CONSTRAINT fk_rails_7486325072 FOREIGN KEY (buyer_id) REFERENCES public.stables(id);
+
+
+--
+-- Name: broodmare_shipments fk_rails_7e5650d355; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.broodmare_shipments
+    ADD CONSTRAINT fk_rails_7e5650d355 FOREIGN KEY (starting_farm_id) REFERENCES public.stables(id);
 
 
 --
@@ -5512,6 +5862,14 @@ ALTER TABLE ONLY public.horse_attributes
 
 ALTER TABLE ONLY public.race_options
     ADD CONSTRAINT fk_rails_a899329ee8 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
+-- Name: broodmare_shipments fk_rails_a92440001b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.broodmare_shipments
+    ADD CONSTRAINT fk_rails_a92440001b FOREIGN KEY (ending_farm_id) REFERENCES public.stables(id);
 
 
 --
@@ -5643,6 +6001,14 @@ ALTER TABLE ONLY public.leases
 
 
 --
+-- Name: shipment_routes fk_rails_e3744a828e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.shipment_routes
+    ADD CONSTRAINT fk_rails_e3744a828e FOREIGN KEY (ending_location_id) REFERENCES public.locations(id);
+
+
+--
 -- Name: lease_offers fk_rails_e4810d6ca8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5721,6 +6087,8 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251122162900'),
+('20251122155624'),
 ('20251121104735'),
 ('20251120144348'),
 ('20251119150441'),

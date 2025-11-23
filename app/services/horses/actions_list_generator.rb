@@ -30,6 +30,7 @@ module Horses
       [
         { key: :geld },
         { key: :change_status },
+        { key: :ship },
         { key: :change_owner, policy: Admin::HorsePolicy },
         { key: :create_lease_offer, policy: CurrentStable::LeaseOfferPolicy },
         { key: :accept, policy: CurrentStable::LeaseOfferPolicy, object: :lease_offer },

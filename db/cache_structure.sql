@@ -18,9 +18,10 @@ SET default_table_access_method = heap;
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.ar_internal_metadata (
-    key character varying NOT NULL,
-    value character varying,
+CREATE TABLE public.ar_internal_metadata
+(
+    key        character varying              NOT NULL,
+    value      character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -30,7 +31,8 @@ CREATE TABLE public.ar_internal_metadata (
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.schema_migrations (
+CREATE TABLE public.schema_migrations
+(
     version character varying NOT NULL
 );
 
@@ -39,13 +41,14 @@ CREATE TABLE public.schema_migrations (
 -- Name: solid_cache_entries; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.solid_cache_entries (
-    id bigint NOT NULL,
-    key bytea NOT NULL,
-    value bytea NOT NULL,
+CREATE TABLE public.solid_cache_entries
+(
+    id         bigint                         NOT NULL,
+    key        bytea                          NOT NULL,
+    value      bytea                          NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    key_hash bigint NOT NULL,
-    byte_size integer NOT NULL
+    key_hash   bigint                         NOT NULL,
+    byte_size  integer                        NOT NULL
 );
 
 
@@ -72,7 +75,8 @@ ALTER SEQUENCE public.solid_cache_entries_id_seq OWNED BY public.solid_cache_ent
 -- Name: solid_cache_entries id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.solid_cache_entries ALTER COLUMN id SET DEFAULT nextval('public.solid_cache_entries_id_seq'::regclass);
+ALTER TABLE ONLY public.solid_cache_entries
+    ALTER COLUMN id SET DEFAULT nextval('public.solid_cache_entries_id_seq'::regclass);
 
 
 --
@@ -125,6 +129,5 @@ CREATE INDEX index_solid_cache_entries_on_key_hash_and_byte_size ON public.solid
 --
 
 SET search_path TO "$user", public;
-
 
 
