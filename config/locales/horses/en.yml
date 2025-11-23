@@ -15,6 +15,7 @@ en:
       gender: Gender
       height: Height
       id: ID
+      in_transit: In Transit, will arrive %{date}
       last_foal: Last Foal
       last_race: Last Race
       lease_status: Lease Status

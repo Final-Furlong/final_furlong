@@ -12,7 +12,7 @@ end
 #
 #  Buyer  :integer          indexed
 #  Date   :date             not null, indexed, indexed => [Seller]
-#  Horse  :integer          not null, indexed
+#  Horse  :integer          indexed
 #  ID     :integer          not null, primary key
 #  PT     :boolean          default(TRUE), not null, indexed
 #  Price  :integer

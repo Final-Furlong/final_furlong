@@ -16,6 +16,10 @@ module Horses
     belongs_to :dam, class_name: "Horse", optional: true
     belongs_to :location_bred, class_name: "Location"
 
+    has_object :racing
+    has_object :broodmare
+    has_object :stud
+
     has_one :horse_attributes, class_name: "Attributes", dependent: :delete
     has_one :appearance, class_name: "Appearance", dependent: :delete
     has_one :genetics, class_name: "Genetics", dependent: :delete
@@ -28,24 +32,25 @@ module Horses
     has_one :sale_offer, class_name: "Horses::SaleOffer", inverse_of: :horse, dependent: :delete
     has_many :sales, class_name: "Horses::Sale", inverse_of: :horse, dependent: :delete_all
 
-    has_one :race_options, class_name: "Racing::RaceOption", dependent: :delete
-    has_one :race_stats, class_name: "Racing::RaceStats", dependent: :delete
-    has_one :training_schedules_horse, class_name: "Racing::TrainingScheduleHorse", dependent: :destroy
-    has_one :training_schedule, class_name: "Racing::TrainingSchedule", through: :training_schedules_horse
     has_many :race_result_finishes, class_name: "Racing::RaceResultHorse", inverse_of: :horse, dependent: :delete_all
     has_many :race_results, class_name: "Racing::RaceResult", source: :race, through: :race_result_finishes
     has_many :race_records, class_name: "Racing::RaceRecord", inverse_of: :horse, dependent: :delete_all
-    has_one :current_boarding, -> { where(end_date: nil) }, class_name: "Horses::Boarding", inverse_of: :horse, dependent: :delete
-    has_many :boardings, -> { where.not(end_date: nil) }, class_name: "Horses::Boarding", inverse_of: :horse, dependent: :delete_all
     # rubocop:disable Rails/HasManyOrHasOneDependent
     has_many :annual_race_records, class_name: "Racing::AnnualRaceRecord", inverse_of: :horse
     has_one :lifetime_race_record, class_name: "Racing::LifetimeRaceRecord", inverse_of: :horse
     # rubocop:enable Rails/HasManyOrHasOneDependent
 
+    # racehorse stuff
+    has_one :training_schedules_horse, class_name: "Racing::TrainingScheduleHorse", dependent: :destroy
+    has_one :training_schedule, class_name: "Racing::TrainingSchedule", through: :training_schedules_horse
+    has_one :current_boarding, -> { where(end_date: nil) }, class_name: "Horses::Boarding", inverse_of: :horse, dependent: :delete
+    has_many :boardings, -> { where.not(end_date: nil) }, class_name: "Horses::Boarding", inverse_of: :horse, dependent: :delete_all
+    has_many :racing_shipments, class_name: "Shipping::RacehorseShipment", dependent: :delete_all
+
     has_many :foals, class_name: "Horses::Horse", inverse_of: :dam, dependent: :nullify
+    has_many :broodmare_shipments, class_name: "Shipping::BroodmareShipment", dependent: :delete_all
+
     has_many :stud_foals, class_name: "Horses::Horse", inverse_of: :sire, dependent: :nullify
-    has_one :broodmare_foal_record, inverse_of: :mare, dependent: :delete
-    has_one :stud_foal_record, inverse_of: :stud, dependent: :delete
 
     enum :status, Status::STATUSES
     enum :gender, Gender::VALUES
@@ -82,14 +87,6 @@ module Horses
 
     def to_key = [slug]
 
-    def breed_ranking_string
-      if broodmare_foal_record
-        broodmare_foal_record.breed_ranking_string
-      elsif stud_foal_record
-        stud_foal_record.breed_ranking_string
-      end
-    end
-
     def age
       return 0 if stillborn?
 
@@ -110,7 +107,7 @@ module Horses
     end
 
     def manager
-      current_lease ? current_lease.leaser : owner
+      current_lease&.persisted? ? current_lease.leaser : owner
     end
 
     def location_bred_name
