@@ -25,6 +25,17 @@ module CurrentStable
       # owner_not_leased? || admin?
     end
 
+    def ship?
+      shipment = if record.racehorse?
+        Shipping::RacehorseShipment.new(horse: record)
+      elsif record.broodmare?
+        Shipping::BroodmareShipment.new(horse: record)
+      else
+        return false
+      end
+      HorseShipmentPolicy.new(user, shipment).create?
+    end
+
     def consign_to_auction?
       # TODO: implement auction consignment
       false
@@ -55,19 +66,19 @@ module CurrentStable
     end
 
     def view_shipping?
-      return false unless record.manager == stable
+      return false unless manager?
 
-      record.racehorse?
+      record.racehorse? || record.broodmare?
     end
 
     def view_workouts?
-      return false unless record.manager == stable
+      return false unless manager?
 
       record.racehorse?
     end
 
     def view_boarding?
-      return false unless record.manager == stable
+      return false unless manager?
 
       record.racehorse?
     end
@@ -87,6 +98,10 @@ module CurrentStable
 
     def owner?
       record.owner == user&.stable
+    end
+
+    def manager?
+      record.manager == stable
     end
   end
 end

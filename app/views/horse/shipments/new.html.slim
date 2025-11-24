@@ -1,0 +1,11 @@
+ruby:
+  horse = @shipment.horse
+  content_for :title, t(".title")
+
+.text-center
+  h1.text-xl.font-bold= t(".title")
+
+- if horse.racehorse?
+  = render "racing_form", shipment: @shipment, horse: horse
+- else
+  = render "broodmare_form", shipment: @shipment, horse: horse
