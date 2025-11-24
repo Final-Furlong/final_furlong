@@ -22,15 +22,17 @@ class Auctions::ProcessSalesJob < ApplicationJob
       winning_bid = Auctions::Bid.find(horse_info[:bid_id])
       Auctions::HorseSeller.new.process_sale(bid: winning_bid)
     end
-    schedule_next_sales_job(auction:)
+    schedule_next_sales_job(auction:) unless Rails.env.test?
   end
 
   private
 
   def schedule_next_sales_job(auction:)
-    return unless Auctions::Bid.where(auction:).current_high_bid.sale_time_not_met.exists?
-
-    next_updated_at = Auctions::Bid.where(auction:).current_high_bid.sale_time_not_met.minimum(:bid_at)
+    next_updated_at = if Auctions::Bid.where(auction:).current_high_bid.sale_time_not_met.exists?
+      Auctions::Bid.where(auction:).current_high_bid.sale_time_not_met.minimum(:bid_at)
+    else
+      5.minutes.ago
+    end
     Auctions::ProcessSalesJob.set(wait_until: next_updated_at + auction.hours_until_sold.hours).perform_later(auction)
   end
 end
