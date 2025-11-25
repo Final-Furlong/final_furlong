@@ -73,3 +73,5 @@ en:
       description_buyer: Purchased %{horse} from %{stable}
       description_seller: Sold %{horse} to %{stable}
       not_for_sale: This horse is not for sale
+    shipment_creator:
+      description: Shipped %{horse} from %{start} to %{end}

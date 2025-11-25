@@ -1,0 +1,38 @@
+ruby:
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new( links: [{ name: Current.stable.name, href: current_stable_path },
+          { name: t(".title"), href: "#", title: true }])
+
+ruby:
+  crc = @dashboard.current_racehorses_count
+  src = @dashboard.scheduled_racehorses_count
+  cbc = @dashboard.current_broodmares_count
+  sbc = @dashboard.scheduled_broodmares_count
+
+.card.card-border.mt-2.p-2.shadow-md.dark:border-1.dark:border-neutral-100
+  .tabs.tabs-border.dark:border-neutral-400 role="tablist"
+    - label = crc.positive? ? t(".current_racehorses", count: crc) : t(".no_current_racehorses")
+    input.tab[ type="radio" name="shipments" aria-label=label
+      checked=(@dashboard.active_tab == :current_racehorses) disabled=crc.zero?
+    ]
+    .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+      = render "table", items: :current_racehorse_shipments, type: :racing_shipments, dashboard: @dashboard
+    - label = src.positive? ? t(".scheduled_racehorses", count: src) : t(".no_scheduled_racehorses")
+    input.tab[ type="radio" name="shipments" aria-label=label
+      checked=(@dashboard.active_tab == :scheduled_racehorses) disabled=src.zero?
+    ]
+    .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+      = render "table", items: :scheduled_racehorse_shipments, type: :racing_shipments, dashboard: @dashboard
+    - label = cbc.positive? ? t(".current_broodmares", count: src) : t(".no_current_broodmares")
+    input.tab[ type="radio" name="shipments" aria-label=label
+      checked=(@dashboard.active_tab == :current_broodmares) disabled=cbc.zero?
+    ]
+    .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+      = render "table", items: :current_broodmare_shipments, type: :broodmare_shipments, dashboard: @dashboard
+    - label = sbc.positive? ? t(".scheduled_broodmares", count: sbc) : t(".no_scheduled_broodmares")
+    input.tab[ type="radio" name="shipments" aria-label=label
+      checked=(@dashboard.active_tab == :scheduled_broodmares) disabled=sbc.zero?
+    ]
+    .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+      = render "table", items: :scheduled_broodmare_shipments, type: :broodmare_shipments, dashboard: @dashboard
+

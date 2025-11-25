@@ -369,7 +369,7 @@ CREATE TABLE `ff_distinct_errors` (
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 CREATE TABLE `ff_donations` (
-    `txn_id` varchar(19) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+                                `txn_id` varchar(19) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
     `user_id` int NOT NULL,
     `amount` float(9,2) NOT NULL,
     `date` date NOT NULL,

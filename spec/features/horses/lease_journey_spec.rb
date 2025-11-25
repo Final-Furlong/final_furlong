@@ -45,6 +45,7 @@ RSpec.describe "Leasing Journey" do
     travel_to 6.months.from_now do
       sign_in(leasee_user)
       visit horse_path(horse)
+      # click_on t("view_components.nav.breadcrumbs.actions.title")
       click_on t("horse.actions.current_lease.terminate")
       within "dialog" do
         check "horses_lease_termination_request[leaser_accepted_end]"
@@ -170,6 +171,7 @@ RSpec.describe "Leasing Journey" do
 
     @horse = create(:horse, :racehorse, :with_appearance, owner: leaser)
     Racing::LifetimeRaceRecord.refresh
+    @horse
   end
 end
 

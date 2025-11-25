@@ -79,6 +79,17 @@ en:
         subscribe_action: Subscribe
         title: Settings
         unsubscribe_action: Unsubscribe
+    shipments:
+      index:
+        current_broodmares: Current Broodmares (%{count})
+        current_racehorses: Current Racehorses (%{count})
+        no_current_broodmares: Current Broodmares
+        no_current_racehorses: Current Racehorses
+        no_scheduled_broodmares: Scheduled Broodmares
+        no_scheduled_racehorses: Scheduled Racehorses
+        scheduled_broodmares: Scheduled Broodmares (%{count})
+        scheduled_racehorses: Scheduled Racehorses (%{count})
+        title: Stable Shipments
     training_schedule_horses:
       create:
         success: "%{name} was assigned to %{schedule}"
