@@ -20,7 +20,9 @@ class UpdateRacehorseStatsJob < ApplicationJob
     else
       Horses::Boarding.ended.where(horse_id: horse.id).maximum(:end_date)
     end
-    # todo: add shipping + check for last shipment to farm
+    last_shipped_at = Shipping::RacehorseShipment.where(horse_id: horse.id).maximum(:arrival_date)
+    last_shipped_home_at = Shipping::RacehorseShipment.where(horse_id: horse.id, shipping_type: "track_to_farm").maximum(:arrival_date)
+    last_rested_at = [last_boarded_at, last_shipped_home_at].compact.max
     racetrack = if legacy_horse.Location == 59
       stable.racetrack
     else
@@ -43,8 +45,8 @@ class UpdateRacehorseStatsJob < ApplicationJob
     attrs = {
       energy: legacy_horse.EnergyCurrent,
       last_raced_at:,
-      last_rested_at: last_boarded_at,
-      last_shipped_at: nil,
+      last_rested_at:,
+      last_shipped_at:,
       fitness: legacy_horse.Fitness,
       natural_energy: legacy_horse.NaturalEnergy,
       energy_grade: legacy_horse.DisplayEnergy,

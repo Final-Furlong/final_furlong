@@ -1,8 +1,9 @@
 module CurrentStable
   class ShipmentsController < AuthenticatedController
+    skip_after_action :verify_pundit_authorization, only: :index
+
     def index
-      query = policy_scope(Horses::Horse.all, policy_scope_class:
-        CurrentStable::HorseShipmentPolicy::Scope)
+      query = Horses::Horse.managed_by(Current.stable)
 
       @dashboard = Dashboard::Stable::Shipments.new(query:)
     end

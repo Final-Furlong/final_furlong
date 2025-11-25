@@ -19,17 +19,17 @@ module Horses
         attrs[:crops_count] = horse.stud_foals.group("DATE_PART('Year', date_of_birth)").count.count
         attrs[:raced_foals_count] = horse.stud_foals.born.where.associated(:lifetime_race_record).count
         if attrs[:raced_foals_count].positive?
-          attrs[:winning_foals_count] = horse.stud_foals.born.joins(:lifetime_race_record).merge(Racing::LifetimeRaceRecord.winner).count
+          attrs[:winning_foals_count] = horse.stud_foals.born.joins(:lifetime_race_record).merge(::Racing::LifetimeRaceRecord.winner).count
           if attrs[:winning_foals_count].positive?
-            attrs[:stakes_winning_foals_count] = horse.stud_foals.born.joins(:lifetime_race_record).merge(Racing::LifetimeRaceRecord.stakes_winner).count
-            attrs[:multi_stakes_winning_foals_count] = horse.stud_foals.born.joins(:lifetime_race_record).merge(Racing::LifetimeRaceRecord.multi_stakes_winner).count
+            attrs[:stakes_winning_foals_count] = horse.stud_foals.born.joins(:lifetime_race_record).merge(::Racing::LifetimeRaceRecord.stakes_winner).count
+            attrs[:multi_stakes_winning_foals_count] = horse.stud_foals.born.joins(:lifetime_race_record).merge(::Racing::LifetimeRaceRecord.multi_stakes_winner).count
             attrs[:stakes_winning_foals_count] += attrs[:multi_stakes_winning_foals_count]
           end
-          attrs[:millionaire_foals_count] = horse.stud_foals.born.joins(:lifetime_race_record).merge(Racing::LifetimeRaceRecord.millionaire).count
-          attrs[:multi_millionaire_foals_count] = horse.stud_foals.born.joins(:lifetime_race_record).merge(Racing::LifetimeRaceRecord.multi_millionaire).count
-          attrs[:total_foal_points] = Racing::LifetimeRaceRecord.where(horse_id: horse.stud_foals.born.select(:id)).sum(:points).to_i
-          attrs[:total_foal_races] = Racing::LifetimeRaceRecord.where(horse_id: horse.stud_foals.born.select(:id)).sum(:starts).to_i
-          attrs[:total_foal_earnings] = Racing::LifetimeRaceRecord.where(horse_id: horse.stud_foals.born.select(:id)).sum(:earnings).to_i
+          attrs[:millionaire_foals_count] = horse.stud_foals.born.joins(:lifetime_race_record).merge(::Racing::LifetimeRaceRecord.millionaire).count
+          attrs[:multi_millionaire_foals_count] = horse.stud_foals.born.joins(:lifetime_race_record).merge(::Racing::LifetimeRaceRecord.multi_millionaire).count
+          attrs[:total_foal_points] = ::Racing::LifetimeRaceRecord.where(horse_id: horse.stud_foals.born.select(:id)).sum(:points).to_i
+          attrs[:total_foal_races] = ::Racing::LifetimeRaceRecord.where(horse_id: horse.stud_foals.born.select(:id)).sum(:starts).to_i
+          attrs[:total_foal_earnings] = ::Racing::LifetimeRaceRecord.where(horse_id: horse.stud_foals.born.select(:id)).sum(:earnings).to_i
         end
       end
       average_points = if attrs[:total_foal_points].positive? && attrs[:total_foal_races].positive?

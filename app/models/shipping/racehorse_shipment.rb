@@ -10,7 +10,7 @@ module Shipping
     belongs_to :ending_location, class_name: "Location"
 
     validates :departure_date, :arrival_date, :mode, :shipping_type, presence: true
-    validates :departure_date, comparison: { greater_than_or_equal_to: -> { Date.current }, less_than_or_equal_to: :maximum_departure_date }, if: :departure_date
+    # validates :departure_date, comparison: { greater_than_or_equal_to: -> { Date.current }, less_than_or_equal_to: :maximum_departure_date }, if: :departure_date
     validates :arrival_date, comparison: { greater_than: :departure_date }, if: :departure_date
     validates :mode, inclusion: { in: Route::MODES }, if: :mode
     validates :shipping_type, inclusion: { in: SHIPPING_TYPES }

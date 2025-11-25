@@ -17,21 +17,21 @@ li.px-2
         ]
           i.ph-fill.ph-coins
           span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.stable.budget")
-      li
+      li.hidden
         a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
           href=stable_shipments_path
           class="hover:bg-gray-100 dark:hover:bg-gray-700"
         ]
           i.ph-fill.ph-truck
           span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.stable.shipping")
-li.hidden
-  details
+li.px-2
+  details open=true
     summary= t("layouts.sidenav.stable.racing_divider")
     ul
       li
         a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
-          href="#"
+          href=racing_races_path
           class="hover:bg-gray-100 dark:hover:bg-gray-700"
         ]
-          i.ph-fill.ph-house
-          span.ms-3= t("layouts.sidenav.stable.training_schedules")
+          i.ph-fill.ph-flag-checkered
+          span.ms-3= t("layouts.sidenav.stable.race_schedule")

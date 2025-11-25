@@ -3,13 +3,20 @@ module Dashboard
     class Shipments
       attr_reader :shipments, :current_racehorse_shipments,
         :scheduled_racehorse_shipments,
-        :current_broodmare_shipments, :scheduled_broodmare_shipments
+        :current_broodmare_shipments, :scheduled_broodmare_shipments,
+        :current_racehorses_count, :current_broodmares_count,
+        :scheduled_racehorses_count, :scheduled_broodmares_count
 
       def initialize(query:)
-        @current_racehorse_shipments = query.racehorse.joins(:racing_shipments).where(racing_shipments: { departure_date: ..Date.current })
-        @scheduled_racehorse_shipments = query.racehorse.joins(:racing_shipments).where("racehorse_shipments.departure_date > ?", Date.current)
-        @current_broodmare_shipments = query.broodmare.joins(:broodmare_shipments).where(broodmare_shipments: { departure_date: ..Date.current })
-        @scheduled_broodmare_shipments = query.broodmare.joins(:broodmare_shipments).where("broodmare_shipments.departure_date > ?", Date.current)
+        @current_racehorse_shipments = query.racehorse.joins(:racing_shipments).where("racehorse_shipments.arrival_date > ?", Date.current).distinct
+        @scheduled_racehorse_shipments = query.racehorse.joins(:racing_shipments).where("racehorse_shipments.departure_date > ?", Date.current).distinct
+        @current_broodmare_shipments = query.broodmare.joins(:broodmare_shipments).where("broodmare_shipments.arrival_date > ?", Date.current).distinct
+        @scheduled_broodmare_shipments = query.broodmare.joins(:broodmare_shipments).where("broodmare_shipments.departure_date > ?", Date.current).distinct
+
+        @current_racehorses_count = @current_racehorse_shipments.count
+        @scheduled_racehorses_count = @scheduled_racehorse_shipments.count
+        @current_broodmares_count = @current_broodmare_shipments.count
+        @scheduled_broodmares_count = @scheduled_broodmare_shipments.count
       end
 
       def active_tab
@@ -50,22 +57,6 @@ module Dashboard
 
       def racetracks
         @racetracks ||= ::Racing::Racetrack.includes(:location).all
-      end
-
-      def current_racehorses_count
-        current_racehorse_shipments.count
-      end
-
-      def scheduled_racehorses_count
-        scheduled_racehorse_shipments.count
-      end
-
-      def current_broodmares_count
-        current_broodmare_shipments.count
-      end
-
-      def scheduled_broodmares_count
-        scheduled_broodmare_shipments.count
       end
     end
   end

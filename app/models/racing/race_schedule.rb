@@ -31,8 +31,25 @@ class Racing::RaceSchedule < ApplicationRecord
 
   delegate :racetrack, to: :track_surface
 
+  scope :future, -> { where("date > ?", Date.current) }
+
   def claiming?
     race_type.to_s.casecmp("claiming").zero?
+  end
+
+  def race_type_string
+    value = race_type.titleize.gsub("Nw1 ", "NW1 ").gsub("Nw2 ", "NW2 ").gsub("Nw3 ", "NW3 ")
+    value += " (#{grade})" if race_type.downcase == "stakes"
+    value
+  end
+
+  def race_age_string
+    strings = age.split("")
+    (strings.count > 1) ? strings.join("yo") : "#{strings[0]}yo"
+  end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[age date distance female_only grade male_only name number qualification_required race_type surface_id]
   end
 end
 

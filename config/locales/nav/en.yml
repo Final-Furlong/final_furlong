@@ -34,6 +34,7 @@ en:
       stable:
         budget: Budget
         horses: My horses
+        race_schedule: Race Schedule
         racing_divider: Racing
         shipping: Shipping
         training_schedules: Training Schedules

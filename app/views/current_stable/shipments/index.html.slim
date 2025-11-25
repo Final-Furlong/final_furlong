@@ -23,7 +23,7 @@ ruby:
     ]
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
       = render "table", items: :scheduled_racehorse_shipments, type: :racing_shipments, dashboard: @dashboard
-    - label = cbc.positive? ? t(".current_broodmares", count: src) : t(".no_current_broodmares")
+    - label = cbc.positive? ? t(".current_broodmares", count: cbc) : t(".no_current_broodmares")
     input.tab[ type="radio" name="shipments" aria-label=label
       checked=(@dashboard.active_tab == :current_broodmares) disabled=cbc.zero?
     ]

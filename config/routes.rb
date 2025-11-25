@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   draw(:users)
   draw(:current_stable)
   draw(:horses)
+  draw(:racing)
 
   match "/404", to: "errors#not_found", via: :all
   match "/422", to: "errors#unprocessable", via: :all

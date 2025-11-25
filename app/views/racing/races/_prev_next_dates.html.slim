@@ -1,0 +1,7 @@
+/# locals: (prev_date:, next_date:)
+
+.w-full.flex.mb-2
+  .flex-1
+    = link_to l(prev_date), racing_races_path(date: prev_date), class: "btn btn-outline btn-sm #{"btn-disabled" if prev_date <= Date.current}"
+  .flex-none
+    = link_to l(next_date), racing_races_path(date: next_date), class: "btn btn-outline btn-sm"

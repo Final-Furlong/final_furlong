@@ -2,7 +2,7 @@
 - query_type = items.to_s.start_with?("current") ? :current : :future
 .mx-auto.overflow-x-auto.w-full.sm:hidden
   - dashboard.send(items.to_sym).each do |horse|
-    - shipment = horse.send(type).send(query_type).first
+    - shipment = horse.send(type).send(query_type).order(arrival_date: :desc).first
     - data = dashboard.data(shipment)
     .card.bg-base-100.w-full.px-2.rounded-none
       .card-body.p-0.rounded-none
@@ -36,7 +36,7 @@
                       = t("common.actions.delete")
 .hidden.mx-auto.overflow-x-auto.border.rounded-md.w-full.sm:block.sm:w-5/6
   .table-responsive-md
-    table.table.table-responsive.table-zebra
+    table.table.table-responsive.table-zebra.sortable
       thead
         tr
           th= Horses::Horse.human_attribute_name("name")
@@ -49,16 +49,16 @@
             th= t("common.actions.title")
         tbody
           - dashboard.send(items.to_sym).each do |horse|
-            - shipment = horse.send(type).send(query_type).first
+            - shipment = horse.send(type).send(query_type).order(arrival_date: :desc).first
             - data = dashboard.data(shipment)
             tr
               td.wb-break-all= link_to horse.name, horse_path(horse), target: "_top"
               td= data[:start_location]
               td= data[:end_location]
               - if query_type == :current
-                td= l(shipment.arrival_date)
+                td data-sort=shipment.arrival_date = l(shipment.arrival_date)
               - else
-                td= l(shipment.departure_date)
+                td data-sort=shipment.departure_date = l(shipment.departure_date)
                 td
                   = link_to shipment_horse_path(horse, shipment.id), class: "btn btn-sm btn-outline btn-error",
                           data: { turbo_method: :delete, turbo_confirm: t("horse.events.shipments.confirm_delete"), turbo_frame: "_top" } do

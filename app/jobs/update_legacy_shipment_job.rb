@@ -2,7 +2,6 @@ class UpdateLegacyShipmentJob < ApplicationJob
   queue_as :low_priority
 
   def perform(horse_id)
-    Legacy::HorseShipping.where(Horse: horse_id).count
     Legacy::HorseShipping.where(Horse: horse_id).find_each do |legacy_shipment|
       migrate_shipment(legacy_shipment:)
     end
@@ -15,6 +14,12 @@ class UpdateLegacyShipmentJob < ApplicationJob
     return unless horse
     return if horse.deceased? || horse.retired?
 
+    class_name = if legacy_shipment.FromFarm.to_i.positive? && legacy_shipment.ToFarm.to_i.positive?
+      Shipping::BroodmareShipment
+    else
+      Shipping::RacehorseShipment
+    end
+
     departure_date = legacy_shipment.Date - 4.years
     return if legacy_shipment.Arrive < Date.current - 30.years
     arrival_date = legacy_shipment.Arrive - 4.years
@@ -23,7 +28,11 @@ class UpdateLegacyShipmentJob < ApplicationJob
       starting_location = Location.joins(:racetrack).find_by(racetracks: { name: start_track.Name })
     elsif legacy_shipment.FromFarm
       stable = Account::Stable.find_by(legacy_id: legacy_shipment.FromFarm)
-      starting_location = Location.joins(:racetrack).find_by(racetrack: stable.racetrack)
+      starting_location = if class_name == Shipping::BroodmareShipment
+        stable
+      else
+        Location.joins(:racetrack).find_by(racetrack: stable.racetrack)
+      end
     end
     return unless starting_location
 
@@ -32,23 +41,23 @@ class UpdateLegacyShipmentJob < ApplicationJob
       ending_location = Location.joins(:racetrack).find_by(racetracks: { name: end_track.Name })
     elsif legacy_shipment.ToFarm
       stable = Account::Stable.find_by(legacy_id: legacy_shipment.ToFarm)
-      ending_location = Location.joins(:racetrack).find_by(racetrack: stable.racetrack)
+      ending_location = if class_name == Shipping::BroodmareShipment
+        stable
+      else
+        Location.joins(:racetrack).find_by(racetrack: stable.racetrack)
+      end
     end
     return unless ending_location
 
-    class_name = if legacy_shipment.FromFarm.to_i.positive? && legacy_shipment.ToFarm.to_i.positive?
-      Shipping::BroodmareShipment
-    else
-      Shipping::RacehorseShipment
-    end
     shipment = class_name.find_or_initialize_by(horse:, departure_date:)
     shipment.arrival_date = arrival_date
-    shipment.starting_location = starting_location
-    shipment.ending_location = ending_location
     shipment.mode = (legacy_shipment.Mode == "R") ? "road" : "air"
     if class_name == Shipping::BroodmareShipment
-      shipment.current_farm_id = Account::Stable.find_by(legacy_id: legacy_shipment.ToFarm)
+      shipment.starting_farm = starting_location
+      shipment.ending_farm = ending_location
     else
+      shipment.starting_location = starting_location
+      shipment.ending_location = ending_location
       shipment.shipping_type = if legacy_shipment.FromTrack.to_i.positive? && legacy_shipment.ToTrack.to_i.positive?
         "track_to_track"
       elsif legacy_shipment.FromTrack.to_i.positive?

@@ -3,6 +3,7 @@ module Racing
     self.ignored_columns += ["old_id"]
 
     CONDITIONS = %w[fast good slow wet].freeze
+    SURFACES = %w[dirt turf steeplechase]
 
     belongs_to :racetrack
 
@@ -12,6 +13,7 @@ module Racing
     validates :surface, :condition, :width, :length, :turn_to_finish_length,
       :turn_distance, :banking, :jumps, presence: true
     validates :condition, inclusion: { in: CONDITIONS }
+    validates :surface, inclusion: { in: SURFACES }
     validates :surface, uniqueness: { scope: :racetrack_id }
 
     scope :dirt, -> { where(surface: "dirt") }

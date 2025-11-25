@@ -1,0 +1,58 @@
+ruby:
+  date = @races.first.date
+  prev_date = Racing::RaceSchedule.where(date: ...date).maximum(:date) || Racing::RaceResult.where(date: ...date).maximum(:date)
+  next_date = Racing::RaceSchedule.where('date > ?', date).minimum(:date)
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t(".title"), href: "#" },
+    { name: l(date), href: "#" }])
+
+= render "prev_next_dates", prev_date:, next_date:
+.overflow-x-auto.rounded-box.border.bg-base-100
+  table.table.table-responsive.table-zebra.sortable.asc.n-last.table-xs.md:table-md
+    thead
+      tr
+        th= t(".number")
+        th= t(".track")
+        th= t(".type")
+        th= t(".distance")
+        th= t(".surface")
+        th= t(".age")
+        th= t(".gender")
+        th= t(".name")
+        th= t(".purse")
+    tbody
+      - @races.each do |race|
+        tr
+          td= race.number
+          td= race.racetrack.name
+          - sort = Racing::RaceSchedule::RACE_TYPES.find_index(race.race_type)
+          - sort += Racing::RaceSchedule::RACE_GRADES.find_index(race.grade) if race.race_type == "stakes"
+          td data-sort=sort
+            span.hidden.lg:inline
+              = t(".#{race.race_type.downcase}")
+              - if race.race_type == "stakes"
+                = "&nbsp;".html_safe
+                = " (#{race.grade.titleize})"
+            span.inline.lg:hidden
+              = t(".mobile.#{race.race_type.downcase}")
+              - if race.race_type == "stakes"
+                = "&nbsp; (".html_safe
+                = t(".mobile.#{race.grade.downcase.gsub(' ', '_')}")
+                = ")"
+          td data-sort=race.distance
+            span.hidden.lg:inline = t(".furlongs", number: race.distance)
+            span.inline.lg:hidden = t(".mobile.furlongs", number: race.distance)
+          - sort = Racing::TrackSurface::SURFACES.find_index(race.track_surface.surface)
+          td data-sort=sort = t(".surface_#{race.track_surface.surface}")
+          td= race.race_age_string
+          td
+            - if race.female_only?
+              span.hidden.lg:inline = t(".female_only")
+              span.inline.lg:hidden = t(".mobile.female_only")
+            - elsif race.male_only?
+              span.hidden.lg:inline = t(".male_only")
+              span.inline.lg:hidden = t(".mobile.male_only")
+          td= race.name
+          td data-sort=race.purse = Game::MoneyFormatter.new(race.purse).to_s
+.mt-2
+  = render "prev_next_dates", prev_date:, next_date:
