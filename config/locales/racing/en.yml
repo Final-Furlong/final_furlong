@@ -1,3 +1,4 @@
+---
 en:
   racing:
     races:
@@ -25,17 +26,17 @@ en:
           nw1_allowance: NW1 Allow
           nw2_allowance: NW2 Allow
           nw3_allowance: NW3 Allow
-          starter_allowance: Starter Allow
           stakes: Stakes
+          starter_allowance: Starter Allow
           ungraded: Ugr.
         name: Name
         number: "#"
         nw1_allowance: NW1 Allowance
         nw2_allowance: NW2 Allowance
         nw3_allowance: NW3 Allowance
-        starter_allowance: Starter Allowance
         purse: Purse
         stakes: Stakes
+        starter_allowance: Starter Allowance
         surface: Surface
         surface_dirt: Dirt
         surface_steeplechase: SC
