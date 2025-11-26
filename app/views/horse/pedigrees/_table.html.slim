@@ -1,0 +1,23 @@
+/# locals: (horse:)
+- pedigree = Horses::PedigreeDisplayService.new(horse)
+.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100
+  table.table
+    tbody
+      tr
+        td.border-1 rowspan=4 class=horse.gender
+          = horse.name || t("horse.unnamed")
+        td.stallion.border-1 rowspan=2
+          = pedigree.sire_display(tag: true, target: '_top')
+        td.stallion.border-1
+          = pedigree.sire_sire_display(tag: true, target: '_top')
+      tr
+        td.mare.border-1
+          = pedigree.sire_dam_display(tag: true, target: "_top")
+      tr
+        td.mare.border-1 rowspan=2
+          = pedigree.dam_display(tag: true, target: "_top")
+        td.stallion.border-1
+          = pedigree.dam_sire_display(tag: true, target: "_top")
+      tr
+        td.mare.border-1
+          = pedigree.dam_dam_display(tag: true, target: "_top")

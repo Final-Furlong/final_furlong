@@ -1,0 +1,43 @@
+/# locals: (auction:, auction_horse:, bid:, current_bid:, minimum_bid: 1000)
+- minimum_bid = current_bid.current_bid + Auctions::Bid::MINIMUM_INCREMENT if current_bid
+.p-4.border.border-neutral-content/50.rounded-md.sm:p-2.sm:border-0
+  = form_with model: bid, scope: :bid, url: auction_horse_bids_path(auction,
+          auction_horse), id: "auction-bid-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+    - if bid.errors[:base].any?
+      .alert.alert-error.alert-outline.mb-2 role="alert"
+        i.ph.ph-x-circle
+        span= bid.errors[:base].join(',')
+    .md:flex.md:items-center.mb-6
+      .md:w-1/3
+        label.block.text-base-content/50.font-bold.md:text-right.mb-1.md:mb-0.pr-4 for="bid_current_bid"
+          = t(".current_bid")
+      .md:w-2/3
+        p= Game::MoneyFormatter.new(minimum_bid).to_s
+        = f.hidden_field :current_bid, class: 'input w-auto validator', required: true, value: minimum_bid
+        - if bid.errors[:current_bid]
+          p.text-error= bid.errors.where(:current_bid).map(&:full_message).join(', ')
+    .md:flex.md:items-center.mb-6
+      .md:w-1/3
+        label.block.text-base-content/50.font-bold.md:text-right.mb-1.md:mb-0.pr-4 for="bid_maximum_bid"
+          = t(".maximum_bid")
+      .md:w-2/3
+        = f.text_field :maximum_bid, class: 'input w-auto validator'
+        p.text-sm.text-neutral-content= t(".maximum_bid_hint", amount: Game::MoneyFormatter.new(Auctions::Bid::MINIMUM_INCREMENT).to_s)
+        - if bid.errors[:maximum_bid]
+          p.text-error= bid.errors.where(:maximum_bid).map(&:full_message).join(', ')
+    .md:flex.md:items-center.mb-6
+      .md:w-1/3
+        label.block.text-base-content/50.font-bold.md:text-right.mb-1.md:mb-0.pr-4 for="bid_notify_if_outbid"
+          = t(".notify_if_outbid")
+      .md:w-2/3
+        label.block.text-neutral-content/50.font-bold
+          = f.radio_button :notify_if_outbid, "no", checked: !bid.notify_if_outbid
+          span.text-sm.ml-2 = t("common.text.no")
+          br
+        label.block.text-neutral-content/50.font-bold
+          = f.radio_button :notify_if_outbid, "yes", checked: bid.notify_if_outbid
+          span.text-sm.ml-2 = t("common.text.yes")
+        - if bid.errors[:notify_if_outbid]
+          p.text-error= bid.errors.where(:notify_if_outbid).map(&:full_message).join(', ')
+    div.sm:float-right
+      = f.submit t("common.actions.save"), class: "btn btn-primary"

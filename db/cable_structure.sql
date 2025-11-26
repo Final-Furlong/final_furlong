@@ -18,10 +18,9 @@ SET default_table_access_method = heap;
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.ar_internal_metadata
-(
-    key        character varying           NOT NULL,
-    value      character varying,
+CREATE TABLE public.ar_internal_metadata (
+    key character varying NOT NULL,
+    value character varying,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -31,8 +30,7 @@ CREATE TABLE public.ar_internal_metadata
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.schema_migrations
-(
+CREATE TABLE public.schema_migrations (
     version character varying NOT NULL
 );
 
@@ -41,13 +39,12 @@ CREATE TABLE public.schema_migrations
 -- Name: solid_cable_messages; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.solid_cable_messages
-(
-    id           bigint                      NOT NULL,
-    channel      bytea                       NOT NULL,
-    payload      bytea                       NOT NULL,
-    created_at   timestamp(6) with time zone NOT NULL,
-    channel_hash bigint                      NOT NULL
+CREATE TABLE public.solid_cable_messages (
+    id bigint NOT NULL,
+    channel bytea NOT NULL,
+    payload bytea NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    channel_hash bigint NOT NULL
 );
 
 
@@ -74,8 +71,7 @@ ALTER SEQUENCE public.solid_cable_messages_id_seq OWNED BY public.solid_cable_me
 -- Name: solid_cable_messages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.solid_cable_messages
-    ALTER COLUMN id SET DEFAULT nextval('public.solid_cable_messages_id_seq'::regclass);
+ALTER TABLE ONLY public.solid_cable_messages ALTER COLUMN id SET DEFAULT nextval('public.solid_cable_messages_id_seq'::regclass);
 
 
 --
@@ -128,5 +124,6 @@ CREATE INDEX index_solid_cable_messages_on_created_at ON public.solid_cable_mess
 --
 
 SET search_path TO "$user", public;
+
 
 

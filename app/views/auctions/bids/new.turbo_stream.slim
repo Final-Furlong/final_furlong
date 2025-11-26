@@ -1,0 +1,5 @@
+ruby:
+  high_bid = auction_horse.bids.order(bid_at: :desc).first
+  new_bid ||= auction_horse.bids.build
+= turbo_stream.replace("bid-form", partial: "auctions/bids/form", locals: { auction:, auction_horse:, bid: new_bid, current_bid: high_bid })
+= turbo_stream.replace("messages", partial: "layouts/flash")

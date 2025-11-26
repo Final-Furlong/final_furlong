@@ -19,8 +19,7 @@ module Api
             horse_id: params[:horse_id],
             bidder_id: params[:bidder_id],
             current_bid: params[:current_bid],
-            maximum_bid: params[:maximum_bid],
-            comment: params[:comment]
+            maximum_bid: params[:maximum_bid]
           )
           error!({ error: "invalid", detail: result.error }, 500) unless result.created?
 

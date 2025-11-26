@@ -4,6 +4,8 @@ en:
     edit_name_form:
       name_hint: Max %{count} characters
     index:
+      auctions: Auctions (%{count})
+      auctions_upcoming: Future Auctions (%{count})
       for_lease: For Lease (%{count})
       for_sale: For Sale (%{count})
     info:

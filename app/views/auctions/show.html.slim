@@ -1,0 +1,62 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t("auctions.index.title"), href: auctions_path },
+          { name: @auction.title, href: "#" }])
+
+.flex.items-center.justify-center.mb-2
+  .text-center
+    h2.text-xl.mb-2 = @auction.future? ? t(".starts_in") : t(".ends_in")
+    - time = @auction.future? ? @auction.start_time.to_i - DateTime.current.to_i : @auction.end_time.to_i - DateTime.current.to_i
+    .px-2.flex.gap-2.justify-center.uppercase#timer data-controller="countdown" data-countdown-time-value=time
+      div
+        .bg-neutral.text-neutral-content.px-6.py-1.text-xl.shadow-md.rounded-l-lg#days data-countdown-target="days"
+        small.px-4= t(".days")
+      div
+        .bg-neutral.text-neutral-content.px-6.py-1.text-xl.shadow-md#hours data-countdown-target="hours"
+        small.px-4= t(".hours")
+      div
+        .bg-neutral.text-neutral-content.px-6.py-1.text-xl.shadow-md#minutes data-countdown-target="minutes"
+        small.px-4= t(".minutes")
+      div
+        .bg-neutral.text-neutral-content.px-6.py-1.text-xl.shadow-md.rounded-r-lg#seconds data-countdown-target="seconds"
+        small.px-4= t(".seconds")
+
+.flex.items-center.justify-center.mb-2
+  .w-full.px-2.py-1.my-2.mt-0.text-yellow-800.border.border-yellow-300.bg-yellow-50.rounded-lg[
+    class="sm:w-1/2 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800"
+    role="alert"
+  ]
+    .flex.flex-wrap
+      .sm:ml-2.mt-1.text-xs
+        = t(".hours_until_sold", hours: @auction.hours_until_sold)
+        br
+        - if @auction.horse_purchase_cap_per_stable.to_i.positive?
+          - horses = Horses::Horse.model_name.human.downcase.pluralize(@auction.horse_purchase_cap_per_stable)
+          = t(".purchase_limit", limit: @auction.horse_purchase_cap_per_stable, horses:)
+        - else
+          = t(".no_purchase_limit")
+        br
+        - if @auction.spending_cap_per_stable.to_i.positive?
+          - limit = Game::MoneyFormatter.new(@auction.spending_cap_per_stable).to_s
+          = t(".spending_limit", limit: )
+        - else
+          = t(".no_spending_limit")
+
+ruby:
+  pending = @auction.pending_sales_count
+  unsold = @auction.horses_count - pending
+  sold = @auction.sold_horses_count
+  active_tab = unsold.positive? ? :unsold : :sold
+.card.card-border.mt-2.shadow-md.dark:border-1.dark:border-neutral-100
+  .tabs.tabs-border.dark:border-neutral-400 role="tablist"
+    - label = unsold.positive? ? t(".unsold_horses", count: unsold) : t(".no_unsold")
+    input.tab type="radio" name="horses" aria-label=label checked=(active_tab == :unsold) disabled=unsold.zero?
+    .tab-content.bg-base-100.py-2
+      = render "table", type: :unsold, auction: @auction
+    - label = pending.positive? ? t(".pending_horses", count: pending) : t(".no_pending")
+    input.tab type="radio" name="horses" aria-label=label disabled=pending.zero?
+    .tab-content.bg-base-100.py-2
+      = render "table", type: :pending, auction: @auction
+    - label = sold.positive? ? t(".sold_horses", count: sold) : t(".no_sold")
+    input.tab type="radio" name="horses" aria-label=label checked=(active_tab == :sold) disabled=sold.zero?
+    .tab-content.bg-base-100.py-2
+      = render "table", type: :sold, auction: @auction

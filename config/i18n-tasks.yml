@@ -135,6 +135,7 @@ ignore_unused:
   - simple_form.{yes,no}
   - view_components.*
   - views.pagination.*
+  - common.*
   - date.*
   - time.*
   - number.*
@@ -147,6 +148,7 @@ ignore_unused:
   - horse.type.*
   - horse.lease_terminations.form.*
   - users.{create,update}.success
+  - horses.index.auctions*
 
 ## Exclude these keys from the `i18n-tasks eq-base' report:
 # ignore_eq_base:

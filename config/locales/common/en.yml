@@ -40,6 +40,11 @@ en:
     search_form:
       action: Search
       reset_filters: Reset filters
+    text:
+      attention: Attention
+      info: Info
+      'no': 'No'
+      'yes': 'Yes'
   daisy_ui:
     abyss: Abyss
     acid: Acid

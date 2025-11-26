@@ -51,13 +51,16 @@ end
 #  broodmare_allowed             :boolean          default(FALSE), not null
 #  end_time                      :datetime         not null, indexed
 #  horse_purchase_cap_per_stable :integer
+#  horses_count                  :integer          default(0), not null
 #  hours_until_sold              :integer          default(12), not null
 #  outside_horses_allowed        :boolean          default(FALSE), not null
+#  pending_sales_count           :integer          default(0), not null
 #  racehorse_allowed_2yo         :boolean          default(FALSE), not null
 #  racehorse_allowed_3yo         :boolean          default(FALSE), not null
 #  racehorse_allowed_older       :boolean          default(FALSE), not null
 #  reserve_pricing_allowed       :boolean          default(FALSE), not null
 #  slug                          :string           uniquely indexed
+#  sold_horses_count             :integer          default(0), not null
 #  spending_cap_per_stable       :integer
 #  stallion_allowed              :boolean          default(FALSE), not null
 #  start_time                    :datetime         not null, indexed

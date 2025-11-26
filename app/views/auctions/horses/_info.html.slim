@@ -1,0 +1,47 @@
+/# locals: (horse:)
+.overflow-x-auto
+  table.table
+    tbody
+      tr
+        th= t("horses.info.date_of_birth")
+        td
+          = l(horse.date_of_birth)
+          - unless horse.dead?
+            = "&nbsp;".html_safe
+            = "(#{horse.age}yo)"
+      tr
+        th= t("horses.info.gender")
+        td= horse.gender.titleize
+      tr
+        th= t("horses.info.status")
+        td= horse.status.titleize
+      tr
+        th= t("horses.info.owner")
+        td= horse.owner.name
+      tr
+        th= t("horses.info.color")
+        td= horse.appearance.color.titleize
+      tr
+        th= t("horses.info.markings")
+        td= horse.appearance.markings_description
+      tr
+        th= t("horses.info.height")
+        td= horse.appearance.height_display
+      tr
+        th= t("horses.info.track_record")
+        td= horse.track_record || t("horse.unraced")
+      - if Horses::Status::BREEDING_STATUSES.include?(horse.status)
+        tr
+          th= t("horses.info.breeding_record")
+          td
+            - if horse.female?
+              = horse.broodmare.breed_ranking_string
+            - else
+              = horse.stud.breed_ranking_string
+      - if Horses::Status::FEMALE_BREEDING_STATUSES.include?(horse.status)
+        tr
+          th= t("horses.info.last_foal")
+          td Not Yet Added
+        tr
+          th= t("horses.info.next_foal")
+          td Not Yet Added

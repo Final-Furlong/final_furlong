@@ -17,7 +17,20 @@ module Auctions
     validates :horse_id, uniqueness: true
 
     scope :sold, -> { where.not(sold_at: nil) }
+    scope :pending, -> { unsold.joins(:auction, :winning_bid).merge(Auctions::Bid.sale_time_met) }
     scope :unsold, -> { where(sold_at: nil) }
+    scope :with_reserve, -> { where.not(reserve_price: nil) }
+
+    delegate :name, :sire, :dam, :age, :gender, :status, to: :horse
+
+    counter_culture :auction,
+      column_names: -> {
+        {
+          Auctions::Horse.unsold => :horses_count,
+          Auctions::Horse.sold => :sold_horses_count,
+          Auctions::Horse.pending => :pending_sales_count
+        }
+      }
 
     def sold?
       sold_at.present?

@@ -1,0 +1,46 @@
+---
+en:
+  auctions:
+    bids:
+      create:
+        success: Bid was successful
+      form:
+        current_bid: Current Bid
+        maximum_bid: Maximum Bid
+        maximum_bid_hint: "(Optional) Must be %{amount} higher than your current bid."
+        notify_if_outbid: Notify if outbid?
+    horses:
+      bidding:
+        bid_at: Time
+        bid_history: Bid History
+        bidder: Bidder
+        current_bid: Bid Amount
+        no_bids: No Bids
+      show:
+        bidding: Bidding
+        details: Details
+    index:
+      auction_title: Title
+      auctioneer: Auctioneer
+      end_time: Ends On
+      horses: Horses
+      start_time: Starts On
+      title: Auctions
+    show:
+      days: Days
+      ends_in: This auction will end in
+      hours: Hrs
+      hours_until_sold: Horses will sell %{hours} hours after the last bid is placed, or at the close of the auction.
+      minutes: Mins
+      no_pending: Sale Pending
+      no_purchase_limit: There is no limit on how many horses you may purchase.
+      no_sold: Sold
+      no_spending_limit: There is no spending limit for this auction.
+      no_unsold: For Sale
+      pending_horses: Sale Pending (%{count})
+      purchase_limit: You are limited to purchasing %{limit} %{horses}.
+      seconds: Secs
+      sold_horses: Sold (%{count})
+      spending_limit: You are limit to spending %{limit} total.
+      starts_in: This auction will start in
+      unsold_horses: For Sale (%{count})

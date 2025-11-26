@@ -20,7 +20,8 @@ class Auction < ApplicationRecord
   after_commit :unschedule_deletion, on: :destroy
   after_commit :unconsign_legacy_horses, on: :destroy
 
-  validates :start_time, :end_time, :hours_until_sold, :title, presence: true
+  validates :start_time, :end_time, :hours_until_sold, :title, :horses_count,
+    :sold_horses_count, :pending_sales_count, presence: true
   validates :title, length: { in: 10..500 }
   validates :title, uniqueness: { case_sensitive: false }
   validates :broodmare_allowed, :outside_horses_allowed, :racehorse_allowed_2yo,
@@ -39,6 +40,8 @@ class Auction < ApplicationRecord
   scope :upcoming, -> { where(start_time: Time.current..) }
   scope :past, -> { where(end_time: ..Time.current) }
 
+  def to_key = [slug]
+
   def active?
     DateTime.current.between?(start_time, end_time)
   end
@@ -49,6 +52,14 @@ class Auction < ApplicationRecord
 
   def future?
     start_time > DateTime.current
+  end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[auctioneer_id end_time outside_horses_allowed start_time title]
+  end
+
+  def self.ransackable_scopes(_auth_object = nil)
+    %w[current future]
   end
 
   private
@@ -89,8 +100,6 @@ class Auction < ApplicationRecord
     start_time + MAXIMUM_DURATION.days
   end
 
-  private
-
   def minimum_status_required
     return if broodmare_allowed || racehorse_allowed_2yo || racehorse_allowed_3yo ||
       racehorse_allowed_older || stallion_allowed || weanling_allowed || yearling_allowed
@@ -115,13 +124,16 @@ end
 #  broodmare_allowed             :boolean          default(FALSE), not null
 #  end_time                      :datetime         not null, indexed
 #  horse_purchase_cap_per_stable :integer
+#  horses_count                  :integer          default(0), not null
 #  hours_until_sold              :integer          default(12), not null
 #  outside_horses_allowed        :boolean          default(FALSE), not null
+#  pending_sales_count           :integer          default(0), not null
 #  racehorse_allowed_2yo         :boolean          default(FALSE), not null
 #  racehorse_allowed_3yo         :boolean          default(FALSE), not null
 #  racehorse_allowed_older       :boolean          default(FALSE), not null
 #  reserve_pricing_allowed       :boolean          default(FALSE), not null
 #  slug                          :string           uniquely indexed
+#  sold_horses_count             :integer          default(0), not null
 #  spending_cap_per_stable       :integer
 #  stallion_allowed              :boolean          default(FALSE), not null
 #  start_time                    :datetime         not null, indexed

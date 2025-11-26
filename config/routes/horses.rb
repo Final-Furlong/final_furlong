@@ -26,3 +26,11 @@ resources :horses, except: %i[new create destroy] do
   end
 end
 
+resources :auctions do
+  scope module: "auctions" do
+    resources :horses do
+      resources :bids, only: %i[new create]
+    end
+  end
+end
+

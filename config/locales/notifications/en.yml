@@ -1,6 +1,10 @@
 ---
 en:
   notifications:
+    auction_outbid_notification:
+      title: Outbid in Auction
+      view_bidding:
+        link: View Bidding
     destroy:
       success: Notification was successfully deleted
     index:

@@ -33,6 +33,7 @@ class Auctions::ProcessSalesJob < ApplicationJob
     else
       5.minutes.ago
     end
+    next_updated_at = auction.end_time - 5.minutes if next_updated_at > auction.end_time
     Auctions::ProcessSalesJob.set(wait_until: next_updated_at + auction.hours_until_sold.hours).perform_later(auction)
   end
 end

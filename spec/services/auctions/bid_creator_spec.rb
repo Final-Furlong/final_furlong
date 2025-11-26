@@ -102,7 +102,7 @@ RSpec.describe Auctions::BidCreator do
 
     it "returns error" do
       result = described_class.new.create_bid(bid_params.merge(current_bid: 500))
-      expect(result.error).to eq "Current bid must be greater than or equal to #{Auctions::Bid::MINIMUM_BID}"
+      expect(result.error).to eq "Bid must be greater than or equal to #{Auctions::Bid::MINIMUM_BID}"
     end
 
     it "does not create bid" do
@@ -377,7 +377,7 @@ RSpec.describe Auctions::BidCreator do
     it "returns created false" do
       auction = create(:auction, :current, spending_cap_per_stable: 10_000)
       horse.update(auction:)
-      other_bid = create(:auction_bid, auction:, bidder: stable, current_bid: 10_000, maximum_bid: 10_000, updated_at: 1.day.ago)
+      other_bid = create(:auction_bid, auction:, bidder: stable, current_bid: 10_000, maximum_bid: 10_000, updated_at: 1.day.ago, current_high_bid: true)
       other_bid.horse.update(sold_at: Time.current)
       result = described_class.new.create_bid(bid_params.merge(auction_id: auction.id, current_bid: 10_000))
       expect(result.created?).to be false
@@ -386,7 +386,7 @@ RSpec.describe Auctions::BidCreator do
     it "returns error" do
       auction = create(:auction, :current, spending_cap_per_stable: 10_000)
       horse.update(auction:)
-      other_bid = create(:auction_bid, auction:, bidder: stable, current_bid: 10_000, maximum_bid: 10_000, updated_at: 1.day.ago)
+      other_bid = create(:auction_bid, auction:, bidder: stable, current_bid: 10_000, maximum_bid: 10_000, updated_at: 1.day.ago, current_high_bid: true)
       other_bid.horse.update(sold_at: Time.current)
       result = described_class.new.create_bid(bid_params.merge(auction_id: auction.id, current_bid: 15_000))
       expect(result.error).to eq error("spent_max_money")
@@ -395,7 +395,7 @@ RSpec.describe Auctions::BidCreator do
     it "does not create bid" do
       auction = create(:auction, :current, spending_cap_per_stable: 10_000)
       horse.update(auction:)
-      other_bid = create(:auction_bid, auction:, bidder: stable, current_bid: 10_000, maximum_bid: 10_000, updated_at: 1.day.ago)
+      other_bid = create(:auction_bid, auction:, bidder: stable, current_bid: 10_000, maximum_bid: 10_000, updated_at: 1.day.ago, current_high_bid: true)
       other_bid.horse.update(sold_at: Time.current)
       expect do
         described_class.new.create_bid(bid_params.merge(auction_id: auction.id, current_bid: 15_000))

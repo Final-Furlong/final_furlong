@@ -1,0 +1,29 @@
+/# locals: (auction_horse:)
+- auction = auction_horse.auction
+- bids = auction_horse.bids
+.grid.grid-cols-1.my-2.md:grid-cols-2
+  div
+    table.table.table-zebra
+      thead
+        tr
+          th.text-center colspan=2 = t(".bid_history")
+        - unless bids.empty?
+          tr
+            th= t(".bidder")
+            th= t(".current_bid")
+            th= t(".bid_at")
+      tbody
+        - if bids.empty?
+          tr
+            td.text-center colspan=2 = t(".no_bids")
+        - else
+          - bids.includes(:bidder).order(bid_at: :desc).each do |bid|
+            tr
+              td= bid.bidder.name
+              td= Game::MoneyFormatter.new(bid.current_bid).to_s
+              td= l(bid.bid_at, format: :long)
+  div.px-2
+    - if policy(auction_horse).bid?
+      = turbo_frame_tag "bid-form" do
+        - high_bid = bids.order(bid_at: :desc).first
+        = render "auctions/bids/form", auction:, auction_horse:, bid: auction_horse.bids.build, current_bid: high_bid

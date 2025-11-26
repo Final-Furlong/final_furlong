@@ -1,0 +1,17 @@
+- horse = @auction_horse.horse
+- current_tab = params[:tab] || :details
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: @auction.title, href: auction_path(@auction) },
+          { name: horse.name || t("horse.unnamed"), href: "#" }])
+
+.card.card-border.mt-2.shadow-md.dark:border-1.dark:border-neutral-100
+  .tabs.tabs-border.dark:border-neutral-400 role="tablist"
+    input.tab type="radio" name="horses" aria-label=t(".details") checked=(current_tab.to_sym == :details)
+    .tab-content.bg-base-100.py-2
+      .px-2
+        = render "horse/pedigrees/table", horse:
+      .mt-2
+        = render "info", horse:
+    input.tab type="radio" name="horses" aria-label=t(".bidding") checked=(current_tab.to_sym == :bidding)
+    .tab-content.bg-base-100.py-2
+      = render "bidding", auction_horse: @auction_horse

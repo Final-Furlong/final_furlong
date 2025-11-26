@@ -1,0 +1,25 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(title: t("auctions.index.title"))
+
+.mx-auto
+  .table-responsive-md
+    table.table.table-responsive.table-zebra.table-sm.sortable.n-last
+      thead
+        tr
+          th.text-center colspan=5
+            = "#{@auctions.count} #{"Auction".pluralize(@auctions.count)}"
+        tr
+          th= t(".auction_title")
+          th= t(".auctioneer")
+          th= t(".start_time")
+          th= t(".end_time")
+          th= t(".horses")
+      - @auctions.each do |auction|
+        tr
+          td= link_to auction.title, auction_path(auction), target: "_top"
+          td= auction.auctioneer.name
+          td data-sort=auction.start_time = l(auction.start_time, format: :short)
+          td data-sort=auction.end_time = l(auction.end_time, format: :short)
+          - horses = auction.horses_count
+          td data-sort=horses
+            = "#{horses} #{"Horse".pluralize(horses)}"

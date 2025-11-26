@@ -704,7 +704,10 @@ CREATE TABLE public.auctions (
     public_id character varying(12),
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
-    slug character varying
+    slug character varying,
+    horses_count integer DEFAULT 0 NOT NULL,
+    sold_horses_count integer DEFAULT 0 NOT NULL,
+    pending_sales_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -6087,6 +6090,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251126225534'),
 ('20251122162900'),
 ('20251122155624'),
 ('20251121104735'),

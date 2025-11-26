@@ -11,6 +11,15 @@ en:
         weak: 'must be at least 8 characters long and contain: an upper case character, a lower case character, a digit and a non-alphabet character.'
   activerecord:
     attributes:
+      auctions/bid:
+        bidder_id: Bidder
+        current_bid: Bid
+        time_left: Sells At
+      auctions/horse:
+        consigned_by: Consigner
+        reserve_price: Reserve
+      horses/horse:
+        yob: YOB
       horses/lease:
         end_date: End Date
       horses/lease_offer:
@@ -56,7 +65,15 @@ en:
         auctions/bid:
           attributes:
             base:
+              bought_max_horses: You have already bought (or have the high bid on) the maximum number of horses.
               cannot_be_owner: Cannot bid on your own horse!
+              is_current_high_bidder: You currently have the high bid!
+              spent_max_money: You have already spent the maximum amount of money.
+            current_bid:
+              cannot_afford: is more than you can afford
+            maximum_bid:
+              cannot_afford: is more than you can afford
+              invalid_increment: must be in increments of $500
         auctions/horse:
           attributes:
             horse_id:
@@ -114,3 +131,5 @@ en:
             mode:
               cannot_afford: costs more than you can afford
               invalid: is invalid for this route
+    models:
+      horses/horse: Horse

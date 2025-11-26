@@ -19,6 +19,10 @@ module Auctions
     scope :current_high_bid, -> { where(current_high_bid: true) }
     scope :sale_time_met, -> { joins(:auction).where("#{table_name}.bid_at <= CURRENT_TIMESTAMP - (auctions.hours_until_sold * INTERVAL '1 hour')") }
     scope :sale_time_not_met, -> { joins(:auction).where("#{table_name}.bid_at > CURRENT_TIMESTAMP - (auctions.hours_until_sold * INTERVAL '1 hour')") }
+
+    def sale_time_met?
+      DateTime.current >= bid_at + auction.hours_until_sold.hours
+    end
   end
 end
 

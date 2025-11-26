@@ -1,4 +1,10 @@
 class AuctionPolicy < AuthenticatedPolicy
+  class Scope < ApplicationPolicy::Scope
+    def resolve
+      scope
+    end
+  end
+
   def create?
     return false unless user&.stable
 
