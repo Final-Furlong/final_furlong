@@ -44,7 +44,7 @@ class Racing::RaceSchedule < ApplicationRecord
   end
 
   def race_age_string
-    strings = age.split("")
+    strings = age.chars
     (strings.count > 1) ? strings.join("yo") : "#{strings[0]}yo"
   end
 
