@@ -37,7 +37,7 @@ class Auction < ApplicationRecord
   validate :final_furlong_only, on: :auto_create
 
   scope :current, -> { where(start_time: ..Time.current, end_time: Time.current..) }
-  scope :upcoming, -> { where(start_time: Time.current..) }
+  scope :upcoming, -> { where("start_time > ?", Time.current) }
   scope :past, -> { where(end_time: ..Time.current) }
 
   def to_key = [slug]
@@ -59,7 +59,7 @@ class Auction < ApplicationRecord
   end
 
   def self.ransackable_scopes(_auth_object = nil)
-    %w[current future]
+    %i[current upcoming]
   end
 
   private
