@@ -10,7 +10,7 @@ html(lang= I18n.locale)
             = render Nav::I18n::Component.new(locale: I18n.locale, version: :phone, variants: request.variant)
         = render "layouts/top_nav"
         = yield :breadcrumbs
-        .container.p-6.clear-both.mb-12.sm:p-4.sm:mb-2
+        .container.p-6.clear-both.mb-16.sm:p-4.sm:mb-2
           = render Users::ImpersonatingBanner::Component.new
           = render partial: "layouts/flash"
           = yield
