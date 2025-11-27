@@ -1,0 +1,30 @@
+/# locals: (date:, number:)
+ruby:
+  if number == 1
+    prev_date = Racing::RaceResult.where(date: ...date).maximum(:date)
+    prev_number = Racing::RaceResult.where(date: prev_date).maximum(:number)
+    prev_text = "#{l(prev_date)} ##{prev_number}"
+    next_date = date
+    next_number = number + 1
+    next_text = "#{l(date)} ##{next_number}"
+  elsif number == Racing::RaceResult.where(date: date).maximum(:number)
+    prev_date = date
+    prev_number = number - 1
+    prev_text = "#{l(date)} ##{prev_number}"
+    next_date = Racing::RaceResult.where('date > ?', date).minimum(:date)
+    next_number = 1
+    next_text = "#{l(next_date)} ##{next_number}"
+  else
+    prev_date = date
+    prev_number = number - 1
+    prev_text = "#{l(date)} ##{prev_number}"
+    next_date = date
+    next_number = number + 1
+    next_text = "#{l(date)} ##{next_number}"
+  end
+
+.w-full.flex.mb-2
+  .flex-1
+    = link_to prev_text, racing_result_path(prev_date, prev_number), class: "btn btn-outline btn-sm"
+  .flex-none
+    = link_to next_text, racing_result_path(next_date, next_number), class: "btn btn-outline btn-sm #{"btn-disabled" if next_date > Date.current}"

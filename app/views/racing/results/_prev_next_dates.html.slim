@@ -1,0 +1,8 @@
+/# locals: (prev_date:, next_date:)
+
+.w-full.flex.mb-2
+  .flex-1
+    = link_to l(prev_date), racing_results_path(date: prev_date), class: "btn btn-outline btn-sm"
+  .flex-none
+    - disabled = next_date > Date.current || !Racing::RaceResult.where(date: next_date, number: 1).exists?
+    = link_to l(next_date), racing_results_path(date: next_date), class: "btn btn-outline btn-sm #{"btn-disabled" if disabled}"
