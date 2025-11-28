@@ -2,19 +2,8 @@ module Game
   class Activity < ApplicationRecord
     self.table_name = "game_activity_points"
 
-    ACTIVITY_TYPES = %w[
-      color_war
-      auction
-      selling
-      buying
-      breeding
-      claiming
-      entering
-      redeem
-    ].freeze
-
     validates :activity_type, :first_year_points, :second_year_points, :older_year_points, presence: true
-    validates :activity_type, inclusion: { in: ACTIVITY_TYPES }
+    validates :activity_type, inclusion: { in: Config::Game.activity_types }
     validates :first_year_points, :second_year_points, :older_year_points, numericality: { only_integer: true }
   end
 end

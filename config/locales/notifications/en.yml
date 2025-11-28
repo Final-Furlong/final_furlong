@@ -2,6 +2,7 @@
 en:
   notifications:
     auction_outbid_notification:
+      message: You no longer have the high bid on %{name} in the %{auction}
       title: Outbid in Auction
       view_bidding:
         link: View Bidding
@@ -13,18 +14,23 @@ en:
       notification_deletion: Notifications that have been marked read will be automatically deleted after 30 days.
       warning: Attention
     lease_acceptance_notification:
+      message: "%{stable} has accepted the lease on %{horse} for %{duration} for %{fee}"
       title: Lease Started
     lease_expiry_notification:
+      message: The lease on %{name} has ended.
       title: Lease Ended
     lease_offer_expiry_notification:
+      message: 'The lease offer on %{horse} for %{duration} (Fee: %{fee}) has expired.'
       title: Lease Offer Expired
     lease_offer_notification:
       accept_lease:
         confirm: Are you sure you want to accept this lease?
+      message: "%{stable} has offered to lease %{horse} to you for %{duration} for %{fee}"
       reject_lease:
         confirm: Are you sure you want to reject this lease?
       title: Horse for Lease
     lease_rejection_notification:
+      message: "%{stable} has rejected the lease offer on %{horse} for %{fee}"
       title: Lease Declined
     notification:
       default_message: We do not know how to describe what happened.
@@ -33,16 +39,20 @@ en:
         unread: unread
       title: Something happened
     sale_acceptance_notification:
+      message: "%{stable} has purchased %{horse} for %{price}"
       title: Horse Sold
     sale_offer_expiry_notification:
+      message: 'The sale offer on %{horse} (Price: %{price}) has expired.'
       title: Sale Offer Expired
     sale_offer_notification:
       buy_horse:
         confirm: Are you sure you want to buy this horse?
+      message: "%{stable} has offered to sell %{horse]} to you for %{price}"
       reject_sale:
         confirm: Are you sure you want to reject this offer?
       title: Horse for Sale
     sale_rejection_notification:
+      message: "%{stable} has rejected the sale offer on %{horse} for %{price}"
       title: Sale Declined
     shared:
       view_horse:

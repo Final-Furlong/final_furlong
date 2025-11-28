@@ -1,8 +1,7 @@
 module CurrentStable
   class TrainingScheduleHorsesController < ::AuthenticatedController
     before_action :set_schedule
-    before_action :set_schedule_horse, only: %i[new create]
-    before_action :set_stable_horses, only: :new
+    before_action :set_schedule_horse, only: :create
 
     skip_after_action :verify_pundit_authorization, only: :index
 
@@ -12,14 +11,20 @@ module CurrentStable
 
     def index
       authorize schedule, :view_horses?
-      query = Horses::Horse.joins(:training_schedule).where(training_schedules: { id: schedule }, owner: Current.stable)
-        .includes(:race_metadata, :race_options, :current_boarding).order(name: :asc)
+      type = params[:type].to_s.inquiry
+      if type.workouts?
+        query = policy_scope(Horses::Horse.racehorse.joins(:training_schedule).where(training_schedules: { id: schedule }),
+          policy_scope_class: Racing::TrainingScheduleHorsePolicy::Scope)
+        query = query.includes(:race_metadata, :race_options, :current_boarding).order(name: :asc)
+      else
+        horses_query = Horses::Horse.racehorse.left_joins(:training_schedule).where(training_schedules: { id: [schedule, nil] })
+        query = policy_scope(horses_query, policy_scope_class: CurrentStable::HorsePolicy::Scope)
+      end
+      query = query.order(training_schedules: { id: :asc }, name: :asc)
 
       @pagy, @horses = pagy(:offset, query)
-    end
-
-    def new
-      authorize schedule
+      page = type.workouts? ? "workouts" : "index"
+      render "current_stable/training_schedule_horses/#{page}"
     end
 
     def create

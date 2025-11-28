@@ -53,7 +53,7 @@ module Horses
         ActiveRecord::Base.transaction do
           if shipment.valid? && shipment.save
             unless shipment.future?
-              # TODO: update race stats to flag in transit
+              horse.race_stats&.update(in_transit: true)
               legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
               legacy_horse&.update(InTransit: 1)
               Legacy::ViewRacehorses.find_by(horse_id: horse.legacy_id)&.update(in_transit: 1)

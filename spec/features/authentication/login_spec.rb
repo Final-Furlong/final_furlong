@@ -57,7 +57,7 @@ RSpec.describe "Login Spec" do
     fill_in "user[login]", with: SecureRandom.alphanumeric(10)
     fill_in "user[password]", with: SecureRandom.alphanumeric(10)
     click_on t("devise.sessions.new.sign_in")
-    expect(page).to have_text t("devise.failure.invalid", authentication_keys: "Login")
+    expect(page).to have_text t("devise.failure.invalid", authentication_keys: "login")
     expect(page).to have_current_path new_user_session_path, ignore_query: true
   end
 

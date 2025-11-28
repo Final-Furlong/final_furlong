@@ -1,0 +1,92 @@
+/# locals: (options:, horse:)
+= form_with model: options, url: horse_race_options_path(horse), id: "race-options-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+  - if options.racehorse_type == 'flat'
+    .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+      div
+        fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+          label.label
+            = f.checkbox :runs_on_dirt, class: 'toggle validator', required: true
+            = t(".runs_on_dirt")
+            - if options.errors[:runs_on_dirt]
+              p.text-error= options.errors.where(:runs_on_dirt).map(&:full_message).join(', ')
+      div
+        fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+          label.label
+            = f.checkbox :runs_on_turf, class: 'toggle validator', required: true
+            = t(".runs_on_turf")
+            - if options.errors[:runs_on_turf]
+              p.text-error= options.errors.where(:runs_on_turf).map(&:full_message).join(', ')
+    .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+      div
+        fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+          label.label
+            = f.checkbox :trains_on_dirt, class: 'toggle validator', required: true
+            = t(".trains_on_dirt")
+            - if options.errors[:trains_on_dirt]
+              p.text-error= options.errors.where(:trains_on_dirt).map(&:full_message).join(', ')
+      div
+        fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+          label.label
+            = f.checkbox :trains_on_turf, class: 'toggle validator', required: true
+            = t(".trains_on_turf")
+            - if options.errors[:trains_on_turf]
+              p.text-error= options.errors.where(:trains_on_turf).map(&:full_message).join(', ')
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".racing_style")
+        = f.select :racing_style, options_for_select(options.options_for_style_select, options.racing_style), { prompt: t(".jockey_decide") }, { class: 'select' }
+        - if options.errors[:racing_style]
+          p.text-error= options.errors.where(:racing_style).map(&:full_message).join(', ')
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".first_jockey")
+        = f.select :first_jockey, options_for_select(options.options_for_jockey_select(options.racehorse_type), options.first_jockey_id), { include_blank: true }, { class: 'select' }
+        - if options.errors[:first_jockey]
+          p.text-error= options.errors.where(:first_jockey).map(&:full_message).join(', ')
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".second_jockey")
+        = f.select :second_jockey, options_for_select(options.options_for_jockey_select(options.racehorse_type), options.second_jockey_id), { include_blank: true }, { class: 'select' }
+        - if options.errors[:second_jockey]
+          p.text-error= options.errors.where(:second_jockey).map(&:full_message).join(', ')
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".third_jockey")
+        = f.select :third_jockey, options_for_select(options.options_for_jockey_select(options.racehorse_type), options.third_jockey_id), { include_blank: true }, { class: 'select' }
+        - if options.errors[:third_jockey]
+          p.text-error= options.errors.where(:third_jockey).map(&:full_message).join(', ')
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".minimum_distance")
+        = f.select :minimum_distance, options_for_select(options.options_for_distance_select, options.minimum_distance), { include_blank: true }, { class: 'select' }
+        p.label= t(".minimum_distance_hint")
+        - if options.calculated_minimum_distance > 5.0
+          p.label= t(".suggested_minimum", value: I18n.t("racing.distance_furlongs", value: options.calculated_minimum_distance))
+        - if options.errors[:minimum_distance]
+          p.text-error= options.errors.where(:minimum_distance).map(&:full_message).join(', ')
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".maximum_distance")
+        = f.select :maximum_distance, options_for_select(options.options_for_distance_select, options.maximum_distance), { include_blank: true }, { class: 'select' }
+        p.label= t(".maximum_distance_hint")
+        - if options.calculated_maximum_distance < 24.0
+          p.label= t(".suggested_maximum", value: I18n.t("racing.distance_furlongs", value: options.calculated_maximum_distance))
+        - if options.errors[:maximum_distance]
+          p.text-error= options.errors.where(:maximum_distance).map(&:full_message).join(', ')
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      = render Ui::EquipmentForm::Component.new(blinkers: options.blinkers, shadow_roll: options.shadow_roll, wraps: options.wraps,
+              figure_8: options.figure_8, no_whip: options.no_whip, disabled: false, classes: "", id: "racing_race_option", object: options)
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".note_for_next_race")
+        textarea.textarea.h-24[ placeholder=t(".sample_note") id="racing_race_option_note_for_next_race" name="racing_race_option[note_for_next_race]"]
+        .label= t(".note_hint")
+        - if options.errors[:note_for_next_race]
+          p.text-error= options.errors.where(:note_for_next_race).map(&:full_message).join(', ')
+  .float-right
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.save"))

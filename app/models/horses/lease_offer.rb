@@ -1,10 +1,5 @@
 module Horses
   class LeaseOffer < ApplicationRecord
-    RACEHORSE_MIN_MONTHS = 3
-    NON_RACEHORSE_MIN_MONTHS = 12
-    MAX_MONTHS = 12
-    MAX_OFFER_PERIOD_DAYS = 60
-
     belongs_to :horse, class_name: "Horses::Horse"
     belongs_to :owner, class_name: "Account::Stable"
     belongs_to :leaser, class_name: "Account::Stable", optional: true
@@ -12,14 +7,14 @@ module Horses
     validates :offer_start_date, :duration_months, :fee, presence: true
     validates :offer_start_date, comparison: { greater_than_or_equal_to: :minimum_offer_date }
     validates :offer_start_date, comparison: { less_than_or_equal_to: :maximum_offer_date }
-    validates :duration_months, comparison: { greater_than_or_equal_to: :minimum_months, less_than_or_equal_to: MAX_MONTHS }, unless: :non_racehorse?
+    validates :duration_months, comparison: { greater_than_or_equal_to: :minimum_months, less_than_or_equal_to: :max_months }, unless: :non_racehorse?
     validates :duration_months, numericality: { only_integer: true, equal_to: :minimum_months }, if: :non_racehorse?
     validates :new_members_only, inclusion: { in: [true, false] }
     validates :new_members_only, inclusion: { in: [false] }, if: :leaser
 
     # rubocop:disable Rails/WhereEquals
     scope :active, -> { where(offer_start_date: ..Date.current) }
-    scope :expired, -> { where(offer_start_date: ..(Date.current - (MAX_OFFER_PERIOD_DAYS + 1).days)) }
+    scope :expired, -> { where(offer_start_date: ..(Date.current - (Config::Leases.max_offer_period + 1).days)) }
     scope :starts_today, -> { where(offer_start_date: Date.current) }
     scope :with_leaser, -> { where.not(leaser_id: nil) }
 
@@ -48,21 +43,25 @@ module Horses
     # rubocop:enable Rails/WhereEquals
 
     def maximum_offer_date
-      Date.current + MAX_OFFER_PERIOD_DAYS.days
+      Date.current + Config::Leases.max_offer_period.days
     end
 
     def minimum_offer_date
-      horse&.racehorse? ? Date.current : Game::BreedingSeason.next_season_start_date - MAX_OFFER_PERIOD_DAYS.days
+      horse&.racehorse? ? Date.current : Game::BreedingSeason.next_season_start_date - Config::Leases.max_offer_period.days
     end
 
     def minimum_months
-      horse&.racehorse? ? RACEHORSE_MIN_MONTHS : NON_RACEHORSE_MIN_MONTHS
+      horse&.racehorse? ? Config::Leases.min_duration_racehorses_months : Config::Leases.min_duration_non_racehorses_months
     end
 
     def options_for_duration_select
-      (minimum_months..MAX_MONTHS).each do |month|
+      (minimum_months..max_months).each do |month|
         [month, month]
       end
+    end
+
+    def max_months
+      Config::Leases.max_duration_months
     end
 
     private

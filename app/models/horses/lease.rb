@@ -1,8 +1,5 @@
 module Horses
   class Lease < ApplicationRecord
-    RACEHORSE_TIME = 3.months
-    NON_RACEHORSE_TIME = 1.year
-
     belongs_to :horse, class_name: "Horse"
     belongs_to :owner, class_name: "Account::Stable"
     belongs_to :leaser, class_name: "Account::Stable"
@@ -27,12 +24,12 @@ module Horses
     private
 
     def start_date_plus_minimum_duration
-      minimum_time = horse.racehorse? ? RACEHORSE_TIME : NON_RACEHORSE_TIME
-      start_date + minimum_time
+      minimum_months = horse.racehorse? ? Config::Leases.min_duration_racehorses_months : Config::Leases.min_duration_non_racehorses_months
+      start_date + minimum_months.months
     end
 
     def start_date_plus_maximum_duration
-      start_date + 1.year
+      start_date + Config::Leases.max_duration_months.months
     end
   end
 end

@@ -8,40 +8,39 @@ ruby:
 
 = render "prev_next_dates", prev_date:, next_date:
 .overflow-x-auto.rounded-box.border.bg-base-100
-  table.table.table-responsive.table-zebra.sortable.asc.n-last.table-xs.md:table-md
+  table.table.table-responsive.table-zebra.sortable.asc.n-last.table-xs.md:table-sm
     thead
       tr
+        th.pr-0 data-sort-tbr="3"
+          i.ph-fill.ph-horse
         th= t("racing.race.number")
         th= t("racing.race.track")
-        th= t("racing.race.type")
+        th data-sort-tbr="2" = t("racing.race.type")
         th= t("racing.race.distance")
-        th= t("racing.race.surface")
-        th= t("racing.race.age")
+        th data-sort-tbr="3" = t("racing.race.surface")
+        th data-sort-tbr="3" = t("racing.race.age")
         th= t("racing.race.gender")
         th= t("racing.race.name")
+        th= t("racing.race.purse")
     tbody
       - @races.each do |race|
         tr
+          td.pr-0 data-sort=race.entries_count
+            span= race.entries_count
+            - if policy(Racing::RaceEntry.new(race:, date: race.date)).new?
+              = link_to new_racing_entry_path(date: race.date, number: race.number), class: "ml-2", target: "modal" do
+                i.ph.ph-plus
           td= race.number
           td= race.racetrack.name
-          - sort = Racing::RaceSchedule::RACE_TYPES.find_index(race.race_type)
-          - sort += Racing::RaceSchedule::RACE_GRADES.find_index(race.grade) if race.race_type == "stakes"
-          td data-sort=sort
+          td data-sort=race.race_type_sort
             span.hidden.lg:inline
-              = t("racing.race.#{race.race_type.downcase}")
-              - if race.race_type == "stakes"
-                = "&nbsp;".html_safe
-                = " (#{race.grade.titleize})"
+              = race.race_type_string(false)
             span.inline.lg:hidden
-              = t("racing.race.mobile.#{race.race_type.downcase}")
-              - if race.race_type == "stakes"
-                = "&nbsp; (".html_safe
-                = t("racing.race.mobile.#{race.grade.downcase.gsub(' ', '_')}")
-                = ")"
+              = race.race_type_string(true)
           td data-sort=race.distance
             span.hidden.lg:inline = t("racing.race.furlongs", number: race.distance)
             span.inline.lg:hidden = t("racing.race.mobile.furlongs", number: race.distance)
-          - sort = Racing::TrackSurface::SURFACES.find_index(race.track_surface.surface)
+          - sort = Config::Racing.surfaces.find_index(race.track_surface.surface)
           td data-sort=sort = t("racing.race.surface_#{race.track_surface.surface}")
           td= race.race_age_string
           td

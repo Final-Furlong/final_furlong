@@ -2,8 +2,6 @@ module Shipping
   class BroodmareShipment < ApplicationRecord
     self.table_name = "broodmare_shipments"
 
-    MAX_DELAYED_SHIPMENT_DAYS = 60
-
     belongs_to :horse, class_name: "Horses::Horse"
     belongs_to :starting_farm, class_name: "Account::Stable"
     belongs_to :ending_farm, class_name: "Account::Stable"
@@ -12,7 +10,7 @@ module Shipping
     validates :departure_date, comparison: { greater_than_or_equal_to: -> { Date.current }, less_than_or_equal_to: :maximum_departure_date }, on: :new_shipment
     validates :arrival_date, comparison: { greater_than: :departure_date }, if: :departure_date
     validates :ending_farm, comparison: { other_than: :starting_farm }, if: :starting_farm
-    validates :mode, inclusion: { in: Route::MODES }
+    validates :mode, inclusion: { in: Config::Shipping.modes }
 
     scope :current, -> { where(departure_date: ..Date.current) }
     scope :future, -> { where("departure_date > ?", Date.current) }
@@ -22,7 +20,7 @@ module Shipping
     end
 
     def maximum_departure_date
-      Date.current + MAX_DELAYED_SHIPMENT_DAYS.days
+      Date.current + Config::Shipping.max_delay.days
     end
 
     def options_for_destination_select
@@ -46,7 +44,7 @@ module Shipping
     end
 
     def options_for_mode_select
-      Route::MODES.map { |mode| [I18n.t("horse.shipments.form.mode_#{mode}"), mode] }
+      Config::Shipping.modes.map { |mode| [I18n.t("horse.shipments.form.mode_#{mode}"), mode] }
     end
   end
 end

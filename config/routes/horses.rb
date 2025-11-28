@@ -18,6 +18,7 @@ resources :horses, except: %i[new create destroy] do
       resources :foals, only: :index
       resources :images, only: :index
       resource :pedigree, only: :show
+      resource :race_options, only: %i[edit update]
       resources :sales, only: :index
       resource :sale_offer, only: %i[new create destroy]
       resource :sale_offer_acceptance, only: :create

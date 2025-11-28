@@ -42,7 +42,7 @@ module Auctions
         horse_type: "yearling",
         minimum_age: 1,
         maximum_age: 1,
-        minimum_count: 75,
+        minimum_count: Config::Auctions.dig(:foal_auction, :yearlings),
         stakes_quality: false
       )
     end
@@ -53,7 +53,7 @@ module Auctions
         horse_type: "weanling",
         minimum_age: 0,
         maximum_age: 0,
-        minimum_count: 50,
+        minimum_count: Config::Auctions.dig(:foal_auction, :weanlings),
         stakes_quality: false
       )
     end

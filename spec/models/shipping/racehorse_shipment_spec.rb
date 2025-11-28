@@ -10,7 +10,7 @@ RSpec.describe Shipping::RacehorseShipment do
     it { is_expected.to validate_presence_of(:arrival_date) }
     it { is_expected.to validate_presence_of(:mode) }
     it { is_expected.to validate_presence_of(:shipping_type) }
-    it { is_expected.to validate_inclusion_of(:mode).in_array(Shipping::Route::MODES) }
+    it { is_expected.to validate_inclusion_of(:mode).in_array(Config::Shipping.modes) }
 
     describe "departure date" do
       it "can be the current date" do
@@ -31,7 +31,7 @@ RSpec.describe Shipping::RacehorseShipment do
         end
 
         it "cannot be too far in the future" do
-          max_date = Date.current + described_class::MAX_DELAYED_SHIPMENT_DAYS.days
+          max_date = Date.current + Config::Shipping.max_delay.days
           shipment = build(:racehorse_shipment, departure_date: max_date + 1.day)
           expect(shipment.valid?(:new_shipment)).to be false
           expect(shipment.errors[:departure_date]).to eq(["must be less than or equal to #{l(max_date)}"])
