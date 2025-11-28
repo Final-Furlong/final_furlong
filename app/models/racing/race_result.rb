@@ -1,7 +1,8 @@
 module Racing
   class RaceResult < ApplicationRecord
+    include RaceTypeable
+
     self.table_name = "race_results"
-    self.ignored_columns += ["old_id"]
 
     SPLITS = %w[4Q 2F].freeze
 
