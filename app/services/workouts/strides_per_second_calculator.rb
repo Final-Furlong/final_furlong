@@ -23,11 +23,11 @@ class Workouts::StridesPerSecondCalculator
   def call
     base_value = case activity.downcase.to_sym
     when :walk
-      rand(10.0..20.0)
+      rand(Config::Workouts.dig(:walk, :strides_per_second_min)..Config::Workouts.dig(:walk, :strides_per_second_max))
     when :jog, :trot
-      rand(20.0..30.0)
+      rand(Config::Workouts.dig(:jog, :strides_per_second_min)..Config::Workouts.dig(:jog, :strides_per_second_max))
     when :canter
-      rand(15.0..20.0)
+      rand(Config::Workouts.dig(:canter, :strides_per_second_min)..Config::Workouts.dig(:canter, :strides_per_second_max))
     when :gallop
       strides_per_second * random_percent
     when :breeze

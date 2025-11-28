@@ -64,6 +64,7 @@ module Accounts
         setting.racing[:apply_minimums_for_future_races] ||= true
       else
         setting.racing[:min_energy_for_race_entry] = attrs[:min_energy_for_race_entry] if attrs[:min_energy_for_race_entry]
+        setting.racing[:min_energy_for_workout] = attrs[:min_energy_for_workout] if attrs[:min_energy_for_workout]
         setting.racing[:min_days_delay_from_last_race] = attrs[:min_days_delay_from_last_race] || 0
         setting.racing[:min_days_delay_from_last_injury] = attrs[:min_days_delay_from_last_injury] || 0
         setting.racing[:min_days_rest_between_races] = attrs[:min_days_rest_between_races] || 0

@@ -102,13 +102,13 @@ RSpec.describe Auctions::BidCreator do
 
     it "returns error" do
       result = described_class.new.create_bid(bid_params.merge(current_bid: 500))
-      expect(result.error).to eq "Bid must be greater than or equal to #{Auctions::Bid::MINIMUM_BID}"
+      expect(result.error).to eq "Bid must be greater than or equal to #{Config::Auctions.minimum_starting_bid}"
     end
 
     it "does not create bid" do
       expect do
         result = described_class.new.create_bid(bid_params.merge(current_bid: 500))
-        expect(result.bid.errors[:current_bid]).to eq(["must be greater than or equal to #{Auctions::Bid::MINIMUM_BID}"])
+        expect(result.bid.errors[:current_bid]).to eq(["must be greater than or equal to #{Config::Auctions.minimum_starting_bid}"])
       end.not_to change(Auctions::Bid, :count)
     end
   end
@@ -123,7 +123,7 @@ RSpec.describe Auctions::BidCreator do
     it "returns error" do
       create(:auction_bid, auction:, horse:, current_bid: 1000)
       result = described_class.new.create_bid(bid_params)
-      expect(result.error).to eq "Current bid must be greater than or equal to #{Game::MoneyFormatter.new(1000 + Auctions::Bid::MINIMUM_INCREMENT)}"
+      expect(result.error).to eq "Current bid must be greater than or equal to #{Game::MoneyFormatter.new(1000 + Config::Auctions.minimum_increment)}"
     end
 
     it "does not create bid" do
@@ -142,7 +142,7 @@ RSpec.describe Auctions::BidCreator do
 
     it "returns error" do
       result = described_class.new.create_bid(bid_params.merge(current_bid: 1050))
-      expect(result.error).to eq "Bids must be a multiple of #{Auctions::Bid::MINIMUM_INCREMENT}"
+      expect(result.error).to eq "Bids must be a multiple of #{Config::Auctions.minimum_increment}"
     end
 
     it "does not create bid" do
@@ -162,7 +162,7 @@ RSpec.describe Auctions::BidCreator do
     it "returns error" do
       create(:auction_bid, auction:, horse:, current_bid: 1000)
       result = described_class.new.create_bid(bid_params.merge(current_bid: 1050))
-      expect(result.error).to eq "Bids must be a multiple of #{Auctions::Bid::MINIMUM_INCREMENT}"
+      expect(result.error).to eq "Bids must be a multiple of #{Config::Auctions.minimum_increment}"
     end
 
     it "does not create bid" do
@@ -185,7 +185,7 @@ RSpec.describe Auctions::BidCreator do
       create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
       create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
       result = described_class.new.create_bid(bid_params.merge(current_bid: 6000, maximum_bid: 7000))
-      expect(result.error).to eq "Current bid must be greater than or equal to #{Game::MoneyFormatter.new(7000 + Auctions::Bid::MINIMUM_INCREMENT)}"
+      expect(result.error).to eq "Current bid must be greater than or equal to #{Game::MoneyFormatter.new(7000 + Config::Auctions.minimum_increment)}"
     end
 
     it "creates 2 bids, one for current bidder + one for new current bid" do

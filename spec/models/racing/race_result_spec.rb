@@ -16,10 +16,10 @@ RSpec.describe Racing::RaceResult do
     it { is_expected.to validate_numericality_of(:time_in_seconds).is_greater_than_or_equal_to(0).is_less_than_or_equal_to(1_000) }
     it { is_expected.to validate_numericality_of(:purse).only_integer.is_greater_than_or_equal_to(10_000).is_less_than_or_equal_to(20_000_000) }
     it { is_expected.to validate_inclusion_of(:split).in_array(described_class::SPLITS) }
-    it { is_expected.to validate_inclusion_of(:race_type).in_array(Racing::RaceSchedule::RACE_TYPES) }
-    it { is_expected.to validate_inclusion_of(:age).in_array(Racing::RaceSchedule::RACE_AGES) }
-    it { is_expected.to validate_inclusion_of(:condition).in_array(Racing::TrackSurface::CONDITIONS) }
-    it { is_expected.to validate_inclusion_of(:grade).in_array(Racing::RaceSchedule::RACE_GRADES).allow_blank }
+    it { is_expected.to validate_inclusion_of(:race_type).in_array(Config::Racing.all_types) }
+    it { is_expected.to validate_inclusion_of(:age).in_array(Config::Racing.ages) }
+    it { is_expected.to validate_inclusion_of(:condition).in_array(Config::Racing.conditions.map(&:downcase)) }
+    it { is_expected.to validate_inclusion_of(:grade).in_array(Config::Racing.grades).allow_blank }
 
     context "when grade is present" do
       subject(:result) { described_class.new(grade: "Ungraded") }

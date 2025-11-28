@@ -3,8 +3,12 @@
   = f.fields_for :racing do |rf|
     fieldset.fieldset
       legend.fieldset-legend= t("activerecord.attributes.setting.min_energy_for_race_entry")
-      - grades = Racing::RaceStats::GRADES
+      - grades = Config::Racing.letter_grades.map(&:upcase)
       = rf.collection_select :min_energy_for_race_entry, grades, :first, :first, { include_blank: true }, class: 'select'
+    fieldset.fieldset
+      legend.fieldset-legend= t("activerecord.attributes.setting.min_energy_for_workout")
+      - grades = Config::Racing.letter_grades.map(&:upcase)
+      = rf.collection_select :min_energy_for_workout, grades, :first, :first, { include_blank: true }, class: 'select'
     fieldset.fieldset
       legend.fieldset-legend= t("activerecord.attributes.setting.min_days_delay_from_last_race")
       = rf.text_field :min_days_delay_from_last_race, class: 'input'

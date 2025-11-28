@@ -6,7 +6,7 @@ module Account
     belongs_to :budget, optional: true
 
     validates :activity_type, :amount, :balance, :legacy_stable_id, presence: true
-    validates :activity_type, inclusion: { in: Game::Activity::ACTIVITY_TYPES }
+    validates :activity_type, inclusion: { in: Config::Game.activity_types }
 
     scope :recent, -> { order(created_at: :desc) }
   end

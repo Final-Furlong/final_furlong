@@ -14,13 +14,13 @@ module Racing
     validates :number, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 50 }
     validates :time_in_seconds, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1_000 }
     validates :split, inclusion: { in: SPLITS }
-    validates :race_type, inclusion: { in: Racing::RaceSchedule::RACE_TYPES }
-    validates :age, inclusion: { in: Racing::RaceSchedule::RACE_AGES }
-    validates :condition, inclusion: { in: Racing::TrackSurface::CONDITIONS }
+    validates :race_type, inclusion: { in: Config::Racing.all_types }
+    validates :age, inclusion: { in: Config::Racing.ages }
+    validates :condition, inclusion: { in: Config::Racing.conditions }
     validates :male_only, inclusion: { in: [true, false] }
     validates :female_only, inclusion: { in: [true, false] }
     validates :distance, numericality: { greater_than_or_equal_to: 5.0, less_than_or_equal_to: 24.0 }
-    validates :grade, inclusion: { in: Racing::RaceSchedule::RACE_GRADES }, allow_blank: true
+    validates :grade, inclusion: { in: Config::Racing.grades }, allow_blank: true
     validates :name, presence: true, if: :grade
     validates :purse, numericality: { only_integer: true, greater_than_or_equal_to: 10_000, less_than_or_equal_to: 20_000_000 }
     validates :claiming_price, numericality: { only_integer: true, greater_than_or_equal_to: 5_000, less_than_or_equal_to: 50_000 }, if: :claiming?

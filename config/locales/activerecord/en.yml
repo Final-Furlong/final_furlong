@@ -28,6 +28,15 @@ en:
         owner_accepted_end: Owner
       horses/stud_foal_record:
         crop: Crop
+      racing/race_option:
+        maximum_distance: Max Dist
+        minimum_distance: Min Dist
+      racing/racehorse_metadata:
+        energy_grade: Energy
+        fitness_grade: Fitness
+        last_raced_at: Last Race
+        last_rested_at: Last Rest
+        last_shipped_at: Last Shipment
       setting:
         apply_minimums_for_future_races: Apply These Minimums For Future Races?
         dark_mode: Dark Mode
@@ -38,6 +47,7 @@ en:
         min_days_delay_from_last_race: Minimum Days Between Races
         min_days_rest_between_races: Minimum Days Rest Between Races
         min_energy_for_race_entry: Minimum Energy for Entering Races
+        min_energy_for_workout: Minimum Energy for Training/Workouts
         min_workouts_between_races: Minimum Number of Workouts Between Races
         mode:
           dark: Dark

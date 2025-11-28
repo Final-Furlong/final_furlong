@@ -7,10 +7,6 @@ module Racing
 
     friendly_id :full_name, use: [:slugged, :finders]
 
-    GENDERS = %w[male female].freeze
-    TYPES = %w[flat jump].freeze
-    STATUSES = %w[apprentice veteran retired].freeze
-
     has_many :race_result_horses, class_name: "Racing::RaceResultHorse", inverse_of: :jockey, dependent: :nullify
     has_many :horse_relationships, class_name: "Racing::HorseJockeyRelationship", inverse_of: :jockey, dependent: :delete_all
     has_many :ridden_horses, class_name: "Horses::Horse", through: :horse_relationships, source: :horse
@@ -30,12 +26,17 @@ module Racing
       numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }
     validates :first_name, :last_name, length: { minimum: 2 }
     validates :last_name, uniqueness: { case_sensitive: false, scope: :first_name }
-    validates :gender, inclusion: { in: GENDERS }
+    validates :gender, inclusion: { in: Config::Jockeys.genders }
     validates :height_in_inches, numericality: { only_integer: true, greater_than_or_equal_to: 48, less_than_or_equal_to: 70 }
-    validates :jockey_type, inclusion: { in: TYPES }
+    validates :jockey_type, inclusion: { in: Config::Jockeys.types }
     validates :looking, numericality: { only_integer: true, greater_than_or_equal_to: 5, less_than_or_equal_to: 100 }
-    validates :status, inclusion: { in: STATUSES }
+    validates :status, inclusion: { in: Config::Jockeys.statuses }
     validates :weight, numericality: { only_integer: true, greater_than_or_equal_to: 35, less_than_or_equal_to: 120 }
+
+    scope :flat, -> { where(jockey_type: "flat") }
+    scope :jump, -> { where(jockey_type: "jump") }
+    scope :active, -> { where.not(status: "retired") }
+    scope :ordered_by_name, -> { order(last_name: :asc, first_name: :asc) }
 
     def full_name
       [first_name, last_name].join(" ")

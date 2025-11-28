@@ -1,0 +1,22 @@
+- race = @entry.race
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t("racing.races.index.title"), href: racing_races_path },
+          { name: l(@entry.date), href: racing_races_path(date: @entry.date) }, { name: t(".title"), href: "#" }])
+.mx-auto.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100.w-full.sm:w-2/3
+  table.table.table-sm
+    thead
+      tr
+        th.text-center colspan=5 = l(race.date, format: :long)
+      tr
+        td.font-normal.text-center colspan=5 = race.race_description_string
+      tr
+        td.font-normal.text-center colspan=5
+          = t(".horses", count: race.entries_count)
+          = " | "
+          - horses = "#{race.entry_limit} #{Horses::Horse.model_name.human.downcase.pluralize(race.entry_limit)}"
+          = t(".entry_limit", horses:)
+      tr
+        td.font-normal.text-center colspan=5
+          = t(".entry_fee", fee: Game::MoneyFormatter.new(race.entry_fee).to_s)
+
+= render "horses_qualification", race: race

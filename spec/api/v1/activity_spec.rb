@@ -1,6 +1,6 @@
 RSpec.describe Api::V1::Activity do
   describe "POST /api/v1/activity" do
-    context "when activity creation works" do
+    context "when activity creation works", :stable do
       it "returns activity ID" do
         initial_activity
 
@@ -30,7 +30,7 @@ RSpec.describe Api::V1::Activity do
       end
     end
 
-    context "when activity amount is negative" do
+    context "when activity amount is negative", :stable do
       it "returns activity ID" do
         initial_activity
 
@@ -63,20 +63,22 @@ RSpec.describe Api::V1::Activity do
 
     context "when stable cannot be found" do
       it "returns error" do
-        post("/api/v1/activity", params: params.merge(legacy_stable_id: 25))
+        params = { amount: 5, activity_type: "color_war", legacy_stable_id: 25 }
+        post("/api/v1/activity", params:)
 
         expect(response).to have_http_status :not_found
         expect(json_body[:error]).to include("Couldn't find Account::Stable")
       end
 
       it "does not create activity" do
+        params = { amount: 5, activity_type: "color_war", legacy_stable_id: 25 }
         expect do
-          post("/api/v1/activity", params: params.merge(legacy_stable_id: 15))
+          post("/api/v1/activity", params:)
         end.not_to change(Account::Activity, :count)
       end
     end
 
-    context "when activity creation fails" do
+    context "when activity creation fails", :stable do
       it "returns error" do
         mock_creator = instance_double(Accounts::ActivityTransactionCreator)
         allow(Accounts::ActivityTransactionCreator).to receive(:new).and_return mock_creator
@@ -105,10 +107,6 @@ RSpec.describe Api::V1::Activity do
       activity_type: "color_war",
       legacy_stable_id: stable.legacy_id
     }
-  end
-
-  def stable
-    @stable ||= create(:stable, legacy_id: 1)
   end
 
   def initial_activity
