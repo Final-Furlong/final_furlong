@@ -4,8 +4,6 @@ module Horses
     include FinalFurlong::Horses::Validation
     include FriendlyId
 
-    NAME_LENGTH_MAX = 18
-
     friendly_id :name_and_foal_status, use: [:slugged, :finders]
 
     belongs_to :breeder, class_name: "Account::Stable"
@@ -48,6 +46,8 @@ module Horses
     has_many :current_injuries, class_name: "Horses::Injury", inverse_of: :horse, dependent: :delete_all
     has_many :historical_injuries, class_name: "Horses::HistoricalInjury", inverse_of: :horse, dependent: :delete_all
     has_many :jockey_relationships, class_name: "Racing::HorseJockeyRelationship", dependent: :delete_all
+    has_one :race_qualification, class_name: "Racing::RaceQualification", dependent: :delete
+    has_one :race_metadata, class_name: "Racing::RacehorseMetadata", dependent: :delete
 
     has_many :foals, class_name: "Horses::Horse", inverse_of: :dam, dependent: :nullify
     has_many :broodmare_shipments, class_name: "Shipping::BroodmareShipment", dependent: :delete_all
@@ -59,7 +59,7 @@ module Horses
 
     validates :date_of_birth, :age, :gender, :status, presence: true
     validates :date_of_death, comparison: { greater_than_or_equal_to: :date_of_birth }, if: :date_of_death
-    validates :name, length: { maximum: NAME_LENGTH_MAX }
+    validates :name, length: { maximum: Config::Horses.max_name_length }
     validate :name_required, on: :update
     validates_horse_name :name, on: :update, if: :name_changed?
 
@@ -72,6 +72,8 @@ module Horses
     scope :female, -> { where(gender: Gender::FEMALE_GENDERS) }
     scope :not_female, -> { where.not(gender: Gender::FEMALE_GENDERS) }
     scope :max_yob, ->(year) { where("DATE_PART('Year', date_of_birth) <= ?", year) }
+    scope :min_age, ->(age) { where("DATE_PART('Year', date_of_birth) <= ?", Date.current.year - age.to_i) }
+    scope :max_age, ->(age) { where("DATE_PART('Year', date_of_birth) >= ?", Date.current.year - age.to_i) }
     scope :with_yob, ->(year) { where("DATE_PART('Year', date_of_birth) = ?", year) }
     scope :with_sire, -> { where.associated(:sire) }
     scope :with_dam, -> { where.associated(:dam) }
@@ -87,9 +89,13 @@ module Horses
     scope :without_lease, -> { where.missing(:current_lease) }
     scope :with_leaser, ->(stable) { joins(:current_lease).where(current_lease: { leaser: stable }) }
     scope :managed_by, ->(stable) {
-      ids = born.with_owner(stable).without_lease.select(:id)
-      ids += born.with_leaser(stable).select(:id)
-      where(id: ids)
+      born.where(
+        "(#{arel_table.name}.owner_id = :id AND #{arel_table.name}.leaser_id IS NULL) OR #{arel_table.name}.leaser_id = :id",
+        id: stable
+      )
+    }
+    scope :racehorse_status, ->(status) {
+      joins(:race_qualification).merge(::Racing::RaceQualification.send(:qualified_for, status))
     }
 
     delegate :title, :breeding_record, :dosage_text, :track_record, to: :horse_attributes, allow_nil: true
@@ -185,7 +191,11 @@ module Horses
     end
 
     def self.ransackable_associations(_auth_object = nil)
-      %w[breeder dam location_bred owner sire]
+      %w[breeder dam location_bred owner sire race_stats race_metadata race_options]
+    end
+
+    def self.ransackable_scopes(_auth_object = nil)
+      %w[min_age max_age female not_female racehorse_status]
     end
 
     private
@@ -215,6 +225,7 @@ end
 #  updated_at                                                                                                         :datetime         not null
 #  breeder_id                                                                                                         :bigint           not null, indexed
 #  dam_id                                                                                                             :bigint           indexed
+#  leaser_id                                                                                                          :bigint           indexed
 #  legacy_id                                                                                                          :integer          indexed
 #  location_bred_id                                                                                                   :bigint           not null, indexed
 #  owner_id                                                                                                           :bigint           not null, indexed
@@ -229,6 +240,7 @@ end
 #  index_horses_on_date_of_birth     (date_of_birth)
 #  index_horses_on_date_of_death     (date_of_death)
 #  index_horses_on_gender            (gender)
+#  index_horses_on_leaser_id         (leaser_id)
 #  index_horses_on_legacy_id         (legacy_id)
 #  index_horses_on_location_bred_id  (location_bred_id)
 #  index_horses_on_name              (name)
@@ -242,6 +254,7 @@ end
 #
 #  fk_rails_...  (breeder_id => stables.id) ON DELETE => restrict ON UPDATE => cascade
 #  fk_rails_...  (dam_id => horses.id) ON DELETE => nullify ON UPDATE => cascade
+#  fk_rails_...  (leaser_id => stables.id)
 #  fk_rails_...  (location_bred_id => locations.id) ON DELETE => restrict ON UPDATE => cascade
 #  fk_rails_...  (owner_id => stables.id) ON DELETE => restrict ON UPDATE => cascade
 #  fk_rails_...  (sire_id => horses.id) ON DELETE => nullify ON UPDATE => cascade

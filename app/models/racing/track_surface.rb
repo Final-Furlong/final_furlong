@@ -1,8 +1,5 @@
 module Racing
   class TrackSurface < ApplicationRecord
-    CONDITIONS = %w[fast good slow wet].freeze
-    SURFACES = %w[dirt turf steeplechase]
-
     belongs_to :racetrack
 
     has_many :scheduled_races, class_name: "RaceSchedule", dependent: :restrict_with_exception
@@ -10,14 +7,24 @@ module Racing
 
     validates :surface, :condition, :width, :length, :turn_to_finish_length,
       :turn_distance, :banking, :jumps, presence: true
-    validates :condition, inclusion: { in: CONDITIONS }
-    validates :surface, inclusion: { in: SURFACES }
+    validates :condition, inclusion: { in: Config::Racing.conditions.map(&:downcase) }
+    validates :surface, inclusion: { in: Config::Racing.surfaces.map(&:downcase) }
     validates :surface, uniqueness: { scope: :racetrack_id }
 
     scope :dirt, -> { where(surface: "dirt") }
     scope :turf, -> { where(surface: "turf") }
     scope :steeplechase, -> { where(surface: "steeplechase") }
     scope :flat, -> { where(surface: ["dirt", "turf"]) }
+
+    def surface = super.to_s.inquiry
+
+    def jump?
+      surface.steeplechase?
+    end
+
+    def flat?
+      !surface.steeplechase?
+    end
   end
 end
 

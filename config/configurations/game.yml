@@ -1,0 +1,19 @@
+shared:
+  currency: $
+  entry_deadline_days: 2
+  entry_fee_percent: 0.05
+  entry_limit_2yo: 1
+  entry_limit_older: 2
+  entry_limit_increase_final_day: 1
+  online_minutes: 15
+  stable: Final Furlong
+  username_minimum_length: 3
+  activity_types:
+    - color_war
+    - auction
+    - selling
+    - buying
+    - breeding
+    - claiming
+    - entering
+    - redeem

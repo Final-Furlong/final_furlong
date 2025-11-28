@@ -1,6 +1,9 @@
 class SaleOfferNotification < Notification
   def message
-    "#{params["stable_name"]} has offered to sell #{params["horse_name"]} to you for #{params["price"]}"
+    I18n.t("notifications.sale_offer_notification.message",
+      stable: params["stable_name"],
+      horse: params["horse_name"],
+      price: params["price"])
   end
 
   def url

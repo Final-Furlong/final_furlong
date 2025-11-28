@@ -2,21 +2,6 @@ module Account
   class Budget < ApplicationRecord
     self.table_name = "budget_transactions"
 
-    DEFAULT_SORT = "id desc".freeze
-    ACTIVITY_TYPES = %w[
-      sold_horse bought_horse bred_mare bred_stud claimed_horse entered_race
-      shipped_horse race_winnings jockey_fee nominated_racehorse nominated_stallion
-      boarded_horse opening_balance paid_tax handicapping_races nominated_breeders_series
-      consigned_auction leased_horse color_war activity_points donation won_breeders_series
-      misc
-    ].freeze
-    SALES_ACTIVITIES = %w[sold_horse bought_horse claimed_horse consigned_auction leased_horse].freeze
-    BREEDING_ACTIVITIES = %w[bred_mare bred_stud].freeze
-    RACING_ACTIVITIES = %w[entered_race race_winnings jockey_fee won_breeders_series]
-    NOMINATING_ACTIVITIES = %w[nominated_racehorse nominated_stallion nominated_breeders_series]
-    GAME_ACTIVITIES = %w[opening_balance paid_tax handicapping_races color_war activity_points]
-    MISC_ACTIVITIES = %w[misc donation]
-
     belongs_to :stable
 
     validates :amount, :balance, :description, presence: true
@@ -30,17 +15,17 @@ module Account
     def self.budget_category(category)
       case category.to_s.downcase
       when "sold_or_bought"
-        where(activity_type: SALES_ACTIVITIES)
+        where(activity_type: Config::Budgets.sales_activities)
       when "all_breeding"
-        where(activity_type: BREEDING_ACTIVITIES)
+        where(activity_type: Config::Budgets.breeding_activities)
       when "all_racing"
-        where(activity_type: RACING_ACTIVITIES)
+        where(activity_type: Config::Budgets.racing_activities)
       when "all_nominations"
-        where(activity_type: NOMINATING_ACTIVITIES)
+        where(activity_type: Config::Budgets.nominating_activities)
       when "game_activity"
-        where(activity_type: GAME_ACTIVITIES)
+        where(activity_type: Config::Budgets.game_activities)
       when "misc"
-        where(activity_type: MISC_ACTIVITIES)
+        where(activity_type: Config::Budgets.misc_activities)
       else
         where(activity_type: category)
       end

@@ -1,6 +1,6 @@
 class LeaseExpiryNotification < Notification
   def message
-    "The lease on #{params["horse_name"]} has ended."
+    I18n.t("notifications.lease_expiry_notification.message", name: params["horse_name"])
   end
 
   def url

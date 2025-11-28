@@ -1,7 +1,7 @@
 = form_with model: horse, scope: :horse, url: horse_path(horse.slug), data: { turbo_frame: "_top" } do |f|
   fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.py-2.w-xs.inline
     .join
-      = f.text_field :name, class: 'input join-item w-auto', required: true, placeholder: t(".name_hint", count: Horses::Horse::NAME_LENGTH_MAX)
+      = f.text_field :name, class: 'input join-item w-auto', required: true, placeholder: t(".name_hint", count: Config::Horses.max_name_length)
       = render Ui::SubmitButton::Component.new(form: f, extra_classes: "join-item", text: t("common.actions.save"))
     - if horse.errors[:name]
       p.text-error= horse.errors.where(:name).map(&:full_message).join(', ')

@@ -28,6 +28,13 @@ module Horses
         where(owner: stable)
       end
 
+      def managed_by(stable)
+        born.where(
+          "(#{arel_table.name}.owner_id = :id AND #{arel_table.name}.leaser_id IS NULL) OR #{arel_table.name}.leaser_id = :id",
+          id: stable
+        )
+      end
+
       def sort_by_status_asc
         in_order_of(:status, status_array_order).order(name: :asc)
       end
@@ -61,6 +68,7 @@ module Horses
 
     delegate :owned_by, to: :query
 
+    delegate :managed_by, to: :query
     delegate :sort_by_status_asc, to: :query
   end
 end
