@@ -1,18 +1,5 @@
 /# locals: (race:)
 ruby:
-  race_description = t("racing.results.race_number", number: race.number) +
-                     ", " + t("racing.race.furlongs", number: race.distance) + " "
-  race_description += if race.claiming?
-                        price = Game::MoneyFormatter.new(race.claiming_price).to_s
-                        t("racing.race.claiming_with_price", price: price)
-                      else
-                        t("racing.race.#{race.race_type.downcase}")
-                      end
-  race_description += " " + t("racing.race.age_desc", age: race.race_age_string)
-  unless race.race_gender_string.blank?
-    race_description += " " + race.race_gender_string
-  end
-  race_description += ", " + Game::MoneyFormatter.new(race.purse).to_s
   track_description = race.racetrack.name + " (" + race.track_surface.surface.capitalize +
                       " - " + race.condition.capitalize + ")"
   winner = race.horses.order(finish_position: :asc).first
@@ -20,7 +7,7 @@ ruby:
   .card.bg-base-100.w-full.px-2.rounded-none
     .card-body.p-0.rounded-none.mb-2
       p
-        = race_description
+        = race.race_description_string
         = " | "
         = track_description
     - race.horses.order(finish_position: :asc).each do |finisher|
@@ -91,13 +78,14 @@ ruby:
                     - loop += 1
           p.text-center.mt-2
             = link_to horse.name, horse_path(horse), class: 'btn btn-neutral', target: '_top'
-    .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
-      input type="checkbox"
-      .collapse-title.font-semibold.font-medium
-        span= t("racing.results.fractions")
-      .collapse-content.text-sm
-        - winner.fractions.split('|').each do |fraction|
-          p= fraction
+    - if winner.fractions
+      .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+        input type="checkbox"
+        .collapse-title.font-semibold.font-medium
+          span= t("racing.results.fractions")
+        .collapse-content.text-sm
+          - winner.fractions.split('|').each do |fraction|
+            p= fraction
     .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
       input type="checkbox"
       .collapse-title.font-semibold.font-medium
@@ -109,7 +97,7 @@ ruby:
       thead
         tr
           th colspan=(7 + (race.distance / 2).floor)
-            = race_description
+            = race.race_description_string
             = " - "
             = track_description
         tr

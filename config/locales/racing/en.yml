@@ -12,6 +12,7 @@ en:
       female_only: Female
       final_furlong: Final
       finish: Finish
+      first_quarter: 1/4
       furlongs: "%{number} Furlongs"
       gender: Gender
       grade: Grade
@@ -43,18 +44,22 @@ en:
       post_position: Post
       post_position_expanded: Post Position
       purse: Purse
+      second_quarter: 1/2
       stakes: Stakes
       starter_allowance: Starter Allowance
+      stretch: Stretch
       surface: Surface
       surface_dirt: Dirt
       surface_steeplechase: SC
       surface_turf: Turf
+      third_quarter: 3/4
       title: Race Schedule
       track: Track
       type: Type
     results:
       fractions: Fractional Times
       horse_title: Horse (Jockey)
+      horse_title_without_jockey: Horse
       index:
         title: Race Results
       injuries: Injuries

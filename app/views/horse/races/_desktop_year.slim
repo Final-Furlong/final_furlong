@@ -29,8 +29,11 @@
         - dashboard.races.each do |finish|
           - horse = finish.horse
           - race = finish.race
+          - winner = finish.finish_position == 1 ? finish : race.horses.find_by(finish_position: 1)
+          - second = finish.finish_position == 2 ? finish : race.horses.find_by(finish_position: 2)
+          - third = finish.finish_position == 3 ? finish : race.horses.find_by(finish_position: 3)
           tr
-            td.border-r-1.border-b-1.border-base-content rowspan=5
+            td.border-r-1.border-b-1.border-base-content rowspan=(winner.fractions ? 5 : 4)
               = l(race.date)
               br
               = race.racetrack.name
@@ -46,9 +49,6 @@
             td= t("horse.races.index.speed_factor", number: finish.speed_factor || t("common.na"))
           tr
             td colspan=4
-              - winner = finish.finish_position == 1 ? finish : race.horses.find_by(finish_position: 1)
-              - second = finish.finish_position == 2 ? finish : race.horses.find_by(finish_position: 2)
-              - third = finish.finish_position == 3 ? finish : race.horses.find_by(finish_position: 3)
               - if winner == finish
                 strong.italic= horse.name
               - else
@@ -66,8 +66,9 @@
                   - elsif third
                     = link_to third.horse.name, horse_path(third.horse), target: "_top", class: "italic text-#{third.horse.gender}"
           tr
-            td colspan=4
+            td colspan=4 class=("border-b-1 border-base-content" unless winner.fractions)
               = t("horse.races.index.running_line", line: finish.positions.gsub("|", "-"))
-          tr
-            td.border-b-1.border-base-content colspan=4
-              = t("horse.races.index.fractions", fractions: winner.fractions.gsub("|", " | "))
+          - if winner.fractions
+            tr
+              td.border-b-1.border-base-content colspan=4
+                = t("horse.races.index.fractions", fractions: winner.fractions.gsub("|", " | "))

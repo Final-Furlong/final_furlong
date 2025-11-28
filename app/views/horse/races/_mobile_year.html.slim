@@ -79,7 +79,8 @@
                   p
                     span= t("horse.races.mobile.running_line")
                     span.float-right= finish.positions.gsub("|", "-")
-                  p
-                    span= t("horse.races.index.fractions", fractions: winner.fractions.gsub("|", " | "))
+                  - if winner.fractions
+                    p
+                      span= t("horse.races.index.fractions", fractions: winner.fractions.gsub("|", " | "))
                   p.text-center
                     = link_to t("horse.races.index.view_race"), racing_result_path(race.date, race.number), class: "mt-2 btn btn-neutral", data: { turbo_frame: "modal" }

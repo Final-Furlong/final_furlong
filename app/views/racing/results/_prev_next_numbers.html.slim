@@ -2,8 +2,10 @@
 ruby:
   if number == 1
     prev_date = Racing::RaceResult.where(date: ...date).maximum(:date)
-    prev_number = Racing::RaceResult.where(date: prev_date).maximum(:number)
-    prev_text = "#{l(prev_date)} ##{prev_number}"
+    unless prev_date.blank?
+      prev_number = Racing::RaceResult.where(date: prev_date).maximum(:number)
+      prev_text = "#{l(prev_date)} ##{prev_number}"
+    end
     next_date = date
     next_number = number + 1
     next_text = "#{l(date)} ##{next_number}"
@@ -25,6 +27,7 @@ ruby:
 
 .w-full.flex.mb-2
   .flex-1
-    = link_to prev_text, racing_result_path(prev_date, prev_number), class: "btn btn-outline btn-sm"
+    - unless prev_text.blank?
+      = link_to prev_text, racing_result_path(prev_date, prev_number), class: "btn btn-outline btn-sm"
   .flex-none
     = link_to next_text, racing_result_path(next_date, next_number), class: "btn btn-outline btn-sm #{"btn-disabled" if next_date > Date.current}"

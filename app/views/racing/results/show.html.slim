@@ -1,10 +1,13 @@
 ruby:
   date = @race.date
   number = @race.number
+  title = "#{l(date)} ##{number}"
 - content_for :breadcrumbs do
-  - title = "#{l(date)} ##{number}"
   = render Nav::Breadcrumbs::Component.new(links: [{ name: t("racing.results.index.title"), href: racing_results_path },
           { name: title, href: "#" }])
 
 = render "prev_next_numbers", date:, number:
-= render "race_result", race: @race
+- if @race.split == "2F"
+  = render "race_result_furlongs", race: @race
+- else
+  = render "race_result_quarters", race: @race

@@ -1,0 +1,97 @@
+/# locals: (race:)
+ruby:
+  track_description = race.racetrack.name + " (" + race.track_surface.surface.capitalize +
+                      " - " + race.condition.capitalize + ")"
+  winner = race.horses.order(finish_position: :asc).first
+.mx-auto.overflow-x-auto.w-full.sm:hidden
+  .card.bg-base-100.w-full.px-2.rounded-none
+    .card-body.p-0.rounded-none.mb-2
+      p
+        = race.race_description_string
+        = " | "
+        = track_description
+    - race.horses.order(finish_position: :asc).each do |finisher|
+      - horse = finisher.horse
+      .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+        input type="checkbox"
+        .collapse-title.font-semibold.font-medium
+          span class="text-#{horse.gender}"= link_to horse.name, horse_path(horse)
+          span.float-right= finisher.speed_factor
+        .collapse-content.text-sm
+          - if finisher.equipment.positive?
+            p
+              span= t("racing.race.equipment")
+              span.float-right= race.equipment_string(finisher)
+          p
+            span= t("racing.results.speed_factor")
+            span.float-right= finisher.speed_factor
+          p &nbsp;
+          - positions = finisher.positions.split('|')
+          - margins = finisher.margins.split('|')
+          table.w-full
+            tr
+              th.text-left= t("racing.race.first_quarter")
+              th.text-left= t("racing.race.second_quarter")
+              th.text-left= t("racing.race.third_quarter")
+              th.text-left= t("racing.race.stretch")
+            tr
+              td= "#{positions[0]}) #{margins[0]}"
+              td= "#{positions[1]}) #{margins[1]}"
+              td= "#{positions[2]}) #{margins[2]}"
+              td= "#{positions[3]}) #{margins[3]}"
+            tr
+              th.text-left= t("racing.race.final_furlong")
+              th.text-left= t("racing.race.finish")
+            tr
+              td= "#{positions[4]}) #{margins[4]}"
+              td= "#{positions[5]}) #{margins[5]}"
+          p.text-center.mt-2
+            = link_to horse.name, horse_path(horse), class: 'btn btn-neutral', target: '_top'
+    - if winner.fractions
+      .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+        input type="checkbox"
+        .collapse-title.font-semibold.font-medium
+          span= t("racing.results.fractions")
+        .collapse-content.text-sm
+          - winner.fractions.split('|').each do |fraction|
+            p= fraction
+    .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+      input type="checkbox"
+      .collapse-title.font-semibold.font-medium
+        span= t("racing.results.injuries")
+        span.float-right= "Not Yet Added"
+.hidden.mx-auto.overflow-x-auto.rounded-md.w-full.sm:block
+  .table-responsive-md
+    table.table.table-responsive.table-zebra.table-sm.sortable.asc.n-last
+      thead
+        tr
+          th colspan=(7 + (race.distance / 2).floor)
+            = race.race_description_string
+            = " - "
+            = track_description
+        tr
+          th= t("racing.results.horse_title_without_jockey")
+          th= t("racing.race.first_quarter")
+          th= t("racing.race.second_quarter")
+          th= t("racing.race.third_quarter")
+          th= t("racing.race.stretch")
+          th= t("racing.race.final_furlong")
+          th= t("racing.race.finish")
+          th= t("racing.race.equipment")
+          th= t("racing.results.speed_factor")
+        tbody
+          - race.horses.order(finish_position: :asc).each do |finisher|
+            - horse = finisher.horse
+            tr
+              td data-sort=horse.name
+                span class="text-#{horse.gender}"= link_to horse.name, horse_path(horse)
+              - positions = finisher.positions.split('|')
+              - margins = finisher.margins.split('|')
+              - 6.times do |n|
+                td data-sort=positions[n] = "#{positions[n]}) #{margins[n]}"
+              td= race.equipment_string(finisher)
+              td= finisher.speed_factor
+  p.text-center.text-sm.mt-2
+    = t("racing.results.injuries")
+    = ": "
+    = "Not Yet Added"
