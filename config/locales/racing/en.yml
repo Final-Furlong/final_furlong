@@ -1,6 +1,13 @@
 ---
 en:
   racing:
+    distance_furlongs: "%{value} Furlongs"
+    entries:
+      new:
+        entry_fee: 'Entry Fee: %{fee}'
+        entry_limit: You may enter %{horses} in this race.
+        horses: 'Horses Entered: %{count}'
+        title: Enter Race
     race:
       age: Age
       age_desc: for %{age}
@@ -69,6 +76,11 @@ en:
       race_number: 'Race #%{number}'
       speed_factor: Speed Factor
       weight: Lbs.
+    style:
+      closing: Closer
+      leading: Leading
+      midpack: Midpack
+      off_pace: Off the Pace
     workout_comments:
       bolt: "%{name} bolted during training."
       confidence_20: "%{name} was unresponsive."

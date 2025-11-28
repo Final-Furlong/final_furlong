@@ -20,7 +20,7 @@ module Horses
           days_string = "#{boarding.days} "
           days_string += "day".pluralize(boarding.days)
           description = I18n.t("services.boarding.updater.budget_description", name: boarding.horse.name, days: days_string)
-          amount = boarding.days * 100 * -1
+          amount = boarding.days * Config::Boarding.daily_fee * -1
           Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount:)
           result.boarding = boarding
         else

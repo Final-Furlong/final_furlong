@@ -89,7 +89,7 @@ module Auctions
         else
           auction_horse.reserve_price = reserve_price
           available_balance = stable.available_balance
-          if available_balance.to_i <= reserve_price * 0.1
+          if available_balance.to_i <= reserve_price * Config::Auctions.reserve_fee
             result.error = error("cannot_afford_reserve_fee")
             return result
           end
@@ -102,7 +102,7 @@ module Auctions
 
       ActiveRecord::Base.transaction do
         if reserve_price
-          reserve_fee = (reserve_price * 0.1).to_i * -1
+          reserve_fee = (reserve_price * Config::Auctions.reserve_fee).to_i * -1
           description = "Consigning #{horse.name} to #{auction.title}"
           Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: reserve_fee)
         end

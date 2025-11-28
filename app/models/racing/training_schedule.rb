@@ -2,8 +2,6 @@ module Racing
   class TrainingSchedule < ApplicationRecord
     include StoreModel::NestedAttributes
 
-    MAX_SCHEDULES_PER_STABLE = 10
-
     belongs_to :stable, class_name: "Account::Stable"
 
     has_many :training_schedule_horses, class_name: "Racing::TrainingScheduleHorse", inverse_of: :training_schedule, dependent: :destroy

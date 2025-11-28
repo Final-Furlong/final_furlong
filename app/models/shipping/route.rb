@@ -2,8 +2,6 @@ module Shipping
   class Route < ApplicationRecord
     self.table_name = "shipment_routes"
 
-    MODES = %w[road air].freeze
-
     belongs_to :starting_location, class_name: "Location"
     belongs_to :ending_location, class_name: "Location"
 
@@ -11,6 +9,11 @@ module Shipping
     validates :ending_location, comparison: { other_than: :starting_location }, if: :starting_location
     validates :air_cost, presence: true, if: :air_days
     validates :road_cost, presence: true, if: :road_days
+
+    scope :with_locations, ->(starting, ending) {
+      where('(starting_location_id = :starting AND ending_location_id = :ending) OR
+        (starting_location_id = :ending AND ending_location_id = :starting)', { starting:, ending: })
+    }
   end
 end
 

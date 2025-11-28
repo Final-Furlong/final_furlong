@@ -36,7 +36,7 @@ RSpec.describe Racing::TrainingSchedulePolicy do
 
     context "when stable has max schedules" do
       it "does not allow new" do
-        (Racing::TrainingSchedule::MAX_SCHEDULES_PER_STABLE - 1).times do
+        (Config::Workouts.max_schedules_per_stable - 1).times do
           create(:training_schedule, stable: user.stable)
         end
 

@@ -2,13 +2,11 @@ module Auctions
   class ConsignmentConfig < ApplicationRecord
     self.table_name = "auction_consignment_configs"
 
-    HORSE_TYPES = %w[racehorse stud broodmare yearling weanling].freeze
-
     belongs_to :auction, class_name: "::Auction"
 
     validates :horse_type, :minimum_age, :maximum_age, :minimum_count, presence: true
     validates :horse_type, uniqueness: { case_sensitive: false, scope: :auction_id }
-    validates :horse_type, inclusion: { in: HORSE_TYPES }
+    validates :horse_type, inclusion: { in: Config::Auctions.horse_statuses }
     validates :minimum_age, numericality: { greater_than_or_equal_to: 2, less_than_or_equal_to: 3 }, if: :racehorse?
     validates :maximum_age, numericality: { greater_than_or_equal_to: 2, less_than_or_equal_to: 5 }, if: :racehorse?
     validates :minimum_age, numericality: { greater_than_or_equal_to: 4, less_than_or_equal_to: 12 }, if: :stallion?

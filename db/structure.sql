@@ -956,6 +956,65 @@ CREATE TABLE public.data_migrations (
 
 
 --
+-- Name: future_race_entries; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.future_race_entries (
+    id bigint NOT NULL,
+    race_id bigint NOT NULL,
+    date date NOT NULL,
+    horse_id bigint NOT NULL,
+    equipment integer DEFAULT 0 NOT NULL,
+    first_jockey_id bigint,
+    second_jockey_id bigint,
+    third_jockey_id bigint,
+    racing_style public.racing_style,
+    auto_enter boolean DEFAULT false NOT NULL,
+    auto_ship boolean DEFAULT false NOT NULL,
+    ship_mode public.shipping_mode,
+    ship_when_entries_open boolean DEFAULT false NOT NULL,
+    ship_when_horse_is_entered boolean DEFAULT false NOT NULL,
+    ship_only_if_horse_is_entered boolean DEFAULT false NOT NULL,
+    ship_date date,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN future_race_entries.racing_style; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.future_race_entries.racing_style IS 'leading,off_pace,midpack,closing';
+
+
+--
+-- Name: COLUMN future_race_entries.ship_mode; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.future_race_entries.ship_mode IS 'road, air';
+
+
+--
+-- Name: future_race_entries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.future_race_entries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: future_race_entries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.future_race_entries_id_seq OWNED BY public.future_race_entries.id;
+
+
+--
 -- Name: game_activity_points; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1320,7 +1379,8 @@ CREATE TABLE public.horses (
     legacy_id integer,
     location_bred_id bigint NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    leaser_id bigint
 );
 
 
@@ -2107,6 +2167,55 @@ ALTER SEQUENCE public.notifications_id_seq OWNED BY public.notifications.id;
 
 
 --
+-- Name: race_entries; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.race_entries (
+    id bigint NOT NULL,
+    race_id bigint NOT NULL,
+    date date NOT NULL,
+    horse_id bigint NOT NULL,
+    equipment integer DEFAULT 0 NOT NULL,
+    post_parade integer DEFAULT 0 NOT NULL,
+    jockey_id bigint,
+    first_jockey_id bigint,
+    second_jockey_id bigint,
+    third_jockey_id bigint,
+    racing_style public.racing_style,
+    odd_id bigint,
+    weight integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN race_entries.racing_style; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_entries.racing_style IS 'leading,off_pace,midpack,closing';
+
+
+--
+-- Name: race_entries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.race_entries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: race_entries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.race_entries_id_seq OWNED BY public.race_entries.id;
+
+
+--
 -- Name: race_odds; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2295,7 +2404,7 @@ CREATE MATERIALIZED VIEW public.race_qualifications AS
         CASE ( SELECT count(*) AS count
                FROM public.lifetime_race_records
               WHERE ((lifetime_race_records.horse_id = h.id) AND (lifetime_race_records.wins = 0)))
-            WHEN 0 THEN true
+            WHEN 1 THEN true
             ELSE false
         END AS maiden_qualified,
         CASE ( SELECT count(r.id) AS count
@@ -2434,7 +2543,8 @@ CREATE TABLE public.race_schedules (
     claiming_price integer,
     qualification_required boolean DEFAULT false NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    entries_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -3322,6 +3432,13 @@ ALTER TABLE ONLY public.budget_transactions ALTER COLUMN id SET DEFAULT nextval(
 
 
 --
+-- Name: future_race_entries id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.future_race_entries ALTER COLUMN id SET DEFAULT nextval('public.future_race_entries_id_seq'::regclass);
+
+
+--
 -- Name: game_activity_points id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3515,6 +3632,13 @@ ALTER TABLE ONLY public.motor_tags ALTER COLUMN id SET DEFAULT nextval('public.m
 --
 
 ALTER TABLE ONLY public.notifications ALTER COLUMN id SET DEFAULT nextval('public.notifications_id_seq'::regclass);
+
+
+--
+-- Name: race_entries id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_entries ALTER COLUMN id SET DEFAULT nextval('public.race_entries_id_seq'::regclass);
 
 
 --
@@ -3799,6 +3923,14 @@ ALTER TABLE ONLY public.data_migrations
 
 
 --
+-- Name: future_race_entries future_race_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.future_race_entries
+    ADD CONSTRAINT future_race_entries_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: game_activity_points game_activity_points_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4023,6 +4155,14 @@ ALTER TABLE ONLY public.notifications
 
 
 --
+-- Name: race_entries race_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_entries
+    ADD CONSTRAINT race_entries_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: race_odds race_odds_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4212,6 +4352,13 @@ ALTER TABLE ONLY public.workout_comments
 
 ALTER TABLE ONLY public.workouts
     ADD CONSTRAINT workouts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: idx_on_horse_id_first_jockey_id_second_jockey_id_th_b7c0ac41cd; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_horse_id_first_jockey_id_second_jockey_id_th_b7c0ac41cd ON public.race_options USING btree (horse_id, first_jockey_id, second_jockey_id, third_jockey_id);
 
 
 --
@@ -4600,6 +4747,111 @@ CREATE INDEX index_budget_transactions_on_stable_id ON public.budget_transaction
 
 
 --
+-- Name: index_future_race_entries_on_auto_enter; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_race_entries_on_auto_enter ON public.future_race_entries USING btree (auto_enter);
+
+
+--
+-- Name: index_future_race_entries_on_auto_ship; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_race_entries_on_auto_ship ON public.future_race_entries USING btree (auto_ship);
+
+
+--
+-- Name: index_future_race_entries_on_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_race_entries_on_date ON public.future_race_entries USING btree (date);
+
+
+--
+-- Name: index_future_race_entries_on_equipment; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_race_entries_on_equipment ON public.future_race_entries USING btree (equipment);
+
+
+--
+-- Name: index_future_race_entries_on_first_jockey_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_race_entries_on_first_jockey_id ON public.future_race_entries USING btree (first_jockey_id);
+
+
+--
+-- Name: index_future_race_entries_on_horse_id_and_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_future_race_entries_on_horse_id_and_date ON public.future_race_entries USING btree (horse_id, date);
+
+
+--
+-- Name: index_future_race_entries_on_race_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_race_entries_on_race_id ON public.future_race_entries USING btree (race_id);
+
+
+--
+-- Name: index_future_race_entries_on_racing_style; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_race_entries_on_racing_style ON public.future_race_entries USING btree (racing_style);
+
+
+--
+-- Name: index_future_race_entries_on_second_jockey_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_race_entries_on_second_jockey_id ON public.future_race_entries USING btree (second_jockey_id);
+
+
+--
+-- Name: index_future_race_entries_on_ship_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_race_entries_on_ship_date ON public.future_race_entries USING btree (ship_date);
+
+
+--
+-- Name: index_future_race_entries_on_ship_mode; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_race_entries_on_ship_mode ON public.future_race_entries USING btree (ship_mode);
+
+
+--
+-- Name: index_future_race_entries_on_ship_only_if_horse_is_entered; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_race_entries_on_ship_only_if_horse_is_entered ON public.future_race_entries USING btree (ship_only_if_horse_is_entered);
+
+
+--
+-- Name: index_future_race_entries_on_ship_when_entries_open; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_race_entries_on_ship_when_entries_open ON public.future_race_entries USING btree (ship_when_entries_open);
+
+
+--
+-- Name: index_future_race_entries_on_ship_when_horse_is_entered; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_race_entries_on_ship_when_horse_is_entered ON public.future_race_entries USING btree (ship_when_horse_is_entered);
+
+
+--
+-- Name: index_future_race_entries_on_third_jockey_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_race_entries_on_third_jockey_id ON public.future_race_entries USING btree (third_jockey_id);
+
+
+--
 -- Name: index_game_activity_points_on_activity_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4758,6 +5010,13 @@ CREATE INDEX index_horses_on_date_of_death ON public.horses USING btree (date_of
 --
 
 CREATE INDEX index_horses_on_gender ON public.horses USING btree (gender);
+
+
+--
+-- Name: index_horses_on_leaser_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horses_on_leaser_id ON public.horses USING btree (leaser_id);
 
 
 --
@@ -5181,6 +5440,83 @@ CREATE INDEX index_notifications_on_user_id ON public.notifications USING btree 
 
 
 --
+-- Name: index_race_entries_on_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_entries_on_date ON public.race_entries USING btree (date);
+
+
+--
+-- Name: index_race_entries_on_equipment; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_entries_on_equipment ON public.race_entries USING btree (equipment);
+
+
+--
+-- Name: index_race_entries_on_first_jockey_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_entries_on_first_jockey_id ON public.race_entries USING btree (first_jockey_id);
+
+
+--
+-- Name: index_race_entries_on_horse_id_and_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_race_entries_on_horse_id_and_date ON public.race_entries USING btree (horse_id, date);
+
+
+--
+-- Name: index_race_entries_on_jockey_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_entries_on_jockey_id ON public.race_entries USING btree (jockey_id);
+
+
+--
+-- Name: index_race_entries_on_odd_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_entries_on_odd_id ON public.race_entries USING btree (odd_id);
+
+
+--
+-- Name: index_race_entries_on_post_parade; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_entries_on_post_parade ON public.race_entries USING btree (post_parade);
+
+
+--
+-- Name: index_race_entries_on_race_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_entries_on_race_id ON public.race_entries USING btree (race_id);
+
+
+--
+-- Name: index_race_entries_on_racing_style; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_entries_on_racing_style ON public.race_entries USING btree (racing_style);
+
+
+--
+-- Name: index_race_entries_on_second_jockey_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_entries_on_second_jockey_id ON public.race_entries USING btree (second_jockey_id);
+
+
+--
+-- Name: index_race_entries_on_third_jockey_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_entries_on_third_jockey_id ON public.race_entries USING btree (third_jockey_id);
+
+
+--
 -- Name: index_race_odds_on_display; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5262,6 +5598,13 @@ CREATE INDEX index_race_options_on_second_jockey_id ON public.race_options USING
 --
 
 CREATE INDEX index_race_options_on_third_jockey_id ON public.race_options USING btree (third_jockey_id);
+
+
+--
+-- Name: index_race_qualifications_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_race_qualifications_on_horse_id ON public.race_qualifications USING btree (horse_id);
 
 
 --
@@ -6286,6 +6629,14 @@ ALTER TABLE ONLY public.horse_sales
 
 
 --
+-- Name: race_entries fk_rails_0d25b537c4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_entries
+    ADD CONSTRAINT fk_rails_0d25b537c4 FOREIGN KEY (jockey_id) REFERENCES public.jockeys(id);
+
+
+--
 -- Name: auction_horses fk_rails_0ff758e7f8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6350,11 +6701,27 @@ ALTER TABLE ONLY public.user_push_subscriptions
 
 
 --
+-- Name: future_race_entries fk_rails_2947652e21; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.future_race_entries
+    ADD CONSTRAINT fk_rails_2947652e21 FOREIGN KEY (first_jockey_id) REFERENCES public.jockeys(id);
+
+
+--
 -- Name: auction_consignment_configs fk_rails_2d96c0c08a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.auction_consignment_configs
     ADD CONSTRAINT fk_rails_2d96c0c08a FOREIGN KEY (auction_id) REFERENCES public.auctions(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: future_race_entries fk_rails_30632c54bf; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.future_race_entries
+    ADD CONSTRAINT fk_rails_30632c54bf FOREIGN KEY (third_jockey_id) REFERENCES public.jockeys(id);
 
 
 --
@@ -6542,6 +6909,30 @@ ALTER TABLE ONLY public.broodmare_shipments
 
 
 --
+-- Name: future_race_entries fk_rails_83ce026761; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.future_race_entries
+    ADD CONSTRAINT fk_rails_83ce026761 FOREIGN KEY (second_jockey_id) REFERENCES public.jockeys(id);
+
+
+--
+-- Name: horses fk_rails_86505356a0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horses
+    ADD CONSTRAINT fk_rails_86505356a0 FOREIGN KEY (leaser_id) REFERENCES public.stables(id);
+
+
+--
+-- Name: race_entries fk_rails_8658d2cce7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_entries
+    ADD CONSTRAINT fk_rails_8658d2cce7 FOREIGN KEY (first_jockey_id) REFERENCES public.jockeys(id);
+
+
+--
 -- Name: motor_alerts fk_rails_8828951644; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6558,6 +6949,14 @@ ALTER TABLE ONLY public.track_surfaces
 
 
 --
+-- Name: race_entries fk_rails_8a4149a29a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_entries
+    ADD CONSTRAINT fk_rails_8a4149a29a FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
 -- Name: racing_stats fk_rails_8a43836593; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6571,6 +6970,14 @@ ALTER TABLE ONLY public.racing_stats
 
 ALTER TABLE ONLY public.boardings
     ADD CONSTRAINT fk_rails_91c5c287e6 FOREIGN KEY (location_id) REFERENCES public.locations(id);
+
+
+--
+-- Name: race_entries fk_rails_925294d708; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_entries
+    ADD CONSTRAINT fk_rails_925294d708 FOREIGN KEY (odd_id) REFERENCES public.race_odds(id);
 
 
 --
@@ -6627,6 +7034,14 @@ ALTER TABLE ONLY public.activity_points
 
 ALTER TABLE ONLY public.training_schedules_horses
     ADD CONSTRAINT fk_rails_a48e7af8f9 FOREIGN KEY (training_schedule_id) REFERENCES public.training_schedules(id) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
+
+
+--
+-- Name: future_race_entries fk_rails_a52f4526d8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.future_race_entries
+    ADD CONSTRAINT fk_rails_a52f4526d8 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
 
 
 --
@@ -6790,11 +7205,27 @@ ALTER TABLE ONLY public.horses
 
 
 --
+-- Name: future_race_entries fk_rails_de9df9406c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.future_race_entries
+    ADD CONSTRAINT fk_rails_de9df9406c FOREIGN KEY (race_id) REFERENCES public.race_schedules(id);
+
+
+--
 -- Name: leases fk_rails_e02745fa92; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.leases
     ADD CONSTRAINT fk_rails_e02745fa92 FOREIGN KEY (leaser_id) REFERENCES public.stables(id);
+
+
+--
+-- Name: race_entries fk_rails_e0db8a9c1c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_entries
+    ADD CONSTRAINT fk_rails_e0db8a9c1c FOREIGN KEY (third_jockey_id) REFERENCES public.jockeys(id);
 
 
 --
@@ -6846,6 +7277,14 @@ ALTER TABLE ONLY public.horse_jockey_relationships
 
 
 --
+-- Name: race_entries fk_rails_ea1274a9a3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_entries
+    ADD CONSTRAINT fk_rails_ea1274a9a3 FOREIGN KEY (race_id) REFERENCES public.race_schedules(id);
+
+
+--
 -- Name: auctions fk_rails_eb22f53e21; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6894,6 +7333,14 @@ ALTER TABLE ONLY public.workouts
 
 
 --
+-- Name: race_entries fk_rails_f7f1d20e77; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_entries
+    ADD CONSTRAINT fk_rails_f7f1d20e77 FOREIGN KEY (second_jockey_id) REFERENCES public.jockeys(id);
+
+
+--
 -- Name: lease_offers fk_rails_fb816dc261; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6924,6 +7371,10 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260209224800'),
+('20260209211310'),
+('20260209144047'),
+('20260205135545'),
 ('20260123120534'),
 ('20260123093229'),
 ('20260122140512'),
@@ -6937,6 +7388,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20251230104641'),
 ('20251229150423'),
 ('20251203101405'),
+('20251129091043'),
+('20251128204314'),
+('20251128200158'),
 ('20251126225534'),
 ('20251122162900'),
 ('20251122155624'),

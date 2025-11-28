@@ -1,6 +1,6 @@
 class AuctionOutbidNotification < Notification
   def message
-    "You no longer have the high bid on #{params["horse_name"]} in the #{params["auction"]}"
+    I18n.t("notifications.auction_outbid_notification.message", name: params["horse_name"], auction: params["auction"])
   end
 
   def title

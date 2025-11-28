@@ -3,8 +3,6 @@ module Account
     include PublicIdGenerator
     include FriendlyId
 
-    FINAL_FURLONG = "Final Furlong"
-
     friendly_id :slug_candidates, use: [:slugged, :finders]
 
     attribute :miles_from_track, default: -> { 10 }
@@ -26,6 +24,7 @@ module Account
 
     scope :with_name, ->(name) { where("#{arel_table.name}.name ILIKE ?", "%#{name}%") }
     scope :active, -> { joins(:user).merge(Account::User.active) }
+    scope :not_color_war, -> { where("#{arel_table.name}.name NOT ILIKE ?", "% Team") }
 
     def self.ransackable_attributes(_auth_object = nil)
       %w[bred_horses_count description horses_count name unborn_horses_count]

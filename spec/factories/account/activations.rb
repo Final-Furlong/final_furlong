@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :activation, class: "Account::Activation" do
     token { SecureRandom.uuid }
-    user
 
     trait :unactivated do
       activated_at { nil }

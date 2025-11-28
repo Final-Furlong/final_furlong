@@ -1,4 +1,26 @@
 shared:
+  activities:
+    - walk
+    - jog
+    - canter
+    - gallop
+    - breeze
+  distances:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 8
+    - 12
+    - 16
+    - 20
+    - 24
+    - 28
+    - 32
+    - 36
+    - 40
   effort_levels:
     - 20
     - 50
@@ -23,7 +45,15 @@ shared:
     breeze: 15
   max_distance_for_2yos: 16
   max_gallop_for_2yos: 8
+  max_schedules_per_stable: 10
   walk:
+    distances:
+      - 4
+      - 5
+      - 6
+      - 8
+      - 12
+      - 16
     energy_loss_per_second_min: 0.006
     energy_loss_per_second_max: 0.007
     fitness_gain_per_second_min: 0.002
@@ -35,6 +65,19 @@ shared:
     strides_per_second_min: 1
     strides_per_second_max: 2
   jog:
+    distances:
+      - 4
+      - 5
+      - 6
+      - 8
+      - 12
+      - 16
+      - 20
+      - 24
+      - 28
+      - 32
+      - 36
+      - 40
     energy_loss_per_second_min: 0.009
     energy_loss_per_second_max: 0.010
     fitness_gain_per_second_min: 0.005
@@ -46,6 +89,19 @@ shared:
     strides_per_second_min: 2
     strides_per_second_max: 3
   canter:
+    distances:
+      - 4
+      - 5
+      - 6
+      - 8
+      - 12
+      - 16
+      - 20
+      - 24
+      - 28
+      - 32
+      - 36
+      - 40
     energy_loss_per_second_min: 0.030
     energy_loss_per_second_max: 0.040
     fitness_gain_per_second_min: 0.006
@@ -57,6 +113,15 @@ shared:
     strides_per_second_min: 1.5
     strides_per_second_max: 2.0
   gallop:
+    distances:
+      - 4
+      - 5
+      - 6
+      - 8
+      - 12
+      - 16
+      - 20
+      - 24
     energy_loss_per_second_min: 0.090
     energy_loss_per_second_max: 0.140
     fitness_gain_per_second_min: 0.045
@@ -65,6 +130,13 @@ shared:
     max_furlongs: 24
     stride_length: average
   breeze:
+    distances:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
     energy_loss_per_second_min: 0.360
     energy_loss_per_second_max: 0.400
     fitness_gain_per_second_min: 0.150

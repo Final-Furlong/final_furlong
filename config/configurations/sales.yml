@@ -1,0 +1,6 @@
+shared:
+  max_offer_period: 60
+  max_newbie_price: 50000
+  minimum_age: 90
+  minimum_wait_from_last_sale: 183
+  minimum_races: 3
