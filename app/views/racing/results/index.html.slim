@@ -1,0 +1,66 @@
+ruby:
+  date = @races.first.date
+  prev_date = Racing::RaceResult.where(date: ...date).maximum(:date)
+  next_date = Racing::RaceResult.where('date > ?', date).minimum(:date) ||
+              Racing::RaceSchedule.where('date > ?', date).minimum(:date)
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t(".title"), href: "#" },
+    { name: l(date), href: "#" }])
+
+= render "prev_next_dates", prev_date:, next_date:
+.overflow-x-auto.rounded-box.border.bg-base-100
+  table.table.table-responsive.table-zebra.sortable.asc.n-last.table-xs.md:table-md
+    thead
+      tr
+        th.table-cell.sm:hidden
+        th= t("racing.race.number")
+        th= t("racing.race.track")
+        th= t("racing.race.type")
+        th= t("racing.race.distance")
+        th= t("racing.race.surface")
+        th= t("racing.race.age")
+        th= t("racing.race.gender")
+        th= t("racing.race.name")
+        th.no-sort
+          span.sr-only= t("common.actions.title")
+    tbody
+      - @races.each do |race|
+        tr
+          td.table-cell.sm:hidden
+            = link_to racing_result_path(race.date, race.number), target: "_top" do
+              i.ph-fill.ph-eye
+          td= race.number
+          td= race.racetrack.name
+          - sort = Racing::RaceSchedule::RACE_TYPES.find_index(race.race_type)
+          - sort += Racing::RaceSchedule::RACE_GRADES.find_index(race.grade) if race.race_type == "stakes"
+          td data-sort=sort
+            span.hidden.lg:inline
+              = t("racing.race.#{race.race_type.downcase}")
+              - if race.race_type == "stakes"
+                = "&nbsp;".html_safe
+                = " (#{race.grade.titleize})"
+            span.inline.lg:hidden
+              = t("racing.race.mobile.#{race.race_type.downcase}")
+              - if race.race_type == "stakes"
+                = "&nbsp; (".html_safe
+                = t("racing.race.mobile.#{race.grade.downcase.gsub(' ', '_')}")
+                = ")"
+          td data-sort=race.distance
+            span.hidden.lg:inline = t("racing.race.furlongs", number: race.distance)
+            span.inline.lg:hidden = t("racing.race.mobile.furlongs", number: race.distance)
+          - sort = Racing::TrackSurface::SURFACES.find_index(race.track_surface.surface)
+          td data-sort=sort = t("racing.race.surface_#{race.track_surface.surface}")
+          td= race.race_age_string
+          td
+            - if race.female_only?
+              span.hidden.lg:inline = t("racing.race.female_only")
+              span.inline.lg:hidden = t("racing.race.mobile.female_only")
+            - elsif race.male_only?
+              span.hidden.lg:inline = t("racing.race.male_only")
+              span.inline.lg:hidden = t("racing.race.mobile.male_only")
+          td= race.name
+          td
+            = link_to racing_result_path(race.date, race.number), target: "_top" do
+              i.ph-fill.ph-eye
+.mt-2
+  = render "prev_next_dates", prev_date:, next_date:

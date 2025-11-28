@@ -1,46 +1,63 @@
 ---
 en:
   racing:
-    races:
-      index:
-        age: Age
-        allowance: Allowance
+    race:
+      age: Age
+      age_desc: for %{age}
+      allowance: Allowance
+      claiming: Claiming
+      claiming_with_price: Claiming (%{price})
+      distance: Distance
+      equipment: Equipment
+      female_only: Female
+      final_furlong: Final
+      finish: Finish
+      furlongs: "%{number} Furlongs"
+      gender: Gender
+      grade: Grade
+      jockey: Jockey
+      maiden: Maiden
+      male_only: Male
+      mobile:
+        allowance: Allow
         claiming: Claiming
-        distance: Distance
-        female_only: Female
-        furlongs: "%{number} Furlongs"
-        gender: Gender
-        grade: Grade
+        female_only: F
+        furlongs: "%{number}f"
+        grade_1: Gr. 1
+        grade_2: Gr. 2
+        grade_3: Gr. 3
         maiden: Maiden
-        male_only: Male
-        mobile:
-          allowance: Allow
-          claiming: Claiming
-          female_only: F
-          furlongs: "%{number}f"
-          grade_1: Gr. 1
-          grade_2: Gr. 2
-          grade_3: Gr. 3
-          maiden: Maiden
-          male_only: M
-          nw1_allowance: NW1 Allow
-          nw2_allowance: NW2 Allow
-          nw3_allowance: NW3 Allow
-          stakes: Stakes
-          starter_allowance: Starter Allow
-          ungraded: Ugr.
-        name: Name
-        number: "#"
-        nw1_allowance: NW1 Allowance
-        nw2_allowance: NW2 Allowance
-        nw3_allowance: NW3 Allowance
-        purse: Purse
+        male_only: M
+        nw1_allowance: NW1 Allow
+        nw2_allowance: NW2 Allow
+        nw3_allowance: NW3 Allow
         stakes: Stakes
-        starter_allowance: Starter Allowance
-        surface: Surface
-        surface_dirt: Dirt
-        surface_steeplechase: SC
-        surface_turf: Turf
-        title: Race Schedule
-        track: Track
-        type: Type
+        starter_allowance: Starter Allow
+        ungraded: Ugr.
+      name: Name
+      number: "#"
+      nw1_allowance: NW1 Allowance
+      nw2_allowance: NW2 Allowance
+      nw3_allowance: NW3 Allowance
+      odds: Odds
+      post_position: Post
+      post_position_expanded: Post Position
+      purse: Purse
+      stakes: Stakes
+      starter_allowance: Starter Allowance
+      surface: Surface
+      surface_dirt: Dirt
+      surface_steeplechase: SC
+      surface_turf: Turf
+      title: Race Schedule
+      track: Track
+      type: Type
+    results:
+      fractions: Fractional Times
+      horse_title: Horse (Jockey)
+      index:
+        title: Race Results
+      injuries: Injuries
+      race_number: 'Race #%{number}'
+      speed_factor: Speed Factor
+      weight: Lbs.
