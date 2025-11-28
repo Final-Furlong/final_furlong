@@ -30,11 +30,20 @@ module Racing
     scope :by_type, ->(type) { where(race_type: type) }
     scope :by_date, ->(date) { where(date:) }
     scope :since_date, ->(date) { where(date: date..) }
+    scope :ordered_by_date, -> { order(date: :asc) }
 
     delegate :racetrack, to: :track_surface
 
     def claiming?
       race_type.to_s.casecmp("claiming").zero?
+    end
+
+    def finish_time_string
+      minutes = (time_in_seconds / 60).floor
+      seconds = (time_in_seconds % 60).floor
+      remainder = (time_in_seconds % 60).to_s.split(".").last
+      seconds = [seconds, remainder].join(".")
+      [minutes, seconds].join(":")
     end
   end
 end

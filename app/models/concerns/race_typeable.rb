@@ -27,6 +27,22 @@ module RaceTypeable
       string
     end
 
+    def race_description_string
+      race_description = I18n.t("racing.results.race_number", number:) +
+        ", " + I18n.t("racing.race.furlongs", number: distance) + " "
+      race_description += if claiming?
+        price = Game::MoneyFormatter.new(claiming_price).to_s
+        I18n.t("racing.race.claiming_with_price", price:)
+      else
+        I18n.t("racing.race.#{race_type.downcase}")
+      end
+      race_description += " " + I18n.t("racing.race.age_desc", age: race_age_string)
+      if race_gender_string.present?
+        race_description += " " + race_gender_string
+      end
+      race_description + ", " + Game::MoneyFormatter.new(purse).to_s
+    end
+
     def equipment_string(object = self)
       values = []
       values << "B" if object.blinkers

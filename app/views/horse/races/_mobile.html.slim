@@ -8,35 +8,35 @@
     .join.join-vertical.bg-base-100.w-full
       .collapse.collapse-arrow.join-item.border-base-300.border
         input type="radio" name="race-record" checked="checked"
-        .collapse-title.font-semibold= t(".lifetime")
+        .collapse-title.font-semibold= t("horse.races.index.lifetime")
         .collapse-content.text-sm
           - if (record = dashboard.lifetime_race_record)
             table.table.table-zebra
               tbody
                 tr
-                  td= t(".starts")
+                  td= t("horse.races.index.starts")
                   td.text-right= record.starts_string
                 tr
-                  td= t(".wins")
+                  td= t("horse.races.index.wins")
                   td.text-right= record.wins_string
                 tr
-                  td= t(".seconds")
+                  td= t("horse.races.index.seconds")
                   td.text-right= record.seconds_string
                 tr
-                  td= t(".thirds")
+                  td= t("horse.races.index.thirds")
                   td.text-right= record.thirds_string
                 tr
-                  td= t(".fourths")
+                  td= t("horse.races.index.fourths")
                   td.text-right= record.fourths_string
                 tr
-                  td= t(".earnings")
+                  td= t("horse.races.index.earnings")
                   td.text-right= record.earnings_string
                 tr
-                  td= t(".points")
+                  td= t("horse.races.index.points")
                   td.text-right= record.points
 
         - dashboard.annual_race_records.each do |record|
-          - description = t(".race_year", age: record.year - dob_year, year: record.year)
+          - description = t("horse.races.index.race_year", age: record.year - dob_year, year: record.year)
           .collapse.collapse-arrow.join-item.border-base-300.border
             input type="radio" name="race-record"
             .collapse-title.font-semibold= description
@@ -44,23 +44,23 @@
               table.table.table-zebra
                 tbody
                   tr
-                    td= t(".starts")
+                    td= t("horse.races.index.starts")
                     td.text-right= record.starts_string
                   tr
-                    td= t(".wins")
+                    td= t("horse.races.index.wins")
                     td.text-right= record.wins_string
                   tr
-                    td= t(".seconds")
+                    td= t("horse.races.index.seconds")
                     td.text-right= record.seconds_string
                   tr
-                    td= t(".thirds")
+                    td= t("horse.races.index.thirds")
                     td.text-right= record.thirds_string
                   tr
-                    td= t(".fourths")
+                    td= t("horse.races.index.fourths")
                     td.text-right= record.fourths_string
                   tr
-                    td= t(".earnings")
+                    td= t("horse.races.index.earnings")
                     td.text-right= record.earnings_string
                   tr
-                    td= t(".points")
+                    td= t("horse.races.index.points")
                     td.text-right= record.points

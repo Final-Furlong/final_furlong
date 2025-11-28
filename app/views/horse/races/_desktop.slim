@@ -3,23 +3,23 @@
   table.table.table-zebra
     thead
       tr.border-b-1.border-gray-400.dark:border-neutral-600
-        th= t(".year")
-        th= t(".starts")
-        th= t(".wins")
-        th= t(".seconds")
-        th= t(".thirds")
-        th= t(".fourths")
-        th= t(".earnings")
-        th= t(".points")
+        th= t("horse.races.index.year")
+        th= t("horse.races.index.starts")
+        th= t("horse.races.index.wins")
+        th= t("horse.races.index.seconds")
+        th= t("horse.races.index.thirds")
+        th= t("horse.races.index.fourths")
+        th= t("horse.races.index.earnings")
+        th= t("horse.races.index.points")
     tbody
       tr
         - if dashboard.annual_race_records.empty?
           td colspan=8
-            .text-secondary-content.text-center= t(".unraced")
+            .text-secondary-content.text-center= t("horse.races.index.unraced")
         - else
           - dashboard.annual_race_records.each do |record|
             tr
-              td= t(".race_year", age: record.year - dob_year, year: record.year)
+              td= t("horse.races.index.race_year", age: record.year - dob_year, year: record.year)
               td= record.starts_string
               td= record.wins_string
               td= record.seconds_string
@@ -30,7 +30,7 @@
     - if (record = dashboard.lifetime_race_record)
       tfoot
         tr.border-t-1.border-gray-400.dark:border-neutral-600
-          td= t(".lifetime")
+          td= t("horse.races.index.lifetime")
           td= record.starts_string
           td= record.wins_string
           td= record.seconds_string

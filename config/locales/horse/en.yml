@@ -159,29 +159,36 @@ en:
       stripe: stripe
       stripe_snip: stripe, snip
     races:
-      desktop:
+      index:
         earnings: Earnings
+        finish_time: 'Time: %{time}'
         fourths: Fourths
+        fractions: 'Fractions: %{fractions}'
         lifetime: Lifetime
+        place: 'Place: %{number}'
         points: Points
+        points_amount: "%{points}pts"
         race_year: "%{age}yo (%{year})"
+        races: Races
+        running_line: 'Running Line: %{line}'
         seconds: Seconds
+        speed_factor: 'Speed Factor: %{number}'
         starts: Starts
+        surface: 'Surface: %{surface}'
         thirds: Thirds
         unraced: Unraced
+        view_race: View Race
         wins: Wins
         year: Year
       mobile:
-        earnings: Earnings
-        fourths: Fourths
-        lifetime: Lifetime
-        points: Points
-        race_year: "%{age}yo (%{year})"
-        seconds: Seconds
-        starts: Starts
-        thirds: Thirds
-        unraced: Unraced
-        wins: Wins
+        finish_time: 'Time:'
+        place: 'Place:'
+        running_line: 'Running Line:'
+        second: 'Second:'
+        speed_factor: 'Speed Factor:'
+        surface: 'Surface:'
+        third: 'Third:'
+        winner: 'Winner:'
     sale_offer_acceptances:
       create:
         success: Horse was successfully purchased

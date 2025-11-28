@@ -1,4 +1,19 @@
 = turbo_frame_tag "#{@dashboard.horse.slug}-races" do
   - dob_year = @dashboard.horse.date_of_birth.year
-  = render 'mobile', dashboard: @dashboard, dob_year: dob_year
-  = render 'desktop', dashboard: @dashboard, dob_year: dob_year
+  .mx-auto.w-full.sm:block.sm:w-3/4
+    .mb-4
+      button.btn.ml-auto#horse-race-results-anchor popovertarget="horse-race-results"
+        = t(".races")
+      ul.dropdown.menu.w-52.rounded-box.bg-base-100.shadow-sm#horse-race-results popover=true
+        li
+          = link_to t(".lifetime"), horse_races_path, data: { turbo_frame: "#{@dashboard.horse.slug}-races" }
+          - @dashboard.annual_race_records.each do |record|
+            li
+              = link_to t(".race_year", age: record.year - dob_year, year: record.year), horse_races_path(year: record.year), data: { turbo_frame: "#{@dashboard.horse.slug}-races" }
+  .clear-both
+  - if params[:year]
+    = render 'mobile_year', dashboard: @dashboard, dob_year: dob_year, year: params[:year]
+    = render 'desktop_year', dashboard: @dashboard, dob_year: dob_year, year: params[:year]
+  - else
+    = render 'mobile', dashboard: @dashboard, dob_year: dob_year
+    = render 'desktop', dashboard: @dashboard, dob_year: dob_year

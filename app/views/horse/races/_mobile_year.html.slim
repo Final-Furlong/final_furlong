@@ -1,0 +1,85 @@
+/# locals: (dashboard:, dob_year:, year:)
+- record = dashboard.annual_race_record
+.mx-auto.overflow-x-auto.border.rounded-md.w-full.sm:hidden
+  - if record.blank?
+    table.table
+      thead
+        td.text-secondary-content.text-center= t("horse.races.index.unraced")
+  - else
+    h1.text-lg.text-center.border-b-1.border-neutral-content.mb-2
+      = t("horse.races.index.race_year", age: year.to_i - dob_year, year: year)
+      = ": ".html_safe
+      = record.starts_string
+      = "-"
+      = record.wins_string
+      = "-"
+      = record.seconds_string
+      = "-"
+      = record.thirds_string
+      = "-"
+      = record.fourths_string
+      = " - "
+      = record.earnings_string
+      = " - "
+      = t("horse.races.index.points_amount", points: record.points)
+    - dashboard.races.each do |finish|
+      - horse = finish.horse
+      - race = finish.race
+      - winner = finish.finish_position == 1 ? finish : race.horses.find_by(finish_position: 1)
+      - second = finish.finish_position == 2 ? finish : race.horses.find_by(finish_position: 2)
+      - third = finish.finish_position == 3 ? finish : race.horses.find_by(finish_position: 3)
+      .card.card-border.bg-base-100.w-full.px-2.rounded-none
+        .card-body.p-0.rounded-none
+          .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+            input type="checkbox"
+            .collapse-title.font-semibold.font-medium
+              span
+                = l(race.date)
+                = " - "
+                = race.race_description_string
+            .collapse-content.text-sm.border-t-1.border-base-content/40
+              p
+                span= t("horse.races.mobile.place")
+                span.float-right
+                  = finish.finish_position.ordinalize
+                  = "/"
+                  = race.horses.count
+              p
+                span= t("horse.races.mobile.surface")
+                span.float-right= race.track_surface.surface.capitalize
+              p
+                span= t("horse.races.mobile.finish_time")
+                span.float-right= race.finish_time_string
+              p
+                span= t("horse.races.mobile.speed_factor")
+                span.float-right= finish.speed_factor || t("common.na")
+              p
+                span= t("horse.races.mobile.winner")
+                span.float-right
+                  - if winner == finish
+                    strong.italic= horse.name
+                  - else
+                    = link_to winner.horse.name, horse_path(winner.horse), target: "_top", class: "italic text-#{winner.horse.gender}"
+                  - if second
+                  p
+                    span= t("horse.races.mobile.second")
+                    span.float-right
+                      - if second && second == finish
+                        strong.italic= horse.name
+                      - elsif second
+                        = link_to second.horse.name, horse_path(second.horse), target: "_top", class: "italic text-#{second.horse.gender}"
+                    - if third
+                      p
+                        span= t("horse.races.mobile.third")
+                        span.float-right
+                          - if third && third == finish
+                            strong.italic= horse.name
+                          - elsif third
+                            = link_to third.horse.name, horse_path(third.horse), target: "_top", class: "italic text-#{third.horse.gender}"
+                  p
+                    span= t("horse.races.mobile.running_line")
+                    span.float-right= finish.positions.gsub("|", "-")
+                  p
+                    span= t("horse.races.index.fractions", fractions: winner.fractions.gsub("|", " | "))
+                  p.text-center
+                    = link_to t("horse.races.index.view_race"), racing_result_path(race.date, race.number), class: "mt-2 btn btn-neutral", data: { turbo_frame: "modal" }

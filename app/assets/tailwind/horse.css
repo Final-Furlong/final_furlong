@@ -39,3 +39,17 @@ td.gelding {
   background-color: var(--gelded-horse-color);
   color: #000;
 }
+
+/* stylelint-disable property-no-unknown */
+#horse-race-results-anchor {
+  anchor-name: --horse-race-results;
+}
+
+#horse-race-results {
+  position-anchor: --horse-race-results;
+  margin: 0;
+  inset: auto;
+  top: anchor(--horse-race-results bottom);
+  justify-self: anchor-center;
+}
+/* stylelint-enable property-no-unknown */
