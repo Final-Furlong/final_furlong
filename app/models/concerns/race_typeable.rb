@@ -6,6 +6,10 @@ module RaceTypeable
       race_type.to_s.casecmp("claiming").zero?
     end
 
+    def race_surface_type
+      (track_surface.surface == "steeplechase") ? "jump" : "flat"
+    end
+
     def race_type_string
       value = race_type.titleize.gsub("Nw1 ", "NW1 ").gsub("Nw2 ", "NW2 ").gsub("Nw3 ", "NW3 ")
       value += " (#{grade})" if race_type.downcase == "stakes"
@@ -30,6 +34,7 @@ module RaceTypeable
     def race_description_string
       race_description = I18n.t("racing.results.race_number", number:) +
         ", " + I18n.t("racing.race.furlongs", number: distance) + " "
+      race_description += " " + track_surface.surface.titleize + " "
       race_description += if claiming?
         price = Game::MoneyFormatter.new(claiming_price).to_s
         I18n.t("racing.race.claiming_with_price", price:)

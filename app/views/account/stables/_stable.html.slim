@@ -3,7 +3,7 @@
   .stable.card.card-border.border-gray-300.shadow-md.mx-2.my-2.dark:border-neutral-300
     .card-body
       .card-title
-        h5.card-header
+        text-lg.card-header
           = render Ui::Link::Component.new(url: stable_path(stable), data: { turbo_frame: "_top" }) do
             = stable.name
       .card-subtitle.mb-2

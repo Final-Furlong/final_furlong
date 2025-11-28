@@ -1,0 +1,11 @@
+shared:
+  genders:
+    - male
+    - female
+  statuses:
+    - apprentice
+    - veteran
+    - retired
+  types:
+    - flat
+    - jump

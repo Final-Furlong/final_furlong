@@ -5,7 +5,7 @@ module Horses
     belongs_to :horse
 
     validates :date, :injury_type, :rest_date, presence: true
-    validates :injury_type, inclusion: { in: Horses::HistoricalInjury::TYPES }
+    validates :injury_type, inclusion: { in: Config::Injuries.types }
     validates :rest_date, comparison: { greater_than_or_equal_to: :date }
 
     scope :current, -> { where(date: ...Date.current).where("rest_date > ?", Date.current) }
@@ -33,7 +33,7 @@ module Horses
     def self.pick_leg(type)
       case type
       when "heat", "swelling", "cut", "limping", "bowed tendon", "broken leg"
-        HistoricalInjury::LEGS.sample
+        Config::Injuries.legs.sample.upcase
       end
     end
   end

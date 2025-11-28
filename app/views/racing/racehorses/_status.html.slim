@@ -1,0 +1,73 @@
+/# locals: (query:, status:, horses:, race:, pagy:)
+= turbo_frame_tag "racehorse-status-#{status}" do
+  .horses-search-results
+    - if horses.empty?
+      h4.text-muted.text-center.my-2
+        small= t("horses.index.no_horses")
+    - else
+      .table-responsive-md
+        table.table.table-responsive.table-zebra.table-sm.sortable.n-last
+          thead
+            tr
+              th.no-sort= sort_link query, :name, Horses::Horse.human_attribute_name("name")
+              th.no-sort= sort_link query, :age, Horses::Horse.human_attribute_name("age")
+              th.no-sort= sort_link query, :gender, Horses::Horse.human_attribute_name("gender")
+              th= Racing::RacehorseMetadata.human_attribute_name("last_raced_at")
+              th= t("horses.info.energy")
+              th= t("horses.info.fitness")
+              th= Racing::RacehorseMetadata.human_attribute_name("last_rested_at")
+              th= Horses::Horse.human_attribute_name("location")
+              th= Racing::RacehorseMetadata.human_attribute_name("last_shipped_at")
+              th= t("horses.info.number_of_workouts")
+              th= t("common.actions.title")
+            tbody.table-group-divider
+              - horses.each do |horse|
+                - stats = horse.race_metadata
+                - options = horse.race_options
+                tr
+                  td.wb-break-all data-sort=horse.name
+                    = link_to horse.name, horse_path(horse), data: { turbo_frame: "modal" }
+                    - if options.note_for_next_race.present?
+                      .tooltip.ml-2.text-lg data-tip=options.note_for_next_race
+                        i.ph-fill.ph-notepad
+                  td.wb-break-all= horse.age
+                  td= t("horses.genders.#{horse.gender}")
+                  td
+                    - if stats&.last_raced_at
+                      = stats&.last_raced_at
+                      = " ("
+                      = (Date.current - stats.last_raced_at).to_i
+                      = ")"
+                    - else
+                      = t("common.dash")
+                  td= stats&.energy_grade
+                  td= stats&.fitness_grade
+                  td
+                    - if stats&.last_rested_at
+                      = stats&.last_rested_at
+                      = " ("
+                      = (Date.current - stats.last_rested_at).to_i
+                      = ")"
+                    - else
+                      = t("common.dash")
+                  - distance =stats.distance_to_race(race.racetrack.location)
+                  td data-sort=distance
+                    = stats&.at_home? ? t("horse.location.at_farm") : stats&.racetrack&.name
+                    - if distance > 0
+                      = " (#{number_with_delimiter(distance)})"
+                  td
+                    - if stats&.last_shipped_at
+                      = stats&.last_shipped_at
+                      = " ("
+                      = (Date.current - stats.last_shipped_at).to_i
+                      = ")"
+                    - else
+                      = t("common.dash")
+                  td= "to be added"
+                  td.actions-column.nav-item.dropdown
+                    = link_to horse_path(horse), class: "btn btn-sm btn-soft btn-primary",
+                            data: { turbo_frame: "_top" } do
+                      i.ph-fill.ph-eye
+                      = t("common.actions.view")
+      .float-right
+        == pagy.series_nav

@@ -31,8 +31,8 @@ ruby:
               i.ph-fill.ph-eye
           td= race.number
           td= race.racetrack.name
-          - sort = Racing::RaceSchedule::RACE_TYPES.find_index(race.race_type)
-          - sort += Racing::RaceSchedule::RACE_GRADES.find_index(race.grade) if race.race_type == "stakes"
+          - sort = Config::Racing.all_types.find_index(race.race_type)
+          - sort += Config::Racing.grades.find_index(race.grade) if race.race_type == "stakes"
           td data-sort=sort
             span.hidden.lg:inline
               = t("racing.race.#{race.race_type.downcase}")
@@ -48,7 +48,7 @@ ruby:
           td data-sort=race.distance
             span.hidden.lg:inline = t("racing.race.furlongs", number: race.distance)
             span.inline.lg:hidden = t("racing.race.mobile.furlongs", number: race.distance)
-          - sort = Racing::TrackSurface::SURFACES.find_index(race.track_surface.surface)
+          - sort = Config::Racing.surfaces.find_index(race.track_surface.surface)
           td data-sort=sort = t("racing.race.surface_#{race.track_surface.surface}")
           td= race.race_age_string
           td

@@ -20,7 +20,7 @@ module Horses
 
         current_location = horse.racing.current_location_name
         ActiveRecord::Base.transaction do
-          # TODO: update race stats to flag in transit
+          horse.race_stats&.update(in_transit: true)
           Legacy::Horse.find_by(ID: horse.legacy_id)&.update(InTransit: 1)
           Legacy::ViewRacehorses.find_by(horse_id: horse.legacy_id)&.update(in_transit: 1)
           description = I18n.t("services.shipment_creator.description", horse: horse.name, start:

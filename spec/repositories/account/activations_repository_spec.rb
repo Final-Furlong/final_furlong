@@ -4,8 +4,8 @@ RSpec.describe Account::ActivationsRepository do
   describe "#find_by!" do
     context "when matching token exists" do
       it "returns matching activation" do
-        matching_activation = create(:activation)
-        _non_matching_activation = create(:activation)
+        matching_activation = create(:activation, user: create(:user, :without_stable))
+        _non_matching_activation = create(:activation, user: create(:user, :without_stable))
 
         result = repo.find_by!(token: matching_activation.token)
         expect(result).to eq matching_activation

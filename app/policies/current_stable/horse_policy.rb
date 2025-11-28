@@ -45,17 +45,17 @@ module CurrentStable
       return false if Auction.valid_for_horse(record).empty?
       if record.sales.count.positive?
         last_sale_date = record.sales.maximum(:date)
-        return true if last_sale_date < Date.current - Horses::SaleOffer::MINIMUM_WAIT_FROM_SALE
+        return true if last_sale_date < Date.current - Config::Sales.minimum_wait_from_last_sale.days
 
         if record.racehorse?
           races_count = record.race_result_finishes.joins(:race).merge(Racing::RaceResult.since_date(last_sale_date)).count
-          races_count >= Horses::SaleOffer::MINIMUM_RACES
+          races_count >= Config::Sales.minimum_races
         elsif record.stud?
           return false # TODO: hook up bookings check
         else
           return false
         end
-      elsif record.date_of_birth > Date.current - Horses::SaleOffer::MINIMUM_AGE
+      elsif record.date_of_birth > Date.current - Config::Sales.minimum_age.days
         return false
       end
 

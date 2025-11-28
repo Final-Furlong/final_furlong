@@ -1,6 +1,5 @@
 class Horses::Horse::Racing < ActiveRecord::AssociatedObject
   record.has_one :race_options, class_name: "Racing::RaceOption", dependent: :delete
-  record.has_one :race_metadata, class_name: "Racing::RacehorseMetadata", dependent: :delete
   record.has_one :racing_stats, class_name: "Racing::RacingStats", dependent: :delete
 
   def current_location

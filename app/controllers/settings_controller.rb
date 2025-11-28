@@ -33,19 +33,19 @@ class SettingsController < ApplicationController
   end
 
   def light_theme_options
-    Account::Settings::Website::LIGHT_THEMES.map do |theme|
+    Config::Website.light_themes.map do |theme|
       [theme, I18n.t("daisy_ui.#{theme}")]
     end.sort
   end
 
   def dark_theme_options
-    Account::Settings::Website::DARK_THEMES.map do |theme|
+    Config::Website.dark_themes.map do |theme|
       [theme, I18n.t("daisy_ui.#{theme}")]
     end.sort
   end
 
   def mode_options
-    Account::Settings::Website::MODES.map do |mode|
+    Config::Website.modes.map do |mode|
       [mode, I18n.t("activerecord.attributes.setting.mode.#{mode}")]
     end.sort
   end

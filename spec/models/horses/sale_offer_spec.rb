@@ -30,9 +30,9 @@ RSpec.describe Horses::SaleOffer do
 
     describe "offer start date" do
       it "cannot be more than the maximum" do
-        offer = build_stubbed(:sale_offer, offer_start_date: Date.current + (described_class::MAX_OFFER_PERIOD_DAYS + 1).days)
+        offer = build_stubbed(:sale_offer, offer_start_date: Date.current + (Config::Sales.max_offer_period + 1).days)
         expect(offer).not_to be_valid
-        max_date = Date.current + described_class::MAX_OFFER_PERIOD_DAYS.days
+        max_date = Date.current + Config::Sales.max_offer_period.days
         expect(offer.errors[:offer_start_date]).to eq(["must be less than or equal to #{I18n.l(max_date)}"])
       end
 

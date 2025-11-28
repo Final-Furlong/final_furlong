@@ -13,7 +13,7 @@ module Racing
     def new?
       return false unless user&.stable
 
-      user.stable.reload.training_schedules.size < Racing::TrainingSchedule::MAX_SCHEDULES_PER_STABLE
+      user.stable.reload.training_schedules.size < Config::Workouts.max_schedules_per_stable
     end
 
     def create?

@@ -231,7 +231,10 @@ ActiveRecordDoctor.configure do
       "Racing::TrainingSchedule.wednesday_activities",
       "Racing::TrainingSchedule.thursday_activities",
       "Racing::TrainingSchedule.friday_activities",
-      "Racing::TrainingSchedule.saturday_activities"
+      "Racing::TrainingSchedule.saturday_activities",
+      "Racing::FutureRaceEntry.equipment", # default 0
+      "Racing::RaceEntry.post_parade", # default 0
+      "Racing::RaceEntry.weight" # default 0
     ]
 
   detector :missing_unique_indexes,
