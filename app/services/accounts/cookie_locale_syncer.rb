@@ -19,7 +19,7 @@ module Accounts
     def sync_cookie_locale_to_user
       return unless valid_locale?(cookies[:locale])
 
-      Accounts::SettingsUpdater.new.call(params: { locale: cookies[:locale] }, cookies:)
+      Accounts::SettingsUpdater.new.call(params: { website_attributes: { locale: cookies[:locale] } }, cookies:)
     end
 
     def clear_cookie_locale
