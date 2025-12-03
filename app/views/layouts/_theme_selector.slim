@@ -15,18 +15,20 @@ javascript:
     return "";
   }
 
-  // const darkMode = (window.matchMedia('(prefers-color-scheme: dark)').matches) || getCookie('dark_mode')
-  const darkMode = getCookie('dark_mode')
+  const savedMode = getCookie('mode')
+  let darkMode = false;
   let colorTheme = '';
-  if (darkMode) {
+  if (savedMode === "dark") {
+    darkMode = true;
     colorTheme = localStorage.getItem('color-theme') || getCookie('dark_theme')
-  } else {
+  } else if (savedMode === "light") {
     colorTheme = localStorage.getItem('color-theme') || getCookie('light_theme')
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    darkMode = true;
   }
   if (colorTheme) {
     document.documentElement.setAttribute('data-theme', colorTheme)
   }
   if (darkMode) {
-    document.documentElement.setAttribute('data-theme', colorTheme)
     document.documentElement.classList.add('dark')
   }

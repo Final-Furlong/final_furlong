@@ -1,15 +1,22 @@
 module Account
   class Setting < ApplicationRecord
-    self.ignored_columns += ["old_id"]
+    include StoreModel::NestedAttributes
+
+    self.ignored_columns += ["old_id", "dark_mode", "dark_theme", "locale", "theme"]
 
     belongs_to :user
 
-    validates :locale, inclusion: { in: I18n.available_locales.map(&:to_s), message: :invalid }
-    validates :dark_mode, inclusion: { in: [true, false] }
+    attribute :racing, Settings::Racing.to_type
+    attribute :website, Settings::Website.to_type
+    attribute :time_zone, default: -> { Time.zone.tzinfo.identifier }
 
-    def time_zone
-      nil
-    end
+    validates :time_zone, presence: true, inclusion: {
+      in: ActiveSupport::TimeZone.all.map(&:tzinfo).map(&:identifier)
+    }
+    validates :racing, store_model: true
+    validates :website, store_model: true
+
+    accepts_nested_attributes_for :racing, :website, allow_destroy: true
   end
 end
 
@@ -19,10 +26,9 @@ end
 # Database name: primary
 #
 #  id         :bigint           not null, primary key
-#  dark_mode  :boolean          default(FALSE), not null
-#  dark_theme :string
-#  locale     :string
-#  theme      :string
+#  racing     :jsonb
+#  time_zone  :string           not null
+#  website    :jsonb
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  user_id    :bigint           not null, uniquely indexed
