@@ -2605,7 +2605,7 @@ CREATE TABLE public.settings (
     updated_at timestamp(6) with time zone NOT NULL,
     dark_theme character varying,
     dark_mode boolean DEFAULT false NOT NULL,
-    time_zone character varying NOT NULL,
+    time_zone character varying DEFAULT 'America/New_York'::character varying NOT NULL,
     website jsonb DEFAULT '{}'::jsonb,
     racing jsonb DEFAULT '{}'::jsonb
 );

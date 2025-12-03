@@ -17,7 +17,7 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpack
 append :assets_manifests, "public/vite/.vite/manifest*.*"
 
 # Important: pass strict install flags to pnpm
-set :pnpm_flags, %w[--frozen-lockfile]
+set :pnpm_flags, %w[--frozen-lockfile --prod]
 
 set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:stage)}" }
 

@@ -8,7 +8,6 @@ module Account
 
     attribute :racing, Settings::Racing.to_type
     attribute :website, Settings::Website.to_type
-    attribute :time_zone, default: -> { Time.zone.tzinfo.identifier }
 
     validates :time_zone, presence: true, inclusion: {
       in: ActiveSupport::TimeZone.all.map(&:tzinfo).map(&:identifier)
@@ -27,7 +26,7 @@ end
 #
 #  id         :bigint           not null, primary key
 #  racing     :jsonb
-#  time_zone  :string           not null
+#  time_zone  :string           default("Etc/UTC"), not null
 #  website    :jsonb
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
