@@ -2,7 +2,7 @@ module Account
   class Setting < ApplicationRecord
     include StoreModel::NestedAttributes
 
-    self.ignored_columns += ["old_id", "dark_mode", "dark_theme", "locale", "theme"]
+    self.ignored_columns += ["old_id"]
 
     belongs_to :user
 
