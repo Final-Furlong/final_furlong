@@ -16,6 +16,8 @@ module Account
     validates :website, store_model: true
 
     accepts_nested_attributes_for :racing, :website, allow_destroy: true
+
+    delegate :locale, to: :website
   end
 end
 

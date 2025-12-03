@@ -9,8 +9,7 @@ class MigrateSettingsToWebsiteJson < ActiveRecord::Migration[8.1]
         mode: setting.dark_mode? ? "dark" : "light",
         locale: setting.locale
       }
-      setting.time_zone = Time.zone.tzinfo.identifier
-      setting.save!
+      setting.save(validate: false)
     end
   end
 
