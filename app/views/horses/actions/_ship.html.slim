@@ -1,2 +1,2 @@
-- classes = single_action ? "btn btn-light btn-sm border border-success text-success text-decoration-none" : ""
+- classes = single_action ? "btn btn-light btn-sm border border-success text-success text-decoration-none" : dropdown_classes
 = link_to t("horse.actions.ship"), new_horse_shipment_path(object), class: classes, data: { turbo_method: :get, turbo_frame: "modal" }

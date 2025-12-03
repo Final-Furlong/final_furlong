@@ -5,14 +5,14 @@
                                               active_status:)
 
 .float-right.space-x-2
-  / - if (count = AuctionPolicy::Scope.new(Current.user, Auction.current).resolve.count).positive?
-  /   - if count == 1
-  /     - auction = AuctionPolicy::Scope.new(Current.user, Auction.current).resolve.first
-  /     = link_to auction_path(auction), class: 'btn btn-neutral' do
-  /       = t(".auctions", count: count)
-  /   - else
-  /     = link_to auctions_path(q: { current: true }), class: 'btn btn-neutral' do
-  /       = t(".auctions", count: count)
+  - if (count = AuctionPolicy::Scope.new(Current.user, Auction.current).resolve.count).positive?
+    - if count == 1
+      - auction = AuctionPolicy::Scope.new(Current.user, Auction.current).resolve.first
+      = link_to auction_path(auction), class: 'btn btn-neutral' do
+        = t(".auctions", count: count)
+    - else
+      = link_to auctions_path(q: { current: true }), class: 'btn btn-neutral' do
+        = t(".auctions", count: count)
   - if (count = AuctionPolicy::Scope.new(Current.user, Auction.upcoming).resolve.count).positive?
     = link_to auctions_path(q: { upcoming: true }), class: 'btn btn-neutral' do
       = t(".auctions_upcoming", count: count)
