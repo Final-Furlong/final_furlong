@@ -212,6 +212,7 @@ ActiveRecordDoctor.configure do
 
   detector :missing_presence_validation,
     ignore_attributes: [
+      "Account::Setting.dark_mode",
       "Account::Stable.bred_horses_count",
       "Account::Stable.horses_count",
       "Account::Stable.unborn_horses_count",

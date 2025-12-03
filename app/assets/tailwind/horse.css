@@ -1,4 +1,11 @@
-:root {
+:root,
+:root.light {
+  --female-horse-color: #d35353;
+  --male-horse-color: #5d5de8;
+  --gelded-horse-color: #73d173;
+}
+
+:root.dark {
   --female-horse-color: #fcc;
   --male-horse-color: #ccf;
   --gelded-horse-color: #b3ebb3;
