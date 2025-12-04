@@ -2,9 +2,15 @@
   - if actions.count == 1
     = render action_path(first_action), object: object, single_action: true
   - else
-    button.btn.ml-auto#breadcrumb-actions-list-anchor popovertarget="breadcrumb-actions-list"
-      = t(".title")
-    ul.dropdown.menu.w-52.rounded-box.bg-base-100.shadow-sm#breadcrumb-actions-list popover=true
-      - actions.each do |action|
-        li
-          = render action_path(action), object: object, single_action: false
+    el-dropdown.inline-block
+      button.inline-flex.w-full.justify-center.gap-x-1.5.rounded-md.bg-white/10.px-3.py-2.text-sm.font-semibold
+        = t(".title")
+      el-menu.w-56.origin-top-right.rounded-md.bg-gray-800.outline-1.transition.transition-discrete[
+        anchor="bottom end" popover=true
+        class="-outline-offset-1 outline-white/10 [--anchor-gap:--spacing(2)]\
+          data-closed:scale-95 data-closed:transform data-closed:opacity-0\
+          data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+      ]
+        .py-1
+          - actions.each do |action|
+            = render action_path(action), object: object, single_action: false, dropdown_classes: dropdown_classes
