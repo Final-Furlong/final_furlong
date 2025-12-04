@@ -37,6 +37,10 @@ module Nav
           button_to t(action_i18n_key(action)), action[:link], type: "button", class: classes, form_class: "d-inline"
         end
 
+        def dropdown_classes
+          "block px-4 py-2 text-sm text-gray-300 focus:bg-white/5 focus:text-white focus:outline-hidden"
+        end
+
         def action_path(action)
           "#{path}#{action}"
         end
