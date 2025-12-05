@@ -1,0 +1,23 @@
+ruby:
+  success_classes = "btn btn-light btn-sm border border-success text-success text-decoration-none"
+  actions = Horses::ActionsListGenerator.new.call(horse: @horse)
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: @horse.name, href: horse_path(@horse) }, { name: t(".title"), href: "#" }]) do
+    = render Nav::Breadcrumbs::Actions::Component.new(actions: actions, path: "/horses/actions/", object: @horse)
+- if @auctions.empty?
+  p.text-error= t(".no_auctions")
+- else
+  div[ data-controller="dynamic-select" data-dynamic-select-turbo-frame-value="auction_form"
+    data-dynamic-select-placeholder-value=":id"
+    data-dynamic-select-url-value=new_auction_horse_path(':id', horse: @horse.slug)
+  ]
+    .flex.mb-2
+      .w-1/2
+        label.label = t(".select_auction")
+        = select_tag "auction_id", options_from_collection_for_select(@auctions, :id, :title), include_blank: true, class: "select",
+          data: { action: 'change->dynamic-select#change', 'dynamic-select-target': 'select' }
+
+    = turbo_frame_tag "auction_form", class:"w-1/2", data: { 'dynamic-select-target': "frame" } do
+      - if false
+        label.label = t(".select_auction")
+        = select_tag "auction_id", options_from_collection_for_select(@auctions, :id, :title), {}, class: "select"

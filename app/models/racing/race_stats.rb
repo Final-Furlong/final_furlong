@@ -10,7 +10,8 @@ module Racing
     belongs_to :racetrack, class_name: "Racing::Racetrack"
 
     validates :energy, :fitness, :natural_energy, :energy_regain_rate, :natural_energy_loss_rate,
-      :natural_energy_regain_rate, :desired_equipment, :mature_at, :hasbeen_at, presence: true
+      :natural_energy_regain_rate, :desired_equipment, :mature_at, :hasbeen_at,
+      :rest_days_since_last_race, :workouts_since_last_race, presence: true
     validates :energy_grade, :fitness_grade, inclusion: { in: GRADES }
     validates :at_home, :in_transit, inclusion: { in: [true, false] }
 

@@ -9,6 +9,7 @@ resources :horses, except: %i[new create destroy] do
     get :thumbnail
     get :edit_name
     scope module: :horse, as: "horse" do
+      resource :auction_consignment, only: %i[new create]
       resource :lease_offer, only: %i[new create destroy]
       resource :lease_offer_acceptance, only: :create
       resource :lease_termination, only: %i[new create]

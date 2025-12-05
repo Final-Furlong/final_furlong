@@ -37,13 +37,35 @@ module CurrentStable
     end
 
     def consign_to_auction?
-      # TODO: implement auction consignment
-      false
+      return false unless owner?
+      return false unless Horses::Status::SELLABLE_STATUSES.include?(record.status)
+      return false if record.current_lease&.persisted?
+      return false if record.sale_offer&.persisted?
+      return false if record.auction_horse&.persisted?
+      return false if Auction.valid_for_horse(record).empty?
+      if record.sales.count.positive?
+        last_sale_date = record.sales.maximum(:date)
+        return true if last_sale_date < Date.current - Horses::SaleOffer::MINIMUM_WAIT_FROM_SALE
+
+        if record.racehorse?
+          races_count = record.race_result_finishes.joins(:race).merge(Racing::RaceResult.since_date(last_sale_date)).count
+          races_count >= Horses::SaleOffer::MINIMUM_RACES
+        elsif record.stud?
+          return false # TODO: hook up bookings check
+        else
+          return false
+        end
+      elsif record.date_of_birth > Date.current - Horses::SaleOffer::MINIMUM_AGE
+        return false
+      end
+
+      true
     end
 
     def remove_from_auction?
-      # TODO: implement auction removal
-      false
+      return false unless owner?
+
+      record.auction_horse&.persisted?
     end
 
     def view_comments?

@@ -10,6 +10,7 @@ class Auction < ApplicationRecord
   MINIMUM_DURATION = 7
   MAXIMUM_DURATION = 14
   MAX_AUCTIONS_PER_STABLE = 2
+  HORSE_STATUSES = %w[racehorse broodmare stud yearling weanling].freeze
 
   belongs_to :auctioneer, class_name: "Account::Stable"
   has_many :horses, class_name: "Auctions::Horse", dependent: :destroy
@@ -39,6 +40,33 @@ class Auction < ApplicationRecord
   scope :current, -> { where(start_time: ..Time.current, end_time: Time.current..) }
   scope :upcoming, -> { where("start_time > ?", Time.current) }
   scope :past, -> { where(end_time: ..Time.current) }
+  scope :by_auctioneer, ->(auctioneer) { where(auctioneer:) }
+  scope :outside_horses_allowed, -> { where(outside_horses_allowed: true) }
+  scope :valid_for_horse, ->(horse) {
+    return none unless HORSE_STATUSES.include?(horse.status)
+    query = case horse.status
+    when "racehorse"
+      case horse.age.to_i
+      when 2
+        where(racehorse_allowed_2yo: true)
+      when 3
+        where(racehorse_allowed_3yo: true)
+      else
+        where(racehorse_allowed_older: true)
+      end
+    when "broodmare"
+      where(broodmare_allowed: true)
+    when "stud"
+      where(stallion_allowed: true)
+    when "yearling"
+      where(yearling_allowed: true)
+    when "weanling"
+      where(weanling_allowed: true)
+    end
+
+    query.by_auctioneer(horse.owner)
+      .or(query.where(outside_horses_allowed: true))
+  }
 
   def to_key = [slug]
 
