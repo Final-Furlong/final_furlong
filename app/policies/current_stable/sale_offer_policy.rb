@@ -11,6 +11,7 @@ module CurrentStable
       return false unless Horses::Status::SELLABLE_STATUSES.include?(record.horse.status)
       return false if record.horse.current_lease&.persisted?
       return false if record.horse.sale_offer.persisted?
+      return false if record.horse.auction_horse&.persisted?
       if record.horse.sales.count.positive?
         last_sale_date = record.horse.sales.maximum(:date)
         return true if last_sale_date < Date.current - Horses::SaleOffer::MINIMUM_WAIT_FROM_SALE

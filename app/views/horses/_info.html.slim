@@ -87,6 +87,11 @@
                   = t(".offered_for_sale", price: Game::MoneyFormatter.new(sale.price).to_s)
                 - else
                   = t(".offered_for_sale_private_html")
+              - elsif (auction_horse = horse.auction_horse)&.persisted?
+                - auction = auction_horse.auction
+                = t(".consigned_to_auction")
+                = "&nbsp;".html_safe
+                = link_to auction.title, auction_path(auction), target: "_top"
               - else
                 = t(".not_for_sale")
       tr

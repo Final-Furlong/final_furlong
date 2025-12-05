@@ -51,7 +51,7 @@ en:
       success:
         en: Your language is now American English
         en-GB: Your language is now British English
-      success_full: Your settings have been updated. You will need to refresh the page to see the theme change.
+      success_full: Your settings have been updated. You will need to refresh the page to see the theme change, if you modified it.
     new:
       game: Game
       loading: Loading...

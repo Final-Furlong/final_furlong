@@ -3,6 +3,11 @@
 - bids = auction_horse.bids
 .grid.grid-cols-1.my-2.md:grid-cols-2
   div
+    - if auction_horse.comment
+      .ml-2.mb-2
+        p
+          span.mr-2= t(".comment")
+          span= auction_horse.comment
     table.table.table-zebra
       thead
         tr

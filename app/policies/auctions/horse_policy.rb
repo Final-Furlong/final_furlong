@@ -1,17 +1,24 @@
 module Auctions
   class HorsePolicy < AuthenticatedPolicy
+    def create?
+      return false unless auction.future?
+      return true if auction.auctioneer == stable
+
+      auction.outside_horses_allowed
+    end
+
     def show?
       logged_in?
     end
 
     def bid?
       return false if record.sold_at
-      return false unless record.auction.active?
-      if (horse_max = record.auction.horse_purchase_cap_per_stable.to_i).positive?
-        return false if sold_or_current_high_bid_horses(auction: record.auction) >= horse_max
+      return false unless auction.active?
+      if (horse_max = auction.horse_purchase_cap_per_stable.to_i).positive?
+        return false if sold_or_current_high_bid_horses(auction:) >= horse_max
       end
-      if (money_max = record.auction.spending_cap_per_stable.to_i).positive?
-        return false if money_spent(auction: record.auction) >= money_max
+      if (money_max = auction.spending_cap_per_stable.to_i).positive?
+        return false if money_spent(auction:) >= money_max
       end
 
       last_bid = record.bids.current_high_bid.first
@@ -20,6 +27,12 @@ module Auctions
       return false if stable.available_balance <= last_bid.current_bid
 
       logged_in?
+    end
+
+    def destroy?
+      return false unless auction.future?
+
+      record.horse.owner == stable
     end
 
     private
@@ -36,6 +49,10 @@ module Auctions
         money += auction.bids.current_high_bid.where(horse:, bidder_id: stable.id).first&.current_bid.to_i
       end
       money
+    end
+
+    def auction
+      record.auction
     end
   end
 end
