@@ -108,21 +108,24 @@ module Auctions
         end
         Legacy::Horse.where(ID: horse.legacy_id).update(consigned_auction_id: auction.id)
         if auction_horse.save!
+          result.auction_horse = auction_horse
           result.error = nil
           result.created = true
         end
       rescue ActiveRecord::ActiveRecordError => e
+        result.auction_horse = auction_horse
         result.error = e.message
       end
       result
     end
 
     class Result
-      attr_accessor :auction, :horse, :stable, :error, :created
+      attr_accessor :auction, :horse, :stable, :error, :created, :auction_horse
 
-      def initialize(created:, auction:, horse:, stable:, error: nil)
+      def initialize(created:, auction:, horse:, stable:, auction_horse: nil, error: nil)
         @created = created
         @auction = auction
+        @auction_horse = auction_horse
         @horse = horse
         @stable = stable
         @error = error

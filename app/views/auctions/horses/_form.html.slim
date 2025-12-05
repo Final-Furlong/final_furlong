@@ -1,0 +1,21 @@
+= form_with model: horse, url: auction_horses_path, data: { turbo_frame: "_top" } do |f|
+  = f.hidden_field :horse_id, value: horse.horse_id
+  div
+    fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+      legend.fieldset-legend= t(".comment")
+      = f.textarea :comment, class: 'input w-auto'
+      p.label= t("form.optional")
+    - if horse.errors[:comment]
+      p.text-error= horse.errors.where(:comment).map(&:full_message).join(', ')
+  div
+    fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+      legend.fieldset-legend= t(".reserve_price")
+      label.input
+        i.ph.ph-currency-dollar
+        = f.text_field :reserve_price, value: (horse.reserve_price.presence || nil), class: "grow", disabled: !auction.reserve_pricing_allowed?
+    - if horse.errors[:reserve_price]
+      p.text-error= horse.errors.where(:reserve_price).map(&:full_message).join(', ')
+  .float-right
+    a.btn.btn-outline.mr-2.sm:hidden onclick="dialog.close();"
+      = t("common.actions.cancel")
+    = f.submit t("common.actions.save"), class: "btn btn-primary"
