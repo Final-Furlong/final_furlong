@@ -29,6 +29,7 @@ CI.run do
   end
 
   if ci_type == "tests" || ci_type == "all"
+    step "Tests: Setup", "pnpm playwright install --with-deps chromium" if external_ci
     step "Tests: Rails", external_ci ? "bin/rspec --format RspecJunitFormatter --out report.xml --format progress" : "bin/rspec"
     step "Tests: Seeds", "env RAILS_ENV=test bin/rails db:seed:replant" unless external_ci
   end

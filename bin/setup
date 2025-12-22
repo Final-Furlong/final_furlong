@@ -3,6 +3,10 @@ require 'colorize'
 require "fileutils"
 
 APP_ROOT = File.expand_path("..", __dir__)
+PLAYWRIGHT_CLI_VERSION = "1.57.0"
+
+# check Playwright version
+# bundle exec ruby -e 'require "playwright"; puts Playwright::COMPATIBLE_PLAYWRIGHT_VERSION.strip'
 
 def setup(test_mode = false)
   FileUtils.chdir APP_ROOT do
