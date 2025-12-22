@@ -292,6 +292,34 @@ RSpec.describe Auctions::BidCreator do
     end
   end
 
+  context "when bid and auction have a max amount" do
+    it "returns created true" do
+      auction.update(spending_cap_per_stable: 100_000)
+      result = described_class.new.create_bid(bid_params.merge(current_bid: 1000, maximum_bid: 10_000))
+      expect(result.created?).to be true
+    end
+
+    it "returns no error" do
+      auction.update(spending_cap_per_stable: 100_000)
+      result = described_class.new.create_bid(bid_params.merge(current_bid: 1000, maximum_bid: 10_000))
+      expect(result.error).to be_nil
+    end
+
+    it "creates bid" do
+      auction.update(spending_cap_per_stable: 100_000)
+      expect do
+        described_class.new.create_bid(bid_params.merge(current_bid: 1000, maximum_bid: 10_000))
+      end.to change(Auctions::Bid, :count).by(1)
+    end
+
+    it "sets the right data for tne new current bid" do
+      auction.update(spending_cap_per_stable: 100_000)
+      described_class.new.create_bid(bid_params.merge(current_bid: 1000, maximum_bid: 10_000))
+      expect(Auctions::Bid.where(horse:).count).to eq 1
+      expect(Auctions::Bid.where(horse:).winning.first).to have_attributes(current_bid: 1_000, maximum_bid: 10_000)
+    end
+  end
+
   context "when bid amount exactly matches maximum bid" do
     it "returns created true" do
       create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)

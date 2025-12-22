@@ -107,6 +107,7 @@ module Auctions
         end
       end
 
+      has_previous_bid = previous_bid.present?
       if bid_params[:bidder_id] == previous_bid&.bidder_id
         bid.errors.add(:base, :is_current_high_bidder)
         result.bid = bid
@@ -143,7 +144,7 @@ module Auctions
         if bid.valid?
           update_old_bids(auction:, horse: auction_horse)
           result.created = bid.save
-          if result.created?
+          if result.created? && has_previous_bid
             notify_previous_bidder(auction:, auction_horse:)
             previous_bid.update(current_bid: previous_bid.maximum_bid) if previous_max_bid.positive?
           end
@@ -213,8 +214,9 @@ module Auctions
       sold_horses + max_bid_horses
     end
 
-    def previous_bid
+    def previous_bid(id: nil)
       @previous_bid ||= Auctions::Bid.where(horse: auction_horse)
+        .where.not(id:)
         .order(maximum_bid: :desc, current_bid: :desc, updated_at: :desc).first
     end
 
