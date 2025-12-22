@@ -18,10 +18,6 @@ def setup(test_mode = false)
     log "Installing node modules"
     system! 'bin/pnpm', 'install', '--frozen-lockfile'
 
-    system "echo $PLAYWRIGHT_CLI_VERSION"
-    system! 'bin/pnpm', 'install', '-D', "playwright@#{PLAYWRIGHT_CLI_VERSION}"
-    system! 'bin/pnpm', 'run', 'playwright install'
-
     unless test_mode
       log "Dropping & recreating the development database"
       unless File.exist?("config/database.yml")
