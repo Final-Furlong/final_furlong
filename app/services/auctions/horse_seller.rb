@@ -65,7 +65,7 @@ module Auctions
 
       horse_max = auction.horse_purchase_cap_per_stable.to_i
       if horse_max.positive?
-        if horses_bought(buyer.id) >= horse_max
+        if horses_bought(buyer.id, auction.id) >= horse_max
           Auctions::BidDeleter.new.delete_bids(bids: [bid], disable_job_trigger:)
           result.error = error("bought_max_horses")
           return result
@@ -74,7 +74,7 @@ module Auctions
 
       money_max = auction.spending_cap_per_stable.to_i
       if money_max.positive?
-        if money_spent(buyer.id) + bid.current_bid > money_max
+        if money_spent(buyer.id, auction.id) + bid.current_bid > money_max
           Auctions::BidDeleter.new.delete_bids(bids: [bid], disable_job_trigger:)
           result.error = error("spent_max_money")
           return result
@@ -149,16 +149,16 @@ module Auctions
 
     private
 
-    def money_spent(bidder_id)
+    def money_spent(bidder_id, auction_id)
       money = 0
-      Auctions::Horse.joins(:horse).where(horses: { owner_id: bidder_id }).sold.find_each do |horse|
+      Auctions::Horse.joins(:horse).where(auction_id:, horses: { owner_id: bidder_id }).sold.find_each do |horse|
         money += Auctions::Bid.current_high_bid.where(horse:, bidder_id:).first&.current_bid.to_i
       end
       money
     end
 
-    def horses_bought(bidder_id)
-      Auctions::Horse.joins(:horse).where(horses: { owner_id: bidder_id }).sold.count
+    def horses_bought(bidder_id, auction_id)
+      Auctions::Horse.joins(:horse).where(auction_id:, horses: { owner_id: bidder_id }).sold.count
     end
 
     def error(key)
