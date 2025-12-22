@@ -22,13 +22,18 @@ Capybara.register_driver(:cuprite) do |app|
   }
   Capybara::Cuprite::Driver.new(app, options)
 end
-Capybara.javascript_driver = :cuprite
+Capybara.register_driver(:playwright) do |app|
+  Capybara::Playwright::Driver.new(app,
+                                   browser_type: ENV["PLAYWRIGHT_BROWSER"]&.to_sym || :chromium,
+                                   headless: (false unless ENV["CI"] || ENV["PLAYWRIGHT_HEADLESS"]))
+end
+Capybara.javascript_driver = :playwright
 
 Capybara.register_driver :custom_rack_test do |app|
   Capybara::RackTest::Driver.new(app,
-    respect_data_method: true,
-    follow_redirects: true,
-    redirect_limit: 10)
+                                 respect_data_method: true,
+                                 follow_redirects: true,
+                                 redirect_limit: 10)
 end
 Capybara.default_driver = :custom_rack_test
 
