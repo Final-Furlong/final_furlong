@@ -284,7 +284,7 @@ RSpec.describe Auctions::BidCreator do
       it "does not modify process sales job" do
         old_bidder = create(:stable)
         create(:auction_bid, horse:, auction:, bidder: old_bidder, current_high_bid: true, current_bid: 2000)
-        Auctions::ProcessSalesJob.set(wait: 1.hour).perform_later(bidder: old_bidder, auction:)
+        Auctions::ProcessSalesJob.set(wait: 1.hour).perform_later(auction:)
         expect do
           described_class.new.create_bid(bid_params.merge(current_bid: 10_500, maximum_bid: 20_000))
         end.not_to change(SolidQueue::Job, :count)

@@ -5,7 +5,7 @@ class Auctions::ProcessSalesJob < ApplicationJob
 
   def perform(auction)
     horses = []
-    Auctions::Horse.where(auction:).where.associated(:bids).distinct.each do |ah|
+    Auctions::Horse.where(auction_id: auction.id).where.associated(:bids).distinct.each do |ah|
       next if ah.sold_at.present?
       wb = ah.bids.current_high_bid.first
       if wb.nil?
