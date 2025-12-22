@@ -74,8 +74,8 @@ class Auction < ApplicationRecord
     DateTime.current.between?(start_time, end_time)
   end
 
-  def recently_ended?
-    DateTime.current.between?(end_time, end_time + 1.day)
+  def ended?
+    DateTime.current > end_time
   end
 
   def future?

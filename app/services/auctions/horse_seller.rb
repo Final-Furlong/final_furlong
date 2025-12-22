@@ -11,7 +11,7 @@ module Auctions
       @seller = horse.owner
       auction = bid.auction
 
-      unless auction.active? || auction.recently_ended?
+      unless auction.active? || auction.ended?
         result.error = error("auction_inactive")
         return result
       end
