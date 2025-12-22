@@ -65,3 +65,10 @@ node_modules
 *.local
 
 ci_results.txt
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
