@@ -84,8 +84,8 @@ RSpec.configure do |config|
 
   # use cuprite for javascript tests
   config.around(:each, :js) do |example|
-    Capybara.current_driver = :cuprite
-    Capybara.javascript_driver = :cuprite
+    Capybara.current_driver = :playwright
+    Capybara.javascript_driver = :playwright
 
     example.run
 

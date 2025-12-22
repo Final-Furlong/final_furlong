@@ -33,12 +33,16 @@ module Horses
       where("lease_offers.leaser_id IS NULL AND lease_offers.new_members_only = FALSE")
     }
     scope :valid_for_stable, ->(stable) {
-      if stable.newbie?
-        active.new_members_only.without_owner(stable)
-          .or(active.without_owner(stable).leased_to(stable))
+      if stable
+        if stable.newbie?
+          active.new_members_only.without_owner(stable)
+            .or(active.without_owner(stable).leased_to(stable))
+        else
+          active.non_new_members_only.without_owner(stable)
+            .or(active.without_owner(stable).leased_to(stable))
+        end
       else
-        active.non_new_members_only.without_owner(stable)
-          .or(active.without_owner(stable).leased_to(stable))
+        active.non_new_members_only
       end
     }
     # rubocop:enable Rails/WhereEquals
