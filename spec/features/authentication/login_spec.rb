@@ -2,10 +2,23 @@ RSpec.describe "Login Spec" do
   it "allows login with email" do
     admin = create(:admin)
 
+    page.driver.with_playwright_page do |playwright_page|
+      playwright_context = playwright_page.context
+      playwright_tracing = playwright_context.tracing # Access the tracing object
+
+      playwright_tracing.start(
+        name: "trace_started_correctly", # Optional name
+        screenshots: true,
+        snapshots: true,
+        sources: true
+      )
+    end # End of block for starting
+
     visit root_path
     within("#top_nav") do
       click_on t("layouts.nav.login")
     end
+    save_and_open_page
     expect(page).to have_current_path new_user_session_path, ignore_query: true
     fill_in "user[login]", with: admin.email
     fill_in "user[password]", with: "abc1A$ab"
@@ -16,6 +29,16 @@ RSpec.describe "Login Spec" do
     within(".badge") do
       expect(page).to have_text t("view_components.users.online_badge.online")
     end
+    page.driver.with_playwright_page do |playwright_page|
+      playwright_context = playwright_page.context
+      playwright_tracing = playwright_context.tracing # Access the tracing object again
+
+      # Ensure the directory exists or use a full path.
+      trace_path = Rails.root.join("tmp/capybara_traces/trace-final-#{Time.now.to_i}.zip")
+      FileUtils.mkdir_p(File.dirname(trace_path)) # Ensure directory exists
+
+      playwright_tracing.stop(path: trace_path.to_s)
+    end # End of block for stopping
     expect(page.driver.request.cookies.keys).to include "_final_furlong_session"
   end
 
