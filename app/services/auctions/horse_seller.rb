@@ -152,7 +152,7 @@ module Auctions
     def money_spent(bidder_id)
       money = 0
       Auctions::Horse.joins(:horse).where(horses: { owner_id: bidder_id }).sold.find_each do |horse|
-        money += Auctions::Bid.current_high_bid.where(horse:, bidder_id:).first.current_bid
+        money += Auctions::Bid.current_high_bid.where(horse:, bidder_id:).first&.current_bid.to_i
       end
       money
     end
