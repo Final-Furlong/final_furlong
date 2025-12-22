@@ -35,7 +35,7 @@ global_job_config:
       value: postgresql://postgres:@0.0.0.0:5432/final_furlong_test_queue
 blocks:
   - name: CI
-    dependencies: []
+    dependencies: [ ]
     task:
       prologue:
         commands:
@@ -82,6 +82,7 @@ blocks:
             - .semaphore/lcov-to-md.sh
             - artifact push workflow -d .semaphore/REPORT.md COVERAGE.md
             - artifact push job tmp/capybara; return 0
+            - artifact push job tmp/capybara_traces; return 0
             - ruby -e "$(curl -s https://undercover-ci.com/uploader.rb)" -- --repo $SEMAPHORE_GIT_REPO_SLUG --commit $SEMAPHORE_GIT_PR_SHA --simplecov coverage/coverage.json; return 0
             - curl https://qlty.sh | sh
             - source /home/semaphore/.bash_profile
