@@ -165,6 +165,7 @@ group :test do
   gem "axe-core-capybara"
   gem "axe-core-rspec"
   gem "capybara", ">= 2.15"
+  gem "capybara-playwright-driver"
   gem "capybara-screenshot"
   gem "cuprite"
   gem "fuubar"
