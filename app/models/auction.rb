@@ -75,7 +75,7 @@ class Auction < ApplicationRecord
   end
 
   def ended?
-    DateTime.current > end_time
+    DateTime.current >= end_time
   end
 
   def future?

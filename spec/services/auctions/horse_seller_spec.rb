@@ -125,7 +125,7 @@ RSpec.describe Auctions::HorseSeller do
   before { setup_data }
 
   context "when auction is not active" do
-    before { auction.update_columns(start_time: DateTime.current - 10.days, end_time: DateTime.current - 1.day) }
+    before { auction.update_columns(start_time: DateTime.current + 1.day, end_time: DateTime.current + 20.days) }
 
     it "returns sold false" do
       result = described_class.new.process_sale(bid:)

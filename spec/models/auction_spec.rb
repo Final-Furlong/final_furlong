@@ -183,11 +183,11 @@ RSpec.describe Auction do
     end
   end
 
-  describe "#recently_ended?" do
+  describe "#ended?" do
     context "when current date before end time" do
       it "returns false" do
         auction = create(:auction, :current)
-        expect(auction.recently_ended?).to be false
+        expect(auction.ended?).to be false
       end
     end
 
@@ -195,7 +195,7 @@ RSpec.describe Auction do
       it "returns true" do
         auction = build(:auction)
         travel_to auction.end_time do
-          expect(auction.recently_ended?).to be true
+          expect(auction.ended?).to be true
         end
       end
     end
@@ -204,16 +204,16 @@ RSpec.describe Auction do
       it "returns true" do
         auction = create(:auction, :past)
         travel_to auction.end_time + 23.hours do
-          expect(auction.recently_ended?).to be true
+          expect(auction.ended?).to be true
         end
       end
     end
 
     context "when current date is end time + 2 days" do
-      it "returns false" do
+      it "returns true" do
         auction = build(:auction)
         travel_to auction.end_time + 2.days do
-          expect(auction.recently_ended?).to be false
+          expect(auction.ended?).to be true
         end
       end
     end
