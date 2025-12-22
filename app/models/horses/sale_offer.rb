@@ -38,10 +38,10 @@ module Horses
       if stable
         if stable.newbie?
           active.new_members_only.without_owner(stable)
-                .or(active.without_owner(stable).offered_to(stable))
+            .or(active.without_owner(stable).offered_to(stable))
         else
           active.non_new_members_only.without_owner(stable)
-                .or(active.without_owner(stable).offered_to(stable))
+            .or(active.without_owner(stable).offered_to(stable))
         end
       else
         active.non_new_members_only

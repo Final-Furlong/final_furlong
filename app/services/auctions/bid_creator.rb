@@ -216,8 +216,8 @@ module Auctions
 
     def previous_bid(id: nil)
       @previous_bid ||= Auctions::Bid.where(horse: auction_horse)
-                                     .where.not(id:)
-                                     .order(maximum_bid: :desc, current_bid: :desc, updated_at: :desc).first
+        .where.not(id:)
+        .order(maximum_bid: :desc, current_bid: :desc, updated_at: :desc).first
     end
 
     def previous_max_bid
