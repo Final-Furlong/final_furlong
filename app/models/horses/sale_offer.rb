@@ -35,12 +35,12 @@ module Horses
       where("sale_offers.buyer_id IS NULL AND sale_offers.new_members_only = FALSE")
     }
     scope :valid_for_stable, ->(stable) {
-      if stable.newbie?
+      if stable&.newbie?
         active.new_members_only.without_owner(stable)
-          .or(active.without_owner(stable).offered_to(stable))
+              .or(active.without_owner(stable).offered_to(stable))
       else
         active.non_new_members_only.without_owner(stable)
-          .or(active.without_owner(stable).offered_to(stable))
+              .or(active.without_owner(stable).offered_to(stable))
       end
     }
     # rubocop:enable Rails/WhereEquals

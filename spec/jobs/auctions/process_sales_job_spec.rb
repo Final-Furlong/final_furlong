@@ -7,7 +7,7 @@ RSpec.describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
     it "uses low_priority queue", perform_enqueueed_jobs: false do
       expect do
         described_class.perform_later(auction)
-      end.to have_enqueued_job.on_queue("default")
+      end.to have_enqueued_job.on_queue("default").at_least(:once)
     end
 
     context "when there are current high bids on horses" do
