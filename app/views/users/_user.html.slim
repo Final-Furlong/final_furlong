@@ -3,13 +3,12 @@
   .user.mb-4.card
     .card-content.is-flex.is-justify-content-space-between.p-5
       .title.is-3.is-vcentered.mb-0.has-text-weight-normal
-        = link_to user.name, user_path(user), data: { turbo_frame: "_top" }
+        = render Ui::Link::Component.new(url: user_path(user), data: { turbo_frame: "_top" }) do
+          = user.name
       .buttons
-        = button_to user_path(user), method: :delete,
-                                     class: "button is-light is-danger mb-0", id: "user-delete-#{user.id}",
-                                     data: { turbo_frame: "_top" } do
+        = render Ui::Button::Component.new(color: :error, data: { turbo_frame: "_top" }, id: "user-delete-#{user.id}") do
           span.icon.is-small
             i.ph-fill.ph-trash
-        = link_to edit_user_path(user), class: "button is-light", id: "user-edit-#{user.id}" do
+        = render Ui::Link::Component.new(url: edit_user_path(user), id: "user-edit-#{user.id}", data: { turbo_frame: "_top" }) do
           span.icon.is-small
             i.ph-fill.ph-pen

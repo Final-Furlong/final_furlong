@@ -24,7 +24,8 @@
             span= t("horse.foals.dam_foal_list.due_date")
             span.float-right= "due date here"
           p.text-center
-            = link_to foal.dam.name, horse_path(foal.dam), class: 'btn btn-neutral', target: '_top'
+            = render Ui::ButtonizedLink::Component.new(url: horse_path(foal.dam), color: :neutal, data: { turbo_frame: "_top" }) do
+              = foal.dam.name
         - else
           p
             span= t("horse.foals.sire_foal_list.status")
@@ -39,4 +40,5 @@
             = foal.track_record
           - unless foal.stillborn?
             p.text-center
-              = link_to t("common.actions.view"), horse_path(foal), class: 'btn btn-neutral', target: '_top'
+              = render Ui::ButtonizedLink::Component.new(url: horse_path(foal), color: :neutal, data: { turbo_frame: "_top" }) do
+                = t("common.actions.view")

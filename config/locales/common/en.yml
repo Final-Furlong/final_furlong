@@ -4,6 +4,7 @@ en:
     actions:
       cancel: Cancel
       close: Close
+      confirm: Confirm
       delete: Delete
       edit: Edit
       save: Save

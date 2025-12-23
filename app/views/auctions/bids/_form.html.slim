@@ -40,4 +40,4 @@
         - if bid.errors[:notify_if_outbid]
           p.text-error= bid.errors.where(:notify_if_outbid).map(&:full_message).join(', ')
     div.sm:float-right
-      = f.submit t("common.actions.save"), class: "btn btn-primary"
+      = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.save"))

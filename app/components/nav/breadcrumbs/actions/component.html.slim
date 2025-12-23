@@ -1,6 +1,6 @@
 #breadcrumb-actions
   - if actions.count == 1
-    = render action_path(first_action), object: object, single_action: true
+    = render action_path(first_action), object: object, classes: single_action_classes
   - else
     el-dropdown.inline-block
       button.inline-flex.w-full.justify-center.gap-x-1.5.rounded-md.bg-white/10.px-3.py-2.text-sm.font-semibold
@@ -13,4 +13,4 @@
       ]
         .py-1
           - actions.each do |action|
-            = render action_path(action), object: object, single_action: false, dropdown_classes: dropdown_classes
+            = render action_path(action), object: object, classes: dropdown_classes

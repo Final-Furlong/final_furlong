@@ -2,7 +2,8 @@
   fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.py-2.w-xs.inline
     .join
       = f.text_field :name, class: 'input join-item w-auto', required: true, placeholder: t(".name_hint", count: Horses::Horse::NAME_LENGTH_MAX)
-      = f.submit t("common.actions.save"), class: "btn btn-primary join-item"
+      = render Ui::SubmitButton::Component.new(form: f, extra_classes: "join-item", text: t("common.actions.save"))
     - if horse.errors[:name]
       p.text-error= horse.errors.where(:name).map(&:full_message).join(', ')
-  = link_to t("common.actions.cancel"), horse_path(horse.slug), target: "_top", class: "btn btn-outline btn-error p-2 mt-2 align-top"
+  = render Ui::ButtonizedLink::Component.new(url: horse_path(horse.slug), color: :error, style: :outline, extra_classes: "p-2 mt-2 align-top", data: { turbo_frame: "_top" }) do
+    = t("common.actions.cancel")

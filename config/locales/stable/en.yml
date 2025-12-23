@@ -125,8 +125,6 @@ en:
   stables:
     edit:
       header: Edit Stable
-    form:
-      update: Update Stable
     index:
       all: All Stables
     show:
