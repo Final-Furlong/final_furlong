@@ -34,7 +34,6 @@
                       = t(".anyone")
                   td= t(".duration", duration: lease_offer.duration_months)
                   td.actions-column.nav-item.dropdown
-                    = link_to horse_path(horse), class: "btn btn-sm btn-soft btn-primary",
-                                                 data: { turbo_frame: "_top" } do
+                    = render Ui::ButtonizedLink::Component.new(url: horse_path(horse), style: :soft, size: :small, data: { turbo_frame: "_top" }) do
                       i.ph-fill.ph-eye
                       = t("common.actions.view")

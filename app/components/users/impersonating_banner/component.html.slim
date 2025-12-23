@@ -1,4 +1,6 @@
 #impersonation-alert
   .alert.alert-error.alert-soft
     span.fs-5= t(".title", username: Current.user.username, stable: Current.stable.name)
-    span.fs-6= button_to t(".sign_out"), admin_impersonate_path, method: :delete, class: "btn btn-link"
+    span.fs-6
+      = render Ui::Button::Component.new(style: :link, url: admin_impersonate_path, http_method: :delete, data: { turbo_frame: "_top" }) do
+        = t(".sign_out")

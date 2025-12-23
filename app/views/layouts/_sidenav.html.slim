@@ -33,8 +33,8 @@ nav.drawer-side.overflow-scroll.h-full.border-0.sm:border-r-1.border-neutral-con
     = render "layouts/admin_sidenav" if signed_in? && Current.user.admin?
     - unless Rails.env.development?
       li.px-4
-        = link_to "https://www.finalfurlong.org/", class: "flex items-center p-2 rounded-lg \
-                  hover:bg-gray-100 dark:hover:bg-gray-700" do
+        = render Ui::Link::Component.new(url: "https://www.finalfurlong.org/",
+                extra_classes: "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700") do
           i.ph-fill.ph-backspace
           span.flex-1.ms-3.whitespace-nowrap= t(".main_app")
 

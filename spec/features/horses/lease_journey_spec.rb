@@ -13,7 +13,7 @@ RSpec.describe "Leasing Journey" do
       fill_in "horses_lease_offer[fee]", with: 10_000
       click_on t("common.actions.save")
     end
-    expect(page).not_to have_css "dialog"
+    expect(page).to have_no_css "dialog"
     expect(page).to have_text t("horse.lease_offers.create.success")
     sign_out(leaser_user)
     visit root_path
@@ -52,7 +52,7 @@ RSpec.describe "Leasing Journey" do
         check "horses_lease_termination_request[leaser_accepted_refund]"
         click_on t("common.actions.save")
       end
-      expect(page).not_to have_css("dialog")
+      expect(page).to have_no_css("dialog")
       expect(page).to have_text t("horse.lease_terminations.create.success")
       expect(page).to have_text t("horses.info.lease_termination_requested")
       sign_out(leasee_user)
@@ -66,9 +66,9 @@ RSpec.describe "Leasing Journey" do
         check "horses_lease_termination_request[owner_accepted_refund]"
         click_on t("common.actions.save")
       end
-      expect(page).not_to have_css("dialog")
+      expect(page).to have_no_css("dialog")
       expect(page).to have_text t("horse.lease_terminations.create.success_with_termination")
-      expect(page).not_to have_text t("horses.info.lease_termination_requested")
+      expect(page).to have_no_text t("horses.info.lease_termination_requested")
       within ".drawer-side" do
         click_on t("layouts.sidenav.stable.budget")
       end
@@ -130,7 +130,7 @@ RSpec.describe "Leasing Journey" do
       check "horses_lease_termination_request[owner_accepted_refund]"
       click_on t("common.actions.save")
       expect(page).to have_text t("horse.lease_terminations.create.success_with_termination")
-      expect(page).not_to have_text t("horses.info.lease_termination_requested")
+      expect(page).to have_no_text t("horses.info.lease_termination_requested")
       within ".drawer-side" do
         click_on t("layouts.sidenav.stable.budget")
       end

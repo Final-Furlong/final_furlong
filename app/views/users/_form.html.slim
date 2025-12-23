@@ -8,5 +8,6 @@
     = f.input :password
     = f.input :password_confirmation
   = f.input :stable_name, disabled: form.persisted?
-  = link_to t("common.actions.cancel"), users_path, class: "button is-light"
-  = f.submit class: "button is-primary"
+  = render Ui::Link::Component.new(url: users_path, color: :secondary, style: :outline) do
+    = t("common.actions.cancel")
+  = render Ui::SubmitButton.new(form: f)

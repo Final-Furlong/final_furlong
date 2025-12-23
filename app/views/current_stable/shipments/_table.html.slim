@@ -22,17 +22,17 @@
                 span= Shipping::Route.human_attribute_name("arrival_date")
                 span.float-right= l(shipment.arrival_date)
                 p.text-center
-                  = link_to horse_path(horse), class: "btn btn-sm btn-outline", data: { turbo_frame: "_top" } do
+                  = render Ui::ButtonizedLink::Component.new(url: horse_path(horse), style: :outline, size: :small, data: { turbo_frame: "_top" }) do
                     = t("common.actions.view")
               - else
                 span= Shipping::Route.human_attribute_name("departure_date")
                 span.float-right= l(shipment.departure_date)
                 div
-                  = link_to horse_path(horse), class: "btn btn-sm btn-outline", data: { turbo_frame: "_top" } do
+                  = render Ui::ButtonizedLink::Component.new(url: horse_path(horse), style: :outline, size: :small, data: { turbo_frame: "_top" }) do
                     = t("common.actions.view")
                   .float-right
-                    = link_to shipment_horse_path(horse, shipment.id), class: "btn btn-sm btn-outline btn-error",
-                            data: { turbo_method: :delete, turbo_confirm: t("horse.events.shipments.confirm_delete"), turbo_frame: "_top" } do
+                    = render Ui::Button::Component.new(url: shipment_horse_path(horse, shipment.id), color: :error, style: :outline, size: :small,
+                            http_method: :delete, data: { turbo_confirm: t("horse.events.shipments.confirm_delete"), turbo_frame: "_top" } do
                       = t("common.actions.delete")
 .hidden.mx-auto.overflow-x-auto.border.rounded-md.w-full.sm:block.sm:w-5/6
   .table-responsive-md
@@ -52,7 +52,9 @@
             - shipment = horse.send(type).send(query_type).order(arrival_date: :desc).first
             - data = dashboard.data(shipment)
             tr
-              td.wb-break-all= link_to horse.name, horse_path(horse), target: "_top"
+              td.wb-break-all
+                = render Ui::Link::Component.new(url: horse_path(horse), data: { turbo_frame: "_top" }) do
+                  = horse.name
               td= data[:start_location]
               td= data[:end_location]
               - if query_type == :current
@@ -60,6 +62,6 @@
               - else
                 td data-sort=shipment.departure_date = l(shipment.departure_date)
                 td
-                  = link_to shipment_horse_path(horse, shipment.id), class: "btn btn-sm btn-outline btn-error",
-                          data: { turbo_method: :delete, turbo_confirm: t("horse.events.shipments.confirm_delete"), turbo_frame: "_top" } do
+                  = render Ui::Button::Component.new(url: shipment_horse_path(horse, shipment.id), color: :error, style: :outline, size: :small,
+                          http_method: :delete, data: { turbo_confirm: t("horse.events.shipments.confirm_delete"), turbo_frame: "_top" } do
                     = t("common.actions.delete")

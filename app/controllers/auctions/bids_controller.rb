@@ -15,7 +15,7 @@ module Auctions
       result = Auctions::BidCreator.new.create_bid(new_bid_params)
       if result.created?
         flash[:success] = t(".success")
-        redirect_to auction_horse_path(@horse, tab: :bidding)
+        redirect_to auction_horse_path(auction, auction_horse, tab: :bidding)
       else
         respond_to do |format|
           format.html { render :new, status: :unprocessable_entity }

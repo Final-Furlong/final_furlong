@@ -1,3 +1,4 @@
-- classes = single_action ? "btn btn-outline btn-error btn-outline btn-sm" : dropdown_classes
 - horse = object.auction_horse
-= link_to t("horse.actions.remove_from_auction"), auction_horse_path(horse.auction, horse), class: classes, data: { turbo_method: :delete, turbo_confirm: t("horse.auction_consignments.destroy.confirm"), turbo_frame: "_top" }
+= button_to t("horse.actions.remove_from_auction"), auction_horse_path(horse.auction, horse), class: classes, method: :delete,
+        data: { turbo_confirm: t("horse.auction_consignments.destroy.confirm"),
+                turbo_confirm_title: t("horse.auction_consignments.destroy.confirm_title", auction: auction.title), turbo_frame: "_top" }

@@ -1,6 +1,6 @@
 #notifications-container
   span.sr-only= t(".notifications")
-  = link_to notifications_path, class: 'btn notification-link' do
+  = link_to notifications_path, class: 'btn notification-link', target: "_top" do
     div tabindex="0" role="button" class="btn btn-ghost btn-circle"
       span.sr-only= t(".notification_icon")
       div class="indicator"

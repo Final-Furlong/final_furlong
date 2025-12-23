@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./breadcrumbs.css";
+@import "./confirm_dialog.css";
 @import "./horse.css";
 @import "./pagy.css";
 

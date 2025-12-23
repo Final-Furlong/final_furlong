@@ -21,6 +21,7 @@ en:
     auction_consignments:
       destroy:
         confirm: Are you sure you want to un-consign this horse?
+        confirm_title: Remove From %{auction}
       new:
         no_auctions: There are no auctions available for consignment.
         select_auction: Select An Auction
@@ -116,10 +117,12 @@ en:
     lease_offers:
       accept:
         confirm: Are you sure you want to accept this lease offer?
+        confirm_title: Accept Lease
       create:
         success: Lease offer was successfully created
       destroy:
         confirm: Are you sure you want to delete this lease offer?
+        confirm_title: Delete Lease Offer
         success: Lease offer was successfully deleted
       form:
         all_members: Offer to all members
@@ -140,6 +143,10 @@ en:
           racehorse: The leasing stable may not geld or retire the horse, but they may switch it to steeplechasing.
           stud: The leasing stable may not geld or retire the horse, but they may change his stud fee.
         title: Offer for Lease
+      reject:
+        confirm: Are you sure you want to reject this lease offer?
+        confirm_title: Reject Lease
+        success: Lease offer was successfully rejected
     lease_terminations:
       create:
         success: Successfully requested to end the lease
@@ -202,11 +209,14 @@ en:
       create:
         success: Horse was successfully purchased
     sale_offers:
-      confirm: Are you sure you want to buy this horse?
+      accept:
+        confirm: Are you sure you want to buy this horse?
+        confirm_title: Buy %{name}
       create:
         success: Sale offer was successfully created
       destroy:
         confirm: Are you sure you want to delete this sale offer?
+        confirm_title: Delete Sale Offer
         success: Sale offer was successfully deleted
       form:
         all_members: Offer to all members
@@ -218,6 +228,10 @@ en:
         rules: Price must be $50,000 or less if selling to new members.
       new:
         title: Offer for Sale
+      reject:
+        confirm: Are you sure you want to reject this offer?
+        confirm_title: Reject Sale Offer
+        success: Sale offer was successfully deleted
     shipments:
       create:
         success: Horse was successfully shipped

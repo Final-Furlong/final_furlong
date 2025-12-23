@@ -19,8 +19,8 @@ li id="#{dom_id(notification)}"
         = f.submit notification.read? ? t(".mark_as_unread") : t(".mark_as_read"), class: button_classes
 
       - button_classes = 'ml-2 text-red-800 bg-transparent hover:bg-red-900 hover:text-white font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:hover:bg-red-600 dark:border-red-600 dark:text-red-500 dark:hover:text-white'
-      = form_with model: notification, scope: :notification, url: notification_path(notification), method: :delete, data: { turbo_confirm: t(".confirm_delete") } do |f|
-        = f.submit t(".delete"), class: button_classes
+      = form_with model: notification, scope: :notification, url: notification_path(notification), method: :delete do |f|
+        = f.submit t(".delete"), class: button_classes, data: { turbo_confirm: t(".confirm_delete") } do |f|
 
       .items-end.ml-auto.text-xs.dark:text-neutral-content
         = time_ago_in_words(notification.created_at) + " ago"
