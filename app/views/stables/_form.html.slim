@@ -4,5 +4,6 @@
   = render Forms::ErrorMessages::Component.new(object: form)
   = f.input :description, as: :text, class: "textarea", input_html: { rows: 10 }, required: false
   .form-actions
-    = link_to t("common.actions.cancel"), current_stable_path, class: "btn btn-outline-secondary"
-    = f.submit t(".update"), class: "btn btn-primary"
+    = render Ui::ButtonizedLink::Component.new(color: :secondary, style: :outline, url: current_stable_path, http_method: :get, data: { turbo_frame: "_top" }) do
+      = t("common.actions.cancel")
+    = render Ui::SubmitButton::Component.new(form: f)

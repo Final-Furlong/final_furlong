@@ -31,7 +31,8 @@
                     = foal.track_record
             - unless foal.stillborn?
               p.text-center
-                = link_to t("common.actions.view"), horse_path(foal), class: 'btn btn-neutral', target: '_top'
+                = render Ui::ButtonizedLink::Component.new(color: :neutral, url: horse_path(foal), data: { turbo_frame: "_top" }) do
+                  = t("common.actions.view")
   - if (unborn_foal = dashboard.unborn_foal)
     - pedigree = Horses::PedigreeDisplayService.new(unborn_foal)
     .card.card-border.bg-base-100.w-full.px-2.rounded-none
@@ -49,7 +50,8 @@
               span= t(".due_date")
               span.float-right= "due date here"
             p.text-center
-              = link_to unborn_foal.sire.name, horse_path(unborn_foal.sire), class: 'btn btn-neutral', target: '_top'
+              = render Ui::ButtonizedLink::Component.new(color: :neutral, url: horse_path(unborn_foal.sire), data: { turbo_frame: "_top" }) do
+                = unborn_foal.sire.name
 .hidden.mx-auto.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100.shadow-md.w-full[
   class="sm:block sm:w-3/4 dark:border-neutral-100"
 ]
@@ -67,7 +69,8 @@
         - pedigree = Horses::PedigreeDisplayService.new(foal)
         tr
           td class="text-#{foal.gender}"
-            = link_to (foal.name || t("horse.unnamed")), horse_path(foal), target: '_top'
+            = render Ui::Link::Component.new(color: :none, url: horse_path(foal), data: { turbo_frame: "_top" }) do
+              = (foal.name || t("horse.unnamed"))
           td= foal.date_of_birth.year
           td= foal.gender.titleize
           td= pedigree.sire_display(tag: true, target: '_top')
@@ -82,6 +85,8 @@
           td= t("horse.in_foal").titleize
           td= unborn_foal.date_of_birth.year
           td= t("common.dash")
-          td= link_to unborn_foal.sire.name, horse_path(unborn_foal.sire), target: '_top'
+          td
+            = render Ui::Link::Component.new(color: :none, url: horse_path(unborn_foal.sire), data: { turbo_frame: "_top" }) do
+              = unborn_foal.sire.name
           td colspan=2
             = "due date here"

@@ -27,6 +27,5 @@
         - if shipment.errors[:mode]
           p.text-error= shipment.errors.where(:mode).map(&:full_message).join(', ')
   .float-right
-    a.btn.btn-outline.mr-2.sm:hidden onclick="dialog.close();"
-      = t("common.actions.cancel")
-    = f.submit t("common.actions.save"), class: "btn btn-primary"
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.save"))

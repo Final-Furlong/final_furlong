@@ -27,7 +27,7 @@ ruby:
       - @races.each do |race|
         tr
           td.table-cell.sm:hidden
-            = link_to racing_result_path(race.date, race.number), target: "_top" do
+            = render Ui::Link::Component.new(url: racing_result_path(race.date, race.number), data: { turbo_frame: "_top" }) do
               i.ph-fill.ph-eye
           td= race.number
           td= race.racetrack.name
@@ -60,7 +60,7 @@ ruby:
               span.inline.lg:hidden = t("racing.race.mobile.male_only")
           td= race.name
           td
-            = link_to racing_result_path(race.date, race.number), target: "_top" do
+            = render Ui::Link::Component.new(url: racing_result_path(race.date, race.number), data: { turbo_frame: "_top" }) do
               i.ph-fill.ph-eye
 .mt-2
   = render "prev_next_dates", prev_date:, next_date:

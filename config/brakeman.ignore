@@ -1,29 +1,6 @@
 {
   "ignored_warnings": [
     {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "1c4ef87eadedce6a6f49f982c03eb15cbf7e925183639483f5a585d2f19e5b4b",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/services/racing/race_schedule_updater.rb",
-      "line": 23,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "ActiveRecord::Base.connection.execute(\"        SELECT day_number, date\\n        FROM  (\\n          SELECT DISTINCT ON (day_number) *\\n          FROM  race_schedules\\n          WHERE date <= '#{(Racing::RaceResult.where(:date => ((..Date.current))).maximum(:date) or Racing::RaceSchedule.where(:date => ((...Racing::RaceResult.where(:date => ((..Date.current))).maximum(:date)))).maximum(:date)).clamp((Date.current - 2.years), Date.current)}'\\n          ORDER  BY day_number ASC, date DESC\\n        ) p\\n        ORDER BY day_number ASC;\\n\".squish)",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Racing::RaceScheduleUpdater",
-        "method": "update_schedule"
-      },
-      "user_input": "Racing::RaceSchedule.where(:date => ((...Racing::RaceResult.where(:date => ((..Date.current))).maximum(:date)))).maximum(:date)",
-      "confidence": "High",
-      "cwe_id": [
-        89
-      ],
-      "note": ""
-    },
-    {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 2,
       "fingerprint": "1eb0580255e50011422bbdb892b48c0b0535a8ee67670430a4b371b36352991e",
@@ -64,7 +41,7 @@
       "check_name": "SQL",
       "message": "Possible SQL injection",
       "file": "app/models/horses/horse.rb",
-      "line": 65,
+      "line": 77,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
       "code": "Arel.sql(\"DATE_PART('Year', date_of_birth) #{(dir or \"ASC\").upcase}\")",
       "render_path": null,

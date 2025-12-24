@@ -14,4 +14,5 @@
 
 - if schedule.persisted?
   .workout-activity-day-activity__footer
-    = link_to "Add Activity", new_stable_training_schedule_activity_path(schedule), class: "btn btn-primary"
+    = render Ui::ButtonizedLink::Component.new(url: new_stable_training_schedule_activity_path(schedule), http_method: :get, data: { turbo_frame: "_top" }) do
+      = t(".add_activity")

@@ -2,15 +2,52 @@
 
 import "@hotwired/turbo-rails"
 
-import TC from "@rolemodel/turbo-confirm"
+// invokers polyfill for commandfor / command
+import "invokers-polyfill"
 
-TC.start()
+// Safari polyfill for closedby
+import { apply, isSupported } from "@fractaledmind/dialog-closedby-polyfill"
+import "../controllers"
+
+if (!isSupported()) {
+  apply()
+}
+
+const dialog = document.getElementById("turbo-confirm-dialog")
+const titleElement = document.getElementById("turbo-confirm-title")
+const messageElement = document.getElementById("turbo-confirm-message")
+const confirmButton = dialog?.querySelector("button[value='confirm']")
+
+window.Turbo.config.forms.confirm = (message, element, submitter) => {
+  // Fall back to native confirm if dialog isn't in the DOM
+  if (!dialog) return Promise.resolve(confirm(message))
+
+  messageElement.textContent = message
+
+  // Allow custom title text via data-turbo-confirm-title
+  titleElement.textContent = submitter?.dataset.turboConfirmTitle || "Confirm"
+  // Allow custom button text via data-turbo-confirm-button
+  confirmButton.textContent = submitter?.dataset.turboConfirmButton || "Yes, go ahead"
+
+  if (dialog.hasAttribute("open")) {
+    dialog.close()
+  }
+  dialog.showModal()
+
+  return new Promise(resolve => {
+    dialog.addEventListener(
+      "close",
+      () => {
+        resolve(dialog.returnValue === "confirm")
+      },
+      { once: true }
+    )
+  })
+}
 
 // The default of 500ms is too long and users can lose the causal
 // link between clicking a link and seeing the browser respond
 window.Turbo.config.drive.progressBarDelay = 100
-
-import "../controllers"
 
 // disable turbo temporarily
 // Turbo.session.drive = false

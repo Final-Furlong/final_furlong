@@ -1,6 +1,6 @@
 - if allowed_to?(:create?, Racing::TrainingSchedule.new)
   - new_text = t("current_stable.training_schedules.index.add_new")
-  a.button-success-outline.btn-sm href=new_stable_training_schedule_path
+  = render Ui::ButtonizedLink::Component.new(url: new_stable_training_schedule_path, color: :success, size: :small, style: :outline, http_method: :get) do
     = new_text
 - else
   p.text-info= t("racing.training_schedules.maximum_allowed_text")

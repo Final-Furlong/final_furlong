@@ -65,7 +65,8 @@ ruby:
                   - else
                     = relative_time_in_words(auction.end_time)
             p.text-center
-              = link_to t("common.actions.view"), auction_horse_path(auction, auction_horse), class: 'btn btn-neutral', target: '_top'
+              = render Ui::ButtonizedLink::Component.new(color: :neutral, url: auction_horse_path(auction, auction_horse), data: { turbo_frame: "_top" }) do
+                = t("common.actions.view")
 .hidden.mx-auto.overflow-x-auto.rounded-md.w-full.sm:block
   .table-responsive-md
     table.table.table-responsive.table-zebra.table-sm.sortable.n-last
@@ -91,7 +92,8 @@ ruby:
             - bid = auction_horse.bids.current_high_bid.first
             tr
               td.wb-break-all class="text-#{horse.gender.downcase}" data-sort=horse.name
-                = link_to (horse.name || t("horse.unnamed")), horse_path(horse), target: "_top"
+                = render Ui::Link::Component.new(url: horse_path(horse), data: { turbo_frame: "_top" }) do
+                  = (horse.name || t("horse.unnamed"))
               td= horse.age
               td= horse.status.titleize
               - pedigree = Horses::PedigreeDisplayService.new(horse)
@@ -120,5 +122,6 @@ ruby:
                   - else
                     = relative_time_in_words(auction.end_time)
               td
-                = link_to auction_horse_path(auction, auction_horse), target: "_top" do
+                = render Ui::ButtonizedLink::Component.new(color: :neutral, url: auction_horse_path(auction, auction_horse), data: { turbo_frame: "_top" }) do
                   i.ph-fill.ph-eye
+                  = t("common.actions.view")
