@@ -23,5 +23,6 @@
     = f.collection_select :time_zone, zones, :first, :last, {}, { class: "select" }
 
   .form-actions.mt-4
-    = link_to t("common.actions.cancel"), current_stable_path, class: "btn btn-outline-secondary"
-    = f.submit t("common.actions.save"), class: "btn btn-primary"
+    = render Ui::ButtonizedLink::Component.new(color: :secondary, style: :outline, url: new_setting_path, data: { turbo_frame: "_top" }) do
+      = t("common.actions.cancel")
+    = render Ui::SubmitButton::Component.new(form: f)

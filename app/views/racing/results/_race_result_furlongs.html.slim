@@ -15,7 +15,9 @@ ruby:
       .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
         input type="checkbox"
         .collapse-title.font-semibold.font-medium
-          span class="text-#{horse.gender}"= link_to horse.name, horse_path(horse)
+          span class="text-#{horse.gender}"
+            = render Ui::Link::Component.new(url: horse_path(horse)) do
+              = horse.name
           span.float-right= finisher.speed_factor
         .collapse-content.text-sm
           p
@@ -77,7 +79,8 @@ ruby:
                           td= "#{position}) #{margins[index + (loop * 4)]}"
                     - loop += 1
           p.text-center.mt-2
-            = link_to horse.name, horse_path(horse), class: 'btn btn-neutral', target: '_top'
+            = render Ui::ButtonizedLink::Component.new(color: :neutral, url: horse_path(horse), data: { turbo_frame: "_top" }) do
+              = horse.name
     - if winner.fractions
       .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
         input type="checkbox"
@@ -116,7 +119,9 @@ ruby:
             - horse = finisher.horse
             tr
               td data-sort=horse.name
-                span class="text-#{horse.gender}"= link_to horse.name, horse_path(horse)
+                span class="text-#{horse.gender}"
+                  = render Ui::Link::Component.new(url: horse_path(horse), data: { turbo_frame: "_top" }) do
+                    = horse.name
                 = " ("
                 = finisher.jockey&.full_name
                 = ")"

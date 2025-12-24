@@ -1,6 +1,8 @@
 RSpec.describe Horses::UpdateStudFoalRecordJob, :perform_enqueued_jobs do
   describe "#perform" do
     it "uses default queue", perform_enqueueed_jobs: false do
+      Horses::Horse.destroy_all
+      horse
       expect do
         described_class.perform_later(horse)
       end.to have_enqueued_job.on_queue("default")

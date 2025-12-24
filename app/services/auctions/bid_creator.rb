@@ -34,6 +34,7 @@ module Auctions
         return result
       end
 
+      bid_params[:maximum_bid] = nil if bid_params[:maximum_bid].to_i.zero?
       bid = Auctions::Bid.new(
         auction:,
         horse: auction_horse,

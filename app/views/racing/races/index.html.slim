@@ -11,15 +11,14 @@ ruby:
   table.table.table-responsive.table-zebra.sortable.asc.n-last.table-xs.md:table-md
     thead
       tr
-        th= t(".number")
-        th= t(".track")
-        th= t(".type")
-        th= t(".distance")
-        th= t(".surface")
-        th= t(".age")
-        th= t(".gender")
-        th= t(".name")
-        th= t(".purse")
+        th= t("racing.race.number")
+        th= t("racing.race.track")
+        th= t("racing.race.type")
+        th= t("racing.race.distance")
+        th= t("racing.race.surface")
+        th= t("racing.race.age")
+        th= t("racing.race.gender")
+        th= t("racing.race.name")
     tbody
       - @races.each do |race|
         tr
@@ -29,29 +28,29 @@ ruby:
           - sort += Racing::RaceSchedule::RACE_GRADES.find_index(race.grade) if race.race_type == "stakes"
           td data-sort=sort
             span.hidden.lg:inline
-              = t(".#{race.race_type.downcase}")
+              = t("racing.race.#{race.race_type.downcase}")
               - if race.race_type == "stakes"
                 = "&nbsp;".html_safe
                 = " (#{race.grade.titleize})"
             span.inline.lg:hidden
-              = t(".mobile.#{race.race_type.downcase}")
+              = t("racing.race.mobile.#{race.race_type.downcase}")
               - if race.race_type == "stakes"
                 = "&nbsp; (".html_safe
-                = t(".mobile.#{race.grade.downcase.gsub(' ', '_')}")
+                = t("racing.race.mobile.#{race.grade.downcase.gsub(' ', '_')}")
                 = ")"
           td data-sort=race.distance
-            span.hidden.lg:inline = t(".furlongs", number: race.distance)
-            span.inline.lg:hidden = t(".mobile.furlongs", number: race.distance)
+            span.hidden.lg:inline = t("racing.race.furlongs", number: race.distance)
+            span.inline.lg:hidden = t("racing.race.mobile.furlongs", number: race.distance)
           - sort = Racing::TrackSurface::SURFACES.find_index(race.track_surface.surface)
-          td data-sort=sort = t(".surface_#{race.track_surface.surface}")
+          td data-sort=sort = t("racing.race.surface_#{race.track_surface.surface}")
           td= race.race_age_string
           td
             - if race.female_only?
-              span.hidden.lg:inline = t(".female_only")
-              span.inline.lg:hidden = t(".mobile.female_only")
+              span.hidden.lg:inline = t("racing.race.female_only")
+              span.inline.lg:hidden = t("racing.race.mobile.female_only")
             - elsif race.male_only?
-              span.hidden.lg:inline = t(".male_only")
-              span.inline.lg:hidden = t(".mobile.male_only")
+              span.hidden.lg:inline = t("racing.race.male_only")
+              span.inline.lg:hidden = t("racing.race.mobile.male_only")
           td= race.name
           td data-sort=race.purse = Game::MoneyFormatter.new(race.purse).to_s
 .mt-2

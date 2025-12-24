@@ -1,7 +1,6 @@
 = form_with model: setting, scope: :settings, url: settings_path, method: :post do |f|
   = render Forms::ErrorMessages::Component.new(object: setting)
   = f.fields_for :racing do |rf|
-    - pd setting.racing
     fieldset.fieldset
       legend.fieldset-legend= t("activerecord.attributes.setting.min_energy_for_race_entry")
       - grades = Racing::RaceStats::GRADES
@@ -31,5 +30,6 @@
       p.label = t("form.setting.racing.apply_minimums_for_future_races_hint")
 
   .form-actions.mt-4
-    = link_to t("common.actions.cancel"), current_stable_path, class: "btn btn-outline-secondary"
-    = f.submit t("common.actions.save"), class: "btn btn-primary"
+    = render Ui::ButtonizedLink::Component.new(color: :secondary, style: :outline, url: new_setting_path, data: { turbo_frame: "_top" }) do
+      = t("common.actions.cancel")
+    = render Ui::SubmitButton::Component.new(form: f)

@@ -5,15 +5,12 @@
       .d-flex
         h1.card-title.flex-grow-1= training_schedule.name
         .buttons
-          = link_to edit_stable_training_schedule_path(training_schedule), class: "button-action-success is-light",
-                                                                           data: { turbo_frame: "_top" } do
+          = render Ui::Link::Component.new(url: edit_stable_training_schedule_path(training_schedule), color: :success, style: :outline, data: { turbo_frame: "_top" }) do
             span.icon
               i.ph-fill.ph-pen
               = t("common.actions.edit")
           - data = { turbo_confirm: t("common.confirmation.delete_with_name", name: training_schedule.name) }
-          = button_to stable_training_schedule_path(training_schedule), class: "button-action-danger is-light ms-2",
-                                                                        form_class: "d-inline", method: :delete,
-                                                                        form: { data: } do
+          = render Ui::Button::Component.new(url: stable_training_schedule_path(training_schedule), color: :error, style: :outline, extra_classes: "ms-2", form_class: "inline", http_method: :delete, form: { data: }) do
             span.icon
               i.ph-fill.ph-trash
               = t("common.actions.delete")

@@ -34,17 +34,26 @@ td.mare,
 td.filly {
   background-color: var(--female-horse-color);
   color: #000;
+  a {
+    color: #000;
+  }
 }
 
 td.stallion,
 td.colt {
   background-color: var(--male-horse-color);
   color: #000;
+  a {
+    color: #000;
+  }
 }
 
 td.gelding {
   background-color: var(--gelded-horse-color);
   color: #000;
+  a {
+    color: #000;
+  }
 }
 
 /* stylelint-disable property-no-unknown */

@@ -18,6 +18,6 @@
           = f.input :budget_category, collection: dashboard.categories, label: false, required: false,
                   prompt: I18n.t("current_stable.budgets.search.category")
       .float-right.flex.mt-2.justify-content-end
-        button.btn.btn-outline.btn-error.btn-sm.me-2 type="button" data-action="search#reset"
+        = render Ui::ButtonizedLink::Component.new(color: :error, style: :outline, size: :small, extra_classes: "me-2", http_method: :get, data: { action: "search#reset" }) do
           = t("common.search_form.reset_filters")
-        = f.submit t("common.search_form.action"), class: "btn btn-primary btn-soft btn-sm d-lg-none"
+        = render Ui::SubmitButton::Component.new(form: f, size: :small, extra_classes: "d-lg-none", text: t("common.search_form.action"))

@@ -20,7 +20,7 @@ RSpec.describe "Update Stable Description" do
       expect(page).to have_current_path current_stable_path, ignore_query: true
       visit edit_current_stable_path
       fill_in "stable[description]", with: updated_description
-      click_on t("stables.form.update")
+      click_on t("common.actions.save")
       expect(page).to have_current_path current_stable_path, ignore_query: true
       expect(page).to have_text updated_description
     end
@@ -29,7 +29,7 @@ RSpec.describe "Update Stable Description" do
       updated_description = "x" * 1001
       visit edit_current_stable_path
       fill_in "stable[description]", with: updated_description
-      click_on t("stables.form.update")
+      click_on t("common.actions.save")
       expect(page).to have_current_path current_stable_path, ignore_query: true
       within(".alert") do
         expect(page).to have_text "Description is too long"

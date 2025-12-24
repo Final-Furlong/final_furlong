@@ -1,11 +1,12 @@
-dialog.modal#confirm inert=true
-  .modal-box
-    h3.text-lg.font-bold#confirm-title
-      / Replaced by `data-turbo-confirm` attribute
-      = t("common.confirm.title")
-    #confirm-body
-      / Optionally replaced by `data-confirm-details` attribute
-      p= t("common.confirm.default_message")
-    .modal-action
-      button.btn.btn-outline.confirm-cancel = t("common.actions.cancel")
-      button.btn.btn-primary#confirm-accept = t("common.confirm.yes")
+dialog.modal#turbo-confirm-dialog closedby="any" aria-labelledby="turbo-confirm-title" aria-describedby="turbo-confirm-message"
+  header
+    hgroup
+      h3.text-2xl.font-semibold#turbo-confirm-title = t("common.actions.confirm")
+      p.mt-1#turbo-confirm-message
+
+  footer.mt-4
+    button.confirm-dialog-cancel-btn type="button" commandfor="turbo-confirm-dialog" command="close"
+      = t("common.actions.cancel")
+    form method="dialog"
+      button.confirm-dialog-confirm-btn.btn.btn-primary type="submit" value="confirm"
+        = t("common.actions.confirm")

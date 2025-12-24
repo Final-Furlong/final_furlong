@@ -14,6 +14,7 @@ ruby:
     prev_number = number - 1
     prev_text = "#{l(date)} ##{prev_number}"
     next_date = Racing::RaceResult.where('date > ?', date).minimum(:date)
+    next_date ||= Racing::RaceSchedule.where('date > ?', date).minimum(:date)
     next_number = 1
     next_text = "#{l(next_date)} ##{next_number}"
   else
@@ -28,6 +29,10 @@ ruby:
 .w-full.flex.mb-2
   .flex-1
     - unless prev_text.blank?
-      = link_to prev_text, racing_result_path(prev_date, prev_number), class: "btn btn-outline btn-sm"
+      = render Ui::ButtonizedLink::Component.new(color: :none, style: :outline, size: :small, url: racing_result_path(prev_date, prev_number), http_method: :get, data: { turbo_frame: "_top" }) do
+        = prev_text
   .flex-none
-    = link_to next_text, racing_result_path(next_date, next_number), class: "btn btn-outline btn-sm #{"btn-disabled" if next_date > Date.current}"
+    - result_exists = Racing::RaceResult.exists?(date: next_date, number: next_number)
+    = render Ui::ButtonizedLink::Component.new(color: :none, style: :outline, size: :small, disabled: !result_exists, url: racing_result_path(next_date, next_number),
+            http_method: :get, data: { turbo_frame: "_top" }) do
+      = next_text
