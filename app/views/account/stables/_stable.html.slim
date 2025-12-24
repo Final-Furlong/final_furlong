@@ -4,8 +4,8 @@
     .card-body
       .card-title
         h5.card-header
-          = link_to stable.name, stable_path(stable), data: { turbo_frame: "_top" },
-                                                      class: "text-decoration-none stretched-link"
+          = render Ui::Link::Component.new(url: stable_path(stable), data: { turbo_frame: "_top" }) do
+            = stable.name
       .card-subtitle.mb-2
         span.text-muted= "@#{stable.user.username}"
         = render Users::OnlineBadge::Component.new(online: SessionsRepository.online?(resource: stable))

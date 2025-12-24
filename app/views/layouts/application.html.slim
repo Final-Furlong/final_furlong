@@ -2,6 +2,7 @@ doctype html
 html(lang= I18n.locale)
   = render "layouts/head"
   body
+    = render "layouts/confirm_dialog"
     .drawer.h-screen.lg:drawer-open
       input id="sidebar-toggle" type="checkbox" class="drawer-toggle"
       main.drawer-content
@@ -16,6 +17,5 @@ html(lang= I18n.locale)
           = yield
         = render "layouts/dock"
       = render "layouts/sidenav"
-    = render "layouts/confirm_dialog"
     = turbo_frame_tag "modal"
     script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"

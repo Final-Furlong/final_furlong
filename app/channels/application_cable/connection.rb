@@ -4,16 +4,12 @@ module ApplicationCable
     impersonates :user, method: :current_user, with: ->(id) { Account::User.find_by(id:) }
 
     def connect
-      self.user = swallow_warden_throws { find_verified_user }
+      self.current_user = swallow_warden_throws { env["warden"].user }
       reject_unauthorized_connection unless current_user
       logger.add_tags "ActionCable", "User #{current_user.id}"
     end
 
     protected
-
-    def find_verified_user
-      env["warden"].user
-    end
 
     def swallow_warden_throws
       catch(:warden) do

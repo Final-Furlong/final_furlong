@@ -25,7 +25,7 @@ end
 Capybara.register_driver(:playwright) do |app|
   Capybara::Playwright::Driver.new(app,
     browser_type: ENV["PLAYWRIGHT_BROWSER"]&.to_sym || :chromium,
-    headless: (false unless ENV["CI"] || ENV["PLAYWRIGHT_HEADLESS"]))
+    headless: !ENV.fetch("HEADFULL", false))
 end
 Capybara.javascript_driver = :playwright
 

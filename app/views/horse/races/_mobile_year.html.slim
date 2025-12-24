@@ -59,7 +59,8 @@
                   - if winner == finish
                     strong.italic= horse.name
                   - else
-                    = link_to winner.horse.name, horse_path(winner.horse), target: "_top", class: "italic text-#{winner.horse.gender}"
+                    = render Ui::Link::Component.new(url: horse_path(winner.horse), extra_classes: "italic text-#{winner.horse.gender}", data: { turbo_frame: "_top" }) do
+                      = winner.horse.name
                   - if second
                   p
                     span= t("horse.races.mobile.second")
@@ -67,7 +68,8 @@
                       - if second && second == finish
                         strong.italic= horse.name
                       - elsif second
-                        = link_to second.horse.name, horse_path(second.horse), target: "_top", class: "italic text-#{second.horse.gender}"
+                        = render Ui::Link::Component.new(url: horse_path(second.horse), extra_classes: "italic text-#{second.horse.gender}", data: { turbo_frame: "_top" }) do
+                          = second.horse.name
                     - if third
                       p
                         span= t("horse.races.mobile.third")
@@ -75,7 +77,8 @@
                           - if third && third == finish
                             strong.italic= horse.name
                           - elsif third
-                            = link_to third.horse.name, horse_path(third.horse), target: "_top", class: "italic text-#{third.horse.gender}"
+                            = render Ui::Link::Component.new(url: horse_path(third.horse), extra_classes: "italic text-#{third.horse.gender}", data: { turbo_frame: "_top" }) do
+                              = third.horse.name
                   p
                     span= t("horse.races.mobile.running_line")
                     span.float-right= finish.positions.gsub("|", "-")
@@ -83,4 +86,5 @@
                     p
                       span= t("horse.races.index.fractions", fractions: winner.fractions.gsub("|", " | "))
                   p.text-center
-                    = link_to t("horse.races.index.view_race"), racing_result_path(race.date, race.number), class: "mt-2 btn btn-neutral", data: { turbo_frame: "modal" }
+                    = render Ui::ButtonizedLink::Component.new(url: racing_result_path(race.date, race.number), color: :neutral, extra_classes: "mt-2", data: { turbo_frame: "modal" }) do
+                      = t("horse.races.index.view_race")

@@ -11,7 +11,10 @@ module Horses
 
     def sire_display(tag: false, target: nil)
       if horse.sire.present?
-        link_to horse.sire.name, routes.horse_path(horse.sire.slug), target:
+        component = Ui::Link::Component.new(url: routes.horse_path(horse.sire.slug), data: { turbo_frame: target })
+        ApplicationController.new.view_context.render(component) do
+          horse.sire.name
+        end
       else
         display_created(tag)
       end
@@ -19,7 +22,10 @@ module Horses
 
     def sire_sire_display(tag: false, target: nil)
       if horse.sire&.sire.present?
-        link_to horse.sire.sire.name, routes.horse_path(horse.sire.sire.slug), target:
+        component = Ui::Link::Component.new(url: routes.horse_path(horse.sire.sire.slug), data: { turbo_frame: target })
+        ApplicationController.new.view_context.render(component) do
+          horse.sire.sire.name
+        end
       else
         display_created(tag)
       end
@@ -27,7 +33,10 @@ module Horses
 
     def sire_dam_display(tag: false, target: nil)
       if horse.sire&.dam.present?
-        link_to horse.sire.dam.name, routes.horse_path(horse.sire.dam.slug), target:
+        component = Ui::Link::Component.new(url: routes.horse_path(horse.sire.dam.slug), data: { turbo_frame: target })
+        ApplicationController.new.view_context.render(component) do
+          horse.sire.dam.name
+        end
       else
         display_created(tag)
       end
@@ -35,7 +44,10 @@ module Horses
 
     def dam_display(tag: false, target: nil)
       if horse.dam.present?
-        link_to horse.dam.name, routes.horse_path(horse.dam.slug), target:
+        component = Ui::Link::Component.new(url: routes.horse_path(horse.dam.slug), data: { turbo_frame: target })
+        ApplicationController.new.view_context.render(component) do
+          horse.dam.name
+        end
       else
         display_created(tag)
       end
@@ -43,7 +55,10 @@ module Horses
 
     def dam_sire_display(tag: false, target: nil)
       if horse.dam&.sire.present?
-        link_to horse.dam.sire.name, routes.horse_path(horse.dam.sire.slug), target:
+        component = Ui::Link::Component.new(url: routes.horse_path(horse.dam.sire.slug), data: { turbo_frame: target })
+        ApplicationController.new.view_context.render(component) do
+          horse.dam.sire.name
+        end
       else
         display_created(tag)
       end
@@ -51,7 +66,10 @@ module Horses
 
     def dam_dam_display(tag: false, target: nil)
       if horse.dam&.dam.present?
-        link_to horse.dam.dam.name, routes.horse_path(horse.dam.dam.slug), target:
+        component = Ui::Link::Component.new(url: routes.horse_path(horse.dam.dam.slug), data: { turbo_frame: target })
+        ApplicationController.new.view_context.render(component) do
+          horse.dam.dam.name
+        end
       else
         display_created(tag)
       end
@@ -64,7 +82,6 @@ module Horses
         content_tag(:em, I18n.t("horse.created"))
       else
         I18n.t("horse.created")
-
       end
     end
   end

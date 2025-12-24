@@ -8,19 +8,21 @@
   - if (count = AuctionPolicy::Scope.new(Current.user, Auction.current).resolve.count).positive?
     - if count == 1
       - auction = AuctionPolicy::Scope.new(Current.user, Auction.current).resolve.first
-      = link_to auction_path(auction), class: 'btn btn-neutral' do
+      = render Ui::Button::Component.new(color: :neutral, url: auction_path(auction), http_method: :get) do
         = t(".auctions", count: count)
     - else
-      = link_to auctions_path(q: { current: true }), class: 'btn btn-neutral' do
+      = render Ui::Button::Component.new(color: :neutral, url: auctions_path, http_method: :get) do
+        = hidden_field_tag "q[current]", true
         = t(".auctions", count: count)
   - if (count = AuctionPolicy::Scope.new(Current.user, Auction.upcoming).resolve.count).positive?
-    = link_to auctions_path(q: { upcoming: true }), class: 'btn btn-neutral' do
+    = render Ui::Button::Component.new(color: :neutral, url: auctions_path, http_method: :get) do
+      = hidden_field_tag "q[upcoming]", true
       = t(".auctions_upcoming", count: count)
   - if (count = Horses::SaleOfferPolicy::Scope.new(Current.user, Horses::SaleOffer).resolve.count).positive?
-    = link_to horses_sale_offers_path, class: 'btn btn-neutral' do
+    = render Ui::Button::Component.new(color: :neutral, url: horses_sale_offers_path, http_method: :get) do
       = t(".for_sale", count: count)
   - if (count = Horses::LeaseOfferPolicy::Scope.new(Current.user, Horses::LeaseOffer).resolve.count).positive?
-    = link_to horses_lease_offers_path, class: 'btn btn-neutral' do
+    = render Ui::Button::Component.new(color: :neutral, url: horses_lease_offers_path, http_method: :get) do
       = t(".for_lease", count: count)
 .clear-both
 

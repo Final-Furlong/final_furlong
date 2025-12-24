@@ -65,10 +65,12 @@ gem "motor-admin"
 gem "pretender"
 
 # UI
+gem "class_variants"
 gem "pagy"
 gem "simple_form"
 gem "slim-rails"
 gem "tailwindcss-rails"
+gem "tailwind_merge"
 gem "view_component"
 gem "view_component-contrib"
 gem "vite_rails"

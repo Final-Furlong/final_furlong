@@ -25,20 +25,12 @@ module Nav
           action[:i18n_key]
         end
 
-        def render_action(action, classes)
-          (action[:type] == :form) ? button_action(action, classes) : link_action(action, classes)
-        end
-
-        def link_action(action, classes)
-          link_to t(action_i18n_key(action)), action[:link], type: "button", class: classes
-        end
-
-        def button_action(action, classes)
-          button_to t(action_i18n_key(action)), action[:link], type: "button", class: classes, form_class: "d-inline"
+        def single_action_classes
+          "mr-2 text-green-800 bg-transparent border border-green-800 hover:bg-green-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:hover:bg-green-600 dark:border-green-600 dark:text-green-400 dark:hover:text-white dark:focus:ring-green-800"
         end
 
         def dropdown_classes
-          "block px-4 py-2 text-sm text-gray-300 focus:bg-white/5 focus:text-white focus:outline-hidden"
+          "block px-4 py-2 w-full text-left text-sm text-gray-300 focus:bg-white/5 focus:text-white focus:outline-hidden"
         end
 
         def action_path(action)

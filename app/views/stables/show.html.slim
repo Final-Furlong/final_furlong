@@ -7,5 +7,6 @@
                                                    { name: @stable.name, href: "#" }],
                                            badge: Users::OnlineBadge::Component.new(online: rep)) do
     = render Nav::Breadcrumbs::Actions::Component.new(actions: actions, path: "/stables/actions/", object: @stable)
+
 = turbo_frame_tag @stable do
   = render "stable", stable: @stable

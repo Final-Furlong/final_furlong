@@ -33,4 +33,4 @@ ruby:
           = t(refund_key, amount: Game::MoneyFormatter.new(refund_fee).to_s)
         - if termination_request.errors[:leaser_accepted_refund]
           p.text-error= termination_request.errors.where(:leaser_accepted_refund).map(&:full_message).join(', ')
-  = f.submit t("common.actions.save"), class: "btn btn-primary"
+  = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.save"))

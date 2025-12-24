@@ -56,6 +56,9 @@ en:
       title: Race Schedule
       track: Track
       type: Type
+    races:
+      index:
+        title: Race Schedule
     results:
       fractions: Fractional Times
       horse_title: Horse (Jockey)
