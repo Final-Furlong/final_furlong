@@ -103,6 +103,12 @@ en:
         language_selector: Language Selector
         uk_language: UK Language
         us_language: US Language
+    ui:
+      alert:
+        confirm_delete: Are you sure you wish to delete this notification?
+        delete: Delete
+        mark_as_read: Mark As Read
+        mark_as_unread: Mark As Unread
     users:
       impersonating_banner:
         sign_out: "(Sign Out)"

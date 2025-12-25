@@ -7,6 +7,10 @@ class LeaseRejectionNotification < Notification
     I18n.t("notifications.lease_rejection_notification.title")
   end
 
+  def type
+    :error
+  end
+
   def actions
     %w[view_horse]
   end
