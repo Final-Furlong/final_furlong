@@ -7,6 +7,10 @@ class SaleRejectionNotification < Notification
     I18n.t("notifications.sale_rejection_notification.title")
   end
 
+  def type
+    :error
+  end
+
   def actions
     %w[view_horse]
   end

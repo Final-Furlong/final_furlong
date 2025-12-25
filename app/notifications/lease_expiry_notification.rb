@@ -11,6 +11,10 @@ class LeaseExpiryNotification < Notification
     I18n.t("notifications.lease_expiry_notification.title")
   end
 
+  def type
+    :error
+  end
+
   def actions
     %w[view_horse]
   end
