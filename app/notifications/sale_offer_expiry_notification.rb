@@ -12,6 +12,10 @@ expired."
     I18n.t("notifications.sale_offer_expiry_notification.title")
   end
 
+  def type
+    :error
+  end
+
   def actions
     %w[view_horse]
   end
