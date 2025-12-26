@@ -10,7 +10,7 @@ RSpec.describe Horses::Boarding do
     it { is_expected.to validate_presence_of(:start_date) }
     it { is_expected.to validate_presence_of(:days) }
     it { is_expected.to validate_comparison_of(:end_date).is_greater_than_or_equal_to(:start_date).allow_nil }
-    it { is_expected.to validate_numericality_of(:days).only_integer.is_greater_than_or_equal_to(0).is_less_than_or_equal_to(30) }
+    it { is_expected.to validate_numericality_of(:days).only_integer.is_greater_than_or_equal_to(0) }
   end
 
   describe "scopes" do

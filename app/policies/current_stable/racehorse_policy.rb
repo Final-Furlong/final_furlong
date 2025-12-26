@@ -20,6 +20,15 @@ module CurrentStable
       false
     end
 
+    def board?
+      # TODO: migrate boarding
+      false
+    end
+
+    def stop_boarding?
+      Horses::Boarding.current.exists?(horse: record)
+    end
+
     def run_workout?
       # TODO: finish training schedules + workouts
       false
@@ -27,16 +36,6 @@ module CurrentStable
 
     def run_jump_trial?
       # TODO: migrate jump trials + implement them
-      false
-    end
-
-    def board?
-      # TODO: implment boarding
-      false
-    end
-
-    def stop_boarding?
-      # TODO: implment boarding
       false
     end
 
