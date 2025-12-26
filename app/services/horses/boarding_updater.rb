@@ -15,7 +15,7 @@ module Horses
       end
 
       ActiveRecord::Base.transaction do
-        boarding.update(end_date: Date.current, days: Date.current - boarding.start_date)
+        boarding.update(end_date: Date.current, days: (Date.current - boarding.start_date).to_i)
         if boarding.days > 0
           days_string = "#{boarding.days} "
           days_string += "day".pluralize(boarding.days)

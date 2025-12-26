@@ -4,23 +4,29 @@
   .tabs.tabs-border.dark:border-neutral-400 role="tablist"
     - if policy.view_workouts?
       / TODO: check if workouts exist
-      input.tab type="radio" name="horse-event" aria-label=t(".workouts")
+      input.tab type="radio" name="horse-event" aria-label=t(".workouts") id="workouts"
       .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
         p= "workouts history here"
 
     - if policy.view_boarding?
       - boardings_count = horse.boardings.count
       - boardings_count += 1 if horse.association(:current_boarding).scope.exists?
-      input.tab type="radio" name="horse-event" aria-label=t(".boarding") disabled=boardings_count.zero?
-      .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
-        p= "boarding history here"
+      - if boardings_count.zero?
+        input.tab type="radio" name="horse-event" aria-label=t(" .no_boarding") id="boarding" disabled=true
+      - else
+        input.tab type="radio" name="horse-event" aria-label=t(".boarding", count: boardings_count) id="boarding"
+        .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+          = turbo_frame_tag "#{horse.slug}-boarding-history", src: horse_boardings_path(horse), loading: "lazy" do
+            .w-full.text-center
+              p.mx-auto= t(".loading_boarding")
+              .mt-2.mx-auto.skeleton.w-full
 
     - if policy.view_shipping?
       - shipments_count = horse.racehorse? ? horse.racing_shipments.count : horse.broodmare_shipments.count
       - if shipments_count.zero?
-        input.tab type="radio" name="horse-event" aria-label=t(".no_shipping") disabled=true
+        input.tab type="radio" name="horse-event" aria-label=t(".no_shipping") id="shipments" disabled=true
       - else
-        input.tab type="radio" name="horse-event" aria-label=t(".shipping", count: shipments_count)
+        input.tab type="radio" name="horse-event" aria-label=t(".shipping", count: shipments_count) id="shipments"
         .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
           = turbo_frame_tag "#{horse.slug}-shipments-history", src: horse_shipments_path(horse), loading: "lazy" do
             .w-full.text-center
@@ -28,7 +34,7 @@
               .mt-2.mx-auto.skeleton.w-full
 
     - if policy.view_highlights?
-      input.tab type="radio" name="horse-event" aria-label=t(".highlights")
+      input.tab type="radio" name="horse-event" aria-label=t(".highlights") id="highlights"
       .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
         p= "highlights history here"
 
@@ -36,9 +42,9 @@
       - events_count = horse.sales.count + horse.past_leases.count
       - events_count += 1 if horse.association(:current_lease).scope.exists?
       - if events_count.zero?
-        input.tab type="radio" name="horse-event" aria-label=t(".no_sales") disabled=true
+        input.tab type="radio" name="horse-event" aria-label=t(".no_sales") id="sales" disabled=true
       - else
-        input.tab type="radio" name="horse-event" aria-label=t(".sales", count: events_count)
+        input.tab type="radio" name="horse-event" aria-label=t(".sales", count: events_count) id="sales"
         .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
           = turbo_frame_tag "#{horse.slug}-sales-history", src: horse_sales_path(horse), loading: "lazy" do
             .w-full.text-center

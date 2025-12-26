@@ -22,6 +22,6 @@
                   td= t("horses.genders.#{horse.gender}")
                   td= horse.owner.name
                   td.actions-column.nav-item.dropdown
-                    = render Ui::Button::Component.new(size: :small, style: :soft, url: horse_path(horse), http_method: :get, data: { turbo_frame: "_top" }) do
+                    = render Ui::ButtonizedLink::Component.new(size: :small, style: :soft, url: horse_path(horse), data: { turbo_frame: "_top" }) do
                       i.ph-fill.ph-eye
                       = t("common.actions.view")
