@@ -7,6 +7,14 @@ class LeaseAcceptanceNotification < Notification
     I18n.t("notifications.lease_acceptance_notification.title")
   end
 
+  def type
+    :success
+  end
+
+  def icon
+    :success
+  end
+
   def actions
     %w[view_horse]
   end

@@ -1,0 +1,9 @@
+.alert-vertical {
+  text-align: left;
+  .title {
+    text-align: center;
+  }
+  .message {
+    @apply mt-2;
+  }
+}
