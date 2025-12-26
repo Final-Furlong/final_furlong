@@ -90,6 +90,11 @@ en:
   i18n:
     en_gb_language: British English
     en_language: US English
+  icon:
+    error: Error
+    info: Info
+    success: Success
+    warning: Warning
   time:
     am: am
     formats:

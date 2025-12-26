@@ -1,0 +1,33 @@
+aside class=css_classes.render(:alert, type:, style:)
+  div class=css_classes.render(:container, type:, style:)
+    - if icon
+      .hidden.sm:block
+        i class=css_classes.render(:icon, type:)
+        span.sr-only = icon_description
+    .flex.flex-col.items-baseline.justify-between.w-full.gap-2
+      div
+        h3.title class=css_classes.render(:title, type:)
+          - if icon
+            .inline.mr-2.sm:hidden
+              i class=css_classes.render(:icon, type:)
+              span.sr-only = icon_description
+          = title
+        .message.mt-2 class=css_classes.render(:body, type:) = body
+      - if notification
+        .flex.items-center.gap-2.5
+          - notification.actions.each do |action|
+            - if helpers.lookup_context.exists?(action.underscore, ['notifications/shared'], true)
+              = render "notifications/shared/#{action.underscore}", notification:
+            - else
+              = render "notifications/#{notification.class.name.underscore}/#{action}", notification:
+
+  .flex.mt-4
+    = form_with model: notification, scope: :notification, url: notification_path(notification), method: :put, data: { turbo: false } do |f|
+      = f.hidden_field :read, value: notification.read? ? false : true
+      = f.submit notification.read? ? t(".mark_as_unread") : t(".mark_as_read"), class: mark_as_read_classes
+
+    = form_with model: notification, scope: :notification, url: notification_path(notification), method: :delete do |f|
+      = f.submit t(".delete"), class: delete_classes, data: { turbo_confirm: t(".confirm_delete") }
+
+    .items-end.ml-auto.text-xs.dark:text-neutral-content
+      = time_ago_in_words(notification.created_at) + " ago"
