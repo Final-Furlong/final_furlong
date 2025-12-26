@@ -8,7 +8,7 @@ module Horses
 
     validates :start_date, :days, presence: true
     validates :end_date, comparison: { greater_than_or_equal_to: :start_date }, allow_nil: true
-    validates :days, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 30 }
+    validates :days, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
     scope :current, -> { where(start_date: ...Date.current).where(end_date: nil) }
     scope :current_year, -> do
@@ -19,6 +19,10 @@ module Horses
 
     def today?
       start_date == Date.current
+    end
+
+    def current?
+      end_date.nil?
     end
   end
 end
