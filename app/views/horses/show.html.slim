@@ -2,26 +2,30 @@
   = render "breadcrumbs", horse: @horse
 
 .tabs.tabs-border.dark:border-neutral-400 role="tablist"
-  input.tab type="radio" name="horse" aria-label=t(".info") checked="checked"
+  input.tab type="radio" name="horse" aria-label=t(".info") id="info" checked="checked"
   .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
     = turbo_frame_tag "#{@horse.slug}-info" do
       = render "horses/info", horse: @horse
 
-  input.tab type="radio" name="horse" aria-label=t(".pedigree") disabled=@horse.created?
+  input.tab[ type="radio" name="horse" aria-label=t(".pedigree") id="pedigree"
+    disabled=@horse.created?
+  ]
   .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
     = turbo_frame_tag "#{@horse.slug}-pedigree", src: horse_pedigree_path(@horse), loading: "lazy" do
       .w-full.text-center
         p.mx-auto= t(".loading_pedigree")
         .mt-2.mx-auto.skeleton.w-full
 
-  input.tab type="radio" name="horse" aria-label=t(".races") disabled=!horse.lifetime_race_record
+  input.tab[ type="radio" name="horse" aria-label=t(".races") id="races"
+    disabled=!horse.lifetime_race_record
+  ]
   .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
     = turbo_frame_tag "#{@horse.slug}-races", src: horse_races_path(@horse), loading: "lazy" do
       .w-full.text-center
         p.mx-auto= t(".loading_races")
         .mt-2.mx-auto.skeleton.h-32.w-32.sm:w-3/4
 
-  input.tab[ type="radio" name="horse" aria-label=t(".foals")
+  input.tab[ type="radio" name="horse" aria-label=t(".foals") id="foals"
     disabled=(horse.foals.empty? && horse.stud_foals.empty?)
   ]
   .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
@@ -31,14 +35,16 @@
         .mt-2.mx-auto.skeleton.w-full
 
   - if CurrentStable::HorsePolicy.new(Current.user, horse).view_events?
-    input.tab[ type="radio" name="horse" aria-label=t(".history") ]
+    input.tab[ type="radio" name="horse" aria-label=t(".history") id="history" ]
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
       = turbo_frame_tag "#{@horse.slug}-history", src: horse_events_path(@horse), loading: "lazy" do
         .w-full.text-center
           p.mx-auto= t(".loading_history")
           .mt-2.mx-auto.skeleton.w-full
 
-  input.tab type="radio" name="horse" aria-label=t(".photos") diabled=!horse.appearance.image.present?
+  input.tab[ type="radio" name="horse" aria-label=t(".photos") id="photos"
+    disabled=!horse.appearance.image.present?
+  ]
   .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
     = turbo_frame_tag "#{@horse.slug}-images", src: horse_images_path(@horse), loading: "lazy" do
       .w-full.text-center
