@@ -38,6 +38,12 @@ module Horses
     def update?
       edit_name?
     end
+
+    private
+
+    def manager?
+      record.manager == stable
+    end
   end
 end
 
