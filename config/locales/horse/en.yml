@@ -2,6 +2,8 @@
 en:
   horse:
     actions:
+      boarding:
+        stop: Stop Boarding
       consign_to_auction: Consign to Auction
       create_lease_offer: Set for Lease
       create_sale_offer: Set for Sale
@@ -26,11 +28,25 @@ en:
         no_auctions: There are no auctions available for consignment.
         select_auction: Select An Auction
         title: Consign to Auction
+    boardings:
+      destroy:
+        success: Boarding was successfully stopped.
+      stop:
+        confirm: Are you sure you want to stop boarding %{horse}?
+        confirm_title: Stop Boarding
     created: Created
     events:
+      boardings:
+        current_boarding: Current
+        days: Days
+        end_date: End Date
+        location: Location
+        no_boarding: No boarding history.
+        start_date: Start Date
       index:
-        boarding: Boarding
+        boarding: Boarding (%{count})
         highlights: Highlights
+        loading_boarding: Loading boarding...
         loading_sales: Loading sales/leases...
         loading_shipping: Loading shipping...
         no_sales: Sales/Leases

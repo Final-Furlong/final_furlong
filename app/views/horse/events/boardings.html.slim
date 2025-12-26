@@ -1,0 +1,55 @@
+= turbo_frame_tag "#{@dashboard.horse.slug}-boarding-history" do
+  - horse = @dashboard.horse
+  - if @dashboard.boardings.empty?
+    p= t(".no_boardings")
+  - else
+    - if @dashboard.current_boarding
+      .text-center.border-neutral.p-2
+        span
+          i.ph.ph-info.text-info.mr-2
+          = t(".current", start: l(@dashboard.current_boarding.start_date),
+                  location: @dashboard.current_boarding.location.name)
+    .mx-auto.overflow-x-auto.w-full.sm:hidden
+      - @dashboard.boardings.each do |boarding|
+        .card.bg-base-100.w-full.px-2.rounded-none
+          .card-body.p-0.rounded-none
+            .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+              input type="checkbox"
+              .collapse-title.font-semibold.font-medium
+                span= l(boarding.start_date)
+                span.float-right
+                  - if boarding.end_date
+                    = l(boarding.end_date)
+                  - else
+                    span.badge.badge-warning= t(".current_boarding")
+              .collapse-content.text-sm
+                p
+                  span= t(".location")
+                  span.float-right= boarding.location.name
+                - if boarding.current?
+                  p.text-center
+                    = render Ui::Button::Component.new(url: horse_boarding_path(horse, boarding), color: :error, style: :outline, size: :small,
+                            http_method: :delete, data: { turbo_confirm: t("horse.boardings.stop.confirm"), turbo_frame: "_top" }) do
+                      = t("horse.actions.boarding.stop")
+    .hidden.mx-auto.overflow-x-auto.border.rounded-md.w-full.sm:block.sm:w-5/6
+      table.table.table-zebra.sortable
+        thead
+          tr.border-b-1.border-gray-400.dark:border-neutral-600
+            th= t(".start_date")
+            th= t(".end_date")
+            th= t(".location")
+            th= t(".days")
+        tbody
+          - @dashboard.boardings.each do |boarding|
+            tr
+              td data-sort=boarding.start_date = l(boarding.start_date)
+              td data-sort=boarding.end_date
+                - if boarding.end_date
+                  = l(boarding.end_date)
+                - else
+                  span.badge.badge-warning= t(".current_boarding")
+                  = render Ui::Button::Component.new(url: horse_boarding_path(horse, boarding), color: :error, style: :outline, size: :small,
+                          form_class: 'inline', http_method: :delete, data: { turbo_confirm: t("horse.boardings.stop.confirm"), turbo_frame: "_top" }) do
+                    = t("horse.actions.boarding.stop")
+              td= boarding.location.name
+              td= boarding.days.positive? ? boarding.days : (Date.current - boarding.start_date).to_i
