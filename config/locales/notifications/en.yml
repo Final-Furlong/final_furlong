@@ -27,12 +27,7 @@ en:
     lease_rejection_notification:
       title: Lease Declined
     notification:
-      confirm_delete: Are you sure you wish to delete this notification?
       default_message: We do not know how to describe what happened.
-      delete: Delete
-      info: Info
-      mark_as_read: Mark as Read
-      mark_as_unread: Mark as Unread
       status:
         read: read
         unread: unread
