@@ -64,8 +64,12 @@ module CurrentStable
 
     def remove_from_auction?
       return false unless owner?
+      auction_horse = record.auction_horse
+      return false unless auction_horse
+      return false unless auction_horse.persisted?
+      auction = auction_horse.auction
 
-      record.auction_horse&.persisted?
+      auction.future?
     end
 
     def view_comments?
