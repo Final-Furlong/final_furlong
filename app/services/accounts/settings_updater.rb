@@ -68,7 +68,7 @@ module Accounts
         setting.racing[:min_days_delay_from_last_injury] = attrs[:min_days_delay_from_last_injury] || 0
         setting.racing[:min_days_rest_between_races] = attrs[:min_days_rest_between_races] || 0
         setting.racing[:min_workouts_between_races] = attrs[:min_workouts_between_races] || 0
-        setting.racing[:apply_minimums_for_future_races] = attrs[:apply_minimums_for_future_races] || true
+        setting.racing[:apply_minimums_for_future_races] = attrs[:apply_minimums_for_future_races]
       end
 
       setting.time_zone = params[:time_zone] if params[:time_zone]
@@ -90,10 +90,6 @@ module Accounts
       end
       cookies.permanent[:dark_theme] = attrs[:dark_theme] if attrs[:dark_theme]
       cookies.permanent[:light_theme] = attrs[:light_theme] if attrs[:light_theme]
-    end
-
-    def locale_exists?
-      I18n.available_locales.map(&:to_s).include?(locale)
     end
   end
 end
