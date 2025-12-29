@@ -6,11 +6,21 @@ RSpec.describe Horses::UpdateBoardingJob, :perform_enqueued_jobs do
       end.to have_enqueued_job.on_queue("default")
     end
 
-    it "triggers service for each auction" do
+    it "triggers service" do
       mock_updater = instance_double(Horses::AutoBoardingUpdater, call: true)
       allow(Horses::AutoBoardingUpdater).to receive(:new).and_return mock_updater
       described_class.perform_later
       expect(mock_updater).to have_received(:call)
+    end
+
+    it "stores job result" do
+      result = { horses_updated: 11, stables_updated: 3 }
+      mock_updater = instance_double(Horses::AutoBoardingUpdater, call: result)
+      allow(Horses::AutoBoardingUpdater).to receive(:new).and_return mock_updater
+      expect { described_class.perform_later }.to change(JobStat, :count).by(1)
+      expect(JobStat.find_by(name: described_class.name)).to have_attributes(
+                                                               outcome: result.stringify_keys
+                                                             )
     end
   end
 end

@@ -28,7 +28,9 @@ RSpec.describe Auctions::ConsignHorsesJob, :perform_enqueued_jobs do
   private
 
   def mock_service
-    @mock_service ||= instance_double(Auctions::HorseConsigner, consign_horses: true)
+    @mock_service ||= instance_double(Auctions::HorseConsigner,
+      consign_horses:
+        Auctions::HorseConsigner::Result.new(created: true, auction: create(:auction), number_consigned: 10))
   end
 
   def final_furlong

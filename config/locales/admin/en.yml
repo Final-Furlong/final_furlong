@@ -1,0 +1,9 @@
+---
+en:
+  admin:
+    job_stats:
+      index:
+        class: Class
+        count: Count
+        last_run: Last Run At
+        outcome: Results
