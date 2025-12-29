@@ -13,6 +13,14 @@ RSpec.describe Daily::DeleteEmptyAuctionsJob, :perform_enqueued_jobs do
         described_class.perform_later
         expect(Auctions::DeleteEmptyAuctionService).not_to have_received(:call)
       end
+
+      it "stores job result" do
+        create(:auction, start_time: 10.days.from_now)
+        expect { described_class.perform_later }.to change(JobStat, :count)
+          .by(1)
+        expect(JobStat.last).to have_attributes(name: described_class.name,
+          outcome: { deleted: false }.stringify_keys)
+      end
     end
 
     context "when auctions start tomorrow" do
@@ -25,6 +33,16 @@ RSpec.describe Daily::DeleteEmptyAuctionsJob, :perform_enqueued_jobs do
         described_class.perform_later
         expect(Auctions::DeleteEmptyAuctionService).to have_received(:call).with(auction: auction1)
         expect(Auctions::DeleteEmptyAuctionService).to have_received(:call).with(auction: auction2)
+      end
+
+      it "stores job result" do
+        auction1 = create(:auction, created_at: 5.days.ago)
+        auction1.update_column(:start_time, Date.tomorrow.beginning_of_day)
+        auction2 = create(:auction, created_at: 4.days.ago)
+        auction2.update_column(:start_time, Date.tomorrow.end_of_day - 1.minute)
+        expect { described_class.perform_later }.to change(JobStat, :count).by(1)
+        expect(JobStat.last).to have_attributes(name: described_class.name,
+          outcome: { deleted: true, count: 2 }.stringify_keys)
       end
     end
   end

@@ -1,0 +1,7 @@
+en:
+  admin:
+    job_stats:
+      index:
+        class: Class
+        last_run: Last Run At
+        outcome: Results

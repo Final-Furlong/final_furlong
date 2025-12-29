@@ -27,8 +27,12 @@ end
 # Database name: primary
 #
 #  id         :bigint           not null, primary key
+#  dark_mode  :boolean          default(FALSE), not null
+#  dark_theme :string
+#  locale     :string
 #  racing     :jsonb
-#  time_zone  :string           default("Etc/UTC"), not null
+#  theme      :string
+#  time_zone  :string           default("America/New_York"), not null
 #  website    :jsonb
 #  created_at :datetime         not null
 #  updated_at :datetime         not null

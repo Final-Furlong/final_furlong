@@ -1,6 +1,7 @@
 module Horses
   class AutoSaleOffersUpdater
     def call
+      offered_sales = 0
       Horses::SaleOffer.with_buyer.starts_today.includes(:horse, buyer: :user).find_each do |offer|
         horse = offer.horse
         ActiveRecord::Base.transaction do
@@ -16,7 +17,9 @@ module Horses
             }
           )
         end
+        offered_sales += 1
       end
+      expired_offers = 0
       Horses::SaleOffer.expired.includes(:horse).find_each do |offer|
         horse = offer.horse
         ActiveRecord::Base.transaction do
@@ -32,7 +35,9 @@ module Horses
           )
           offer.destroy!
         end
+        expired_offers += 1
       end
+      { offered_sales:, expired_offers: }
     end
   end
 end
