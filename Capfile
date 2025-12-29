@@ -17,9 +17,6 @@ install_plugin Capistrano::SCM::Git
 require "capistrano/deploytags"
 require "capistrano/data_migrate"
 
-require "capistrano/solid_queue"
-install_plugin Capistrano::SolidQueue::Systemd
-
 require "whenever/capistrano"
 
 Dir.glob("lib/capistrano/tasks/*.rake").each { |r| import r }

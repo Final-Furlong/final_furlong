@@ -37,5 +37,4 @@ set :ssh_options, {
 before "deploy:migrate", "maintenance:start"
 after "deploy:migrate", "maintenance:stop"
 before "deploy:updated", "pnpm:install"
-after "deploy:finished", "solid_queue:restart"
 
