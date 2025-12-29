@@ -1,6 +1,7 @@
 module Horses
   class AutoLeaseOffersUpdater
     def call
+      offered_leases = 0
       Horses::LeaseOffer.with_leaser.starts_today.includes(:horse, leaser: :user).find_each do |offer|
         horse = offer.horse
         duration = "#{offer.duration_months} #{"month".pluralize(offer.duration_months)}"
@@ -18,7 +19,9 @@ module Horses
             }
           )
         end
+        offered_leases += 1
       end
+      expired_offers = 0
       Horses::LeaseOffer.expired.includes(:horse).find_each do |offer|
         horse = offer.horse
         duration = "#{offer.duration_months} #{"month".pluralize(offer.duration_months)}"
@@ -36,7 +39,9 @@ module Horses
           )
           offer.destroy!
         end
+        expired_offers += 1
       end
+      { offered_leases:, expired_offers: }
     end
   end
 end

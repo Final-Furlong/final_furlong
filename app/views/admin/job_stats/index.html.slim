@@ -1,0 +1,22 @@
+.hidden.mx-auto.overflow-x-auto.rounded-md.w-full.sm:block
+  .table-responsive-md
+    table.table.table-responsive.table-zebra.table-sm.sortable.n-last
+      thead
+        tr
+          th= t(".class")
+          th= t(".last_run")
+          th= t(".outcome")
+      tbody
+        - @classes.each do |class_name|
+          - stats = JobStat.where(name: class_name).recent.first
+          tr
+            td= class_name
+            td= stats&.last_run_at ? l(stats.last_run_at) : t("common.dash")
+            td
+              - if stats&.outcome
+                - stats.outcome.each_pair do |key, value|
+                  p= "#{key.humanize}: #{value}"
+              - else
+                = t("common.dash")
+
+

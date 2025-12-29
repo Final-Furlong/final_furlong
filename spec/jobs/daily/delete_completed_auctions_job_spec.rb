@@ -24,6 +24,14 @@ RSpec.describe Daily::DeleteCompletedAuctionsJob, :perform_enqueued_jobs do
         described_class.perform_later(auction:)
         expect(Auctions::DeleteCompletedAuctionService).to have_received(:call).with(auction:)
       end
+
+      it "stores job result" do
+        auction = create(:auction)
+        auction.update_column(:end_time, 1.day.ago)
+        expect { described_class.perform_later(auction:) }.to change(JobStat, :count).by(1)
+        expect(JobStat.last).to have_attributes(name: described_class.name,
+          outcome: { deleted: true, auction_id: auction.id }.stringify_keys)
+      end
     end
   end
 end

@@ -59,11 +59,11 @@ module Auctions
         end
         result.number_consigned = number_consigned
         result.created = true
+        result
       rescue ActiveRecord::ActiveRecordError => e
         result.error = e.message
-        return result
+        result
       end
-      result
     end
 
     class Result
