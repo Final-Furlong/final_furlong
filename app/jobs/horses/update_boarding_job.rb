@@ -2,7 +2,8 @@ class Horses::UpdateBoardingJob < ApplicationJob
   queue_as :default
 
   def perform
-    Horses::AutoBoardingUpdater.new.call
+    result = Horses::AutoBoardingUpdater.new.call
+    store_job_info(outcome: result)
   end
 end
 

@@ -25,7 +25,8 @@ RSpec.describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
   private
 
   def mock_seller
-    @mock_seller ||= instance_double(Auctions::HorseSeller, process_sale: true)
+    @mock_seller ||= instance_double(Auctions::HorseSeller, process_sale:
+      Auctions::HorseSeller::Result.new(sold: true, bid: {}))
   end
 
   def bid

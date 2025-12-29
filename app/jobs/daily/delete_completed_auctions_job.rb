@@ -4,7 +4,13 @@ class Daily::DeleteCompletedAuctionsJob < ApplicationJob
   def perform(auction:)
     return if DateTime.current < auction.end_time
 
-    Auctions::DeleteCompletedAuctionService.call(auction:)
+    result = Auctions::DeleteCompletedAuctionService.call(auction:)
+    outcome = if result
+      { deleted: true, auction_id: auction.id }
+    else
+      { deleted: false, auction_id: auction.id }
+    end
+    store_job_info(outcome:)
   end
 end
 

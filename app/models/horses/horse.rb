@@ -212,7 +212,6 @@ end
 #  updated_at                                                                                                         :datetime         not null
 #  breeder_id                                                                                                         :bigint           not null, indexed
 #  dam_id                                                                                                             :bigint           indexed
-#  leaser_id                                                                                                          :bigint           indexed
 #  legacy_id                                                                                                          :integer          indexed
 #  location_bred_id                                                                                                   :bigint           not null, indexed
 #  owner_id                                                                                                           :bigint           not null, indexed
@@ -227,7 +226,6 @@ end
 #  index_horses_on_date_of_birth     (date_of_birth)
 #  index_horses_on_date_of_death     (date_of_death)
 #  index_horses_on_gender            (gender)
-#  index_horses_on_leaser_id         (leaser_id)
 #  index_horses_on_legacy_id         (legacy_id)
 #  index_horses_on_location_bred_id  (location_bred_id)
 #  index_horses_on_name              (name)
@@ -241,7 +239,6 @@ end
 #
 #  fk_rails_...  (breeder_id => stables.id) ON DELETE => restrict ON UPDATE => cascade
 #  fk_rails_...  (dam_id => horses.id) ON DELETE => nullify ON UPDATE => cascade
-#  fk_rails_...  (leaser_id => stables.id)
 #  fk_rails_...  (location_bred_id => locations.id) ON DELETE => restrict ON UPDATE => cascade
 #  fk_rails_...  (owner_id => stables.id) ON DELETE => restrict ON UPDATE => cascade
 #  fk_rails_...  (sire_id => horses.id) ON DELETE => nullify ON UPDATE => cascade

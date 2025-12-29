@@ -10,3 +10,10 @@ li.px-2
         ]
           i.ph.ph-fill.ph-robot
           span.ms-3= t("layouts.sidenav.jobs")
+      li
+        a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
+          href=admin_job_stats_path
+          class="hover:bg-gray-100 dark:hover:bg-gray-700"
+        ]
+          i.ph.ph-fill.ph-chart-bar-horizontal
+          span.ms-3= t("layouts.sidenav.job_stats")

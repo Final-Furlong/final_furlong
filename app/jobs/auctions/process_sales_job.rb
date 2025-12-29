@@ -18,17 +18,34 @@ class Auctions::ProcessSalesJob < ApplicationJob
     end
     sorted_horses = horses.sort_by { |h| h[:time] }
 
+    succeeded = false
+    sold_horses = 0
+    error = nil
     sorted_horses.each do |horse_info|
       winning_bid = Auctions::Bid.find(horse_info[:bid_id])
-      Auctions::HorseSeller.new.process_sale(bid: winning_bid)
+      result = Auctions::HorseSeller.new.process_sale(bid: winning_bid)
+      if result.sold?
+        sold_horses += 1
+      else
+        error = result.error
+      end
+      succeeded = result.sold?
     end
+    outcome = if succeeded
+      { auction_id: auction.id, sold_horses: }
+    else
+      { sold: false, error: }
+    end
+    store_job_info(outcome:)
     schedule_next_sales_job(auction:) unless Rails.env.test?
   end
 
   private
 
   def schedule_next_sales_job(auction:)
-    next_updated_at = if Auctions::Bid.where(auction:).current_high_bid.sale_time_not_met.exists?
+    return unless auction.horses.unsold.exists?
+
+    next_updated_at = if auction.bids.current_high_bid.sale_time_not_met.exists?
       Auctions::Bid.where(auction:).current_high_bid.sale_time_not_met.minimum(:bid_at)
     else
       5.minutes.ago
