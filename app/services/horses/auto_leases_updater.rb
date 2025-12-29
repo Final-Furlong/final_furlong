@@ -1,6 +1,7 @@
 module Horses
   class AutoLeasesUpdater
     def call
+      expired_leases = 0
       Horses::Lease.expired.includes(:horse, leaser: :user, owner: :user).find_each do |lease|
         horse = lease.horse
         ActiveRecord::Base.transaction do
@@ -26,7 +27,9 @@ module Horses
           Legacy::ViewTrainingSchedules.find_by(horse_id: horse.legacy_id)&.update(leased: 0, leaser: 0)
           lease.destroy!
         end
+        expired_leases += 1
       end
+      { expired_leases: }
     end
   end
 end

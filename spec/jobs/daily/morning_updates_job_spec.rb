@@ -17,6 +17,27 @@ RSpec.describe Daily::MorningUpdatesJob, :perform_enqueued_jobs do
       described_class.perform_later
       expect(Horses::UpdateLeasesJob).to have_received(:perform_later)
     end
+
+    it "triggers sales job" do
+      allow(Horses::UpdateSalesJob).to receive(:perform_later)
+      described_class.perform_later
+      expect(Horses::UpdateSalesJob).to have_received(:perform_later)
+    end
+
+    it "triggers activations job" do
+      allow(Daily::CreateActivationsJob).to receive(:perform_later)
+      described_class.perform_later
+      expect(Daily::CreateActivationsJob).to have_received(:perform_later)
+    end
+
+    it "stores job result" do
+      classes = [Daily::CreateActivationsJob, Horses::UpdateBoardingJob,
+        Horses::UpdateLeasesJob, Horses::UpdateSalesJob]
+      expect { described_class.perform_later }.to change(JobStat, :count).by(5)
+      expect(JobStat.find_by(name: described_class.name)).to have_attributes(
+                                                               outcome: { classes: classes.map(&:to_s).join(",") }.stringify_keys
+                                                             )
+    end
   end
 end
 

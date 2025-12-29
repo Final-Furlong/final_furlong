@@ -8,6 +8,12 @@ class Auctions::CreateFoalAuctionJob < ApplicationJob
     return if Date.current > Date.new(Date.current.year, 11, 15)
 
     result = Auctions::FoalAuctionCreator.new.create_auction(auction_params)
+    outcome = if result.created?
+      { auction_id: result.auction.id, start_date: result.auction.start_time.to_date }
+    else
+      { created: false, error: result.auction.errors.full_messages.to_sentence }
+    end
+    store_job_info(outcome:)
     raise AuctionNotCreated, result.auction.errors.full_messages.to_sentence unless result.created?
 
     Auctions::ConsignHorsesJob.set(wait: 5.minutes).perform_later(auction: result.auction)
