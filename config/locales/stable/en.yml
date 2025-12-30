@@ -6,6 +6,17 @@ en:
         last_online: 'Last online at: %{date}'
         no_description: No description
   current_stable:
+    auctions:
+      index:
+        bidder: Bidder
+        buying: Buying (%{count})
+        current_bid: Current Bid
+        current_bid_yours: Current Bid (Your Max)
+        horse: Horse
+        selling: Selling (%{count})
+        sold: Sold
+        time_left: Time Left
+        view_bidding: View Bids
     budgets:
       index:
         available_balance: 'Available: %{amount}'

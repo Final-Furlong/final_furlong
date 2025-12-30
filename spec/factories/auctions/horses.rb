@@ -36,19 +36,25 @@ end
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  auction_id    :bigint           not null, indexed
+#  buyer_id      :bigint           indexed
 #  horse_id      :bigint           not null, uniquely indexed
 #  public_id     :string(12)
+#  seller_id     :bigint           indexed
 #
 # Indexes
 #
 #  index_auction_horses_on_auction_id  (auction_id)
+#  index_auction_horses_on_buyer_id    (buyer_id)
 #  index_auction_horses_on_horse_id    (horse_id) UNIQUE
+#  index_auction_horses_on_seller_id   (seller_id)
 #  index_auction_horses_on_slug        (slug) UNIQUE
 #  index_auction_horses_on_sold_at     (sold_at)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (auction_id => auctions.id) ON DELETE => cascade ON UPDATE => cascade
+#  fk_rails_...  (buyer_id => stables.id)
 #  fk_rails_...  (horse_id => horses.id) ON DELETE => cascade ON UPDATE => cascade
+#  fk_rails_...  (seller_id => stables.id)
 #
 
