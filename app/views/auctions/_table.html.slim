@@ -44,10 +44,14 @@ ruby:
                     = horse.broodmare.breed_ranking_string
                   - elsif horse.stud?
                     = horse.stud.breed_ranking_string
-            - if include_reserve && auction_horse.reserve_price && bid.current_bid >= auction_horse.reserve_price
-              p
+            - if include_reserve && auction_horse.reserve_price
+              p.clear-both
                 span= Auctions::Horse.human_attribute_name("reserve_price")
-                span.float-right= Game::MoneyFormatter.new(auction_horse.reserve_price).to_s
+                - if bid && bid.current_bid >= auction_horse.reserve_price
+                  span.float-right= Game::MoneyFormatter.new(auction_horse.reserve_price).to_s
+                - else
+                  span.float-right.badge.badge-sm.badge-outline.badge-warning = t("auctions.show.reserve_not_met")
+
             - if bid
               p
                 span= Auctions::Bid.human_attribute_name("current_bid")
@@ -59,7 +63,7 @@ ruby:
               p
                 span= Auctions::Bid.human_attribute_name("time_left")
                 span.float-right
-                  - if bid
+                  - if bid && bid.current_bid >= auction_horse.reserve_price.to_i
                     - sell_time = [bid.bid_at + auction.hours_until_sold.hours, auction.end_time].min
                     = relative_time_in_words(sell_time)
                   - else
@@ -109,14 +113,22 @@ ruby:
                   = horse.stud.breed_ranking_string
               - if include_reserve
                 td
-                  - if auction_horse.reserve_price && bid.current_bid >= auction_horse.reserve_price
+                  - if auction_horse.reserve_price && bid && bid.current_bid >= auction_horse.reserve_price
                     = Game::MoneyFormatter.new(auction_horse.reserve_price).to_s
-              td data-sort=(bid&.current_bid.to_i) = Game::MoneyFormatter.new(bid.current_bid).to_s if bid
+                  - elsif auction_horse.reserve_price.to_i.positive?
+                    span.ml-2.badge.badge-sm.badge-outline.badge-warning = t("auctions.show.reserve_not_met")
+                  - else
+                    = t("common.dash")
+              td data-sort=(bid&.current_bid.to_i)
+                - if bid
+                  = Game::MoneyFormatter.new(bid.current_bid).to_s if bid
+                - else
+                  = t("common.dash")
               td
                 = bid.bidder.name if bid
               - if type == :unsold
                 td
-                  - if bid
+                  - if bid && bid.current_bid >= auction_horse.reserve_price.to_i
                     - sell_time = [bid.bid_at + auction.hours_until_sold.hours, auction.end_time].min
                     = relative_time_in_words(sell_time)
                   - else

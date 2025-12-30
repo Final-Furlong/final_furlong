@@ -81,7 +81,7 @@ module Auctions
         return result
       end
 
-      auction_horse = Auctions::Horse.new(horse:, auction:, sold_at: nil)
+      auction_horse = Auctions::Horse.new(horse:, auction:, sold_at: nil, seller: horse.owner)
       if (reserve_price = params[:reserve_price].to_i).positive?
         if !auction.reserve_pricing_allowed
           result.error = error("reserves_not_allowed")

@@ -1,6 +1,7 @@
 resource :stable, only: %i[show edit update], controller: "stables", as: :current_stable
 
 namespace :stable, module: "current_stable" do
+  resources :auctions, only: %i[index show]
   resources :budgets, only: %i[index]
   resources :horses, only: %i[index edit show update]
   resources :lease_offers, only: :index
