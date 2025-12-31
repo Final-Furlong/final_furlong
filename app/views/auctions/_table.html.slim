@@ -116,7 +116,8 @@ ruby:
                   - if auction_horse.reserve_price && bid && bid.current_bid >= auction_horse.reserve_price
                     = Game::MoneyFormatter.new(auction_horse.reserve_price).to_s
                   - elsif auction_horse.reserve_price.to_i.positive?
-                    span.ml-2.badge.badge-sm.badge-outline.badge-warning = t("auctions.show.reserve_not_met")
+                    span.ml-2.badge.badge-xs.md:badge-sm.badge-outline.badge-warning
+                      = t ("auctions.show.reserve_not_met")
                   - else
                     = t("common.dash")
               td data-sort=(bid&.current_bid.to_i)
