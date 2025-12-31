@@ -23,6 +23,14 @@ module Auctions
     def sale_time_met?
       DateTime.current >= bid_at + auction.hours_until_sold.hours
     end
+
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[auction_id bid_at bidder_id comment current_bid current_high_bid horse_id maximum_bid]
+    end
+
+    def self.ransackable_associations(_auth_object = nil)
+      %w[auction bidder horse]
+    end
   end
 end
 

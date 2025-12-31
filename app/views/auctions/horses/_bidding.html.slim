@@ -11,7 +11,24 @@
     table.table.table-zebra
       thead
         tr
-          th.text-center colspan=2 = t(".bid_history")
+          th.text-center colspan=3
+            = t(".bid_history")
+            - if auction_horse.sold?
+              span.ml-2.badge.badge-outline.badge-success = t(".sold")
+            - elsif bids.count.positive?
+              - current_bid = bids.current_high_bid.first
+              - sell_time = [current_bid.bid_at + auction.hours_until_sold.hours, auction.end_time].min
+              - if current_bid.current_bid >= auction_horse.reserve_price.to_i
+                - if Date.current > sell_time
+                  span.ml-2.badge.badge-outline.badge-success = t(".sold_in", time: relative_time_in_words(sell_time))
+                - else
+                  span.ml-2.badge.badge-outline.badge-warning = t(".sells_in", time: relative_time_in_words(sell_time))
+              - else
+                span.ml-2.badge.badge-outline.badge-warning
+                  = Auctions::Horse.human_attribute_name("reserve_price")
+                  = "&nbsp;".html_safe
+                  = t("auctions.show.reserve_not_met")
+
         - unless bids.empty?
           tr
             th= t(".bidder")
@@ -20,7 +37,7 @@
       tbody
         - if bids.empty?
           tr
-            td.text-center colspan=2 = t(".no_bids")
+            td.text-center colspan=3 = t(".no_bids")
         - else
           - bids.includes(:bidder).order(bid_at: :desc).each do |bid|
             tr

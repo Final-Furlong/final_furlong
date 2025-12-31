@@ -83,6 +83,7 @@ en:
               spent_max_money: You have already spent the maximum amount of money.
             current_bid:
               cannot_afford: is more than you can afford
+              reserve_not_met: is not high enough to meet the reserve price
             maximum_bid:
               cannot_afford: is more than you can afford
               invalid_increment: must be in increments of $500
