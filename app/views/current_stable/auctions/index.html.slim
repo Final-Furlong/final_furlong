@@ -1,0 +1,88 @@
+.tabs.tabs-border.dark:border-neutral-400 role="tablist"
+  - @dashboard.auctions.each do |auction|
+    - data = @dashboard.horse_counts(auction)
+    - count = data[:selling].count + data[:buying].count
+    - label = "#{auction.title} (#{count})"
+    input.tab type="radio" name="auction" aria-label=label id=auction.title
+    .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+      - if data[:selling].count.positive?
+        - label = t(".selling", count: data[:selling].count)
+        input.tab type="radio" name="auction-selling" aria-label=label id="#{auction.slug}-selling"
+        .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+          .overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100
+            table.table-zebra.sortable.n-last.w-4/5
+              thead
+                tr
+                  th= t(".horse")
+                  th= t(".current_bid")
+                  th= t(".bidder")
+                  th= t(".time_left")
+                  th= t(".view_bidding")
+              tbody
+                - data[:selling].each do |row|
+                  - horse_info = row.last
+                  tr
+                    td
+                      = render Ui::Link::Component.new(url: horse_path(horse_info[:horse_slug])) do
+                        = horse_info[:horse_name]
+                    td data-sort=horse_info[:current_bid]
+                      - if horse_info[:current_bid]
+                        = Game::MoneyFormatter.new(horse_info[:current_bid]).to_s
+                      - else
+                        = t("common.dash")
+                    td
+                      - if horse_info[:current_bidder]
+                        = horse_info[:current_bidder]
+                      - else
+                        = t("common.dash")
+                    td data-sort=horse_info[:bid_at]
+                      - if horse_info[:state] == :sold
+                        = t(".sold")
+                      - elsif horse_info[:state] == :pending
+                        - sell_time = [horse_info[:bid_at] + auction.hours_until_sold.hours, auction.end_time].min
+                        = relative_time_in_words(sell_time)
+                      - else
+                        = t("common.dash")
+                    td
+                      = render Ui::ButtonizedLink::Component.new(url: auction_horse_path(auction, horse_info[:auction_horse_id]),
+                              size: :small, color: :primary, style: :outline,
+                              extra_classes: "mb-1") do
+                        = t(".view_bidding")
+      - if data[:buying].count.positive?
+        - label = t(".buying", count: data[:buying].count)
+        input.tab type="radio" name="auction-buying" aria-label=label id="#{auction.slug}-buying"
+        .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+          .overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100
+            table.table-zebra.sortable.n-last.w-4/5
+              thead
+                tr
+                  th= t(".horse")
+                  th= t(".current_bid_yours")
+                  th= t(".bidder")
+                  th= t(".time_left")
+                  th= t(".view_bidding")
+              tbody
+                - data[:buying].each do |row|
+                  - horse_info = row.last
+                  tr
+                    td
+                      = render Ui::Link::Component.new(url: horse_path(horse_info[:horse_slug])) do
+                        = horse_info[:horse_name]
+                    td data-sort=horse_info[:current_bid]
+                      = Game::MoneyFormatter.new(horse_info[:current_bid]).to_s
+                      - if horse_info[:maximum_bid]
+                        = " ("
+                        = Game::MoneyFormatter.new(horse_info[:maximum_bid]).to_s
+                        = ")"
+                    td= horse_info[:current_bidder]
+                    td data-sort=horse_info[:bid_at]
+                      - if horse_info[:state] == :sold
+                        = t(".sold")
+                      - else
+                        - sell_time = [horse_info[:bid_at] + auction.hours_until_sold.hours, auction.end_time].min
+                        = relative_time_in_words(sell_time)
+                    td
+                      = render Ui::ButtonizedLink::Component.new(url: auction_horse_path(auction, horse_info[:auction_horse_id]),
+                              size: :small, color: :primary, style: :outline,
+                              extra_classes: "mb-1") do
+                        = t(".view_bidding")

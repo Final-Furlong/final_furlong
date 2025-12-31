@@ -17,6 +17,9 @@ en:
         comment: 'Comment:'
         current_bid: Bid Amount
         no_bids: No Bids
+        sells_in: Sells %{time}
+        sold: Sold
+        sold_in: Sold %{time}
       create:
         success: Successfully consigned %{horse} to %{auction}
       destroy:
@@ -48,6 +51,7 @@ en:
       no_unsold: For Sale
       pending_horses: Sale Pending (%{count})
       purchase_limit: You are limited to purchasing %{limit} %{horses}.
+      reserve_not_met: Not Met
       seconds: Secs
       sold_horses: Sold (%{count})
       spending_limit: You are limit to spending %{limit} total.

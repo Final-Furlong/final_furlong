@@ -33,6 +33,7 @@ en:
       main_app: Main app
       my_stable: My stable
       stable:
+        auctions: Auctions
         budget: Budget
         horses: My horses
         race_results: Race Results

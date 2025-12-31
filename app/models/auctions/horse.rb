@@ -10,6 +10,8 @@ module Auctions
 
     belongs_to :auction, class_name: "::Auction"
     belongs_to :horse, class_name: "Horses::Horse"
+    belongs_to :buyer, class_name: "Account::Stable", optional: true
+    belongs_to :seller, class_name: "Account::Stable", optional: true
     has_many :bids, class_name: "Auctions::Bid", dependent: :delete_all
     has_one :winning_bid, -> { Auctions::Bid.current_high_bid }, class_name: "Auctions::Bid", dependent: :delete, inverse_of: :horse
 
@@ -17,7 +19,10 @@ module Auctions
     validates :horse_id, uniqueness: true
 
     scope :sold, -> { where.not(sold_at: nil) }
-    scope :pending, -> { unsold.joins(:auction, :winning_bid).merge(Auctions::Bid.sale_time_met) }
+    scope :pending, -> {
+      unsold.joins(:auction, :winning_bid).merge(Auctions::Bid.sale_time_met)
+        .where("auction_bids.current_bid >= COALESCE(CAST(NULLIF(reserve_price, '0') AS INTEGER), 0)")
+    }
     scope :unsold, -> { where(sold_at: nil) }
     scope :with_reserve, -> { where.not(reserve_price: nil) }
 
@@ -64,19 +69,25 @@ end
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  auction_id    :bigint           not null, indexed
+#  buyer_id      :bigint           indexed
 #  horse_id      :bigint           not null, uniquely indexed
 #  public_id     :string(12)
+#  seller_id     :bigint           indexed
 #
 # Indexes
 #
 #  index_auction_horses_on_auction_id  (auction_id)
+#  index_auction_horses_on_buyer_id    (buyer_id)
 #  index_auction_horses_on_horse_id    (horse_id) UNIQUE
+#  index_auction_horses_on_seller_id   (seller_id)
 #  index_auction_horses_on_slug        (slug) UNIQUE
 #  index_auction_horses_on_sold_at     (sold_at)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (auction_id => auctions.id) ON DELETE => cascade ON UPDATE => cascade
+#  fk_rails_...  (buyer_id => stables.id)
 #  fk_rails_...  (horse_id => horses.id) ON DELETE => cascade ON UPDATE => cascade
+#  fk_rails_...  (seller_id => stables.id)
 #
 
