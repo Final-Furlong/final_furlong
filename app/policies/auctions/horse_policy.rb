@@ -14,6 +14,7 @@ module Auctions
     def bid?
       return false if record.sold_at
       return false unless auction.active?
+      return false if record.horse.owner == stable
       if (horse_max = auction.horse_purchase_cap_per_stable.to_i).positive?
         return false if sold_or_current_high_bid_horses(auction:) >= horse_max
       end
@@ -23,6 +24,7 @@ module Auctions
 
       last_bid = record.bids.current_high_bid.first
       return true unless last_bid
+      return true if last_bid.current_bid < record.reserve_price.to_i
       return false if last_bid.sale_time_met?
       return false if stable.available_balance <= last_bid.current_bid
 

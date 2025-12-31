@@ -14,7 +14,7 @@ module Auctions
       horse = Horses::Horse.find_by(legacy_id: legacy_horse_id)
       result.error = error("horse_not_found") unless horse
 
-      auction_horse = auction.horses.build(horse:, sold_at: nil)
+      auction_horse = auction.horses.build(horse:, sold_at: nil, seller: horse&.owner)
       auction_horse.maximum_price = spending_cap if spending_cap&.positive?
       result.horse = auction_horse
       result.created = if auction_horse.save!

@@ -656,7 +656,9 @@ CREATE TABLE public.auction_horses (
     public_id character varying(12),
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
-    slug character varying
+    slug character varying,
+    seller_id bigint,
+    buyer_id bigint
 );
 
 
@@ -3907,10 +3909,24 @@ CREATE INDEX index_auction_horses_on_auction_id ON public.auction_horses USING b
 
 
 --
+-- Name: index_auction_horses_on_buyer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_auction_horses_on_buyer_id ON public.auction_horses USING btree (buyer_id);
+
+
+--
 -- Name: index_auction_horses_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_auction_horses_on_horse_id ON public.auction_horses USING btree (horse_id);
+
+
+--
+-- Name: index_auction_horses_on_seller_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_auction_horses_on_seller_id ON public.auction_horses USING btree (seller_id);
 
 
 --
@@ -6053,6 +6069,14 @@ ALTER TABLE ONLY public.activations
 
 
 --
+-- Name: auction_horses fk_rails_cb41915e73; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auction_horses
+    ADD CONSTRAINT fk_rails_cb41915e73 FOREIGN KEY (seller_id) REFERENCES public.stables(id);
+
+
+--
 -- Name: horses fk_rails_d484f5dff4; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6117,6 +6141,14 @@ ALTER TABLE ONLY public.horse_appearances
 
 
 --
+-- Name: auction_horses fk_rails_ee9966d91f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auction_horses
+    ADD CONSTRAINT fk_rails_ee9966d91f FOREIGN KEY (buyer_id) REFERENCES public.stables(id);
+
+
+--
 -- Name: broodmare_foal_records fk_rails_f03f5afd0c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6155,6 +6187,7 @@ ALTER TABLE ONLY public.horses
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251230104641'),
 ('20251229150423'),
 ('20251203101405'),
 ('20251126225534'),

@@ -399,6 +399,37 @@ RSpec.describe Auctions::BidCreator do
         described_class.new.create_bid(bid_params.merge(current_bid: 15_000))
       end.not_to change(Auctions::Bid, :count)
     end
+
+    context "when the reserve price is not met" do
+      it "returns created true" do
+        horse.update(reserve_price: 20_000)
+        create(:auction_bid, auction:, horse:, bidder: stable, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
+        result = described_class.new.create_bid(bid_params.merge(current_bid: 15_000))
+        expect(result.created?).to be true
+      end
+
+      it "returns error about reserve price" do
+        horse.update(reserve_price: 20_000)
+        create(:auction_bid, auction:, horse:, bidder: stable, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
+        result = described_class.new.create_bid(bid_params.merge(current_bid: 15_000))
+        expect(result.error).to eq error("reserve_not_met")
+      end
+
+      it "creates bid" do
+        horse.update(reserve_price: 20_000)
+        create(:auction_bid, auction:, horse:, bidder: stable, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
+        expect do
+          described_class.new.create_bid(bid_params.merge(current_bid: 15_000))
+        end.to change(Auctions::Bid, :count)
+      end
+
+      it "sets the right data for tne new current bid" do
+        horse.update(reserve_price: 20_000)
+        create(:auction_bid, auction:, horse:, bidder: stable, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
+        described_class.new.create_bid(bid_params.merge(current_bid: 15_000))
+        expect(Auctions::Bid.where(horse:).winning.first).to have_attributes(current_bid: 15_000, maximum_bid: nil)
+      end
+    end
   end
 
   context "when bidder has spent the max allowed in the auction" do
