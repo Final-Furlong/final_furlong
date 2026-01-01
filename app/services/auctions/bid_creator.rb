@@ -109,8 +109,9 @@ module Auctions
       end
 
       has_previous_bid = previous_bid.present?
-      if bid_params[:bidder_id] == previous_bid&.bidder_id && horse_reserve.positive? && bid.errors.where(:current_bid, :reserve_not_met).blank? &&
-          previous_bid.current_bid >= horse_reserve
+      if bid_params[:bidder_id] == previous_bid&.bidder_id && horse_reserve.zero? ||
+          (horse_reserve.positive? && bid.errors.where(:current_bid, :reserve_not_met).blank? &&
+            has_previous_bid && previous_bid.current_bid >= horse_reserve)
         bid.errors.add(:base, :is_current_high_bidder)
         result.bid = bid
         result.error = error("bidder_has_high_bid")
