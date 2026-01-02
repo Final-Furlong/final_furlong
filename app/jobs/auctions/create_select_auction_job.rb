@@ -51,7 +51,7 @@ class Auctions::CreateSelectAuctionJob < ApplicationJob
   end
 
   def end_time
-    @end_time ||= (start_time + (Auction::MAXIMUM_DURATION - 1).days).end_of_day
+    @end_time ||= (start_time + (Config::Auctions.maximum_duration_days - 1).days).end_of_day
   end
 
   def title
