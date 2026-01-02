@@ -13,10 +13,9 @@ class AuctionPolicy < AuthenticatedPolicy
 
   def update?
     return false unless user&.stable
-    return true if admin?
     return false unless record.future?
 
-    record.auctioneer == user.stable
+    record.auctioneer == user.stable || admin?
   end
 
   def destroy?

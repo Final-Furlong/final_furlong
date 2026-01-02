@@ -2,7 +2,7 @@ class AuctionsController < ApplicationController
   def index
     authorize Auction
 
-    query = policy_scope(Auction).includes(:auctioneer).ransack(params[:q])
+    query = policy_scope(Auction.current.or(Auction.upcoming)).includes(:auctioneer).ransack(params[:q])
     query.sorts = "start_time asc, name asc" if query.sorts.blank?
 
     @pagy, @auctions = pagy(query.result)

@@ -74,8 +74,20 @@ RSpec.describe AuctionPolicy do
     let(:user) { create(:user, admin: true) }
 
     context "when user does not own the auction" do
-      it "does allow edit or update" do
-        expect(policy).to permit_actions(%i[edit update])
+      context "when auction has not started" do
+        it "does allow edit or update" do
+          auction.start_time = 2.days.from_now
+          auction.end_time = 12.days.from_now
+          expect(policy).to permit_actions(%i[edit update])
+        end
+      end
+
+      context "when auction has started" do
+        it "does allow edit or update" do
+          auction.start_time = 10.days.ago
+          auction.end_time = 2.days.from_now
+          expect(policy).not_to permit_actions(%i[edit update])
+        end
       end
 
       context "when auction has not started" do
