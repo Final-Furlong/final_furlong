@@ -1,5 +1,7 @@
 - content_for :breadcrumbs do
   = render Nav::Breadcrumbs::Component.new(title: t("auctions.index.title"))
+    - if AuctionPolicy.new(Current.user, Auction).create?
+      = render Nav::Breadcrumbs::Actions::Component.new(actions: [:create], path: "/auctions/actions/")
 
 .mx-auto
   .table-responsive-md
@@ -16,7 +18,12 @@
           th= t(".horses")
       - @auctions.each do |auction|
         tr
-          td= link_to auction.title, auction_path(auction), target: "_top"
+          td
+            = link_to auction.title, auction_path(auction), target: "_top"
+            - if policy(auction).edit?
+              = render Ui::ButtonizedLink::Component.new(url: edit_auction_path(auction), style: :outline,
+                      extra_classes: 'btn-xs lg:btn-sm ml-2', data: { turbo_frame: "modal" }) do
+                = t("common.actions.edit")
           td= auction.auctioneer.name
           td data-sort=auction.start_time = l(auction.start_time, format: :short)
           td data-sort=auction.end_time = l(auction.end_time, format: :short)

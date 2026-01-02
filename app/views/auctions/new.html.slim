@@ -1,0 +1,7 @@
+- title = t(".title")
+- content_for :title, title
+
+.text-center
+  h1.text-xl.font-bold= title
+
+= render "form", auction: @auction, url: auctions_path

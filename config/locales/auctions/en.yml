@@ -9,6 +9,27 @@ en:
         maximum_bid: Maximum Bid
         maximum_bid_hint: "(Optional) Must be %{amount} higher than your current bid."
         notify_if_outbid: Notify if outbid?
+    create:
+      success: Auction was successfully created
+    edit:
+      title: Edit %{title}
+    form:
+      broodmare_allowed: Broodmare
+      duration: Duration (Days)
+      hours_until_sold: Hours Until Horses Sell
+      outside_horses_allowed: Outside Horses Allowed
+      racehorse_allowed_2yo: Racehorse (2yo)
+      racehorse_allowed_3yo: Racehorse (3yo)
+      racehorse_allowed_older: Racehorse (Older)
+      reserve_pricing_allowed: Allow Reserve Prices
+      reserve_pricing_allowed_hint: Horses with reserves cost a 10% fee to consign
+      spending_cap_per_stable: Spending Limit for Stables
+      stallion_allowed: Stallion
+      start_time: Start Date
+      statuses: Horse Status(es)
+      title: "%{stable} Auction"
+      weanling_allowed: Weanling
+      yearling_allowed: Yearling
     horses:
       bidding:
         bid_at: Time
@@ -38,6 +59,8 @@ en:
       horses: Horses
       start_time: Starts On
       title: Auctions
+    new:
+      title: Create Auction
     show:
       days: Days
       ends_in: This auction will end in
@@ -57,3 +80,5 @@ en:
       spending_limit: You are limit to spending %{limit} total.
       starts_in: This auction will start in
       unsold_horses: For Sale (%{count})
+    update:
+      success: Auction was successfully updated

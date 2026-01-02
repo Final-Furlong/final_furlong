@@ -69,6 +69,7 @@ module Horses
     scope :not_stillborn, -> { where(date_of_death: nil).or(where("date_of_death > date_of_birth")) }
     scope :female, -> { where(gender: Gender::FEMALE_GENDERS) }
     scope :not_female, -> { where.not(gender: Gender::FEMALE_GENDERS) }
+    scope :max_yob, ->(year) { where("DATE_PART('Year', date_of_birth) <= ?", year) }
     scope :with_yob, ->(year) { where("DATE_PART('Year', date_of_birth) = ?", year) }
     scope :with_sire, -> { where.associated(:sire) }
     scope :with_dam, -> { where.associated(:dam) }

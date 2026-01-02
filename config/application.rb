@@ -1,4 +1,5 @@
 require_relative "boot"
+require "./lib/config"
 
 ENV["RANSACK_FORM_BUILDER"] = "::SimpleForm::FormBuilder"
 
@@ -25,6 +26,8 @@ module FinalFurlong
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1
+
+    Config.load! # load custom config from config/configurations
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.

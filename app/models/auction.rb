@@ -2,15 +2,10 @@ class Auction < ApplicationRecord
   include PublicIdGenerator
   include FriendlyId
 
-  self.ignored_columns += ["old_id"]
-
   friendly_id :title, use: [:slugged, :finders]
 
-  MINIMUM_DELAY = 7
-  MINIMUM_DURATION = 7
-  MAXIMUM_DURATION = 14
-  MAX_AUCTIONS_PER_STABLE = 2
   HORSE_STATUSES = %w[racehorse broodmare stud yearling weanling].freeze
+  HOURS_UNTIL_SOLD_OPTIONS = %w[12 24 48].freeze
 
   belongs_to :auctioneer, class_name: "Account::Stable"
   has_many :horses, class_name: "Auctions::Horse", dependent: :destroy
@@ -90,6 +85,24 @@ class Auction < ApplicationRecord
     %i[current upcoming]
   end
 
+  def options_for_duration_select
+    min_days = Config::Auctions.minimum_duration_days
+    max_days = Config::Auctions.maximum_duration_days
+    (min_days..max_days).each do |day|
+      [day, day]
+    end
+  end
+
+  def options_for_hours_select
+    HOURS_UNTIL_SOLD_OPTIONS.each do |hours|
+      [hours, hours]
+    end
+  end
+
+  def today_plus_min_duration
+    (Date.current + Config::Auctions.minimum_start_date_days_delay.days).beginning_of_day
+  end
+
   private
 
   def schedule_deletion
@@ -116,16 +129,12 @@ class Auction < ApplicationRecord
     Daily::DeleteCompletedAuctionsJob.set(wait_until: end_time + 1.minute).perform_later(auction: self)
   end
 
-  def today_plus_min_duration
-    (Date.current + MINIMUM_DELAY.days).beginning_of_day
-  end
-
   def start_time_plus_min_duration
-    start_time + MINIMUM_DURATION.days
+    start_time + Config::Auctions.minimum_duration_days.days
   end
 
   def start_time_plus_max_duration
-    start_time + MAXIMUM_DURATION.days
+    start_time + Config::Auctions.maximum_duration_days.days
   end
 
   def minimum_status_required

@@ -21,14 +21,14 @@ RSpec.describe AuctionPolicy do
 
     context "when user already has max number of upcoming auctions" do
       it "does not allow create" do
-        create_list(:auction, Auction::MAX_AUCTIONS_PER_STABLE + 1, auctioneer: user.stable)
+        create_list(:auction, Config::Auctions.max_auctions_per_stable + 1, auctioneer: user.stable)
         expect(policy).not_to permit_action(:create)
       end
     end
 
     context "when user does not have max number of upcoming auctions" do
       it "does allow create" do
-        create_list(:auction, Auction::MAX_AUCTIONS_PER_STABLE + 1, :past, auctioneer: user.stable)
+        create_list(:auction, Config::Auctions.max_auctions_per_stable + 1, :past, auctioneer: user.stable)
         expect(policy).to permit_action(:create)
       end
     end
