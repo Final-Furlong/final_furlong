@@ -80,17 +80,7 @@ RSpec.describe AuctionPolicy do
           auction.end_time = 12.days.from_now
           expect(policy).to permit_actions(%i[edit update])
         end
-      end
 
-      context "when auction has started" do
-        it "does allow edit or update" do
-          auction.start_time = 10.days.ago
-          auction.end_time = 2.days.from_now
-          expect(policy).not_to permit_actions(%i[edit update])
-        end
-      end
-
-      context "when auction has not started" do
         it "allows destroy" do
           expect(policy).to permit_action(:destroy)
         end
@@ -98,6 +88,10 @@ RSpec.describe AuctionPolicy do
 
       context "when auction has started" do
         let(:auction) { create(:auction, :past) }
+
+        it "does allow edit or update" do
+          expect(policy).not_to permit_actions(%i[edit update])
+        end
 
         it "does not allow destroy" do
           expect(policy).not_to permit_action(:destroy)
