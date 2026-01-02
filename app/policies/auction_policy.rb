@@ -8,12 +8,13 @@ class AuctionPolicy < AuthenticatedPolicy
   def create?
     return false unless user&.stable
 
-    user.stable.auctions.upcoming.count <= Auction::MAX_AUCTIONS_PER_STABLE
+    user.stable.auctions.upcoming.count < Config::Auctions.max_auctions_per_stable
   end
 
   def update?
     return false unless user&.stable
     return true if admin?
+    return false unless record.future?
 
     record.auctioneer == user.stable
   end
@@ -23,6 +24,10 @@ class AuctionPolicy < AuthenticatedPolicy
     return false unless (record.auctioneer == user.stable) || admin?
 
     record.start_time > Time.current
+  end
+
+  def allow_outside_horses?
+    admin?
   end
 end
 

@@ -1,5 +1,7 @@
 - content_for :breadcrumbs do
   = render Nav::Breadcrumbs::Component.new(title: t("horses.index.title"))
+    - if AuctionPolicy.new(Current.user, Auction).create?
+      = render Nav::Breadcrumbs::Actions::Component.new(actions: [:create], path: "/auctions/actions/")
 
 = render Horses::SearchFilters::Component.new(version: request_variant, path_name: "horses_path", params:, query:,
                                               active_status:)

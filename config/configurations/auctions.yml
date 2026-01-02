@@ -1,0 +1,5 @@
+shared:
+  minimum_start_date_days_delay: 7
+  minimum_duration_days: 7
+  maximum_duration_days: 14
+  max_auctions_per_stable: 1

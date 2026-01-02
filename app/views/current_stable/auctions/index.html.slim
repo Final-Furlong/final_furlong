@@ -5,6 +5,10 @@
     - label = "#{auction.title} (#{count})"
     input.tab type="radio" name="auction" aria-label=label id=auction.title
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+      - if policy(auction).edit?
+        = render Ui::ButtonizedLink::Component.new(url: edit_auction_path(auction), style: :outline,
+                extra_classes: 'btn-xs lg:btn-sm ml-2', data: { turbo_frame: "modal" }) do
+          = t("common.actions.edit")
       - if data[:selling].count.positive?
         - label = t(".selling", count: data[:selling].count)
         input.tab type="radio" name="auction-selling" aria-label=label id="#{auction.slug}-selling"
@@ -78,9 +82,11 @@
                     td data-sort=horse_info[:bid_at]
                       - if horse_info[:state] == :sold
                         = t(".sold")
-                      - else
+                      - elsif horse_info[:bid_at]
                         - sell_time = [horse_info[:bid_at] + auction.hours_until_sold.hours, auction.end_time].min
                         = relative_time_in_words(sell_time)
+                      - else
+                        = relative_time_in_words(auction.end_time)
                     td
                       = render Ui::ButtonizedLink::Component.new(url: auction_horse_path(auction, horse_info[:auction_horse_id]),
                               size: :small, color: :primary, style: :outline,

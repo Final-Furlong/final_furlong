@@ -1,0 +1,11 @@
+shared:
+  api_key: <%= ENV.fetch("STRIPE_API_KEY", Rails.application.credentials.dig(:stripe, :api_key)) %>
+  api_version: <%= ENV.fetch("STRIPE_API_VERSION", "2025-07-30.basil") %>
+  max_network_retries: <%= ENV.fetch("STRIPE_MAX_NETWORK_RETRIES", 2) %>
+
+development:
+  default_price_id: price_in_development
+
+production:
+  default_price_id: price_in_production
+  signing_secret_key: <%= ENV.fetch("STRIPE_SIGNING_KEY", Rails.application.credentials.dig(:stripe, :signing_secret)) %>

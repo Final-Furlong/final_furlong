@@ -19,8 +19,8 @@ RSpec.describe Auction do
 
         expect(auction).not_to be_valid
         expect(auction.errors[:start_time].size).to eq 1
-        expect(auction.errors[:start_time].first).to include "must be greater than or equal to #{(Date.current + described_class::MINIMUM_DELAY.days).to_date}"
-        auction.start_time = Date.current + described_class::MINIMUM_DELAY.days
+        expect(auction.errors[:start_time].first).to include "must be greater than or equal to #{(Date.current + Config::Auctions.minimum_duration_days.days).to_date}"
+        auction.start_time = Date.current + Config::Auctions.minimum_duration_days.days
         expect(auction).to be_valid
       end
     end
@@ -33,20 +33,20 @@ RSpec.describe Auction do
 
         expect(auction).not_to be_valid
         expect(auction.errors[:end_time].size).to eq 1
-        expect(auction.errors[:end_time].first).to include "must be greater than or equal to #{(start_time.to_date + described_class::MINIMUM_DURATION.days).to_date}"
-        auction.end_time = start_time + described_class::MINIMUM_DURATION.days
+        expect(auction.errors[:end_time].first).to include "must be greater than or equal to #{(start_time.to_date + Config::Auctions.minimum_duration_days.days).to_date}"
+        auction.end_time = start_time + Config::Auctions.minimum_duration_days.days
         expect(auction).to be_valid
       end
 
       it "must be less than maximum duration days away" do
         auction = build(:auction)
         start_time = auction.start_time
-        auction.end_time = start_time + (described_class::MAXIMUM_DURATION + 1).days
+        auction.end_time = start_time + (Config::Auctions.maximum_duration_days + 1).days
 
         expect(auction).not_to be_valid
         expect(auction.errors[:end_time].size).to eq 1
-        expect(auction.errors[:end_time].first).to include "must be less than or equal to #{(start_time.to_date + described_class::MAXIMUM_DURATION.days).to_date}"
-        auction.end_time = start_time + described_class::MAXIMUM_DURATION.days
+        expect(auction.errors[:end_time].first).to include "must be less than or equal to #{(start_time.to_date + Config::Auctions.maximum_duration_days.days).to_date}"
+        auction.end_time = start_time + Config::Auctions.maximum_duration_days.days
         expect(auction).to be_valid
       end
     end
