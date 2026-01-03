@@ -39,8 +39,8 @@ module Dashboard
             hash[:buying][bid.horse_id][:current_bidder] = current_bid.bidder.name
             hash[:buying][bid.horse_id][:your_max] = [last_bid.current_bid, last_bid.maximum_bid.to_i].max
             hash[:buying][bid.horse_id][:state] = :lost
-            hash[:buying][bid.horse_id][:bid_at] = current_bid.bid_at
           end
+          hash[:buying][bid.horse_id][:bid_at] = current_bid&.bid_at
         end
         auction.horses.includes(:horse).where(seller: Current.stable).find_each do |horse|
           hash[:selling][horse.id] ||= {}
