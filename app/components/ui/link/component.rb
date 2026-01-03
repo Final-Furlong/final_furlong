@@ -30,7 +30,12 @@ module Ui
               info: "link-info",
               success: "link-success",
               warning: "link-warning",
-              error: "link-error"
+              error: "link-error",
+              filly: "text-filly",
+              mare: "text-mare",
+              colt: "text-colt",
+              stallion: "text-stallion",
+              gelding: "text-gelding"
             },
             style: {
               none: "",

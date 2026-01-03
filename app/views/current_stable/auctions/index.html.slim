@@ -30,7 +30,7 @@
                   - horse_info = row.last
                   tr
                     td
-                      = render Ui::Link::Component.new(url: horse_path(horse_info[:horse_slug])) do
+                      = render Ui::Link::Component.new(url: horse_path(horse_info[:horse_slug]), color: horse_info[:horse_gender].to_sym) do
                         = horse_info[:horse_name]
                     td data-sort=horse_info[:current_bid]
                       - if horse_info[:current_bid]
@@ -73,7 +73,7 @@
                   - horse_info = row.last
                   tr
                     td
-                      = render Ui::Link::Component.new(url: horse_path(horse_info[:horse_slug])) do
+                      = render Ui::Link::Component.new(url: horse_path(horse_info[:horse_slug]), color: horse_info[:horse_gender].to_sym) do
                         = horse_info[:horse_name]
                     td data-sort=horse_info[:current_bid]
                       = Game::MoneyFormatter.new(horse_info[:current_bid]).to_s

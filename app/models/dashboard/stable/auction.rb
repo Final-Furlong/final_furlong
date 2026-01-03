@@ -18,7 +18,8 @@ module Dashboard
         auction.bids.includes(horse: :horse).where(bidder: Current.stable).find_each do |bid|
           hash[:buying][bid.horse_id] ||= {}
           horse = bid.horse
-          hash[:buying][bid.horse_id][:horse_name] = horse.horse.name
+          hash[:buying][bid.horse_id][:horse_name] = horse.horse.budget_name
+          hash[:buying][bid.horse_id][:horse_gender] = horse.horse.gender
           hash[:buying][bid.horse_id][:horse_slug] = horse.horse.slug
           hash[:buying][bid.horse_id][:auction_horse_id] = horse.id
           hash[:buying][bid.horse_id][:status] = horse.sold? ? :sold : :unsold
@@ -42,7 +43,8 @@ module Dashboard
         end
         auction.horses.includes(:horse).where(seller: Current.stable).find_each do |horse|
           hash[:selling][horse.id] ||= {}
-          hash[:selling][horse.id][:horse_name] = horse.horse.name
+          hash[:selling][horse.id][:horse_name] = horse.horse.budget_name
+          hash[:selling][horse.id][:horse_gender] = horse.horse.gender
           hash[:selling][horse.id][:horse_slug] = horse.horse.slug
           hash[:selling][horse.id][:auction_horse_id] = horse.id
           hash[:selling][horse.id][:state] = horse.sold? ? :sold : :unsold
