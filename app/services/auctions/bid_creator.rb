@@ -127,13 +127,15 @@ module Auctions
             current_bid: bid_params[:current_bid], maximum_bid: bid_params[:maximum_bid]
           )
           extra_invalid_amount = bid_params[:current_bid] % increment
-          minimum_amount = (bid_params[:maximum_bid].to_i == max_bid) ? max_bid : previous_bid.current_bid
+          minimum_amount = (bid_params[:maximum_bid].to_i == max_bid) ? max_bid : [previous_bid.current_bid, bid_params[:maximum_bid].to_i].max
           minimum_display_amount = [minimum_amount + increment, bid_params[:current_bid] - extra_invalid_amount.to_i].max
+          minimum_display_amount = Game::MoneyFormatter.new(minimum_display_amount).to_s
           bid.errors.add(:current_bid, :greater_than_or_equal_to, count: minimum_display_amount)
           result.bid = bid
           result.error = I18n.t("services.auctions.bid_creator.bid_not_high_enough", number: minimum_display_amount)
           return result
-        elsif max_bid.positive? && bid_params[:maximum_bid].to_i > max_bid
+        elsif max_bid.positive? && bid_params[:maximum_bid].to_i > max_bid &&
+            bid_params[:current_bid] < previous_max_bid + Bid::MINIMUM_INCREMENT
           bid_params[:current_bid] = previous_max_bid + Auctions::Bid::MINIMUM_INCREMENT
         end
 
