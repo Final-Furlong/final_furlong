@@ -6,6 +6,7 @@ module Auctions
       @auction = auction
       days = auction_params.delete(:duration_days)
       auction_params[:spending_cap_per_stable] = nil if auction_params[:spending_cap_per_stable].to_i.zero?
+      auction_params[:horse_purchase_cap_per_stable] = nil if auction_params[:horse_purchase_cap_per_stable].to_i.zero?
       auction_params[:start_time] = auction_params[:start_time].to_datetime.beginning_of_day
       auction_params[:end_time] = auction_params[:start_time] + days.to_i.days
       auction_params[:auctioneer] ||= Current.stable

@@ -16,6 +16,8 @@ en:
     form:
       broodmare_allowed: Broodmare
       duration: Duration (Days)
+      horse_purchase_cap_per_stable: Horse Purchase Limit for Stables
+      horse_purchase_cap_per_stable_hint: Leave blank for no limit
       hours_until_sold: Hours Until Horses Sell
       outside_horses_allowed: Outside Horses Allowed
       racehorse_allowed_2yo: Racehorse (2yo)

@@ -108,15 +108,15 @@ ruby:
                 - if horse.broodmare? || horse.stud?
                   = " | "
                 - if horse.broodmare?
-                  = horse.broodmare.breed_ranking_string
+                  = horse.broodmare.breed_ranking_string || t("common.none")
                 - elsif horse.stud?
-                  = horse.stud.breed_ranking_string
+                  = horse.stud.breed_ranking_string || t("common.none")
               - if include_reserve
                 td
                   - if auction_horse.reserve_price && bid && bid.current_bid >= auction_horse.reserve_price
                     = Game::MoneyFormatter.new(auction_horse.reserve_price).to_s
                   - elsif auction_horse.reserve_price.to_i.positive?
-                    span.ml-2.badge.badge-xs.md:badge-sm.badge-outline.badge-warning
+                    span.ml-2.badge.badge-xs.badge-outline.badge-warning
                       = t ("auctions.show.reserve_not_met")
                   - else
                     = t("common.dash")
