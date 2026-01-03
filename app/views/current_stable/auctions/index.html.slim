@@ -5,6 +5,9 @@
     - label = "#{auction.title} (#{count})"
     input.tab type="radio" name="auction" aria-label=label id=auction.title
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+      = render Ui::ButtonizedLink::Component.new(url: auction_path(auction), style: :outline,
+              extra_classes: 'btn-xs lg:btn-sm ml-2') do
+        = t(".view_auction")
       - if policy(auction).edit?
         = render Ui::ButtonizedLink::Component.new(url: edit_auction_path(auction), style: :outline,
                 extra_classes: 'btn-xs lg:btn-sm ml-2', data: { turbo_frame: "modal" }) do
@@ -78,6 +81,11 @@
                         = " ("
                         = Game::MoneyFormatter.new(horse_info[:maximum_bid]).to_s
                         = ")"
+                      - if horse_info[:your_max]
+                        span.text-error
+                          = " ("
+                          = Game::MoneyFormatter.new(horse_info[:your_max]).to_s
+                          = ")"
                     td= horse_info[:current_bidder]
                     td data-sort=horse_info[:bid_at]
                       - if horse_info[:state] == :sold

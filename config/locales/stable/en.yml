@@ -16,6 +16,7 @@ en:
         selling: Selling (%{count})
         sold: Sold
         time_left: Time Left
+        view_auction: View Auction
         view_bidding: View Bids
     budgets:
       index:
