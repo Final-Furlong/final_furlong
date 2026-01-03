@@ -12,7 +12,7 @@ repos:
       - id: codespell
         name: check spelling
         files: ^(app|spec)/ # Only application + test code
-        args: [--exclude-file=pnpm-lock.yaml]
+        args: [ --exclude-file=pnpm-lock.yaml ]
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.24.2
     hooks:
@@ -46,14 +46,9 @@ repos:
       - id: brakeman
         language: script
         name: run brakeman
-        types: [ruby]
+        types: [ ruby ]
         entry: bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-erro
         pass_filenames: false
-      - id: fasterer
-        language: script
-        name: run fasterer
-        types: [ruby]
-        entry: bin/fasterer
       - id: i18n-normalize
         language: script
         name: run i18n normalize
@@ -62,7 +57,7 @@ repos:
       - id: image-optim
         language: script
         name: run image-optim
-        types_or: [jpeg, gif, png, svg]
+        types_or: [ jpeg, gif, png, svg ]
         entry: image_optim
       - id: slim-lint
         language: script

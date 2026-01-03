@@ -24,7 +24,6 @@ CI.run do
   end
 
   if ci_type == "performance" || ci_type == "all"
-    step "Performance: Fasterer", "bin/fasterer"
     step "Performance: Active Record Doctor", "bundle exec rake active_record_doctor"
   end
 

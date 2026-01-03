@@ -1,6 +1,6 @@
 /# locals: (auction_horse:)
 - auction = auction_horse.auction
-- bids = auction_horse.bids
+- bids = auction_horse.bids.order(current_bid: :desc, bid_at: :desc)
 .grid.grid-cols-1.my-2.md:grid-cols-2
   div
     - if auction_horse.comment

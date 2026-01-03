@@ -23,15 +23,13 @@
         = f.select :hours_until_sold, options_for_select(auction.options_for_hours_select, auction.hours_until_sold), { include_blank: true }, { class: "select w-full" }
         - if auction.errors[:hours_until_sold]
           p.text-error= auction.errors.where(:hours_until_sold).map(&:full_message).join(', ')
-    - if policy(auction).allow_outside_horses?
-      div
-        fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
-          legend.fieldset-legend= t(".outside_horses_allowed")
-          label.label
-            = f.checkbox :outside_horses_allowed, class: 'checkbox'
-            = t(".outside_horses_allowed")
-          - if auction.errors[:outside_horses_allowed]
-            p.text-error= auction.errors.where(:outside_horses_allowed).map(&:full_message).join(', ')
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".horse_purchase_cap_per_stable")
+        = f.text_field :horse_purchase_cap_per_stable, class: 'input'
+        p.label= t(".horse_purchase_cap_per_stable_hint")
+        - if auction.errors[:horse_purchase_cap_per_stable]
+          p.text-error= auction.errors.where(:horse_purchase_cap_per_stable).map(&:full_message).join(', ')
   .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
     div
       fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
@@ -41,15 +39,15 @@
           = f.text_field :spending_cap_per_stable, value: (auction.spending_cap_per_stable.presence || nil), class: "grow"
         - if auction.errors[:spending_cap_per_stable]
           p.text-error= auction.errors.where(:spending_cap_per_stable).map(&:full_message).join(', ')
-    div
-      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
-        legend.fieldset-legend= t(".reserve_pricing_allowed")
-        label.label
-          = f.checkbox :reserve_pricing_allowed, class: 'checkbox'
-          = t(".reserve_pricing_allowed")
-        p.label= t(".reserve_pricing_allowed_hint")
-        - if auction.errors[:reserve_pricing_allowed]
-          p.text-error= auction.errors.where(:reserve_pricing_allowed).map(&:full_message).join(', ')
+    - if policy(auction).allow_outside_horses?
+      div
+        fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+          legend.fieldset-legend= t(".outside_horses_allowed")
+          label.label
+            = f.checkbox :outside_horses_allowed, class: 'checkbox'
+            = t(".outside_horses_allowed")
+          - if auction.errors[:outside_horses_allowed]
+            p.text-error= auction.errors.where(:outside_horses_allowed).map(&:full_message).join(', ')
   .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
     div
       fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
@@ -89,6 +87,15 @@
           = t(".weanling_allowed")
         - if auction.errors[:weanling_allowed]
           p.text-error= auction.errors.where(:weanling_allowed).map(&:full_message).join(', ')
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".reserve_pricing_allowed")
+        label.label
+          = f.checkbox :reserve_pricing_allowed, class: 'checkbox'
+          = t(".reserve_pricing_allowed")
+        p.label= t(".reserve_pricing_allowed_hint")
+        - if auction.errors[:reserve_pricing_allowed]
+          p.text-error= auction.errors.where(:reserve_pricing_allowed).map(&:full_message).join(', ')
   .float-right
     = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
     = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.save"))

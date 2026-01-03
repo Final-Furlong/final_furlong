@@ -67,7 +67,7 @@ class AuctionsController < ApplicationController
 
   def auction_params
     params.expect(auction: [:start_time, :duration_days, :hours_until_sold,
-      :spending_cap_per_stable,
+      :spending_cap_per_stable, :horse_purchase_cap_per_stable,
       :reserve_pricing_allowed, :racehorse_allowed_2yo,
       :racehorse_allowed_3yo, :racehorse_allowed_older,
       :stallion_allowed, :broodmare_allowed,

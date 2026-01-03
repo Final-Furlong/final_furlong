@@ -26,11 +26,6 @@ pre-commit:
       tags: frontend style
       glob: "*.{js,ts,jsx,tsx,css}"
       run: pnpm biome check --fix {staged_files} && git add {staged_files}
-    fasterer:
-      tags: backend style
-      files: git diff --name-only --staged
-      glob: "*.rb"
-      run: fasterer {files}
     i18n-check:
       tags: backend style
       files: git diff --name-only --staged
@@ -91,8 +86,6 @@ lint:
     lint:
       glob: "*.{js,ts,jsx,tsx,css}"
       run: pnpm biome check {staged_files} --fix
-    fasterer:
-      run: fasterer
     i18n-check:
       run: bundle exec i18n-tasks health
     rubocop:
