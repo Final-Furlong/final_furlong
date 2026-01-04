@@ -2,6 +2,8 @@ module Legacy
   class HorseShipping < Record
     self.table_name = "ff_horse_shipping"
     self.primary_key = "ID"
+
+    belongs_to :horse, class_name: "Legacy::Horse", foreign_key: "Horse"
   end
 end
 

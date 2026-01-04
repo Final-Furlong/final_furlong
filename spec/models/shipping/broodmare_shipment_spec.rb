@@ -22,17 +22,19 @@ RSpec.describe Shipping::BroodmareShipment do
         expect(shipment).to be_valid
       end
 
-      it "cannot be a past date" do
-        shipment = create(:broodmare_shipment, :past)
-        expect(shipment).not_to be_valid
-        expect(shipment.errors[:departure_date]).to eq(["must be greater than or equal to #{l(Date.current)}"])
-      end
+      context "when new shipment" do
+        it "cannot be a past date" do
+          shipment = create(:broodmare_shipment, :past)
+          expect(shipment.valid?(:new_shipment)).to be false
+          expect(shipment.errors[:departure_date]).to eq(["must be greater than or equal to #{l(Date.current)}"])
+        end
 
-      it "cannot be too far in the future" do
-        max_date = Date.current + described_class::MAX_DELAYED_SHIPMENT_DAYS.days
-        shipment = build(:broodmare_shipment, departure_date: max_date + 1.day)
-        expect(shipment).not_to be_valid
-        expect(shipment.errors[:departure_date]).to eq(["must be less than or equal to #{l(max_date)}"])
+        it "cannot be too far in the future" do
+          max_date = Date.current + described_class::MAX_DELAYED_SHIPMENT_DAYS.days
+          shipment = build(:broodmare_shipment, departure_date: max_date + 1.day)
+          expect(shipment.valid?(:new_shipment)).to be false
+          expect(shipment.errors[:departure_date]).to eq(["must be less than or equal to #{l(max_date)}"])
+        end
       end
     end
 
