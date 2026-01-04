@@ -1,8 +1,14 @@
 class UpdateLegacyShipmentJob < ApplicationJob
   queue_as :low_priority
 
+  discard_on ActiveRecord::RecordInvalid
+
   def perform(horse_id)
-    Legacy::HorseShipping.where(Horse: horse_id).find_each do |legacy_shipment|
+    horse = Horses::Horse.find_by!(legacy_id: horse_id)
+    shipment_type = horse.racehorse? ? Shipping::RacehorseShipment : Shipping::BroodmareShipment
+    min_date = shipment_type.where(horse_id:).maximum(:departure_date) || horse.date_of_birth
+    min_date += 4.years
+    Legacy::HorseShipping.where(Horse: horse_id).where("Date > ?", min_date).find_each do |legacy_shipment|
       migrate_shipment(legacy_shipment:)
     end
   end
@@ -12,7 +18,7 @@ class UpdateLegacyShipmentJob < ApplicationJob
   def migrate_shipment(legacy_shipment:)
     horse = Horses::Horse.find_by(legacy_id: legacy_shipment.Horse)
     return unless horse
-    return if horse.deceased? || horse.retired?
+    return unless horse.racehorse? || horse.broodmare?
 
     class_name = if legacy_shipment.FromFarm.to_i.positive? && legacy_shipment.ToFarm.to_i.positive?
       Shipping::BroodmareShipment
