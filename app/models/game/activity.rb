@@ -1,7 +1,6 @@
 module Game
   class Activity < ApplicationRecord
     self.table_name = "game_activity_points"
-    self.ignored_columns += ["old_id"]
 
     ACTIVITY_TYPES = %w[
       color_war

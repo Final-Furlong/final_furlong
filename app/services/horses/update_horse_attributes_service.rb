@@ -51,7 +51,21 @@ module Horses
       elsif record&.earnings&.>= 1_000_000
         track_record += ", Millionaire"
       end
-      horse_attributes.update(track_record:)
+      points = record&.points.to_i
+      title = if points >= 1500
+        "Final Furlong"
+      elsif points >= 1000
+        "World"
+      elsif points >= 750
+        "International"
+      elsif points >= 500
+        "National"
+      elsif points >= 300
+        "Grand"
+      elsif points >= 100
+        "Normal"
+      end
+      horse_attributes.update(track_record:, title:)
     end
   end
 end

@@ -10,7 +10,7 @@ module CurrentStable
 
     def index
       authorize schedule, :view_horses?
-      @horses = Horses::HorsesQuery.with_training_schedule(schedule).owned_by(Current.stable)
+      @horses = Horses::Horse.joins(:training_schedule).where(training_schedules: { id: schedule }, owner: Current.stabler)
     end
 
     def new
@@ -57,7 +57,7 @@ module CurrentStable
     end
 
     def set_stable_horses
-      @horses = Horses::HorsesQuery.without_training_schedules.owned_by(Current.stable)
+      @horses = Horses::Horse.where.missing(:training_schedule).where(owner: Current.stable)
     end
 
     def schedule_params
