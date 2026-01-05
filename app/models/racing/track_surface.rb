@@ -1,7 +1,5 @@
 module Racing
   class TrackSurface < ApplicationRecord
-    self.ignored_columns += ["old_id"]
-
     CONDITIONS = %w[fast good slow wet].freeze
     SURFACES = %w[dirt turf steeplechase]
 

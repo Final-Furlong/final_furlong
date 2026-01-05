@@ -3,16 +3,22 @@
   - policy = CurrentStable::HorsePolicy.new(Current.user, horse)
   .tabs.tabs-border.dark:border-neutral-400 role="tablist"
     - if policy.view_workouts?
-      / TODO: check if workouts exist
-      input.tab type="radio" name="horse-event" aria-label=t(".workouts") id="workouts"
-      .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
-        p= "workouts history here"
+      - workouts_count = horse.workouts.count
+      - if workouts_count.zero?
+        input.tab type="radio" name="horse-event" aria-label=t(".no_workouts") id="workouts" disabled=true
+      - else
+        input.tab type="radio" name="horse-event" aria-label=t(".workouts", count: workouts_count) id="workouts"
+        .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+          = turbo_frame_tag "#{horse.slug}-workout-history", src: horse_workouts_path(horse), loading: "lazy" do
+            .w-full.text-center
+              p.mx-auto= t(".loading_workouts")
+              .mt-2.mx-auto.skeleton.w-full
 
     - if policy.view_boarding?
       - boardings_count = horse.boardings.count
       - boardings_count += 1 if horse.association(:current_boarding).scope.exists?
       - if boardings_count.zero?
-        input.tab type="radio" name="horse-event" aria-label=t(" .no_boarding") id="boarding" disabled=true
+        input.tab type="radio" name="horse-event" aria-label=t(".no_boarding") id="boarding" disabled=true
       - else
         input.tab type="radio" name="horse-event" aria-label=t(".boarding", count: boardings_count) id="boarding"
         .tab-content.border-base-400.bg-base-100.p-2.sm:p-4

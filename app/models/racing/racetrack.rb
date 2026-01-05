@@ -1,7 +1,5 @@
 module Racing
   class Racetrack < ApplicationRecord
-    self.ignored_columns += ["old_id"]
-
     include PublicIdGenerator
     include FriendlyId
 
