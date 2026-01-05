@@ -148,6 +148,7 @@ ignore_unused:
   - horse.events.*
   - horse.type.*
   - horse.lease_terminations.form.*
+  - racing.workout_comments.*
   - users.{create,update}.success
   - horses.index.auctions*
 

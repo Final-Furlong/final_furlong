@@ -375,6 +375,45 @@ CREATE TYPE public.user_status AS ENUM (
 );
 
 
+--
+-- Name: workout_activities; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.workout_activities AS ENUM (
+    'walk',
+    'jog',
+    'canter',
+    'gallop',
+    'breeze'
+);
+
+
+--
+-- Name: workout_stats; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.workout_stats AS ENUM (
+    'bolt',
+    'confidence',
+    'cooperate',
+    'dump',
+    'energy',
+    'equipment',
+    'fight',
+    'fitness',
+    'happy',
+    'jumps',
+    'natural_energy',
+    'pissy',
+    'ratability',
+    'spook',
+    'stamina',
+    'style',
+    'weight',
+    'xp'
+);
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -2910,6 +2949,115 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: workout_comments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.workout_comments (
+    id bigint NOT NULL,
+    comment_i18n_key character varying,
+    stat public.workout_stats NOT NULL,
+    stat_value integer,
+    placeholders character varying
+);
+
+
+--
+-- Name: workout_comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.workout_comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: workout_comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.workout_comments_id_seq OWNED BY public.workout_comments.id;
+
+
+--
+-- Name: workouts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.workouts (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    jockey_id bigint NOT NULL,
+    date date NOT NULL,
+    racetrack_id bigint NOT NULL,
+    surface_id bigint NOT NULL,
+    location_id bigint NOT NULL,
+    condition public.track_condition NOT NULL,
+    equipment integer DEFAULT 0 NOT NULL,
+    comment_id bigint NOT NULL,
+    effort integer DEFAULT 0 NOT NULL,
+    confidence integer DEFAULT 0 NOT NULL,
+    rank integer,
+    time_in_seconds integer,
+    activity1 public.workout_activities NOT NULL,
+    distance1 integer DEFAULT 0 NOT NULL,
+    activity2 public.workout_activities NOT NULL,
+    distance2 integer DEFAULT 0 NOT NULL,
+    activity3 public.workout_activities NOT NULL,
+    distance3 integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN workouts.condition; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.workouts.condition IS 'fast, good, slow, wet';
+
+
+--
+-- Name: COLUMN workouts.activity1; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.workouts.activity1 IS 'walk, jog, canter, gallop, breeze';
+
+
+--
+-- Name: COLUMN workouts.activity2; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.workouts.activity2 IS 'walk, jog, canter, gallop, breeze';
+
+
+--
+-- Name: COLUMN workouts.activity3; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.workouts.activity3 IS 'walk, jog, canter, gallop, breeze';
+
+
+--
+-- Name: workouts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.workouts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: workouts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.workouts_id_seq OWNED BY public.workouts.id;
+
+
+--
 -- Name: activations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3285,6 +3433,20 @@ ALTER TABLE ONLY public.user_push_subscriptions ALTER COLUMN id SET DEFAULT next
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Name: workout_comments id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workout_comments ALTER COLUMN id SET DEFAULT nextval('public.workout_comments_id_seq'::regclass);
+
+
+--
+-- Name: workouts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workouts ALTER COLUMN id SET DEFAULT nextval('public.workouts_id_seq'::regclass);
 
 
 --
@@ -3773,6 +3935,22 @@ ALTER TABLE ONLY public.user_push_subscriptions
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workout_comments workout_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workout_comments
+    ADD CONSTRAINT workout_comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workouts workouts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workouts
+    ADD CONSTRAINT workouts_pkey PRIMARY KEY (id);
 
 
 --
@@ -5519,6 +5697,153 @@ CREATE UNIQUE INDEX index_users_on_username ON public.users USING btree (usernam
 
 
 --
+-- Name: index_workout_comments_on_stat; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workout_comments_on_stat ON public.workout_comments USING btree (stat);
+
+
+--
+-- Name: index_workout_comments_on_stat_value; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workout_comments_on_stat_value ON public.workout_comments USING btree (stat_value);
+
+
+--
+-- Name: index_workouts_on_activity1; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_activity1 ON public.workouts USING btree (activity1);
+
+
+--
+-- Name: index_workouts_on_activity2; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_activity2 ON public.workouts USING btree (activity2);
+
+
+--
+-- Name: index_workouts_on_activity3; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_activity3 ON public.workouts USING btree (activity3);
+
+
+--
+-- Name: index_workouts_on_comment_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_comment_id ON public.workouts USING btree (comment_id);
+
+
+--
+-- Name: index_workouts_on_condition; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_condition ON public.workouts USING btree (condition);
+
+
+--
+-- Name: index_workouts_on_confidence; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_confidence ON public.workouts USING btree (confidence);
+
+
+--
+-- Name: index_workouts_on_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_date ON public.workouts USING btree (date);
+
+
+--
+-- Name: index_workouts_on_distance1; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_distance1 ON public.workouts USING btree (distance1);
+
+
+--
+-- Name: index_workouts_on_distance2; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_distance2 ON public.workouts USING btree (distance2);
+
+
+--
+-- Name: index_workouts_on_distance3; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_distance3 ON public.workouts USING btree (distance3);
+
+
+--
+-- Name: index_workouts_on_effort; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_effort ON public.workouts USING btree (effort);
+
+
+--
+-- Name: index_workouts_on_equipment; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_equipment ON public.workouts USING btree (equipment);
+
+
+--
+-- Name: index_workouts_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_horse_id ON public.workouts USING btree (horse_id);
+
+
+--
+-- Name: index_workouts_on_jockey_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_jockey_id ON public.workouts USING btree (jockey_id);
+
+
+--
+-- Name: index_workouts_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_location_id ON public.workouts USING btree (location_id);
+
+
+--
+-- Name: index_workouts_on_racetrack_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_racetrack_id ON public.workouts USING btree (racetrack_id);
+
+
+--
+-- Name: index_workouts_on_rank; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_rank ON public.workouts USING btree (rank);
+
+
+--
+-- Name: index_workouts_on_surface_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_surface_id ON public.workouts USING btree (surface_id);
+
+
+--
+-- Name: index_workouts_on_time_in_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_time_in_seconds ON public.workouts USING btree (time_in_seconds);
+
+
+--
 -- Name: motor_alerts_name_unique_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5597,6 +5922,14 @@ ALTER TABLE ONLY public.race_options
 
 
 --
+-- Name: workouts fk_rails_049e476bcd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workouts
+    ADD CONSTRAINT fk_rails_049e476bcd FOREIGN KEY (jockey_id) REFERENCES public.jockeys(id);
+
+
+--
 -- Name: race_results fk_rails_06818a8fab; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5650,6 +5983,14 @@ ALTER TABLE ONLY public.horse_genetics
 
 ALTER TABLE ONLY public.racehorse_shipments
     ADD CONSTRAINT fk_rails_11743aea75 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
+-- Name: workouts fk_rails_1177451f68; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workouts
+    ADD CONSTRAINT fk_rails_1177451f68 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
 
 
 --
@@ -5733,6 +6074,14 @@ ALTER TABLE ONLY public.lease_termination_requests
 
 
 --
+-- Name: workouts fk_rails_41bba41962; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workouts
+    ADD CONSTRAINT fk_rails_41bba41962 FOREIGN KEY (location_id) REFERENCES public.locations(id);
+
+
+--
 -- Name: broodmare_shipments fk_rails_4b660bbb6a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5794,6 +6143,14 @@ ALTER TABLE ONLY public.budget_transactions
 
 ALTER TABLE ONLY public.racehorse_shipments
     ADD CONSTRAINT fk_rails_61598134a3 FOREIGN KEY (ending_location_id) REFERENCES public.locations(id);
+
+
+--
+-- Name: workouts fk_rails_62b0d2407d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workouts
+    ADD CONSTRAINT fk_rails_62b0d2407d FOREIGN KEY (comment_id) REFERENCES public.workout_comments(id);
 
 
 --
@@ -6165,6 +6522,14 @@ ALTER TABLE ONLY public.race_result_horses
 
 
 --
+-- Name: workouts fk_rails_f459544cd4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workouts
+    ADD CONSTRAINT fk_rails_f459544cd4 FOREIGN KEY (racetrack_id) REFERENCES public.racetracks(id);
+
+
+--
 -- Name: lease_offers fk_rails_fb816dc261; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6181,12 +6546,21 @@ ALTER TABLE ONLY public.horses
 
 
 --
+-- Name: workouts fk_rails_fd31a75744; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workouts
+    ADD CONSTRAINT fk_rails_fd31a75744 FOREIGN KEY (surface_id) REFERENCES public.track_surfaces(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260105110324'),
 ('20251230104641'),
 ('20251229150423'),
 ('20251203101405'),

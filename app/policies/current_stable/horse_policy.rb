@@ -98,6 +98,7 @@ module CurrentStable
     end
 
     def view_workouts?
+      return true
       return false unless manager?
 
       record.racehorse?

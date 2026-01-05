@@ -49,11 +49,14 @@ en:
         loading_boarding: Loading boarding...
         loading_sales: Loading sales/leases...
         loading_shipping: Loading shipping...
+        loading_workouts: Loading workouts...
+        no_boarding: Workouts
         no_sales: Sales/Leases
         no_shipping: Shipping
+        no_workouts: Workouts
         sales: Sales/Leases (%{count})
         shipping: Shipping (%{count})
-        workouts: Workouts
+        workouts: Workouts (%{count})
       sales:
         buyer: Buyer
         date: Date
@@ -82,6 +85,8 @@ en:
         no_shipments: No shipments found.
         scheduled: Scheduled
         starting_location: From
+      workouts:
+        date: Date
     foal_due: Foal Due
     foals:
       dam_foal_list:

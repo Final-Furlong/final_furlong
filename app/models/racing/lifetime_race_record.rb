@@ -21,6 +21,20 @@ module Racing
     def self.populated?
       Scenic.database.populated?(table_name)
     end
+
+    def race_record_races_only
+      record = starts.to_s
+      record += "(#{stakes_starts})" if stakes_starts.positive?
+      record += "-#{wins}"
+      record += "(#{stakes_wins})" if stakes_wins.positive?
+      record += "-#{seconds}"
+      record += "(#{stakes_seconds})" if stakes_seconds.positive?
+      record += "-#{thirds}"
+      record += "(#{stakes_thirds})" if stakes_thirds.positive?
+      record += "-#{fourths}"
+      record += "(#{stakes_fourths})" if stakes_fourths.positive?
+      record
+    end
   end
 end
 
