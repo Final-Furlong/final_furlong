@@ -5,11 +5,11 @@ class UpdateLegacyHorsesJob < ApplicationJob
     if Racing::Racetrack.count < 21
       MigrateLegacyRacetrackService.new.call
     end
-    Legacy::Horse.where(rails_id: nil).limit(50).find_each do |legacy_horse|
+    Legacy::Horse.where(rails_id: nil).find_each do |legacy_horse|
       migrate_legacy_horse(legacy_horse:)
     end
     Legacy::Horse.where("last_modified > last_synced_to_rails_at")
-      .or(Legacy::Horse.where(last_synced_to_rails_at: nil)).limit(50).find_each do |legacy_horse|
+      .or(Legacy::Horse.where(last_synced_to_rails_at: nil)).find_each do |legacy_horse|
       migrate_legacy_horse(legacy_horse:)
     end
   end
