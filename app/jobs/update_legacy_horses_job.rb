@@ -25,6 +25,9 @@ class UpdateLegacyHorsesJob < ApplicationJob
         Legacy::Horse.find(legacy_horse.ID).update(rails_id: horse_id, last_synced_to_rails_at: Time.current)
       end
     end
+  rescue ActiveRecord::RecordInvalid => e
+    message = "ID: #{legacy_horse.id}, #{e.message}"
+    raise e, message:
   end
 end
 
