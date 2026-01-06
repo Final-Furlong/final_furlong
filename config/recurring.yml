@@ -21,7 +21,7 @@ production:
   horse_legacy_migrate:
     class: UpdateLegacyHorsesJob
     queue: low_priority
-    schedule: every 30 minutes
+    schedule: every 3 minutes
   auction_create_monthly_auction:
     class: Auctions::CreateMonthlyAuctionJob
     queue: low_priority
