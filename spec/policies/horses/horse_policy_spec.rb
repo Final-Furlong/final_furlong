@@ -131,12 +131,9 @@ RSpec.describe Horses::HorsePolicy do
   context "when user is an admin" do
     let(:user) { create(:user, admin: true) }
 
-    it "allows public actions" do
-      expect(policy).to permit_actions(:index, :show, :image, :thumbnail)
-    end
-
-    it "denies private actions" do
-      expect(policy).not_to permit_actions(:edit_name, :update)
+    it "allows public and private actions" do
+      expect(policy).to permit_actions(:index, :show, :image, :thumbnail,
+        :edit_name, :update)
     end
 
     it_behaves_like "not permitting anything for an unborn horse"

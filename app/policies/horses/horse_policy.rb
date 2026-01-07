@@ -24,7 +24,7 @@ module Horses
 
     def edit_name?
       return false if record.deceased?
-      return true if record.age < 2
+      return false if record.unborn?
       return false if record.age >= 2 && !record.created?
       return false if record.age >= 2 && record.name.present?
       return false if record.race_result_finishes.exists?
