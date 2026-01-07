@@ -15,7 +15,6 @@ class UpdateLegacyHorsesJob < ApplicationJob
     remaining_count = Legacy::Horse.where(rails_id: nil).count
     remaining_count += Legacy::Horse.where("last_modified > last_synced_to_rails_at").count
     UpdateLegacyHorsesJob.set(wait: 5.seconds).perform_later if remaining_count.positive?
-    end
   end
 
   private
