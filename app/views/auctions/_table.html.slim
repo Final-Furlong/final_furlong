@@ -7,6 +7,7 @@ ruby:
     horses = auction.horses.send(type.to_sym)
   end
   horses = horses.includes(horse: [:owner, :sire, :dam, :horse_attributes,
+                                   :lifetime_race_record,
                                    :broodmare_foal_record, :stud_foal_record]).order("horses.name asc")
   include_reserve = auction.horses.with_reserve.count.positive?
 .mx-auto.overflow-x-auto.w-full.sm:hidden
@@ -19,7 +20,11 @@ ruby:
         .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
           input type="checkbox"
           .collapse-title.font-semibold.font-medium
-            span class="text-#{horse.gender.downcase}" = horse.budget_name
+            span class="text-#{horse.gender.downcase}"
+              - if horse.horse_attributes&.title_abbr
+                = horse.horse_attributes.title_abbr
+                = "&nbsp;".html_safe
+              = horse.budget_name
           .collapse-content.text-sm
             p
               span= Horses::Horse.human_attribute_name("age")
@@ -35,7 +40,10 @@ ruby:
               span.float-right= pedigree.dam_display(tag: true)
             p
               span= Horses::Horse.human_attribute_name("track_record")
-              span.float-right= horse.track_record
+              - if horse.racehorse?
+                span.float-right= horse.lifetime_race_record&.race_record_races_only || t("horse.unraced")
+              - else
+                span.float-right= horse.track_record
             - if horse.broodmare? || horse.stud?
               p
                 span= Horses::Horse.human_attribute_name("breeding_record")
@@ -104,13 +112,16 @@ ruby:
               td.wb-break-all= pedigree.sire_display(tag: true, target: '_top')
               td.wb-break-all= pedigree.dam_display(tag: true, target: '_top')
               td.wb-break-all
-                = horse.track_record
+                - if horse.racehorse?
+                  = horse.lifetime_race_record&.race_record_races_only || t("horse.unraced")
+                - else
+                  = horse.track_record
                 - if horse.broodmare? || horse.stud?
                   = " | "
-                - if horse.broodmare?
-                  = horse.broodmare.breed_ranking_string || t("common.none")
-                - elsif horse.stud?
-                  = horse.stud.breed_ranking_string || t("common.none")
+                  - if horse.broodmare?
+                    = horse.broodmare.breed_ranking_string || t("common.none")
+                  - elsif horse.stud?
+                    = horse.stud.breed_ranking_string || t("common.none")
               - if include_reserve
                 td
                   - if auction_horse.reserve_price && bid && bid.current_bid >= auction_horse.reserve_price

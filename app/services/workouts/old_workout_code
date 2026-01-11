@@ -1,0 +1,1791 @@
+for ($i = 0; $i < count($workouts); $i++) {
+    $workouts[$i] = getData($workouts[$i], $tracks);
+    if (!$valid['Status']) {
+        $workouts[$i]['JComment'] = 'Invalid Workout - ' . $valid['Error'];
+    } else {
+        $workouts[$i] = workout($workouts[$i]);
+    }
+}
+?>
+<br />
+<h2 align="center">Workout Results</h2>
+<br />
+<div align="center">
+    If an event is listed in red &amp; bold, that means that the horse had a problem during the workout, and the rest of the training session was cancelled.<br />
+    If all of the events are listed in red, that means your horse was injured during the workout.<br />
+    (Note: Both events can occur - the jockey comment will indicate whether there was a problem during training)
+</div>
+<br />
+<table border="1" cellpadding="1" cellspacing="0" align="center">
+<tr bgcolor="#999999">
+    <th>Horse</th>
+    <th>Activity</th>
+    <th>Distance</th>
+    <th>Time</th>
+    <th>Activity</th>
+    <th>Distance</th>
+    <th>Time</th>
+    <th>Activity</th>
+    <th>Distance</th>
+    <th>Time</th>
+</tr>
+<tr bgcolor="#999999">
+    <th>&nbsp;  </th>
+    <th colspan="3">Jockey</th>
+    <th>Effort</th>
+    <th colspan="2">Track</th>
+    <th colspan="3">Equipment</th>
+</tr>
+<?php  for ($i = 0; $i < count($workouts); $i++) {
+    $bgcolor = (isset($bgcolor) && $bgcolor == '#D7D7D7' ? '#FFFFFF' : '#D7D7D7');  ?>
+<tr bgcolor="<?php echo $bgcolor; ?>">
+    <td rowspan="3" valign="top"><a href="viewhorse.php?horse=<?php echo $workouts[$i]['Horse']; ?>" title="<?php echo $workouts[$i]['HorseName']; ?>" class="newwindow"><?php echo $workouts[$i]['HorseName']; ?></a></td>
+    <?php      for ($j = 1; $j < 4; $j++) {
+        $akey = "Activity$j";
+        $dkey = "Distance{$j}Text";
+        $tkey = "Time$j";
+        $style = (!empty($workouts[$i]['EventActivity']) && $workouts[$i]['EventActivity'] == $j) ? " style=\"color: #FF0000; font-weight: bold;\"" : ((isset($workouts[$i]['Injury']) && $workouts[$i]['Injury'] != '') ? " style=\"color: #FF0000;\"" : '');   ?>
+    <td<?php echo $style; ?>><?php echo $workouts[$i][$akey]; ?></td>
+    <td<?php echo $style; ?>><?php echo !empty($workouts[$i][$dkey]) ? $workouts[$i][$dkey] : ''; ?></td>
+    <td<?php echo $style; ?>><?php echo !empty($workouts[$i][$tkey]) ? $workouts[$i][$tkey] : '&nbsp;'; ?></td>
+    <?php      }   ?>
+</tr>
+<tr bgcolor="<?php echo $bgcolor; ?>">
+    <td colspan="3"><?php echo $workouts[$i]['JFirst'] . ' ' . $workouts[$i]['JLast']; ?></td>
+    <td><?php echo $workouts[$i]['Effort']; ?>%</td>
+    <td colspan="2"><?php echo $workouts[$i]['TrackName'] . " (" . $workouts[$i]['TrackCond'] . " - " . $workouts[$i]['TrackType'] . ")"; ?></td>
+    <td colspan="3"><?php echo ($workouts[$i]['Equipment'] != '') ? $workouts[$i]['Equipment'] : 'No Equipment'; ?></td>
+</tr>
+<tr bgcolor="<?php echo $bgcolor; ?>">
+    <td colspan="2" valign="top">Jockey Comment</td>
+    <td colspan="7"><?php echo $workouts[$i]['JComment']; ?></td>
+</tr>
+<?php  }   ?>
+</table>
+<br />
+<div align="center"><a href="workouts.php" title="Workout Schedule">Back to Workouts List</a></div>
+<?php
+    include 'footer.php';
+
+function workout($workout)
+{
+    global $db;
+    // first, figure out if any special events will occur in this workout
+    $workout = getEvent($workout);
+
+    // next, check for injury
+    $workout = getExperience($workout);
+    $workout = injure($workout);
+
+    $numactivities = 0;
+    $workout['TotalDistance'] = 0;
+    // go through each activity
+    for ($i = 1; $i < 4; $i++) {
+        $activity = 'Activity' . $i;
+        $distance = 'Distance' . $i;
+        if ($workout[$activity] != '') {
+            // then, figure out baseline information (sps, stride length, etc)
+            $workout = baseLine($workout, $workout[$activity], $activity, $workout[$distance]);
+            // do the activity
+            $workout = doActivity($workout, $activity, $i, $workout[$distance]);
+            // count it against their stamina
+            if ($workout[$activity] == 'Gallop'
+                || $workout[$activity] == 'Breeze'
+            ) {
+                $workout['TotalDistance'] += $workout[$distance];
+            } elseif ($workout[$activity] == 'Canter') {
+                $workout['TotalDistance'] += $workout[$distance] / 2;
+            } elseif ($workout[$activity] == 'Jog') {
+                $workout['TotalDistance'] += $workout[$distance] / 4;
+            } elseif ($workout[$activity] == 'Walk') {
+                $workout['TotalDistance'] += $workout[$distance] / 6;
+            }
+            $numactivities++;
+        }
+    }
+
+    $workout = confidence($workout);
+    $workout = jockeyFeedback($workout);
+    $workout = energyFitness($workout);
+
+    // stat bonus
+    if ($workout['Confidence'] > 94) {
+        // pick an activity
+        $id = mt_rand(1, $numactivities);
+        $activity = 'Activity' . $id;
+        $distance = 'Distance' . $id;
+        // do stat bonuses
+        $workout = statBonus($workout, $workout[$activity], $workout[$distance]);
+    }
+
+    // update database stuff
+    updateDatabase($workout);
+
+    return $workout;
+}
+
+function updateDatabase($horse)
+{
+    global $db;
+
+    if (!empty($horse['Jockey'])) {
+        // first, jock/horse xp
+        $get = 'SELECT * FROM ff_horse_jockeys WHERE Horse = ? AND Jockey = ?';
+        $res = $db->query($get, array($horse['Horse'], $horse['Jockey']));
+        $xpgain = ($horse['Confidence'] < 26 || $horse['Confidence'] > 75) ? 2 : 1;
+        // check if there is a xp row for this horse/jock
+        if (!empty($res)) {
+            $xprow = $res->fetch();
+            if ($xprow['XP'] >= 98) {
+                $xpgain = 100 - $xprow['XP'];
+            }
+            $upd = 'UPDATE ff_horse_jockeys SET XP = (XP + ?) WHERE Horse = ? AND Jockey = ? LIMIT 1';
+            $params = array($xpgain, $horse['Horse'], $horse['Jockey']);
+        } else {
+            $upd = 'INSERT INTO ff_horse_jockeys (Horse, Jockey, XP) VALUES (?, ?, ?)';
+            $params = array($horse['Horse'], $horse['Jockey'], $xpgain);
+        }
+    } else {
+        $upd = 'INSERT INTO ff_horse_jockeys (Horse, Jockey, XP) VALUES (?, ?, ?)';
+        $params = array($horse['Horse'], $horse['Jockey'], $xpgain);
+    }
+    if (isset($upd)) {
+        $db->update($upd, $params);
+    }
+    // if an event occured, or conf b/t 25-75, do happy
+    if ($horse['Event'] == 'Cooperate') {
+        $happy = 2;
+    } elseif ($horse['Event'] != 'None') {
+        $happy = -2;
+    } elseif ($horse['Confidence'] > 75) {
+        $happy = 1;
+    } elseif ($horse['Confidence'] < 26) {
+        $happy = -1;
+    } else {
+        $happy = false;
+    }
+    if ($happy) {
+        if (!empty($res) || ($horse['Confidence'] < 26 || $horse['Confidence'] > 75)) {
+            $upd = 'UPDATE ff_horse_jockeys SET Happy = (Happy + ?) WHERE Horse = ? AND Jockey = ?';
+            $params = array($happy, $horse['Horse'], $horse['Jockey']);
+        } else {
+            $upd = 'INSERT INTO ff_horse_jockeys (Horse, Jockey, XP) VALUES (?, ?, ?)';
+            $params = array($horse['Horse'], $horse['Jockey'], 1);
+        }
+        $db->update($upd, $params);
+    }
+
+    // store workout info
+    if ($horse['TrackType'] == 'Dirt') {
+        $track = 1;
+    } elseif ($horse['TrackType'] == 'Turf') {
+        $track = 2;
+    } else {
+        $track = 3;
+    }
+    if ($horse['TrackCond'] == 'Fast') {
+        $cond = 1;
+    } elseif ($horse['TrackCond'] == 'Firm') {
+        $cond = 2;
+    } elseif ($horse['TrackCond'] == 'Good') {
+        $cond = 3;
+    } elseif ($horse['TrackCond'] == 'Soft') {
+        $cond = 4;
+    } elseif ($horse['TrackCond'] == 'Wet') {
+        $cond = 5;
+    } elseif ($horse['TrackCond'] == 'Sloppy') {
+        $cond = 6;
+    } elseif ($horse['TrackCond'] == 'Slow') {
+        $cond = 7;
+    } elseif ($horse['TrackCond'] == 'Yielding') {
+        $cond = 8;
+    }
+    $get = 'SELECT * FROM ff_equipment WHERE Equipment LIKE ?';
+    $row = $db->query($get, array(trim($horse['Equipment'])))->fetch();
+    if (!empty($row)) {
+        $equip = $row['ID'];
+    } else {
+        $equip = "NULL";
+    };
+    $ins = "INSERT INTO ff_workouts (`Horse`, `Jockey`, `Date`, `DTSC`,
+        `Condition`, `Location`, `Activity1`, `Distance1`, `Activity2`,
+        `Distance2`, `Activity3`, `Distance3`, `Effort`, `Equipment`,
+        `Confidence`, `Time`, `Comment`) VALUES
+        (" . $horse['Horse'] . ", " . $horse['Jockey'] . ", '" .
+        (date('Y') + 4) . date('-m-d') . "', $track, $cond, " .
+        $horse['Location'] . ", " . $horse['Activity1ID'] . ", " .
+        $horse['Distance1'] . ", NULLIF('" . $horse['Activity2ID'] . "', ''), NULLIF('" .
+        $horse['Distance2'] . "', ''), NULLIF('" . $horse['Activity3ID'] . "', ''), NULLIF('" .
+        $horse['Distance3'] . "', ''), " . $horse['Effort'] . ", $equip, " .
+        $horse['Confidence'] . ", ";
+    $ins .= (!empty($horse['BreezeTime'])) ? $horse['BreezeTime'] : "NULL";
+    $ins .= ", {$horse['JCommentID']})";
+    $db->insert($ins);
+
+    // update energy/fitness
+    $get = 'SELECT EnergyCurrent, Fitness FROM ff_horses WHERE ID = :id';
+    $result = $db->query($get, array(':id' => $horse['Horse']))->fetch();
+    if (($result['Fitness'] + $horse['FitnessGain']) > 100) {
+        $horse['FitnessGain'] = 100 - $result['Fitness'];
+    }
+    $upd = "UPDATE ff_horses
+        SET EnergyCurrent = (EnergyCurrent - " . $horse['EnergyLoss'] ."),
+        Fitness = (Fitness + " . $horse['FitnessGain'] . ")
+        WHERE ID = " . $horse['Horse'] . " LIMIT 1";
+    $db->update($upd);
+    $upd = "UPDATE horse_training_schedules_mv
+        SET energy_current = (energy_current - " . $horse['EnergyLoss'] ."),
+        fitness = (fitness + " . $horse['FitnessGain'] . ")
+        WHERE horse_id = " . $horse['Horse'] . " LIMIT 1";
+    $db->update($upd);
+
+    $get = 'SELECT EnergyCurrent, Fitness FROM ff_horses WHERE ID = :id';
+    $result = $db->query($get, array(':id' => $horse['Horse']))->fetch();
+    $energyGrade = $fitnessGrade = '';
+    $percent = $result['EnergyCurrent'] * 0.2;
+    if ($percent < 10) {
+        $percent = 10;
+    }
+    $modifier = mt_rand(0, (int)$percent);
+
+    $energyScore = (mt_rand(1, 2) == 1) ? $modifier : $modifier * -1;
+    $energyScore += $result['EnergyCurrent'];
+    if ($energyScore <= 40) {
+        $energyGrade = 'F';
+    } elseif ($energyScore <= 70) {
+        $energyGrade = 'D';
+    } elseif ($energyScore <= 84) {
+        $energyGrade = 'C';
+    } elseif ($energyScore <= 94) {
+        $energyGrade = 'B';
+    } else {
+        $energyGrade = 'A';
+    }
+    $percent = $result['Fitness'] * 0.2;
+    if ($percent < 10) {
+        $percent = 10;
+    }
+    $modifier = mt_rand(0, $percent);
+
+    $fitnessScore = (mt_rand(1, 2) == 1) ? $modifier : $modifier * -1;
+    $fitnessScore += $result['Fitness'];
+    if ($fitnessScore <= 40) {
+        $fitnessGrade = 'F';
+    } elseif ($fitnessScore <= 70) {
+        $fitnessGrade = 'D';
+    } elseif ($fitnessScore <= 84) {
+        $fitnessGrade = 'C';
+    } elseif ($fitnessScore <= 94) {
+        $fitnessGrade = 'B';
+    } else {
+        $fitnessGrade = 'A';
+    }
+
+    $upd = 'UPDATE ff_horses SET DisplayEnergy = :energy, DisplayFitness = :fitness WHERE ID = :id';
+    $db->update($upd, array(':energy' => $energyGrade, ':fitness' => $fitnessGrade, ':id' => $horse['Horse']));
+    $upd = 'UPDATE horse_training_schedules_mv SET energy_grade = :energy, fitness_grade = :fitness WHERE horse_id = :id';
+    $db->update($upd, array(':energy' => $energyGrade, ':fitness' => $fitnessGrade, ':id' => $horse['Horse']));
+    $upd = 'UPDATE horse_racehorses_mv hv LEFT JOIN ff_horses h ON hv.horse_id = h.ID
+	    SET hv.energy_grade = h.DisplayEnergy, hv.fitness_grade = h.DisplayFitness';
+    $db->update($upd);
+
+    if (isset($horse['StatBonus']) && $horse['StatBonus'] != '') {
+        $ins = "INSERT INTO ff_workout_bonuses (Horse, Stat, Bonus)
+            VALUES (" . $horse['Horse'] . ", '" . $horse['StatBonus'] . "', " .
+            $horse['BonusAmt'] . ")";
+        $db->insert($ins);
+    }
+
+    // injury
+    if (isset($horse['Injury']) && $horse['Injury'] != '') {
+        switch ($horse['Injury']) {
+            case 1: // heat = 3-5 days
+                $rest = mt_rand(3, 5);
+                break;
+            case 2: // swelling = 5-7 days
+                $rest = mt_rand(5, 7);
+                break;
+            case 3: // cut = 7-14 days
+                $rest = mt_rand(7, 14);
+                break;
+            case 4: // limping = 14-21 days
+                $rest = mt_rand(14, 21);
+                break;
+            case 5: // overheat = 30-65 days
+                $rest = mt_rand(30, 65);
+                break;
+            case 6: // bowed tendon = 60-95 days
+                $rest = mt_rand(60, 95);
+                break;
+        }
+        if (isset($rest)) {
+            $restdate = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') + $rest - 1, date('Y') + 4));
+            $ins = "INSERT INTO ff_injuries (Horse, Date, Injury, Rest)
+                VALUES (" . $horse['Horse'] . ", '" .
+                (date('Y') + 4) . date('-m-d') . "', " . $horse['Injury'] .
+            ", '$restdate')";
+            $db->insert($ins);
+
+            // delete the training schedule(s)
+            $del = 'DELETE FROM ff_training_schedules WHERE Horse = ?';
+            $db->delete($del, array($horse['Horse']));
+
+            $del = 'DELETE FROM ff_training_schedule_horses WHERE Horse = ?';
+            $db->delete($del, array($horse['Horse']));
+        }
+
+        // pick a random leg, if applicable
+        if ($horse['Injury'] == 1 or $horse['Injury'] == 2
+            or $horse['Injury'] == 3 or $horse['Injury'] == 4
+            or $horse['Injury'] == 6
+        ) {
+            $rnd = mt_rand(1, 4);
+            if ($rnd == 1) {
+                $leg = 'RF';
+            } elseif ($rnd == 2) {
+                $leg = 'LF';
+            } elseif ($rnd == 3) {
+                $leg = 'RH';
+            } elseif ($rnd == 4) {
+                $leg = 'LH';
+            }
+        } else {
+            unset($leg);
+        }
+        $ins = "INSERT INTO ff_horse_injuries (Horse, Date, Injury";
+        if (isset($leg)) {
+            $ins .= ",Leg";
+        }
+        $ins .= ") VALUES (" . $horse['Horse'] . ", '" . (date('Y') + 4) . date('-m-d') . "', " . $horse['Injury'];
+        if (isset($leg)) {
+            $ins .= ", '$leg'";
+        }
+        $ins .= ")";
+        $db->insert($ins);
+    }
+}
+
+function statBonus($horse, $activity, $distance)
+{
+    global $db;
+    $jumps = false;
+    // figure out if jumping's an issue
+    if (($activity == 'Gallop' or $activity == 'Breeze') and $horse['TrackType'] == 'Jumps') {
+        if (mt_rand(1, 4) == 1) {
+            $jumps = true;
+        }
+    }
+    // go through the options
+    if ($activity == 'Walk') {
+        // < 1mi = min, >= 1mi = stam
+        $stat = ($distance < 8) ? "Min" : "Stamina";
+        // + 1-3
+        $amt = mt_rand(1, 3);
+    } elseif ($activity == 'Jog') {
+        // < 1mi = min, >= 1mi = stam
+        $stat = ($distance < 8) ? "Min" : "Stamina";
+        // + 3-5
+        $amt = mt_rand(3, 5);
+    } elseif ($activity == 'Canter') {
+        // < 2.5mi = ave, >= 2.5mi = sus
+        $stat = ($distance < 20) ? "Ave" : "Sustain";
+        // + 3-5
+        $amt = mt_rand(3, 5);
+    } elseif ($activity == 'Gallop' and !$jumps) {
+        // < 1.5mi = ave, >= 1.5mi = sus
+        $stat = ($distance < 12) ? "Ave" : "Sustain";
+        // + 5-7
+        $amt = mt_rand(5, 7);
+    } elseif ($activity == 'Breeze' and !$jumps) {
+        $stat = "Max";
+        switch ($distance) {
+            case 1:
+                $amt = mt_rand(1, 2);
+                break;
+            case 2:
+                $amt = mt_rand(3, 4);
+                break;
+            case 3:
+                $amt = mt_rand(5, 6);
+                break;
+            case 4:
+                $amt = mt_rand(7, 8);
+                break;
+            case 5:
+                $amt = mt_rand(9, 10);
+                break;
+            case 6:
+                $amt = mt_rand(10, 12);
+                break;
+        }
+    } elseif ($activity == 'Gate') {
+        $stat = "Break";
+        $amt = 1;
+    } elseif ($jumps) {
+        $stat = "SC";
+        $amt = mt_rand(1, 3);
+    }
+
+    $horse['StatBonus'] = $stat;
+    $horse['BonusAmt'] = $amt;
+    return $horse;
+}
+
+function doActivity($horse, $activity, $actid, $distance)
+{
+    global $db;
+    // check for special activity this event
+    $asps = $activity . "SPS";
+    $asl = $activity . "SL";
+    $ael = $activity . "EL";
+    $afg = $activity . "FG";
+    $atime = "Time" . $actid;
+    if ($actid == $horse['EventActivity']) {
+        $time = $horse['EventTime'];
+
+        // figure out how far the horse went before doing something
+        $numstrides = $time * $horse[$asps];
+        $enloss = $time * $horse[$ael];
+        $enloss += mt_rand(10, 20); // extra energy wasted for spooking/bolting/etc
+        $fitgain = $time * $horse[$afg];
+        $fitgain -= mt_rand(5, 10); // loss of fitness for spooking/bolting/etc
+    } elseif ($actid > $horse['EventActivity'] and $horse['EventActivity'] != '') {
+        $time = "--";
+    } else {
+        // time = (furlongs / 8) * 5280 ft in a mile * 12in in a foot / sps / sl
+        $time = $distance / 8;
+        $time *= 5280 * 12;
+        $time /= $horse[$asl];
+        $enloss = $time * $horse[$ael];
+        $fitgain = $time * $horse[$afg];
+        $time /= $horse[$asps];
+    }
+    if (($horse[$activity] == 'Gallop' or $horse[$activity] == 'Breeze') and $horse['TrackType'] == 'Jumps') {
+        // get the jumptime for the horse
+        $horse = getJumpTime($horse);
+        // figure out how many jumps the horse needs to do
+        $feet = $distance * 660;
+        $pctTrack = $feet / $horse['TrackLength'];
+        $numJumps = floor($horse['TrackJumps'] * $pctTrack);
+
+        for ($i = 0; $i < $numJumps; $i++) {
+            // figure out how long it'll take the horse to jump
+            $jumpNow = (mt_rand($horse['minJumpTime'] * 100, $horse['maxJumpTime'] * 100)) / 100;
+            // add the time to jump the jump
+            $time += $jumpNow;
+            // use up energy jumping
+            if ($horse['SC'] < 5) {
+                // horse totally sucks, so use 3x energy
+                $enloss += ($horse[$ael] * $jumpNow * 3);
+            } elseif ($horse['SC'] < 8) {
+                // horse kinda sucks, so use 2x energy
+                $enloss += ($horse[$ael] * $jumpNow * 2);
+            } else {
+                $enloss += ($horse[$ael] * $jumpNow);
+            }
+        }   // end jumping
+    }
+    $horse[$ael] = !empty($enloss) ? $enloss : null;
+    $horse[$afg] = !empty($fitgain) ? $fitgain : null;
+
+    $display = 0;
+    while ($time > 60) {
+        $display++;
+        $time -= 60;
+    }
+    $display .= ":";
+    if ($time < 10) {
+        $display .= "0";
+    }
+    if ($time != '--') {
+        $display .= number_format($time, 3);
+    }
+    if ($time == '--') {
+        $display = $time;
+    } elseif ($horse[$activity] == 'Breeze' && $actid != $horse['EventActivity']) {
+        $horse['BreezeTime'] = round($time, 2);
+    }
+    $horse[$atime] = !empty($display) ? $display : null;
+
+    return $horse;
+}
+
+function baseLine($horse, $activity, $actid, $distance)
+{
+    global $db;
+    /*  walk    = 1-2sps, 3-4ft/stride, 0.006-0.007EL, 0.005-0.006FG
+    trot    = 2-3sps, 4-7ft/stride, 0.009-0.01EL, 0.002-0.003FG
+    canter  = 1.5-2sps, 10-12ft/stride, 0.03-0.04EL, 0.006-0.01FG
+    gallop  = natural sps, ave stride length, 0.09-0.14EL, 0.045-0.5FG
+    breeze  = natural sps, max stride length, 0.36-0.40EL, 0.15-0.20FG
+     */
+    // get sps (in s/sec) and stride length (in inches)
+    switch ($activity) {
+        case 'Walk':
+            $sps = mt_rand(10, 20)  / 10;
+            $sl = mt_rand(36, 48);
+            $el = mt_rand(12, 14)   / 10000;
+            $fg = mt_rand(45, 61)   / 10000;
+            break;
+        case 'Jog':
+            $sps = mt_rand(20, 30)    / 10;
+            $sl = mt_rand(48, 84);
+            $el = mt_rand(45, 56)    / 10000;
+            $fg = mt_rand(182, 318)   / 10000;
+            break;
+        case 'Canter':
+            $sps = mt_rand(15, 20)    / 10;
+            $sl = mt_rand(120, 144);
+            $el = mt_rand(112, 137)   / 10000;
+            $fg = mt_rand(758, 909)   / 10000;
+            break;
+        case 'Gallop':
+            $rand = mt_rand(89, 99);
+            $sps = $horse['SPS']      * ($rand / 100);
+            $rand = mt_rand(89, 99);
+            $sl = $horse['Ave']       * ($rand / 100);
+            $el = mt_rand(22, 27)     / 1000;
+            $fg = mt_rand(2879, 3182) / 10000;
+            break;
+        case 'Breeze':
+            $rand = mt_rand(89, 99);
+            $sps = $horse['SPS']      * ($rand / 100);
+            $rand = mt_rand(89, 99);
+            $sl = $horse['Max']       * ($rand / 100);
+            $el = mt_rand(337, 412)   / 10000;
+            $fg = mt_rand(5000, 5455) / 10000;
+            break;
+    }
+
+    // modify for effort level
+    $sps *= ($horse['Effort'] / 100);
+    $sl *= ($horse['Effort'] / 100);
+
+    // modify for jockey's weight
+    $maxweight = $horse['Weight'] * 0.9;
+    $weight = $horse['JWeight'];
+    $pctCarried = 1 + (0.9 - $weight / $maxweight);
+    $sps *= $pctCarried;
+    $sl *= $pctCarried;
+
+    // modify for equipment liking/disliking
+    /*  3 categories =
+    $wbdh = wants but doesn't have
+    $hbdw = has but doesn't want
+    $wah = wants and has    */
+    $wbdh = '';
+    $hbdw = '';
+    $wah = '';
+    $ct_hbdw = 0;
+    $ct_wbdh = 0;
+    $ct_wah = 0;
+    $ct_w = ($horse['DesiredEquip'] != '') ? count(explode(' ', $horse['DesiredEquip'])) : 0;
+    if ($horse['Equipment'] != '') {
+        // go through all of the equipment worn
+        foreach (explode(' ', $horse['Equipment']) as $v) {
+            // if it's among the equpiment wanted
+            if (in_array($v, explode(' ', $horse['DesiredEquip']))) {
+                // then add it to that list
+                $wah .= ' ' . $v;
+                $ct_wah++;
+            } else { // if not
+                // then it must be worn but not wanted
+                // so add it to that list
+                $hbdw .= ' ' . $v;
+                $ct_hbdw++;
+            }
+        }
+    }
+    if ($horse['DesiredEquip'] != '') {
+        // now go through all the equipment wanted
+        foreach (preg_split('/ /', $horse['DesiredEquip']) as $v) {
+            // if it's not among the equipment worn, then it goes into 'wants but doesn't have'
+            if (!in_array($v, preg_split('/ /', $horse['Equipment']))) {
+                $wbdh .= ' ' . $v;
+                $ct_wbdh++;
+            }
+        }
+    }
+    if ($ct_hbdw > 0) {
+        $horse['LikesEquip'] = "Hate";
+        $mod = 90;
+    } elseif ($ct_wbdh > 0) {
+        $horse['LikesEquip'] = "Dislike";
+        $mod = 95;
+    } else {
+        $horse['LikesEquip'] = "Love";
+        $mod = 110;
+    }
+    $sps *= $mod / 100;
+    $sl *= $mod / 100;
+
+    // modify for track liking (D/T/SC)
+    switch ($horse['Track']) {
+        case 1: // dirt
+            $mod = $horse['Dirt'];
+            break;
+        case 2: // turf
+            $mod = $horse['Turf'];
+            break;
+        case 3: // sc - jumps
+            $mod = $horse['SC'];
+            break;
+        case 4: // sc - no jumps
+            $mod = $horse['SC'];
+            break;
+    }
+    $sps *= (100 - (5 - $mod)) / 100;
+    $sl *= (100 - (5 - $mod)) / 100;
+
+    // affect confidence (10%)
+    $horse['Confidence'] = 0;
+    $horse['Confidence'] += ((11 - $mod) / 10) * 10;
+
+    // modify for surface liking (F/G/W/S)
+    switch ($horse['TrackCond']) {
+        case 'Fast':
+            $mod = $horse['Fast'];
+            break;
+        case 'Good':
+            $mod = $horse['Good'];
+            break;
+        case 'Wet':
+            $mod = $horse['Wet'];
+            break;
+        case 'Slow':
+            $mod = $horse['Slow'];
+            break;
+    }
+    $sps *= (100 - (5 - $mod)) / 100;
+    $sl *= (100 - (5 - $mod)) / 100;
+
+    // affect confidence (10%)
+    $horse['Confidence'] += ((11 - $mod) / 10) * 10;
+
+    // modify for consistency
+    //$cons = (11 - $horse['Consistency']) + mt_rand(1, 10);
+    $cons = mt_rand(0, 10) - $horse['Consistency'];
+    $sps *= (100 - $cons) / 100;
+    $sl *= (100 - $cons) / 100;
+
+    // affect confidence (10%)
+    $horse['Confidence'] += ((11 - $cons) / 10) * 10;
+
+    $akey = $actid . "SPS";
+    $horse[$akey] = round($sps, 2);
+    $akey = $actid . "SL";
+    $horse[$akey] = round($sl, 2);
+    $akey = $actid . "EL";
+    $horse[$akey] = round($el, 3);
+    $akey = $actid . "FG";
+    $horse[$akey] = round($fg, 3);
+
+    return $horse;
+}
+
+function getEvent($horse)
+{
+    // get chance of horse being spooky (spooking)
+    $spook = 3;
+    // modify based on horse's experience
+    if ($horse['Experience'] < 20) {
+        $spook += 3;
+    } elseif ($horse['Experience'] < 40) {
+        $spook += 2;
+    } elseif ($horse['Experience'] < 60) {
+        $spook += 1;
+    } elseif ($horse['Experience'] > 80) {
+        $spook -= 1;
+    } elseif ($horse['Experience'] > 90) {
+        $spook -= 2;
+    }
+
+    // get chance of being antsy (dumping jockey)
+    $antsy = 3;
+    // modify based on horse's energy level
+    if ($horse['EnergyCurrent'] > 90) {
+        $antsy += 3;
+    } elseif ($horse['EnergyCurrent'] > 80) {
+        $antsy += 2;
+    } elseif ($horse['EnergyCurrent'] > 70) {
+        $antsy += 1;
+    } elseif ($horse['EnergyCurrent'] < 20) {
+        $antsy -= 1;
+    } elseif ($horse['EnergyCurrent'] < 10) {
+        $antsy -= 2;
+    }
+
+    // get chance of horse being high-strung (bolting)
+    $highstrung = 3;
+    // modify based on horse's fitness level
+    if ($horse['Fitness'] > 90) {
+        $highstrung += 3;
+    } elseif ($horse['Fitness'] > 80) {
+        $highstrung += 2;
+    } elseif ($horse['Fitness'] > 70) {
+        $highstrung += 1;
+    } elseif ($horse['Fitness'] < 20) {
+        $highstrung -= 1;
+    } elseif ($horse['Fitness'] < 10) {
+        $highstrung -= 2;
+    }
+
+    // get chance of horse being stubborn (fighting jockey)
+    $stubborn = 3;
+    // modify based on horse's pissy level
+    if ($horse['Pissy'] > 4) {
+        $stubborn += 2;
+    } elseif ($horse['Pissy'] > 3) {
+        $stubborn += 1;
+    }
+
+    // get chance of horse being cooperative (extra happiness for jock)
+    $cooperative = 3;
+    // modify based on horse's ratability
+    if ($horse['Ratability'] > 4) {
+        $cooperative += 2;
+    } elseif ($horse['Ratability'] > 3) {
+        $cooperative += 1;
+    }
+
+    if ($horse['NaturalEnergy'] <= 0) {
+        $max = 50;
+    } elseif ($horse['NaturalEnergy'] <= 20) {
+        $max = 70;
+    } elseif ($horse['NaturalEnergy'] <= 40) {
+        $max = 100;
+    } elseif ($horse['NaturalEnergy'] <= 60) {
+        $max = 130;
+    } else {
+        $max = 150;
+    }
+
+    $rnd = mt_rand(1, $max);
+    if ($rnd <= $spook) {
+        $event = "Spook";
+    } elseif ($rnd <= ($spook + 1 + $antsy)) {
+        $event = "Dump";
+    } elseif ($rnd <= ($spook + 1 + $antsy + 1 + $highstrung)) {
+        $event = "Bolt";
+    } elseif ($rnd <= ($spook + 1 + $antsy + 1 + $highstrung + 1 + $stubborn)) {
+        $event = "Fight";
+    } elseif ($rnd <= ($spook + 1 + $antsy + 1 + $highstrung + 1 + $stubborn + 1 + $cooperative)) {
+        $event = "Cooperate";
+        $horse['Confidence'] = 10;
+    } else {
+        $event = "None";
+    }
+
+    $horse['Event'] = $event;
+
+    if ($event != 'None' and $event != 'Cooperate') {
+        // figure out what activity the event will occur in
+        if ($horse['Activity3'] != '') {
+            $numactivities = 3;
+        } elseif ($horse['Activity2'] != '') {
+            $numactivities = 2;
+        } else {
+            $numactivities = 1;
+        }
+        $pickact = mt_rand(1, $numactivities);
+        // get the time range for that activity (furlongs * 10)
+        $key = 'Distance' . $pickact;
+        $timerange = $horse[$key] * 10;
+        $picktime = mt_rand(5, $timerange);
+        $horse['EventActivity'] = $pickact;
+        $horse['EventTime'] = $picktime;
+        $horse['Confidence'] = -20;
+    } else {
+        $horse['EventActivity'] = '';
+        $horse['EventTime'] = '';
+    }
+
+    return $horse;
+}
+
+// get the new energy/fitness for the horse
+function energyFitness($horse)
+{
+    $enLoss = 0;
+    $fitGain = 0;
+    // go through each activity
+    for ($i = 1; $i < 4; $i++) {
+        $activity = 'Activity' . $i;
+        $el = 'Activity' . $i . 'EL';
+        $fg = 'Activity' . $i . 'FG';
+        if ($horse[$activity] != '') {
+            $enLoss += $horse[$el];
+            $fitGain += $horse[$fg];
+        }
+    }
+
+    // now mod for immaturity
+    $enLoss *= (0.5 + (1 - $horse['agePercent']));
+    $fitGain *= (0.9 + (0.1 * $horse['agePercent']));
+
+    // now mod for fitness - higher fitness = lower energy loss, lower fitness gain
+    if ($horse['Fitness'] < 100) {
+        //        $enLoss *= 1 - ($horse['Fitness'] / 200);
+        $fitGain *= (0.8 + (0.2 * (1 - ($horse['Fitness'] / 100))));
+    }
+    if ($fitGain > (abs($enLoss) * 10)) {
+        $fitGain = abs($enLoss) * 10;
+    }
+
+    $horse['EnergyLoss'] = round($enLoss);
+    $horse['FitnessGain'] = ceil($fitGain);
+
+    return $horse;
+}
+
+function getExperience($horse)
+{
+    $now = (date('Y') + 4) . date('-m-d');
+    // figure out if the horse is immature, in its peak, or past its prime
+    // get the horse's date of birth
+    $dob = $horse['DOB'];
+    // get the date of Jan. 1 of the horse's 2yo year
+    $two = date('Y-m-d', mktime(0, 0, 0, 1, 1, substr($dob, 0, 4) + 2));
+    // get the date the horse reaches its peak
+    $imm = $horse['Immature'];
+    // get the date the horse becomes a has-been
+    $hb = $horse['Hasbeen'];
+
+    // if today is before the peak date
+    if ($now < $imm) {
+        // the horse is still immature
+        $horse['agePercent'] = getImmature(
+            mktime(0, 0, 0, substr($dob, 5, 2), substr($dob, 8), substr($dob, 0, 4)),
+            mktime(0, 0, 0, substr($two, 5, 2), substr($two, 8), substr($two, 0, 4)),
+            mktime(0, 0, 0, substr($imm, 5, 2), substr($imm, 8), substr($imm, 0, 4)),
+            mktime(0, 0, 0, substr($now, 5, 2), substr($now, 8), substr($now, 0, 4))
+        );
+    } elseif ($now < $hb) { // or if today is before the has-been date
+        // the horse is in its prime
+        $horse['agePercent'] = getPeak(
+            mktime(0, 0, 0, substr($dob, 5, 2), substr($dob, 8), substr($dob, 0, 4)),
+            mktime(0, 0, 0, substr($imm, 5, 2), substr($imm, 8), substr($imm, 0, 4)),
+            mktime(0, 0, 0, substr($hb, 5, 2), substr($hb, 8), substr($hb, 0, 4)),
+            mktime(0, 0, 0, substr($now, 5, 2), substr($now, 8), substr($now, 0, 4))
+        );
+    } else { // or if today is after the has-been date
+        // the horse is past its prime
+        $horse['agePercent'] = getHasbeen(
+            mktime(0, 0, 0, substr($dob, 5, 2), substr($dob, 8), substr($dob, 0, 4)),
+            mktime(0, 0, 0, substr($imm, 5, 2), substr($imm, 8), substr($imm, 0, 4)),
+            mktime(0, 0, 0, substr($hb, 5, 2), substr($hb, 8), substr($hb, 0, 4)),
+            mktime(0, 0, 0, substr($now, 5, 2), substr($now, 8), substr($now, 0, 4))
+        );
+    }
+    // stats to affect: min, ave, max, sps, stam, suse
+    $horse['Min'] = round($horse['Min'] * $horse['agePercent']);
+    $horse['Ave'] = round($horse['Ave'] * $horse['agePercent']);
+    $horse['Max'] = round($horse['Max'] * $horse['agePercent']);
+    //$this->sps = round($this->sps * $this->agePercent);
+    $horse['Stamina'] = round($horse['Stamina'] * $horse['agePercent']);
+    $horse['Sustain'] = round($horse['Sustain'] * $horse['agePercent']);
+
+    return $horse;
+}
+
+function getImmature($dob, $two, $imm, $now)
+{
+    //  Formula: (8 Steps)
+    //  1. Count days from birthdate to 1/1/2yo year (x)
+    // /60 = seconds to minutes; /60 = minutes to hours; /24 = hours to days
+    $birthtotwo = floor(($two - $dob) / 60 / 60 / 24);
+    //  2. Count days from birthdate to imm. date (y)
+    $birthtoimm = floor(($imm - $dob) / 60 / 60 / 24);
+    //  3. Count days from birthdate to now (z)
+    $birthtonow = floor(($now - $dob) / 60 / 60 / 24);
+    //  4. y - x = days into immaturity
+    $daysintoimm = $birthtonow - $birthtotwo;
+    //  5. z - x = total immaturity range
+    $totalimmdays = floor(($imm - $two) / 60 / 60 / 24);
+    //  6. days into immaturity / total immaturity range = a%
+    $percentintoimm = round(($daysintoimm / $totalimmdays), 2);
+    //  7. a% x 40% (90% - 50%) = b%
+    $totalpercent = $percentintoimm * 0.4;
+    //  8. 60% + b% = final %
+    $finalpercent = 0.6 + $totalpercent;
+
+    return $finalpercent;
+}
+
+function getPeak($dob, $imm, $hb, $now)
+{
+    //  Formula: (10 Steps)
+    //  1. Count days from birthdate to imm. date (x)
+    $birthtoimm = floor(($imm - $dob) / 60 / 60 / 24);
+    //  2. Count days from birthdate to hb. date (y)
+    $birthtohb = floor(($hb - $dob) / 60 / 60 / 24);
+    //  3. Count days from birthdate to now (z)
+    $birthtonow = floor(($now - $dob) / 60 / 60 / 24);
+    //  4. Calculate days for halfway pt of peak range (a)
+    $halfofpeak = $birthtoimm + round((($hb - $imm) / 60 / 60 / 24 / 2), 0);
+    // if the horse is still on the way towards peaking
+    if ($birthtonow < $halfofpeak) {
+        //      5b. z - x = days into peak
+        $daysintopeak = $birthtonow - $birthtoimm;
+    } else { // otherwise, the horse is past peak
+        //      6b. y - z = days towards hb
+        $daysintopeak = $birthtohb - $birthtonow;
+    }
+
+    //  6c. days toward hb / a = b%
+    $percentintopeak = round(($daysintopeak / $halfofpeak), 2);
+    //  6d. 100% - b% = c%
+    $totalpercent = 1.0 - $percentintopeak;
+    //  6e. c% of 10% (110% - 10%) = d%
+    $totalpercent1 = $totalpercent * 0.1;
+    //  6f. 100% + d% = final %
+    $finalpercent = 1 + $totalpercent1;
+
+    return $finalpercent;
+}
+
+function getHasbeen($dob, $imm, $hb, $now)
+{
+    //  Formula: (7 Steps)
+    //  1. Count days from birthdate to hb. date (x)
+    $birthtohb = floor(($hb - $dob) / 60 / 60 / 24);
+    //  2. Count total days of peak time (y)
+    $totalpeak = floor(($hb - $imm) / 60 / 60 / 24);
+    //  3. Count days from birthdate to now (z)
+    $birthtonow = floor(($now - $dob) / 60 / 60 / 24);
+    //  4. y - x = days past peak (a)
+    $dayspastpeak = $birthtonow - $birthtohb;
+    //  5. a / y = b%
+    $percentpastpeak = round(($dayspastpeak / $birthtonow), 2);
+    //  6. b% of 80% (100% - 20%) = c%
+    $totalpercent = $percentpastpeak * 0.8;
+    //  7. 100% - c% = final %
+    $finalpercent = 1 - $totalpercent;
+
+    return $finalpercent;
+}
+
+// figure out how confident the horse was about the workout
+function confidence($horse)
+{
+    // figure out how many activities the horse did
+    // horse did 3 activities
+    if ($horse['Activity3'] != '') {
+        $max = 10;
+        // horse did 2 activities
+    } elseif ($horse['Activity2'] != '') {
+        $max = 40;
+    } else {
+        $max = 70;
+    }
+    $conf = mt_rand(1, $max);
+
+    $horse['Confidence'] += $conf;
+    return $horse;
+}
+
+function jockeyFeedback($horse)
+{
+    global $db;
+
+    $value = '';
+    if ($horse['Event'] != '' && $horse['Event'] != 'None') {
+        $stat = $horse['Event'];
+        $value = "IS NULL";
+    } else {
+        // randomly pick a category of statement
+        $category = mt_rand(1, 12);
+        if ($horse['NaturalEnergy'] <= 10 && mt_rand(1, 2) == 1) {
+            $category = 12;
+        }
+        $knowledge = $horse['JXP'];
+        if ($knowledge < 10) {
+            $knowledge = 10;
+        } elseif ($knowledge > 90) {
+            $knowledge = 90;
+        }
+        $chance = mt_rand(1, 100);
+        switch ($category) {
+            case 1:
+                $stat = 'Equipment';
+                switch ($horse['LikesEquip']) {
+                    case 'Hate':
+                        if ($chance <= $knowledge) {
+                            $value = 20;
+                        } elseif ($knowledge < 50) {
+                            $value = 100;
+                        } else {
+                            $value = 50;
+                        }
+                        break;
+                    case 'Dislike':
+                        if ($chance <= $knowledge) {
+                            $value = 50;
+                        } elseif ($knowledge < 50) {
+                            $value = 100;
+                        } else {
+                            $value = 20;
+                        }
+                        break;
+                    case 'Love':
+                        if ($chance <= $knowledge) {
+                            $value = 100;
+                        } elseif ($knowledge < 50) {
+                            $value = 20;
+                        } else {
+                            $value = 50;
+                        }
+                        break;
+                }
+                break;
+            case 2:
+                $stat = 'Stamina';
+                // convert distance to 10ths of furlongs
+                $distance = $horse['TotalDistance'] * 10;
+                if ($distance > $horse['Stamina']) {
+                    if ($chance <= $knowledge) {
+                        $value = 50;
+                    } else {
+                        $value = 100;
+                    }
+                } else {
+                    if ($chance <= $knowledge) {
+                        $value = 100;
+                    } else {
+                        $value = 50;
+                    }
+                }
+                break;
+            case 3:
+                $stat = 'Energy';
+                if (!empty($horse['Energy']) && $horse['Energy'] < 51) {
+                    if ($chance <= $knowledge) {
+                        $value = 50;
+                    } else {
+                        $value = 100;
+                    }
+                } else {
+                    if ($chance <= $knowledge) {
+                        $value = 50;
+                    } else {
+                        $value = 100;
+                    }
+                }
+                break;
+            case 4:
+                $stat = 'Fitness';
+                if ($horse['Fitness'] < 61) {
+                    if ($chance <= $knowledge) {
+                        $value = 50;
+                    } else {
+                        $value = 100;
+                    }
+                } else {
+                    if ($chance <= $knowledge) {
+                        $value = 100;
+                    } else {
+                        $value = 50;
+                    }
+                }
+                break;
+            case 5: // jock/horse happy
+                $stat = 'Happy';
+                if ($horse['JHappy'] < 21) {
+                    $value = 20;
+                } elseif ($horse['JHappy'] < 41) {
+                    $value = 40;
+                } elseif ($horse['JHappy'] < 61) {
+                    $value = 60;
+                } else {
+                    $value = 80;
+                }
+                break;
+            case 6:
+                $stat = 'Weight';
+                if ($horse['JWeight'] > $horse['Weight']) {
+                    $value = 100;
+                } else {
+                    $value = 50;
+                }
+                break;
+            case 7:
+                $stat = 'Style';
+                switch ($horse['Style']) {
+                    case 20:
+                        if ($chance <= $knowledge) {
+                            $value = 20;
+                        } elseif ($knowledge < 30) {
+                            $value = 80;
+                        } elseif ($knowledge < 60) {
+                            $value = 60;
+                        } else {
+                            $value = 40;
+                        }
+                        break;
+                    case 40:
+                        if ($chance <= $knowledge) {
+                            $value = 40;
+                        } elseif ($knowledge < 30) {
+                            $value = 80;
+                        } elseif ($knowledge < 60) {
+                            $value = 60;
+                        } else {
+                            $value = 20;
+                        }
+                        break;
+                    case 60:
+                        if ($chance <= $knowledge) {
+                            $value = 60;
+                        } elseif ($knowledge < 30) {
+                            $value = 20;
+                        } elseif ($knowledge < 60) {
+                            $value = 40;
+                        } else {
+                            $value = 80;
+                        }
+                        break;
+                    case 80:
+                        if ($chance <= $knowledge) {
+                            $value = 80;
+                        } elseif ($knowledge < 30) {
+                            $value = 20;
+                        } elseif ($knowledge < 60) {
+                            $value = 40;
+                        } else {
+                            $value = 60;
+                        }
+                        break;
+                }
+                break;
+            case 8:
+                $stat = 'Pissy';
+                switch ($horse['Pissy']) {
+                    case 1:
+                        if ($chance <= $knowledge) {
+                            $value = 20;
+                        } elseif ($knowledge < 50) {
+                            $value = 50;
+                        } else {
+                            $value = 100;
+                        }
+                        break;
+                    case 2:
+                        if ($chance <= $knowledge) {
+                            $value = 50;
+                        } elseif ($knowledge < 50) {
+                            $value = 100;
+                        } else {
+                            $value = 20;
+                        }
+                        break;
+                    case 3:
+                        if ($chance <= $knowledge) {
+                            $value = 50;
+                        } elseif ($knowledge < 50) {
+                            $value = 20;
+                        } else {
+                            $value = 100;
+                        }
+                        break;
+                    case 4:
+                        if ($chance <= $knowledge) {
+                            $value = 50;
+                        } elseif ($knowledge < 50) {
+                            $value = 20;
+                        } else {
+                            $value = 100;
+                        }
+                        break;
+                    case 5:
+                        if ($chance <= $knowledge) {
+                            $value = 100;
+                        } elseif ($knowledge < 50) {
+                            $value = 50;
+                        } else {
+                            $value = 20;
+                        }
+                        break;
+                }
+                break;
+            case 9:
+                $stat = 'Ratability';
+                switch ($horse['Ratability']) {
+                    case 1:
+                        if ($chance <= $knowledge) {
+                            $value = 20;
+                        } elseif ($knowledge < 50) {
+                            $value = 50;
+                        } else {
+                            $value = 100;
+                        }
+                        break;
+                    case 2:
+                        if ($chance <= $knowledge) {
+                            $value = 50;
+                        } elseif ($knowledge < 50) {
+                            $value = 100;
+                        } else {
+                            $value = 20;
+                        }
+                        break;
+                    case 3:
+                        if ($chance <= $knowledge) {
+                            $value = 50;
+                        } elseif ($knowledge < 50) {
+                            $value = 20;
+                        } else {
+                            $value = 100;
+                        }
+                        break;
+                    case 4:
+                        if ($chance <= $knowledge) {
+                            $value = 50;
+                        } elseif ($knowledge < 50) {
+                            $value = 20;
+                        } else {
+                            $value = 100;
+                        }
+                        break;
+                    case 5:
+                        if ($chance <= $knowledge) {
+                            $value = 100;
+                        } elseif ($knowledge < 50) {
+                            $value = 20;
+                        } else {
+                            $value = 50;
+                        }
+                        break;
+                }
+                break;
+            case 10:
+                $stat = 'XP';
+                if ($horse['JXP'] < 11) {
+                    $value = 10;
+                } elseif ($horse['JXP'] < 31) {
+                    $value = 30;
+                } elseif ($horse['JXP'] < 41) {
+                    $value = 40;
+                } elseif ($horse['JXP'] < 61) {
+                    $value = 60;
+                } elseif ($horse['JXP'] < 71) {
+                    $value = 70;
+                } else {
+                    $value = 90;
+                }
+                break;
+            case 11:
+                $stat = 'Confidence';
+                if ($horse['Confidence'] < 21) {
+                    $value = 20;
+                } elseif ($horse['Confidence'] < 41) {
+                    $value = 40;
+                } elseif ($horse['Confidence'] < 61) {
+                    $value = 60;
+                } else {
+                    $value = 80;
+                }
+                break;
+            case 12:
+                $stat = 'NatEnergy';
+                if ($horse['NaturalEnergy'] >= 80) {
+                    $value = 80;
+                } elseif ($horse['NaturalEnergy'] >= 60) {
+                    $value = 60;
+                } elseif ($horse['NaturalEnergy'] >= 40) {
+                    $value = 40;
+                } elseif ($horse['NaturalEnergy'] >= 20) {
+                    $value = 20;
+                } elseif ($horse['NaturalEnergy'] >= 0) {
+                    $value = 0;
+                } else {
+                    $value = -20;
+                }
+        }
+        $value = " = $value";
+    }
+
+    $get = "SELECT * FROM ff_jocklines WHERE Stat = ? AND Value $value LIMIT 1";
+    $row = $db->query($get, array($stat))->fetch();
+
+    $line = $row['Line'];
+    $line = preg_replace('/Name/', $horse['HorseName'], $line);
+    $gender = ($horse['Gender'] == 'F' || $horse['Gender'] == 'M') ? 'her' : 'his';
+    $line = preg_replace('/Gender/', $gender, $line);
+
+    $horse['JComment'] = $line;
+    $horse['JCommentID'] = $row['ID'];
+    return $horse;
+}
+
+function trainerFeedback($horse)
+{
+    $tc = "horse's confidence = " . $horse['Confidence'];
+    $horse['TComment'] = $tc;
+    return $horse;
+}
+
+function getJumpTime($horse)
+{
+    global $db;
+    $maxJump = 4;
+    $rngJump = 0.2;
+    $segJump = 0.3;
+
+    $sc = $horse['SC'];
+    $weight = $horse['JWeight'];
+    $weightLimit = $horse['Weight'];
+    $effort = $horse['Effort'];
+    $time2 = $maxJump - (($sc - 1) * $rngJump);
+    $time = $time2 - $segJump;
+    if ($weight > $weightLimit) {
+        $time = number_format($time * ($weight / $weightLimit), 2);
+        $time2 = number_format($time2 * ($weight / $weightLimit), 2);
+    }
+    if ($effort < 100) {
+        $time = number_format($time * ($effort / 100), 2);
+        $time2 = number_format($time2 * ($effort / 100), 2);
+    } elseif ($effort > 100) {
+        $time = number_format($time * ($effort / 100), 2);
+        $time2 = number_format($time2 * ($effort / 100), 2);
+    }
+    $horse['minJumpTime'] = $time;
+    $horse['maxJumpTime'] = $time2;
+
+    return $horse;
+}
+
+function getData($workout, $tracks)
+{
+    global $db;
+
+    // get the info for the horse
+    $get = "SELECT h.*, e.Equipment AS EquipName
+        FROM ff_horses h LEFT JOIN
+        ff_equipment e ON h.Equipment = e.ID
+        WHERE h.ID = ?";
+    $row = $db->query($get, array($workout['Horse']))->fetch();
+
+    $workout['HorseID'] = $row['ID'];
+    $workout['HorseName'] = $row['Name'];
+    $workout['Gender'] = $row['Gender'];
+    $workout['DOB'] = $row['DOB'];
+    $workout['Break'] = $row['Break'];
+    $workout['Min'] = $row['Min'];
+    $workout['Ave'] = $row['Ave'];
+    $workout['Max'] = $row['Max'];
+    $workout['Stamina'] = $row['Stamina'];
+    $workout['Sustain'] = $row['Sustain'];
+    $workout['Consistency'] = $row['Consistency'];
+    $workout['Fast'] = $row['Fast'];
+    $workout['Good'] = $row['Good'];
+    $workout['Wet'] = $row['Wet'];
+    $workout['Slow'] = $row['Slow'];
+    $workout['Dirt'] = $row['Dirt'];
+    $workout['Turf'] = $row['Turf'];
+    $workout['SC'] = $row['SC'];
+    // get style
+    if ($row['Lead'] >= $row['Pace'] && $row['Lead'] >= $row['Midpack']
+        && $row['Lead'] >= $row['Close']
+    ) {
+        $workout['Style'] = 20;
+    } elseif ($row['Pace'] >= $row['Midpack'] && $row['Pace'] >= $row['Close']) {
+        $workout['Style'] = 40;
+    } elseif ($row['Midpack'] >= $row['Close']) {
+        $workout['Style'] = 60;
+    } else {
+        $workout['Style'] = 80;
+    }
+    $workout['Courage'] = $row['Courage'];
+    $workout['Immature'] = $row['ImmDate'];
+    $workout['Hasbeen'] = $row['HBDate'];
+    $workout['Soundness'] = $row['Soundness'];
+    $workout['Fitness'] = $row['Fitness'];
+    $workout['Pissy'] = $row['Pissy'];
+    $workout['Ratability'] = $row['Ratability'];
+    $workout['DesiredEquip'] = $row['EquipName'];
+    $workout['SPS'] = $row['SPS'];
+    $workout['Acceleration'] = $row['Acceleration'];
+    $workout['EnergyRegain'] = $row['EnergyRegain'];
+    $workout['EnergyCurrent'] = $row['EnergyCurrent'];
+    $workout['Turning'] = $row['Turning'];
+    $workout['Weight'] = $row['Weight'];
+    $workout['Location'] = $row['Location'];
+    $workout['Experience'] = $row['XPCurrent'];
+    $workout['NatEnergy'] = $row['NELoss'];
+    $workout['NaturalEnergy'] = $row['NaturalEnergy'];
+
+    // have nat. energy affect SPS
+    if ($row['NaturalEnergy'] < 50) {
+        $pct = 20;
+        if ($row['NaturalEnergy'] < 0) {
+            $pct += abs($row['NaturalEnergy']);
+            if ($pct > 75) {
+                $pct = 75;
+            }
+        }
+    } elseif ($row['NaturalEnergy'] < 70) {
+        $pct = 15;
+    } elseif ($row['NaturalEnergy'] < 90) {
+        $pct = 10;
+    } else {
+        $pct = 5;
+    }
+    $penalty = $workout['SPS'] * ($pct / 100);
+    $penalty *= ($row['NaturalEnergy'] / 100);
+    $workout['SPS'] -= $penalty;
+
+    // get horse/jockey exp. & happiness
+    $get = "SELECT * FROM ff_horse_jockeys WHERE Horse = ? AND Jockey = ?";
+    $row = $db->query($get, array($workout['Horse'], $workout['Jockey']))->fetch();
+    $workout['JHappy'] = !empty($row['Happy']) ? $row['Happy'] : 0;
+    $workout['JXP'] = !empty($row['XP']) ? $row['XP'] : 0;
+
+    // get jockey info
+    $get = 'SELECT First, Last, Weight FROM ff_jockeys WHERE ID = ?';
+    $row = $db->query($get, array($workout['Jockey']))->fetch();
+    $workout['JFirst'] = $row['First'];
+    $workout['JLast'] = $row['Last'];
+    $workout['JWeight'] = $row['Weight'];
+
+    // convert d/t/sc to name rather than ID
+    $workout['TrackType'] = (!empty($workout['Track']) && !empty($tracks[$workout['Track'] - 1][1])) ? $tracks[$workout['Track'] - 1][1] : null;
+    $tracktype = $workout['TrackType'];
+    if ($tracktype == 'No Jumps') {
+        $tracktype = 'Turf';
+    } elseif ($tracktype == 'Jumps') {
+        $tracktype = 'Steeplechase';
+    }
+
+    // get track info
+    if (empty($workout['Location'])) {
+        $get = "SELECT r.Location, t.*
+            FROM ff_raceresults r LEFT JOIN
+            ff_raceresults_oof ro ON r.ID = ro.RaceID LEFT JOIN
+            ff_trackdata t ON r.Location = t.ID
+            WHERE ro.Horse = ?
+            ORDER BY r.DATE DESC LIMIT 1";
+        $row = $db->query($get, array($workout['HorseID']))->fetch();
+        if (!empty($row)) {
+            $workout['Location'] = $row['Location'];
+        } else {
+            $get = 'SELECT * FROM ff_trackdata WHERE DTSC = ? AND Name = ?';
+            $row = $db->query($get, array($tracktype, 'Aqueduct'))->fetch();
+            $workout['Location'] = $row['ID'];
+        }
+    } else {
+        $get = 'SELECT * FROM ff_trackdata WHERE ID = ?';
+        $row = $db->query($get, array($workout['Location']))->fetch();
+    }
+    $trackname = $row['Name'];
+    $workout['TrackName'] = $trackname;
+    $workout['TrackCond'] = (!empty($row['Condition'])) ? $row['Condition'] : 'Fast';
+    $workout['TrackLength'] = $row['Length'];
+    $workout['TrackTTF'] = $row['TurnToFinish'];
+    $workout['TrackTurn'] = $row['TurnDistance'];
+    $workout['TrackBanking'] = $row['Banking'];
+    $workout['TrackJumps'] = $row['Jumps'];
+
+
+    // convert distance to miles
+    for ($i = 1; $i < 4; $i++) {
+        $akey = "Activity$i";
+        $dkey = "Distance$i";
+        if (!empty($workout[$akey]) && !empty($workout[$dkey])) {
+            if ($workout[$dkey] == 4) {
+                $distancemi = '1/2 mile';
+            } elseif ($workout[$dkey] >= 8) {
+                $distancemi = floor($workout[$dkey] / 8);
+                if (($workout[$dkey] % 8) == 4) {
+                    $distancemi .= ' 1/2';
+                }
+                $distancemi .= ' mile';
+                if ($workout[$dkey] > 8) {
+                    $distancemi .= 's';
+                }
+            } else {
+                $distancemi = $workout[$dkey] . ' furlong';
+                if ($workout[$dkey] > 1) {
+                    $distancemi .= 's';
+                }
+            }
+            $newkey = "Distance{$i}Text";
+            $workout[$newkey] = $distancemi;
+        }
+    }
+
+    return $workout;
+}
+
+function injure($horse)
+{
+    // random # b/t soundness score & 10
+    $chance = mt_rand(5 - $horse['Soundness'], 10);
+    // if the track is muddy
+    if ($horse['TrackCond'] == 'Wet') {
+        // increase chance of injury by 2%
+        $chance += 2;
+    } elseif ($horse['TrackCond'] == 'Slow') { // if the track is slow
+        // increase chance of injury by 3%
+        $chance += 3;
+    }   // end track condition check
+    // if the race is a steeplechase
+    if ($horse['TrackType'] == 'Jumps') {
+        // increase chance of injury by 3%
+        $chance += 3;
+    }   // end steeplechase check
+    // if the horse is carrying too much weight
+    if ($horse['JWeight'] > $horse['Weight']) {
+        // figure out how much extra weight
+        $diffweight = $horse['JWeight'] - $horse['Weight'];
+        $chance += ($diffweight < 5) ? 2 : 3;
+    }   // end weight check
+    // check if the horse is not in its peak
+    if ($horse['agePercent'] < .3) {
+        $chance += 10;
+    } elseif ($horse['agePercent'] < .4) {
+        $chance += 8;
+    } elseif ($horse['agePercent'] < .5) {
+        $chance += 6;
+    } elseif ($horse['agePercent'] < .6) {
+        $chance += 5;
+    } elseif ($horse['agePercent'] < .7) {
+        $chance += 4;
+    } elseif ($horse['agePercent'] < .8) {
+        $chance += 3;
+    } elseif ($horse['agePercent'] < .9) {
+        $chance += 2;
+    } elseif ($horse['agePercent'] < 1) {
+        $chance += 1;
+    }
+    // check that the horse is not super tired
+    if ($horse['EnergyCurrent'] < 25) {
+        $chance += 5;
+    } elseif ($horse['EnergyCurrent'] < 50) {
+        $chance += 3;
+    } elseif ($horse['EnergyCurrent'] < 75) {
+        $chance += 1;
+    }
+    // check that the horse is not super unfit
+    if ($horse['Fitness'] < 25) {
+        $chance += 5;
+    } elseif ($horse['Fitness'] < 40) {
+        $chance += 3;
+    } elseif ($horse['Fitness'] < 60) {
+        $chance += 1;
+    }
+
+    // finally, figure out what the horse is doing
+    /*  Walk: 1/2 mile - 2 miles    2%/f     8-32
+    Jog: 1/2 mile - 5 miles     4%/f     16-160
+    Canter: 1/2 mile - 5 miles  6%/f     24-240
+    Gallop: 1/2 mile - 3 miles  12%/f    48-288
+    Breeze: 1 - 6 furlongs      75%/f    75-450   */
+    $pts = 0;
+    for ($i = 1; $i < 4; $i++) {
+        $akey = 'Activity' . $i;
+        $dkey = 'Distance' . $i;
+        $activity = $horse[$akey];
+        $distance = $horse[$dkey];
+        switch ($activity) {
+            case 'Walk':
+                $pct = 2;
+                break;
+            case 'Jog':
+                $pct = 4;
+                break;
+            case 'Canter':
+                $pct = 6;
+                break;
+            case 'Gallop':
+                $pct = 12;
+                break;
+            case 'Breeze':
+                $pct = 75;
+                break;
+        }
+        $pts += $pct;
+    }
+    $chance += floor($pts / 100);
+    if ($chance > 100) {
+        $chance = 100;
+    }
+
+    // generate a random # between 1-250
+    $rand = mt_rand(1, 5000);
+    if ($rand < $chance) {
+        // horse will get injured
+        //echo $horse['HorseName'] . " should get injured<br />\n";
+
+        $sound = $horse['Soundness'];
+
+        //Possible injuries
+        //1 = heat in leg (week off from racing)
+        //2 = swelling in leg (week off from racing)
+        //3 = cut/bleeding (2 weeks off from racing)
+        //4 = limping (2 weeks off from racing)
+        //5 = overheating (3 weeks off from racing)
+        //6 = bowed tendon (3 weeks off from racing)
+
+        switch ($sound) {
+            case 10:
+                // 5% chance of bowed tendon
+                $bowed = 5;
+                // 10% chance of overheating
+                $overheat = 15;
+                // 15% chance of limping
+                $limp = 30;
+                // 20% chance of cut/bleeding
+                $cut = 50;
+                // 23% chance of swelling
+                $swelling = 73;
+                // 27% chance of heat
+                $heat = 100;
+                break;
+            case 9:
+                // 5% chance of bowed tendon
+                $bowed = 5;
+                // 12% chance of overheating
+                $overheat = 17;
+                // 17% chance of limping
+                $limp = 34;
+                // 20% chance of cut/bleeding
+                $cut = 54;
+                // 22% chance of swelling
+                $swelling = 76;
+                // 24% chance of heat
+                $heat = 100;
+                break;
+            case 8:
+                // 7% chance of bowed tendon
+                $bowed = 7;
+                // 13% chance of overheating
+                $overheat = 20;
+                // 21% chance of limping
+                $limp = 41;
+                // 21% chance of cut/bleeding
+                $cut = 63;
+                // 19% chance of swelling
+                $swelling = 81;
+                // 19% chance of heat
+                $heat = 100;
+                break;
+            case 7:
+                // 8% chance of bowed tendon
+                $bowed = 8;
+                // 13% chance of overheating
+                $overheat = 21;
+                // 18% chance of limping
+                $limp = 39;
+                // 21% chance of cut/bleeding
+                $cut = 60;
+                // 20% chance of swelling
+                $swelling = 80;
+                // 20% chance of heat
+                $heat = 100;
+                break;
+            case 6:
+                // 9% chance of bowed tendon
+                $bowed = 9;
+                // 13% chance of overheating
+                $overheat = 21;
+                // 18% chance of limping
+                $limp = 39;
+                // 21% chance of cut/bleeding
+                $cut = 60;
+                // 19% chance of swelling
+                $swelling = 80;
+                // 20% chance of heat
+                $heat = 100;
+                break;
+            case 5:
+                // 10% chance of bowed tendon
+                $bowed = 10;
+                // 14% chance of overheating
+                $overheat = 24;
+                // 18% chance of limping
+                $limp = 42;
+                // 21% chance of cut/bleeding
+                $cut = 63;
+                // 18% chance of swelling
+                $swelling = 81;
+                // 19% chance of heat
+                $heat = 100;
+                break;
+            case 4:
+                // 11% chance of bowed tendon
+                $bowed = 11;
+                // 15% chance of overheating
+                $overheat = 26;
+                // 20% chance of limping
+                $limp = 46;
+                // 18% chance of cut/bleeding
+                $cut = 64;
+                // 17% chance of swelling
+                $swelling = 81;
+                // 19% chance of heat
+                $heat = 100;
+                break;
+            case 3:
+                // 12% chance of bowed tendon
+                $bowed = 12;
+                // 17% chance of overheating
+                $overheat = 29;
+                // 21% chance of limping
+                $limp = 50;
+                // 17% chance of cut/bleeding
+                $cut = 67;
+                // 15% chance of swelling
+                $swelling = 82;
+                // 18% chance of heat
+                $heat = 100;
+                break;
+            case 2:
+                // 13% chance of bowed tendon
+                $bowed = 13;
+                // 18% chance of overheating
+                $overheat = 31;
+                // 22% chance of limping
+                $limp = 53;
+                // 16% chance of cut/bleeding
+                $cut = 69;
+                // 14% chance of swelling
+                $swelling = 83;
+                // 17% chance of heat
+                $heat = 100;
+                break;
+            default:
+                // 14% chance of bowed tendon
+                $bowed = 14;
+                // 19% chance of overheating
+                $overheat = 31;
+                // 22% chance of limping
+                $limp = 53;
+                // 16% chance of cut/bleeding
+                $cut = 69;
+                // 13% chance of swelling
+                $swelling = 82;
+                // 18% chance of heat
+                $heat = 100;
+                break;
+        }
+
+        $randinj = mt_rand(1, 350);
+
+        if ($randinj <= $bowed) { // < bowed tendon
+            $horse['Injury'] = 6;
+        } elseif ($randinj <= $overheat) { // < overheating
+            $horse['Injury'] = 5;
+        } elseif ($randinj <= $limp) { // < limping
+            $horse['Injury'] = 4;
+        } elseif ($randinj <= $cut) { // < cut
+            $horse['Injury'] = 3;
+        } elseif ($randinj <= $swelling) { // < swelling
+            $horse['Injury'] = 2;
+        } elseif ($randinj <= $heat) { // < heat
+            $horse['Injury'] = 1;
+        }
+        //echo "horse's injury = " . $horse['Injury'] . "<br />";
+    }   // end random # check
+
+    return $horse;
+}

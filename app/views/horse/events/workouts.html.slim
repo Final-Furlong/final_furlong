@@ -1,0 +1,22 @@
+= turbo_frame_tag "#{@horse.slug}-workout-history" do
+  - if @workouts.blank?
+    p= t(".no_workouts")
+  - else
+    .mx-auto.overflow-x-auto.w-full.sm:hidden
+      - @workouts.each do |workout|
+        .card.bg-base-100.w-full.px-2.rounded-none
+          .card-body.p-0.rounded-none
+            .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+              input type="checkbox"
+              .collapse-title.font-semibold.font-medium
+                span= l(workout.date)
+              .collapse-content.text-sm
+    .hidden.mx-auto.overflow-x-auto.border.rounded-md.w-full.sm:block.sm:w-5/6
+      table.table.table-zebra.sortable
+        thead
+          tr.border-b-1.border-gray-400.dark:border-neutral-600
+            th= t(".date")
+        tbody
+          - @workouts.each do |workout|
+            tr
+              td data-sort=workout.date = l(workout.date)

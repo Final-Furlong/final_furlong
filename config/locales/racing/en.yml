@@ -69,3 +69,54 @@ en:
       race_number: 'Race #%{number}'
       speed_factor: Speed Factor
       weight: Lbs.
+    workout_comments:
+      bolt: "%{name} bolted during training."
+      confidence_20: "%{name} was unresponsive."
+      confidence_40: "%{name} did poorly today."
+      confidence_60: "%{name} did well today."
+      confidence_80: "%{name} was willing."
+      cooperate: "%{name} was a dream to ride today!"
+      dump: Your @*$(!&% horse dumped me!
+      energy_100: "%{name} has lots of energy!"
+      energy_50: "%{name} seems tired."
+      equipment_100: "%{name} loves %{gender} equipment."
+      equipment_20: "%{name} hates %{gender} equipment."
+      equipment_50: "%{name} dislikes %{gender} equipment."
+      fight: Your @*$(!&% horse fought me too hard to continue the workout!
+      fitness_100: "%{name} is in great shape!"
+      fitness_50: "%{name} seems out of shape."
+      happy_20: "%{name} and I don't get along at all."
+      happy_40: "%{name} and I get along OK."
+      happy_60: "%{name} and I get along well."
+      happy_80: "%{name} and I get along great!"
+      jumps_20: "%{name} tripped over a cross-rail."
+      jumps_40: "%{name} is so-so at jumping."
+      jumps_60: "%{name} seems like a decent jumper."
+      jumps_80: "%{name} loves jumping."
+      natural_energy_0: "%{name} refused to run at all."
+      natural_energy_20: "%{name} really isn't interested in running."
+      natural_energy_40: "%{name} is looking a bit lackluster lately."
+      natural_energy_60: "%{name} seems willing to run."
+      natural_energy_80: "%{name} is raring to go mentally."
+      natural_energy_negative: "%{name} tore off my pants, kicked me, dumped his waterbucket over my head and then took off down the road.  Y'know, I think we should cut down on the sweet feed.  He's obviously got too much energy.  Oh, and you owe me a pair of jeans."
+      pissy_100: "%{name} has the devil's temperament!"
+      pissy_20: "%{name} seems very well-mannered."
+      pissy_50: "%{name} has an average temperament."
+      ratability_100: "%{name} is very easy to rate in a race."
+      ratability_20: "%{name} refuses to rate at all."
+      ratability_50: "%{name} is moderately ratable."
+      spook: "%{name} spooked pretty badly during training."
+      stamina_100: "%{name} finished strong, had lots left."
+      stamina_50: "%{name} ran out of steam."
+      style_20: "%{name} seems to like running on the lead."
+      style_40: "%{name} seems to like running off the pace."
+      style_60: "%{name} seems to like running midpack."
+      style_80: "%{name} seems to like running from behind."
+      weight_100: I think I'm too heavy for %{name} to carry.
+      weight_50: "%{name} could carry more weight in races."
+      xp_10: Sorry, I just don't know %{name} very well yet.
+      xp_30: I'm getting to know %{name} a little better.
+      xp_40: I know %{name} fairly well.
+      xp_60: I know %{name} pretty well.
+      xp_70: I know %{name} really well.
+      xp_90: I know %{name} like the back of my hand.

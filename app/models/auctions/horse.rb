@@ -4,7 +4,6 @@ module Auctions
     include FriendlyId
 
     self.table_name = "auction_horses"
-    self.ignored_columns += ["old_id"]
 
     friendly_id :horse_slug, use: [:slugged, :finders]
 
