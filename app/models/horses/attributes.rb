@@ -1,7 +1,6 @@
 module Horses
   class Attributes < ApplicationRecord
     self.table_name = "horse_attributes"
-    self.ignored_columns += ["old_id"]
 
     TITLES = ["Final Furlong", "World", "International", "National", "Grand", "Normal"].freeze
 
@@ -14,10 +13,14 @@ module Horses
     validates :title, inclusion: { in: TITLES }, allow_blank: true
 
     def title_string
+      return unless title
+
       I18n.t("horse.titles.#{title.downcase.tr(" ", "_")}")
     end
 
     def title_abbr
+      return unless title
+
       I18n.t("horse.titles.abbr.#{title.downcase.tr(" ", "_")}")
     end
   end

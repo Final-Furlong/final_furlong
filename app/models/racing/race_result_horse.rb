@@ -3,7 +3,6 @@ module Racing
     include FlagShihTzu
 
     self.table_name = "race_result_horses"
-    self.ignored_columns += ["old_id", "old_jockey_id", "old_odd_id"]
 
     belongs_to :race, class_name: "Racing::RaceResult", inverse_of: :horses
     belongs_to :horse, class_name: "Horses::Horse", inverse_of: :race_result_finishes
