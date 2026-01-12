@@ -13,12 +13,12 @@ if (!isSupported()) {
   apply()
 }
 
-const dialog = document.getElementById("turbo-confirm-dialog")
-const titleElement = document.getElementById("turbo-confirm-title")
-const messageElement = document.getElementById("turbo-confirm-message")
-const confirmButton = dialog?.querySelector("button[value='confirm']")
-
 window.Turbo.config.forms.confirm = (message, element, submitter) => {
+  const dialog = document.getElementById("turbo-confirm-dialog")
+  const titleElement = document.getElementById("turbo-confirm-title")
+  const messageElement = document.getElementById("turbo-confirm-message")
+  const confirmButton = dialog?.querySelector("button[value='confirm']")
+
   // Fall back to native confirm if dialog isn't in the DOM
   if (!dialog) return Promise.resolve(confirm(message))
 

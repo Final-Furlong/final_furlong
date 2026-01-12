@@ -3,6 +3,8 @@ module Legacy
     self.table_name = "ff_horses"
     self.primary_key = "ID"
 
+    has_many :workouts, class_name: "Legacy::Workout", inverse_of: :horse, dependent: :destroy
+
     scope :game_owned, -> { where(Owner: 20) }
     scope :alive, -> { where(DOD: Date.current + 4.years..).or(where(DOD: nil)) }
     scope :racehorse, -> { where(status: 3).alive }

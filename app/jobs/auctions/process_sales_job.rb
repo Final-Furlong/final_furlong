@@ -37,6 +37,7 @@ class Auctions::ProcessSalesJob < ApplicationJob
       { sold: false, error: }
     end
     store_job_info(outcome:)
+    Auctions::Horse.counter_culture_fix_counts
     schedule_next_sales_job(auction:) unless Rails.env.test?
   end
 

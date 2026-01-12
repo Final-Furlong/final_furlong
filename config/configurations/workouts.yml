@@ -1,0 +1,34 @@
+shared:
+  energy_loss_per_stride:
+    walk: .0005
+    jog: .0015
+    canter: .005
+    gallop: .006
+    breeze: .0075
+  energy_loss_events:
+    spook: 3
+    bolt: 5
+    buck: 2
+  fitness_gain_per_furlong:
+    walk: 1
+    jog: 3
+    canter: 5
+    gallop: 10
+    breeze: 15
+  max_distance_for_2yos: 16
+  max_gallop_for_2yos: 8
+  walk:
+    min_furlongs: 4
+    max_furlongs: 16
+  jog:
+    min_furlongs: 4
+    max_furlongs: 40
+  canter:
+    min_furlongs: 4
+    max_furlongs: 40
+  gallop:
+    min_furlongs: 4
+    max_furlongs: 24
+  breeze:
+    min_furlongs: 1
+    max_furlongs: 6
