@@ -123,6 +123,7 @@ module Auctions
         end
         auction_horse.update(sold_at: Time.current)
         horse.update(owner: buyer)
+        Auctions::Horse.counter_culture_fix_counts
 
         result.sold = true
       rescue ActiveRecord::ActiveRecordError

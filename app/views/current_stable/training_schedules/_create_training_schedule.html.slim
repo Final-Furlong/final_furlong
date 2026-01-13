@@ -1,4 +1,4 @@
-- if allowed_to?(:create?, Racing::TrainingSchedule.new)
+- if policy(Racing::TrainingSchedule).create?
   - new_text = t("current_stable.training_schedules.index.add_new")
   = render Ui::ButtonizedLink::Component.new(url: new_stable_training_schedule_path, color: :success, size: :small, style: :outline, http_method: :get) do
     = new_text

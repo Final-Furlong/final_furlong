@@ -9,7 +9,7 @@ module CurrentStable
     helper_method :schedule
 
     def index
-      @schedules = authorized_scope(Racing::TrainingSchedule.all)
+      @schedules = policy_scope(Racing::TrainingSchedule.all)
     end
 
     def show

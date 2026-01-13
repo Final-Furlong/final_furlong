@@ -12,6 +12,10 @@ module Racing
       user.stable.reload.training_schedules.size < Racing::TrainingSchedule::MAX_SCHEDULES_PER_STABLE
     end
 
+    def create?
+      new?
+    end
+
     def edit?
       owned_by_stable?
     end

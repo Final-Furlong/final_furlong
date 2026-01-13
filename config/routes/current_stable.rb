@@ -7,6 +7,8 @@ namespace :stable, module: "current_stable" do
   resources :lease_offers, only: :index
   resources :leases, only: :index
   resources :sale_offers, only: :index
+  resources :trainings, only: :index
+  resources :training, only: :show
   resources :training_schedules do
     resources :horses, controller: "training_schedule_horses", only: %i[index new create destroy]
   end

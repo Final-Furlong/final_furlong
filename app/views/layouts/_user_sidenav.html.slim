@@ -32,6 +32,14 @@ li.px-2
           ]
             i.ph-fill.ph-gavel
             span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.stable.auctions")
+      - if Horses::Horse.racehorse.where(owner: Current.stable).exists?
+        li.hidden
+          a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
+            href=stable_trainings_path
+            class="hover:bg-gray-100 dark:hover:bg-gray-700"
+          ]
+            i.ph-fill.ph-timer
+            span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.stable.training")
 li.px-2
   details open=true
     summary= t("layouts.sidenav.stable.racing_divider")
