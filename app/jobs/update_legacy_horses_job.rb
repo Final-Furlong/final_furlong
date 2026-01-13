@@ -8,9 +8,9 @@ class UpdateLegacyHorsesJob < ApplicationJob
     Legacy::Horse.where(rails_id: nil).find_each do |legacy_horse|
       migrate_legacy_horse(legacy_horse:)
     end
-    Legacy::Horse.where.not(Status: 3).where("last_modified >
-last_synced_to_rails_at").find_each do |legacy_horse|
+    Legacy::Horse.where.not(Status: 3).where("last_modified > last_synced_to_rails_at").find_each do |legacy_horse|
       migrate_legacy_horse(legacy_horse:)
+    end
     Legacy::Horse.where(last_synced_to_rails_at: nil).find_each do |legacy_horse|
       migrate_legacy_horse(legacy_horse:)
     end
