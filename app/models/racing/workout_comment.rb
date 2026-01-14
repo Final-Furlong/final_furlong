@@ -1,6 +1,17 @@
 module Racing
   class WorkoutComment < ApplicationRecord
     validates :stat, presence: true
+
+    def to_s(name, female = false)
+      if placeholders.blank?
+        I18n.t("racing.workout_comments.#{comment_i18n_key}")
+      elsif placeholders == "name"
+        I18n.t("racing.workout_comments.#{comment_i18n_key}", name:)
+      else
+        gender = I18n.t("racing.workout_comments.gender_#{female ? "female" : "male"}")
+        I18n.t("racing.workout_comments.#{comment_i18n_key}", name:, gender:)
+      end
+    end
   end
 end
 

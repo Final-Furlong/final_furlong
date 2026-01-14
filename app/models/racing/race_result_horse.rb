@@ -1,6 +1,6 @@
 module Racing
   class RaceResultHorse < ApplicationRecord
-    include FlagShihTzu
+    include Equipmentable
 
     self.table_name = "race_result_horses"
 
@@ -19,13 +19,6 @@ module Racing
     scope :by_max_finish, ->(position) { where(finish_position: ..position) }
     scope :by_date, ->(date) { joins(:race).merge(RaceResult.by_date(date)) }
     scope :by_year, ->(year) { joins(:race).merge(RaceResult.by_year(year).ordered_by_date) }
-
-    has_flags 1 => :blinkers,
-      2 => :shadow_roll,
-      3 => :wraps,
-      4 => :figure_8,
-      5 => :no_whip,
-      :column => "equipment"
   end
 end
 

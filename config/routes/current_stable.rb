@@ -12,7 +12,7 @@ namespace :stable, module: "current_stable" do
   resources :training_schedules do
     resources :horses, controller: "training_schedule_horses", only: %i[index new create destroy]
   end
-  resources :workouts, only: %i[create]
+  resources :workouts, only: %i[index create]
   resources :settings, only: %i[new]
   resources :shipments, only: :index
 end

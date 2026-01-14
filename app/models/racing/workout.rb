@@ -1,6 +1,6 @@
 module Racing
   class Workout < ApplicationRecord
-    include FlagShihTzu
+    include Equipmentable
 
     ACTIVITIES = %w[walk jog canter gallop breeze].freeze
 
@@ -59,12 +59,19 @@ module Racing
       end
     end
 
-    has_flags 1 => :blinkers,
-      2 => :shadow_roll,
-      3 => :wraps,
-      4 => :figure_8,
-      5 => :no_whip,
-      :column => "equipment"
+    def activity_string(key)
+      activity = send(:"activity#{key}")
+      return I18n.t("common.dash") if activity.blank?
+
+      distance = send(:"distance#{key}")
+      distance_i18n = I18n.t("common.distances.#{distance}_furlongs")
+      "#{activity.capitalize} (#{distance_i18n})"
+    end
+
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[activity1 activity2 activity3 comment_id condition confidence date distance1
+        distance2 distance3 effort equipment horse_id jockey_id time_in_seconds]
+    end
   end
 end
 

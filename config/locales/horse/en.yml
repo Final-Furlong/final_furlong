@@ -86,7 +86,13 @@ en:
         scheduled: Scheduled
         starting_location: From
       workouts:
+        activity: Activity
+        comment: Comment
         date: Date
+        effort: Effort
+        equipment: Equipment
+        jockey: Jockey
+        racetrack: Racetrack
     foal_due: Foal Due
     foals:
       dam_foal_list:

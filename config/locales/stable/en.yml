@@ -131,6 +131,10 @@ en:
         title: 'Training Schedule: %{name}'
       update:
         success: Training Schedule was successfully updated.
+    trainings:
+      index:
+        loading_workouts: Loading workouts...
+        workouts: Workouts (%{count})
     workouts:
       create:
         success: Workout for %{horse} ran successfully

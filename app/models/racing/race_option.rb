@@ -1,6 +1,6 @@
 module Racing
   class RaceOption < ApplicationRecord
-    include FlagShihTzu
+    include Equipmentable
 
     RACEHORSE_TYPES = %w[flat jump].freeze
     RACING_STYLES = %w[leading off_pace midpack closing].freeze
@@ -22,13 +22,6 @@ module Racing
     validates :runs_on_dirt, :runs_on_turf, :trains_on_dirt, :trains_on_turf,
       :trains_on_jumps, inclusion: { in: [true, false] }
     validates :next_race_note_created_at, presence: true, if: :note_for_next_race
-
-    has_flags 1 => :blinkers,
-      2 => :shadow_roll,
-      3 => :wraps,
-      4 => :figure_8,
-      5 => :no_whip,
-      :column => "equipment"
   end
 end
 

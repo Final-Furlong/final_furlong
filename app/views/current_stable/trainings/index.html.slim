@@ -1,0 +1,25 @@
+= turbo_frame_tag "#{Current.stable.slug}-trainings" do
+  .tabs.tabs-border.dark:border-neutral-400 role="tablist"
+    - if policy(Racing::TrainingSchedule).index?
+      - schedules_count = 0
+      - if schedules_count.zero?
+        input.tab type="radio" name="stable-trainings" aria-label=t(".no_schedules") id="schedules" disabled=true
+      - else
+        input.tab type="radio" name="stable-trainings" aria-label=t(".schedules", count: schedules_count) id="schedules"
+        .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+          = turbo_frame_tag "#{Current.stable.slug}-training-schedules", src: "#", loading: "lazy" do
+            .w-full.text-center
+              p.mx-auto= t(".loading_schedules")
+              .mt-2.mx-auto.skeleton.w-full
+
+    - if policy(Racing::Workout).index?
+      - workouts_count = Racing::Workout.where(horse: Horses::Horse.managed_by(Current.stable)).count
+      - if workouts_count.zero?
+        input.tab type="radio" name="stable-workouts" aria-label=t(".no_workouts") id="workouts" disabled=true
+      - else
+        input.tab type="radio" name="stable-workouts" aria-label=t(".workouts", count: workouts_count) id="workouts"
+        .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+          = turbo_frame_tag "#{Current.stable.slug}-training-workouts", src: stable_workouts_path, loading: "lazy" do
+            .w-full.text-center
+              p.mx-auto= t(".loading_workouts")
+              .mt-2.mx-auto.skeleton.w-full

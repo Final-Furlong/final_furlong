@@ -85,6 +85,8 @@ en:
       fight: Your @*$(!&% horse fought me too hard to continue the workout!
       fitness_100: "%{name} is in great shape!"
       fitness_50: "%{name} seems out of shape."
+      gender_female: "her"
+      gender_male: "his"
       happy_20: "%{name} and I don't get along at all."
       happy_40: "%{name} and I get along OK."
       happy_60: "%{name} and I get along well."

@@ -1,6 +1,12 @@
 module CurrentStable
   class WorkoutsController < ApplicationController
-    before_action :set_horse
+    before_action :set_horse, except: :index
+
+    def index
+      query = policy_scope(Racing::Workout.all, policy_scope_class: CurrentStable::WorkoutPolicy::Scope).includes(:horse).ransack(params[:q])
+      query.sorts = "date desc" if query.sorts.blank?
+      @pagy, @workouts = pagy(:offset, query.result)
+    end
 
     def create
       workout = Racing::Workout.new(**workout_params.merge(horse:))

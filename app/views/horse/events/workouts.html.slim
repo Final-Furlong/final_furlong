@@ -12,11 +12,37 @@
                 span= l(workout.date)
               .collapse-content.text-sm
     .hidden.mx-auto.overflow-x-auto.border.rounded-md.w-full.sm:block.sm:w-5/6
-      table.table.table-zebra.sortable
+      table.table.table-zebra
         thead
           tr.border-b-1.border-gray-400.dark:border-neutral-600
             th= t(".date")
+            th= t(".jockey")
+            th= t(".effort")
+            th= t(".racetrack")
+            th= t(".equipment")
+            th= t(".activity")
+            th= t(".activity")
+            th= t(".activity")
+            th= t(".comment")
         tbody
           - @workouts.each do |workout|
+            - horse = workout.horse
+            - jockey = workout.jockey
+            - racetrack = workout.racetrack
             tr
               td data-sort=workout.date = l(workout.date)
+              td data-sort="#{jockey.last_name}, #{jockey.first_name}" = jockey.full_name
+              td data-sort=workout.effort = "#{workout.effort}%"
+              td
+                = racetrack.name
+                = " ("
+                = workout.condition.titleize
+                = ")"
+              td=workout.equipment_string
+              td=workout.activity_string(1)
+              td=workout.activity_string(2)
+              td=workout.activity_string(3)
+              td=workout.comment.to_s(horse.name, horse.female?)
+
+  .float-right.mt-2
+    == @pagy.series_nav
