@@ -23,6 +23,61 @@ module Racing
       4 => :figure_8,
       5 => :no_whip,
       :column => "desired_equipment"
+
+    def peak_percent
+      if Date.current < peak_start_date
+        # 1. Count days from birthdate to 1/1/2yo year (x)
+        days_to_two_year_old = (Date.new(horse.date_of_birth.year + 2, 1, 1) -
+                               horse.date_of_birth).to_i
+        # 2. Count days from birthdate to peak start date (y)
+        days_to_peak_start = (peak_start_date - horse.date_of_birth).to_i
+        # 3. Count days from birthdate to now (z)
+        current_days_old = (Date.current - horse.date_of_birth).to_i
+        # 4. y - x = days into immaturity
+        days_toward_peak = days_to_peak_start - days_to_two_year_old
+        # 5. z - x = total immaturity range
+        total_peak_days = current_days_old - days_to_two_year_old
+        # 6. days until peak / days past 2yo start = a%
+        percent_towards_peak = total_peak_days.fdiv(days_toward_peak).round(2)
+        # 7. a% x 40% (90% - 50%) = b%
+        total_percent = percent_towards_peak * 0.4
+        # 8. 60% + b% = final %
+        0.6 + total_percent
+      elsif Date.current > peak_end_date
+        # 1. Count total days of peak time (y)
+        total_peak_length = (peak_end_date - peak_start_date).to_i
+        # 2. Count time since peak ended = days past peak (a)
+        days_past_peak = (Date.current - peak_end_date).to_i
+        # 3. a / y = b%
+        percent_past_peak = 1 - days_past_peak.fdiv(total_peak_length).round(2)
+        # 4. b% of 80% (100% - 20%) = c%
+        total_percent = percent_past_peak * 0.8
+        # 5. 100% - c% = final %
+        1 + total_percent
+      else
+        # 1. Count days from birthdate to imm. date (x)
+        days_to_peak_start = (peak_start_date - horse.date_of_birth).to_i
+        # 2. Count days from birthdate to hb. date (y)
+        days_to_peak_end = (peak_end_date - horse.date_of_birth).to_i
+        # 3. Count days from birthdate to now (z)
+        current_days_old = (Date.current - horse.date_of_birth).to_i
+        # 4. Calculate days for halfway pt of peak range (a)
+        halfway_through_peak = days_to_peak_start + ((peak_end_date - peak_start_date).to_i / 2)
+        days_into_peak = if current_days_old < halfway_through_peak
+          current_days_old - days_to_peak_start
+        else
+          days_to_peak_end - current_days_old
+        end
+        # 6c. days toward hb / a = b%
+        percent_into_peak = days_into_peak.fdiv(halfway_through_peak).round(2)
+        # 6d. 100% - b% = c%
+        total_percent = 1 - percent_into_peak
+        # 6e. c% of 10% (110% - 10%) = d%
+        total_percent *= percent_into_peak # 0.1
+        # 6f. 100% + d% = final %
+        1 + total_percent
+      end
+    end
   end
 end
 
