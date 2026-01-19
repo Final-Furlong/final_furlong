@@ -2,7 +2,6 @@ class Racing::RaceSchedule < ApplicationRecord
   include RaceTypeable
 
   self.table_name = "race_schedules"
-  self.ignored_columns += ["old_id"]
 
   RACE_TYPES = %w[
     maiden

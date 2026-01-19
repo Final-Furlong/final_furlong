@@ -4,7 +4,6 @@ module Racing
     include FriendlyId
 
     self.table_name = "jockeys"
-    self.ignored_columns += ["old_id"]
 
     friendly_id :full_name, use: [:slugged, :finders]
 
@@ -13,6 +12,8 @@ module Racing
     STATUSES = %w[apprentice veteran retired].freeze
 
     has_many :race_result_horses, class_name: "Racing::RaceResultHorse", inverse_of: :jockey, dependent: :nullify
+    has_many :horse_relationships, class_name: "Racing::HorseJockeyRelationship", inverse_of: :jockey, dependent: :delete_all
+    has_many :ridden_horses, class_name: "Horses::Horse", through: :horse_relationships, source: :horse
 
     validates :legacy_id, :first_name, :last_name, :date_of_birth, :height_in_inches,
       :weight, :strength, :acceleration, :break_speed, :min_speed, :average_speed,

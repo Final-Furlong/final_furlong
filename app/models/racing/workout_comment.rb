@@ -1,5 +1,9 @@
 module Racing
   class WorkoutComment < ApplicationRecord
+    self.table_name = "workout_comments"
+
+    # has_many :workouts, class_name: "Racing::Workout", inverse_of: :comment, dependent: :nullify
+
     validates :stat, presence: true
 
     def to_s(name, female = false)
