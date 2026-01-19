@@ -7,7 +7,6 @@ module Racing
     belongs_to :stable, class_name: "Account::Stable"
 
     has_many :training_schedule_horses, class_name: "Racing::TrainingScheduleHorse", inverse_of: :training_schedule, dependent: :destroy
-    has_many :horses, class_name: "Horses::Horse", through: :training_schedule_horses
 
     attribute :sunday_activities, TrainingScheduleActivity.to_type
     attribute :monday_activities, TrainingScheduleActivity.to_type

@@ -105,7 +105,7 @@ end
 #  max_speed              :integer          default(0), not null
 #  midpack                :integer          default(0), not null
 #  min_speed              :integer          default(0), not null
-#  natural_energy_current :decimal(5, 3)    default(0.0), not null
+#  natural_energy_current :float            default(0.0), not null
 #  natural_energy_gain    :decimal(5, 3)    default(0.0), not null
 #  natural_energy_loss    :integer          default(0), not null
 #  off_pace               :integer          default(0), not null

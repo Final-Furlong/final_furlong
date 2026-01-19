@@ -22,12 +22,12 @@ class Workouts::StrideLengthCalculator
 
   def call
     base_value = case activity.downcase.to_sym
-    when :walk
-      rand(36..48)
-    when :jog, :trot
-      rand(48..84)
-    when :canter
-      rand(120..144)
+    when :walk, :jog, :trot, :canter
+      key = activity.downcase.to_sym
+      key = :jog if key == :trot
+      min = Config::Workouts[key][:stride_inches_min]
+      max = Config::Workouts[key][:stride_inches_max]
+      rand(min...max)
     when :gallop
       stride_length * random_percent
     when :breeze

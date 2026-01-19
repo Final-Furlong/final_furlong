@@ -18,17 +18,51 @@ shared:
   max_distance_for_2yos: 16
   max_gallop_for_2yos: 8
   walk:
+    energy_loss_per_second_min: 0.006
+    energy_loss_per_second_max: 0.007
+    fitness_gain_per_second_min: 0.002
+    fitness_gain_per_second_max: 0.003
     min_furlongs: 4
     max_furlongs: 16
+    stride_inches_min: 36
+    stride_inches_max: 48
+    strides_per_second_min: 1
+    strides_per_second_max: 2
   jog:
+    energy_loss_per_second_min: 0.009
+    energy_loss_per_second_max: 0.010
+    fitness_gain_per_second_min: 0.005
+    fitness_gain_per_second_max: 0.006
     min_furlongs: 4
     max_furlongs: 40
+    stride_inches_min: 48
+    stride_inches_max: 84
+    strides_per_second_min: 2
+    strides_per_second_max: 3
   canter:
+    energy_loss_per_second_min: 0.030
+    energy_loss_per_second_max: 0.040
+    fitness_gain_per_second_min: 0.006
+    fitness_gain_per_second_max: 0.010
     min_furlongs: 4
     max_furlongs: 40
+    stride_inches_min: 120
+    stride_inches_max: 144
+    strides_per_second_min: 1.5
+    strides_per_second_max: 2.0
   gallop:
+    energy_loss_per_second_min: 0.090
+    energy_loss_per_second_max: 0.140
+    fitness_gain_per_second_min: 0.045
+    fitness_gain_per_second_max: 0.050
     min_furlongs: 4
     max_furlongs: 24
+    stride_length: average
   breeze:
+    energy_loss_per_second_min: 0.360
+    energy_loss_per_second_max: 0.400
+    fitness_gain_per_second_min: 0.150
+    fitness_gain_per_second_max: 0.200
     min_furlongs: 1
     max_furlongs: 6
+    stride_length: max

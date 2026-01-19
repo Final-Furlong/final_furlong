@@ -8,7 +8,7 @@ module Racing
     belongs_to :location, inverse_of: :racetrack
 
     has_many :surfaces, class_name: "TrackSurface", dependent: :restrict_with_exception
-    has_many :scheduled_races, through: :surfaces
+    has_many :scheduled_races, class_name: "Racing::RaceSchedule", through: :surfaces
 
     validates :name, presence: true, length: { minimum: 4 }
     validates :name, uniqueness: { case_sensitive: false }
