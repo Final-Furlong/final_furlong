@@ -6,6 +6,10 @@ module Racing
       end
     end
 
+    def index?
+      logged_in?
+    end
+
     def new?
       return false unless user&.stable
 

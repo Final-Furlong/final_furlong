@@ -4,6 +4,10 @@ class UpdateLegacyWorkoutsJob < ApplicationJob
   def perform
     workouts = 0
     Legacy::Workout.unscoped.find_each do |workout|
+      if workout.horse.Status != 3
+        workout.destroy
+        next
+      end
       if Racing::Workout.joins(:horse).where(horse: { legacy_id: workout.Horse }).exists?(date: workout.Date - 4.years)
         workout.destroy
         next

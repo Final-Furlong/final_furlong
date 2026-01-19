@@ -1,7 +1,5 @@
 module Horses
   class Horse < ApplicationRecord
-    self.ignored_columns += ["old_id", "old_dam_id", "old_sire_id"]
-
     include PublicIdGenerator
     include FinalFurlong::Horses::Validation
     include FriendlyId
@@ -47,6 +45,9 @@ module Horses
     has_one :current_boarding, -> { where(end_date: nil) }, class_name: "Horses::Boarding", inverse_of: :horse, dependent: :delete
     has_many :boardings, -> { where.not(end_date: nil) }, class_name: "Horses::Boarding", inverse_of: :horse, dependent: :delete_all
     has_many :racing_shipments, class_name: "Shipping::RacehorseShipment", dependent: :delete_all
+    has_many :current_injuries, class_name: "Horses::Injury", inverse_of: :horse, dependent: :delete_all
+    has_many :historical_injuries, class_name: "Horses::HistoricalInjury", inverse_of: :horse, dependent: :delete_all
+    has_many :jockey_relationships, class_name: "Racing::HorseJockeyRelationship", dependent: :delete_all
 
     has_many :foals, class_name: "Horses::Horse", inverse_of: :dam, dependent: :nullify
     has_many :broodmare_shipments, class_name: "Shipping::BroodmareShipment", dependent: :delete_all
