@@ -91,6 +91,7 @@ en:
         date: Date
         effort: Effort
         equipment: Equipment
+        horse: Horse
         jockey: Jockey
         racetrack: Racetrack
     foal_due: Foal Due

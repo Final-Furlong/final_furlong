@@ -3,4 +3,5 @@
   = render Nav::Breadcrumbs::Component.new(links: [{ name: Current.stable.name, href: current_stable_path },
                                                    { name: index_title, href: stable_training_schedules_path },
                                                    { name: t(".title"), href: "#" }])
-= render "form", url: stable_training_schedules_path
+= turbo_frame_tag "#{Current.stable.slug}-training-schedules" do
+  = render "form", url: stable_training_schedules_path, schedule: @schedule

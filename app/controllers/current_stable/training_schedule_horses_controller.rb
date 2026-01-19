@@ -4,13 +4,15 @@ module CurrentStable
     before_action :set_schedule_horse, only: %i[new create]
     before_action :set_stable_horses, only: :new
 
+    skip_after_action :verify_pundit_authorization, only: :index
+
     attr_reader :schedule, :schedule_horse, :horses, :daily_activities, :horse
 
     helper_method :schedule, :schedule_horse, :horses, :daily_activities, :horse
 
     def index
       authorize schedule, :view_horses?
-      @horses = Horses::Horse.joins(:training_schedule).where(training_schedules: { id: schedule }, owner: Current.stabler)
+      @horses = Horses::Horse.joins(:training_schedule).where(training_schedules: { id: schedule }, owner: Current.stable)
     end
 
     def new

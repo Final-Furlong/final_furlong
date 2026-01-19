@@ -1,1 +1,51 @@
-p hi
+= turbo_frame_tag "#{Current.stable.slug}-training-workouts" do
+  - if @workouts.blank?
+    p= t(".no_workouts")
+  - else
+    .mx-auto.overflow-x-auto.w-full.sm:hidden
+      - @workouts.each do |workout|
+        .card.bg-base-100.w-full.px-2.rounded-none
+          .card-body.p-0.rounded-none
+            .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+              input type="checkbox"
+              .collapse-title.font-semibold.font-medium
+                span= l(workout.date)
+              .collapse-content.text-sm
+    .hidden.mx-auto.overflow-x-auto.border.rounded-md.w-full.sm:block.sm:w-5/6
+      table.table.table-zebra
+        thead
+          tr.border-b-1.border-gray-400.dark:border-neutral-600
+            th= t("horse.events.workouts.horse")
+            th= t("horse.events.workouts.date")
+            th= t("horse.events.workouts.jockey")
+            th= t("horse.events.workouts.effort")
+            th= t("horse.events.workouts.racetrack")
+            th= t("horse.events.workouts.equipment")
+            th= t("horse.events.workouts.activity")
+            th= t("horse.events.workouts.activity")
+            th= t("horse.events.workouts.activity")
+            th= t("horse.events.workouts.comment")
+        tbody
+          - @workouts.each do |workout|
+            - horse = workout.horse
+            - jockey = workout.jockey
+            - racetrack = workout.racetrack
+            tr
+              td= horse.name
+              td data-sort=workout.date = l(workout.date)
+              td data-sort="#{jockey.last_name}, #{jockey.first_name}" = jockey.full_name
+              td data-sort=workout.effort = "#{workout.effort}%"
+              td
+                = racetrack.name
+                = " ("
+                = workout.condition.titleize
+                = ")"
+              td=workout.equipment_string
+              td=workout.activity_string(1)
+              td=workout.activity_string(2)
+              td=workout.activity_string(3)
+              td=workout.comment.to_s(horse.name, horse.female?)
+
+  .float-right.mt-2
+    == @pagy.series_nav
+
