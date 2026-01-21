@@ -133,7 +133,11 @@ en:
         success: Training Schedule was successfully updated.
     trainings:
       index:
+        loading_schedules: Loading schedules...
         loading_workouts: Loading workouts...
+        no_schedules: Schedules
+        no_workouts: Workouts
+        schedules: Schedules (%{count})
         workouts: Workouts (%{count})
     workouts:
       create:
