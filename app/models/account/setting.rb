@@ -2,8 +2,6 @@ module Account
   class Setting < ApplicationRecord
     include StoreModel::NestedAttributes
 
-    self.ignored_columns += ["old_id"]
-
     belongs_to :user
 
     attribute :racing, Settings::Racing.to_type

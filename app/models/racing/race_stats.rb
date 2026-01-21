@@ -21,6 +21,35 @@ module Racing
       4 => :figure_8,
       5 => :no_whip,
       :column => "desired_equipment"
+
+    def update_grades
+      modifier_percent = (energy * 0.2).clamp(10, 20)
+      modifier = rand(0...modifier_percent)
+      graded_score = (rand(1...2) == 1) ? modifier : modifier * -1
+      energy_score = energy * graded_score
+      grade = if energy_score <= 40 then "F"
+      elsif energy_score <= 70 then "D"
+      elsif energy_score <= 84 then "C"
+      elsif energy_score <= 94 then "B"
+      else
+        "A"
+      end
+      self.energy_grade = grade
+
+      modifier_percent = (fitness * 0.2).clamp(10, 20)
+      modifier = rand(0...modifier_percent)
+      graded_score = (rand(1...2) == 1) ? modifier : modifier * -1
+      fitness_score = fitness * graded_score
+      grade = if fitness_score <= 40 then "F"
+      elsif fitness_score <= 70 then "D"
+      elsif fitness_score <= 84 then "C"
+      elsif fitness_score <= 94 then "B"
+      else
+        "A"
+      end
+      self.fitness_grade = grade
+      save
+    end
   end
 end
 
