@@ -4,23 +4,49 @@
                                                    { name: schedule_name, href: stable_training_schedules_path },
                                                    { name: t(".title", schedule: schedule_name), href: "#" }])
 
-h3 Activities for Today
+h3.font-bold.text-xl = t(".today_activities")
 p= daily_activities.activity_with_distance(1)
 - if daily_activities.activity_with_distance(2) != I18n.t("common.none")
   p= daily_activities.activity_with_distance(2)
 - if daily_activities.activity_with_distance(3) != I18n.t("common.none")
   p= daily_activities.activity_with_distance(3)
 
-h3 Horses
+hr.my-2
 
-- horses.each do |horse|
-  = turbo_frame_tag("schedule_horse_#{horse.id}") do
-    div
-      span= horse.name
-      = render Ui::Button::Component.new(size: :small) do
-        = t(".do_workout")
-      ruby:
-        confirm_message = t("current_stable.training_schedules.horse.confirm", name: horse.name)
-        data = { turbo_confirm: confirm_message, turbo_method: :delete }
-      = render Ui::Button::Component.new(color: :error, style: :outline, size: :small, http_method: :delete, form_class: "d-inline", data: , url: stable_training_schedule_horse_path(schedule, horse)) do
-        = t("current_stable.training_schedules.horse.remove")
+.hidden.mx-auto.overflow-x-auto.rounded-md.w-full.sm:block
+  .table-responsive-md
+    table.table.table-responsive.table-zebra.table-sm.sortable.n-last
+      thead
+        tr
+          td= t(".horse")
+          td= t(".age_gender")
+          td= t(".energy")
+          td= t(".fitness")
+          td= t(".jockey")
+          td= t(".effort")
+          td= t(".track")
+          td= t(".equipment")
+          td= t("common.actions.title")
+      tbody
+        - horses.each do |horse|
+          - stats = horse.race_stats
+          tr
+            td= horse.name
+            td.wb-break-all
+              = horse.age
+              = "yo "
+              = t("horses.genders.#{horse.gender}")
+            td= stats&.energy_grade || t("common.dash")
+            td
+            td
+            td
+            td
+            td
+            td
+              = render Ui::Button::Component.new(size: :small) do
+                = t(".do_workout")
+              ruby:
+                confirm_message = t("current_stable.training_schedules.horse.confirm", name: horse.name)
+                data = { turbo_confirm: confirm_message, turbo_method: :delete }
+              = render Ui::Button::Component.new(color: :error, style: :outline, size: :small, http_method: :delete, form_class: "d-inline", data: , url: stable_training_schedule_horse_path(schedule, horse)) do
+                = t("current_stable.training_schedules.horse.remove")

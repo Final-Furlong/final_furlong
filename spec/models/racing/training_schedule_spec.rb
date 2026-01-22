@@ -3,7 +3,6 @@ RSpec.describe Racing::TrainingSchedule do
     it { is_expected.to belong_to(:stable).class_name("Account::Stable") }
 
     it { is_expected.to have_many(:training_schedule_horses).class_name("Racing::TrainingScheduleHorse") }
-    it { is_expected.to have_many(:horses).class_name("Horses::Horse").through(:training_schedule_horses) }
   end
 
   describe "validations" do

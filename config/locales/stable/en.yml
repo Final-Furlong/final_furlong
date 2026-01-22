@@ -105,7 +105,17 @@ en:
       create:
         success: "%{name} was assigned to %{schedule}"
       index:
+        age_gender: Age/Gender
+        do_workout: Do Workout
+        effort: Effort
+        energy: Energy
+        equipment: Equipment
+        fitness: Fitness
+        horse: Horse
+        jockey: Jockey
         title: Horses Assigned to Training Schedule %{schedule}
+        today_activities: Activities for Today
+        track: Track
       new:
         title: Assign Horse to Training Schedule
     training_schedules:
@@ -133,7 +143,11 @@ en:
         success: Training Schedule was successfully updated.
     trainings:
       index:
+        loading_schedules: Loading schedules...
         loading_workouts: Loading workouts...
+        no_schedules: Schedules
+        no_workouts: Workouts
+        schedules: Schedules (%{count})
         workouts: Workouts (%{count})
     workouts:
       create:

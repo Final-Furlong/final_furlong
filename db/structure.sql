@@ -204,6 +204,22 @@ CREATE TYPE public.horse_status AS ENUM (
 
 
 --
+-- Name: injury_types; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.injury_types AS ENUM (
+    'heat',
+    'swelling',
+    'cut',
+    'limping',
+    'overheat',
+    'bowed tendon',
+    'broken leg',
+    'heart attack'
+);
+
+
+--
 -- Name: jockey_gender; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -231,6 +247,18 @@ CREATE TYPE public.jockey_status AS ENUM (
 CREATE TYPE public.jockey_type AS ENUM (
     'flat',
     'jump'
+);
+
+
+--
+-- Name: legs; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.legs AS ENUM (
+    'LF',
+    'RF',
+    'LH',
+    'RH'
 );
 
 
@@ -1004,6 +1032,40 @@ ALTER SEQUENCE public.game_alerts_id_seq OWNED BY public.game_alerts.id;
 
 
 --
+-- Name: historical_injuries; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.historical_injuries (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    date date NOT NULL,
+    injury_type public.injury_types NOT NULL,
+    leg public.legs,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: historical_injuries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.historical_injuries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: historical_injuries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.historical_injuries_id_seq OWNED BY public.historical_injuries.id;
+
+
+--
 -- Name: horse_appearances; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1168,6 +1230,40 @@ ALTER SEQUENCE public.horse_genetics_id_seq OWNED BY public.horse_genetics.id;
 
 
 --
+-- Name: horse_jockey_relationships; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.horse_jockey_relationships (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    jockey_id bigint NOT NULL,
+    experience integer DEFAULT 0 NOT NULL,
+    happiness integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: horse_jockey_relationships_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.horse_jockey_relationships_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: horse_jockey_relationships_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.horse_jockey_relationships_id_seq OWNED BY public.horse_jockey_relationships.id;
+
+
+--
 -- Name: horse_sales; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1259,6 +1355,40 @@ CREATE SEQUENCE public.horses_id_seq
 --
 
 ALTER SEQUENCE public.horses_id_seq OWNED BY public.horses.id;
+
+
+--
+-- Name: injuries; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.injuries (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    date date NOT NULL,
+    injury_type public.injury_types NOT NULL,
+    rest_date date NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: injuries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.injuries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: injuries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.injuries_id_seq OWNED BY public.injuries.id;
 
 
 --
@@ -2424,7 +2554,9 @@ CREATE TABLE public.racehorse_stats (
     mature_at date NOT NULL,
     hasbeen_at date NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    rest_days_since_last_race integer DEFAULT 0 NOT NULL,
+    workouts_since_last_race integer DEFAULT 0 NOT NULL
 );
 
 
@@ -2508,7 +2640,7 @@ CREATE TABLE public.racing_stats (
     max_speed integer DEFAULT 0 NOT NULL,
     midpack integer DEFAULT 0 NOT NULL,
     min_speed integer DEFAULT 0 NOT NULL,
-    natural_energy_current numeric(5,3) DEFAULT 0.0 NOT NULL,
+    natural_energy_current double precision DEFAULT 0.0 NOT NULL,
     natural_energy_gain numeric(5,3) DEFAULT 0.0 NOT NULL,
     natural_energy_loss integer DEFAULT 0 NOT NULL,
     off_pace integer DEFAULT 0 NOT NULL,
@@ -3080,7 +3212,11 @@ CREATE TABLE public.workouts (
     activity3 public.workout_activities,
     distance3 integer DEFAULT 0,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    total_time_in_seconds integer DEFAULT 0,
+    activity1_time_in_seconds integer DEFAULT 0,
+    activity2_time_in_seconds integer DEFAULT 0,
+    activity3_time_in_seconds integer DEFAULT 0
 );
 
 
@@ -3209,6 +3345,13 @@ ALTER TABLE ONLY public.game_alerts ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
+-- Name: historical_injuries id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.historical_injuries ALTER COLUMN id SET DEFAULT nextval('public.historical_injuries_id_seq'::regclass);
+
+
+--
 -- Name: horse_appearances id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3230,6 +3373,13 @@ ALTER TABLE ONLY public.horse_genetics ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
+-- Name: horse_jockey_relationships id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horse_jockey_relationships ALTER COLUMN id SET DEFAULT nextval('public.horse_jockey_relationships_id_seq'::regclass);
+
+
+--
 -- Name: horse_sales id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3241,6 +3391,13 @@ ALTER TABLE ONLY public.horse_sales ALTER COLUMN id SET DEFAULT nextval('public.
 --
 
 ALTER TABLE ONLY public.horses ALTER COLUMN id SET DEFAULT nextval('public.horses_id_seq'::regclass);
+
+
+--
+-- Name: injuries id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.injuries ALTER COLUMN id SET DEFAULT nextval('public.injuries_id_seq'::regclass);
 
 
 --
@@ -3667,6 +3824,14 @@ ALTER TABLE ONLY public.game_alerts
 
 
 --
+-- Name: historical_injuries historical_injuries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.historical_injuries
+    ADD CONSTRAINT historical_injuries_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: horse_appearances horse_appearances_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3691,6 +3856,14 @@ ALTER TABLE ONLY public.horse_genetics
 
 
 --
+-- Name: horse_jockey_relationships horse_jockey_relationships_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horse_jockey_relationships
+    ADD CONSTRAINT horse_jockey_relationships_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: horse_sales horse_sales_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3704,6 +3877,14 @@ ALTER TABLE ONLY public.horse_sales
 
 ALTER TABLE ONLY public.horses
     ADD CONSTRAINT horses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: injuries injuries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.injuries
+    ADD CONSTRAINT injuries_pkey PRIMARY KEY (id);
 
 
 --
@@ -4463,6 +4644,27 @@ CREATE INDEX index_game_alerts_on_start_time ON public.game_alerts USING btree (
 
 
 --
+-- Name: index_historical_injuries_on_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_historical_injuries_on_date ON public.historical_injuries USING btree (date);
+
+
+--
+-- Name: index_historical_injuries_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_historical_injuries_on_horse_id ON public.historical_injuries USING btree (horse_id);
+
+
+--
+-- Name: index_historical_injuries_on_injury_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_historical_injuries_on_injury_type ON public.historical_injuries USING btree (injury_type);
+
+
+--
 -- Name: index_horse_appearances_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4481,6 +4683,20 @@ CREATE UNIQUE INDEX index_horse_attributes_on_horse_id ON public.horse_attribute
 --
 
 CREATE UNIQUE INDEX index_horse_genetics_on_horse_id ON public.horse_genetics USING btree (horse_id);
+
+
+--
+-- Name: index_horse_jockey_relationships_on_horse_id_and_jockey_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_horse_jockey_relationships_on_horse_id_and_jockey_id ON public.horse_jockey_relationships USING btree (horse_id, jockey_id);
+
+
+--
+-- Name: index_horse_jockey_relationships_on_jockey_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horse_jockey_relationships_on_jockey_id ON public.horse_jockey_relationships USING btree (jockey_id);
 
 
 --
@@ -4607,6 +4823,34 @@ CREATE INDEX index_horses_on_slug ON public.horses USING btree (slug);
 --
 
 CREATE INDEX index_horses_on_status ON public.horses USING btree (status);
+
+
+--
+-- Name: index_injuries_on_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_injuries_on_date ON public.injuries USING btree (date);
+
+
+--
+-- Name: index_injuries_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_injuries_on_horse_id ON public.injuries USING btree (horse_id);
+
+
+--
+-- Name: index_injuries_on_injury_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_injuries_on_injury_type ON public.injuries USING btree (injury_type);
+
+
+--
+-- Name: index_injuries_on_rest_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_injuries_on_rest_date ON public.injuries USING btree (rest_date);
 
 
 --
@@ -5450,6 +5694,20 @@ CREATE INDEX index_racehorse_stats_on_racetrack_id ON public.racehorse_stats USI
 
 
 --
+-- Name: index_racehorse_stats_on_rest_days_since_last_race; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_stats_on_rest_days_since_last_race ON public.racehorse_stats USING btree (rest_days_since_last_race);
+
+
+--
+-- Name: index_racehorse_stats_on_workouts_since_last_race; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_stats_on_workouts_since_last_race ON public.racehorse_stats USING btree (workouts_since_last_race);
+
+
+--
 -- Name: index_racetracks_on_location_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5814,6 +6072,13 @@ CREATE INDEX index_workouts_on_activity1 ON public.workouts USING btree (activit
 
 
 --
+-- Name: index_workouts_on_activity1_time_in_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_activity1_time_in_seconds ON public.workouts USING btree (activity1_time_in_seconds);
+
+
+--
 -- Name: index_workouts_on_activity2; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5821,10 +6086,24 @@ CREATE INDEX index_workouts_on_activity2 ON public.workouts USING btree (activit
 
 
 --
+-- Name: index_workouts_on_activity2_time_in_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_activity2_time_in_seconds ON public.workouts USING btree (activity2_time_in_seconds);
+
+
+--
 -- Name: index_workouts_on_activity3; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_workouts_on_activity3 ON public.workouts USING btree (activity3);
+
+
+--
+-- Name: index_workouts_on_activity3_time_in_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_activity3_time_in_seconds ON public.workouts USING btree (activity3_time_in_seconds);
 
 
 --
@@ -5937,6 +6216,13 @@ CREATE INDEX index_workouts_on_surface_id ON public.workouts USING btree (surfac
 --
 
 CREATE INDEX index_workouts_on_time_in_seconds ON public.workouts USING btree (time_in_seconds);
+
+
+--
+-- Name: index_workouts_on_total_time_in_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_total_time_in_seconds ON public.workouts USING btree (total_time_in_seconds);
 
 
 --
@@ -6162,6 +6448,14 @@ ALTER TABLE ONLY public.motor_alert_locks
 
 
 --
+-- Name: injuries fk_rails_3f46265a72; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.injuries
+    ADD CONSTRAINT fk_rails_3f46265a72 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
 -- Name: lease_termination_requests fk_rails_413af159d7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6191,6 +6485,14 @@ ALTER TABLE ONLY public.broodmare_shipments
 
 ALTER TABLE ONLY public.leases
     ADD CONSTRAINT fk_rails_53972bd5e0 FOREIGN KEY (owner_id) REFERENCES public.stables(id);
+
+
+--
+-- Name: horse_jockey_relationships fk_rails_54ae17d60f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horse_jockey_relationships
+    ADD CONSTRAINT fk_rails_54ae17d60f FOREIGN KEY (horse_id) REFERENCES public.horses(id);
 
 
 --
@@ -6570,6 +6872,14 @@ ALTER TABLE ONLY public.lease_offers
 
 
 --
+-- Name: historical_injuries fk_rails_e4cca4bab6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.historical_injuries
+    ADD CONSTRAINT fk_rails_e4cca4bab6 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
 -- Name: horses fk_rails_e50f0d1f41; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6583,6 +6893,14 @@ ALTER TABLE ONLY public.horses
 
 ALTER TABLE ONLY public.race_options
     ADD CONSTRAINT fk_rails_e55e3a4cf5 FOREIGN KEY (first_jockey_id) REFERENCES public.jockeys(id);
+
+
+--
+-- Name: horse_jockey_relationships fk_rails_e6dddc69ab; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horse_jockey_relationships
+    ADD CONSTRAINT fk_rails_e6dddc69ab FOREIGN KEY (jockey_id) REFERENCES public.jockeys(id);
 
 
 --
@@ -6664,6 +6982,12 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260122140512'),
+('20260121202130'),
+('20260121154836'),
+('20260121124511'),
+('20260121114008'),
+('20260119143652'),
 ('20260107185127'),
 ('20260105110324'),
 ('20251230104641'),

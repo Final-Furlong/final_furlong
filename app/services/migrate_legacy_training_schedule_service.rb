@@ -12,10 +12,12 @@ class MigrateLegacyTrainingScheduleService
     return if Racing::TrainingSchedule.exists?(stable:, name: legacy_schedule.Name)
     return if Legacy::TrainingScheduleDetail.where("Schedule" => legacy_schedule.ID).empty?
 
-    schedule = Racing::TrainingSchedule.create!(
+    schedule = Racing::TrainingSchedule.find_or_initialize_by(
       stable:,
+      name: name_for(legacy_schedule)
+    )
+    schedule.update!(
       description: legacy_schedule.Description,
-      name: name_for(legacy_schedule),
       sunday_activities: sunday_activities(legacy_schedule),
       monday_activities: monday_activities(legacy_schedule),
       tuesday_activities: tuesday_activities(legacy_schedule),
@@ -26,11 +28,17 @@ class MigrateLegacyTrainingScheduleService
     )
     if legacy_schedule.Horse
       horse = Horses::Horse.find_by(legacy_id: legacy_schedule.Horse)
-      Racing::TrainingScheduleHorse.create!(training_schedule: schedule, horse:) if horse
+
+      return unless horse
+      schedule_horse = Racing::TrainingScheduleHorse.find_or_initialize_by(horse:)
+      schedule_horse.update!(training_schedule: schedule)
     else
       Legacy::TrainingScheduleHorse.where("Schedule = ?", legacy_schedule.ID).find_each do |schedule_horse|
         horse = Horses::Horse.find_by(legacy_id: schedule_horse.Horse)
-        Racing::TrainingScheduleHorse.create!(training_schedule: schedule, horse:) if horse
+
+        next unless horse
+        schedule_horse = Racing::TrainingScheduleHorse.find_or_initialize_by(horse:)
+        schedule_horse.update!(training_schedule: schedule)
       end
     end
   end
