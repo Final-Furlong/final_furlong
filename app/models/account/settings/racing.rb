@@ -10,7 +10,7 @@ module Account
       attribute :min_workouts_between_races, :integer
       attribute :apply_minimums_for_future_races, :boolean
 
-      validates :min_energy_for_race_entry, inclusion: { in: ::Racing::RaceStats::GRADES }, allow_nil: true
+      validates :min_energy_for_race_entry, inclusion: { in: ::Racing::RacehorseMetadata::GRADES }, allow_nil: true
       validates :min_days_delay_from_last_race, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 365 }
       validates :min_days_delay_from_last_injury, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 365 }
       validates :min_days_rest_between_races, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 365 }

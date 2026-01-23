@@ -62,7 +62,7 @@ module Workouts
         stats.fitness += workout.fitness_gain
         stats.fitness = stats.fitness.clamp(-50, 100)
         stats.save
-        horse.race_stats.update_grades
+        horse.race_metadata.update_grades
         pick_and_save_injury
         workout.save
       end

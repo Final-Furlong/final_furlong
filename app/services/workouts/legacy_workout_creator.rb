@@ -9,6 +9,8 @@ module Workouts
       workout.racetrack = racetrack
       workout.location = racetrack.location
       workout.surface = racetrack.surfaces.find_by(surface:)
+      return unless workout.surface
+
       workout.condition = find_condition(legacy_condition)
       workout.activity1 = find_activity(legacy_activity1)
       workout.distance1 = distance1
@@ -20,6 +22,9 @@ module Workouts
         workout.activity3 = find_activity(legacy_activity3)
         workout.distance3 = distance3
       end
+      workout.activity1_time_in_seconds = nil
+      workout.activity2_time_in_seconds = nil
+      workout.activity3_time_in_seconds = nil
       workout.confidence = confidence
       workout.effort = effort
       if legacy_equipment.present?

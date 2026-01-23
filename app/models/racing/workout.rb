@@ -22,16 +22,16 @@ module Racing
     validates :activity1, :activity2, :activity3, inclusion: { in: ACTIVITIES }, allow_nil: true
     validates :condition, inclusion: { in: TrackSurface::CONDITIONS }
     validates :distance2, presence: true, if: :activity2
-    validates :activity2_time_in_seconds, presence: true, if: :activity2
+    # validates :activity2_time_in_seconds, presence: true, if: :activity2
     validates :distance3, presence: true, if: :activity3
-    validates :activity3_time_in_seconds, presence: true, if: :activity3
+    # validates :activity3_time_in_seconds, presence: true, if: :activity3
     validates :distance1, :distance2, :distance3, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     validates :effort, numericality: { only_integer: true, greater_than: 0 }
-    validates :confidence, numericality: { only_integer: true, greater_than: 0 }
+    validates :confidence, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     validates :equipment, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-    validates :acivity1_time_in_seconds, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
-    validates :acivity2_time_in_seconds, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
-    validates :acivity3_time_in_seconds, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
+    validates :activity1_time_in_seconds, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
+    validates :activity2_time_in_seconds, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
+    validates :activity3_time_in_seconds, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
     validates :time_in_seconds, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
     validates :horse_id, uniqueness: { scope: :date }
 

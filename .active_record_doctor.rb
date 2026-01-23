@@ -231,16 +231,7 @@ ActiveRecordDoctor.configure do
       "Racing::TrainingSchedule.wednesday_activities",
       "Racing::TrainingSchedule.thursday_activities",
       "Racing::TrainingSchedule.friday_activities",
-      "Racing::TrainingSchedule.saturday_activities",
-      "Racing::RaceStats.energy",
-      "Racing::RaceStats.fitness",
-      "Racing::RaceStats.natural_energy",
-      "Racing::RaceStats.energy_regain_rate",
-      "Racing::RaceStats.natural_energy_loss_rate",
-      "Racing::RaceStats.natural_energy_regain_rate",
-      "Racing::RaceStats.desired_equipment",
-      "Racing::RaceStats.mature_at",
-      "Racing::RaceStats.hasbeen_at"
+      "Racing::TrainingSchedule.saturday_activities"
     ]
 
   detector :missing_unique_indexes,

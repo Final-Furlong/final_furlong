@@ -2,6 +2,7 @@ class UpdateLegacyShipmentJob < ApplicationJob
   queue_as :low_priority
 
   discard_on ActiveRecord::RecordInvalid
+  discard_on ActiveRecord::RecordNotUnique
 
   def perform(horse_id)
     horse = Horses::Horse.find_by!(legacy_id: horse_id)

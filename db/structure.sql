@@ -2479,6 +2479,47 @@ ALTER SEQUENCE public.race_schedules_id_seq OWNED BY public.race_schedules.id;
 
 
 --
+-- Name: racehorse_metadata; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.racehorse_metadata (
+    id bigint CONSTRAINT racehorse_stats_id_not_null NOT NULL,
+    horse_id bigint CONSTRAINT racehorse_stats_horse_id_not_null NOT NULL,
+    last_raced_at date,
+    last_rested_at date,
+    last_shipped_at date,
+    energy_grade character varying DEFAULT 'F'::character varying CONSTRAINT racehorse_stats_energy_grade_not_null NOT NULL,
+    fitness_grade character varying DEFAULT 'F'::character varying CONSTRAINT racehorse_stats_fitness_grade_not_null NOT NULL,
+    racetrack_id bigint CONSTRAINT racehorse_stats_racetrack_id_not_null NOT NULL,
+    at_home boolean DEFAULT true CONSTRAINT racehorse_stats_at_home_not_null NOT NULL,
+    in_transit boolean DEFAULT false CONSTRAINT racehorse_stats_in_transit_not_null NOT NULL,
+    created_at timestamp(6) with time zone CONSTRAINT racehorse_stats_created_at_not_null NOT NULL,
+    updated_at timestamp(6) with time zone CONSTRAINT racehorse_stats_updated_at_not_null NOT NULL,
+    rest_days_since_last_race integer DEFAULT 0 CONSTRAINT racehorse_stats_rest_days_since_last_race_not_null NOT NULL,
+    workouts_since_last_race integer DEFAULT 0 CONSTRAINT racehorse_stats_workouts_since_last_race_not_null NOT NULL
+);
+
+
+--
+-- Name: racehorse_metadata_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.racehorse_metadata_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: racehorse_metadata_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.racehorse_metadata_id_seq OWNED BY public.racehorse_metadata.id;
+
+
+--
 -- Name: racehorse_shipments; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2527,56 +2568,6 @@ CREATE SEQUENCE public.racehorse_shipments_id_seq
 --
 
 ALTER SEQUENCE public.racehorse_shipments_id_seq OWNED BY public.racehorse_shipments.id;
-
-
---
--- Name: racehorse_stats; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.racehorse_stats (
-    id bigint NOT NULL,
-    horse_id bigint NOT NULL,
-    last_raced_at date,
-    last_rested_at date,
-    last_shipped_at date,
-    energy integer DEFAULT 0 NOT NULL,
-    fitness integer DEFAULT 0 NOT NULL,
-    natural_energy numeric(4,1) DEFAULT 0.0 NOT NULL,
-    energy_grade character varying DEFAULT 'F'::character varying NOT NULL,
-    fitness_grade character varying DEFAULT 'F'::character varying NOT NULL,
-    energy_regain_rate integer DEFAULT 0 NOT NULL,
-    natural_energy_loss_rate integer DEFAULT 0 NOT NULL,
-    natural_energy_regain_rate numeric(3,2) DEFAULT 0.0 NOT NULL,
-    racetrack_id bigint NOT NULL,
-    at_home boolean DEFAULT true NOT NULL,
-    in_transit boolean DEFAULT false NOT NULL,
-    desired_equipment integer DEFAULT 0 NOT NULL,
-    mature_at date NOT NULL,
-    hasbeen_at date NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL,
-    rest_days_since_last_race integer DEFAULT 0 NOT NULL,
-    workouts_since_last_race integer DEFAULT 0 NOT NULL
-);
-
-
---
--- Name: racehorse_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.racehorse_stats_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: racehorse_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.racehorse_stats_id_seq OWNED BY public.racehorse_stats.id;
 
 
 --
@@ -3569,17 +3560,17 @@ ALTER TABLE ONLY public.race_schedules ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
+-- Name: racehorse_metadata id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.racehorse_metadata ALTER COLUMN id SET DEFAULT nextval('public.racehorse_metadata_id_seq'::regclass);
+
+
+--
 -- Name: racehorse_shipments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.racehorse_shipments ALTER COLUMN id SET DEFAULT nextval('public.racehorse_shipments_id_seq'::regclass);
-
-
---
--- Name: racehorse_stats id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.racehorse_stats ALTER COLUMN id SET DEFAULT nextval('public.racehorse_stats_id_seq'::regclass);
 
 
 --
@@ -4080,19 +4071,19 @@ ALTER TABLE ONLY public.race_schedules
 
 
 --
+-- Name: racehorse_metadata racehorse_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.racehorse_metadata
+    ADD CONSTRAINT racehorse_metadata_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: racehorse_shipments racehorse_shipments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.racehorse_shipments
     ADD CONSTRAINT racehorse_shipments_pkey PRIMARY KEY (id);
-
-
---
--- Name: racehorse_stats racehorse_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.racehorse_stats
-    ADD CONSTRAINT racehorse_stats_pkey PRIMARY KEY (id);
 
 
 --
@@ -5540,6 +5531,83 @@ CREATE INDEX index_race_schedules_on_surface_id ON public.race_schedules USING b
 
 
 --
+-- Name: index_racehorse_metadata_on_at_home; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_metadata_on_at_home ON public.racehorse_metadata USING btree (at_home);
+
+
+--
+-- Name: index_racehorse_metadata_on_energy_grade; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_metadata_on_energy_grade ON public.racehorse_metadata USING btree (energy_grade);
+
+
+--
+-- Name: index_racehorse_metadata_on_fitness_grade; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_metadata_on_fitness_grade ON public.racehorse_metadata USING btree (fitness_grade);
+
+
+--
+-- Name: index_racehorse_metadata_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_racehorse_metadata_on_horse_id ON public.racehorse_metadata USING btree (horse_id);
+
+
+--
+-- Name: index_racehorse_metadata_on_in_transit; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_metadata_on_in_transit ON public.racehorse_metadata USING btree (in_transit);
+
+
+--
+-- Name: index_racehorse_metadata_on_last_raced_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_metadata_on_last_raced_at ON public.racehorse_metadata USING btree (last_raced_at);
+
+
+--
+-- Name: index_racehorse_metadata_on_last_rested_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_metadata_on_last_rested_at ON public.racehorse_metadata USING btree (last_rested_at);
+
+
+--
+-- Name: index_racehorse_metadata_on_last_shipped_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_metadata_on_last_shipped_at ON public.racehorse_metadata USING btree (last_shipped_at);
+
+
+--
+-- Name: index_racehorse_metadata_on_racetrack_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_metadata_on_racetrack_id ON public.racehorse_metadata USING btree (racetrack_id);
+
+
+--
+-- Name: index_racehorse_metadata_on_rest_days_since_last_race; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_metadata_on_rest_days_since_last_race ON public.racehorse_metadata USING btree (rest_days_since_last_race);
+
+
+--
+-- Name: index_racehorse_metadata_on_workouts_since_last_race; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_metadata_on_workouts_since_last_race ON public.racehorse_metadata USING btree (workouts_since_last_race);
+
+
+--
 -- Name: index_racehorse_shipments_on_arrival_date; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5579,132 +5647,6 @@ CREATE INDEX index_racehorse_shipments_on_shipping_type ON public.racehorse_ship
 --
 
 CREATE INDEX index_racehorse_shipments_on_starting_location_id ON public.racehorse_shipments USING btree (starting_location_id);
-
-
---
--- Name: index_racehorse_stats_on_at_home; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_racehorse_stats_on_at_home ON public.racehorse_stats USING btree (at_home);
-
-
---
--- Name: index_racehorse_stats_on_desired_equipment; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_racehorse_stats_on_desired_equipment ON public.racehorse_stats USING btree (desired_equipment);
-
-
---
--- Name: index_racehorse_stats_on_energy; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_racehorse_stats_on_energy ON public.racehorse_stats USING btree (energy);
-
-
---
--- Name: index_racehorse_stats_on_energy_grade; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_racehorse_stats_on_energy_grade ON public.racehorse_stats USING btree (energy_grade);
-
-
---
--- Name: index_racehorse_stats_on_energy_regain_rate; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_racehorse_stats_on_energy_regain_rate ON public.racehorse_stats USING btree (energy_regain_rate);
-
-
---
--- Name: index_racehorse_stats_on_fitness; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_racehorse_stats_on_fitness ON public.racehorse_stats USING btree (fitness);
-
-
---
--- Name: index_racehorse_stats_on_fitness_grade; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_racehorse_stats_on_fitness_grade ON public.racehorse_stats USING btree (fitness_grade);
-
-
---
--- Name: index_racehorse_stats_on_horse_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_racehorse_stats_on_horse_id ON public.racehorse_stats USING btree (horse_id);
-
-
---
--- Name: index_racehorse_stats_on_in_transit; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_racehorse_stats_on_in_transit ON public.racehorse_stats USING btree (in_transit);
-
-
---
--- Name: index_racehorse_stats_on_last_raced_at; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_racehorse_stats_on_last_raced_at ON public.racehorse_stats USING btree (last_raced_at);
-
-
---
--- Name: index_racehorse_stats_on_last_rested_at; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_racehorse_stats_on_last_rested_at ON public.racehorse_stats USING btree (last_rested_at);
-
-
---
--- Name: index_racehorse_stats_on_last_shipped_at; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_racehorse_stats_on_last_shipped_at ON public.racehorse_stats USING btree (last_shipped_at);
-
-
---
--- Name: index_racehorse_stats_on_natural_energy; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_racehorse_stats_on_natural_energy ON public.racehorse_stats USING btree (natural_energy);
-
-
---
--- Name: index_racehorse_stats_on_natural_energy_loss_rate; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_racehorse_stats_on_natural_energy_loss_rate ON public.racehorse_stats USING btree (natural_energy_loss_rate);
-
-
---
--- Name: index_racehorse_stats_on_natural_energy_regain_rate; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_racehorse_stats_on_natural_energy_regain_rate ON public.racehorse_stats USING btree (natural_energy_regain_rate);
-
-
---
--- Name: index_racehorse_stats_on_racetrack_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_racehorse_stats_on_racetrack_id ON public.racehorse_stats USING btree (racetrack_id);
-
-
---
--- Name: index_racehorse_stats_on_rest_days_since_last_race; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_racehorse_stats_on_rest_days_since_last_race ON public.racehorse_stats USING btree (rest_days_since_last_race);
-
-
---
--- Name: index_racehorse_stats_on_workouts_since_last_race; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_racehorse_stats_on_workouts_since_last_race ON public.racehorse_stats USING btree (workouts_since_last_race);
 
 
 --
@@ -6392,10 +6334,10 @@ ALTER TABLE ONLY public.race_result_horses
 
 
 --
--- Name: racehorse_stats fk_rails_2685265a1f; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: racehorse_metadata fk_rails_2685265a1f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.racehorse_stats
+ALTER TABLE ONLY public.racehorse_metadata
     ADD CONSTRAINT fk_rails_2685265a1f FOREIGN KEY (racetrack_id) REFERENCES public.racetracks(id);
 
 
@@ -6800,10 +6742,10 @@ ALTER TABLE ONLY public.active_storage_attachments
 
 
 --
--- Name: racehorse_stats fk_rails_c4775ac331; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: racehorse_metadata fk_rails_c4775ac331; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.racehorse_stats
+ALTER TABLE ONLY public.racehorse_metadata
     ADD CONSTRAINT fk_rails_c4775ac331 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
 
 
@@ -6982,6 +6924,8 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260123120534'),
+('20260123093229'),
 ('20260122140512'),
 ('20260121202130'),
 ('20260121154836'),

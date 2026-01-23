@@ -29,14 +29,14 @@ hr.my-2
           td= t("common.actions.title")
       tbody
         - horses.each do |horse|
-          - stats = horse.race_stats
+          - data = horse.race_metadata
           tr
             td= horse.name
             td.wb-break-all
               = horse.age
               = "yo "
               = t("horses.genders.#{horse.gender}")
-            td= stats&.energy_grade || t("common.dash")
+            td= data&.energy_grade || t("common.dash")
             td
             td
             td

@@ -2,7 +2,7 @@ class UpdateRacehorseStatsJob < ApplicationJob
   queue_as :low_priority
 
   def perform
-    Horses::Horse.racehorse.where.missing(:race_stats).find_each do |horse|
+    Horses::Horse.racehorse.where.missing(:race_metadata).find_each do |horse|
       migrate_stats(horse:)
     end
   end
@@ -10,7 +10,7 @@ class UpdateRacehorseStatsJob < ApplicationJob
   private
 
   def migrate_stats(horse:)
-    stats = horse.race_stats || horse.build_race_stats
+    data = horse.race_metadata || horse.build_race_metadata
     stable = horse.manager
     legacy_horse = Legacy::Horse.find(horse.legacy_id)
     last_raced_at = Racing::RaceResult.joins(:horses).where(race_result_horses: { horse_id: horse.id })
@@ -65,7 +65,7 @@ class UpdateRacehorseStatsJob < ApplicationJob
       mature_at: legacy_horse.ImmDate,
       hasbeen_at: legacy_horse.HBDate
     }
-    stats.update(attrs)
+    data.update(attrs)
   end
 end
 

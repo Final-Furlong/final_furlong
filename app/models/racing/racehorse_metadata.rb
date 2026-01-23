@@ -1,8 +1,6 @@
 module Racing
-  class RaceStats < ApplicationRecord
-    self.table_name = "racehorse_stats"
-
-    self.ignored_columns += %i[energy fitness desired_equipment energy_regain_rate hasbeen_at mature_at natural_energy natural_energy_loss_rate natural_energy_regain_rate]
+  class RacehorseMetadata < ApplicationRecord
+    self.table_name = "racehorse_metadata"
 
     GRADES = %w[A B C D F].freeze
 
@@ -66,24 +64,17 @@ end
 #
 # Indexes
 #
-#  index_racehorse_stats_on_at_home                     (at_home)
-#  index_racehorse_stats_on_desired_equipment           (desired_equipment)
-#  index_racehorse_stats_on_energy                      (energy)
-#  index_racehorse_stats_on_energy_grade                (energy_grade)
-#  index_racehorse_stats_on_energy_regain_rate          (energy_regain_rate)
-#  index_racehorse_stats_on_fitness                     (fitness)
-#  index_racehorse_stats_on_fitness_grade               (fitness_grade)
-#  index_racehorse_stats_on_horse_id                    (horse_id) UNIQUE
-#  index_racehorse_stats_on_in_transit                  (in_transit)
-#  index_racehorse_stats_on_last_raced_at               (last_raced_at)
-#  index_racehorse_stats_on_last_rested_at              (last_rested_at)
-#  index_racehorse_stats_on_last_shipped_at             (last_shipped_at)
-#  index_racehorse_stats_on_natural_energy              (natural_energy)
-#  index_racehorse_stats_on_natural_energy_loss_rate    (natural_energy_loss_rate)
-#  index_racehorse_stats_on_natural_energy_regain_rate  (natural_energy_regain_rate)
-#  index_racehorse_stats_on_racetrack_id                (racetrack_id)
-#  index_racehorse_stats_on_rest_days_since_last_race   (rest_days_since_last_race)
-#  index_racehorse_stats_on_workouts_since_last_race    (workouts_since_last_race)
+#  index_racehorse_stats_on_at_home                    (at_home)
+#  index_racehorse_stats_on_energy_grade               (energy_grade)
+#  index_racehorse_stats_on_fitness_grade              (fitness_grade)
+#  index_racehorse_stats_on_horse_id                   (horse_id) UNIQUE
+#  index_racehorse_stats_on_in_transit                 (in_transit)
+#  index_racehorse_stats_on_last_raced_at              (last_raced_at)
+#  index_racehorse_stats_on_last_rested_at             (last_rested_at)
+#  index_racehorse_stats_on_last_shipped_at            (last_shipped_at)
+#  index_racehorse_stats_on_racetrack_id               (racetrack_id)
+#  index_racehorse_stats_on_rest_days_since_last_race  (rest_days_since_last_race)
+#  index_racehorse_stats_on_workouts_since_last_race   (workouts_since_last_race)
 #
 # Foreign Keys
 #
