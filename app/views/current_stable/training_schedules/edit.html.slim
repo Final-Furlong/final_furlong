@@ -4,4 +4,4 @@
                                                    { name: index_title, href: stable_training_schedules_path },
                                                    { name: schedule.name, href: "#" },
                                                    { name: t("common.actions.edit"), href: "#" }])
-= render "form", url: stable_training_schedule_path(schedule)
+= render "form", url: stable_training_schedule_path(schedule), schedule: schedule

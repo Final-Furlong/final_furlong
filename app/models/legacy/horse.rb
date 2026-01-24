@@ -22,7 +22,7 @@ module Legacy
     scope :age_between, ->(min, max) { where(DOB: game_year_start(max)..game_year_end(min)) }
 
     scope :sellable, -> { where(can_be_sold: true) }
-    scope :random_order, -> { order("RAND()") }
+    scope :random_order, -> { order("RANDOM()") }
 
     def self.game_year_end(years_ago)
       year = Date.current.year + 4 - years_ago
