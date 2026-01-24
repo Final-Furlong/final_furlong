@@ -15,8 +15,9 @@ module Shipping
     validates :mode, inclusion: { in: Route::MODES }, if: :mode
     validates :shipping_type, inclusion: { in: SHIPPING_TYPES }
 
-    scope :current, -> { where(departure_date: ..Date.current) }
+    scope :current, -> { where(departure_date: ..Date.current).where("arrival_date > ?", Date.current) }
     scope :future, -> { where("departure_date > ?", Date.current) }
+    scope :not_future, -> { where(departure_date: ..Date.current) }
 
     def future?
       departure_date > Date.current
@@ -29,6 +30,7 @@ module Shipping
     def options_for_destination_select(horse)
       location_query = Location
       list = []
+      pd horse.racing.at_farm?.inspect
       unless horse.racing.at_farm?
         list << [horse.manager.name, "Farm"]
         location_query = location_query.where.not(id: horse.racing.current_location.id)

@@ -1,0 +1,10 @@
+fieldset class=classes
+  legend.fieldset-legend= label
+  - equipment_list.each do |equipment_data|
+    - value = equipment_data.first
+    label.label
+      input.checkbox[
+        type="checkbox" id="#{id}_#{value}" name="#{id}[#{value}]" value=value disabled=disabled
+        checked=(object && object.send("#{value}?"))
+      ]
+      = equipment_data.last

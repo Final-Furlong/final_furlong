@@ -14,7 +14,7 @@ module Racing
       :calculated_maximum_distance, :calculated_minimum_distance, :equipment,
       presence: true
     validates :racehorse_type, inclusion: { in: RACEHORSE_TYPES }
-    validates :racing_style, inclusion: { in: RACING_STYLES }
+    validates :racing_style, inclusion: { in: RACING_STYLES }, allow_blank: true
     validates :minimum_distance, numericality: { greater_than_or_equal_to: 5.0, less_than_or_equal_to: 24.0 }
     validates :maximum_distance, numericality: { greater_than_or_equal_to: 5.0, less_than_or_equal_to: 24.0 }
     validates :calculated_minimum_distance, numericality: { greater_than_or_equal_to: 5.0, less_than_or_equal_to: 24.0 }
@@ -22,6 +22,18 @@ module Racing
     validates :runs_on_dirt, :runs_on_turf, :trains_on_dirt, :trains_on_turf,
       :trains_on_jumps, inclusion: { in: [true, false] }
     validates :next_race_note_created_at, presence: true, if: :note_for_next_race
+
+    def jockeys_list
+      jockeys = Racing::Jockey.order(last_name: :asc, first_name: :asc).all
+      priority_list, other_jockeys = jockeys.partition { |jockey| chosen_jockeys.include? jockey }
+      priority_list = priority_list.map { |jockey| [jockey.full_name, jockey.id] }
+      other_jockeys = other_jockeys.map { |jockey| [jockey.full_name, jockey.id] }
+      priority_list + other_jockeys
+    end
+
+    def chosen_jockeys
+      [first_jockey, second_jockey, third_jockey]
+    end
   end
 end
 
