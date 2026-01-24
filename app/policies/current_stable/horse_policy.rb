@@ -103,6 +103,13 @@ module CurrentStable
       record.racehorse?
     end
 
+    def create_workout?
+      return false unless manager?
+      return false unless record.racehorse?
+
+      !record.workouts.exists?(date: Date.current)
+    end
+
     def view_boarding?
       return false unless manager?
 
