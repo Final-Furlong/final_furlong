@@ -12,7 +12,10 @@ module CurrentStable
 
     def index
       authorize schedule, :view_horses?
-      @horses = Horses::Horse.joins(:training_schedule).where(training_schedules: { id: schedule }, owner: Current.stable)
+      query = Horses::Horse.joins(:training_schedule).where(training_schedules: { id: schedule }, owner: Current.stable)
+        .includes(:race_metadata, :race_options, :current_boarding).order(name: :asc)
+
+      @pagy, @horses = pagy(:offset, query)
     end
 
     def new
@@ -49,8 +52,7 @@ module CurrentStable
 
     def set_schedule
       @schedule = Current.stable.training_schedules.find(params[:training_schedule_id])
-      weekday = Time.zone.today.strftime("%A")
-      @daily_activities = schedule.send(:"#{weekday.downcase}_activities")
+      @daily_activities = schedule.daily_activities
       @schedule
     end
 
@@ -59,7 +61,7 @@ module CurrentStable
     end
 
     def set_stable_horses
-      @horses = Horses::Horse.where.missing(:training_schedule).where(owner: Current.stable)
+      @horses = Horses::Horse.racehorse.where.missing(:training_schedule).managed_by(Current.stable).order(name: :asc)
     end
 
     def schedule_params

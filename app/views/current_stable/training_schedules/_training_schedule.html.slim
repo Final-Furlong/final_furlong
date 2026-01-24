@@ -1,40 +1,40 @@
 /# locals: (training_schedule:)
 = turbo_frame_tag training_schedule do
-  .card.w-100.my-2
-    .card-body
-      .d-flex
-        h1.card-title.flex-grow-1= training_schedule.name
-        .buttons
-          = render Ui::Link::Component.new(url: edit_stable_training_schedule_path(training_schedule), color: :success, style: :outline, data: { turbo_frame: "_top" }) do
-            span.icon
-              i.ph-fill.ph-pen
-              = t("common.actions.edit")
-          - data = { turbo_confirm: t("common.confirmation.delete_with_name", name: training_schedule.name) }
-          = render Ui::Button::Component.new(url: stable_training_schedule_path(training_schedule), color: :error, style: :outline, extra_classes: "ms-2", form_class: "inline", http_method: :delete, form: { data: }) do
-            span.icon
-              i.ph-fill.ph-trash
-              = t("common.actions.delete")
-      p.card-subtitle= training_schedule.description
-      table.table.table-bordered.w-100.mt-3
-        thead
-          tr
-            td Day
-            td Activity
-            td Activity
-            td Activity
-        tbody.table-group-divider
-          - Date::DAYNAMES.each do |day|
-            - if training_schedule.send(:"#{day.downcase}_activities").present?
-              tr
-                td= day
-                td= training_schedule.send(:"#{day.downcase}_activities").activity_with_distance(1)
-                td= training_schedule.send(:"#{day.downcase}_activities").activity_with_distance(2)
-                td= training_schedule.send(:"#{day.downcase}_activities").activity_with_distance(3)
+  .w-full.my-2
+    .flex
+      .flex-none
+        .flex.space-x-2.mr-2
+          h1.card-title= training_schedule.name
+          - horses_count = pluralize(training_schedule.horses_count, "horse")
+          = render Ui::ButtonizedLink::Component.new(url: stable_training_schedule_horses_path(training_schedule), size: :small, color: :neutral, data: { turbo_frame: "_top" }) do
+            = t("current_stable.training_schedules.show.workouts_count", count: horses_count)
 
-      - horses_count = pluralize(training_schedule.horses_count, "horse")
-      p
-        = link_to_if training_schedule.horses_count.positive?,
-                     "Workouts (#{horses_count})",
-                     stable_training_schedule_horses_path(training_schedule), data: { turbo: false }
+          = render Ui::ButtonizedLink::Component.new(url: new_stable_training_schedule_horse_path(training_schedule), size: :small, color: :neutral, data: { turbo_frame: "_top" }) do
+            = t("current_stable.training_schedules.show.add_horse")
+      .flex-grow.justify-end
+        = render Ui::ButtonizedLink::Component.new(url: edit_stable_training_schedule_path(training_schedule), size: :small, color: :success, style: :outline, data: { turbo_frame: "_top" }) do
+          span.icon
+            i.ph-fill.ph-pen
+            = t("common.actions.edit")
+        - data = { turbo_confirm: t("common.confirmation.delete_with_name", name: training_schedule.name) }
+        = render Ui::Button::Component.new(url: stable_training_schedule_path(training_schedule), size: :small, color: :error, style: :outline, extra_classes: "ms-2", form_class: "inline", http_method: :delete, form: { data: }) do
+          span.icon
+            i.ph-fill.ph-trash
+            = t("common.actions.delete")
+    p= training_schedule.description
+    table.table.table-bordered.w-full.mt-3
+      thead
+        tr
+          td Day
+          td Activity
+          td Activity
+          td Activity
+      tbody.table-group-divider
+        - Date::DAYNAMES.each do |day|
+          - if training_schedule.send(:"#{day.downcase}_activities").present?
+            tr
+              td= day
+              td= training_schedule.send(:"#{day.downcase}_activities").activity_with_distance(1)
+              td= training_schedule.send(:"#{day.downcase}_activities").activity_with_distance(2)
+              td= training_schedule.send(:"#{day.downcase}_activities").activity_with_distance(3)
 
-      p= link_to "Add Horse", new_stable_training_schedule_horse_path(training_schedule), data: { turbo: false }
