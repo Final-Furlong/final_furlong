@@ -2,7 +2,7 @@
 = simple_form_for schedule, as: :training_schedule, url:, html: { class: "training-schedule form" } do |f|
   = f.input :name, required: true
   = f.input :description, required: false
-  table.table.table-bordered.w-100
+  table.table.table-bordered.w-full
     thead
       tr
         td Day

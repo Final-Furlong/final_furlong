@@ -2,19 +2,30 @@ module Workouts
   class WorkoutCreator
     attr_reader :horse, :workout
 
-    def create_workout(horse:, jockey:, surface:,
-      condition:, activity1:, distance1:, effort:, blinkers: false,
-      shadow_roll: false, wraps: false, figure_8: false, no_whip: false,
-      activity2: nil, distance2: nil, activity3: nil, distance3: nil)
+    def create_workout(horse:, jockey:, surface:, params: {})
+      activity1 = params[:activity1]
+      distance1 = params[:distance1]
+      activity2 = params[:activity2]
+      distance2 = params[:distance2]
+      activity3 = params[:activity3]
+      distance3 = params[:distance3]
+      effort = params[:effort]
+
       @horse = horse
       return if Racing::Workout.exists?(horse:, date: Date.current)
 
       @workout = Racing::Workout.new(horse:, date: Date.current)
+      result = Result.new(created: false, workout: @workout)
+      workout.blinkers = params.key?(:blinkers)
+      workout.shadow_roll = params.key?(:shadow_roll)
+      workout.wraps = params.key?(:wraps)
+      workout.figure_8 = params.key?(:figure_8)
+      workout.no_whip = params.key?(:no_whip)
       workout.jockey = jockey
-      workout.condition = condition
-      workout.surface = surface.surface
-      workout.racetrack = surface.racetrack
-      workout.location = workout.racetrack.location
+      workout.condition = surface&.condition
+      workout.surface = surface
+      workout.racetrack = surface&.racetrack
+      workout.location = workout.racetrack&.location
       workout.effort = effort
       workout.activity1 = activity1
       workout.distance1 = distance1
@@ -26,6 +37,7 @@ module Workouts
         workout.activity3 = activity3
         workout.distance3 = distance3
       end
+      workout.confidence = 0
       if workout.valid?
         workout.special_event = pick_special_event
         event_activity = 0
@@ -37,34 +49,55 @@ module Workouts
           workout.special_event_time = rand(5...furlong_time)
           workout.confidence = -20
         end
-        (1...activity_count).each do |activity_number|
+        workout.energy_loss = 0
+        workout.fitness_gain = 0
+        workout.time_in_seconds = 0
+        workout.total_time_in_seconds = 0
+        (1..workout.activity_count).each do |activity_number|
           do_activity(activity_number, event_activity == activity_number)
         end
+        calculate_energy_loss
+        calculate_fitness_gain
+        workout.comment = pick_comment
+        workout.confidence += rand(1...70)
+        ActiveRecord::Base.transaction do
+          relationship = Racing::HorseJockeyRelationship.find_or_initialize_by(horse: workout.horse, jockey: workout.jockey)
+          relationship.experience += gained_xp
+          relationship.experience = 100 if relationship.experience > 100
+          relationship.happiness += gained_happiness
+          relationship.save
+          stats = horse.racing_stats
+          stats.energy -= workout.energy_loss
+          stats.energy = stats.energy.clamp(-50, 100)
+          stats.fitness += workout.fitness_gain
+          stats.fitness = stats.fitness.clamp(-50, 100)
+          stats.save
+          energy_grade, fitness_grade = horse.race_metadata.update_grades(energy: stats.energy, fitness: stats.fitness)
+          Legacy::Horse.where(ID: horse.legacy_id).update(
+            EnergyCurrent: stats.energy,
+            Fitness: stats.fitness,
+            DisplayEnergy: energy_grade,
+            DisplayFitness: fitness_grade
+          )
+          pick_and_save_injury
+          workout.valid?(context: :complete_workout)
+          result.created = workout.save
+        end
       end
-      calculate_energy_loss
-      calculate_fitness_gain
-      workout.comment = pick_comment
-      workout.confidence += rand(1...70)
-      workout.blinkers = blinkers
-      workout.shadow_roll = shadow_roll
-      workout.wraps = wraps
-      workout.figure_8 = figure_8
-      workout.no_whip = no_whip
-      ActiveRecord::Base.transaction do
-        relationship = Racing::HorseJockeyRelationship.find_or_initialize_by(horse: workout.horse, jockey: workout.jockey)
-        relationship.experience += gained_xp
-        relationship.experience = 100 if relationship.experience > 100
-        relationship.happiness += gained_happiness
-        relationship.save
-        stats = horse.racing_stats
-        stats.energy -= workout.energy_loss
-        stats.energy = stats.energy.clamp(-50, 100)
-        stats.fitness += workout.fitness_gain
-        stats.fitness = stats.fitness.clamp(-50, 100)
-        stats.save
-        horse.race_metadata.update_grades
-        pick_and_save_injury
-        workout.save
+      result.workout = workout
+      result
+    end
+
+    class Result
+      attr_accessor :workout, :created
+
+      def initialize(created:, workout:)
+        @created = created
+        @workout = workout
+      end
+
+      def created?
+        @created
       end
     end
 
@@ -108,7 +141,7 @@ module Workouts
     end
 
     def calculate_energy_loss
-      workout.energy_loss *= (0.5 + (1 - horse.racing_stats.age_percent))
+      workout.energy_loss *= (0.5 + (1 - horse.racing_stats.peak_percent))
     end
 
     def calculate_fitness_gain
@@ -125,11 +158,11 @@ module Workouts
         stat = if horse.racing_stats.natural_energy_current <= 10 && rand(1...2) == 1
           "natural_energy"
         else
-          query = Racing::WorkoutComment.where(stat_value: nil).where.not(stat: "jumps")
-          query.order("RAND()").first.pick(:stat)
+          query = Racing::WorkoutComment.where.not(stat_value: nil).where.not(stat: "jumps")
+          query.order("RANDOM()").first.stat
         end
         knowledge = Racing::HorseJockeyRelationship.find_or_initialize_by(horse: workout.horse, jockey: workout.jockey).experience
-        WorkoutCommentGenerator.new(knowledge:, stat:, value: pick_stat_value(stat))
+        WorkoutCommentGenerator.new(workout:, knowledge:, stat:, value: pick_stat_value(stat)).call
       end
     end
 
@@ -138,7 +171,7 @@ module Workouts
       when "equipment"
         equipment_status
       when "stamina"
-        horse.racing_stats.stamina * horse.racing_stats.age_percent
+        horse.racing_stats.stamina * horse.racing_stats.peak_percent
       when "energy"
         horse.racing_stats.energy
       when "fitness"
@@ -187,14 +220,14 @@ module Workouts
         activity_time
       else
         activity_time = workout.send(:"distance#{index}") * 660 * 12 # get distance in inches
-        activity_time /= stride_length(activity)
+        activity_time = activity_time.fdiv(stride_length(activity))
         workout.energy_loss += activity_time * pick_energy_loss(activity)
         workout.fitness_gain += activity_time + pick_fitness_gain(activity)
         activity_time /= strides_per_second(activity)
         activity_time
       end
       # rubocop:enable Style/IdenticalConditionalBranches
-      workout.send(":activity#{index}_time_in_seconds=", time)
+      workout.send("activity#{index}_time_in_seconds=", time)
       workout.time_in_seconds += time
       workout.total_time_in_seconds += time
     end
@@ -204,12 +237,12 @@ module Workouts
         activity:,
         stride_length: pick_stride_length(activity),
         effort: workout.effort,
-        weight: workout.weight,
+        weight: weight_modifier,
         equipment_status:,
         track_preference:,
         track_condition:,
         consistency:
-      )
+      ).call
     end
 
     def strides_per_second(activity)
@@ -217,12 +250,16 @@ module Workouts
         activity:,
         strides_per_second: pick_strides_per_second(activity),
         effort: workout.effort,
-        weight: workout.weight,
+        weight: weight_modifier,
         equipment_status:,
         track_preference:,
         track_condition:,
         consistency:
-      )
+      ).call
+    end
+
+    def weight_modifier
+      @weight_modifier ||= Workouts::WeightCarriedCalculator.new(workout.jockey.weight, horse.racing_stats.weight).call
     end
 
     def consistency
@@ -239,13 +276,16 @@ module Workouts
 
     def track_preference
       @track_preference ||= Racing::TrackTypePreferenceCalculator.new(
-        track_type: workout.surface, dirt: horse.racing_stats.dirt,
+        track_type: workout.surface.surface, dirt: horse.racing_stats.dirt,
         turf: horse.racing_stats.turf, steeplechase: horse.racing_stats.steeplechase
       ).call
     end
 
     def equipment_status
-      @equipment_status ||= Racing::EquipmentStatusGenerator.new(current_equipment: workout.equipment, desired_equipment: horse.racing_stats.desired_equipment).call
+      return @equipment_status if @equipment_status
+
+      status = Racing::EquipmentStatusGenerator.new(current_equipment: workout.equipment, desired_equipment: horse.racing_stats.desired_equipment).call
+      @equipment_status = Racing::EquipmentStatusGenerator::STATUS_MODIFIERS[status]
     end
 
     def pick_fitness_gain(activity)
@@ -308,13 +348,13 @@ module Workouts
         percent = rand(89...99)
         key = Config::Workouts.dig(:gallop, :stride_length)
         speed = horse.racing_stats.send(:"#{key}_speed")
-        speed *= horse.racing_stats.age_percent
+        speed *= horse.racing_stats.peak_percent
         speed * percent.fdiv(100)
       when :breeze
         percent = rand(89...99)
         key = Config::Workouts.dig(:breeze, :stride_length)
         speed = horse.racing_stats.send(:"#{key}_speed")
-        speed *= horse.racing_stats.age_percent
+        speed *= horse.racing_stats.peak_percent
         speed * percent.fdiv(100)
       end
     end
@@ -343,28 +383,29 @@ module Workouts
     end
 
     def pick_injury
-      chance = rand(5 - horse.soundness...10)
+      stats = horse.racing_stats
+      chance = rand(5 - stats.soundness...10)
       if workout.condition == "wet"
         chance += 2
       elsif workout.condition == "slow"
         chance += 3
       end
-      if workout.jockey.weight > horse.weight
-        difference_in_lbs = workout.jockey.weight - horse.weight
+      if workout.jockey.weight > stats.weight
+        difference_in_lbs = workout.jockey.weight - stats.weight
         chance += (difference_in_lbs < 5) ? 2 : 3
       end
-      if horse.energy < 25
+      if stats.energy < 25
         chance += 5
-      elsif horse.energy < 50
+      elsif stats.energy < 50
         chance += 3
-      elsif horse.energy < 75
+      elsif stats.energy < 75
         chance += 1
       end
-      if horse.fitness < 25
+      if stats.fitness < 25
         chance += 5
-      elsif horse.fitness < 40
+      elsif stats.fitness < 40
         chance += 3
-      elsif horse.fitness < 60
+      elsif stats.fitness < 60
         chance += 1
       end
       extra_points = injury_points_for_activity(workout.activity1)
@@ -383,7 +424,7 @@ module Workouts
         cut = 69
         swelling = 82
         heat = 100
-        case horse.soundness
+        case stats.soundness
         when 10
           bowed_tendon = 5
           overheat = 15
@@ -483,66 +524,67 @@ module Workouts
     end
 
     def pick_special_event
+      stats = horse.racing_stats
       spook_chance = 3
-      if horse.experience < 20
+      if stats.xp_current < 20
         spook_chance += 3
-      elsif horse.experience < 40
+      elsif stats.xp_current < 40
         spook_chance += 2
-      elsif horse.experience < 60
+      elsif stats.xp_current < 60
         spook_chance += 1
-      elsif horse.experience > 90
+      elsif stats.xp_current > 90
         spook_chance -= 2
-      elsif horse.experience > 80
+      elsif stats.xp_current > 80
         spook_chance -= 1
       end
 
       dump_chance = 3
-      if horse.energy > 90
+      if stats.energy > 90
         dump_chance += 3
-      elsif horse.energy > 80
+      elsif stats.energy > 80
         dump_chance += 2
-      elsif horse.energy > 70
+      elsif stats.energy > 70
         dump_chance += 1
-      elsif horse.energy < 10
+      elsif stats.energy < 10
         dump_chance -= 2
-      elsif horse.energy < 20
+      elsif stats.energy < 20
         dump_chance -= 1
       end
 
       bolt_chance = 3
-      if horse.fitness > 90
+      if stats.fitness > 90
         bolt_chance += 3
-      elsif horse.fitness > 80
+      elsif stats.fitness > 80
         bolt_chance += 2
-      elsif horse.fitness > 70
+      elsif stats.fitness > 70
         bolt_chance += 1
-      elsif horse.fitness < 10
+      elsif stats.fitness < 10
         bolt_chance -= 2
-      elsif horse.fitness < 20
+      elsif stats.fitness < 20
         bolt_chance -= 1
       end
 
       fight_chance = 3
-      if horse.pissy > 4
+      if stats.pissy > 4
         fight_chance += 2
-      elsif horse.pissy > 3
+      elsif stats.pissy > 3
         fight_chance += 1
       end
 
       cooperate_chance = 3
-      if horse.ratability > 4
+      if stats.ratability > 4
         cooperate_chance += 2
-      elsif horse.ratability > 3
+      elsif stats.ratability > 3
         cooperate_chance += 1
       end
 
-      max_value_check = if horse.natural_energy <= 0
+      max_value_check = if stats.natural_energy_current <= 0
         50
-      elsif horse.natural_energy <= 20
+      elsif stats.natural_energy_current <= 20
         70
-      elsif horse.natural_energy <= 40
+      elsif stats.natural_energy_current <= 40
         100
-      elsif horse.natural_energy <= 60
+      elsif stats.natural_energy_current <= 60
         130
       else
         150

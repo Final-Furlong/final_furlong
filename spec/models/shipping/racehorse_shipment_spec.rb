@@ -62,8 +62,8 @@ RSpec.describe Shipping::RacehorseShipment do
         future_shipment = create(:racehorse_shipment, departure_date: Date.current + 1.day, arrival_date: Date.current + 3.days)
 
         result = described_class.current
-        expect(result).to include today_shipment, past_shipment
-        expect(result).not_to include future_shipment
+        expect(result).to include today_shipment
+        expect(result).not_to include past_shipment, future_shipment
       end
     end
 

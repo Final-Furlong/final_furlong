@@ -43,7 +43,7 @@ class Horses::Horse::Racing < ActiveRecord::AssociatedObject
   end
 
   def last_shipment
-    record.racing_shipments.current.order(arrival_date: :desc).first
+    record.racing_shipments.not_future.order(arrival_date: :desc).first
   end
 end
 
