@@ -4,6 +4,9 @@
   - else
     .mx-auto.overflow-x-auto.w-full.sm:hidden
       - @workouts.each do |workout|
+        - horse = workout.horse
+        - jockey = workout.jockey
+        - racetrack = workout.racetrack
         .card.bg-base-100.w-full.px-2.rounded-none
           .card-body.p-0.rounded-none
             .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
@@ -11,6 +14,52 @@
               .collapse-title.font-semibold.font-medium
                 span= l(workout.date)
               .collapse-content.text-sm
+                p
+                  span= t(".jockey")
+                  span.float-right= jockey.full_name
+                p
+                  span= t(".effort")
+                  span.float-right= "#{workout.effort}%"
+                p
+                  span= t(".racetrack")
+                  span.float-right
+                    = racetrack.name
+                    = " ("
+                    = workout.condition.titleize
+                    = ")"
+                p
+                  span= t(".equipment")
+                  span.float-right= workout.equipment_string
+                p
+                  span= t(".activity")
+                  span.float-right= workout.activity_string(1)
+                - if workout.activity_time(1)
+                  p.text-sm
+                    span= t(".time")
+                    span.float-right= workout.activity_time(1)
+                - if workout.activity2
+                  p
+                    span= t(".activity")
+                    span.float-right= workout.activity_string(2)
+                  - if workout.activity_time(2)
+                    p.text-sm
+                      span= t(".time")
+                      span.float-right= workout.activity_time(2)
+                - if workout.activity3
+                  p
+                    span= t(".activity")
+                    span.float-right= workout.activity_string(3)
+                  - if workout.activity_time(3)
+                    p.text-sm
+                      span= t(".time")
+                      span.float-right= workout.activity_time(3)
+                p
+                  span= t(".total_time")
+                  span.float-right= workout.activity_time(:total) || t("common.dash")
+                p.mt-2
+                  span= t(".comment")
+                p
+                  span= workout.comment.to_s(horse.name, horse.female?)
     .hidden.mx-auto.overflow-x-auto.border.rounded-md.w-full.sm:block.sm:w-5/6
       table.table.table-zebra
         thead
@@ -23,6 +72,7 @@
             th= t(".activity")
             th= t(".activity")
             th= t(".activity")
+            th= t(".time")
             th= t(".comment")
         tbody
           - @workouts.each do |workout|
@@ -39,9 +89,19 @@
                 = workout.condition.titleize
                 = ")"
               td=workout.equipment_string
-              td=workout.activity_string(1)
-              td=workout.activity_string(2)
-              td=workout.activity_string(3)
+              td
+                =workout.activity_string(1)
+                - if workout.activity_time(1)
+                  p.text-sm= workout.activity_time(1)
+              td
+                =workout.activity_string(2)
+                - if workout.activity_time(2)
+                  p.text-sm= workout.activity_time(2)
+              td
+                =workout.activity_string(3)
+                - if workout.activity_time(3)
+                  p.text-sm= workout.activity_time(3)
+              td= workout.activity_time(:total)
               td=workout.comment.to_s(horse.name, horse.female?)
 
   .float-right.mt-2

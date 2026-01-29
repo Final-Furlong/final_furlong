@@ -3,4 +3,4 @@
   = render Nav::Breadcrumbs::Component.new(links: [{ name: Current.stable.name, href: current_stable_path },
                                                    { name: schedule_name, href: stable_training_schedules_path },
                                                    { name: t(".title"), href: "#" }])
-= render "form", url: stable_training_schedule_horses_path
+= render "form", url: stable_training_schedule_horses_path, schedule_horse: @schedule_horse

@@ -11,7 +11,7 @@ module Racing
     validates :energy_grade, :fitness_grade, inclusion: { in: GRADES }
     validates :at_home, :in_transit, inclusion: { in: [true, false] }
 
-    def update_grades
+    def update_grades(energy:, fitness:)
       modifier_percent = (energy * 0.2).clamp(10, 20)
       modifier = rand(0...modifier_percent)
       graded_score = (rand(1...2) == 1) ? modifier : modifier * -1
@@ -37,7 +37,11 @@ module Racing
         "A"
       end
       self.fitness_grade = grade
-      save
+      if save
+        [energy_grade, fitness_grade]
+      else
+        []
+      end
     end
   end
 end

@@ -106,16 +106,17 @@ en:
         success: "%{name} was assigned to %{schedule}"
       index:
         age_gender: Age/Gender
-        do_workout: Do Workout
-        effort: Effort
+        at_farm: Not at the track
+        boarded: Currently Boarded
         energy: Energy
-        equipment: Equipment
         fitness: Fitness
         horse: Horse
-        jockey: Jockey
-        title: Horses Assigned to Training Schedule %{schedule}
+        horse_description: Horse Name (Energy/Fitness)
+        in_transit: In Transit
+        title: Horses Assigned (%{count})
         today_activities: Activities for Today
-        track: Track
+        worked_out_today: Already Worked Today
+        workout: Workout
       new:
         title: Assign Horse to Training Schedule
     training_schedules:
@@ -138,7 +139,9 @@ en:
       new:
         title: New Training Schedule
       show:
+        add_horse: Add Horse
         title: 'Training Schedule: %{name}'
+        workouts_count: Workouts (%{count})
       update:
         success: Training Schedule was successfully updated.
     trainings:

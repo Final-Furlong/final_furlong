@@ -12,9 +12,9 @@ module Equipmentable
       :column => "equipment"
 
     def equipment_string
-      return if selected_equipment.empty?
+      return I18n.t("common.dash") if selected_equipment.empty?
 
-      selected_equipment.map { |equipment| I18n.t("horse.equipment.#{equipment}") }
+      selected_equipment.map { |equipment| I18n.t("horse.equipment.#{equipment}") }.join(" ")
     end
   end
 end

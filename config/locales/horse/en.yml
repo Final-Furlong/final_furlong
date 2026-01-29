@@ -35,6 +35,13 @@ en:
         confirm: Are you sure you want to stop boarding %{horse}?
         confirm_title: Stop Boarding
     created: Created
+    equipment:
+      blinkers: B
+      figure_8: F8
+      no_whip: NW
+      none: None
+      shadow_roll: SR
+      wraps: W
     events:
       boardings:
         current_boarding: Current
@@ -50,7 +57,7 @@ en:
         loading_sales: Loading sales/leases...
         loading_shipping: Loading shipping...
         loading_workouts: Loading workouts...
-        no_boarding: Workouts
+        no_boarding: Boarding
         no_sales: Sales/Leases
         no_shipping: Shipping
         no_workouts: Workouts
@@ -94,6 +101,8 @@ en:
         horse: Horse
         jockey: Jockey
         racetrack: Racetrack
+        time: Time
+        total_time: Total Time
     foal_due: Foal Due
     foals:
       dam_foal_list:
@@ -302,3 +311,23 @@ en:
       yearling: yearling
     unnamed: Unnamed
     unraced: Unraced
+    workouts:
+      create:
+        failure: Workout could not be performed.
+        success: Workout was successfully completed.
+      form:
+        activity: Activity
+        distance: Distance
+        effort: Effort
+        effort_100: 100%
+        effort_110: 110%
+        effort_20: 20%
+        effort_50: 50%
+        effort_70: 70%
+        jockey: Jockey
+        surface_dirt: Dirt
+        surface_steeplechase: Steeplechase
+        surface_turf: Turf
+        track: Track
+      new:
+        title: Workout for %{name}
