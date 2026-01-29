@@ -302,3 +302,23 @@ en:
       yearling: yearling
     unnamed: Unnamed
     unraced: Unraced
+    workouts:
+      create:
+        failure: Workout could not be performed.
+        success: Workout was successfully completed.
+      form:
+        activity: Activity
+        distance: Distance
+        effort: Effort
+        effort_100: 100%
+        effort_110: 110%
+        effort_20: 20%
+        effort_50: 50%
+        effort_70: 70%
+        jockey: Jockey
+        surface_dirt: Dirt
+        surface_steeplechase: Steeplechase
+        surface_turf: Turf
+        track: Track
+      new:
+        title: Workout for %{name}

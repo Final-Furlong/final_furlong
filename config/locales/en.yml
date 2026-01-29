@@ -91,6 +91,14 @@ en:
       failure: User could not be updated.
       success: User was successfully updated.
   view_components:
+    equipment:
+      form:
+        blinkers: Blinkers
+        figure_8: Figure 8
+        label: Equipment
+        no_whip: No Whip
+        shadow_roll: Shadow Roll
+        wraps: Wraps
     nav:
       breadcrumbs:
         actions:

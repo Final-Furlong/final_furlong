@@ -1,6 +1,6 @@
 class MigrateLegacyShipmentsService
   def call
-    Horses::Horse.select(:id, :legacy_id, :status).where(status: %w[broodmare])
+    Horses::Horse.select(:id, :legacy_id, :status).where(status: %w[broodmare racehorse])
       .find_in_batches(batch_size: 100) do |horses|
       horses.each do |info|
         if info[:status] == "racehorse"

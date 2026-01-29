@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def pick_layout
-    (turbo_frame_request_id == "modal") ? "modal" : "application"
+    (turbo_frame_request_id == "modal" && flash[:error].blank?) ? "modal" : "application"
   end
 
   def not_found
