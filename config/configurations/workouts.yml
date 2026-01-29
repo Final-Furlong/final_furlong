@@ -1,4 +1,10 @@
 shared:
+  effort_levels:
+    - 20
+    - 50
+    - 70
+    - 100
+    - 110
   energy_loss_per_stride:
     walk: .0005
     jog: .0015

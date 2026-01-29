@@ -15,7 +15,7 @@ module Shipping
     validates :mode, inclusion: { in: Route::MODES }, if: :mode
     validates :shipping_type, inclusion: { in: SHIPPING_TYPES }
 
-    scope :current, -> { where(departure_date: ..Date.current) }
+    scope :current, -> { where(departure_date: ..Date.current).where("arrival_date > ?", Date.current) }
     scope :future, -> { where("departure_date > ?", Date.current) }
 
     def future?

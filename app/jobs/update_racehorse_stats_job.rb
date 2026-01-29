@@ -2,6 +2,8 @@ class UpdateRacehorseStatsJob < ApplicationJob
   queue_as :low_priority
 
   def perform
+    racetrack = Racing::Racetrack.find_by(name: "Churchill Downs")
+    Account::Stable.where(racetrack: nil).update_all(racetrack_id: racetrack.id) # rubocop:disable Rails/SkipsModelValidations
     Horses::Horse.racehorse.where.missing(:race_metadata).find_each do |horse|
       migrate_stats(horse:)
     end
@@ -23,6 +25,7 @@ class UpdateRacehorseStatsJob < ApplicationJob
     last_shipped_at = Shipping::RacehorseShipment.where(horse_id: horse.id).maximum(:arrival_date)
     last_shipped_home_at = Shipping::RacehorseShipment.where(horse_id: horse.id, shipping_type: "track_to_farm").maximum(:arrival_date)
     last_rested_at = [last_boarded_at, last_shipped_home_at].compact.max
+    last_rested_at ||= Date.current
     racetrack = if legacy_horse.Location == 59
       stable.racetrack
     else
@@ -31,41 +34,18 @@ class UpdateRacehorseStatsJob < ApplicationJob
 
       Racing::Racetrack.find_by(name: legacy_racetrack.Name)
     end
-    equipment = if legacy_horse.Equipment.present? && legacy_horse.Equipment != 0
-      legacy_equip = Legacy::Equipment.find(legacy_horse.Equipment)
-      equip_list = legacy_equip.Equipment.split(" ")
-      {
-        blinkers: equip_list.include?("B"),
-        shadow_roll: equip_list.include?("SR"),
-        wraps: equip_list.include?("W"),
-        figure_8: equip_list.include?("F8"),
-        no_whip: equip_list.include?("NW")
-      }
-    end
+    racetrack ||= stable.racetrack
     attrs = {
-      energy: legacy_horse.EnergyCurrent,
       last_raced_at:,
       last_rested_at:,
       last_shipped_at:,
-      fitness: legacy_horse.Fitness,
-      natural_energy: legacy_horse.NaturalEnergy,
       energy_grade: legacy_horse.DisplayEnergy,
       fitness_grade: legacy_horse.DisplayFitness,
-      energy_regain_rate: legacy_horse.EnergyRegain.to_f,
-      natural_energy_loss_rate: legacy_horse.NELoss,
-      natural_energy_regain_rate: legacy_horse.NEGain.to_f,
       racetrack:,
       at_home: legacy_horse.Location == 59,
-      in_transit: false, # TODO: fix this
-      blinkers: equipment ? equipment[:blinkers] : false,
-      shadow_roll: equipment ? equipment[:shadow_roll] : false,
-      wraps: equipment ? equipment[:wraps] : false,
-      figure_8: equipment ? equipment[:figure_8] : false,
-      no_whip: equipment ? equipment[:no_whip] : false,
-      mature_at: legacy_horse.ImmDate,
-      hasbeen_at: legacy_horse.HBDate
+      in_transit: horse.racing_shipments.current.exists?
     }
-    data.update(attrs)
+    data.update!(attrs)
   end
 end
 

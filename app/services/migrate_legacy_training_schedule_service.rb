@@ -33,7 +33,8 @@ class MigrateLegacyTrainingScheduleService
       schedule_horse = Racing::TrainingScheduleHorse.find_or_initialize_by(horse:)
       schedule_horse.update!(training_schedule: schedule)
     else
-      Legacy::TrainingScheduleHorse.where("Schedule = ?", legacy_schedule.ID).find_each do |schedule_horse|
+      Legacy::TrainingScheduleHorse.joins(:horse).where(horse: { Status: 3 }).where("horse.Owner = ? OR horse.Leaser = ?", stable.legacy_id, stable.legacy_id)
+        .where("Schedule = ?", legacy_schedule.ID).find_each do |schedule_horse|
         horse = Horses::Horse.find_by(legacy_id: schedule_horse.Horse)
 
         next unless horse
@@ -41,6 +42,8 @@ class MigrateLegacyTrainingScheduleService
         schedule_horse.update!(training_schedule: schedule)
       end
     end
+    schedule.training_schedule_horses.joins(:horse).where.not(horse: { status: "racehorse" }).delete_all
+    Racing::TrainingScheduleHorse.counter_culture_fix_counts
   end
 
   private
