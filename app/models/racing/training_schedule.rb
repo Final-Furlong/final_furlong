@@ -30,6 +30,11 @@ module Racing
     validates :saturday_activities, store_model: true
     validate :minimum_activities
 
+    def daily_activities
+      weekday = Time.zone.today.strftime("%A")
+      send(:"#{weekday.downcase}_activities")
+    end
+
     private
 
     def all_activities
@@ -42,10 +47,6 @@ module Racing
 
       errors.add(:base, :missing_activities)
     end
-
-    # 2yo schedule
-    # Max gallop	1 mile
-    # Max workout (all activities)	2 miles
   end
 end
 

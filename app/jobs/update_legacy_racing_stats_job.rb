@@ -5,6 +5,9 @@ class UpdateLegacyRacingStatsJob < ApplicationJob
     Horses::Horse.where("date_of_birth != date_of_death").where.missing(:racing_stats).find_each do |horse|
       migrate_racing_stats(horse:)
     end
+    Horses::Horse.where(date_of_death: nil).where.missing(:racing_stats).find_each do |horse|
+      migrate_racing_stats(horse:)
+    end
   end
 
   private
@@ -43,13 +46,13 @@ class UpdateLegacyRacingStatsJob < ApplicationJob
     stats.natural_energy_loss = legacy.NELoss
     stats.off_pace = legacy.Pace
     stats.peak_start_date = legacy.ImmDate
-    stats.peak_end_date = legacy.HBDate
+    stats.peak_end_date = legacy.HBDate.presence || Date.new(horse.date_of_birth.year.to_i + legacy.Hasbeen.to_i, rand(1...12), 1)
     stats.pissy = legacy.Pissy
     stats.ratability = legacy.Ratability
     stats.soundness = legacy.Soundness
     stats.stamina = legacy.Stamina
     stats.steeplechase = legacy.SC
-    stats.strides_per_second = legacy.SPS
+    stats.strides_per_second = legacy.SPS.presence || rand(2300...2600).fdiv(1000)
     stats.sustain = legacy.Sustain
     stats.track_fast = legacy.Fast
     stats.track_good = legacy.Good

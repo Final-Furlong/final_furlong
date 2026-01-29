@@ -17,6 +17,7 @@ module Racing
     scope :dirt, -> { where(surface: "dirt") }
     scope :turf, -> { where(surface: "turf") }
     scope :steeplechase, -> { where(surface: "steeplechase") }
+    scope :flat, -> { where(surface: ["dirt", "turf"]) }
   end
 end
 

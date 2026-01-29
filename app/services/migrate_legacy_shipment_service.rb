@@ -68,7 +68,16 @@ class MigrateLegacyShipmentService
         "farm_to_track"
       end
     end
-    shipment.save!
+    ActiveRecord::Base.transaction do
+      if class_name == Shipping::RacehorseShipment && shipment.arrival_date > Date.current
+        if horse.race_metadata
+          horse.race_metadata.update(in_transit: shipment.arrival_date > Date.current, at_home: shipment.shipping_type == "track_to_farm")
+        else
+          UpdateRacehorseStatsJob.set(wait: 5.seconds).perform_later
+        end
+      end
+      shipment.save!
+    end
   end
 end
 

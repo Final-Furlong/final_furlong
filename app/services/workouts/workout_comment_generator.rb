@@ -1,5 +1,5 @@
 class Workouts::WorkoutCommentGenerator
-  attr_reader :knowledge, :stat, :value, :random_chance
+  attr_reader :knowledge, :stat, :value, :random_chance, :workout
 
   def initialize(knowledge:, stat:, value:, workout:)
     @knowledge = knowledge.clamp(10, 90)
@@ -10,6 +10,10 @@ class Workouts::WorkoutCommentGenerator
   end
 
   def call
+    pd stat
+    pd value
+    pd knowledge
+    pd random_chance
     comment_i18n_key = case stat.to_s.downcase
     when "equipment"
       case value
@@ -240,6 +244,7 @@ class Workouts::WorkoutCommentGenerator
         "natural_energy_negative"
       end
     end
+    pd comment_i18n_key
     Racing::WorkoutComment.find_by(comment_i18n_key:)
   end
 

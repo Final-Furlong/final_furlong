@@ -15,10 +15,10 @@ module Racing
     belongs_to :location
     belongs_to :racetrack
     belongs_to :surface, class_name: "TrackSurface"
-    belongs_to :comment, class_name: "Racing::WorkoutComment", inverse_of: :workouts
+    belongs_to :comment, class_name: "Racing::WorkoutComment", optional: true, inverse_of: :workouts
 
-    validates :activity1, :distance1, :condition, :date, :effort, :equipment,
-      :confidence, presence: true
+    validates :activity1, :distance1, :condition, :date, :effort, :equipment, presence: true
+    validates :confidence, :comment, presence: true, on: :complete_workout
     validates :activity1, :activity2, :activity3, inclusion: { in: ACTIVITIES }, allow_nil: true
     validates :condition, inclusion: { in: TrackSurface::CONDITIONS }
     validates :distance2, presence: true, if: :activity2
@@ -27,12 +27,12 @@ module Racing
     # validates :activity3_time_in_seconds, presence: true, if: :activity3
     validates :distance1, :distance2, :distance3, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     validates :effort, numericality: { only_integer: true, greater_than: 0 }
-    validates :confidence, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+    validates :confidence, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, on: :complete_workout
     validates :equipment, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-    validates :activity1_time_in_seconds, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
-    validates :activity2_time_in_seconds, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
-    validates :activity3_time_in_seconds, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
-    validates :time_in_seconds, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
+    validates :activity1_time_in_seconds, numericality: { only_integer: true, greater_than: 0 }, on: :complete_workout, allow_nil: true
+    validates :activity2_time_in_seconds, numericality: { only_integer: true, greater_than: 0 }, on: :complete_workout, allow_nil: true
+    validates :activity3_time_in_seconds, numericality: { only_integer: true, greater_than: 0 }, on: :complete_workout, allow_nil: true
+    validates :time_in_seconds, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true, on: :complete_workout
     validates :horse_id, uniqueness: { scope: :date }
 
     validates :distance1, numericality: { greater_than: Config::Workouts.dig(:walk, :min_furlongs) - 1, less_than: Config::Workouts.dig(:walk, :max_furlongs) + 1 }, if: -> { activity1 == "walk" }
@@ -52,6 +52,42 @@ module Racing
     validates :distance3, numericality: { greater_than: Config::Workouts.dig(:breeze, :min_furlongs) - 1, less_than: Config::Workouts.dig(:breeze, :max_furlongs) + 1 }, if: -> { activity3 == "breeze" }
 
     validate :valid_baby_distances
+
+    def options_for_effort_select
+      levels = Config::Workouts.effort_levels.sort.reverse
+      levels.map do |level|
+        [I18n.t("horse.workouts.form.effort_#{level}"), level]
+      end
+    end
+
+    def options_for_surface_select
+      options = horse.race_options
+      surfaces = if options.racehorse_type == "jump"
+        ["steeplechase"]
+      else
+        ["dirt", "turf"]
+      end
+      surfaces.map do |surface|
+        [I18n.t("horse.workouts.form.surface_#{surface}"), surface]
+      end
+    end
+
+    def store_initial_options(schedule)
+      activities = schedule.daily_activities
+      self.activity1 = activities.activity1
+      self.activity2 = activities.activity2
+      self.activity3 = activities.activity3
+      self.distance1 = activities.distance1
+      self.distance2 = activities.distance2
+      self.distance3 = activities.distance3
+      self.effort = 100
+      options = horse.race_options
+      self.jockey = options&.first_jockey
+      self.racetrack = horse.race_metadata.racetrack
+      if racetrack && options.racehorse_type == "jump" && racetrack
+        self.surface = racetrack.surfaces.steeplechase.first
+      end
+    end
 
     def valid_baby_distances
       return if horse.age > 2

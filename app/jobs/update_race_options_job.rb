@@ -14,8 +14,10 @@ class UpdateRaceOptionsJob < ApplicationJob
     jumper = horse.race_result_finishes.joins(:race).merge(Racing::RaceResult.by_track("steeplechase")).exists?
     min_distance = Racing::RaceResult.joins(:horses).where(race_result_horses: { horse_id: horse.id })
       .merge(Racing::RaceResultHorse.by_max_finish(3)).minimum(:distance)
+    min_distance ||= 5.0
     max_distance = Racing::RaceResult.joins(:horses).where(race_result_horses: { horse_id: horse.id })
       .merge(Racing::RaceResultHorse.by_max_finish(3)).maximum(:distance)
+    max_distance ||= 24.0
     legacy_horse = Legacy::Horse.find(horse.legacy_id)
     jockey1 = legacy_horse.DefaultJock1.blank? ? nil : Racing::Jockey.find_by(legacy_id: legacy_horse.DefaultJock1)
     jockey2 = legacy_horse.DefaultJock2.blank? ? nil : Racing::Jockey.find_by(legacy_id: legacy_horse.DefaultJock2)
@@ -51,7 +53,7 @@ class UpdateRaceOptionsJob < ApplicationJob
       figure_8: equipment ? equipment[:figure_8] : false,
       no_whip: equipment ? equipment[:no_whip] : false
     }
-    race_option.update(attrs)
+    race_option.update!(attrs)
   end
 end
 
