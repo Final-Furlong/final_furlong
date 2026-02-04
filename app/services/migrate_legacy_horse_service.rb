@@ -13,9 +13,9 @@ class MigrateLegacyHorseService # rubocop:disable Metrics/ClassLength
       date_of_death: dead? ? from_game_date(legacy_horse.DOD) : nil,
       gender: pick_gender,
       status: pick_status,
-      owner_id: find_owner,
-      name: legacy_horse.Name
+      owner_id: find_owner
     }
+    update_attrs[:name] = legacy_horse.Name.presence
     unless horse.persisted?
       update_attrs.merge!(
         date_of_birth: from_game_date(legacy_horse.DOB),
