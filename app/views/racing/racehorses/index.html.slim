@@ -1,0 +1,5 @@
+= turbo_frame_tag "racehorse-status-#{@status}" do
+  .horses-search-results
+    - if @horses.empty?
+      h4.text-muted.text-center.my-2
+        small= t("horses.index.no_horses")

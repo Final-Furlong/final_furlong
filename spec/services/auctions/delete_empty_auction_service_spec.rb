@@ -74,7 +74,7 @@ RSpec.describe Auctions::DeleteEmptyAuctionService do
     context "when auction has less than 5 horses" do
       context "when auctioneer is FF" do
         before do
-          auction.auctioneer.update(name: Account::Stable::FINAL_FURLONG)
+          auction.auctioneer.update(name: Config::Game.stable)
           horses = create_list(:auction_horse, 1, auction:)
           horses.each do |horse|
             create(:auction_bid, auction:, horse:)

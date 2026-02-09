@@ -28,6 +28,15 @@ en:
         owner_accepted_end: Owner
       horses/stud_foal_record:
         crop: Crop
+      racing/race_option:
+        maximum_distance: Max Dist
+        minimum_distance: Min Dist
+      racing/racehorse_metadata:
+        energy_grade: Energy
+        fitness_grade: Fitness
+        last_raced_at: Last Race
+        last_rested_at: Last Rest
+        last_shipped_at: Last Shipment
       setting:
         apply_minimums_for_future_races: Apply These Minimums For Future Races?
         dark_mode: Dark Mode

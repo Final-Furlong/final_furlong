@@ -12,17 +12,17 @@ module Api
         params do
           requires :date, type: String, desc: "Date of the race"
           requires :number, type: Integer, desc: "Number of the race", values: 1..50
-          requires :race_type, type: String, desc: "Race Type", values: Racing::RaceSchedule::RACE_TYPES
+          requires :race_type, type: String, desc: "Race Type", values: Config::Racing.all_types
           requires :distance, type: Float, desc: "Distance", values: 5.0..24.00
-          requires :age, type: String, desc: "Race age", values: Racing::RaceSchedule::RACE_AGES
+          requires :age, type: String, desc: "Race age", values: Config::Racing.ages
           requires :track_name, type: String, desc: "Track Name"
           requires :track_surface, type: String, values: %w[dirt turf steeplechase], desc: "Track surface"
-          requires :condition, type: String, desc: "Track condition", values: Racing::TrackSurface::CONDITIONS
+          requires :condition, type: String, desc: "Track condition", values: Config::Racing.conditions.map(&:downcase)
           requires :time, type: Float, desc: "Time in seconds"
           requires :purse, type: Integer, desc: "Purse", values: 10_000..25_000_000
           optional :male_only, type: Boolean, default: false, desc: "Male only flag"
           optional :female_only, type: Boolean, default: false, desc: "Female only flag"
-          optional :grade, type: String, desc: "Race Grade", values: Racing::RaceSchedule::RACE_GRADES
+          optional :grade, type: String, desc: "Race Grade", values: Config::Racing.grades
           optional :claiming_price, Integer, desc: "Claiming Price"
           optional :name, String, desc: "Race Name"
           requires :horses, type: Array, length: { min: 1, max: 14 } do

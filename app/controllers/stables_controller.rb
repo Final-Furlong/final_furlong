@@ -6,7 +6,7 @@ class StablesController < AuthenticatedController
 
   def index
     authorize Account::Stable
-    @stables = policy_scope(Account::Stable).order(name: :asc)
+    @stables = policy_scope(Account::Stable).includes(:user).order(name: :asc)
   end
 
   def show

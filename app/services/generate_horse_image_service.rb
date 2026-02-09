@@ -5,7 +5,7 @@ class GenerateHorseImageService < ApplicationService
 
   attr_reader :appearance
 
-  def call(horse_id:, max_height: 500, max_width: 800)
+  def call(horse_id:, max_height: Config::Horses.image_height, max_width: Config::Horses.image_width)
     horse = Horses::Horse.find(horse_id)
     @appearance = horse.appearance
 

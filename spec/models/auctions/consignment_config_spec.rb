@@ -8,7 +8,7 @@ RSpec.describe Auctions::ConsignmentConfig do
 
     it { is_expected.to validate_presence_of(:horse_type) }
     it { is_expected.to validate_uniqueness_of(:horse_type).case_insensitive.scoped_to(:auction_id) }
-    it { is_expected.to validate_inclusion_of(:horse_type).in_array(described_class::HORSE_TYPES) }
+    it { is_expected.to validate_inclusion_of(:horse_type).in_array(Config::Auctions.horse_statuses) }
     it { is_expected.to validate_numericality_of(:minimum_count).is_greater_than(0) }
 
     context "when horse type is racehorse" do

@@ -1,0 +1,6 @@
+/# locals: (query:, status:)
+= turbo_search_form_for query, url: racing_racehorses_path, method: :get, turbo_frame: "racehorse-status-#{@status}-search" do |f|
+  = f.hidden_field :min_age
+  = f.hidden_field :max_age
+  = f.hidden_field :racehorse_status, value: status
+  = f.text_field :name_i_cont_all, placeholder: t("horses.info.name")

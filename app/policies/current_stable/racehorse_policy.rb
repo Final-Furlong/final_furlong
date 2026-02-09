@@ -1,8 +1,40 @@
 module CurrentStable
   class RacehorsePolicy < ApplicationPolicy
-    def update_racing_options?
-      # TODO: implement racing options
-      false
+    class Scope < ApplicationPolicy::Scope
+      def resolve
+        refined_scope = scope.managed_by(stable)
+        if (energy = game_settings[:minimum_energy])
+          refined_scope = refined_scope.where(race_metadata: {
+            energy_grade: energy
+          })
+        end
+        if (min_days = game_settings[:minimum_days_since_last_race])
+          refined_scope = refined_scope.where(race_metadata: {
+            last_raced_at:
+              ..(Date.current - min_days.days)
+          })
+        end
+        refined_scope
+      end
+
+      def game_settings
+        return {} unless user.setting.racing
+        {
+
+          minimum_energy: user.setting.racing.min_energy_for_race_entry,
+          minimum_days_since_last_race: user.setting.racing.min_days_delay_from_last_race,
+          minimum_days_since_last_injury: user.setting.racing.min_days_delay_from_last_injury,
+          minimum_rest_days_since_last_race: user.setting.racing.min_days_rest_between_races,
+          minimum_workouts_since_last_race: user.setting.racing.min_workouts_between_races
+        }
+      end
+    end
+
+    def update_race_options?
+      return false unless record.racehorse?
+      return false if record.race_options.blank?
+
+      manager?
     end
 
     def nominate?
@@ -47,6 +79,10 @@ module CurrentStable
 
     def owner?
       record.owner == user&.stable
+    end
+
+    def manager?
+      record.manager == user&.stable
     end
   end
 end

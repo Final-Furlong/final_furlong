@@ -52,17 +52,17 @@ module Horses
         track_record += ", Millionaire"
       end
       points = record&.points.to_i
-      title = if points >= 1500
+      title = if points >= Config::Racing.dig(:title_points, :final_furlong)
         "Final Furlong"
-      elsif points >= 1000
+      elsif points >= Config::Racing.dig(:title_points, :world)
         "World"
-      elsif points >= 750
+      elsif points >= Config::Racing.dig(:title_points, :international)
         "International"
-      elsif points >= 500
+      elsif points >= Config::Racing.dig(:title_points, :national)
         "National"
-      elsif points >= 300
+      elsif points >= Config::Racing.dig(:title_points, :grand)
         "Grand"
-      elsif points >= 100
+      elsif points >= Config::Racing.dig(:title_points, :normal)
         "Normal"
       end
       horse_attributes.update(track_record:, title:)

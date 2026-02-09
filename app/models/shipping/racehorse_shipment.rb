@@ -2,9 +2,6 @@ module Shipping
   class RacehorseShipment < ApplicationRecord
     self.table_name = "racehorse_shipments"
 
-    SHIPPING_TYPES = %w[track_to_track track_to_farm farm_to_track].freeze
-    MAX_DELAYED_SHIPMENT_DAYS = 60
-
     belongs_to :horse, class_name: "Horses::Horse"
     belongs_to :starting_location, class_name: "Location"
     belongs_to :ending_location, class_name: "Location"
@@ -12,8 +9,8 @@ module Shipping
     validates :departure_date, :arrival_date, :mode, :shipping_type, presence: true
     validates :departure_date, comparison: { greater_than_or_equal_to: -> { Date.current }, less_than_or_equal_to: :maximum_departure_date }, on: :new_shipment
     validates :arrival_date, comparison: { greater_than: :departure_date }, if: :departure_date
-    validates :mode, inclusion: { in: Route::MODES }, if: :mode
-    validates :shipping_type, inclusion: { in: SHIPPING_TYPES }
+    validates :mode, inclusion: { in: Config::Shipping.modes }, if: :mode
+    validates :shipping_type, inclusion: { in: Config::Shipping.racehorse_types }
 
     scope :current, -> { where(departure_date: ..Date.current).where("arrival_date > ?", Date.current) }
     scope :future, -> { where("departure_date > ?", Date.current) }
@@ -24,13 +21,12 @@ module Shipping
     end
 
     def maximum_departure_date
-      Date.current + MAX_DELAYED_SHIPMENT_DAYS.days
+      Date.current + Config::Shipping.max_delay.days
     end
 
     def options_for_destination_select(horse)
       location_query = Location
       list = []
-      pd horse.racing.at_farm?.inspect
       unless horse.racing.at_farm?
         list << [horse.manager.name, "Farm"]
         location_query = location_query.where.not(id: horse.racing.current_location.id)
@@ -43,7 +39,7 @@ module Shipping
     end
 
     def options_for_mode_select
-      Route::MODES.map { |mode| [I18n.t("horse.shipments.form.mode_#{mode}"), mode] }
+      Config::Shipping.modes.map { |mode| [I18n.t("horse.shipments.form.mode_#{mode}"), mode] }
     end
   end
 end

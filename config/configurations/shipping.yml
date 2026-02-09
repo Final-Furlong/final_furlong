@@ -1,0 +1,9 @@
+shared:
+  max_delay: 60
+  modes:
+    - road
+    - air
+  racehorse_types:
+    - track_to_track
+    - track_to_farm
+    - farm_to_track

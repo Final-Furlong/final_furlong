@@ -7,7 +7,7 @@ RSpec.describe Auctions::Bid do
 
   describe "validations" do
     it { is_expected.to validate_presence_of(:current_bid) }
-    it { is_expected.to validate_numericality_of(:current_bid).is_greater_than_or_equal_to(described_class::MINIMUM_BID) }
+    it { is_expected.to validate_numericality_of(:current_bid).is_greater_than_or_equal_to(Config::Auctions.minimum_starting_bid) }
 
     describe "maximum bid" do
       it "can be blank" do
