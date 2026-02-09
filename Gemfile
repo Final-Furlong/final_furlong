@@ -44,7 +44,8 @@ gem "mission_control-jobs"
 gem "net-ssh"
 gem "rack-cors"
 gem "rails-i18n"
-gem "ransack"
+gem "ransack", github: "activerecord-hackery/ransack", branch: "v5.0.0"
+# gem "ransack"
 gem "requestjs-rails"
 gem "responders"
 gem "sentry-rails"
@@ -105,7 +106,6 @@ group :development do
   gem "bcrypt_pbkdf" # required for capistran
   gem "benchmark"
   gem "better_errors"
-  gem "bullet"
   gem "byebug"
   gem "capistrano", "~> 3.17", require: false
   gem "capistrano-bundler", "~> 2.0", require: false
@@ -142,6 +142,7 @@ group :development, :test do
   gem "i18n-tasks"
   gem "isolator"
   gem "letter_opener"
+  gem "prosopite" # n+1 queries
   gem "puts_debuggerer"
   gem "reek", require: false
   gem "rubocop", require: false
@@ -179,6 +180,7 @@ group :test do
   gem "simplecov", require: false
   gem "simplecov-cobertura", require: false
   gem "simplecov-lcov", require: false
+  gem "test-prof"
   gem "undercover", require: false
   gem "whenever-test"
 end

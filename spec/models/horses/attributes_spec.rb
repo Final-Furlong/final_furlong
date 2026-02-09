@@ -4,12 +4,12 @@ RSpec.describe Horses::Attributes do
   end
 
   describe "validations" do
-    it { is_expected.to validate_inclusion_of(:title).in_array(described_class::TITLES).allow_blank }
+    it { is_expected.to validate_inclusion_of(:title).in_array(Config::Racing.horse_titles).allow_blank }
   end
 
   describe "#title_string" do
     it "works for all titles" do
-      described_class::TITLES.each do |title|
+      Config::Racing.horse_titles.each do |title|
         expected_value = (title == "Normal") ? "Champion" : "#{title} Champion"
 
         result = described_class.new(title:)
@@ -20,7 +20,7 @@ RSpec.describe Horses::Attributes do
 
   describe "#title_abbr" do
     it "works for all titles" do
-      described_class::TITLES.each do |title|
+      Config::Racing.horse_titles.each do |title|
         prefix = (title == "Normal") ? "" : title.split(" ").map { |word| word[0] }.join.upcase
         expected_value = "#{prefix}Ch."
 

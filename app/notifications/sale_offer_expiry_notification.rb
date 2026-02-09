@@ -1,7 +1,8 @@
 class SaleOfferExpiryNotification < Notification
   def message
-    "The sale offer on #{params["horse_name"]} (Price: #{params["price"]}) has
-expired."
+    I18n.t("notifications.sale_offer_expiry_notification.message",
+      horse: params["horse_name"],
+      price: params["price"])
   end
 
   def url

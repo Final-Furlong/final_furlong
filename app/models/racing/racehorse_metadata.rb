@@ -1,14 +1,10 @@
 module Racing
   class RacehorseMetadata < ApplicationRecord
-    self.table_name = "racehorse_metadata"
-
-    GRADES = %w[A B C D F].freeze
-
     belongs_to :horse, class_name: "Horses::Horse"
     belongs_to :racetrack, class_name: "Racing::Racetrack"
 
     validates :rest_days_since_last_race, :workouts_since_last_race, presence: true
-    validates :energy_grade, :fitness_grade, inclusion: { in: GRADES }
+    validates :energy_grade, :fitness_grade, inclusion: { in: Config::Racing.letter_grades.map(&:upcase) }
     validates :at_home, :in_transit, inclusion: { in: [true, false] }
 
     def update_grades(energy:, fitness:)
@@ -43,12 +39,23 @@ module Racing
         []
       end
     end
+
+    def distance_to_race(location)
+      starting_location = at_home? ? horse.manager.racetrack.location : racetrack.location
+      return 0 if starting_location == location
+
+      Shipping::Route.with_locations(starting_location, location).pluck(:miles).uniq.first
+    end
+
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[at_home energy_grade fitness_grade in_transit last_raced_at last_rested_at last_shipped_at rest_days_since_last_race workouts_since_last_race]
+    end
   end
 end
 
 # == Schema Information
 #
-# Table name: racehorse_stats
+# Table name: racehorse_metadata
 # Database name: primary
 #
 #  id                        :bigint           not null, primary key
@@ -68,17 +75,17 @@ end
 #
 # Indexes
 #
-#  index_racehorse_stats_on_at_home                    (at_home)
-#  index_racehorse_stats_on_energy_grade               (energy_grade)
-#  index_racehorse_stats_on_fitness_grade              (fitness_grade)
-#  index_racehorse_stats_on_horse_id                   (horse_id) UNIQUE
-#  index_racehorse_stats_on_in_transit                 (in_transit)
-#  index_racehorse_stats_on_last_raced_at              (last_raced_at)
-#  index_racehorse_stats_on_last_rested_at             (last_rested_at)
-#  index_racehorse_stats_on_last_shipped_at            (last_shipped_at)
-#  index_racehorse_stats_on_racetrack_id               (racetrack_id)
-#  index_racehorse_stats_on_rest_days_since_last_race  (rest_days_since_last_race)
-#  index_racehorse_stats_on_workouts_since_last_race   (workouts_since_last_race)
+#  index_racehorse_metadata_on_at_home                    (at_home)
+#  index_racehorse_metadata_on_energy_grade               (energy_grade)
+#  index_racehorse_metadata_on_fitness_grade              (fitness_grade)
+#  index_racehorse_metadata_on_horse_id                   (horse_id) UNIQUE
+#  index_racehorse_metadata_on_in_transit                 (in_transit)
+#  index_racehorse_metadata_on_last_raced_at              (last_raced_at)
+#  index_racehorse_metadata_on_last_rested_at             (last_rested_at)
+#  index_racehorse_metadata_on_last_shipped_at            (last_shipped_at)
+#  index_racehorse_metadata_on_racetrack_id               (racetrack_id)
+#  index_racehorse_metadata_on_rest_days_since_last_race  (rest_days_since_last_race)
+#  index_racehorse_metadata_on_workouts_since_last_race   (workouts_since_last_race)
 #
 # Foreign Keys
 #

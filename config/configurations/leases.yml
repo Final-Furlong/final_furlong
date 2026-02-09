@@ -1,0 +1,5 @@
+shared:
+  max_duration_months: 12
+  max_offer_period: 60
+  min_duration_racehorses_months: 3
+  min_duration_non_racehorses_months: 12

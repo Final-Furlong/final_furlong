@@ -5,7 +5,7 @@
       fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
         legend.fieldset-legend= t(".offer_start_date")
         = f.date_field :offer_start_date, class: 'input w-auto validator', required: true, value: lease_offer.offer_start_date || Date.current, min: Date.current, max: @lease_offer.maximum_offer_date
-        p.label= t(".offer_start_date_hint", count: Horses::LeaseOffer::MAX_OFFER_PERIOD_DAYS)
+        p.label= t(".offer_start_date_hint", count: Config::Leases.max_offer_period)
       - if lease_offer.errors[:offer_start_date]
         p.text-error= lease_offer.errors.where(:offer_start_date).map(&:full_message).join(', ')
     div

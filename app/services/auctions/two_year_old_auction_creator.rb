@@ -37,7 +37,7 @@ module Auctions
         horse_type: "racehorse",
         minimum_age: 2,
         maximum_age: 2,
-        minimum_count: 75,
+        minimum_count: Config::Auctions.dig(:two_year_old_auction, :count),
         stakes_quality: false
       )
     end

@@ -4,9 +4,6 @@ class Auction < ApplicationRecord
 
   friendly_id :title, use: [:slugged, :finders]
 
-  HORSE_STATUSES = %w[racehorse broodmare stud yearling weanling].freeze
-  HOURS_UNTIL_SOLD_OPTIONS = %w[12 24 48].freeze
-
   belongs_to :auctioneer, class_name: "Account::Stable"
   has_many :horses, class_name: "Auctions::Horse", dependent: :destroy
   has_many :bids, class_name: "Auctions::Bid", dependent: :delete_all
@@ -38,7 +35,7 @@ class Auction < ApplicationRecord
   scope :by_auctioneer, ->(auctioneer) { where(auctioneer:) }
   scope :outside_horses_allowed, -> { where(outside_horses_allowed: true) }
   scope :valid_for_horse, ->(horse) {
-    return none unless HORSE_STATUSES.include?(horse.status)
+    return none unless Config::Auctions.horse_statuses.map(&:downcase).include?(horse.status)
     query = case horse.status
     when "racehorse"
       case horse.age.to_i
@@ -94,7 +91,7 @@ class Auction < ApplicationRecord
   end
 
   def options_for_hours_select
-    HOURS_UNTIL_SOLD_OPTIONS.each do |hours|
+    Config::Auctions.hours_until_sold.each do |hours|
       [hours, hours]
     end
   end
