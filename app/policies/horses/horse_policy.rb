@@ -28,8 +28,8 @@ module Horses
       return false if record.race_result_finishes.exists?
       return false if record.foals.exists?
       return false if record.stud_foals.exists?
-      return false if record.age > Config::Horses.max_rename_age && record.name.present?
       return true if admin?
+      return false if record.age > Config::Horses.max_rename_age && record.name.present?
       return false if record.age > Config::Horses.max_rename_age && !record.created?
 
       record.owner == stable
