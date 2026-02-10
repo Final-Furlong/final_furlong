@@ -9,7 +9,7 @@ RSpec.describe Account::Activity do
     it { is_expected.to validate_presence_of(:amount) }
     it { is_expected.to validate_presence_of(:balance) }
     it { is_expected.to validate_presence_of(:legacy_stable_id) }
-    it { is_expected.to validate_inclusion_of(:activity_type).in_array(Game::Activity::ACTIVITY_TYPES) }
+    it { is_expected.to validate_inclusion_of(:activity_type).in_array(Config::Game.activity_types) }
   end
 
   describe "scopes" do

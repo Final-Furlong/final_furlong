@@ -8,10 +8,10 @@ module Auctions
       ActiveRecord::Base.transaction do
         new_current_bid = [bid_params[:current_bid].to_i, bid_params[:maximum_bid].to_i].max
         if bid_params[:maximum_bid] && bid_params[:maximum_bid] == original_bid[:maximum_bid]
-          new_current_bid = original_bid[:maximum_bid] - Auctions::Bid::MINIMUM_INCREMENT
+          new_current_bid = original_bid[:maximum_bid] - Config::Auctions.minimum_increment
           new_maximum_bid = original_bid[:maximum_bid]
         else
-          current_bid_from_max = original_bid.maximum_bid + Auctions::Bid::MINIMUM_INCREMENT if original_bid.maximum_bid
+          current_bid_from_max = original_bid.maximum_bid + Config::Auctions.minimum_increment if original_bid.maximum_bid
           new_current_bid = current_bid_from_max if current_bid_from_max && bid_params[:maximum_bid].to_i > current_bid_from_max
           new_maximum_bid = bid_params[:maximum_bid].to_i if bid_params[:maximum_bid].to_i >= new_current_bid
         end
@@ -29,7 +29,7 @@ module Auctions
         update_current_bid = if original_bid.maximum_bid && (new_maximum_bid == original_bid.maximum_bid || new_current_bid == original_bid.maximum_bid)
           original_bid.maximum_bid
         else
-          new_current_bid + Auctions::Bid::MINIMUM_INCREMENT
+          new_current_bid + Config::Auctions.minimum_increment
         end
         update_old_bids(auction: original_bid.auction, horse: original_bid.horse)
         bid = Auctions::Bid.create!(

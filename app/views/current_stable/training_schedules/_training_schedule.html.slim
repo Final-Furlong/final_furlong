@@ -5,12 +5,15 @@
       .flex-none
         .flex.space-x-2.mr-2
           h1.card-title= training_schedule.name
-          - horses_count = pluralize(training_schedule.horses_count, "horse")
-          = render Ui::ButtonizedLink::Component.new(url: stable_training_schedule_horses_path(training_schedule), size: :small, color: :neutral, data: { turbo_frame: "_top" }) do
+          ruby:
+            query = Horses::Horse.racehorse.joins(:training_schedule).where(training_schedules: { id: training_schedule })
+            horses_count = Racing::TrainingScheduleHorsePolicy::Scope.new(Current.user, query).resolve.count
+            total_horses_count = Horses::Horse.racehorse.managed_by(Current.stable).joins(:training_schedule).where(training_schedules: { id: training_schedule }).count
+          = render Ui::ButtonizedLink::Component.new(url: stable_training_schedule_horses_path(training_schedule, type: "workouts"), size: :small, color: :neutral, data: { turbo_frame: "_top" }) do
             = t("current_stable.training_schedules.show.workouts_count", count: horses_count)
 
-          = render Ui::ButtonizedLink::Component.new(url: new_stable_training_schedule_horse_path(training_schedule), size: :small, color: :neutral, data: { turbo_frame: "_top" }) do
-            = t("current_stable.training_schedules.show.add_horse")
+          = render Ui::ButtonizedLink::Component.new(url: stable_training_schedule_horses_path(training_schedule), size: :small, color: :neutral, data: { turbo_frame: "_top" }) do
+            = t("current_stable.training_schedules.show.manage_horses", count: total_horses_count)
       .flex-grow.justify-end
         = render Ui::ButtonizedLink::Component.new(url: edit_stable_training_schedule_path(training_schedule), size: :small, color: :success, style: :outline, data: { turbo_frame: "_top" }) do
           span.icon

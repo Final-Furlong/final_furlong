@@ -2,9 +2,6 @@ module Racing
   class RaceOption < ApplicationRecord
     include Equipmentable
 
-    RACEHORSE_TYPES = %w[flat jump].freeze
-    RACING_STYLES = %w[leading off_pace midpack closing].freeze
-
     belongs_to :horse, class_name: "Horses::Horse"
     belongs_to :first_jockey, class_name: "Racing::Jockey", optional: true
     belongs_to :second_jockey, class_name: "Racing::Jockey", optional: true
@@ -13,15 +10,31 @@ module Racing
     validates :minimum_distance, :maximum_distance,
       :calculated_maximum_distance, :calculated_minimum_distance, :equipment,
       presence: true
-    validates :racehorse_type, inclusion: { in: RACEHORSE_TYPES }
-    validates :racing_style, inclusion: { in: RACING_STYLES }, allow_blank: true
-    validates :minimum_distance, numericality: { greater_than_or_equal_to: 5.0, less_than_or_equal_to: 24.0 }
-    validates :maximum_distance, numericality: { greater_than_or_equal_to: 5.0, less_than_or_equal_to: 24.0 }
-    validates :calculated_minimum_distance, numericality: { greater_than_or_equal_to: 5.0, less_than_or_equal_to: 24.0 }
-    validates :calculated_maximum_distance, numericality: { greater_than_or_equal_to: 5.0, less_than_or_equal_to: 24.0 }
-    validates :runs_on_dirt, :runs_on_turf, :trains_on_dirt, :trains_on_turf,
-      :trains_on_jumps, inclusion: { in: [true, false] }
+    validates :racehorse_type, inclusion: { in: Config::Racing.racehorse_types }
+    validates :racing_style, inclusion: { in: Config::Racing.styles }, allow_blank: true
+    validates :minimum_distance, numericality: { greater_than_or_equal_to: Config::Racing.minimum_distance, less_than_or_equal_to: Config::Racing.maximum_distance }
+    validates :maximum_distance, numericality: { greater_than_or_equal_to: Config::Racing.minimum_distance, less_than_or_equal_to: Config::Racing.maximum_distance }
+    validates :calculated_minimum_distance, numericality: { greater_than_or_equal_to: Config::Racing.minimum_distance, less_than_or_equal_to: Config::Racing.maximum_distance }
+    validates :calculated_maximum_distance, numericality: { greater_than_or_equal_to: Config::Racing.minimum_distance, less_than_or_equal_to: Config::Racing.maximum_distance }
+    validates :runs_on_dirt, :runs_on_turf, :trains_on_dirt, :trains_on_turf, :trains_on_jumps, inclusion: { in: [true, false] }
     validates :next_race_note_created_at, presence: true, if: :note_for_next_race
+    validates :first_jockey, presence: true, if: :second_jockey
+    validates :second_jockey, comparison: { other_than: :first_jockey }, if: :first_jockey
+    validates :second_jockey, presence: true, if: :third_jockey
+    validates :third_jockey, comparison: { other_than: :second_jockey }, if: :second_jockey
+    validates :second_jockey_id, uniqueness: { scope: [:horse_id, :first_jockey_id, :third_jockey_id] }
+    validates :third_jockey_id, uniqueness: { scope: [:horse_id, :first_jockey_id, :second_jockey_id] }
+
+    scope :flat, -> { where(racehorse_type: "flat") }
+    scope :jump, -> { where(racehorse_type: "jump") }
+    scope :distance_matching, ->(distance) { where("minimum_distance <= :num AND maximum_distance >= :num", { num: distance }) }
+    scope :dirt, -> { where(runs_on_dirt: true) }
+    scope :turf, -> { where(runs_on_turf: true) }
+    scope :steeplechase, -> {}
+
+    def racehorse_type = super.to_s.inquiry
+
+    delegate :jump?, :flat?, to: :racehorse_type
 
     def jockeys_list
       jockeys = Racing::Jockey.order(last_name: :asc, first_name: :asc).all
@@ -33,6 +46,29 @@ module Racing
 
     def chosen_jockeys
       [first_jockey, second_jockey, third_jockey]
+    end
+
+    def options_for_style_select
+      Config::Racing.styles.map do |style|
+        [I18n.t("racing.style.#{style}"), style]
+      end
+    end
+
+    def options_for_jockey_select(type)
+      Racing::Jockey.active.send(type.to_sym).ordered_by_name.all.map do |jockey|
+        [jockey.full_name, jockey.id]
+      end
+    end
+
+    def options_for_distance_select
+      Racing::RaceSchedule.select(:distance).order(distance: :asc).distinct.map do |race|
+        [I18n.t("racing.distance_furlongs", value: race.distance), race.distance]
+      end
+    end
+
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[equipment first_jockey_id maximum_distance minimum_distance racehorse_type racing_style runs_on_dirt
+        runs_on_turf second_jockey_id third_jockey_id trains_on_dirt trains_on_turf]
     end
   end
 end
@@ -59,24 +95,25 @@ end
 #  trains_on_turf                                 :boolean          default(TRUE), not null
 #  created_at                                     :datetime         not null
 #  updated_at                                     :datetime         not null
-#  first_jockey_id                                :bigint           indexed
-#  horse_id                                       :bigint           not null, uniquely indexed
-#  second_jockey_id                               :bigint           indexed
-#  third_jockey_id                                :bigint           indexed
+#  first_jockey_id                                :bigint           uniquely indexed => [horse_id, second_jockey_id, third_jockey_id], indexed
+#  horse_id                                       :bigint           not null, uniquely indexed => [first_jockey_id, second_jockey_id, third_jockey_id], uniquely indexed
+#  second_jockey_id                               :bigint           uniquely indexed => [horse_id, first_jockey_id, third_jockey_id], indexed
+#  third_jockey_id                                :bigint           uniquely indexed => [horse_id, first_jockey_id, second_jockey_id], indexed
 #
 # Indexes
 #
-#  index_race_options_on_calculated_maximum_distance  (calculated_maximum_distance)
-#  index_race_options_on_calculated_minimum_distance  (calculated_minimum_distance)
-#  index_race_options_on_first_jockey_id              (first_jockey_id)
-#  index_race_options_on_horse_id                     (horse_id) UNIQUE
-#  index_race_options_on_maximum_distance             (maximum_distance)
-#  index_race_options_on_minimum_distance             (minimum_distance)
-#  index_race_options_on_next_race_note_created_at    (next_race_note_created_at)
-#  index_race_options_on_racehorse_type               (racehorse_type)
-#  index_race_options_on_racing_style                 (racing_style)
-#  index_race_options_on_second_jockey_id             (second_jockey_id)
-#  index_race_options_on_third_jockey_id              (third_jockey_id)
+#  idx_on_horse_id_first_jockey_id_second_jockey_id_th_b7c0ac41cd  (horse_id,first_jockey_id,second_jockey_id,third_jockey_id) UNIQUE
+#  index_race_options_on_calculated_maximum_distance               (calculated_maximum_distance)
+#  index_race_options_on_calculated_minimum_distance               (calculated_minimum_distance)
+#  index_race_options_on_first_jockey_id                           (first_jockey_id)
+#  index_race_options_on_horse_id                                  (horse_id) UNIQUE
+#  index_race_options_on_maximum_distance                          (maximum_distance)
+#  index_race_options_on_minimum_distance                          (minimum_distance)
+#  index_race_options_on_next_race_note_created_at                 (next_race_note_created_at)
+#  index_race_options_on_racehorse_type                            (racehorse_type)
+#  index_race_options_on_racing_style                              (racing_style)
+#  index_race_options_on_second_jockey_id                          (second_jockey_id)
+#  index_race_options_on_third_jockey_id                           (third_jockey_id)
 #
 # Foreign Keys
 #

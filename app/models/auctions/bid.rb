@@ -2,15 +2,12 @@ module Auctions
   class Bid < ApplicationRecord
     self.table_name = "auction_bids"
 
-    MINIMUM_BID = 1000
-    MINIMUM_INCREMENT = 500
-
     belongs_to :auction, class_name: "::Auction"
     belongs_to :horse, class_name: "Auctions::Horse"
     belongs_to :bidder, class_name: "Account::Stable"
 
     validates :current_bid, presence: true
-    validates :current_bid, numericality: { greater_than_or_equal_to: MINIMUM_BID }, allow_nil: true
+    validates :current_bid, numericality: { greater_than_or_equal_to: Config::Auctions.minimum_starting_bid }, allow_nil: true
     validates :maximum_bid, numericality: { greater_than_or_equal_to: :current_bid }, allow_nil: true
     validates :notify_if_outbid, :current_high_bid, inclusion: { in: [true, false] }
 

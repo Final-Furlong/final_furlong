@@ -1,5 +1,58 @@
 shared:
+  max_auctions_per_stable: 1
   minimum_start_date_days_delay: 7
   minimum_duration_days: 7
   maximum_duration_days: 14
-  max_auctions_per_stable: 1
+  minimum_increment: 500
+  minimum_starting_bid: 1000
+  horse_statuses:
+    - racehorse
+    - stud
+    - broodmare
+    - yearling
+    - weanling
+  hours_until_sold:
+    - 12
+    - 24
+    - 48
+  default_sort: created_at desc
+  reserve_fee: 0.1
+  foal_auction:
+    yearlings: 75
+    weanlings: 50
+  mixed_auction:
+    racehorses:
+      count: 50
+      min_age: 2
+      max_age: 4
+    stallions:
+      count: 2
+      min_age: 4
+      max_age: 10
+    broodmares:
+      count: 50
+      min_age: 4
+      max_age: 12
+    yearlings:
+      count: 30
+    weanlings:
+      count: 20
+  select_auction:
+    racehorses:
+      count: 50
+      min_age: 2
+      max_age: 4
+    stallions:
+      count: 2
+      min_age: 4
+      max_age: 10
+    broodmares:
+      count: 50
+      min_age: 4
+      max_age: 12
+    yearlings:
+      count: 30
+    weanlings:
+      count: 20
+  two_year_old_auction:
+    count: 75

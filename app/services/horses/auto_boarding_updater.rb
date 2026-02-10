@@ -2,7 +2,7 @@ module Horses
   class AutoBoardingUpdater
     def call
       horses_updated = 0
-      Horses::Boarding.where(start_date: ..(Date.current - Horses::Boarding::MAX_YEARLY_DAYS.days)).where(end_date: nil).find_each do |boarding|
+      Horses::Boarding.where(start_date: ..(Date.current - Config::Boarding.max_yearly_days.days)).where(end_date: nil).find_each do |boarding|
         Horses::BoardingUpdater.new.stop_boarding(boarding:)
         horses_updated += 1
       end
@@ -13,7 +13,7 @@ module Horses
 
         horse = boarding.horse
         current_year_days += horse.boardings.current_year.where(location: boarding.location).sum(:days)
-        if current_year_days >= Horses::Boarding::MAX_YEARLY_DAYS
+        if current_year_days >= Config::Boarding.max_yearly_days
           Horses::BoardingUpdater.new.stop_boarding(boarding:)
           horses_updated += 1
         end
@@ -22,7 +22,7 @@ module Horses
       Account::Stable.joins(horses: :current_boarding).find_each do |stable|
         num_boarded = stable.horses.where.associated(:current_boarding).uniq.count
 
-        stable.available_balance -= num_boarded * Horses::Boarding::DAILY_BOARDING_FEE
+        stable.available_balance -= num_boarded * Config::Boarding.daily_fee
         stable.save
         stables_updated += 1
       end

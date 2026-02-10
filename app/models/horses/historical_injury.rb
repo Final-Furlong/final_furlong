@@ -4,13 +4,9 @@ module Horses
 
     belongs_to :horse
 
-    LEGS = %w[LF RF LH RH].freeze
-    TYPES = ["heat", "swelling", "cut", "limping", "overheat",
-      "bowed tendon", "broken leg", "heart attack"].freeze
-
     validates :date, :injury_type, presence: true
-    validates :injury_type, inclusion: { in: TYPES }
-    validates :leg, inclusion: { in: LEGS }, allow_nil: true
+    validates :injury_type, inclusion: { in: Config::Injuries.types }
+    validates :leg, inclusion: { in: Config::Injuries.legs.map(&:upcase) }, allow_nil: true
 
     scope :current, -> { where(date: ...Date.current).where("rest_date > ?", Date.current) }
     scope :healed, -> { where(rest_date: ...Date.current) }

@@ -17,6 +17,14 @@ module Racing
       numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180 }
     validates :latitude, presence: true,
       numericality: { less_than_or_equal_to: 90, greater_than_or_equal_to: -90 }
+
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[latitude location_id longitude name]
+    end
+
+    def self.ransackable_associations(_auth_object = nil)
+      %w[location surfaces]
+    end
   end
 end
 

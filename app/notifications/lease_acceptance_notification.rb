@@ -1,6 +1,10 @@
 class LeaseAcceptanceNotification < Notification
   def message
-    "#{params["stable_name"]} has accepted the lease on #{params["horse_name"]} for #{params["duration"]} for #{params["fee"]}"
+    I18n.t("notifications.lease_acceptance_notification.message",
+      stable: params["stable_name"],
+      horse: params["horse_name"],
+      duration: params["duration"],
+      fee: params["fee"])
   end
 
   def title

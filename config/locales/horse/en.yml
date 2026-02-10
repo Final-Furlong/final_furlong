@@ -19,6 +19,7 @@ en:
         cancel: Cancel Sale Offer
         reject: Reject Sale
       ship: Ship Horse
+      update_race_options: Set Racing Options
       view_sales: Sales History
     auction_consignments:
       destroy:
@@ -198,6 +199,7 @@ en:
         title: End Lease
     leased_html: Leased to %{stable} until %{date}
     location:
+      at_farm: Farm
       at_racetrack: "%{name} Racetrack"
     markings:
       bald_face: bald face
@@ -210,6 +212,30 @@ en:
       star_stripe_snip: star, stripe, snip
       stripe: stripe
       stripe_snip: stripe, snip
+    race_options:
+      edit:
+        title: Set Racing Options for %{name}
+      form:
+        first_jockey: First Choice Jockey
+        jockey_decide: Let the jockey decide
+        maximum_distance: Maximum Distance
+        maximum_distance_hint: This will restrict the horse to races less than or equal to this distance.
+        minimum_distance: Minimum Distance
+        minimum_distance_hint: This will restrict the horse to races greater than or equal to this distance.
+        note_for_next_race: Note for Next Race
+        note_hint: This note will be visible when entering their next race
+        racing_style: Preferred Running Style
+        runs_on_dirt: Races on Dirt
+        runs_on_turf: Races on Turf
+        sample_note: Try wraps next time, also try 8-9f
+        second_jockey: Second Choice Jockey
+        suggested_maximum: 'Suggested Maximum: %{value}'
+        suggested_minimum: 'Suggested Minimum: %{value}'
+        third_jockey: Third Choice Jockey
+        trains_on_dirt: Trains on Dirt
+        trains_on_turf: Trains on Turf
+      update:
+        success: Racing options were successfully saved.
     races:
       index:
         earnings: Earnings
