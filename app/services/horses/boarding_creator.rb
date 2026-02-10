@@ -34,7 +34,7 @@ module Horses
 
         total_days_in_location += (end_date - start_date).to_i
       end
-      if total_days_in_location >= Horses::Boarding::MAX_YEARLY_DAYS
+      if total_days_in_location >= Config::Boarding.max_yearly_days
         result.error = error("max_days_reached")
         return result
       end

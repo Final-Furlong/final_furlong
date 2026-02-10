@@ -1,0 +1,9 @@
+ruby:
+  horse = @options.horse
+  title = t(".title", name: horse.name)
+  content_for :title, title
+
+.text-center
+  h1.text-xl.font-bold= title
+
+= render "form", horse:, options: @options

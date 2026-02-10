@@ -2,15 +2,13 @@ module Horses
   class Attributes < ApplicationRecord
     self.table_name = "horse_attributes"
 
-    TITLES = ["Final Furlong", "World", "International", "National", "Grand", "Normal"].freeze
-
     attribute :track_record, default: -> { "Unraced" }
     attribute :breeding_record, default: -> { "none" }
 
     belongs_to :horse, class_name: "Horse"
 
     validates :track_record, :breeding_record, presence: true
-    validates :title, inclusion: { in: TITLES }, allow_blank: true
+    validates :title, inclusion: { in: Config::Racing.horse_titles }, allow_blank: true
 
     def title_string
       return unless title
