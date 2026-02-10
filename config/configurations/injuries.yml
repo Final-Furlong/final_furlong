@@ -1,0 +1,15 @@
+shared:
+  legs:
+    - LF
+    - RF
+    - LH
+    - RH
+  types:
+    - heat
+    - swelling
+    - cut
+    - limping
+    - overheat
+    - "bowed tendon"
+    - "broken leg"
+    - "heart attack"

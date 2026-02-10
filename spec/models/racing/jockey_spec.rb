@@ -70,9 +70,9 @@ RSpec.describe Racing::Jockey do
     it { is_expected.to validate_numericality_of(:weight).only_integer.is_greater_than_or_equal_to(35).is_less_than_or_equal_to(120) }
     it { is_expected.to validate_length_of(:first_name).is_at_least(2) }
     it { is_expected.to validate_length_of(:last_name).is_at_least(2) }
-    it { is_expected.to validate_inclusion_of(:gender).in_array(described_class::GENDERS) }
-    it { is_expected.to validate_inclusion_of(:jockey_type).in_array(described_class::TYPES) }
-    it { is_expected.to validate_inclusion_of(:status).in_array(described_class::STATUSES) }
+    it { is_expected.to validate_inclusion_of(:gender).in_array(Config::Jockeys.genders) }
+    it { is_expected.to validate_inclusion_of(:jockey_type).in_array(Config::Jockeys.types) }
+    it { is_expected.to validate_inclusion_of(:status).in_array(Config::Jockeys.statuses) }
   end
 end
 

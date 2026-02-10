@@ -231,7 +231,10 @@ ActiveRecordDoctor.configure do
       "Racing::TrainingSchedule.wednesday_activities",
       "Racing::TrainingSchedule.thursday_activities",
       "Racing::TrainingSchedule.friday_activities",
-      "Racing::TrainingSchedule.saturday_activities"
+      "Racing::TrainingSchedule.saturday_activities",
+      "Racing::FutureRaceEntry.equipment", # default 0
+      "Racing::RaceEntry.post_parade", # default 0
+      "Racing::RaceEntry.weight" # default 0
     ]
 
   detector :missing_unique_indexes,
@@ -262,6 +265,11 @@ ActiveRecordDoctor.configure do
       "new_horse_genetics",
       "new_race_result_horses",
       "horse_genetics"
+    ]
+
+  detector :extraneous_indexes,
+    ignore_indexes: [
+      "idx_on_horse_id_first_jockey_id_second_jockey_id_th_b7c0ac41cd"
     ]
 end
 

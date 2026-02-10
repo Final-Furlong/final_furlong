@@ -1,8 +1,8 @@
 RSpec.describe Api::V1::Activations do
   describe "GET /api/v1/activations" do
     it "returns un-activated activations" do
-      create(:activation, :activated)
-      activation = create(:activation, :unactivated)
+      create(:activation, :activated, user: create(:user, :without_stable))
+      activation = create(:activation, :unactivated, user: create(:user, :without_stable))
 
       get "/api/v1/activations"
       expect(response).to have_http_status :ok
@@ -105,7 +105,7 @@ RSpec.describe Api::V1::Activations do
     context "when stable does not match activation" do
       it "returns error" do
         token = SecureRandom.uuid
-        create(:activation, :unactivated, token:)
+        create(:activation, :unactivated, token:, user: create(:user, :without_stable))
 
         post "/api/v1/activations/", params: { token:, stable_name: "foo" }
         expect(response).to have_http_status :internal_server_error

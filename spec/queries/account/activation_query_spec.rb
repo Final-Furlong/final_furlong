@@ -3,8 +3,8 @@ RSpec.describe Account::ActivationQuery do
 
   describe "#activated" do
     it "returns activated users" do
-      activated = create(:activation, :activated)
-      unactivated = create(:activation, :unactivated)
+      activated = create(:activation, :activated, user: create(:user, :without_stable))
+      unactivated = create(:activation, :unactivated, user: create(:user, :without_stable))
 
       result = query.activated
       expect(result).to include activated
@@ -12,10 +12,10 @@ RSpec.describe Account::ActivationQuery do
     end
   end
 
-  describe "#unactivated" do
+  describe "#unactivated", :stable do
     it "returns un-activated users" do
-      unactivated = create(:activation, :unactivated)
-      activated = create(:activation, :activated)
+      activated = create(:activation, :activated, user: create(:user, :without_stable))
+      unactivated = create(:activation, :unactivated, user: create(:user, :without_stable))
 
       result = query.unactivated
       expect(result).to include unactivated
@@ -48,7 +48,7 @@ RSpec.describe Account::ActivationQuery do
       it "returns false" do
         user = create(:user, :unactivated)
         stable = user.stable
-        activation = create(:activation)
+        activation = create(:activation, user: create(:user, :without_stable))
 
         expect(query.exists_with_token?(stable_name: stable.name, token: activation.token)).to be false
       end

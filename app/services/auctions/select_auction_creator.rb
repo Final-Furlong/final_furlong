@@ -43,9 +43,9 @@ module Auctions
       Auctions::ConsignmentConfig.create!(
         auction:,
         horse_type: "racehorse",
-        minimum_age: 2,
-        maximum_age: 4,
-        minimum_count: 50,
+        minimum_age: Config::Auctions.dig(:select_auction, :racehorses, :min_age),
+        maximum_age: Config::Auctions.dig(:select_auction, :racehorses, :max_age),
+        minimum_count: Config::Auctions.dig(:select_auction, :racehorses, :count),
         stakes_quality: true
       )
     end
@@ -54,9 +54,9 @@ module Auctions
       Auctions::ConsignmentConfig.create!(
         auction:,
         horse_type: "stud",
-        minimum_age: 4,
-        maximum_age: 10,
-        minimum_count: 2,
+        minimum_age: Config::Auctions.dig(:select_auction, :stallions, :min_age),
+        maximum_age: Config::Auctions.dig(:select_auction, :stallions, :max_age),
+        minimum_count: Config::Auctions.dig(:select_auction, :stallions, :count),
         stakes_quality: true
       )
     end
@@ -65,9 +65,9 @@ module Auctions
       Auctions::ConsignmentConfig.create!(
         auction:,
         horse_type: "broodmare",
-        minimum_age: 4,
-        maximum_age: 12,
-        minimum_count: 50,
+        minimum_age: Config::Auctions.dig(:select_auction, :broodmares, :min_age),
+        maximum_age: Config::Auctions.dig(:select_auction, :broodmares, :max_age),
+        minimum_count: Config::Auctions.dig(:select_auction, :broodmares, :count),
         stakes_quality: true
       )
     end
@@ -78,7 +78,7 @@ module Auctions
         horse_type: "yearling",
         minimum_age: 1,
         maximum_age: 1,
-        minimum_count: 30,
+        minimum_count: Config::Auctions.dig(:select_auction, :yearlings, :count),
         stakes_quality: true
       )
     end
@@ -89,7 +89,7 @@ module Auctions
         horse_type: "weanling",
         minimum_age: 0,
         maximum_age: 0,
-        minimum_count: 20,
+        minimum_count: Config::Auctions.dig(:select_auction, :weanlings, :count),
         stakes_quality: true
       )
     end

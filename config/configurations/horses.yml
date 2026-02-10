@@ -1,0 +1,15 @@
+shared:
+  max_name_length: 18
+  max_rename_age: 1
+  breed_rankings:
+    bronze:
+      points: 3.0
+    silver:
+      points: 6.0
+    gold:
+      minimum_races: 30
+      points: 10.0
+    platinum:
+      minimum_races: 50
+  image_height: 500
+  image_width: 800

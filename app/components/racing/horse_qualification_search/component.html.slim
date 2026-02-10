@@ -1,0 +1,9 @@
+- pd statuses.count
+- statuses.each do |status|
+  - count = status_count(status)
+  label.tab
+    input type="radio" name="racehorse-status" disabled=count.zero? checked=(statuses.count == 1)
+    span= localised_status(status)
+    span.badge.text-bg-light class=("text-base-content/50" if count.zero?) = count
+  .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+    = helpers.turbo_frame_tag "racehorse-status-#{status}", src: url_with_params(status), loading: statuses.count == 1 ? "now" : "lazy"

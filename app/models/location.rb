@@ -6,6 +6,10 @@ class Location < ApplicationRecord
   validates :has_farm, inclusion: { in: [true, false] }
 
   scope :boardable, -> { where(has_farm: true) }
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[country county has_farm name state]
+  end
 end
 
 # == Schema Information

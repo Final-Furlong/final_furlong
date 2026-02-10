@@ -1,5 +1,5 @@
 /# locals: (auction:, auction_horse:, bid:, current_bid:, minimum_bid: 1000)
-- minimum_bid = current_bid.current_bid + Auctions::Bid::MINIMUM_INCREMENT if current_bid
+- minimum_bid = current_bid.current_bid + Config::Auctions.minimum_increment if current_bid
 .p-4.border.border-neutral-content/50.rounded-md.sm:p-2.sm:border-0
   = form_with model: bid, scope: :bid, url: auction_horse_bids_path(auction,
           auction_horse), id: "auction-bid-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
@@ -22,7 +22,7 @@
           = t(".maximum_bid")
       .md:w-2/3
         = f.text_field :maximum_bid, class: 'input w-auto validator'
-        p.text-sm.text-neutral-content= t(".maximum_bid_hint", amount: Game::MoneyFormatter.new(Auctions::Bid::MINIMUM_INCREMENT).to_s)
+        p.text-sm.text-neutral-content= t(".maximum_bid_hint", amount: Game::MoneyFormatter.new(Config::Auctions.minimum_increment).to_s)
         - if bid.errors[:maximum_bid]
           p.text-error= bid.errors.where(:maximum_bid).map(&:full_message).join(', ')
     .md:flex.md:items-center.mb-6

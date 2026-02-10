@@ -12,7 +12,7 @@ module CurrentStable
       return false if record.current_lease
       return false if record.lease_offer
       unless record.racehorse?
-        # return false unless Game::BreedingSeason.pre_breeding_season_date?(Date.current, Horses::LeaseOffer::MAX_OFFER_PERIOD_DAYS)
+        return false unless Game::BreedingSeason.pre_breeding_season_date?(Date.current, Config::Leases.max_offer_period)
         return false if record.broodmare? && record.foals.unborn.exists?
 
         return true

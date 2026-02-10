@@ -1,0 +1,75 @@
+shared:
+  max_racing_age: 10
+  minimum_distance: 5.0
+  maximum_distance: 24.0
+  racehorse_types:
+    - flat
+    - jump
+  styles:
+    - leading
+    - off_pace
+    - midpack
+    - closing
+  horse_titles:
+    - "Final Furlong"
+    - World
+    - International
+    - National
+    - Grand
+    - Normal
+  title_points:
+    final_furlong: 1500
+    world: 1000
+    international: 750
+    national: 500
+    grand: 300
+    normal: 100
+  all_types:
+    - maiden
+    - claiming
+    - starter_allowance
+    - nw1_allowance
+    - nw2_allowance
+    - nw3_allowance
+    - allowance
+    - stakes
+  claiming_types:
+    - claiming
+    - starter_allowance
+  qualified_types:
+    - maiden
+    - nw1_allowance
+    - nw2_allowance
+    - nw3_allowance
+  non_qualified_types:
+    - allowance
+    - stakes
+  surfaces:
+    - dirt
+    - turf
+    - steeplechase
+  conditions:
+    - fast
+    - good
+    - slow
+    - wet
+  ages:
+    - "2"
+    - "2+"
+    - "3"
+    - "3+"
+    - "4"
+    - "4+"
+  grades:
+    - Ungraded
+    - "Grade 3"
+    - "Grade 2"
+    - "Grade 1"
+  letter_grades:
+    - A
+    - B
+    - C
+    - D
+    - F
+
+

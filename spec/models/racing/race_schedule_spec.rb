@@ -15,10 +15,10 @@ RSpec.describe Racing::RaceSchedule do
     it { is_expected.to validate_presence_of(:purse) }
     it { is_expected.to validate_numericality_of(:day_number).only_integer.is_greater_than_or_equal_to(1).is_less_than_or_equal_to(105).allow_nil }
     it { is_expected.to validate_numericality_of(:number).only_integer.is_greater_than_or_equal_to(1).is_less_than_or_equal_to(50) }
-    it { is_expected.to validate_inclusion_of(:race_type).in_array(described_class::RACE_TYPES) }
-    it { is_expected.to validate_inclusion_of(:age).in_array(described_class::RACE_AGES) }
+    it { is_expected.to validate_inclusion_of(:race_type).in_array(Config::Racing.all_types) }
+    it { is_expected.to validate_inclusion_of(:age).in_array(Config::Racing.ages) }
     it { is_expected.to validate_numericality_of(:distance).is_greater_than_or_equal_to(5.0).is_less_than_or_equal_to(24.0) }
-    it { is_expected.to validate_inclusion_of(:grade).in_array(described_class::RACE_GRADES).allow_blank }
+    it { is_expected.to validate_inclusion_of(:grade).in_array(Config::Racing.grades).allow_blank }
     it { is_expected.to validate_numericality_of(:purse).only_integer.is_greater_than_or_equal_to(10_000).is_less_than_or_equal_to(20_000_000) }
 
     context "when grade is present" do

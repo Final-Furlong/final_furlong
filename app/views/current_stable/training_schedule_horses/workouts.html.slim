@@ -1,0 +1,118 @@
+- content_for :breadcrumbs do
+  - schedule_name = t("current_stable.training_schedules.show.title", name: schedule.name)
+  - count = @pagy.data_hash(data_keys: [:count])
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: Current.stable.name, href: current_stable_path },
+                                                   { name: schedule_name, href: stable_training_schedules_path },
+                                                   { name: t(".title", count: count[:count]), href: "#" }])
+
+h3.font-bold.text-xl = t(".today_activities")
+p= daily_activities.activity_with_distance(1)
+- if daily_activities.activity_with_distance(2) != I18n.t("common.none")
+  p= daily_activities.activity_with_distance(2)
+- if daily_activities.activity_with_distance(3) != I18n.t("common.none")
+  p= daily_activities.activity_with_distance(3)
+
+hr.my-2
+
+.mx-auto.overflow-x-auto.w-full.sm:hidden
+  p.text-center= t(".horse_description")
+  - horses.each do |horse|
+    - data = horse.race_metadata
+    - options = horse.race_options
+    .card.bg-base-100.w-full.px-2.rounded-none
+      .card-body.p-0.rounded-none
+        .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+          input type="checkbox"
+          .collapse-title.font-semibold.font-medium
+            span class="text-#{horse.gender.downcase}"
+              = horse.name
+            span.float-right
+              - if data&.energy_grade && data&.fitness_grade
+                span.float-right
+                  = data.energy_grade
+                  = "/"
+                  = data.fitness_grade
+          .collapse-content.text-sm
+            p
+              span= t(".age_gender")
+              span.float-right
+                = horse.age
+                = "yo "
+                = t("horses.genders.#{horse.gender}")
+            p
+              span= t(".energy")
+              span.float-right= data&.energy_grade || t("common.dash")
+            p
+              span= t(".fitness")
+              span.float-right= data&.fitness_grade || t("common.dash")
+            p.text-center
+              - if Racing::Workout.where(horse:, date: Date.current).exists?
+                = render Ui::Badge::Component.new(color: :warning, style: :outline) do
+                  = t(".worked_out_today")
+              - elsif data&.in_transit
+                = render Ui::Badge::Component.new(color: :warning, style: :outline) do
+                  = t(".in_transit")
+              - elsif data&.at_home
+                = render Ui::Badge::Component.new(color: :warning, style: :outline) do
+                  = t(".at_farm")
+              - elsif horse.current_boarding.present?
+                = render Ui::Badge::Component.new(color: :warning, style: :outline) do
+                  = t(".boarded")
+              - else
+                = render Ui::ButtonizedLink::Component.new(url: new_horse_workout_path(horse), size: :small, data: { turbo_frame: "modal" }) do
+                  = t(".workout")
+            .mx-auto.mt-2
+              ruby:
+                confirm_message = t("current_stable.training_schedules.horse.confirm", name: horse.name)
+                data = { turbo_confirm: confirm_message, turbo_method: :delete }
+              = render Ui::Button::Component.new(color: :error, style: :outline, size: :small, http_method: :delete, data:, url: stable_training_schedule_horse_path(schedule, horse)) do
+                = t("current_stable.training_schedules.horse.remove")
+
+.hidden.mx-auto.overflow-x-auto.rounded-md.w-full.sm:block
+  .table-responsive-md
+    table.table.table-responsive.table-zebra.table-sm.sortable.n-last
+      thead
+        tr
+          td= t(".horse")
+          td= t(".age_gender")
+          td= t(".energy")
+          td= t(".fitness")
+          td= t("common.actions.title")
+      tbody
+        - horses.each do |horse|
+          - data = horse.race_metadata
+          - options = horse.race_options
+          tr
+            td class="text-#{horse.gender.downcase}"
+              = render Ui::Link::Component.new(url: horse_path(horse), data: { turbo_frame: "_top" }) do
+                = horse.name
+            td.wb-break-all
+              = horse.age
+              = "yo "
+              = t("horses.genders.#{horse.gender}")
+            td= data&.energy_grade || t("common.dash")
+            td= data&.fitness_grade || t("common.dash")
+            td
+              - if Racing::Workout.where(horse:, date: Date.current).exists?
+                = render Ui::Badge::Component.new(color: :warning, style: :outline) do
+                  = t(".worked_out_today")
+              - elsif data&.in_transit
+                = render Ui::Badge::Component.new(color: :warning, style: :outline) do
+                  = t(".in_transit")
+              - elsif data&.at_home
+                = render Ui::Badge::Component.new(color: :warning, style: :outline) do
+                  = t(".at_farm")
+              - elsif horse.current_boarding.present?
+                = render Ui::Badge::Component.new(color: :warning, style: :outline) do
+                  = t(".boarded")
+              - else
+                = render Ui::ButtonizedLink::Component.new(url: new_horse_workout_path(horse), size: :small, data: { turbo_frame: "modal" }) do
+                  = t(".workout")
+              ruby:
+                confirm_message = t("current_stable.training_schedules.horse.confirm", name: horse.name)
+                data = { turbo_confirm: confirm_message, turbo_method: :delete }
+              = render Ui::Button::Component.new(color: :error, style: :outline, size: :small, http_method: :delete, form_class: "inline", data:, url: stable_training_schedule_horse_path(schedule, horse)) do
+                = t("current_stable.training_schedules.horse.remove")
+
+    .float-right.mt-2
+      == @pagy.series_nav
