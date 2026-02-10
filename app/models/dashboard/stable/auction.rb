@@ -3,8 +3,6 @@ module Dashboard
     class Auction
       attr_reader :query, :auctions, :pagy
 
-      DEFAULT_SORT = "created_at desc".freeze
-
       def initialize(query:, bids:, pagy:, query_result:)
         @query = query
         @query_result = query_result

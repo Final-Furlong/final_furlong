@@ -5,8 +5,6 @@ module Racing
     self.table_name = "workouts"
     self.ignored_columns += ["rank"]
 
-    ACTIVITIES = %w[walk jog canter gallop breeze].freeze
-
     attr_accessor :special_event, :special_event_time, :confidence,
       :energy_loss, :fitness_gain
 
@@ -19,8 +17,8 @@ module Racing
 
     validates :activity1, :distance1, :condition, :date, :effort, :equipment, presence: true
     validates :confidence, :comment, presence: true, on: :complete_workout
-    validates :activity1, :activity2, :activity3, inclusion: { in: ACTIVITIES }, allow_nil: true
-    validates :condition, inclusion: { in: TrackSurface::CONDITIONS }
+    validates :activity1, :activity2, :activity3, inclusion: { in: Config::Workouts.activities.map(&:downcase) }, allow_nil: true
+    validates :condition, inclusion: { in: Config::Racing.conditions.map(&:downcase) }
     validates :distance2, presence: true, if: :activity2
     # validates :activity2_time_in_seconds, presence: true, if: :activity2
     validates :distance3, presence: true, if: :activity3

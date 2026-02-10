@@ -22,6 +22,10 @@ production:
     class: Racing::EnergyFitnessUpdaterJob
     queue: default
     schedule: 25 0 * * *
+  horse_racing_data:
+    class: UpdateRacehorseStatsJob
+    queue: default
+    schedule: 7 1 * * *
   horse_legacy_migrate:
     class: UpdateLegacyHorsesJob
     queue: low_priority

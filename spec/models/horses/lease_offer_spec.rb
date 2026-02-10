@@ -31,9 +31,9 @@ RSpec.describe Horses::LeaseOffer do
 
     describe "offer start date" do
       it "cannot be more than the maximum" do
-        offer = build_stubbed(:lease_offer, offer_start_date: Date.current + (described_class::MAX_OFFER_PERIOD_DAYS + 1).days)
+        offer = build_stubbed(:lease_offer, offer_start_date: Date.current + (Config::Leases.max_offer_period + 1).days)
         expect(offer).not_to be_valid
-        max_date = Date.current + described_class::MAX_OFFER_PERIOD_DAYS.days
+        max_date = Date.current + Config::Leases.max_offer_period.days
         expect(offer.errors[:offer_start_date]).to eq(["must be less than or equal to #{I18n.l(max_date)}"])
       end
 
@@ -47,7 +47,7 @@ RSpec.describe Horses::LeaseOffer do
 
       context "when horse is stud" do
         it "cannot be less than the minimum" do
-          date = Game::BreedingSeason.next_season_start_date - (described_class::MAX_OFFER_PERIOD_DAYS + 1).days
+          date = Game::BreedingSeason.next_season_start_date - (Config::Leases.max_offer_period + 1).days
           offer = build_stubbed(:lease_offer, offer_start_date: date, horse: build_stubbed(:horse, :stallion))
           expect(offer).not_to be_valid
           expect(offer.errors[:offer_start_date]).to eq(["must be greater than or equal to #{I18n.l(date + 1.day)}"])
@@ -56,7 +56,7 @@ RSpec.describe Horses::LeaseOffer do
 
       context "when horse is broodmare" do
         it "cannot be less than the minimum" do
-          date = Game::BreedingSeason.next_season_start_date - (described_class::MAX_OFFER_PERIOD_DAYS + 1).days
+          date = Game::BreedingSeason.next_season_start_date - (Config::Leases.max_offer_period + 1).days
           offer = build_stubbed(:lease_offer, offer_start_date: date, horse: build_stubbed(:horse, :broodmare))
           expect(offer).not_to be_valid
           expect(offer.errors[:offer_start_date]).to eq(["must be greater than or equal to #{I18n.l(date + 1.day)}"])
@@ -99,7 +99,7 @@ RSpec.describe Horses::LeaseOffer do
 
       context "when horse is stud" do
         it "cannot be less than the minimum" do
-          date = Game::BreedingSeason.next_season_start_date - (described_class::MAX_OFFER_PERIOD_DAYS + 1).days
+          date = Game::BreedingSeason.next_season_start_date - (Config::Leases.max_offer_period + 1).days
           offer = build_stubbed(:lease_offer, offer_start_date: date, horse: build_stubbed(:horse, :stallion))
           expect(offer).not_to be_valid
           expect(offer.errors[:offer_start_date]).to eq(["must be greater than or equal to #{I18n.l(date + 1.day)}"])
@@ -108,7 +108,7 @@ RSpec.describe Horses::LeaseOffer do
 
       context "when horse is broodmare" do
         it "cannot be less than the minimum" do
-          date = Game::BreedingSeason.next_season_start_date - (described_class::MAX_OFFER_PERIOD_DAYS + 1).days
+          date = Game::BreedingSeason.next_season_start_date - (Config::Leases.max_offer_period + 1).days
           offer = build_stubbed(:lease_offer, offer_start_date: date, horse: build_stubbed(:horse, :broodmare))
           expect(offer).not_to be_valid
           expect(offer.errors[:offer_start_date]).to eq(["must be greater than or equal to #{I18n.l(date + 1.day)}"])

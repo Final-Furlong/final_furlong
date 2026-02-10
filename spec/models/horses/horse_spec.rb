@@ -125,7 +125,7 @@ RSpec.describe Horses::Horse do
   describe ".ransackable_associations" do
     it "returns correct list" do
       expect(described_class.ransackable_associations).to match_array(
-                                                            %w[breeder dam location_bred owner sire]
+                                                            %w[breeder dam location_bred owner sire race_stats race_metadata race_options]
                                                           )
     end
   end

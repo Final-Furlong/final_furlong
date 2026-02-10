@@ -1,6 +1,9 @@
 class SaleRejectionNotification < Notification
   def message
-    "#{params["stable_name"]} has rejected the sale offer on #{params["horse_name"]} for #{params["price"]}"
+    I18n.t("notifications.sale_rejection_notification.message",
+      stable: params["stable_name"],
+      horse: params["horse_name"],
+      price: params["price"])
   end
 
   def title

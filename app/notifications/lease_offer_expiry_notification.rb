@@ -1,6 +1,9 @@
 class LeaseOfferExpiryNotification < Notification
   def message
-    "The lease offer on #{params["horse_name"]} for #{params["duration"]} (Fee: #{params["fee"]}) has expired."
+    I18n.t("notifications.lease_offer_expiry_notification.message",
+      horse: params["horse_name"],
+      duration: params["duration"],
+      fee: params["fee"])
   end
 
   def url

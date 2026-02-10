@@ -1,0 +1,78 @@
+shared:
+  default_sort: created_at desc
+  activity_types:
+    - sold_horse
+    - bought_horse
+    - bred_mare
+    - bred_stud
+    - claimed_horse
+    - entered_race
+    - shipped_horse
+    - race_winnings
+    - jockey_fee
+    - nominated_racehorse
+    - nominated_stallion
+    - boarded_horse
+    - opening_balance
+    - paid_tax
+    - handicapping_races
+    - nominated_breeders_series
+    - consigned_auction
+    - leased_horse
+    - color_war
+    - activity_points
+    - donation
+    - won_breeders_series
+    - misc
+  sales_activities:
+    - sold_horse
+    - bought_horse
+    - claimed_horse
+    - consigned_auction
+    - leased_horse
+  breeding_activities:
+    - bred_mare
+    - bred_stud
+  racing_activities:
+    - entered_race
+    - race_winnings
+    - jockey_fee
+    - won_breeders_series
+  nominating_activities:
+    - nominated_racehorse
+    - nominated_stallion
+    - nominated_breeders_series
+  game_activities:
+    - opening_balance
+    - paid_tax
+    - handicapping_races
+    - color_war
+    - activity_points
+  misc_activities:
+    - misc
+    - donation
+  dashboard_activity_types:
+    - sold_or_bought
+    - sold_horse
+    - bought_horse
+    - leased_horse
+    - claimed_horse
+    - consigned_auction
+    - boarded_horse
+    - all_breeding
+    - bred_mare
+    - bred_stud
+    - all_racing
+    - entered_race
+    - shipped_horse
+    - race_winnings
+    - jockey_fee
+    - all_nominations
+    - nominated_racehorse
+    - nominated_stallion
+    - nominated_breeders_series
+    - game_activity
+    - color_war
+    - activity_points
+    - donation
+    - misc

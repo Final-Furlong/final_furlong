@@ -8,9 +8,6 @@ module Account
 
     attr_accessor :login
 
-    USERNAME_LENGTH = 4
-    PASSWORD_LENGTH = 8
-
     has_one :stable, dependent: :destroy
     has_one :activation, class_name: "Account::Activation", dependent: :delete
     has_one :setting, dependent: :delete
@@ -29,7 +26,7 @@ module Account
     validates :username, :status, :name, presence: true
     validates :admin, inclusion: { in: [true, false] }
     validates :developer, inclusion: { in: [true, false] }
-    validates :username, uniqueness: { case_sensitive: false }, length: { minimum: 3 }
+    validates :username, uniqueness: { case_sensitive: false }, length: { minimum: Config::Game.username_minimum_length }
 
     scope :developer, -> { where(developer: true) }
 

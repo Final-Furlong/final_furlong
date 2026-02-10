@@ -1,6 +1,9 @@
 class SaleAcceptanceNotification < Notification
   def message
-    "#{params["stable_name"]} has purchased #{params["horse_name"]} for #{params["price"]}"
+    I18n.t("notifications.sale_acceptance_notification.message",
+      stable: params["stable_name"],
+      horse: params["horse_name"],
+      price: params["price"])
   end
 
   def title
