@@ -63,7 +63,10 @@ module Racing
       surfaces = if options.racehorse_type == "jump"
         ["steeplechase"]
       else
-        ["dirt", "turf"]
+        surface_list = []
+        surface_list << "dirt" if options.trains_on_dirt
+        surface_list << "turf" if options.trains_on_turf
+        surface_list
       end
       surfaces.map do |surface|
         [I18n.t("horse.workouts.form.surface_#{surface}"), surface]
@@ -82,8 +85,14 @@ module Racing
       options = horse.race_options
       self.jockey = options&.first_jockey
       self.racetrack = horse.race_metadata.racetrack
-      if racetrack && options.racehorse_type == "jump" && racetrack
+      if racetrack && options.racehorse_type == "jump"
         self.surface = racetrack.surfaces.steeplechase.first
+      elsif racetrack && options.racehorse_type != "jump"
+        if options.trains_on_dirt && !options.trains_on_turf
+          self.surface = racetrack.surfaces.dirt.first
+        elsif options.trains_on_turf && !options.trains_on_dirt
+          self.surface = racetrack.surfaces.turf.first
+        end
       end
     end
 

@@ -8,7 +8,11 @@ module Racing
     scope :by_horse, ->(id) { where(horse_id: id) }
     scope :qualified_for, ->(type) {
       if Config::Racing.non_qualified_types.include?(type)
-        not_qualified_for(previous_qualification_level(type))
+        query = all
+        previous_qualification_levels(type).each do |qual_type|
+          query = query.not_qualified_for(qual_type)
+        end
+        query
       elsif type.to_s == "maiden"
         where("#{type}_qualified": true)
       else
@@ -34,9 +38,10 @@ module Racing
     end
 
     def self.previous_qualification_levels(qualification)
-      qualification = "allowance" if qualification == "stakes"
       if qualification.to_sym == :maiden
         []
+      elsif %w[allowance stakes].include?(qualification)
+        Config::Racing.qualified_types
       else
         types = Config::Racing.claiming_types.include?(qualification) ? Config::Racing.all_types : Config::Racing.qualified_types
         types.slice(0, types.find_index(qualification))
