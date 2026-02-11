@@ -65,7 +65,15 @@ module Horses
       elsif points >= Config::Racing.dig(:title_points, :normal)
         "Normal"
       end
-      horse_attributes.update(track_record:, title:)
+      ActiveRecord::Base.transaction do
+        horse.race_metadata&.update(
+          at_home: false,
+          last_raced_at: Time.current,
+          rest_days_since_last_race: 0,
+          workouts_since_last_race: 0
+        )
+        horse_attributes.update(track_record:, title:)
+      end
     end
   end
 end
