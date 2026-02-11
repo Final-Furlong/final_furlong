@@ -1,7 +1,8 @@
 module Racing
   class RacehorsesController < AuthenticatedController
     def index
-      @query = policy_scope(Horses::Horse.racehorse.includes(:race_options, race_metadata: :racetrack), policy_scope_class: CurrentStable::RacehorsePolicy::Scope)
+      base_query = Horses::Horse.racehorse.includes(:race_options, race_metadata: :racetrack).where.missing(:race_entries)
+      @query = policy_scope(base_query, policy_scope_class: CurrentStable::RacehorsePolicy::Scope)
       @race = Racing::RaceSchedule.find(params.dig(:q, :race)) if params.dig(:q, :race).present?
       if status
         @query = @query.joins(:race_qualification).merge(

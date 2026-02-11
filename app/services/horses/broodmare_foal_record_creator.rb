@@ -39,9 +39,9 @@ module Horses
         elsif average_points <= Config::Horses.dig(:breed_rankings, :silver, :points)
           "silver"
         elsif average_points <= Config::Horses.dig(:breed_rankings, :gold, :points)
-          (attrs[:total_foal_races] < Config::Horses.dig(:breed_rankings, :gold, :min_races)) ? "silver" : "gold"
+          (attrs[:total_foal_races] < Config::Horses.dig(:breed_rankings, :gold, :minimum_races)) ? "silver" : "gold"
         elsif average_points > Config::Horses.dig(:breed_rankings, :gold, :points)
-          (attrs[:total_foal_races] < Config::Horses.dig(:breed_rankings, :platinum, :min_races)) ? "gold" : "platinum"
+          (attrs[:total_foal_races] < Config::Horses.dig(:breed_rankings, :platinum, :minimum_races)) ? "gold" : "platinum"
         end
         attrs[:breed_ranking] = breed_ranking
       end

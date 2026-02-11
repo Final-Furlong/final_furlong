@@ -12,6 +12,7 @@ module Racing
     validates :auto_enter, :auto_ship, :ship_when_entries_open,
       :ship_when_horse_is_entered, :ship_only_if_horse_is_entered,
       inclusion: { in: [true, false] }
+    validates :horse_id, uniqueness: { scope: :date }
 
     has_flags 1 => :blinkers,
       2 => :shadow_roll,

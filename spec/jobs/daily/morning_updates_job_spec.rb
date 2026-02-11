@@ -32,8 +32,9 @@ RSpec.describe Daily::MorningUpdatesJob, :perform_enqueued_jobs do
 
     it "stores job result" do
       classes = [Daily::CreateActivationsJob, Horses::UpdateBoardingJob,
-        Horses::UpdateLeasesJob, Horses::UpdateSalesJob, UpdateLegacyWorkoutsJob]
-      expect { described_class.perform_later }.to change(JobStat, :count).by(6)
+        Horses::UpdateLeasesJob, Horses::UpdateSalesJob,
+        UpdateLegacyWorkoutsJob, Horses::NameHorsesJob]
+      expect { described_class.perform_later }.to change(JobStat, :count).by(7)
       expect(JobStat.find_by(name: described_class.name)).to have_attributes(
                                                                outcome: { classes: classes.map(&:to_s).join(",") }.stringify_keys
                                                              )

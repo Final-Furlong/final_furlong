@@ -16,6 +16,7 @@ module Racing
                                             greater_than_or_equal_to: 1, less_than_or_equal_to: 14 }
     validates :weight, numericality: { only_integer: true }
     validates :racing_style, inclusion: { in: Config::Racing.styles }
+    validates :horse_id, uniqueness: { scope: :date }
 
     has_flags 1 => :blinkers,
       2 => :shadow_roll,

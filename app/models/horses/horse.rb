@@ -42,6 +42,8 @@ module Horses
     has_one :training_schedule, class_name: "Racing::TrainingSchedule", through: :training_schedules_horse
     has_one :current_boarding, -> { where(end_date: nil) }, class_name: "Horses::Boarding", inverse_of: :horse, dependent: :delete
     has_many :boardings, -> { where.not(end_date: nil) }, class_name: "Horses::Boarding", inverse_of: :horse, dependent: :delete_all
+    has_many :race_entries, class_name: "Racing::RaceEntry", inverse_of: :horse, dependent: :delete_all
+    has_many :future_race_entries, class_name: "Racing::FutureRaceEntry", inverse_of: :horse, dependent: :delete_all
     has_many :racing_shipments, class_name: "Shipping::RacehorseShipment", dependent: :delete_all
     has_many :current_injuries, class_name: "Horses::Injury", inverse_of: :horse, dependent: :delete_all
     has_many :historical_injuries, class_name: "Horses::HistoricalInjury", inverse_of: :horse, dependent: :delete_all
@@ -69,6 +71,8 @@ module Horses
     scope :unborn, -> { where(date_of_birth: Date.current + 1.day..) }
     scope :stillborn, -> { where("date_of_birth = date_of_death") }
     scope :not_stillborn, -> { where(date_of_death: nil).or(where("date_of_death > date_of_birth")) }
+    scope :created, -> { where(sire_id: nil, dam_id: nil) }
+    scope :not_created, -> { where("sire_id IS NULL AND dam_id IS NULL") }
     scope :female, -> { where(gender: Gender::FEMALE_GENDERS) }
     scope :not_female, -> { where.not(gender: Gender::FEMALE_GENDERS) }
     scope :max_yob, ->(year) { where("DATE_PART('Year', date_of_birth) <= ?", year) }
