@@ -55,7 +55,7 @@ production:
     queue: low_priority
     schedule: at 11:45pm every day
   race_entry_migrate:
-    class: Racing::RaceEntryMigrationJo
+    class: Racing::RaceEntryMigrationJob
     queue: default
     schedule: every hour at minute 2
   shipping_migrate:
