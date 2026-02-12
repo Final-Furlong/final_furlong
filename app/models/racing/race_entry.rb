@@ -1,6 +1,6 @@
 module Racing
   class RaceEntry < ApplicationRecord
-    include FlagShihTzu
+    include Equipmentable
 
     belongs_to :horse, class_name: "Horses::Horse"
     belongs_to :race, class_name: "Racing::RaceSchedule"
@@ -13,17 +13,16 @@ module Racing
     validates :date, :equipment, presence: true
     validates :date, comparison: { greater_than: -> { Date.current } }
     validates :post_parade, numericality: { only_integer: true,
-                                            greater_than_or_equal_to: 1, less_than_or_equal_to: 14 }
+                                            greater_than_or_equal_to: 0,
+                                            less_than_or_equal_to: 14 }
     validates :weight, numericality: { only_integer: true }
-    validates :racing_style, inclusion: { in: Config::Racing.styles }
+    validates :racing_style, inclusion: { in: Config::Racing.styles }, allow_nil: true
     validates :horse_id, uniqueness: { scope: :date }
 
-    has_flags 1 => :blinkers,
-      2 => :shadow_roll,
-      3 => :wraps,
-      4 => :figure_8,
-      5 => :no_whip,
-      :column => "equipment"
+    scope :future, -> { where("date > ?", Date.current) }
+    scope :past, -> { where("date < ?", Date.current) }
+
+    counter_culture :race, column_name: "entries_count"
   end
 end
 
