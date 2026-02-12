@@ -42,7 +42,7 @@ module Horses
     has_one :training_schedule, class_name: "Racing::TrainingSchedule", through: :training_schedules_horse
     has_one :current_boarding, -> { where(end_date: nil) }, class_name: "Horses::Boarding", inverse_of: :horse, dependent: :delete
     has_many :boardings, -> { where.not(end_date: nil) }, class_name: "Horses::Boarding", inverse_of: :horse, dependent: :delete_all
-    has_many :race_entries, class_name: "Racing::RaceEntry", inverse_of: :horse, dependent: :delete_all
+    has_many :race_entries, class_name: "Racing::RaceEntry", inverse_of: :horse, dependent: :destroy
     has_many :future_race_entries, class_name: "Racing::FutureRaceEntry", inverse_of: :horse, dependent: :delete_all
     has_many :racing_shipments, class_name: "Shipping::RacehorseShipment", dependent: :delete_all
     has_many :current_injuries, class_name: "Horses::Injury", inverse_of: :horse, dependent: :delete_all

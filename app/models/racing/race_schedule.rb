@@ -5,7 +5,7 @@ class Racing::RaceSchedule < ApplicationRecord
 
   belongs_to :track_surface, class_name: "Racing::TrackSurface", foreign_key: :surface_id, inverse_of: :scheduled_races
 
-  has_many :entries, class_name: "Racing::RaceEntry", inverse_of: :race, dependent: :delete_all
+  has_many :entries, class_name: "Racing::RaceEntry", inverse_of: :race, dependent: :destroy
   has_many :future_entries, class_name: "Racing::FutureRaceEntry", inverse_of: :race, dependent: :delete_all
 
   validates :day_number, :date, :number, :race_type, :age, :distance, :purse,
@@ -25,6 +25,8 @@ class Racing::RaceSchedule < ApplicationRecord
   delegate :racetrack, to: :track_surface
 
   scope :future, -> { where("date > ?", Date.current) }
+  scope :next_year, -> { where("date > ?", Date.current + 10.months) }
+  scope :past, -> { where(date: ...Date.current) }
 
   def entry_deadline
     date - Config::Game.entry_deadline_days.days
