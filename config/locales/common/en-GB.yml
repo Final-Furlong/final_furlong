@@ -5,6 +5,7 @@ en-GB:
       default: "%d-%m-%Y"
       long: "%-d %B, %Y"
       short: "%d %b"
+      slashes: "%-d/%-m/%y"
       text: "%-d %B, %Y"
   time:
     formats:
