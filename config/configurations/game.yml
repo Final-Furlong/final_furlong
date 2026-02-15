@@ -7,6 +7,7 @@ shared:
   entry_limit_increase_final_day: 1
   online_minutes: 15
   stable: Final Furlong
+  username: FFadmin
   username_minimum_length: 3
   activity_types:
     - color_war

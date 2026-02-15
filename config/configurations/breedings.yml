@@ -1,0 +1,6 @@
+shared:
+  statuses:
+    - pending
+    - approved
+    - bred
+    - denied
