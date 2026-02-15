@@ -320,6 +320,10 @@ GEM
     ffi (1.17.3-arm64-darwin)
     ffi (1.17.3-x86_64-linux-gnu)
     ffi (1.17.3-x86_64-linux-musl)
+    fixture_factory (0.3.0)
+      activemodel (>= 5.2)
+      activerecord (>= 5.2)
+      activesupport (>= 5.2)
     flag_shih_tzu (0.3.23)
     formatador (1.2.3)
       reline
@@ -1092,6 +1096,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   fastimage
+  fixture_factory
   flag_shih_tzu
   friendly_id
   fuubar
@@ -1311,6 +1316,7 @@ CHECKSUMS
   ffi (1.17.3-arm64-darwin) sha256=0c690555d4cee17a7f07c04d59df39b2fba74ec440b19da1f685c6579bb0717f
   ffi (1.17.3-x86_64-linux-gnu) sha256=3746b01f677aae7b16dc1acb7cb3cc17b3e35bdae7676a3f568153fb0e2c887f
   ffi (1.17.3-x86_64-linux-musl) sha256=086b221c3a68320b7564066f46fed23449a44f7a1935f1fe5a245bd89d9aea56
+  fixture_factory (0.3.0) sha256=c3fcefffe99e78efd31e113bd7875c052ca2eff6ba9de780292d0afff0848863
   flag_shih_tzu (0.3.23) sha256=0982215a5b96771671e13884e08f34c7084650752fd002a3ad6e91c4897061be
   formatador (1.2.3) sha256=19fa898133c2c26cdbb5d09f6998c1e137ad9427a046663e55adfe18b950d894
   friendly_id (5.6.0) sha256=28e221cd53fbd21586321164c1c6fd0c9ba8dde13969cb2363679f44726bb0c3
