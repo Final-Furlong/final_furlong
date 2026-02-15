@@ -88,6 +88,8 @@ en:
       long: "%B %-d, %Y"
       short: "%b %d"
       text: "%B %-d, %Y"
+      slashes: "%-m/%-d/%y"
+      year_abbr: "'%y"
   i18n:
     en_gb_language: British English
     en_language: US English

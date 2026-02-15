@@ -87,6 +87,18 @@ CREATE TYPE public.breed_record AS ENUM (
 
 
 --
+-- Name: breeding_statuses; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.breeding_statuses AS ENUM (
+    'pending',
+    'approved',
+    'bred',
+    'denied'
+);
+
+
+--
 -- Name: budget_activity_type; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -114,6 +126,17 @@ CREATE TYPE public.budget_activity_type AS ENUM (
     'donation',
     'won_breeders_series',
     'misc'
+);
+
+
+--
+-- Name: future_event_types; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.future_event_types AS ENUM (
+    'retire',
+    'die',
+    'nominate'
 );
 
 
@@ -816,6 +839,86 @@ CREATE TABLE public.boardings (
 
 
 --
+-- Name: breeding_stats; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.breeding_stats (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    breeding_potential integer DEFAULT 0 NOT NULL,
+    breeding_potential_grandparent integer DEFAULT 0 NOT NULL,
+    soundness integer DEFAULT 0 NOT NULL,
+    dosage character varying,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: breeding_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.breeding_stats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: breeding_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.breeding_stats_id_seq OWNED BY public.breeding_stats.id;
+
+
+--
+-- Name: breedings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.breedings (
+    id bigint NOT NULL,
+    mare_id bigint NOT NULL,
+    stud_id bigint NOT NULL,
+    year integer DEFAULT 0 NOT NULL,
+    date date,
+    due_date date,
+    fee integer DEFAULT 0 NOT NULL,
+    status public.breeding_statuses NOT NULL,
+    legacy_id integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN breedings.status; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.breedings.status IS 'pending, approved, bred, denied';
+
+
+--
+-- Name: breedings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.breedings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: breedings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.breedings_id_seq OWNED BY public.breedings.id;
+
+
+--
 -- Name: broodmare_foal_records; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -953,6 +1056,46 @@ ALTER SEQUENCE public.budget_transactions_id_seq OWNED BY public.budget_transact
 CREATE TABLE public.data_migrations (
     version character varying NOT NULL
 );
+
+
+--
+-- Name: future_events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.future_events (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    event_type public.future_event_types NOT NULL,
+    date date NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN future_events.event_type; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.future_events.event_type IS 'retire, die, nominate';
+
+
+--
+-- Name: future_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.future_events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: future_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.future_events_id_seq OWNED BY public.future_events.id;
 
 
 --
@@ -2985,6 +3128,42 @@ ALTER SEQUENCE public.stables_id_seq OWNED BY public.stables.id;
 
 
 --
+-- Name: stallion_options; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.stallion_options (
+    id bigint NOT NULL,
+    stud_id bigint NOT NULL,
+    stud_fee integer DEFAULT 0 NOT NULL,
+    outside_mares_allowed integer DEFAULT 0 NOT NULL,
+    outside_mares_per_stable integer DEFAULT 0 NOT NULL,
+    approval_required boolean DEFAULT false NOT NULL,
+    breed_to_game_mares boolean DEFAULT false NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: stallion_options_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.stallion_options_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: stallion_options_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.stallion_options_id_seq OWNED BY public.stallion_options.id;
+
+
+--
 -- Name: stud_foal_records; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3411,6 +3590,20 @@ ALTER TABLE ONLY public.auctions ALTER COLUMN id SET DEFAULT nextval('public.auc
 
 
 --
+-- Name: breeding_stats id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breeding_stats ALTER COLUMN id SET DEFAULT nextval('public.breeding_stats_id_seq'::regclass);
+
+
+--
+-- Name: breedings id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breedings ALTER COLUMN id SET DEFAULT nextval('public.breedings_id_seq'::regclass);
+
+
+--
 -- Name: broodmare_foal_records id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3429,6 +3622,13 @@ ALTER TABLE ONLY public.broodmare_shipments ALTER COLUMN id SET DEFAULT nextval(
 --
 
 ALTER TABLE ONLY public.budget_transactions ALTER COLUMN id SET DEFAULT nextval('public.budget_transactions_id_seq'::regclass);
+
+
+--
+-- Name: future_events id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.future_events ALTER COLUMN id SET DEFAULT nextval('public.future_events_id_seq'::regclass);
 
 
 --
@@ -3747,6 +3947,13 @@ ALTER TABLE ONLY public.stables ALTER COLUMN id SET DEFAULT nextval('public.stab
 
 
 --
+-- Name: stallion_options id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stallion_options ALTER COLUMN id SET DEFAULT nextval('public.stallion_options_id_seq'::regclass);
+
+
+--
 -- Name: stud_foal_records id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3891,6 +4098,22 @@ ALTER TABLE ONLY public.boardings
 
 
 --
+-- Name: breeding_stats breeding_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breeding_stats
+    ADD CONSTRAINT breeding_stats_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: breedings breedings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breedings
+    ADD CONSTRAINT breedings_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: broodmare_foal_records broodmare_foal_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3920,6 +4143,14 @@ ALTER TABLE ONLY public.budget_transactions
 
 ALTER TABLE ONLY public.data_migrations
     ADD CONSTRAINT data_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: future_events future_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.future_events
+    ADD CONSTRAINT future_events_pkey PRIMARY KEY (id);
 
 
 --
@@ -4291,6 +4522,14 @@ ALTER TABLE ONLY public.stables
 
 
 --
+-- Name: stallion_options stallion_options_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stallion_options
+    ADD CONSTRAINT stallion_options_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: stud_foal_records stud_foal_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4593,6 +4832,69 @@ CREATE INDEX index_boardings_on_start_date ON public.boardings USING btree (star
 
 
 --
+-- Name: index_breeding_stats_on_dosage; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeding_stats_on_dosage ON public.breeding_stats USING btree (dosage);
+
+
+--
+-- Name: index_breeding_stats_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeding_stats_on_horse_id ON public.breeding_stats USING btree (horse_id);
+
+
+--
+-- Name: index_breedings_on_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breedings_on_date ON public.breedings USING btree (date);
+
+
+--
+-- Name: index_breedings_on_due_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breedings_on_due_date ON public.breedings USING btree (due_date);
+
+
+--
+-- Name: index_breedings_on_legacy_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breedings_on_legacy_id ON public.breedings USING btree (legacy_id);
+
+
+--
+-- Name: index_breedings_on_mare_id_and_stud_id_and_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breedings_on_mare_id_and_stud_id_and_year ON public.breedings USING btree (mare_id, stud_id, year) WHERE (status <> 'denied'::public.breeding_statuses);
+
+
+--
+-- Name: index_breedings_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breedings_on_status ON public.breedings USING btree (status);
+
+
+--
+-- Name: index_breedings_on_stud_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breedings_on_stud_id ON public.breedings USING btree (stud_id);
+
+
+--
+-- Name: index_breedings_on_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breedings_on_year ON public.breedings USING btree (year);
+
+
+--
 -- Name: index_broodmare_foal_records_on_born_foals_count; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4744,6 +5046,27 @@ CREATE INDEX index_budget_transactions_on_legacy_stable_id ON public.budget_tran
 --
 
 CREATE INDEX index_budget_transactions_on_stable_id ON public.budget_transactions USING btree (stable_id);
+
+
+--
+-- Name: index_future_events_on_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_events_on_date ON public.future_events USING btree (date);
+
+
+--
+-- Name: index_future_events_on_event_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_events_on_event_type ON public.future_events USING btree (event_type);
+
+
+--
+-- Name: index_future_events_on_horse_id_and_event_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_future_events_on_horse_id_and_event_type ON public.future_events USING btree (horse_id, event_type);
 
 
 --
@@ -6175,6 +6498,48 @@ CREATE UNIQUE INDEX index_stables_on_user_id ON public.stables USING btree (user
 
 
 --
+-- Name: index_stallion_options_on_approval_required; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_stallion_options_on_approval_required ON public.stallion_options USING btree (approval_required);
+
+
+--
+-- Name: index_stallion_options_on_breed_to_game_mares; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_stallion_options_on_breed_to_game_mares ON public.stallion_options USING btree (breed_to_game_mares);
+
+
+--
+-- Name: index_stallion_options_on_outside_mares_allowed; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_stallion_options_on_outside_mares_allowed ON public.stallion_options USING btree (outside_mares_allowed);
+
+
+--
+-- Name: index_stallion_options_on_outside_mares_per_stable; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_stallion_options_on_outside_mares_per_stable ON public.stallion_options USING btree (outside_mares_per_stable);
+
+
+--
+-- Name: index_stallion_options_on_stud_fee; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_stallion_options_on_stud_fee ON public.stallion_options USING btree (stud_fee);
+
+
+--
+-- Name: index_stallion_options_on_stud_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_stallion_options_on_stud_id ON public.stallion_options USING btree (stud_id);
+
+
+--
 -- Name: index_stud_foal_records_on_born_foals_count; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6717,6 +7082,14 @@ ALTER TABLE ONLY public.auction_consignment_configs
 
 
 --
+-- Name: stallion_options fk_rails_2ef74eb1f9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stallion_options
+    ADD CONSTRAINT fk_rails_2ef74eb1f9 FOREIGN KEY (stud_id) REFERENCES public.horses(id);
+
+
+--
 -- Name: future_race_entries fk_rails_30632c54bf; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6754,6 +7127,14 @@ ALTER TABLE ONLY public.race_options
 
 ALTER TABLE ONLY public.motor_alert_locks
     ADD CONSTRAINT fk_rails_38d1b2960e FOREIGN KEY (alert_id) REFERENCES public.motor_alerts(id);
+
+
+--
+-- Name: breedings fk_rails_3905bb7408; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breedings
+    ADD CONSTRAINT fk_rails_3905bb7408 FOREIGN KEY (mare_id) REFERENCES public.horses(id);
 
 
 --
@@ -6898,6 +7279,14 @@ ALTER TABLE ONLY public.race_result_horses
 
 ALTER TABLE ONLY public.sale_offers
     ADD CONSTRAINT fk_rails_7486325072 FOREIGN KEY (buyer_id) REFERENCES public.stables(id);
+
+
+--
+-- Name: breedings fk_rails_7b2e65f69a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breedings
+    ADD CONSTRAINT fk_rails_7b2e65f69a FOREIGN KEY (stud_id) REFERENCES public.horses(id);
 
 
 --
@@ -7125,6 +7514,14 @@ ALTER TABLE ONLY public.horse_sales
 
 
 --
+-- Name: breeding_stats fk_rails_b5dc8646e6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breeding_stats
+    ADD CONSTRAINT fk_rails_b5dc8646e6 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
 -- Name: boardings fk_rails_b7a9ec2495; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7162,6 +7559,14 @@ ALTER TABLE ONLY public.active_storage_attachments
 
 ALTER TABLE ONLY public.racehorse_metadata
     ADD CONSTRAINT fk_rails_c4775ac331 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
+-- Name: future_events fk_rails_c4d2e5e811; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.future_events
+    ADD CONSTRAINT fk_rails_c4d2e5e811 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
 
 
 --
@@ -7371,6 +7776,11 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260216203416'),
+('20260216202905'),
+('20260216202506'),
+('20260216202110'),
+('20260215132429'),
 ('20260209224800'),
 ('20260209211310'),
 ('20260209144047'),

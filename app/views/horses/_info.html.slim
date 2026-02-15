@@ -119,7 +119,19 @@
       - if Horses::Status::FEMALE_BREEDING_STATUSES.include?(horse.status)
         tr
           th= t(".last_foal")
-          td Not Yet Added
+          td
+            - if horse.foals.born.present?
+              - last_dob = horse.foals.born.order(date_of_birth: :desc).pluck(:date_of_birth).first
+              - horse.foals.born.where(date_of_birth: last_dob).find_each do |foal|
+                - pedigree = Horses::PedigreeDisplayService.new(foal)
+                span class="text-#{foal.gender}" = link_to foal.budget_name, horse_path(foal), data: { turbo_frame: "_top" }
+                = " - "
+                = t(".foal_info", year: l(foal.date_of_birth, format: :year_abbr), gender: foal.gender, sire: pedigree.sire_display(target: "_top")).html_safe
         tr
           th= t(".next_foal")
-          td Not Yet Added
+          td
+            - if horse.next_foal.present?
+              - stud = horse.next_foal.stud
+              span
+                = t(".in_foal", stud: link_to(stud.name, horse_path(stud))).html_safe
+                = t(".due_date", date: l(horse.next_foal.due_date, format: :slashes))
