@@ -48,13 +48,20 @@ module Horses
     has_many :current_injuries, class_name: "Horses::Injury", inverse_of: :horse, dependent: :delete_all
     has_many :historical_injuries, class_name: "Horses::HistoricalInjury", inverse_of: :horse, dependent: :delete_all
     has_many :jockey_relationships, class_name: "Racing::HorseJockeyRelationship", dependent: :delete_all
-    has_one :race_qualification, class_name: "Racing::RaceQualification", dependent: :delete
+    has_one :race_qualification, class_name: "Racing::RaceQualification"
     has_one :race_metadata, class_name: "Racing::RacehorseMetadata", dependent: :delete
 
     has_many :foals, class_name: "Horses::Horse", inverse_of: :dam, dependent: :nullify
     has_many :broodmare_shipments, class_name: "Shipping::BroodmareShipment", dependent: :delete_all
+    has_many :due_dates, -> { where.not(status: "denied") }, class_name: "Horses::Breeding", dependent: :delete_all, inverse_of: :mare
+    has_one :next_foal, -> { where(status: "bred") }, class_name: "Horses::Breeding", dependent: :delete, inverse_of: :mare
 
     has_many :stud_foals, class_name: "Horses::Horse", inverse_of: :sire, dependent: :nullify
+    has_many :breedings, class_name: "Horses::Breeding", dependent: :delete_all, inverse_of: :stud
+
+    has_one :breeding_stats, class_name: "Horses::BreedingStats", dependent: :delete, inverse_of: :horse
+
+    has_many :future_events, class_name: "Horses::FutureEvent", inverse_of: :horse, dependent: :delete_all
 
     enum :status, Status::STATUSES
     enum :gender, Gender::VALUES

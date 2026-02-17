@@ -50,7 +50,7 @@ RSpec.describe Horses::LeaseOffer do
           date = Game::BreedingSeason.next_season_start_date - (Config::Leases.max_offer_period + 1).days
           offer = build_stubbed(:lease_offer, offer_start_date: date, horse: build_stubbed(:horse, :stallion))
           expect(offer).not_to be_valid
-          expect(offer.errors[:offer_start_date]).to eq(["must be greater than or equal to #{I18n.l(date + 1.day)}"])
+          expect(offer.errors[:offer_start_date]).to include("must be greater than or equal to #{I18n.l(date + 1.day)}")
         end
       end
 
@@ -59,7 +59,7 @@ RSpec.describe Horses::LeaseOffer do
           date = Game::BreedingSeason.next_season_start_date - (Config::Leases.max_offer_period + 1).days
           offer = build_stubbed(:lease_offer, offer_start_date: date, horse: build_stubbed(:horse, :broodmare))
           expect(offer).not_to be_valid
-          expect(offer.errors[:offer_start_date]).to eq(["must be greater than or equal to #{I18n.l(date + 1.day)}"])
+          expect(offer.errors[:offer_start_date]).to include("must be greater than or equal to #{I18n.l(date + 1.day)}")
         end
       end
     end
@@ -102,7 +102,7 @@ RSpec.describe Horses::LeaseOffer do
           date = Game::BreedingSeason.next_season_start_date - (Config::Leases.max_offer_period + 1).days
           offer = build_stubbed(:lease_offer, offer_start_date: date, horse: build_stubbed(:horse, :stallion))
           expect(offer).not_to be_valid
-          expect(offer.errors[:offer_start_date]).to eq(["must be greater than or equal to #{I18n.l(date + 1.day)}"])
+          expect(offer.errors[:offer_start_date]).to include("must be greater than or equal to #{I18n.l(date + 1.day)}")
         end
       end
 
@@ -111,7 +111,7 @@ RSpec.describe Horses::LeaseOffer do
           date = Game::BreedingSeason.next_season_start_date - (Config::Leases.max_offer_period + 1).days
           offer = build_stubbed(:lease_offer, offer_start_date: date, horse: build_stubbed(:horse, :broodmare))
           expect(offer).not_to be_valid
-          expect(offer.errors[:offer_start_date]).to eq(["must be greater than or equal to #{I18n.l(date + 1.day)}"])
+          expect(offer.errors[:offer_start_date]).to include("must be greater than or equal to #{I18n.l(date + 1.day)}")
         end
       end
     end

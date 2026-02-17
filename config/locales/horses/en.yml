@@ -9,17 +9,28 @@ en:
       for_lease: For Lease (%{count})
       for_sale: For Sale (%{count})
     info:
+      bookings:
+        zero: No Bookings
+        one: 1 Booking
+        other: "%{count} Bookings"
+      bred_mares:
+        zero: None Bred
+        one: 1 Bred
+        other: "%{count} Bred"
       breeder: Breeder
       breeding_record: Breeding Record
       color: Color
       consigned_to_auction: 'Consigned to Auction:'
       date_of_birth: Date of Birth
       date_of_death: Date of Death
+      due_date: ", due %{date}"
       energy: Energy
       fitness: Fitness
+      foal_info: "%{year} %{gender} by %{sire}"
       gender: Gender
       height: Height
       id: ID
+      in_foal: "In Foal to %{stud}"
       in_transit: In Transit, will arrive %{date}
       last_foal: Last Foal
       last_race: Last Race
@@ -33,6 +44,7 @@ en:
       next_foal: Next Foal
       next_race: Next Race
       not_for_sale: Not for Sale
+      not_in_foal: Not In Foal
       number_of_workouts: Workouts
       offered_for_lease: 'Offered for lease for %{duration} months (Fee: %{fee})'
       offered_for_sale: 'Offered for sale (Price: %{price})'

@@ -1,6 +1,7 @@
 RSpec.describe Horses::UpdateStudFoalRecordJob, :perform_enqueued_jobs do
   describe "#perform" do
     it "uses default queue", perform_enqueueed_jobs: false do
+      Racing::LifetimeRaceRecord.refresh
       Horses::Horse.destroy_all
       horse
       expect do

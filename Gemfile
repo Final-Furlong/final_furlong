@@ -139,6 +139,7 @@ group :development, :test do
   gem "factory_bot-awesome_linter", require: false
   gem "factory_bot_rails", require: false
   gem "faker", require: false
+  gem "fixture_factory"
   gem "i18n-tasks"
   gem "isolator"
   gem "letter_opener"

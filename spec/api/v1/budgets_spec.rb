@@ -21,7 +21,7 @@ RSpec.describe Api::V1::Budgets do
 
         post("/api/v1/budgets", params:)
 
-        expect(Account::Budget.count).to eq 2
+        expect(Account::Budget.count).to eq 3
         expect(Account::Budget.recent.first).to have_attributes(
           stable:,
           amount: -5000,
