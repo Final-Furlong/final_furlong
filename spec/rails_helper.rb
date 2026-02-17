@@ -13,9 +13,6 @@ require "capybara/rspec"
 require "capybara-screenshot/rspec"
 require "factory_bot_rails"
 require "axe-rspec"
-require "test_prof/any_fixture/dsl"
-require "test_prof/ext/active_record_refind"
-require "test_prof/recipes/rspec/any_fixture"
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -42,25 +39,7 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 
-RSpec.shared_context "shared:stable" do # rubocop:disable RSpec/ContextWording
-  before(:all) do
-    @user = TestProf::AnyFixture.register(:user) do
-      FactoryBot.create(:user, :without_stable) # rubocop:disable FactoryBot/SyntaxMethods
-    end
-    @stable = TestProf::AnyFixture.register(:stable) do
-      FactoryBot.create(:stable, user: @user) # rubocop:disable FactoryBot/SyntaxMethods
-    end
-  end
-
-  let(:user) { TestProf::AnyFixture.cached(:user) }
-  let(:stable) { TestProf::AnyFixture.cached(:stable) }
-end
-
 RSpec.configure do |config|
-  config.include TestProf::AnyFixture::DSL
-
-  config.include_context "shared:stable", stable: true
-
   config.define_derived_metadata(file_path: %r{/spec/components}) do |metadata|
     metadata[:type] = :component
   end
