@@ -1,6 +1,6 @@
 RSpec.describe Api::V1::Activity do
   describe "POST /api/v1/activity" do
-    context "when activity creation works", :stable do
+    context "when activity creation works" do
       it "returns activity ID" do
         initial_activity
 
@@ -30,7 +30,7 @@ RSpec.describe Api::V1::Activity do
       end
     end
 
-    context "when activity amount is negative", :stable do
+    context "when activity amount is negative" do
       it "returns activity ID" do
         initial_activity
 
@@ -78,7 +78,7 @@ RSpec.describe Api::V1::Activity do
       end
     end
 
-    context "when activity creation fails", :stable do
+    context "when activity creation fails" do
       it "returns error" do
         mock_creator = instance_double(Accounts::ActivityTransactionCreator)
         allow(Accounts::ActivityTransactionCreator).to receive(:new).and_return mock_creator
@@ -107,6 +107,10 @@ RSpec.describe Api::V1::Activity do
       activity_type: "color_war",
       legacy_stable_id: stable.legacy_id
     }
+  end
+
+  def stable
+    @stable ||= create(:stable, legacy_id: 1)
   end
 
   def initial_activity
