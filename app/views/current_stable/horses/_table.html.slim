@@ -29,7 +29,7 @@
                   td.wb-break-all= horse.name || t("horse.unnamed")
                   - unless @active_status.to_s == 'yearling' || @active_status.to_s == 'weanling'
                     td.wb-break-all= horse.age
-                  - unless @active_status.to_s == 'broodmare'
+                  - unless @active_status.to_s == 'broodmare' || @active_status.to_s == "stud"
                     td= t("horses.genders.#{horse.gender}")
                   - if @active_status.to_s == 'yearling' || @active_status.to_s == 'weanling'
                     - pedigree = Horses::PedigreeDisplayService.new(horse)
@@ -43,12 +43,24 @@
                       td
                         = horse.broodmare.breed_ranking_string
                       td
-                        = "next foal info"
+                        - if horse.next_foal.present?
+                          - stud = horse.next_foal.stud
+                          span
+                            = t("horses.info.in_foal", stud: link_to(stud .name, horse_path(stud), data: { turbo_frame: "_top" })).html_safe
+                            = t("horses.info.due_date", date: l(horse.next_foal .due_date, format: :slashes))
+                        - else
+                          span.italic= t("horses.info.not_in_foal")
                     - if @active_status.to_s == 'stud'
                       td
                         = horse.stud.breed_ranking_string
                       td
-                        = "foal crop info"
+                        - breedings = horse.breedings.by_year(Date.current.year)
+                        - approved = breedings.select { |breeding| breeding.approved? }
+                        - bred = breedings.select { |breeding| breeding.bred? }
+                        span= t("horses.info.bookings", count: approved.size)
+                        - if bred.size.positive?
+                          = " | "
+                          span= t("horses.info.bred_mares", count: bred.size)
                   td.actions-column.nav-item.dropdown
                     = render Ui::ButtonizedLink::Component.new(url: horse_path(horse), style: :soft, size: :small, data: { turbo_frame: "_top" }) do
                       i.ph-fill.ph-eye
