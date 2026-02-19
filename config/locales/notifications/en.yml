@@ -8,6 +8,22 @@ en:
         link: View Bidding
     destroy:
       success: Notification was successfully deleted
+    horse_born_notification:
+      message: The foal for %{sire} x %{dam} was born
+      message_created: The created foal was born
+      title: 'Foal Birth: %{mare}'
+    horse_died_notification:
+      message: "%{horse} has died"
+      title: Horse Died
+    horse_premature_notification:
+      message: The foal for %{sire} x %{dam} was born premature
+      title: 'Foal Birth: %{mare}'
+    horse_retired_notification:
+      message: "%{horse} has been retired"
+      title: Horse Retired
+    horse_stillborn_notification:
+      message: The foal for %{sire} x %{dam} was stillborn
+      title: 'Stillborn Foal: %{mare}'
     index:
       info: Info
       no_notifications: You have no notifications.

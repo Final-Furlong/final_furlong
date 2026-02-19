@@ -13,3 +13,8 @@ shared:
       minimum_races: 50
   image_height: 500
   image_width: 800
+  future_events:
+    - retire
+    - die
+    - nominate
+  max_premature_days: 30
