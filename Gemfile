@@ -170,7 +170,7 @@ group :test do
   gem "capybara-playwright-driver"
   gem "capybara-screenshot"
   gem "cuprite"
-  gem 'flatware-rspec', require: false
+  gem "flatware-rspec", require: false
   gem "i18n-spec"
   gem "pundit-matchers"
   gem "rspec"
