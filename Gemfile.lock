@@ -325,6 +325,12 @@ GEM
       activerecord (>= 5.2)
       activesupport (>= 5.2)
     flag_shih_tzu (0.3.23)
+    flatware (2.3.4)
+      drb
+      thor (< 2.0)
+    flatware-rspec (2.3.4)
+      flatware (= 2.3.4)
+      rspec (>= 3.6)
     formatador (1.2.3)
       reline
     friendly_id (5.6.0)
@@ -333,9 +339,6 @@ GEM
     fugit (1.12.1)
       et-orbi (~> 1.4)
       raabro (~> 1.4)
-    fuubar (2.5.1)
-      rspec-core (~> 3.0)
-      ruby-progressbar (~> 1.4)
     globalid (1.3.0)
       activesupport (>= 6.1)
     good_migrations (0.3.1)
@@ -936,6 +939,7 @@ GEM
     stringio (3.2.0)
     strong_migrations (2.5.2)
       activerecord (>= 7.1)
+    sus (0.35.2)
     sysexits (1.2.0)
     tailwind_merge (1.3.3)
       sin_lru_redux (~> 2.5)
@@ -1098,8 +1102,8 @@ DEPENDENCIES
   fastimage
   fixture_factory
   flag_shih_tzu
+  flatware-rspec
   friendly_id
-  fuubar
   good_migrations
   grape
   grape-active_model_serializers
@@ -1182,6 +1186,7 @@ DEPENDENCIES
   stimulus-rails
   store_model
   strong_migrations
+  sus
   tailwind_merge
   tailwindcss-rails
   terminal-notifier
@@ -1318,11 +1323,12 @@ CHECKSUMS
   ffi (1.17.3-x86_64-linux-musl) sha256=086b221c3a68320b7564066f46fed23449a44f7a1935f1fe5a245bd89d9aea56
   fixture_factory (0.3.0) sha256=c3fcefffe99e78efd31e113bd7875c052ca2eff6ba9de780292d0afff0848863
   flag_shih_tzu (0.3.23) sha256=0982215a5b96771671e13884e08f34c7084650752fd002a3ad6e91c4897061be
+  flatware (2.3.4) sha256=33464fc43fb7bae4cb13e44787f5b7dc63515f3a6280acc26667c5d2ffa5d41b
+  flatware-rspec (2.3.4) sha256=cba63a6ea683a4249af749980677b3942e79af5c6ef40c10c6a62dac689413bf
   formatador (1.2.3) sha256=19fa898133c2c26cdbb5d09f6998c1e137ad9427a046663e55adfe18b950d894
   friendly_id (5.6.0) sha256=28e221cd53fbd21586321164c1c6fd0c9ba8dde13969cb2363679f44726bb0c3
   fspath (3.1.2) sha256=b5ac9bafb97e2c8f8f9e303cd98ebd484be76fe9aa588bc4d01c6d99e78c9d75
   fugit (1.12.1) sha256=5898f478ede9b415f0804e42b8f3fd53f814bd85eebffceebdbc34e1107aaf68
-  fuubar (2.5.1) sha256=b272a7804b282661c7fab583a3764f92543cb482c365ae39c685cd218fdd4880
   globalid (1.3.0) sha256=05c639ad6eb4594522a0b07983022f04aa7254626ab69445a0e493aa3786ff11
   good_migrations (0.3.1) sha256=3f8267c00caa29689823cb8d53cbfb62cd5b0310fe6b088f5ce589243f6f797f
   google-protobuf (4.33.4) sha256=86921935b023ed0d872d6e84382e79016c91689be0520d614c74426778f13c16
@@ -1540,6 +1546,7 @@ CHECKSUMS
   store_model (4.4.0) sha256=44eb98d8c81f885bb0f69c10383d8069f9ffe089e42aad22f5b331322170a4e0
   stringio (3.2.0) sha256=c37cb2e58b4ffbd33fe5cd948c05934af997b36e0b6ca6fdf43afa234cf222e1
   strong_migrations (2.5.2) sha256=06faff4782b24c8a0a4b1a5a1613d809339ff26c5ac135fde75a932a5c9b454e
+  sus (0.35.2) sha256=26917b3aae6e966768e3336ea0e6872c4fd3b3d8b1d81b179516832a6f052e3f
   sysexits (1.2.0) sha256=598241c4ae57baa403c125182dfdcc0d1ac4c0fb606dd47fbed57e4aaf795662
   tailwind_merge (1.3.3) sha256=9073fa69add5e9266609dee759bee333cdfa7bc0704fc577812e50c70b62291b
   tailwindcss-rails (4.4.0) sha256=efa2961351a52acebe616e645a81a30bb4f27fde46cc06ce7688d1cd1131e916
