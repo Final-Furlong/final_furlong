@@ -4,6 +4,7 @@ if ENV.fetch("COVERAGE", false) || ENV.fetch("CI", false)
   SimpleCov.start ENV.fetch("EXTERNAL_CI", false) ? "ci" : "local"
 end
 
+require "flatware_helper"
 require "capybara/rspec"
 require "faker"
 require "pundit/matchers"
