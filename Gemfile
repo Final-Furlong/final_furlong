@@ -170,7 +170,7 @@ group :test do
   gem "capybara-playwright-driver"
   gem "capybara-screenshot"
   gem "cuprite"
-  gem "fuubar"
+  gem "flatware-rspec", require: false
   gem "i18n-spec"
   gem "pundit-matchers"
   gem "rspec"
@@ -181,6 +181,7 @@ group :test do
   gem "simplecov", require: false
   gem "simplecov-cobertura", require: false
   gem "simplecov-lcov", require: false
+  gem "sus"
   gem "test-prof"
   gem "undercover", require: false
   gem "whenever-test"
