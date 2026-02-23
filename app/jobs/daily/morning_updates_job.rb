@@ -2,6 +2,8 @@ class Daily::MorningUpdatesJob < ApplicationJob
   queue_as :default
 
   def perform
+    return if run_today?
+
     classes = []
     class_list.each do |job_class|
       classes << job_class.to_s
@@ -16,7 +18,7 @@ class Daily::MorningUpdatesJob < ApplicationJob
       Horses::UpdateLeasesJob, Horses::UpdateSalesJob,
       UpdateLegacyWorkoutsJob, Horses::NameHorsesJob,
       Horses::UpdateBabiesJob, Horses::RetireMaresJob,
-      Horses::KillMaresJob]
+      Horses::KillMaresJob, Daily::DeleteReadNotificationsJob]
   end
 end
 

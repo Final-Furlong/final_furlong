@@ -2,6 +2,8 @@ class Horses::KillMaresJob < ApplicationJob
   queue_as :default
 
   def perform
+    return if run_today?
+
     died = 0
     stillborn = 0
     premature = 0

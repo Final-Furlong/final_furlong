@@ -5,6 +5,7 @@ shared:
   entry_limit_2yo: 1
   entry_limit_older: 2
   entry_limit_increase_final_day: 1
+  notification_expiration_after_reading: 30
   online_minutes: 15
   stable: Final Furlong
   username: FFadmin

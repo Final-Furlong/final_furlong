@@ -2,6 +2,8 @@ class Daily::ProcessFutureShipmentsJob < ApplicationJob
   queue_as :low_priority
 
   def perform
+    return if run_today?
+
     today = Date.current
     Shipping::BroodmareShipments.where(departure_date: today).find_each do |shipment|
       Horses::Horse::Broodmare::FutureShipmentCreator.new.ship_horse(shipment:)

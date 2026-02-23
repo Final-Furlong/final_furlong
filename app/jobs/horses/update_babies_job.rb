@@ -2,6 +2,8 @@ class Horses::UpdateBabiesJob < ApplicationJob
   queue_as :default
 
   def perform
+    return if run_today?
+
     born = 0
     stillborn = 0
     Horses::Horse.where(status: "unborn").where(date_of_birth: ...Date.current).find_each do |horse|

@@ -2,6 +2,8 @@ class Daily::UpdateBabiesJob < ApplicationJob
   queue_as :low_priority
 
   def perform
+    return if run_today?
+
     born = 0
     stillborn = 0
     retired = 0

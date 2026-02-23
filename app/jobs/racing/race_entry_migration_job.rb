@@ -2,6 +2,8 @@ class Racing::RaceEntryMigrationJob < ApplicationJob
   queue_as :default
 
   def perform
+    return if run_today?
+
     deleted_entries = Racing::RaceEntry.past.delete_all
     count = Racing::RaceEntry.count
     MigrateLegacyRaceEntriesService.new.call

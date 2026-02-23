@@ -2,6 +2,8 @@ class Daily::DeleteEmptyAuctionsJob < ApplicationJob
   queue_as :low_priority
 
   def perform
+    return if run_today?
+
     tomorrow = Date.current + 1.day
     deleted_count = 0
     Auction.where(start_time: tomorrow.all_day).order(created_at: :asc).find_each do |auction|

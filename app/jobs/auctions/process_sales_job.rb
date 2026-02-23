@@ -5,6 +5,7 @@ class Auctions::ProcessSalesJob < ApplicationJob
 
   def perform(auction)
     horses = []
+    outcome = {}
     Auctions::Horse.where(auction_id: auction.id).where.associated(:bids).distinct.each do |ah|
       next if ah.sold_at.present?
       wb = ah.bids.current_high_bid.first
@@ -16,25 +17,29 @@ class Auctions::ProcessSalesJob < ApplicationJob
 
       horses << { id: ah.id, bid_id: wb.id, time: wb.bid_at }
     end
-    sorted_horses = horses.sort_by { |h| h[:time] }
+    if horses.present?
+      sorted_horses = horses.sort_by { |h| h[:time] }
 
-    succeeded = false
-    sold_horses = 0
-    error = nil
-    sorted_horses.each do |horse_info|
-      winning_bid = Auctions::Bid.find(horse_info[:bid_id])
-      result = Auctions::HorseSeller.new.process_sale(bid: winning_bid)
-      if result.sold?
-        sold_horses += 1
-      else
-        error = result.error
+      succeeded = false
+      sold_horses = 0
+      error = nil
+      sorted_horses.each do |horse_info|
+        winning_bid = Auctions::Bid.find(horse_info[:bid_id])
+        result = Auctions::HorseSeller.new.process_sale(bid: winning_bid)
+        if result.sold?
+          sold_horses += 1
+        else
+          error = result.error
+        end
+        succeeded = result.sold?
       end
-      succeeded = result.sold?
-    end
-    outcome = if succeeded
-      { auction_id: auction.id, sold_horses: }
+      outcome = if succeeded
+        { auction_id: auction.id, sold_horses: }
+      else
+        { sold: false, error: }
+      end
     else
-      { sold: false, error: }
+      outcome = { sold: false, error: "No horses" }
     end
     store_job_info(outcome:)
     schedule_next_sales_job(auction:) unless Rails.env.test?

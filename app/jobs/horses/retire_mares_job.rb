@@ -2,6 +2,8 @@ class Horses::RetireMaresJob < ApplicationJob
   queue_as :default
 
   def perform
+    return if run_today?
+
     retired = 0
     Horses::Horse.where(status: "broodmare").joins(:future_events).merge(Horses::FutureEvent.past.retirement).find_each do |mare|
       ActiveRecord::Base.transaction do

@@ -2,6 +2,8 @@ class Racing::EnergyFitnessUpdaterJob < ApplicationJob
   queue_as :default
 
   def perform
+    return if run_today?
+
     horses = 0
     Legacy::Horse.where(Status: 3).find_each do |legacy_horse|
       horse = Horses::Horse.find_by(legacy_id: legacy_horse.ID)

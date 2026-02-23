@@ -54,6 +54,10 @@ production:
     class: Daily::DeleteEmptyAuctionsJob
     queue: low_priority
     schedule: at 11:45pm every day
+  auction_sales:
+    class: Auctions::ProcessSalesJob
+    queue: low_priority
+    schedule: every 12 hours at minute 8
   race_entry_migrate:
     class: Racing::RaceEntryMigrationJob
     queue: default

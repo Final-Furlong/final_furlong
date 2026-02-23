@@ -4,6 +4,7 @@ class Auctions::ConsignHorsesJob < ApplicationJob
   class AuctionNotCreated < StandardError; end
 
   def perform(auction:)
+    return if run_today?
     return if auction.auctioneer.name != "Final Furlong"
 
     result = Auctions::HorseConsigner.new.consign_horses(auction:)
