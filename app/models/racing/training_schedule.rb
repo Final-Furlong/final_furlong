@@ -2,6 +2,8 @@ module Racing
   class TrainingSchedule < ApplicationRecord
     include StoreModel::NestedAttributes
 
+    WEEKDAYS = %w[sunday monday tuesday wednesday thursday friday saturday].freeze
+
     belongs_to :stable, class_name: "Account::Stable"
 
     has_many :training_schedule_horses, class_name: "Racing::TrainingScheduleHorse", inverse_of: :training_schedule, dependent: :destroy
@@ -27,6 +29,21 @@ module Racing
     validates :friday_activities, store_model: true
     validates :saturday_activities, store_model: true
     validate :minimum_activities
+
+    scope :with_activities, ->(weekday) {
+      if WEEKDAYS.include?(weekday)
+        where.not("#{weekday.downcase}_activities" => { activity1: nil, activity2: nil, activity3: nil, distance1: nil, distance2: nil, distance3: nil }.to_json)
+      else
+        none
+      end
+    }
+    scope :without_activities, ->(weekday) {
+      if WEEKDAYS.include?(weekday)
+        with_activities(weekday).invert_where
+      else
+        none
+      end
+    }
 
     def daily_activities
       weekday = Time.zone.today.strftime("%A")
