@@ -22,6 +22,8 @@ module Racing
       end
     }
     scope :raced_before, ->(days) { where(last_raced_at: ..(Date.current - days.days)) }
+    scope :at_home, -> { where(at_home: true) }
+    scope :not_at_home, -> { at_home.invert_where }
 
     def update_grades(energy:, fitness:)
       modifier_percent = (energy * 0.2).clamp(10, 20)
