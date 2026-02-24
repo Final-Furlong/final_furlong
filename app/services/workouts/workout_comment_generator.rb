@@ -39,7 +39,7 @@ class Workouts::WorkoutCommentGenerator
     Racing::WorkoutComment.find_by(comment_i18n_key:)
   end
 
-  def equipment_key
+  def equipment_value
     case value
     when Racing::EquipmentStatusGenerator::HATE
       if correct?
@@ -310,7 +310,7 @@ class Workouts::WorkoutCommentGenerator
   def total_distance
     distance = 0
     (1..workout.activity_count).each do |index|
-      distance += workout.send(:"distance_#{index}") * 10
+      distance += workout.send(:"distance#{index}") * 10
     end
     distance
   end
