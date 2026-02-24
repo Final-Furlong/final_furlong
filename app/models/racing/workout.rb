@@ -59,16 +59,7 @@ module Racing
     end
 
     def options_for_surface_select
-      options = horse.race_options
-      surfaces = if options.racehorse_type == "jump"
-        ["steeplechase"]
-      else
-        surface_list = []
-        surface_list << "dirt" if options.trains_on_dirt
-        surface_list << "turf" if options.trains_on_turf
-        surface_list
-      end
-      surfaces.map do |surface|
+      horse.race_options.surface_options.map do |surface|
         [I18n.t("horse.workouts.form.surface_#{surface}"), surface]
       end
     end
@@ -164,6 +155,7 @@ end
 #  activity2_time_in_seconds                    :integer          default(0), indexed
 #  activity3(walk, jog, canter, gallop, breeze) :enum             indexed
 #  activity3_time_in_seconds                    :integer          default(0), indexed
+#  auto                                         :boolean          default(FALSE), indexed
 #  condition(fast, good, slow, wet)             :enum             not null, indexed
 #  confidence                                   :integer          default(0), not null, indexed
 #  date                                         :date             not null, indexed, uniquely indexed => [horse_id]
@@ -191,6 +183,7 @@ end
 #  index_workouts_on_activity2_time_in_seconds  (activity2_time_in_seconds)
 #  index_workouts_on_activity3                  (activity3)
 #  index_workouts_on_activity3_time_in_seconds  (activity3_time_in_seconds)
+#  index_workouts_on_auto                       (auto)
 #  index_workouts_on_comment_id                 (comment_id)
 #  index_workouts_on_condition                  (condition)
 #  index_workouts_on_confidence                 (confidence)
