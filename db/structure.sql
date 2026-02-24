@@ -3496,7 +3496,8 @@ CREATE TABLE public.workouts (
     total_time_in_seconds integer DEFAULT 0,
     activity1_time_in_seconds integer DEFAULT 0,
     activity2_time_in_seconds integer DEFAULT 0,
-    activity3_time_in_seconds integer DEFAULT 0
+    activity3_time_in_seconds integer DEFAULT 0,
+    auto boolean DEFAULT false
 );
 
 
@@ -6757,6 +6758,13 @@ CREATE INDEX index_workouts_on_activity3_time_in_seconds ON public.workouts USIN
 
 
 --
+-- Name: index_workouts_on_auto; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workouts_on_auto ON public.workouts USING btree (auto);
+
+
+--
 -- Name: index_workouts_on_comment_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7776,6 +7784,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260224174254'),
 ('20260216203416'),
 ('20260216202905'),
 ('20260216202506'),

@@ -37,7 +37,7 @@ module Racing
     delegate :jump?, :flat?, to: :racehorse_type
 
     def jockeys_list
-      jockeys = Racing::Jockey.order(last_name: :asc, first_name: :asc).all
+      jockeys = Racing::Jockey.active.send(racehorse_type.to_sym).order(last_name: :asc, first_name: :asc).all
       priority_list, other_jockeys = jockeys.partition { |jockey| chosen_jockeys.include? jockey }
       priority_list = priority_list.map { |jockey| [jockey.full_name, jockey.id] }
       other_jockeys = other_jockeys.map { |jockey| [jockey.full_name, jockey.id] }
@@ -46,6 +46,17 @@ module Racing
 
     def chosen_jockeys
       [first_jockey, second_jockey, third_jockey]
+    end
+
+    def surface_options
+      if racehorse_type == "jump"
+        ["steeplechase"]
+      else
+        surface_list = []
+        surface_list << "dirt" if trains_on_dirt
+        surface_list << "turf" if trains_on_turf
+        surface_list
+      end
     end
 
     def options_for_style_select

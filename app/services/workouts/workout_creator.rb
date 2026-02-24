@@ -2,7 +2,7 @@ module Workouts
   class WorkoutCreator
     attr_reader :horse, :workout
 
-    def create_workout(horse:, jockey:, surface:, params: {})
+    def create_workout(horse:, jockey:, surface:, params: {}, date: Date.current, auto: false)
       activity1 = params[:activity1]
       distance1 = params[:distance1]
       activity2 = params[:activity2]
@@ -12,9 +12,9 @@ module Workouts
       effort = params[:effort]
 
       @horse = horse
-      return if Racing::Workout.exists?(horse:, date: Date.current)
+      return if Racing::Workout.exists?(horse:, date:)
 
-      @workout = Racing::Workout.new(horse:, date: Date.current)
+      @workout = Racing::Workout.new(horse:, date:, auto:)
       result = Result.new(created: false, workout: @workout)
       workout.blinkers = params.key?(:blinkers)
       workout.shadow_roll = params.key?(:shadow_roll)
@@ -44,7 +44,7 @@ module Workouts
         if workout.special_event == "cooperate"
           workout.confidence = 10
         elsif workout.special_event != "none"
-          event_activity = rand(1...workout.activity_count)
+          event_activity = rand(1..workout.activity_count)
           furlong_time = workout.send(:"distance#{event_activity}") * 10
           workout.special_event_time = rand(5...furlong_time)
           workout.confidence = -20
@@ -84,16 +84,18 @@ module Workouts
           result.created = workout.save
         end
       end
+      result.error = workout.errors.full_messages.to_sentence unless result.created
       result.workout = workout
       result
     end
 
     class Result
-      attr_accessor :workout, :created
+      attr_accessor :workout, :created, :error
 
-      def initialize(created:, workout:)
+      def initialize(created:, workout:, error: nil)
         @created = created
         @workout = workout
+        @error = error
       end
 
       def created?
