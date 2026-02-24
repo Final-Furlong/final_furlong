@@ -28,6 +28,13 @@ module Racing
     validates :saturday_activities, store_model: true
     validate :minimum_activities
 
+    scope :with_activities, ->(weekday) {
+      where.not("#{weekday.downcase}_activities" => { activity1: nil, activity2: nil, activity3: nil, distance1: nil, distance2: nil, distance3: nil }.to_json)
+    }
+    scope :without_activities, ->(weekday) {
+      with_activities(weekday).invert_where
+    }
+
     def daily_activities
       weekday = Time.zone.today.strftime("%A")
       send(:"#{weekday.downcase}_activities")

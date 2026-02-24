@@ -27,6 +27,7 @@ shared:
     - 70
     - 100
     - 110
+  default_effort: 100
   energy_loss_per_stride:
     walk: .0005
     jog: .0015
