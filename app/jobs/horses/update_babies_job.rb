@@ -6,7 +6,7 @@ class Horses::UpdateBabiesJob < ApplicationJob
 
     born = 0
     stillborn = 0
-    Horses::Horse.where(status: "unborn").where(date_of_birth: ...Date.current).find_each do |horse|
+    Horses::Horse.where(status: "unborn").where(date_of_birth: ..Date.current).find_each do |horse|
       ActiveRecord::Base.transaction do
         if horse.date_of_birth == horse.date_of_death
           horse.update(status: "deceased")
