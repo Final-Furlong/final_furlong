@@ -36,7 +36,10 @@ module Racing
           end
         end
         trigger_horse_attribute_updates(horses:)
-        Racing::RaceDayUpdaterJob.perform_later(date:) if max_race?(date:, number:)
+        if max_race?(date:, number:)
+          Racing::RaceDayUpdaterJob.perform_later(date:) if max_race?(date:, number:)
+          User::SendDeveloperNotifications.call(title: "FF Races Finished", message: "Races finished running!")
+        end
         return result
       rescue => e
         race_result.destroy if race_result.persisted?

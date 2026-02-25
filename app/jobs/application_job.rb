@@ -42,8 +42,8 @@ class ApplicationJob < ActiveJob::Base
     JobStat.create!(name: self.class.name, last_run_at: Time.current, outcome:)
   end
 
-  def run_today?
-    JobStat.exists?(name: self.class.name, last_run_at: Date.current.all_day)
+  def run_today?(name: self.class.name)
+    JobStat.exists?(name:, last_run_at: Date.current.all_day)
   end
 end
 

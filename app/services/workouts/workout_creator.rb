@@ -120,8 +120,7 @@ module Workouts
         injury_type: injury,
         leg: Horses::Injury.pick_leg(injury)
       )
-      horse.training_schedules_horse.destroy
-      horse.training_schedule.destroy
+      horse.training_schedules_horse&.destroy
     end
 
     def gained_happiness

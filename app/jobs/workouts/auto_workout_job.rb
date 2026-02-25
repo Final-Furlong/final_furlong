@@ -3,6 +3,8 @@ class Workouts::AutoWorkoutJob < ApplicationJob
 
   def perform
     return if run_today?
+    return unless run_today?(name: "Racing::EnergyFitnessUpdaterJob")
+    return unless run_today?(name: "UpdateRacehorseStatsJob")
 
     yesterday = Date.yesterday
     skipped = 0
@@ -10,7 +12,7 @@ class Workouts::AutoWorkoutJob < ApplicationJob
     worked = 0
     errors = []
     weekday = yesterday.strftime("%A").downcase
-    Racing::TrainingSchedule.with_activities(weekday).where.associated(:training_schedule_horses).distinct.find_each do |schedule|
+    Racing::TrainingSchedule.with_activities(weekday).distinct.find_each do |schedule|
       activities = schedule.send("#{weekday}_activities")
       schedule.training_schedule_horses.includes(:horse).where(horse: { status: "racehorse" }).find_each do |training_horse|
         horse = training_horse.horse
@@ -91,6 +93,7 @@ class Workouts::AutoWorkoutJob < ApplicationJob
         end
       end
     end
+    User::SendDeveloperNotifications.call(title: "FF Workouts Finished", message: "#{worked} horses worked!")
     store_job_info(outcome: { worked:, errored:, skipped:, error: errors.first })
   end
 

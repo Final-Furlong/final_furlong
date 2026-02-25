@@ -10,6 +10,10 @@
 #     schedule: at 5am every day
 
 production:
+  auto_workouts:
+    class: Workouts::AutoWorkoutJob
+    queue: default
+    schedule: 34 1 * * *
   canary_health_check:
     class: CanaryJob
     schedule: every 5 minutes
