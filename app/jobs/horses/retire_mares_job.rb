@@ -6,6 +6,8 @@ class Horses::RetireMaresJob < ApplicationJob
 
     retired = 0
     Horses::Horse.where(status: "broodmare").joins(:future_events).merge(Horses::FutureEvent.past.retirement).find_each do |mare|
+      next if Horses::FutureEvent.past.death.exists?(horse: mare)
+
       ActiveRecord::Base.transaction do
         mare.update(status: "retired_broodmare")
         Legacy::Horse.where(ID: mare.legacy_id).update(Status: 5)
