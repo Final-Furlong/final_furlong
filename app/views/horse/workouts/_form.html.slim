@@ -1,45 +1,18 @@
 /# locals: (horse:, workout:)
 - options = horse.race_options || horse.build_race_options
 = form_with model: workout, url: horse_workouts_path(horse), id: "workout-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
-  .grid.grid-cols-1.sm:grid-cols-2.mt-2.gap-4
-    div
-      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
-        legend.fieldset-legend= t(".activity")
-        = f.select :activity1, options_for_select(Racing::TrainingScheduleActivity.localised_activities, workout.activity1), { include_blank: true }, { class: "select w-full" }
-        - if workout.errors[:activity1]
-          p.text-error= workout.errors.where(:activity1).map(&:full_message).join(', ')
-    div
-      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
-        legend.fieldset-legend= t(".distance")
-        = f.select :distance1, options_for_select(Racing::TrainingScheduleActivity.localised_distances, workout.distance1), { include_blank: true }, { class: "select w-full" }
-        - if workout.errors[:distance1]
-          p.text-error= workout.errors.where(:distance1).map(&:full_message).join(', ')
-  .grid.grid-cols-1.sm:grid-cols-2.gap-4
-    div
-      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
-        legend.fieldset-legend= t(".activity")
-        = f.select :activity2, options_for_select(Racing::TrainingScheduleActivity.localised_activities, workout.activity2), { include_blank: true }, { class: "select w-full" }
-        - if workout.errors[:activity2]
-          p.text-error= workout.errors.where(:activity2).map(&:full_message).join(', ')
-    div
-      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
-        legend.fieldset-legend= t(".distance")
-        = f.select :distance2, options_for_select(Racing::TrainingScheduleActivity.localised_distances, workout.distance2), { include_blank: true }, { class: "select w-full" }
-        - if workout.errors[:distance2]
-          p.text-error= workout.errors.where(:distance2).map(&:full_message).join(', ')
-  .grid.grid-cols-1.sm:grid-cols-2.gap-4
-    div
-      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
-        legend.fieldset-legend= t(".activity")
-        = f.select :activity3, options_for_select(Racing::TrainingScheduleActivity.localised_activities, workout.activity3), { include_blank: true }, { class: "select w-full" }
-        - if workout.errors[:activity3]
-          p.text-error= workout.errors.where(:activity3).map(&:full_message).join(', ')
-    div
-      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
-        legend.fieldset-legend= t(".distance")
-        = f.select :distance3, options_for_select(Racing::TrainingScheduleActivity.localised_distances, workout.distance3), { include_blank: true }, { class: "select w-full" }
-        - if workout.errors[:distance3]
-          p.text-error= workout.errors.where(:distance3).map(&:full_message).join(', ')
+  - if workout.errors[:base]
+    p.text-error= workout.errors.where(:base).map(&:full_message).join(', ')
+  = f.fields_for :activities do |af|
+    .grid.grid-cols-1.sm:grid-cols-2.mt-2.gap-4
+      div
+        fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+          legend.fieldset-legend= t(".activity")
+          = af.select :activity, options_for_select(Racing::TrainingScheduleActivity.localised_activities, af.object.activity), { include_blank: true }, { class: "select w-full" }
+      div
+        fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+          legend.fieldset-legend= t(".distance")
+          = af.select :distance, options_for_select(Racing::TrainingScheduleActivity.localised_distances, af.object.distance), { include_blank: true }, { class: "select w-full" }
   .grid.grid-cols-1.sm:grid-cols-2.gap-4
     div
       fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4

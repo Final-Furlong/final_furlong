@@ -11,7 +11,7 @@ module Racing
     belongs_to :odd, class_name: "Racing::Odd", optional: true
 
     validates :date, :equipment, presence: true
-    validates :date, comparison: { greater_than: -> { Date.current } }
+    validates :date, comparison: { greater_than_or_equal_to: -> { Date.current } }
     validates :post_parade, numericality: { only_integer: true,
                                             greater_than_or_equal_to: 0,
                                             less_than_or_equal_to: 14 }

@@ -10,8 +10,8 @@
             p.mx-auto= t(".loading_schedules")
             .mt-2.mx-auto.skeleton.w-full
 
-    - if policy(Racing::Workout).index?
-      - workouts_count = Racing::Workout.where(horse: Horses::Horse.managed_by(Current.stable)).count
+    - if policy(Workouts::Workout).index?
+      - workouts_count = Workouts::Workout.where(horse: Horses::Horse.managed_by(Current.stable)).count
       - if workouts_count.zero?
         input.tab type="radio" name="stable-trainings" aria-label=t(".no_workouts") id="workouts" disabled=true
       - else
