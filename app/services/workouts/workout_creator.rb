@@ -3,18 +3,20 @@ module Workouts
     attr_reader :horse, :workout
 
     def create_workout(horse:, jockey:, surface:, params: {}, date: Date.current, auto: false)
-      activity1 = params[:activity1]
-      distance1 = params[:distance1]
-      activity2 = params[:activity2]
-      distance2 = params[:distance2]
-      activity3 = params[:activity3]
-      distance3 = params[:distance3]
-      effort = params[:effort]
+      params = params.deep_stringify_keys if params.is_a? Hash
+      pd params
+      activity1 = params["activities_attributes"]["0"]["activity"]
+      distance1 = params["activities_attributes"]["0"]["distance"]
+      activity2 = params["activities_attributes"]["1"]["activity"]
+      distance2 = params["activities_attributes"]["1"]["distance"]
+      activity3 = params["activities_attributes"]["2"]["activity"]
+      distance3 = params["activities_attributes"]["2"]["distance"]
+      effort = params["effort"]
 
       @horse = horse
-      return if Racing::Workout.exists?(horse:, date:)
+      return if Workouts::Workout.exists?(horse:, date:)
 
-      @workout = Racing::Workout.new(horse:, date:, auto:)
+      @workout = Workouts::Workout.new(horse:, date:, auto:)
       result = Result.new(created: false, workout: @workout)
       workout.blinkers = params.key?(:blinkers)
       workout.shadow_roll = params.key?(:shadow_roll)
@@ -27,34 +29,35 @@ module Workouts
       workout.racetrack = surface&.racetrack
       workout.location = workout.racetrack&.location
       workout.effort = effort
-      workout.activity1 = activity1
-      workout.distance1 = distance1
+      activities = []
+      activities << workout.activities.build(activity: activity1, distance: distance1, activity_index: 1)
       if activity2.present?
-        workout.activity2 = activity2
-        workout.distance2 = distance2
+        activities << workout.activities.build(activity: activity2, distance: distance2, activity_index: 2)
       end
       if activity3.present?
-        workout.activity3 = activity3
-        workout.distance3 = distance3
+        activities << workout.activities.build(activity: activity3, distance: distance3, activity_index: 3)
       end
       workout.confidence = 0
-      if workout.valid?
-        workout.special_event = pick_special_event
+      workout.activities = activities
+      if workout.valid? && activities.all?(&:valid?)
+        workout.special_event_type = pick_special_event
         event_activity = 0
-        if workout.special_event == "cooperate"
+        if workout.special_event_type == "cooperate"
           workout.confidence = 10
-        elsif workout.special_event != "none"
-          event_activity = rand(1..workout.activity_count)
-          furlong_time = workout.send(:"distance#{event_activity}") * 10
+        elsif workout.special_event_type != "none"
+          event_activity = rand(1..workout.activities.size)
+          activity_furlongs = workout.activities.find { |activity| activity.activity_index == event_activity }.distance
+          furlong_time = activity_furlongs * 10
+          workout.special_event = true
           workout.special_event_time = rand(5...furlong_time)
           workout.confidence = -20
         end
         workout.energy_loss = 0
         workout.fitness_gain = 0
         workout.time_in_seconds = 0
-        workout.total_time_in_seconds = 0
-        (1..workout.activity_count).each do |activity_number|
-          do_activity(activity_number, event_activity == activity_number)
+        workout.activities = []
+        activities.each do |workout_activity|
+          workout.activities << do_activity(workout_activity, event_activity == workout_activity.activity_index)
         end
         calculate_energy_loss
         calculate_fitness_gain
@@ -81,10 +84,15 @@ module Workouts
           )
           pick_and_save_injury
           workout.valid?(context: :complete_workout)
-          result.created = workout.save
+          result.created = workout.save!
         end
       end
-      result.error = workout.errors.full_messages.to_sentence unless result.created
+      unless result.created
+        result.error = workout.errors.full_messages.to_sentence
+        workout.activities << workout.activities.build(activity_index: 2) if activity2.blank?
+        workout.activities << workout.activities.build(activity_index: 3) if activity3.blank?
+      end
+
       result.workout = workout
       result
     end
@@ -124,9 +132,9 @@ module Workouts
     end
 
     def gained_happiness
-      if workout.special_event == "cooperate"
+      if workout.special_event_type == "cooperate"
         4
-      elsif workout.special_event == "none"
+      elsif workout.special_event_type == "none"
         -2
       elsif workout.confidence > 74
         2
@@ -153,17 +161,17 @@ module Workouts
     end
 
     def pick_comment
-      if workout.special_event != "none"
-        Racing::WorkoutComment.find_by(stat: workout.special_event.to_s.downcase)
+      if workout.special_event_type != "none"
+        Workouts::Comment.find_by(stat: workout.special_event_type.to_s.downcase)
       else
         stat = if horse.racing_stats.natural_energy_current <= 10 && rand(1...2) == 1
           "natural_energy"
         else
-          query = Racing::WorkoutComment.where.not(stat_value: nil).where.not(stat: "jumps")
+          query = Workouts::Comment.where.not(stat_value: nil).where.not(stat: "jumps")
           query.order("RANDOM()").first.stat
         end
         knowledge = Racing::HorseJockeyRelationship.find_or_initialize_by(horse: workout.horse, jockey: workout.jockey).experience
-        WorkoutCommentGenerator.new(workout:, knowledge:, stat:, value: pick_stat_value(stat)).call
+        CommentGenerator.new(workout:, knowledge:, stat:, value: pick_stat_value(stat)).call
       end
     end
 
@@ -210,27 +218,26 @@ module Workouts
       end
     end
 
-    def do_activity(index, do_special_event = false)
-      activity = workout.send(:"activity#{index}").downcase.to_sym
+    def do_activity(activity, do_special_event = false)
       # rubocop:disable Style/IdenticalConditionalBranches
       time = if do_special_event
         activity_time = workout.special_event_time
-        workout.energy_loss += activity_time * pick_energy_loss(activity)
+        workout.energy_loss += activity_time * pick_energy_loss(activity.activity)
         workout.energy_loss += rand(10...20) # extra lost energy for the event
-        workout.fitness_gain += activity_time * pick_fitness_gain(activity)
+        workout.fitness_gain += activity_time * pick_fitness_gain(activity.activity)
         activity_time
       else
-        activity_time = workout.send(:"distance#{index}") * 660 * 12 # get distance in inches
-        activity_time = activity_time.fdiv(stride_length(activity))
-        workout.energy_loss += activity_time * pick_energy_loss(activity)
-        workout.fitness_gain += activity_time + pick_fitness_gain(activity)
-        activity_time /= strides_per_second(activity)
+        activity_time = activity.distance * 660 * 12 # get distance in inches
+        activity_time = activity_time.fdiv(stride_length(activity.activity))
+        workout.energy_loss += activity_time * pick_energy_loss(activity.activity)
+        workout.fitness_gain += activity_time + pick_fitness_gain(activity.activity)
+        activity_time /= strides_per_second(activity.activity)
         activity_time
       end
       # rubocop:enable Style/IdenticalConditionalBranches
-      workout.send("activity#{index}_time_in_seconds=", time)
+      activity.time_in_seconds = time.floor
       workout.time_in_seconds += time
-      workout.total_time_in_seconds += time
+      activity
     end
 
     def stride_length(activity)
@@ -290,7 +297,7 @@ module Workouts
     end
 
     def pick_fitness_gain(activity)
-      case activity
+      case activity.to_s.downcase.to_sym
       when :walk
         min = Config::Workouts.dig(:walk, :fitness_gain_per_second_min) * 1000
         max = Config::Workouts.dig(:walk, :fitness_gain_per_second_max) * 1000
@@ -311,7 +318,7 @@ module Workouts
     end
 
     def pick_energy_loss(activity)
-      case activity
+      case activity.to_s.downcase.to_sym
       when :walk
         min = Config::Workouts.dig(:walk, :energy_loss_per_second_min) * 1000
         max = Config::Workouts.dig(:walk, :energy_loss_per_second_max) * 1000
@@ -332,7 +339,7 @@ module Workouts
     end
 
     def pick_stride_length(activity)
-      case activity
+      case activity.to_s.downcase.to_sym
       when :walk
         min = Config::Workouts.dig(:walk, :stride_inches_min)
         max = Config::Workouts.dig(:walk, :stride_inches_max)
@@ -361,7 +368,7 @@ module Workouts
     end
 
     def pick_strides_per_second(activity)
-      case activity
+      case activity.to_s.downcase.to_sym
       when :walk
         min = Config::Workouts.dig(:walk, :strides_per_second_min)
         max = Config::Workouts.dig(:walk, :strides_per_second_max)
@@ -409,9 +416,10 @@ module Workouts
       elsif stats.fitness < 60
         chance += 1
       end
-      extra_points = injury_points_for_activity(workout.activity1)
-      extra_points += injury_points_for_activity(workout.activity2)
-      extra_points += injury_points_for_activity(workout.activity3)
+      extra_points = 0
+      workout.activities.each do |workout_activity|
+        extra_points += injury_points_for_activity(workout_activity.activity)
+      end
       chance += extra_points.fdiv(100).floor
       if chance > 100
         chance = 100
@@ -508,7 +516,7 @@ module Workouts
     end
 
     def injury_points_for_activity(activity)
-      case activity
+      case activity.to_s.downcase
       when "walk"
         2
       when "jog"
