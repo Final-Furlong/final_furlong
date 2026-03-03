@@ -154,5 +154,9 @@ en:
             mode:
               cannot_afford: costs more than you can afford
               invalid: is invalid for this route
+        workouts/workout:
+          attributes:
+            base:
+              duplicate_activities: Workouts cannot contain the same activity more than once
     models:
       horses/horse: Horse

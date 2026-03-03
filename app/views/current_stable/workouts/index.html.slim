@@ -31,13 +31,15 @@
             - jockey = workout.jockey
             - racetrack = workout.racetrack
             tr
-              td= horse.name
+              td class="text-#{horse.gender.downcase}"= link_to horse.name, horse_path(horse), data: { turbo_frame: "_top" }
               td data-sort=workout.date = l(workout.date)
               td data-sort="#{jockey.last_name}, #{jockey.first_name}" = jockey.full_name
               td data-sort=workout.effort = "#{workout.effort}%"
               td
                 = racetrack.name
                 = " ("
+                = workout.surface_name.titleize
+                = " - "
                 = workout.condition.titleize
                 = ")"
               td=workout.equipment_string

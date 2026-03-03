@@ -32,6 +32,12 @@ module CurrentStable
       manager?
     end
 
+    def view_race_stats?
+      return false unless record.racehorse?
+
+      manager?
+    end
+
     def nominate?
       # TODO: migrate racehorse noms + implement them
       false
