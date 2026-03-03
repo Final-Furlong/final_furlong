@@ -1,8 +1,8 @@
-module Racing
-  class WorkoutComment < ApplicationRecord
+module Workouts
+  class Comment < ApplicationRecord
     self.table_name = "workout_comments"
 
-    has_many :workouts, class_name: "Racing::Workout", inverse_of: :comment, dependent: :nullify
+    has_many :workouts, class_name: "Workouts::Workout", inverse_of: :comment, dependent: :nullify
 
     validates :stat, presence: true
 
