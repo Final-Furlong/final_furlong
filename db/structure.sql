@@ -427,10 +427,10 @@ CREATE TYPE public.user_status AS ENUM (
 
 
 --
--- Name: workout_activities; Type: TYPE; Schema: public; Owner: -
+-- Name: workout_activity_types; Type: TYPE; Schema: public; Owner: -
 --
 
-CREATE TYPE public.workout_activities AS ENUM (
+CREATE TYPE public.workout_activity_types AS ENUM (
     'walk',
     'jog',
     'canter',
@@ -3433,6 +3433,48 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: workout_activities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.workout_activities (
+    id bigint NOT NULL,
+    workout_id bigint NOT NULL,
+    activity public.workout_activity_types NOT NULL,
+    distance integer DEFAULT 0 NOT NULL,
+    activity_index integer DEFAULT 1 NOT NULL,
+    time_in_seconds integer,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN workout_activities.activity; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.workout_activities.activity IS 'walk, jog, canter, gallop, breeze';
+
+
+--
+-- Name: workout_activities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.workout_activities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: workout_activities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.workout_activities_id_seq OWNED BY public.workout_activities.id;
+
+
+--
 -- Name: workout_comments; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3483,13 +3525,12 @@ CREATE TABLE public.workouts (
     comment_id bigint NOT NULL,
     effort integer DEFAULT 0 NOT NULL,
     confidence integer DEFAULT 0 NOT NULL,
-    rank integer,
     time_in_seconds integer,
-    activity1 public.workout_activities NOT NULL,
-    distance1 integer DEFAULT 0 NOT NULL,
-    activity2 public.workout_activities,
+    activity1 public.workout_activity_types,
+    distance1 integer DEFAULT 0,
+    activity2 public.workout_activity_types,
     distance2 integer DEFAULT 0,
-    activity3 public.workout_activities,
+    activity3 public.workout_activity_types,
     distance3 integer DEFAULT 0,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
@@ -3497,7 +3538,8 @@ CREATE TABLE public.workouts (
     activity1_time_in_seconds integer DEFAULT 0,
     activity2_time_in_seconds integer DEFAULT 0,
     activity3_time_in_seconds integer DEFAULT 0,
-    auto boolean DEFAULT false
+    auto boolean DEFAULT false NOT NULL,
+    special_event boolean DEFAULT false NOT NULL
 );
 
 
@@ -3994,6 +4036,13 @@ ALTER TABLE ONLY public.user_push_subscriptions ALTER COLUMN id SET DEFAULT next
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Name: workout_activities id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workout_activities ALTER COLUMN id SET DEFAULT nextval('public.workout_activities_id_seq'::regclass);
 
 
 --
@@ -4576,6 +4625,14 @@ ALTER TABLE ONLY public.user_push_subscriptions
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workout_activities workout_activities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workout_activities
+    ADD CONSTRAINT workout_activities_pkey PRIMARY KEY (id);
 
 
 --
@@ -6702,6 +6759,48 @@ CREATE UNIQUE INDEX index_users_on_username ON public.users USING btree (usernam
 
 
 --
+-- Name: index_workout_activities_on_activity; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workout_activities_on_activity ON public.workout_activities USING btree (activity);
+
+
+--
+-- Name: index_workout_activities_on_activity_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workout_activities_on_activity_index ON public.workout_activities USING btree (activity_index);
+
+
+--
+-- Name: index_workout_activities_on_distance; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workout_activities_on_distance ON public.workout_activities USING btree (distance);
+
+
+--
+-- Name: index_workout_activities_on_time_in_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workout_activities_on_time_in_seconds ON public.workout_activities USING btree (time_in_seconds);
+
+
+--
+-- Name: index_workout_activities_on_workout_id_and_activity; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_workout_activities_on_workout_id_and_activity ON public.workout_activities USING btree (workout_id, activity);
+
+
+--
+-- Name: index_workout_activities_on_workout_id_and_activity_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_workout_activities_on_workout_id_and_activity_index ON public.workout_activities USING btree (workout_id, activity_index);
+
+
+--
 -- Name: index_workout_comments_on_stat; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6856,10 +6955,10 @@ CREATE INDEX index_workouts_on_racetrack_id ON public.workouts USING btree (race
 
 
 --
--- Name: index_workouts_on_rank; Type: INDEX; Schema: public; Owner: -
+-- Name: index_workouts_on_special_event; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_workouts_on_rank ON public.workouts USING btree (rank);
+CREATE INDEX index_workouts_on_special_event ON public.workouts USING btree (special_event);
 
 
 --
@@ -7618,6 +7717,14 @@ ALTER TABLE ONLY public.horses
 
 
 --
+-- Name: workout_activities fk_rails_d6103b1015; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workout_activities
+    ADD CONSTRAINT fk_rails_d6103b1015 FOREIGN KEY (workout_id) REFERENCES public.workouts(id);
+
+
+--
 -- Name: future_race_entries fk_rails_de9df9406c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7784,6 +7891,9 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260304145944'),
+('20260304122904'),
+('20260303120921'),
 ('20260224174254'),
 ('20260216203416'),
 ('20260216202905'),

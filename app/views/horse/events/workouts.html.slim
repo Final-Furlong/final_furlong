@@ -25,6 +25,8 @@
                   span.float-right
                     = racetrack.name
                     = " ("
+                    = workout.surface_name.titleize
+                    = " - "
                     = workout.condition.titleize
                     = ")"
                 p
@@ -37,7 +39,7 @@
                   p.text-sm
                     span= t(".time")
                     span.float-right= workout.activity_time(1)
-                - if workout.activity2
+                - if workout.activity_time(2)
                   p
                     span= t(".activity")
                     span.float-right= workout.activity_string(2)
@@ -45,7 +47,7 @@
                     p.text-sm
                       span= t(".time")
                       span.float-right= workout.activity_time(2)
-                - if workout.activity3
+                - if workout.activity_time(3)
                   p
                     span= t(".activity")
                     span.float-right= workout.activity_string(3)
@@ -86,19 +88,21 @@
               td
                 = racetrack.name
                 = " ("
+                = workout.surface_name.titleize
+                = " - "
                 = workout.condition.titleize
                 = ")"
               td=workout.equipment_string
               td
-                =workout.activity_string(1)
+                = workout.activity_string(1)
                 - if workout.activity_time(1)
                   p.text-sm= workout.activity_time(1)
               td
-                =workout.activity_string(2)
+                = workout.activity_string(2)
                 - if workout.activity_time(2)
                   p.text-sm= workout.activity_time(2)
               td
-                =workout.activity_string(3)
+                = workout.activity_string(3)
                 - if workout.activity_time(3)
                   p.text-sm= workout.activity_time(3)
               td= workout.activity_time(:total)

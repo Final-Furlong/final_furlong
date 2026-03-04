@@ -51,7 +51,8 @@ module Horse
     private
 
     def workout_params
-      params.expect(racing_workout: [:activity1, :distance1, :distance2, :activity2, :distance3, :jockey, :effort, :surface, :blinkers, :wraps, :shadow_roll, :figure_8, :no_whip])
+      params.expect(workouts_workout: [:jockey, :effort, :surface, :blinkers, :wraps, :shadow_roll, :figure_8, :no_whip,
+        activities_attributes: [[:activity, :distance]]])
     end
   end
 end

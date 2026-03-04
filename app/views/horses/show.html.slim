@@ -42,6 +42,14 @@
           p.mx-auto= t(".loading_history")
           .mt-2.mx-auto.skeleton.w-full
 
+  - if CurrentStable::RacehorsePolicy.new(Current.user, horse).view_race_stats?
+    input.tab[ type="radio" name="horse" aria-label=t(".race_stats") id="race_stats" ]
+    .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+      = turbo_frame_tag "#{@horse.slug}-race-stats", src: horse_race_stats_path(@horse), loading: "lazy" do
+        .w-full.text-center
+          p.mx-auto= t(".loading_race_stats")
+          .mt-2.mx-auto.skeleton.w-full
+
   input.tab[ type="radio" name="horse" aria-label=t(".photos") id="photos"
     disabled=!horse.appearance.image.present?
   ]
