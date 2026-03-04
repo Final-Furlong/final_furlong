@@ -3,11 +3,12 @@ module Workouts
     include Equipmentable
 
     self.table_name = "workouts"
-    self.ignored_columns += ["rank", "activity1", "distance1",
-      "activity1_time_in_seconds", "activity2",
-      "activity2_time_in_seconds", "activity3",
-      "activity3_time_in_seconds", "distance2",
-      "distance3", "total_time_in_seconds"]
+    self.ignored_columns += ["rank"]
+    # , "activity1", "distance1",
+    #   "activity1_time_in_seconds", "activity2",
+    #   "activity2_time_in_seconds", "activity3",
+    #   "activity3_time_in_seconds", "distance2",
+    #   "distance3", "total_time_in_seconds"]
 
     attr_accessor :special_event_type, :special_event_time, :confidence,
       :energy_loss, :fitness_gain
