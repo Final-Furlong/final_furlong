@@ -1,4 +1,4 @@
-class Workouts::WorkoutCommentGenerator
+class Workouts::CommentGenerator
   attr_reader :knowledge, :stat, :value, :random_chance, :workout
 
   def initialize(knowledge:, stat:, value:, workout:)
@@ -36,7 +36,7 @@ class Workouts::WorkoutCommentGenerator
     when "natural_energy"
       natural_energy_value
     end
-    Racing::WorkoutComment.find_by(comment_i18n_key:)
+    Workouts::Comment.find_by(comment_i18n_key:)
   end
 
   def equipment_value
@@ -309,8 +309,8 @@ class Workouts::WorkoutCommentGenerator
 
   def total_distance
     distance = 0
-    (1..workout.activity_count).each do |index|
-      distance += workout.send(:"distance#{index}") * 10
+    workout.activities.each do |workout_activity|
+      distance += workout_activity.distance * 10
     end
     distance
   end

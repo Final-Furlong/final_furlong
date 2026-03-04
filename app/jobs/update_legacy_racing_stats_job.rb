@@ -2,12 +2,16 @@ class UpdateLegacyRacingStatsJob < ApplicationJob
   queue_as :low_priority
 
   def perform
+    horses = 0
     Horses::Horse.where("date_of_birth != date_of_death").where.missing(:racing_stats).find_each do |horse|
       migrate_racing_stats(horse:)
+      horses += 1
     end
     Horses::Horse.where(date_of_death: nil).where.missing(:racing_stats).find_each do |horse|
       migrate_racing_stats(horse:)
+      horses += 1
     end
+    store_job_info(outcome: { horses: })
   end
 
   private

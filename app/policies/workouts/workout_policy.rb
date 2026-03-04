@@ -1,4 +1,4 @@
-module Racing
+module Workouts
   class WorkoutPolicy < ApplicationPolicy
     def index?
       stable.horses.racehorse.exists?
