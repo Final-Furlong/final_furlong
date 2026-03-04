@@ -1,13 +1,18 @@
 class UpdateRacehorseStatsJob < ApplicationJob
+  include ActiveJob::Continuable
+
   queue_as :low_priority
 
   def perform
     racetrack = Racing::Racetrack.find_by(name: "Churchill Downs")
     Account::Stable.where(racetrack: nil).update_all(racetrack_id: racetrack.id) # rubocop:disable Rails/SkipsModelValidations
     horses = 0
-    Horses::Horse.racehorse.find_each do |horse|
-      migrate_stats(horse:)
-      horses += 1
+    step :process do |step|
+      Horses::Horse.racehorse.find_each(start: step.cursor) do |horse|
+        migrate_stats(horse:)
+        horses += 1
+        step.advance! from: horse.id
+      end
     end
     store_job_info(outcome: { horses: })
   end
@@ -45,7 +50,7 @@ class UpdateRacehorseStatsJob < ApplicationJob
         end
       end
     end
-    workouts_since_last_race = Racing::Workout.where(horse_id: horse.id).where("date > ?", last_raced_at).count
+    workouts_since_last_race = Workouts::Workout.where(horse_id: horse.id).where("date > ?", last_raced_at).count
     last_rested_at = [last_boarded_at, last_shipped_home_at].compact.max
     last_rested_at ||= Date.current
     racetrack = if legacy_horse.Location == 59
