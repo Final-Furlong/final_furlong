@@ -46,7 +46,7 @@ hr.my-2
               span= t(".fitness")
               span.float-right= data&.fitness_grade || t("common.dash")
             p.text-center
-              - if Racing::Workout.where(horse:, date: Date.current).exists?
+              - if Workouts::Workout.where(horse:, date: Date.current).exists?
                 = render Ui::Badge::Component.new(color: :warning, style: :outline) do
                   = t(".worked_out_today")
               - elsif data&.in_transit
@@ -58,7 +58,7 @@ hr.my-2
               - elsif horse.current_boarding.present?
                 = render Ui::Badge::Component.new(color: :warning, style: :outline) do
                   = t(".boarded")
-              - else
+              - elsif CurrentStable::RacehorsePolicy.new(Current.user, horse).run_workout?
                 = render Ui::ButtonizedLink::Component.new(url: new_horse_workout_path(horse), size: :small, data: { turbo_frame: "modal" }) do
                   = t(".workout")
             .mx-auto.mt-2
@@ -93,7 +93,7 @@ hr.my-2
             td= data&.energy_grade || t("common.dash")
             td= data&.fitness_grade || t("common.dash")
             td
-              - if Racing::Workout.where(horse:, date: Date.current).exists?
+              - if Workouts::Workout.where(horse:, date: Date.current).exists?
                 = render Ui::Badge::Component.new(color: :warning, style: :outline) do
                   = t(".worked_out_today")
               - elsif data&.in_transit
@@ -105,7 +105,7 @@ hr.my-2
               - elsif horse.current_boarding.present?
                 = render Ui::Badge::Component.new(color: :warning, style: :outline) do
                   = t(".boarded")
-              - else
+              - elsif CurrentStable::RacehorsePolicy.new(Current.user, horse).run_workout?
                 = render Ui::ButtonizedLink::Component.new(url: new_horse_workout_path(horse), size: :small, data: { turbo_frame: "modal" }) do
                   = t(".workout")
               ruby:
