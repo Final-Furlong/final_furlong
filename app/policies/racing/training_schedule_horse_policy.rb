@@ -10,7 +10,7 @@ module Racing
       end
 
       def game_settings
-        return {} unless user.setting.racing
+        return {} unless user.setting&.racing
         {
           minimum_energy: user.setting.racing.min_energy_for_workout
         }

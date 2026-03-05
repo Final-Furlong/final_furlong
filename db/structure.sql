@@ -3526,18 +3526,8 @@ CREATE TABLE public.workouts (
     effort integer DEFAULT 0 NOT NULL,
     confidence integer DEFAULT 0 NOT NULL,
     time_in_seconds integer,
-    activity1 public.workout_activity_types,
-    distance1 integer DEFAULT 0,
-    activity2 public.workout_activity_types,
-    distance2 integer DEFAULT 0,
-    activity3 public.workout_activity_types,
-    distance3 integer DEFAULT 0,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
-    total_time_in_seconds integer DEFAULT 0,
-    activity1_time_in_seconds integer DEFAULT 0,
-    activity2_time_in_seconds integer DEFAULT 0,
-    activity3_time_in_seconds integer DEFAULT 0,
     auto boolean DEFAULT false NOT NULL,
     special_event boolean DEFAULT false NOT NULL
 );
@@ -3548,27 +3538,6 @@ CREATE TABLE public.workouts (
 --
 
 COMMENT ON COLUMN public.workouts.condition IS 'fast, good, slow, wet';
-
-
---
--- Name: COLUMN workouts.activity1; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.workouts.activity1 IS 'walk, jog, canter, gallop, breeze';
-
-
---
--- Name: COLUMN workouts.activity2; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.workouts.activity2 IS 'walk, jog, canter, gallop, breeze';
-
-
---
--- Name: COLUMN workouts.activity3; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.workouts.activity3 IS 'walk, jog, canter, gallop, breeze';
 
 
 --
@@ -6815,48 +6784,6 @@ CREATE INDEX index_workout_comments_on_stat_value ON public.workout_comments USI
 
 
 --
--- Name: index_workouts_on_activity1; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_workouts_on_activity1 ON public.workouts USING btree (activity1);
-
-
---
--- Name: index_workouts_on_activity1_time_in_seconds; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_workouts_on_activity1_time_in_seconds ON public.workouts USING btree (activity1_time_in_seconds);
-
-
---
--- Name: index_workouts_on_activity2; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_workouts_on_activity2 ON public.workouts USING btree (activity2);
-
-
---
--- Name: index_workouts_on_activity2_time_in_seconds; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_workouts_on_activity2_time_in_seconds ON public.workouts USING btree (activity2_time_in_seconds);
-
-
---
--- Name: index_workouts_on_activity3; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_workouts_on_activity3 ON public.workouts USING btree (activity3);
-
-
---
--- Name: index_workouts_on_activity3_time_in_seconds; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_workouts_on_activity3_time_in_seconds ON public.workouts USING btree (activity3_time_in_seconds);
-
-
---
 -- Name: index_workouts_on_auto; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6889,27 +6816,6 @@ CREATE INDEX index_workouts_on_confidence ON public.workouts USING btree (confid
 --
 
 CREATE INDEX index_workouts_on_date ON public.workouts USING btree (date);
-
-
---
--- Name: index_workouts_on_distance1; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_workouts_on_distance1 ON public.workouts USING btree (distance1);
-
-
---
--- Name: index_workouts_on_distance2; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_workouts_on_distance2 ON public.workouts USING btree (distance2);
-
-
---
--- Name: index_workouts_on_distance3; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_workouts_on_distance3 ON public.workouts USING btree (distance3);
 
 
 --
@@ -6973,13 +6879,6 @@ CREATE INDEX index_workouts_on_surface_id ON public.workouts USING btree (surfac
 --
 
 CREATE INDEX index_workouts_on_time_in_seconds ON public.workouts USING btree (time_in_seconds);
-
-
---
--- Name: index_workouts_on_total_time_in_seconds; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_workouts_on_total_time_in_seconds ON public.workouts USING btree (total_time_in_seconds);
 
 
 --
@@ -7891,6 +7790,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260305133154'),
 ('20260304145944'),
 ('20260304122904'),
 ('20260303120921'),
