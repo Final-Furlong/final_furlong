@@ -127,18 +127,11 @@ module Workouts
     end
 
     def activity_count
-      if activity3
-        3
-      elsif activity2
-        2
-      else
-        1
-      end
+      activities.size
     end
 
     def self.ransackable_attributes(_auth_object = nil)
-      %w[activity1 activity2 activity3 comment_id condition confidence date distance1
-        distance2 distance3 effort equipment horse_id jockey_id time_in_seconds]
+      %w[comment_id condition confidence date effort equipment horse_id jockey_id time_in_seconds]
     end
   end
 end
@@ -148,53 +141,40 @@ end
 # Table name: workouts
 # Database name: primary
 #
-#  id                                           :bigint           not null, primary key
-#  activity1(walk, jog, canter, gallop, breeze) :enum             indexed
-#  activity1_time_in_seconds                    :integer          default(0), indexed
-#  auto                                         :boolean          default(FALSE), not null, indexed
-#  condition(fast, good, slow, wet)             :enum             not null, indexed
-#  confidence                                   :integer          default(0), not null, indexed
-#  date                                         :date             not null, indexed, uniquely indexed => [horse_id]
-#  distance1                                    :integer          default(0), not null, indexed
-#  effort                                       :integer          default(0), not null, indexed
-#  equipment                                    :integer          default(0), not null, indexed
-#  special_event                                :boolean          default(FALSE), not null, indexed
-#  time_in_seconds                              :integer          indexed
-#  created_at                                   :datetime         not null
-#  updated_at                                   :datetime         not null
-#  comment_id                                   :bigint           not null, indexed
-#  horse_id                                     :bigint           not null, uniquely indexed => [date]
-#  jockey_id                                    :bigint           not null, indexed
-#  location_id                                  :bigint           not null, indexed
-#  racetrack_id                                 :bigint           not null, indexed
-#  surface_id                                   :bigint           not null, indexed
+#  id                               :bigint           not null, primary key
+#  auto                             :boolean          default(FALSE), not null, indexed
+#  condition(fast, good, slow, wet) :enum             not null, indexed
+#  confidence                       :integer          default(0), not null, indexed
+#  date                             :date             not null, indexed, uniquely indexed => [horse_id]
+#  effort                           :integer          default(0), not null, indexed
+#  equipment                        :integer          default(0), not null, indexed
+#  special_event                    :boolean          default(FALSE), not null, indexed
+#  time_in_seconds                  :integer          indexed
+#  created_at                       :datetime         not null
+#  updated_at                       :datetime         not null
+#  comment_id                       :bigint           not null, indexed
+#  horse_id                         :bigint           not null, uniquely indexed => [date]
+#  jockey_id                        :bigint           not null, indexed
+#  location_id                      :bigint           not null, indexed
+#  racetrack_id                     :bigint           not null, indexed
+#  surface_id                       :bigint           not null, indexed
 #
 # Indexes
 #
-#  index_workouts_on_activity1                  (activity1)
-#  index_workouts_on_activity1_time_in_seconds  (activity1_time_in_seconds)
-#  index_workouts_on_activity2                  (activity2)
-#  index_workouts_on_activity2_time_in_seconds  (activity2_time_in_seconds)
-#  index_workouts_on_activity3                  (activity3)
-#  index_workouts_on_activity3_time_in_seconds  (activity3_time_in_seconds)
-#  index_workouts_on_auto                       (auto)
-#  index_workouts_on_comment_id                 (comment_id)
-#  index_workouts_on_condition                  (condition)
-#  index_workouts_on_confidence                 (confidence)
-#  index_workouts_on_date                       (date)
-#  index_workouts_on_distance1                  (distance1)
-#  index_workouts_on_distance2                  (distance2)
-#  index_workouts_on_distance3                  (distance3)
-#  index_workouts_on_effort                     (effort)
-#  index_workouts_on_equipment                  (equipment)
-#  index_workouts_on_horse_id_and_date          (horse_id,date) UNIQUE
-#  index_workouts_on_jockey_id                  (jockey_id)
-#  index_workouts_on_location_id                (location_id)
-#  index_workouts_on_racetrack_id               (racetrack_id)
-#  index_workouts_on_special_event              (special_event)
-#  index_workouts_on_surface_id                 (surface_id)
-#  index_workouts_on_time_in_seconds            (time_in_seconds)
-#  index_workouts_on_total_time_in_seconds      (total_time_in_seconds)
+#  index_workouts_on_auto               (auto)
+#  index_workouts_on_comment_id         (comment_id)
+#  index_workouts_on_condition          (condition)
+#  index_workouts_on_confidence         (confidence)
+#  index_workouts_on_date               (date)
+#  index_workouts_on_effort             (effort)
+#  index_workouts_on_equipment          (equipment)
+#  index_workouts_on_horse_id_and_date  (horse_id,date) UNIQUE
+#  index_workouts_on_jockey_id          (jockey_id)
+#  index_workouts_on_location_id        (location_id)
+#  index_workouts_on_racetrack_id       (racetrack_id)
+#  index_workouts_on_special_event      (special_event)
+#  index_workouts_on_surface_id         (surface_id)
+#  index_workouts_on_time_in_seconds    (time_in_seconds)
 #
 # Foreign Keys
 #
