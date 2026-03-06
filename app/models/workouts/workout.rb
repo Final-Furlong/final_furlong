@@ -79,7 +79,7 @@ module Workouts
       activities.each do |activity|
         if activity
           total_distance += activity.distance
-          if activity.activity == "gallop" && distance > Config::Workouts.max_gallop_for_2yos
+          if activity.activity == "gallop" && activity.distance > Config::Workouts.max_gallop_for_2yos
             errors.add(:activities, :less_than, count: Config::Workouts.max_gallop_for_2yos)
           end
         end

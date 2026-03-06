@@ -3,12 +3,12 @@ class Workouts::AutoWorkoutJob < ApplicationJob
 
   queue_as :low_priority
 
-  def perform
-    return if run_today?
-    return unless run_today?(name: "Racing::EnergyFitnessUpdaterJob")
-    return unless run_today?(name: "UpdateRacehorseStatsJob")
+  def perform(date: Date.current)
+    return if run_today?(date:)
+    return unless run_today?(name: "Racing::EnergyFitnessUpdaterJob", date:)
+    return unless run_today?(name: "UpdateRacehorseStatsJob", date:)
 
-    yesterday = Date.yesterday
+    yesterday = date - 1.day
     skipped = 0
     errored = 0
     worked = 0
@@ -75,7 +75,7 @@ class Workouts::AutoWorkoutJob < ApplicationJob
             horse:,
             jockey: pick_jockey(horse),
             surface: pick_surface(horse, racetrack),
-            params:,
+            params: params.deep_stringify_keys!,
             date: yesterday,
             auto: true
           )

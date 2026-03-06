@@ -3,14 +3,12 @@ module Workouts
     attr_reader :horse, :workout
 
     def create_workout(horse:, jockey:, surface:, params: {}, date: Date.current, auto: false)
-      params = params.deep_stringify_keys if params.is_a? Hash
-      pd params
-      activity1 = params["activities_attributes"]["0"]["activity"]
-      distance1 = params["activities_attributes"]["0"]["distance"]
-      activity2 = params["activities_attributes"]["1"]["activity"]
-      distance2 = params["activities_attributes"]["1"]["distance"]
-      activity3 = params["activities_attributes"]["2"]["activity"]
-      distance3 = params["activities_attributes"]["2"]["distance"]
+      activity1 = params["activities_attributes"][0]["activity"]
+      distance1 = params["activities_attributes"][0]["distance"]
+      activity2 = params["activities_attributes"][1]["activity"]
+      distance2 = params["activities_attributes"][1]["distance"]
+      activity3 = params["activities_attributes"][2]["activity"]
+      distance3 = params["activities_attributes"][2]["distance"]
       effort = params["effort"]
 
       @horse = horse
