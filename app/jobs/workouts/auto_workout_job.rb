@@ -35,6 +35,10 @@ class Workouts::AutoWorkoutJob < ApplicationJob
             skipped += 1
             next
           end
+          if Legacy::RaceEntry.exists?(Horse: horse.legacy_id)
+            skipped += 1
+            next
+          end
           data = horse.race_metadata
           case horse.manager.user&.setting&.racing&.[](:min_energy_for_workouts)
           when "A"
