@@ -15,6 +15,9 @@ module Workouts
     validates :distance, numericality: { greater_than: Config::Workouts.dig(:gallop, :min_furlongs) - 1, less_than: Config::Workouts.dig(:gallop, :max_furlongs) + 1 }, if: -> { activity == "gallop" }
     validates :distance, numericality: { greater_than: Config::Workouts.dig(:breeze, :min_furlongs) - 1, less_than: Config::Workouts.dig(:breeze, :max_furlongs) + 1 }, if: -> { activity == "breeze" }
 
+    scope :by_activity, ->(activity) { where(activity:) }
+    scope :with_time, -> { where.not(time_in_seconds: nil) }
+
     def activity_string
       distance_i18n = I18n.t("common.distances.#{distance}_furlongs")
       "#{activity.capitalize} (#{distance_i18n})"

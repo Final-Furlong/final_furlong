@@ -440,10 +440,10 @@ CREATE TYPE public.workout_activity_types AS ENUM (
 
 
 --
--- Name: workout_stats; Type: TYPE; Schema: public; Owner: -
+-- Name: workout_stat_types; Type: TYPE; Schema: public; Owner: -
 --
 
-CREATE TYPE public.workout_stats AS ENUM (
+CREATE TYPE public.workout_stat_types AS ENUM (
     'bolt',
     'confidence',
     'cooperate',
@@ -3481,7 +3481,7 @@ ALTER SEQUENCE public.workout_activities_id_seq OWNED BY public.workout_activiti
 CREATE TABLE public.workout_comments (
     id bigint NOT NULL,
     comment_i18n_key character varying,
-    stat public.workout_stats NOT NULL,
+    stat public.workout_stat_types NOT NULL,
     stat_value integer,
     placeholders character varying,
     created_at timestamp(6) with time zone NOT NULL,
@@ -3506,6 +3506,49 @@ CREATE SEQUENCE public.workout_comments_id_seq
 --
 
 ALTER SEQUENCE public.workout_comments_id_seq OWNED BY public.workout_comments.id;
+
+
+--
+-- Name: workout_stats; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.workout_stats (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    activity public.workout_activity_types NOT NULL,
+    best_time_in_seconds integer DEFAULT 0 NOT NULL,
+    best_date date NOT NULL,
+    recent_time_in_seconds integer DEFAULT 0 NOT NULL,
+    recent_date date NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN workout_stats.activity; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.workout_stats.activity IS 'walk, jog, canter, gallop, breeze';
+
+
+--
+-- Name: workout_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.workout_stats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: workout_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.workout_stats_id_seq OWNED BY public.workout_stats.id;
 
 
 --
@@ -4019,6 +4062,13 @@ ALTER TABLE ONLY public.workout_activities ALTER COLUMN id SET DEFAULT nextval('
 --
 
 ALTER TABLE ONLY public.workout_comments ALTER COLUMN id SET DEFAULT nextval('public.workout_comments_id_seq'::regclass);
+
+
+--
+-- Name: workout_stats id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workout_stats ALTER COLUMN id SET DEFAULT nextval('public.workout_stats_id_seq'::regclass);
 
 
 --
@@ -4610,6 +4660,14 @@ ALTER TABLE ONLY public.workout_activities
 
 ALTER TABLE ONLY public.workout_comments
     ADD CONSTRAINT workout_comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workout_stats workout_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workout_stats
+    ADD CONSTRAINT workout_stats_pkey PRIMARY KEY (id);
 
 
 --
@@ -6784,6 +6842,48 @@ CREATE INDEX index_workout_comments_on_stat_value ON public.workout_comments USI
 
 
 --
+-- Name: index_workout_stats_on_activity; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workout_stats_on_activity ON public.workout_stats USING btree (activity);
+
+
+--
+-- Name: index_workout_stats_on_best_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workout_stats_on_best_date ON public.workout_stats USING btree (best_date);
+
+
+--
+-- Name: index_workout_stats_on_best_time_in_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workout_stats_on_best_time_in_seconds ON public.workout_stats USING btree (best_time_in_seconds);
+
+
+--
+-- Name: index_workout_stats_on_horse_id_and_activity; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_workout_stats_on_horse_id_and_activity ON public.workout_stats USING btree (horse_id, activity);
+
+
+--
+-- Name: index_workout_stats_on_recent_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workout_stats_on_recent_date ON public.workout_stats USING btree (recent_date);
+
+
+--
+-- Name: index_workout_stats_on_recent_time_in_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_workout_stats_on_recent_time_in_seconds ON public.workout_stats USING btree (recent_time_in_seconds);
+
+
+--
 -- Name: index_workouts_on_auto; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6997,6 +7097,14 @@ ALTER TABLE ONLY public.sale_offers
 
 ALTER TABLE ONLY public.horse_sales
     ADD CONSTRAINT fk_rails_0b809fb199 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
+-- Name: workout_stats fk_rails_0be98d1821; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workout_stats
+    ADD CONSTRAINT fk_rails_0be98d1821 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
 
 
 --
@@ -7790,6 +7898,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260310122751'),
 ('20260305133154'),
 ('20260304145944'),
 ('20260304122904'),

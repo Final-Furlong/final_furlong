@@ -3,11 +3,6 @@ module Workouts
     include Equipmentable
 
     self.table_name = "workouts"
-    self.ignored_columns += ["rank", "activity1", "distance1",
-      "activity1_time_in_seconds", "activity2",
-      "activity2_time_in_seconds", "activity3",
-      "activity3_time_in_seconds", "distance2",
-      "distance3", "total_time_in_seconds"]
 
     attr_accessor :special_event_type, :special_event_time, :confidence,
       :energy_loss, :fitness_gain
@@ -33,6 +28,8 @@ module Workouts
     validate :valid_baby_distances, :valid_activity_list
 
     accepts_nested_attributes_for :activities, reject_if: lambda { |attributes| attributes["activity"].blank? || attributes["distance"].blank? }
+
+    scope :no_special_event, -> { where(special_event: false) }
 
     def surface_name
       surface&.surface
