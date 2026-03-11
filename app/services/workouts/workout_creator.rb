@@ -83,6 +83,7 @@ module Workouts
           pick_and_save_injury
           workout.valid?(context: :complete_workout)
           result.created = workout.save!
+          update_stats if result.created?
         end
       end
       unless result.created
@@ -110,6 +111,22 @@ module Workouts
     end
 
     private
+
+    def update_stats
+      workout.activities.each do |activity|
+        next if activity.activity.blank? || activity.distance.blank?
+
+        stat = Workouts::Stat.find_or_initialize_by(horse:, activity:)
+        time = activity.time_in_seconds.fdiv(activity.distance)
+        if stat.persisted? && stat.best_time_in_seconds > time
+          stat.best_time_in_seconds = activity.time_in_seconds
+          stat.best_date = workout.date
+        end
+        stat.recent_time_in_seconds = time
+        stat.recent_date = workout.date
+        stat.save!
+      end
+    end
 
     def pick_and_save_injury
       return unless (injury = pick_injury)
