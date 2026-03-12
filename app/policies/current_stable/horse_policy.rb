@@ -103,6 +103,10 @@ module CurrentStable
       record.racehorse?
     end
 
+    def view_injuries?
+      true
+    end
+
     def create_workout?
       return false unless manager?
       return false unless record.racehorse?

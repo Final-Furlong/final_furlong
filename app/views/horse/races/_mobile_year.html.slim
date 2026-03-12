@@ -85,6 +85,16 @@
                   - if winner.fractions
                     p
                       span= t("horse.races.index.fractions", fractions: winner.fractions.gsub("|", " | "))
+                  - if (injury = horse.historical_injuries.find_by(date: race.date))
+                    p
+                      span
+                        = t("horse.races.index.injury")
+                        = ':'
+                      span.ml-2.float-right
+                        = t("horse.injuries.#{injury.injury_type.downcase.underscore}")
+                        - if injury.leg
+                          = " (#{injury.leg})"
+                        i.ph-fill.ph-warning.ml-2.text-warning
                   p.text-center
                     = render Ui::ButtonizedLink::Component.new(url: racing_result_path(race.date, race.number), color: :neutral, extra_classes: "mt-2", data: { turbo_frame: "modal" }) do
                       = t("horse.races.index.view_race")

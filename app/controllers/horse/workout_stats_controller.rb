@@ -1,10 +1,10 @@
 module Horse
-  class RaceStatsController < ApplicationController
+  class WorkoutStatsController < ApplicationController
     skip_after_action :verify_pundit_authorization, only: :index
 
     def index
       @horse = Horses::Horse.find(params[:id])
-      authorize @horse, :view_race_stats?, policy_class: CurrentStable::RacehorsePolicy
+      authorize @horse, :view_workout_stats?, policy_class: CurrentStable::RacehorsePolicy
     end
   end
 end

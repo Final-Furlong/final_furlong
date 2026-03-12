@@ -43,7 +43,7 @@
             td colspan=4 = race.race_description_string
           tr
             td
-              = number = "#{finish.finish_position.ordinalize}/#{race.horses.count}"
+              - number = "#{finish.finish_position.ordinalize}/#{race.horses.count}"
               = t("horse.races.index.place", number: number)
             td= t("horse.races.index.surface", surface: race.track_surface.surface.capitalize)
             td= t("horse.races.index.finish_time", time: race.finish_time_string)
@@ -72,6 +72,12 @@
           tr
             td colspan=4 class=("border-b-1 border-base-content" unless winner.fractions)
               = t("horse.races.index.running_line", line: finish.positions.gsub("|", "-"))
+              - if (injury = horse.historical_injuries.find_by(date: race.date))
+                span.ml-2.text-warning
+                  i.ph-fill.ph-warning.mr-2
+                  = t("horse.injuries.#{injury.injury_type.downcase.underscore}")
+                  - if injury.leg
+                    = " (#{injury.leg})"
           - if winner.fractions
             tr
               td.border-b-1.border-base-content colspan=4

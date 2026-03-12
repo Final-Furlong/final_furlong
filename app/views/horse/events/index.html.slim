@@ -2,6 +2,18 @@
   - horse = @dashboard.horse
   - policy = CurrentStable::HorsePolicy.new(Current.user, horse)
   .tabs.tabs-border.dark:border-neutral-400 role="tablist"
+    - if policy.view_injuries?
+      - injuries_count = horse.historical_injuries.count
+      - if injuries_count.zero?
+        input.tab type="radio" name="horse-event" aria-label=t(".no_injuries") id="injuries" disabled=true
+      - else
+        input.tab type="radio" name="horse-event" aria-label=t(".injuries", count: injuries_count) id="injuries"
+        .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+          = turbo_frame_tag "#{horse.slug}-injury-history", src: horse_injuries_path(horse), loading: "lazy" do
+            .w-full.text-center
+              p.mx-auto= t(".loading_injuries")
+              .mt-2.mx-auto.skeleton.w-full
+
     - if policy.view_workouts?
       - workouts_count = horse.workouts.count
       - if workouts_count.zero?
