@@ -118,7 +118,10 @@ module Workouts
 
         stat = Workouts::Stat.find_or_initialize_by(horse:, activity: activity.activity)
         time = activity.time_in_seconds.fdiv(activity.distance)
-        if stat.persisted? && stat.best_time_in_seconds > time
+        if stat.persisted? && stat.best_time_in_seconds < time
+          stat.best_time_in_seconds = activity.time_in_seconds
+          stat.best_date = workout.date
+        elsif !stat.persisted?
           stat.best_time_in_seconds = activity.time_in_seconds
           stat.best_date = workout.date
         end
