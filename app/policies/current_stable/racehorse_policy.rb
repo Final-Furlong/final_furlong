@@ -38,6 +38,10 @@ module CurrentStable
       manager?
     end
 
+    def view_workout_stats?
+      view_race_stats?
+    end
+
     def nominate?
       # TODO: migrate racehorse noms + implement them
       false

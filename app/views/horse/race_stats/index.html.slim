@@ -1,0 +1,12 @@
+= turbo_frame_tag "#{@horse.slug}-race-stats" do
+  - policy = CurrentStable::RacehorsePolicy.new(Current.user, @horse)
+  .tabs.tabs-border.dark:border-neutral-400 role="tablist"
+    - if policy.view_race_stats?
+      - workouts_exist = Workouts::Stat.where(horse: @horse).exists?
+      input.tab type="radio" name="horse-stat" aria-label=t(".workout_stats") id="workout-stats" disabled=!workouts_exist
+        - if workouts_exist
+          .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+            = turbo_frame_tag "#{@horse.slug}-workout-stats", src: horse_workout_stats_path(@horse), loading: "lazy" do
+              .w-full.text-center
+                p.mx-auto= t(".loading_stats")
+                .mt-2.mx-auto.skeleton.w-full

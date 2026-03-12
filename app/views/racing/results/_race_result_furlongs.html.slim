@@ -141,7 +141,17 @@ ruby:
     - winner.fractions.split('|').each do |fraction|
       = " | "
       = fraction
-  p.text-center.text-sm.mt-2
-    = t("racing.results.injuries")
-    = ": "
-    = "Not Yet Added"
+  - if (injuries = Horses::HistoricalInjury.where(date: race.date, horse: race.horses.select(:horse_id))).present?
+    p.text-sm.mt-2
+      = t("racing.results.injuries")
+      = ": "
+    - injuries.each do |injury|
+      p.text-sm
+        = injury.horse.name
+        = ' - '
+        = t("horse.injuries.#{injury.injury_type.downcase.underscore}")
+        - if injury.leg
+          = " (#{injury.leg})"
+  - else
+    p.text-center.text-sm.mt-2
+      = t("racing.results.no_injuries")
