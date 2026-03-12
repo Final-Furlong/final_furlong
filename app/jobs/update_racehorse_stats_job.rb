@@ -79,8 +79,8 @@ class UpdateRacehorseStatsJob < ApplicationJob
   end
 
   def pick_grades(horse, energy_grade, energy, fitness_grade, fitness)
-    egrade = energy_grade.upcase if Config::Racing.letter_grades.map(&:upcase).include?(energy_grade.upcase)
-    fgrade = fitness_grade.upcase if Config::Racing.letter_grades.map(&:upcase).include?(fitness_grade.upcase)
+    egrade = energy_grade.upcase if Config::Racing.letter_grades.map(&:upcase).include?(energy_grade&.upcase)
+    fgrade = fitness_grade.upcase if Config::Racing.letter_grades.map(&:upcase).include?(fitness_grade&.upcase)
     return [egrade, fgrade] unless egrade.blank? || fgrade.blank?
 
     egrade, fgrade = horse.race_metadata.update_grades(energy:, fitness:)
