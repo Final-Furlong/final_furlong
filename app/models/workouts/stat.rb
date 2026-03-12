@@ -4,6 +4,8 @@ module Workouts
 
     belongs_to :horse, class_name: "Horses::Horse", inverse_of: :workout_stats
 
+    validates :best_time_in_seconds, :best_date, :recent_time_in_seconds,
+      :recent_date, presence: true
     validates :activity, inclusion: { in: Config::Workouts.activities.map(&:downcase) }
     validates :best_time_in_seconds, comparison: { less_than_or_equal_to: :recent_time_in_seconds }
     validates :best_time_in_seconds, :recent_time_in_seconds, numericality: { greater_than_or_equal_to: 0 }

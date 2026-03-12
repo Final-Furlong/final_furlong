@@ -14,6 +14,7 @@ resources :horses, except: %i[new create destroy] do
       resources :events, only: :index
       resources :foals, only: :index
       resources :images, only: :index
+      resources :injuries, only: :index
       resource :lease_offer, only: %i[new create destroy]
       resource :lease_offer_acceptance, only: :create
       resource :lease_termination, only: %i[new create]
@@ -26,6 +27,7 @@ resources :horses, except: %i[new create destroy] do
       resources :sales, only: :index
       resources :shipments, only: %i[index new create]
       resources :workouts, only: %i[index new create]
+      resources :workout_stats, only: %i[index]
     end
     delete "shipments/:shipment_id", to: "horse/shipments#destroy", as: :shipment
   end

@@ -1,0 +1,76 @@
+= turbo_frame_tag "#{@horse.slug}-workout-stats" do
+  .mt-2.mx-auto.overflow-x-auto.w-full.sm:hidden
+    p.text-center.mb-2= t(".time_explanation")
+    - Config::Workouts.activities.each do |activity|
+      - stat = @horse.workout_stats.find { |stat| stat.activity == activity }
+      .card.card-border.bg-base-100.w-full.px-2.rounded-none
+        .card-body.p-0.rounded-none
+          .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+            input type="checkbox"
+            .collapse-title.font-semibold.font-medium
+              span= t("horse.workouts.activities.#{activity.to_s.downcase}")
+              - if stat
+                span.float-right= l([stat.recent_date, stat.best_date].max)
+            - if stat
+              .collapse-content.text-sm.border-t-1.border-base-content/40
+                p
+                  span= t(".best_time")
+                  span.float-right= stat.best_time_in_seconds
+                p
+                  span= t(".best_date")
+                  span.float-right= l(stat.best_date)
+                p.float-right= relative_time_in_words(stat.best_date)
+                - if stat.best_date != stat.recent_date
+                  p.clear-both
+                  p.mt-2
+                    span= t(".recent_time")
+                    span.float-right= stat.recent_time_in_seconds
+                  p
+                    span= t(".time_difference")
+                    span.float-right.text-error.ml-2
+                      = "+"
+                      = stat.recent_time_in_seconds -  stat.best_time_in_seconds
+                  p
+                    span= t(".recent_date")
+                    span.float-right= l(stat.recent_date)
+                  p.float-right= relative_time_in_words(stat.recent_date)
+  .hidden.sm:block
+    table.table.table-responsive.table-bordered.w-2/3.mx-auto
+      thead
+        th.text-center= t(".activity")
+        th.text-center
+          = t(".best_time")
+          .tooltip.ml-2.text-lg data-tip=t(".time_hint")
+            i.ph-fill.ph-info
+        th.text-center
+          = t(".recent_time")
+          .tooltip.ml-2.text-lg data-tip=t(".time_hint")
+            i.ph-fill.ph-info
+      tbody
+        - Config::Workouts.activities.each do |activity|
+          tr
+            td= t("horse.workouts.activities.#{activity.to_s.downcase}")
+            - stat = @horse.workout_stats.find { |stat| stat.activity == activity}
+            - if stat
+              td.text-center
+                = stat.best_time_in_seconds
+                .tooltip.ml-2 data-tip=l(stat.best_date)
+                  = " ("
+                  = relative_time_in_words(stat.best_date)
+                  = ")"
+              td.text-center
+                - if stat.best_date == stat.recent_date
+                  = t("common.dash")
+                - else
+                  = stat.recent_time_in_seconds
+                  span.text-error.ml-2
+                    = "(+"
+                    = stat.recent_time_in_seconds -  stat.best_time_in_seconds
+                    = ")"
+                  .tooltip.ml-2 data-tip=l(stat.recent_date)
+                    = " ("
+                    = relative_time_in_words(stat.recent_date)
+                    = ")"
+            - else
+              td.text-center= t("common.dash")
+              td.text-center= t("common.dash")

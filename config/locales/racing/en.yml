@@ -81,6 +81,7 @@ en:
       index:
         title: Race Results
       injuries: Injuries
+      no_injuries: No Injuries
       race_number: 'Race #%{number}'
       speed_factor: Speed Factor
       weight: Lbs.

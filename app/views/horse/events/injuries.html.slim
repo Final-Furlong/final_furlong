@@ -1,0 +1,21 @@
+= turbo_frame_tag "#{@horse.slug}-injury-history" do
+  - if @injuries.blank?
+    p= t(".no_injuries")
+  - else
+    .mx-auto.overflow-x-auto.border.rounded-md.w-full.sm:block.sm:w-5/6
+      table.table.table-zebra.sortable.n-last
+        thead
+          tr.border-b-1.border-gray-400.dark:border-neutral-600
+            th= t(".date")
+            th= t(".injury")
+        tbody
+          - @injuries.each do |injury|
+            tr
+              td data-sort=injury.date = l(injury.date)
+              td data-sort=injury.injury_type
+                = t("horse.injuries.#{injury.injury_type.downcase.underscore}")
+                - if injury.leg
+                  = " (#{injury.leg})"
+
+  .float-right.mt-2
+    == @pagy.series_nav

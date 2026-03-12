@@ -54,17 +54,23 @@ en:
       index:
         boarding: Boarding (%{count})
         highlights: Highlights
+        injuries: Injuries (%{count})
         loading_boarding: Loading boarding...
+        loading_injuries: Loading injuries...
         loading_sales: Loading sales/leases...
         loading_shipping: Loading shipping...
         loading_workouts: Loading workouts...
         no_boarding: Boarding
+        no_injuries: Injuries
         no_sales: Sales/Leases
         no_shipping: Shipping
         no_workouts: Workouts
         sales: Sales/Leases (%{count})
         shipping: Shipping (%{count})
         workouts: Workouts (%{count})
+      injuries:
+        date: Date
+        injury: Injury
       sales:
         buyer: Buyer
         date: Date
@@ -149,6 +155,15 @@ en:
         summary: Summary
     height: "%{height}h"
     in_foal: in foal
+    injuries:
+      bowed_tendon: Bowed Tendon
+      broken_leg: Broken Leg
+      cut: Cut
+      heart_attack: Heart Attack
+      heat: Heat
+      limping: Limping
+      overheat: Overheated
+      swelling: Swelling
     lease_offer_acceptances:
       create:
         success: Lease was accepted
@@ -236,12 +251,17 @@ en:
         trains_on_turf: Trains on Turf
       update:
         success: Racing options were successfully saved.
+    race_stats:
+      index:
+        loading_stats: Loading workout stats...
+        workout_stats: Workout Stats
     races:
       index:
         earnings: Earnings
         finish_time: 'Time: %{time}'
         fourths: Fourths
         fractions: 'Fractions: %{fractions}'
+        injury: Injury
         lifetime: Lifetime
         place: 'Place: %{number}'
         points: Points
@@ -337,7 +357,23 @@ en:
       yearling: yearling
     unnamed: Unnamed
     unraced: Unraced
+    workout_stats:
+      index:
+        activity: Activity
+        best_date: Best Date
+        best_time: Best Time
+        recent_date: Recent Date
+        recent_time: Recent Time
+        time_difference: Difference
+        time_explanation: Times are in seconds per furlong
+        time_hint: Seconds per Furlong
     workouts:
+      activities:
+        breeze: Breeze
+        canter: Canter
+        gallop: Gallop
+        jog: Jog
+        walk: Walk
       create:
         failure: Workout could not be performed.
         success: Workout was successfully completed.
