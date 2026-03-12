@@ -1,13 +1,16 @@
 class UpdateLegacyHorseJockeysJob < ApplicationJob
+  include ActiveJob::Continuable
+
   queue_as :low_priority
 
   def perform
-    Legacy::HorseJockey.find_each do |legacy_hj|
-      horse = Horses::Horse.find_by(legacy_id: legacy_hj.Horse)
-      legacy_hj.destroy and next unless horse
-      legacy_hj.destroy and next unless horse.racehorse?
+    step :process do |step|
+      Legacy::HorseJockey.find_each(start: step.cursor) do |legacy_hj|
+        horse = Horses::Horse.find_by(legacy_id: legacy_hj.Horse)
 
-      migrate_horse_jockey(legacy_hj, horse)
+        migrate_horse_jockey(legacy_hj, horse)
+        step.advance! from: legacy_hj.id
+      end
     end
   end
 
