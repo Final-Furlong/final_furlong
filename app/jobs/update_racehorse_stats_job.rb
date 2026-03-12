@@ -62,19 +62,33 @@ class UpdateRacehorseStatsJob < ApplicationJob
       Racing::Racetrack.find_by(name: legacy_racetrack.Name)
     end
     racetrack ||= stable.racetrack
+    energy_grade, fitness_grade = pick_grades(horse, legacy_horse.DisplayEnergy, legacy_horse.EnergyCurrent, legacy_horse.DisplayFitness, legacy_horse.Fitness)
     attrs = {
       last_raced_at:,
       last_rested_at:,
       last_shipped_at:,
       rest_days_since_last_race: rest_days,
       workouts_since_last_race:,
-      energy_grade: legacy_horse.DisplayEnergy,
-      fitness_grade: legacy_horse.DisplayFitness,
+      energy_grade:,
+      fitness_grade:,
       racetrack:,
       at_home: legacy_horse.Location == 59,
       in_transit: horse.racing_shipments.current.exists?
     }
     data.update!(attrs)
+  end
+
+  def pick_grades(horse, energy_grade, energy, fitness_grade, fitness)
+    egrade = energy_grade.upcase if Config::Racing.letter_grades.map(&:upcase).include?(energy_grade.upcase)
+    fgrade = fitness_grade.upcase if Config::Racing.letter_grades.map(&:upcase).include?(fitness_grade.upcase)
+    return [egrade, fgrade] unless egrade.blank? || fgrade.blank?
+
+    egrade, fgrade = horse.race_metadata.update_grades(energy:, fitness:)
+    [egrade, fgrade]
+  end
+
+  def pick_fitness_grade(grade)
+    grade.upcase if Config::Racing.letter_grades.map(&:upcase).include?(grade.upcase)
   end
 end
 
