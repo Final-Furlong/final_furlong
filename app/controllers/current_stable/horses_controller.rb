@@ -7,6 +7,7 @@ module CurrentStable
     def index
       set_status_counts
       set_active_status
+      set_gender_select
       @query = policy_scope(Horses::Horse, policy_scope_class: CurrentStable::HorsePolicy::Scope)
       case @active_status
       when :racehorse

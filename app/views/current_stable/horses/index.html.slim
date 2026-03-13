@@ -3,7 +3,7 @@
                                                    { name: t(".title"), href: "#" }])
 
 = render Horses::SearchFilters::Component.new(version: request_variant, path_name: "stable_horses_path", params:, query: @query,
-        active_status: @active_status)
+        active_status: @active_status, url: stable_horses_path, include_owner_filter: false)
 
 .float-right
   - if (count = CurrentStable::SaleOfferPolicy::Scope.new(Current.user, Horses::SaleOffer).resolve.count).positive?

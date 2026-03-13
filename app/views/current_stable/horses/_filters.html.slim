@@ -1,6 +1,7 @@
+/# locals: (params:, query:, active_status:)
 .card.card-border.shadow-md.my-4.dark:border-1.dark:border-neutral-100/50
   .card-body#horses-search data-turbo-permanent=""
-    = search_form_for query, url:, html: { class: "d-flex flex-column", autocomplete: "off" },
+    = search_form_for query, url: stable_horses_path, html: { class: "d-flex flex-column", autocomplete: "off" },
                              data: { turbo_action: "replace", controller: "auto-submit" } do |f|
       .grid.grid-cols-1.sm:grid-cols-4.mb-2.gap-4
         div
@@ -21,11 +22,6 @@
           label for="q_dam_name_i_cont_all"= I18n.t("horses.search.dam")
           = f.input :dam_name_i_cont_all, label: false, required: false,
                   input_html: { data: { action: 'keyup->auto-submit#submit' } }
-        - if include_owner_filter
-          div
-            label for="q_owner_name_i_cont_all"= I18n.t("horses.search.owner")
-            = f.input :owner_name_i_cont_all, label: false, required: false,
-                    input_html: { data: { action: 'keyup->auto-submit#submit' } }
         div
           label for="q_breeder_name_i_cont_all"= I18n.t("horses.search.breeder")
           = f.input :breeder_name_i_cont_all, label: false, required: false,

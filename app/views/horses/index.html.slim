@@ -4,7 +4,7 @@
       = render Nav::Breadcrumbs::Actions::Component.new(actions: [:create], path: "/auctions/actions/")
 
 = render Horses::SearchFilters::Component.new(version: request_variant, path_name: "horses_path", params:, query:,
-                                              active_status:)
+                                              active_status:, url: horses_path)
 
 .float-right.space-x-2
   - if (count = AuctionPolicy::Scope.new(Current.user, Auction.current).resolve.count).positive?
