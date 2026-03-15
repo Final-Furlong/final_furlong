@@ -26,6 +26,9 @@ javascript:
   } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
     darkMode = true;
   }
+  if (colorTheme === '') {
+    colorTheme = darkMode ? 'night' : 'nord';
+  }
   if (colorTheme) {
     document.documentElement.setAttribute('data-theme', colorTheme)
   }
