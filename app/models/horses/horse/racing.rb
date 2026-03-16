@@ -3,6 +3,10 @@ class Horses::Horse::Racing < ActiveRecord::AssociatedObject
   record.has_one :racing_stats, class_name: "Racing::RacingStats", dependent: :delete
   record.has_many :workout_stats, class_name: "Workouts::Stat", dependent: :delete_all
 
+  record.scope :runs_on_dirt, -> { joins(:race_options).merge(::Racing::RaceOption.dirt) }
+  record.scope :runs_on_turf, -> { joins(:race_options).merge(::Racing::RaceOption.turf) }
+  record.scope :runs_on_steeplechase, -> { joins(:race_options).merge(::Racing::RaceOption.jump) }
+
   def current_location
     if last_shipment.nil?
       record.manager.racetrack.location

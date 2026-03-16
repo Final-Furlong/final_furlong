@@ -147,13 +147,41 @@ en:
         workouts_count: Workouts (%{count})
       update:
         success: Training Schedule was successfully updated.
+    training_summaries:
+      filters:
+        age: Age(s)
+        days_since_last_race: Days Since Last Race
+        days_since_last_shipment: Days Since Last Shipment
+        energy: Energy (Max/Min)
+        entered_to_race: Entered to Race
+        fitness: Fitness (Max/Min)
+        gender: Gender
+        injury: Injury
+        location: Location
+        max: Max
+        min: Min
+        name: Horse Name
+        runs_on: Runs On
+        workouts_since_last_race: Workouts Since Last Race
+      show:
+        age: Age
+        energy: Energy
+        fitness: Fitness
+        gender: Gender
+        horse: Horse
+        last_injury: Last Injury
+        last_race: Last Race
+        location: Location
+        qualifying_level: Qualifying Race
     trainings:
       index:
         loading_schedules: Loading schedules...
+        loading_training_summary: Loading training summary...
         loading_workouts: Loading workouts...
         no_schedules: Schedules
         no_workouts: Workouts
         schedules: Schedules (%{count})
+        training_summary: Summary
         workouts: Workouts (%{count})
     workouts:
       create:

@@ -11,6 +11,9 @@ shared:
       points: 10.0
     platinum:
       minimum_races: 50
+  filter_genders:
+    - male
+    - female
   image_height: 500
   image_width: 800
   future_events:

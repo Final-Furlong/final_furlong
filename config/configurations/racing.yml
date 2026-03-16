@@ -60,6 +60,14 @@ shared:
     - "3+"
     - "4"
     - "4+"
+  filter_ages:
+    - "2yo"
+    - "3yo"
+    - "4yo+"
+  filter_injuries:
+    - past
+    - present
+    - none
   grades:
     - Ungraded
     - Grade 3

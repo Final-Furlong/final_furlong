@@ -30,6 +30,9 @@ module Horses
 
     has_many :race_result_finishes, class_name: "Racing::RaceResultHorse", inverse_of: :horse, dependent: :delete_all
     has_many :race_results, class_name: "Racing::RaceResult", source: :race, through: :race_result_finishes
+    has_one :latest_race_result_finish, -> { order id: :desc }, class_name:
+      "Racing::RaceResultHorse", inverse_of: :horse, dependent: :delete
+    has_one :latest_race_result, class_name: "Racing::RaceResult", through: :latest_race_result_finish, source: :race
     has_many :race_records, class_name: "Racing::RaceRecord", inverse_of: :horse, dependent: :delete_all
     has_many :workouts, class_name: "Workouts::Workout", inverse_of: :horse, dependent: :destroy
     # rubocop:disable Rails/HasManyOrHasOneDependent
@@ -48,6 +51,8 @@ module Horses
     has_many :racing_shipments, class_name: "Shipping::RacehorseShipment", dependent: :delete_all
     has_many :current_injuries, class_name: "Horses::Injury", inverse_of: :horse, dependent: :delete_all
     has_many :historical_injuries, class_name: "Horses::HistoricalInjury", inverse_of: :horse, dependent: :delete_all
+    has_one :latest_injury, -> { order date: :desc }, class_name:
+      "Horses::HistoricalInjury", inverse_of: :horse, dependent: :delete
     has_many :jockey_relationships, class_name: "Racing::HorseJockeyRelationship", dependent: :delete_all
     has_one :race_metadata, class_name: "Racing::RacehorseMetadata", dependent: :delete
 
@@ -108,6 +113,18 @@ module Horses
     scope :racehorse_status, ->(status) {
       joins(:race_qualification).merge(::Racing::RaceQualification.send(:qualified_for, status))
     }
+    scope :sort_by_race_qualification_asc, -> { joins(:race_qualification).merge(::Racing::RaceQualification.sort_by_qualified_asc) }
+    scope :sort_by_race_qualification_desc, -> { joins(:race_qualification).merge(::Racing::RaceQualification.sort_by_qualified_desc) }
+    scope :sort_by_race_metadata_race_nulls_last_asc, -> { joins(:race_metadata).order("race_metadata.last_raced_at ASC NULLS LAST") }
+    scope :sort_by_race_metadata_race_nulls_last_desc, -> { joins(:race_metadata).order("race_metadata.last_raced_at DESC NULLS LAST") }
+    scope :sort_by_race_metadata_injury_nulls_last_asc, -> { joins(:race_metadata).order("race_metadata.last_injured_at ASC NULLS LAST") }
+    scope :sort_by_race_metadata_injury_nulls_last_desc, -> { joins(:race_metadata).order("race_metadata.last_injured_at DESC NULLS LAST") }
+    scope :min_energy, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.min_energy(value)) }
+    scope :max_energy, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.max_energy(value)) }
+    scope :energy_in, ->(max_value, min_value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.energy_within(max_value, min_value)) }
+    scope :min_fitness, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.min_fitness(value)) }
+    scope :max_fitness, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.max_fitness(value)) }
+    scope :fitness_in, ->(max_value, min_value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.fitness_within(max_value, min_value)) }
 
     delegate :title, :breeding_record, :dosage_text, :track_record, to: :horse_attributes, allow_nil: true
 
@@ -202,11 +219,17 @@ module Horses
     end
 
     def self.ransackable_associations(_auth_object = nil)
-      %w[breeder dam location_bred owner sire race_stats race_metadata race_options]
+      %w[breeder dam location_bred owner sire race_stats race_metadata race_options race_qualification race_results latest_race_result latest_injury]
     end
 
     def self.ransackable_scopes(_auth_object = nil)
-      %w[min_age max_age female not_female racehorse_status]
+      %w[min_age max_age female not_female racehorse_status min_energy max_energy energy_in min_fitness max_fitness fitness_in
+        runs_on_dirt runs_on_turf runs_on_steeplechase injury_status min_days_since_last_race max_days_since_last_race
+        min_days_since_last_shipment max_days_since_last_shipment min_workouts_since_last_race max_workouts_since_last_race]
+    end
+
+    def self.ransackable_scopes_skip_sanitize_args
+      %i[min_energy max_energy energy_in min_fitness max_fitness fitness_in]
     end
 
     private

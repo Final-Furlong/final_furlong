@@ -14,7 +14,15 @@ class UpdateRacehorseStatsJob < ApplicationJob
         step.advance! from: horse.id
       end
     end
-    store_job_info(outcome: { horses: })
+    deleted = 0
+    step :cleanup do |step|
+      Horses::Horse.where.not(status: "racehorse").where.associated(:race_metadata).find_each(start: step.cursor) do |horse|
+        Racing::RacehorseMetadata.where(horse:).first&.destroy
+        deleted += 1
+        step.advance! from: horse.id
+      end
+    end
+    store_job_info(outcome: { horses:, deleted: })
   end
 
   private
@@ -30,6 +38,8 @@ class UpdateRacehorseStatsJob < ApplicationJob
     else
       Horses::Boarding.ended.where(horse_id: horse.id).maximum(:end_date)
     end
+    last_injured_at = Horses::HistoricalInjury.where(horse:).maximum(:date)
+    currently_injured = horse.current_injuries.present?
     last_shipped_at = Shipping::RacehorseShipment.where(horse_id: horse.id).maximum(:arrival_date)
     last_shipped_home_at = Shipping::RacehorseShipment.where(horse_id: horse.id, shipping_type: "track_to_farm").maximum(:arrival_date)
     # count rest days since last race
@@ -67,15 +77,36 @@ class UpdateRacehorseStatsJob < ApplicationJob
       last_raced_at:,
       last_rested_at:,
       last_shipped_at:,
+      last_injured_at:,
+      currently_injured:,
       rest_days_since_last_race: rest_days,
       workouts_since_last_race:,
       energy_grade:,
       fitness_grade:,
       racetrack:,
+      location: racetrack.location,
+      location_string: location_name(horse),
       at_home: legacy_horse.Location == 59,
       in_transit: horse.racing_shipments.current.exists?
     }
     data.update!(attrs)
+  end
+
+  def location_name(horse)
+    last_shipment = Shipping::RacehorseShipment.where(horse_id: horse.id).order(departure_date: :desc).first
+    return horse.manager.name if last_shipment.blank?
+
+    case last_shipment.shipping_type
+    when "track_to_track", "farm_to_track"
+      name = Racing::Racetrack.where(location: last_shipment.ending_location).pick(:name)
+      if horse.current_boarding.present?
+        I18n.t("horse.location.at_boarding_farm", name:)
+      else
+        I18n.t("horse.location.at_racetrack", name:)
+      end
+    when "track_to_farm"
+      horse.manager.name
+    end
   end
 
   def pick_grades(horse, energy_grade, energy, fitness_grade, fitness)
@@ -85,10 +116,6 @@ class UpdateRacehorseStatsJob < ApplicationJob
 
     egrade, fgrade = horse.race_metadata.update_grades(energy:, fitness:)
     [egrade, fgrade]
-  end
-
-  def pick_fitness_grade(grade)
-    grade.upcase if Config::Racing.letter_grades.map(&:upcase).include?(grade.upcase)
   end
 end
 
