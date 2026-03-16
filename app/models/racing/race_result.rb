@@ -45,6 +45,14 @@ module Racing
       seconds = [seconds, remainder].join(".")
       [minutes, seconds].join(":")
     end
+
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[age claiming_price condition date distance female_only grade male_only name number purse race_type time_in_seconds]
+    end
+
+    def self.ransackable_associations(_auth_object = nil)
+      %w[horses track_surface]
+    end
   end
 end
 

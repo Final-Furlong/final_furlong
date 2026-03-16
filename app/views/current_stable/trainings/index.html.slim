@@ -21,3 +21,11 @@
             .w-full.text-center
               p.mx-auto= t(".loading_workouts")
               .mt-2.mx-auto.skeleton.w-full
+
+    - if policy([:current_stable, :training_summary]).show?
+      input.tab type="radio" name="stable-training-summary" aria-label=t(".training_summary") id="training-summary"
+      .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+        = turbo_frame_tag "#{Current.stable.slug}-training-summary", src: stable_training_summary_path, loading: "lazy" do
+          .w-full.text-center
+            p.mx-auto= t(".loading_training_summary")
+            .mt-2.mx-auto.skeleton.w-full

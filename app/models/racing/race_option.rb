@@ -28,8 +28,8 @@ module Racing
     scope :flat, -> { where(racehorse_type: "flat") }
     scope :jump, -> { where(racehorse_type: "jump") }
     scope :distance_matching, ->(distance) { where("minimum_distance <= :num AND maximum_distance >= :num", { num: distance }) }
-    scope :dirt, -> { where(runs_on_dirt: true) }
-    scope :turf, -> { where(runs_on_turf: true) }
+    scope :dirt, -> { where(runs_on_dirt: true).flat }
+    scope :turf, -> { where(runs_on_turf: true).flat }
     scope :steeplechase, -> {}
 
     def racehorse_type = super.to_s.inquiry

@@ -25,6 +25,34 @@ module Racing
     }
     scope :qualified_for_exactly, ->(type) { where("#{type}_qualified": true) }
     scope :not_qualified_for, ->(type) { where("#{type}_qualified": false) }
+    scope :sort_by_qualified_asc, -> {
+      order(Arel.sql("CASE
+      WHEN (maiden_qualified = TRUE AND starter_allowance_qualified = FALSE) THEN 1
+      WHEN (maiden_qualified = TRUE AND starter_allowance_qualified = TRUE) THEN 1.5
+      WHEN (nw1_allowance_qualified = TRUE AND starter_allowance_qualified = FALSE) THEN 2
+      WHEN (nw1_allowance_qualified = TRUE AND starter_allowance_qualified = TRUE) THEN 2.5
+      WHEN (nw2_allowance_qualified = TRUE AND starter_allowance_qualified = FALSE) THEN 3
+      WHEN (nw2_allowance_qualified = TRUE AND starter_allowance_qualified = TRUE) THEN 3.5
+      WHEN (nw3_allowance_qualified = TRUE AND starter_allowance_qualified = FALSE) THEN 4
+      WHEN (nw3_allowance_qualified = TRUE AND starter_allowance_qualified = TRUE) THEN 4.5
+      WHEN starter_allowance_qualified = FALSE THEN 5
+      ELSE 6
+      END"))
+    }
+    scope :sort_by_qualified_desc, -> {
+      order(Arel.sql("CASE
+      WHEN (maiden_qualified = TRUE AND starter_allowance_qualified = FALSE) THEN 6.5
+      WHEN (maiden_qualified = TRUE AND starter_allowance_qualified = TRUE) THEN 6
+      WHEN (nw1_allowance_qualified = TRUE AND starter_allowance_qualified = FALSE) THEN 5.5
+      WHEN (nw1_allowance_qualified = TRUE AND starter_allowance_qualified = TRUE) THEN 5
+      WHEN (nw2_allowance_qualified = TRUE AND starter_allowance_qualified = FALSE) THEN 4.5
+      WHEN (nw2_allowance_qualified = TRUE AND starter_allowance_qualified = TRUE) THEN 4
+      WHEN (nw3_allowance_qualified = TRUE AND starter_allowance_qualified = FALSE) THEN 3.5
+      WHEN (nw3_allowance_qualified = TRUE AND starter_allowance_qualified = TRUE) THEN 3
+      WHEN starter_allowance_qualified = FALSE THEN 2
+      ELSE 1
+      END"))
+    }
 
     def self.previous_qualification_level(qualification)
       if Config::Racing.non_qualified_types.include?(qualification)
@@ -54,6 +82,26 @@ module Racing
 
     def self.populated?
       Scenic.database.populated?(table_name)
+    end
+
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[allowance_placed claiming_qualified horse_id maiden_qualified nw1_allowance_qualified nw2_allowance_qualified nw3_allowance_qualified stakes_placed starter_allowance_qualified]
+    end
+
+    def to_s
+      base_qual = if maiden_qualified
+        I18n.t("racing.race.maiden")
+      elsif nw1_allowance_qualified
+        I18n.t("racing.race.nw1_allowance")
+      elsif nw2_allowance_qualified
+        I18n.t("racing.race.nw2_allowance")
+      elsif nw3_allowance_qualified
+        I18n.t("racing.race.nw3_allowance")
+      else
+        I18n.t("racing.race.allowance")
+      end
+      base_qual += " (" + I18n.t("racing.race.starter_allowance") + ")" if starter_allowance_qualified
+      base_qual
     end
   end
 end

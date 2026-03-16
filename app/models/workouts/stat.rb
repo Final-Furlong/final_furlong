@@ -21,9 +21,9 @@ end
 #  id                                          :bigint           not null, primary key
 #  activity(walk, jog, canter, gallop, breeze) :enum             not null, indexed, uniquely indexed => [horse_id]
 #  best_date                                   :date             not null, indexed
-#  best_time_in_seconds                        :integer          default(0), not null, indexed
+#  best_time_in_seconds                        :decimal(6, 3)    default(0.0), not null, indexed
 #  recent_date                                 :date             not null, indexed
-#  recent_time_in_seconds                      :integer          default(0), not null, indexed
+#  recent_time_in_seconds                      :decimal(6, 3)    default(0.0), not null, indexed
 #  created_at                                  :datetime         not null
 #  updated_at                                  :datetime         not null
 #  horse_id                                    :bigint           not null, uniquely indexed => [activity]

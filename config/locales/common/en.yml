@@ -44,8 +44,10 @@ en:
       reset_filters: Reset filters
     text:
       attention: Attention
+      'false': 'No'
       info: Info
       'no': 'No'
+      'true': 'Yes'
       'yes': 'Yes'
   daisy_ui:
     abyss: Abyss
