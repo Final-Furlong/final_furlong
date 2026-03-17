@@ -1,0 +1,43 @@
+= turbo_frame_tag "#{Current.stable.slug}-training-summary" do
+  = render "filters", query: @query
+  table.table-responsive.table.bordered.table-zebra.w-full
+    thead
+      tr
+        th= sort_link @query, :name, t(".horse")
+        th= sort_link @query, :age, [:age, 'name asc'], t(".age")
+        th= sort_link @query, :gender, [:gender, 'name asc'], t(".gender")
+        th= sort_link @query, :race_metadata_energy_grade, [:race_metadata_energy_grade, 'name asc'], t(".energy")
+        th= sort_link @query, :race_metadata_fitness_grade, [:race_metadata_fitness_grade, 'name asc'], t(".fitness")
+        th= sort_link @query, :race_metadata_location_string, [:race_metadata_location_string, 'name asc'], t(".location")
+        th= sort_link @query, :race_qualification, [:race_qualification, 'name asc'], t(".qualifying_level")
+        th= sort_link @query, :race_metadata_race_nulls_last, [:race_metadata_race_nulls_last, 'name asc'], t(".last_race")
+        th= sort_link @query, :race_metadata_injury_nulls_last, [:race_metadata_injury_nulls_last, 'name asc'], t(".last_injury")
+    tbody
+      - @horses.each do |horse|
+        - data = horse.race_metadata
+        tr
+          td class="text-#{horse.gender.downcase}"= link_to horse.name, horse_path(horse), data: { turbo_frame: "_top" }
+          td.text-center= horse.age
+          td.text-center= horse.gender.first.upcase
+          td.text-center= data&.energy_grade || t("common.dash")
+          td.text-center= data&.fitness_grade || t("common.dash")
+          td.text-center= data.location_string
+          td.text-center= horse.race_qualification.to_s
+          td.text-center
+            - if (race_date = horse.latest_race_result&.date)
+              = l(race_date)
+              = " ("
+              = (Date.current - race_date).to_i
+              = ")"
+            - else
+              = t("common.dash")
+          td
+            - if (injury_date = horse.latest_injury&.date)
+              = l(injury_date)
+              = " ("
+              = (Date.current - injury_date).to_i
+              = ")"
+            - else
+              = t("common.dash")
+  .float-right.mt-2
+    == @pagy.series_nav

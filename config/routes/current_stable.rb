@@ -8,10 +8,10 @@ namespace :stable, module: "current_stable" do
   resources :leases, only: :index
   resources :sale_offers, only: :index
   resources :trainings, only: :index
-  resources :training, only: :show
   resources :training_schedules do
     resources :horses, controller: "training_schedule_horses", only: %i[index create destroy]
   end
+  resource :training_summary, only: :show
   resources :workouts, only: %i[index create]
   resources :settings, only: %i[new]
   resources :shipments, only: :index

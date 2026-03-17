@@ -2548,14 +2548,26 @@ CREATE MATERIALIZED VIEW public.race_qualifications AS
                FROM public.lifetime_race_records
               WHERE ((lifetime_race_records.horse_id = h.id) AND (lifetime_race_records.wins = 0)))
             WHEN 1 THEN true
-            ELSE false
+            ELSE
+            CASE ( SELECT count(*) AS count
+                   FROM public.lifetime_race_records
+                  WHERE (lifetime_race_records.horse_id = h.id))
+                WHEN 1 THEN false
+                ELSE true
+            END
         END AS maiden_qualified,
         CASE ( SELECT count(r.id) AS count
                FROM (public.race_result_horses rr
                  LEFT JOIN public.race_results r ON ((r.id = rr.race_id)))
               WHERE ((rr.horse_id = h.id) AND (r.date > GREATEST(horse_sales.sale_date, h.date_of_birth))))
             WHEN 3 THEN true
-            ELSE false
+            ELSE
+            CASE ( SELECT count(*) AS count
+                   FROM public.lifetime_race_records
+                  WHERE (lifetime_race_records.horse_id = h.id))
+                WHEN 1 THEN false
+                ELSE true
+            END
         END AS claiming_qualified,
         CASE ( SELECT count(r.id) AS count
                FROM (public.race_result_horses rr
@@ -2566,18 +2578,36 @@ CREATE MATERIALIZED VIEW public.race_qualifications AS
         END AS starter_allowance_qualified,
         CASE allowance_wins.wins
             WHEN 0 THEN true
-            ELSE false
+            ELSE
+            CASE ( SELECT count(*) AS count
+                   FROM public.lifetime_race_records
+                  WHERE (lifetime_race_records.horse_id = h.id))
+                WHEN 1 THEN false
+                ELSE true
+            END
         END AS nw1_allowance_qualified,
         CASE allowance_wins.wins
             WHEN 0 THEN true
             WHEN 1 THEN true
-            ELSE false
+            ELSE
+            CASE ( SELECT count(*) AS count
+                   FROM public.lifetime_race_records
+                  WHERE (lifetime_race_records.horse_id = h.id))
+                WHEN 1 THEN false
+                ELSE true
+            END
         END AS nw2_allowance_qualified,
         CASE allowance_wins.wins
             WHEN 0 THEN true
             WHEN 1 THEN true
             WHEN 2 THEN true
-            ELSE false
+            ELSE
+            CASE ( SELECT count(*) AS count
+                   FROM public.lifetime_race_records
+                  WHERE (lifetime_race_records.horse_id = h.id))
+                WHEN 1 THEN false
+                ELSE true
+            END
         END AS nw3_allowance_qualified,
         CASE ( SELECT count(r.id) AS count
                FROM (public.race_result_horses rr
@@ -2749,7 +2779,11 @@ CREATE TABLE public.racehorse_metadata (
     created_at timestamp(6) with time zone CONSTRAINT racehorse_stats_created_at_not_null NOT NULL,
     updated_at timestamp(6) with time zone CONSTRAINT racehorse_stats_updated_at_not_null NOT NULL,
     rest_days_since_last_race integer DEFAULT 0 CONSTRAINT racehorse_stats_rest_days_since_last_race_not_null NOT NULL,
-    workouts_since_last_race integer DEFAULT 0 CONSTRAINT racehorse_stats_workouts_since_last_race_not_null NOT NULL
+    workouts_since_last_race integer DEFAULT 0 CONSTRAINT racehorse_stats_workouts_since_last_race_not_null NOT NULL,
+    location_id bigint,
+    location_string character varying DEFAULT 'Farm'::character varying NOT NULL,
+    last_injured_at date,
+    currently_injured boolean DEFAULT false NOT NULL
 );
 
 
@@ -3516,9 +3550,9 @@ CREATE TABLE public.workout_stats (
     id bigint NOT NULL,
     horse_id bigint NOT NULL,
     activity public.workout_activity_types NOT NULL,
-    best_time_in_seconds integer DEFAULT 0 NOT NULL,
+    best_time_in_seconds numeric(6,3) DEFAULT 0 NOT NULL,
     best_date date NOT NULL,
-    recent_time_in_seconds integer DEFAULT 0 NOT NULL,
+    recent_time_in_seconds numeric(6,3) DEFAULT 0 NOT NULL,
     recent_date date NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
@@ -6289,6 +6323,13 @@ CREATE INDEX index_racehorse_metadata_on_at_home ON public.racehorse_metadata US
 
 
 --
+-- Name: index_racehorse_metadata_on_currently_injured; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_metadata_on_currently_injured ON public.racehorse_metadata USING btree (currently_injured);
+
+
+--
 -- Name: index_racehorse_metadata_on_energy_grade; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6317,6 +6358,13 @@ CREATE INDEX index_racehorse_metadata_on_in_transit ON public.racehorse_metadata
 
 
 --
+-- Name: index_racehorse_metadata_on_last_injured_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_metadata_on_last_injured_at ON public.racehorse_metadata USING btree (last_injured_at);
+
+
+--
 -- Name: index_racehorse_metadata_on_last_raced_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6335,6 +6383,13 @@ CREATE INDEX index_racehorse_metadata_on_last_rested_at ON public.racehorse_meta
 --
 
 CREATE INDEX index_racehorse_metadata_on_last_shipped_at ON public.racehorse_metadata USING btree (last_shipped_at);
+
+
+--
+-- Name: index_racehorse_metadata_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_metadata_on_location_id ON public.racehorse_metadata USING btree (location_id);
 
 
 --
@@ -7764,6 +7819,14 @@ ALTER TABLE ONLY public.shipment_routes
 
 
 --
+-- Name: racehorse_metadata fk_rails_e3cb002fdf; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.racehorse_metadata
+    ADD CONSTRAINT fk_rails_e3cb002fdf FOREIGN KEY (location_id) REFERENCES public.locations(id);
+
+
+--
 -- Name: lease_offers fk_rails_e4810d6ca8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7898,6 +7961,9 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260317123610'),
+('20260317121603'),
+('20260317105713'),
 ('20260310122751'),
 ('20260305133154'),
 ('20260304145944'),

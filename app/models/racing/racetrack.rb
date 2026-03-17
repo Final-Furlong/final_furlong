@@ -10,6 +10,8 @@ module Racing
     has_many :surfaces, class_name: "TrackSurface", dependent: :restrict_with_exception
     has_many :scheduled_races, class_name: "Racing::RaceSchedule", through: :surfaces
 
+    scope :not_final_furlong, -> { where.not(name: "Final Furlong") }
+
     validates :name, presence: true, length: { minimum: 4 }
     validates :name, uniqueness: { case_sensitive: false }
 

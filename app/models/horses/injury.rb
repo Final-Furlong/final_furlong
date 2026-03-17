@@ -36,6 +36,10 @@ module Horses
         Config::Injuries.legs.sample.upcase
       end
     end
+
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[date horse_id injury_type rest_date]
+    end
   end
 end
 

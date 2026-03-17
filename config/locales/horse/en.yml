@@ -164,6 +164,10 @@ en:
       limping: Limping
       overheat: Overheated
       swelling: Swelling
+    injury_state:
+      none: No injuries
+      past: Has a past injury
+      present: Currently injured
     lease_offer_acceptances:
       create:
         success: Lease was accepted
@@ -214,6 +218,7 @@ en:
         title: End Lease
     leased_html: Leased to %{stable} until %{date}
     location:
+      at_boarding_farm: "%{name} Boarding Farm"
       at_farm: Farm
       at_racetrack: "%{name} Racetrack"
     markings:
