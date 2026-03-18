@@ -1,17 +1,21 @@
 = turbo_frame_tag "#{Current.stable.slug}-training-summary" do
   = render "filters", query: @query
-  table.table-responsive.table.bordered.table-zebra.w-full
+  table.table-responsive.table.bordered.table-zebra.table-sm.w-full
     thead
       tr
-        th= sort_link @query, :name, t(".horse")
-        th= sort_link @query, :age, [:age, 'name asc'], t(".age")
-        th= sort_link @query, :gender, [:gender, 'name asc'], t(".gender")
-        th= sort_link @query, :race_metadata_energy_grade, [:race_metadata_energy_grade, 'name asc'], t(".energy")
-        th= sort_link @query, :race_metadata_fitness_grade, [:race_metadata_fitness_grade, 'name asc'], t(".fitness")
-        th= sort_link @query, :race_metadata_location_string, [:race_metadata_location_string, 'name asc'], t(".location")
-        th= sort_link @query, :race_qualification, [:race_qualification, 'name asc'], t(".qualifying_level")
-        th= sort_link @query, :race_metadata_race_nulls_last, [:race_metadata_race_nulls_last, 'name asc'], t(".last_race")
-        th= sort_link @query, :race_metadata_injury_nulls_last, [:race_metadata_injury_nulls_last, 'name asc'], t(".last_injury")
+        th.text-center= sort_link @query, :name, t(".horse")
+        th.text-center= sort_link @query, :age, [:age, 'name asc'], t(".age")
+        th.text-center= sort_link @query, :gender, [:gender, 'name asc'], t(".gender")
+        th.text-center= sort_link @query, :race_metadata_energy_grade, [:race_metadata_energy_grade, 'name asc'], t(".energy")
+        th.text-center= sort_link @query, :race_metadata_fitness_grade, [:race_metadata_fitness_grade, 'name asc'], t(".fitness")
+        th.text-center= sort_link @query, :race_metadata_location_string, [:race_metadata_location_string, 'name asc'], t(".location")
+        th.text-center= sort_link @query, :race_qualification, [:race_qualification, 'name asc'], t(".qualifying_level")
+        th.text-center
+          = sort_link @query, :race_metadata_race_nulls_last, [:race_metadata_race_nulls_last, 'name asc'] do
+            = t(".last_race")
+            .tooltip.ml-2.text-lg data-tip=t(".last_race_hint")
+              i.ph-fill.ph-info
+        th.text-center= sort_link @query, :race_metadata_injury_nulls_last, [:race_metadata_injury_nulls_last, 'name asc'], t(".last_injury")
     tbody
       - @horses.each do |horse|
         - data = horse.race_metadata
@@ -24,18 +28,22 @@
           td.text-center= data.location_string
           td.text-center= horse.race_qualification.to_s
           td.text-center
-            - if (race_date = horse.latest_race_result&.date)
-              = l(race_date)
+            - if data.last_raced_at
+              = l(data.last_raced_at, format: :month_day)
+              = " - "
+              = data.latest_result_abbreviation
               = " ("
-              = (Date.current - race_date).to_i
+              = (Date.current - data.last_raced_at).to_i
+              = " | "
+              = data.rest_days_since_last_race
               = ")"
             - else
               = t("common.dash")
           td
-            - if (injury_date = horse.latest_injury&.date)
-              = l(injury_date)
+            - if data.last_injured_at
+              = l(data.last_injured_at)
               = " ("
-              = (Date.current - injury_date).to_i
+              = (Date.current - data.last_injured_at).to_i
               = ")"
             - else
               = t("common.dash")

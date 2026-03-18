@@ -103,7 +103,7 @@ end
 #
 #  id                                                                                                                 :bigint           not null, primary key
 #  age                                                                                                                :integer          default(0), not null, indexed
-#  date_of_birth                                                                                                      :date             not null, indexed
+#  date_of_birth                                                                                                      :date             not null, indexed, indexed => [leaser_id], indexed => [owner_id]
 #  date_of_death                                                                                                      :date             indexed
 #  gender(colt, filly, mare, stallion, gelding)                                                                       :enum             not null, indexed
 #  name                                                                                                               :string(18)       indexed
@@ -113,30 +113,32 @@ end
 #  updated_at                                                                                                         :datetime         not null
 #  breeder_id                                                                                                         :bigint           not null, indexed
 #  dam_id                                                                                                             :bigint           indexed
-#  leaser_id                                                                                                          :bigint           indexed
+#  leaser_id                                                                                                          :bigint           indexed => [date_of_birth], indexed
 #  legacy_id                                                                                                          :integer          indexed
 #  location_bred_id                                                                                                   :bigint           not null, indexed
-#  owner_id                                                                                                           :bigint           not null, indexed
+#  owner_id                                                                                                           :bigint           not null, indexed => [date_of_birth], indexed
 #  public_id                                                                                                          :string(12)       indexed
 #  sire_id                                                                                                            :bigint           indexed
 #
 # Indexes
 #
-#  index_horses_on_age               (age)
-#  index_horses_on_breeder_id        (breeder_id)
-#  index_horses_on_dam_id            (dam_id)
-#  index_horses_on_date_of_birth     (date_of_birth)
-#  index_horses_on_date_of_death     (date_of_death)
-#  index_horses_on_gender            (gender)
-#  index_horses_on_leaser_id         (leaser_id)
-#  index_horses_on_legacy_id         (legacy_id)
-#  index_horses_on_location_bred_id  (location_bred_id)
-#  index_horses_on_name              (name)
-#  index_horses_on_owner_id          (owner_id)
-#  index_horses_on_public_id         (public_id)
-#  index_horses_on_sire_id           (sire_id)
-#  index_horses_on_slug              (slug)
-#  index_horses_on_status            (status)
+#  index_horses_on_age                          (age)
+#  index_horses_on_breeder_id                   (breeder_id)
+#  index_horses_on_dam_id                       (dam_id)
+#  index_horses_on_date_of_birth                (date_of_birth)
+#  index_horses_on_date_of_birth_and_leaser_id  (date_of_birth,leaser_id) WHERE (leaser_id IS NOT NULL)
+#  index_horses_on_date_of_birth_and_owner_id   (date_of_birth,owner_id) WHERE (leaser_id IS NULL)
+#  index_horses_on_date_of_death                (date_of_death)
+#  index_horses_on_gender                       (gender)
+#  index_horses_on_leaser_id                    (leaser_id)
+#  index_horses_on_legacy_id                    (legacy_id)
+#  index_horses_on_location_bred_id             (location_bred_id)
+#  index_horses_on_name                         (name)
+#  index_horses_on_owner_id                     (owner_id)
+#  index_horses_on_public_id                    (public_id)
+#  index_horses_on_sire_id                      (sire_id)
+#  index_horses_on_slug                         (slug)
+#  index_horses_on_status                       (status)
 #
 # Foreign Keys
 #

@@ -88,6 +88,7 @@ en:
     formats:
       default: "%Y-%m-%d"
       long: "%B %-d, %Y"
+      month_day: "%-m/%-d"
       short: "%b %d"
       slashes: "%-m/%-d/%y"
       text: "%B %-d, %Y"

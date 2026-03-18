@@ -150,7 +150,6 @@ en:
     training_summaries:
       filters:
         age: Age(s)
-        days_since_last_race: Days Since Last Race
         days_since_last_shipment: Days Since Last Shipment
         energy: Energy (Max/Min)
         entered_to_race: Entered to Race
@@ -161,6 +160,7 @@ en:
         max: Max
         min: Min
         name: Horse Name
+        rest_days_since_last_race: Rest Days Since Last Race
         runs_on: Runs On
         workouts_since_last_race: Workouts Since Last Race
       show:
@@ -171,6 +171,7 @@ en:
         horse: Horse
         last_injury: Last Injury
         last_race: Last Race
+        last_race_hint: Race Info (Days Since | Rest Days Since)
         location: Location
         qualifying_level: Qualifying Race
     trainings:

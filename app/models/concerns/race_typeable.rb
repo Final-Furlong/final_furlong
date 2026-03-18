@@ -34,7 +34,7 @@ module RaceTypeable
     def race_description_string
       race_description = I18n.t("racing.results.race_number", number:) +
         ", " + I18n.t("racing.race.furlongs", number: distance) + " "
-      race_description += " " + track_surface.surface.titleize + " "
+      race_description += " " + race_surface_string + " "
       race_description += if claiming?
         price = Game::MoneyFormatter.new(claiming_price).to_s
         I18n.t("racing.race.claiming_with_price", price:)
@@ -46,6 +46,10 @@ module RaceTypeable
         race_description += " " + race_gender_string
       end
       race_description + ", " + Game::MoneyFormatter.new(purse).to_s
+    end
+
+    def race_surface_string
+      track_surface.surface.titleize
     end
 
     def equipment_string(object = self)

@@ -99,12 +99,29 @@
         th= t(".track_record")
         td= horse.track_record || t("horse.unraced")
       - if horse.racehorse?
-        tr
-          th= t(".last_race")
-          td Not Yet Added
-        tr
-          th= t(".next_race")
-          td Not Yet Added
+        - if horse.race_metadata.last_raced_at
+          tr
+            th= t(".last_race")
+            td
+              - last_finish = horse.latest_race_result_finish
+              - last_race = last_finish.race
+              - date = l(last_race.date, format: :slashes)
+              - track = last_race.racetrack.name
+              - number = last_race.number
+              - distance = last_race.distance_abbr
+              - type = t("racing.race.#{last_race.race_type}")
+              - age_gender = [last_race.race_age_string, last_race.race_gender_string].compact.join(' ')
+              - surface = last_race.race_surface_string
+              - position = last_finish.finish_position.ordinalize
+              - horses = last_race.horses.count
+              = render Ui::Link::Component.new(url: racing_result_path(last_race.date, last_race.number), extra_classes: "mt-2", data: { turbo_frame: "modal" }) do
+                = t(".last_race_info", date:, track:, number:, distance:, type:, age_gender:, surface: , position: , horses:)
+        - if horse.race_entries.any?
+          tr
+            th= t(".next_race")
+            td
+              - next_entry = horse.race_entries.joins(:race).order(race: { date: :asc }).first
+              = next_entry.inspect
         tr
           th= t(".scheduled_race")
           td Not Yet Added

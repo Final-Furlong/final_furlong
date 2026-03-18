@@ -2561,13 +2561,7 @@ CREATE MATERIALIZED VIEW public.race_qualifications AS
                  LEFT JOIN public.race_results r ON ((r.id = rr.race_id)))
               WHERE ((rr.horse_id = h.id) AND (r.date > GREATEST(horse_sales.sale_date, h.date_of_birth))))
             WHEN 3 THEN true
-            ELSE
-            CASE ( SELECT count(*) AS count
-                   FROM public.lifetime_race_records
-                  WHERE (lifetime_race_records.horse_id = h.id))
-                WHEN 1 THEN false
-                ELSE true
-            END
+            ELSE false
         END AS claiming_qualified,
         CASE ( SELECT count(r.id) AS count
                FROM (public.race_result_horses rr
@@ -2783,7 +2777,8 @@ CREATE TABLE public.racehorse_metadata (
     location_id bigint,
     location_string character varying DEFAULT 'Farm'::character varying NOT NULL,
     last_injured_at date,
-    currently_injured boolean DEFAULT false NOT NULL
+    currently_injured boolean DEFAULT false NOT NULL,
+    latest_result_abbreviation character varying
 );
 
 
@@ -3550,9 +3545,9 @@ CREATE TABLE public.workout_stats (
     id bigint NOT NULL,
     horse_id bigint NOT NULL,
     activity public.workout_activity_types NOT NULL,
-    best_time_in_seconds numeric(6,3) DEFAULT 0 NOT NULL,
+    best_time_in_seconds numeric(6,3) DEFAULT 0.0 NOT NULL,
     best_date date NOT NULL,
-    recent_time_in_seconds numeric(6,3) DEFAULT 0 NOT NULL,
+    recent_time_in_seconds numeric(6,3) DEFAULT 0.0 NOT NULL,
     recent_date date NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
@@ -5441,6 +5436,20 @@ CREATE INDEX index_horses_on_date_of_birth ON public.horses USING btree (date_of
 
 
 --
+-- Name: index_horses_on_date_of_birth_and_leaser_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horses_on_date_of_birth_and_leaser_id ON public.horses USING btree (date_of_birth, leaser_id) WHERE (leaser_id IS NOT NULL);
+
+
+--
+-- Name: index_horses_on_date_of_birth_and_owner_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horses_on_date_of_birth_and_owner_id ON public.horses USING btree (date_of_birth, owner_id) WHERE (leaser_id IS NULL);
+
+
+--
 -- Name: index_horses_on_date_of_death; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6390,6 +6399,13 @@ CREATE INDEX index_racehorse_metadata_on_last_shipped_at ON public.racehorse_met
 --
 
 CREATE INDEX index_racehorse_metadata_on_location_id ON public.racehorse_metadata USING btree (location_id);
+
+
+--
+-- Name: index_racehorse_metadata_on_location_string; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_metadata_on_location_string ON public.racehorse_metadata USING btree (location_string);
 
 
 --
@@ -7961,6 +7977,8 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260318121037'),
+('20260318100704'),
 ('20260317123610'),
 ('20260317121603'),
 ('20260317105713'),

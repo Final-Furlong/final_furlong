@@ -46,6 +46,14 @@ module Racing
       [minutes, seconds].join(":")
     end
 
+    def distance_abbr
+      "#{distance.to_s.gsub(".0", "")}f"
+    end
+
+    def surface_abbr
+      track_surface.surface.to_s[0].upcase
+    end
+
     def self.ransackable_attributes(_auth_object = nil)
       %w[age claiming_price condition date distance female_only grade male_only name number purse race_type time_in_seconds]
     end

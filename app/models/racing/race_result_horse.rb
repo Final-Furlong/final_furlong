@@ -19,6 +19,13 @@ module Racing
     scope :by_max_finish, ->(position) { where(finish_position: ..position) }
     scope :by_date, ->(date) { joins(:race).merge(RaceResult.by_date(date)) }
     scope :by_year, ->(year) { joins(:race).merge(RaceResult.by_year(year).ordered_by_date) }
+
+    def result_abbreviation
+      race_info = [race.distance_abbr, race.surface_abbr].join(" ")
+      position = "#{finish_position.ordinalize}/#{race.horses.count}"
+      equipment = (equipment_string == I18n.t("common.dash")) ? I18n.t("common.none") : equipment_string
+      [race_info, position, equipment].join(" - ")
+    end
   end
 end
 

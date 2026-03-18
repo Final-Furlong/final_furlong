@@ -33,6 +33,7 @@ class UpdateRacehorseStatsJob < ApplicationJob
     legacy_horse = Legacy::Horse.find(horse.legacy_id)
     last_raced_at = Racing::RaceResult.joins(:horses).where(race_result_horses: { horse_id: horse.id })
       .maximum(:date)
+    last_race_abbr = Racing::RaceResultHorse.joins(:race).where(race: { date: last_raced_at }, horse:).first&.result_abbreviation
     last_boarded_at = if Horses::Boarding.current.exists?(horse_id: horse.id)
       Date.current
     else
@@ -75,6 +76,7 @@ class UpdateRacehorseStatsJob < ApplicationJob
     energy_grade, fitness_grade = pick_grades(horse, legacy_horse.DisplayEnergy, legacy_horse.EnergyCurrent, legacy_horse.DisplayFitness, legacy_horse.Fitness)
     attrs = {
       last_raced_at:,
+      latest_result_abbreviation: last_race_abbr,
       last_rested_at:,
       last_shipped_at:,
       last_injured_at:,

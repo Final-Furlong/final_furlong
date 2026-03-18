@@ -4,6 +4,7 @@ en-GB:
     formats:
       default: "%d-%m-%Y"
       long: "%-d %B, %Y"
+      month_day: "%-d/%-m"
       short: "%d %b"
       slashes: "%-d/%-m/%y"
       text: "%-d %B, %Y"

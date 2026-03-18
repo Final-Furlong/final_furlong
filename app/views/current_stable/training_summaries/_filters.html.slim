@@ -46,13 +46,13 @@
           fieldset.fieldset
             legend.fieldset-legend= t(".location")
             label.label
-              = f.collection_select :race_metadata_racetrack_id_eq, Racing::Racetrack.not_final_furlong.order(name: :asc), :id, :name, { include_blank: true }, { class: 'select', disabled: true }
+              = f.collection_select :race_metadata_location_string_eq, Racing::RacehorseMetadata.joins(:horse).merge(Horses::Horse.managed_by(Current.stable)).order(location_string: :asc).select(:location_string).distinct, :location_string, :location_string, { include_blank: true }, { class: 'select' }
         div
           fieldset.fieldset
             legend.fieldset-legend= t(".entered_to_race")
             label.label
               - %w[true false].each do |value|
-                = radio_button_tag "q[race_entry]", value, checked: params.dig(:q, :race_entry).to_s == value, class: "radio", disabled: true
+                = radio_button_tag "q[race_entry]", value, checked: params.dig(:q, :race_entry).to_s == value, class: "radio"
                 = t("common.text.#{value}")
         div
           fieldset.fieldset
@@ -60,25 +60,25 @@
             label.label
               - injury_options = Config::Racing.filter_injuries.map do |injury|
                 - [injury, I18n.t("horse.injury_state.#{injury}")]
-              = f.collection_select :injury_status, injury_options, :first, :last, { include_blank: true }, { class: 'select d-inline' , disabled: true }
+              = f.collection_select :injury_status, injury_options, :first, :last, { include_blank: true }, { class: 'select d-inline' }
         div
           fieldset.fieldset
-            legend.fieldset-legend= t(".days_since_last_race")
+            legend.fieldset-legend= t(".rest_days_since_last_race")
             .flex
-              = f.text_field :min_days_since_last_race, class: 'input mr-2', type: 'text', placeholder: t(".min"), disabled: true
-              = f.text_field :max_days_since_last_race, class: 'input', type: 'text', placeholder: t(".max"), disabled: true
+              = f.text_field :min_rest_days_since_last_race, class: 'input mr-2', type: 'text', placeholder: t(".min")
+              = f.text_field :max_rest_days_since_last_race, class: 'input', type: 'text', placeholder: t(".max")
         div
           fieldset.fieldset
             legend.fieldset-legend= t(".days_since_last_shipment")
             .flex
-              = f.text_field :min_days_since_last_shipment, class: 'input mr-2', type: 'text', placeholder: t(".min"), disabled: true
-              = f.text_field :max_days_since_last_shipment, class: 'input', type: 'text', placeholder: t(".max"), disabled: true
+              = f.text_field :min_days_since_last_shipment, class: 'input mr-2', type: 'text', placeholder: t(".min")
+              = f.text_field :max_days_since_last_shipment, class: 'input', type: 'text', placeholder: t(".max")
         div
           fieldset.fieldset
             legend.fieldset-legend= t(".workouts_since_last_race")
             .flex
-              = f.text_field :min_workouts_since_last_race, class: 'input mr-2', type: 'text', placeholder: t(".min"), disabled: true
-              = f.text_field :max_workouts_since_last_race, class: 'input', type: 'text', placeholder: t(".max"), disabled: true
+              = f.text_field :min_workouts_since_last_race, class: 'input mr-2', type: 'text', placeholder: t(".min")
+              = f.text_field :max_workouts_since_last_race, class: 'input', type: 'text', placeholder: t(".max")
 
       .float-right.flex.mt-2.justify-content-end
         = render Ui::ButtonizedLink::Component.new(url: stable_training_summary_path, color: :error, style: :outline, size: :small, extra_classes: "me-2", http_method: :get, data: { action: "search#reset" }) do
