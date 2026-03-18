@@ -16,9 +16,6 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpack
   "vendor", "storage", ".bundle", "public/uploads", "public/vite"
 append :assets_manifests, "public/vite/.vite/manifest*.*"
 
-# Important: pass strict install flags to pnpm
-set :pnpm_flags, %w[--frozen-lockfile --prod]
-
 set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:stage)}" }
 
 after "deploy", "deploy:cleanup"
@@ -36,5 +33,5 @@ set :ssh_options, {
 
 before "deploy:migrate", "maintenance:start"
 after "deploy:migrate", "maintenance:stop"
-#before "deploy:updated", "pnpm:install"
+before "deploy:updated", "pnpm:install"
 

@@ -111,7 +111,6 @@ group :development do
   gem "capistrano-bundler", "~> 2.0", require: false
   gem "capistrano-deploytags", "~> 1.0.0", require: false
   gem "capistrano-passenger", require: false
-  gem "capistrano-pnpm", require: false
   gem "capistrano-rails", "~> 1.3", require: false
   gem "capistrano-rbenv", "~> 2.2", require: false
   gem "ed25519", require: false # required for capistrano
@@ -149,7 +148,6 @@ group :development, :test do
   gem "rubocop", require: false
   gem "rubocop-capybara", require: false
   gem "rubocop-factory_bot", require: false
-  gem "rubocop-graphql", require: false
   gem "rubocop-performance", require: false
   gem "rubocop-rails", require: false
   gem "rubocop-rake", require: false
