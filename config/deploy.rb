@@ -16,6 +16,7 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpack
   "vendor", "storage", ".bundle", "public/uploads", "public/vite"
 append :assets_manifests, "public/vite/.vite/manifest*.*"
 
+set :npm_flags, '--production'
 set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:stage)}" }
 
 after "deploy", "deploy:cleanup"
@@ -33,4 +34,5 @@ set :ssh_options, {
 
 before "deploy:migrate", "maintenance:start"
 after "deploy:migrate", "maintenance:stop"
+before "deploy:updated", "npm:install"
 
