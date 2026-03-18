@@ -1,12 +1,10 @@
 namespace :pnpm do
   desc "Install JavaScript dependencies using pnpm"
   task :install do
-    on roles(fetch(:pnpm_roles, :web)) do
+    as user: 'www', group: 'www' do
       within release_path do
-        with fetch(:pnpm_env, {}) do
-          flags = Array(fetch(:pnpm_flags, %w[--frozen-lockfile --prod]))
-          execute :pnpm, :install, *flags
-        end
+        flags = Array(fetch(:pnpm_flags, %w[--frozen-lockfile --prod]))
+        execute :pnpm, :install, *flags
       end
     end
   end
