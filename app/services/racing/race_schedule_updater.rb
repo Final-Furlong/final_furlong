@@ -10,7 +10,7 @@ module Racing
       max_date = Date.current if max_date && max_date > Date.current
       return unless max_date
 
-      query = <<-SQL.squish
+      query = <<~SQL.squish
         SELECT day_number, date
         FROM  (
           SELECT DISTINCT ON (day_number) *

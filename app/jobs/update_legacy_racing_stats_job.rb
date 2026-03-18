@@ -18,7 +18,7 @@ class UpdateLegacyRacingStatsJob < ApplicationJob
 
   def migrate_racing_stats(horse:)
     legacy = Legacy::Horse.where.not(Acceleration: nil).find_by(ID: horse
-                                                                   .legacy_id)
+      .legacy_id)
     return unless legacy
 
     stats = horse.racing_stats || horse.build_racing_stats
