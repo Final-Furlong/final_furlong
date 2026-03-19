@@ -16,7 +16,10 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpack
   "vendor", "storage", ".bundle", "public/uploads", "public/vite"
 append :assets_manifests, "public/vite/.vite/manifest*.*"
 
-set :npm_flags, '--production'
+SSHKit.config.command_map[:npm] = "/home/www/.nvm/versions/node/v25.1.0/bin/npm"
+SSHKit.config.command_map[:node] = "/home/www/.nvm/versions/node/v25.1.0/bin/node"
+SSHKit.config.command_map[:pnpm] = "/home/www/.local/share/pnpm/pnpm"
+set :npm_flags, '--omit-dev'
 set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:stage)}" }
 
 after "deploy", "deploy:cleanup"
