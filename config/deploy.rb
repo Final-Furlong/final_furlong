@@ -35,6 +35,10 @@ set :ssh_options, {
   verify_host_key: :always
 }
 
+set :default_env, {
+  'VITE_RUBY_SKIP_ASSETS_PRECOMPILE_INSTALL' => true,
+}
+
 before "deploy:migrate", "maintenance:start"
 after "deploy:migrate", "maintenance:stop"
 before "deploy:updated", "pnpm:install"
