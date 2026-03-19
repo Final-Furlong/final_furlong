@@ -5,7 +5,7 @@ namespace :pnpm do
       within release_path do
         with fetch(:pnpm_env, {}) do
           flags = Array(fetch(:pnpm_flags, %w[--frozen-lockfile --prod]))
-          execute 'whoami'
+          execute 'echo $PATH'
           execute :pnpm, :install, *flags
         end
       end

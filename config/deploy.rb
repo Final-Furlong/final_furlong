@@ -35,9 +35,7 @@ set :ssh_options, {
   verify_host_key: :always
 }
 
-set :default_env, {
-  'VITE_RUBY_SKIP_ASSETS_PRECOMPILE_INSTALL' => true,
-}
+SSHKit.config.default_env = { path: '/home/www/.local/share/pnpm:/home/www/.nvm/versions/node/v25.1.0/bin:$PATH' }
 
 before "deploy:migrate", "maintenance:start"
 after "deploy:migrate", "maintenance:stop"
