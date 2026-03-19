@@ -996,10 +996,10 @@ GEM
       axiom-types (~> 0.1)
       coercible (~> 1.0)
       descendants_tracker (~> 0.0, >= 0.0.3)
-    vite_rails (3.0.20)
+    vite_rails (3.10.0)
       railties (>= 5.1, < 9)
       vite_ruby (~> 3.0, >= 3.2.2)
-    vite_ruby (3.9.2)
+    vite_ruby (3.10.0)
       dry-cli (>= 0.7, < 2)
       logger (~> 1.6)
       mutex_m
@@ -1574,8 +1574,8 @@ CHECKSUMS
   view_component (4.2.0) sha256=f250a3397a794336354f73c229b3b7549af0b24906551b99a03492b54cb5233d
   view_component-contrib (0.2.5) sha256=4a6baee5abf2a317ba333a3cdd032bcd13b0f4cbdc57628ca3c8866f159e5f8e
   virtus (2.0.0) sha256=8841dae4eb7fcc097320ba5ea516bf1839e5d056c61ee27138aa4bddd6e3d1c2
-  vite_rails (3.0.20) sha256=582bf9aa3bc3b4d9b0a48c17862b4fa9bd17384ac597a57b7a38d2f95d96e682
-  vite_ruby (3.9.2) sha256=e10a7c851b590cccab57904bc96c2eb078ed6e22560a778db1dcefa3818a4972
+  vite_rails (3.10.0) sha256=8c4471554870c043e8d9ff7d379302a01d147ade2cd61476ddf020fed32a107a
+  vite_ruby (3.10.0) sha256=7d4468adbce161a182873bed4469363e4fc01df77504c66d3519a2b3d0ebb3f4
   warden (1.2.9) sha256=46684f885d35a69dbb883deabf85a222c8e427a957804719e143005df7a1efd0
   web-console (4.2.1) sha256=e7bcf37a10ea2b4ec4281649d1cee461b32232d0a447e82c786e6841fd22fe20
   web-push (3.1.0) sha256=501ab00340c58fb70dabda59f28a86b3cccb0930c6f1f30721b2a5b24de7187d
