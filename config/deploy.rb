@@ -19,7 +19,7 @@ append :assets_manifests, "public/vite/.vite/manifest*.*"
 SSHKit.config.command_map[:npm] = "/home/www/.nvm/versions/node/v25.1.0/bin/npm"
 SSHKit.config.command_map[:node] = "/home/www/.nvm/versions/node/v25.1.0/bin/node"
 SSHKit.config.command_map[:pnpm] = "/home/www/.local/share/pnpm/pnpm"
-set :npm_flags, '--prod --frozen-lockfile'
+set :npm_flags, "--prod --frozen-lockfile"
 set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:stage)}" }
 
 after "deploy", "deploy:cleanup"
@@ -35,7 +35,7 @@ set :ssh_options, {
   verify_host_key: :always
 }
 
-SSHKit.config.default_env = { path: '/home/www/.local/share/pnpm:/home/www/.nvm/versions/node/v25.1.0/bin:$PATH' }
+SSHKit.config.default_env = { path: "/home/www/.local/share/pnpm:/home/www/.nvm/versions/node/v25.1.0/bin:$PATH" }
 
 before "deploy:migrate", "maintenance:start"
 after "deploy:migrate", "maintenance:stop"

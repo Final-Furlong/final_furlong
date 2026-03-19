@@ -110,8 +110,8 @@ group :development do
   gem "capistrano", "~> 3.17", require: false
   gem "capistrano-bundler", "~> 2.0", require: false
   gem "capistrano-deploytags", "~> 1.0.0", require: false
-  gem "capistrano-pnpm", require: false
   gem "capistrano-passenger", require: false
+  gem "capistrano-pnpm", require: false
   gem "capistrano-rails", "~> 1.3", require: false
   gem "capistrano-rbenv", "~> 2.2", require: false
   gem "ed25519", require: false # required for capistrano

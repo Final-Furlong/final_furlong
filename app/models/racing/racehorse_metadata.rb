@@ -84,7 +84,7 @@ module Racing
       modifier_percent = (energy * 0.2).clamp(10, 20)
       modifier = rand(0...modifier_percent)
       graded_score = (rand(1...2) == 1) ? modifier : modifier * -1
-      energy_score = energy * graded_score
+      energy_score = energy * (100 - graded_score).fdiv(100)
       grade = if energy_score <= 40 then "F"
       elsif energy_score <= 70 then "D"
       elsif energy_score <= 84 then "C"
@@ -97,7 +97,7 @@ module Racing
       modifier_percent = (fitness * 0.2).clamp(10, 20)
       modifier = rand(0...modifier_percent)
       graded_score = (rand(1...2) == 1) ? modifier : modifier * -1
-      fitness_score = fitness * graded_score
+      fitness_score = fitness * (100 - graded_score).fdiv(100)
       grade = if fitness_score <= 40 then "F"
       elsif fitness_score <= 70 then "D"
       elsif fitness_score <= 84 then "C"
