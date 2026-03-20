@@ -26,18 +26,7 @@ module Api
             stats.fitness += permitted_params[:fitness_change].to_i
           end
 
-          saved = false
-          energy_grade, fitness_grade = "", ""
-          ActiveRecord::Base.transaction do
-            saved = stats.save
-            energy_grade, fitness_grade = data.update_grades(energy: stats.energy, fitness: stats.fitness)
-          end
-          if saved && energy_grade.present? && fitness_grade.present?
-            Legacy::Horse.where(ID: permitted_params[:id]).update(
-              EnergyCurrent: stats.energy, Fitness: stats.fitness,
-              DisplayEnergy: energy_grade, DisplayFitness: fitness_grade
-            )
-          end
+          data.update_grades(energy: stats.energy, fitness: stats.fitness, update_legacy: true) if stats.save
 
           { updated: saved }
         end
