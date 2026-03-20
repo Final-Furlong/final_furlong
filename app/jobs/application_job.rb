@@ -45,5 +45,9 @@ class ApplicationJob < ActiveJob::Base
   def run_today?(name: self.class.name, date: Date.current)
     JobStat.exists?(name:, last_run_at: date.all_day)
   end
+
+  def last_run(name: self.class.name)
+    JobStat.where(name:).maximum(:last_run_at)
+  end
 end
 
