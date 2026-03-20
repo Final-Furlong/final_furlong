@@ -2,6 +2,12 @@ shared:
   max_racing_age: 10
   minimum_distance: 5.0
   maximum_distance: 24.0
+  minimum_energy: -100
+  maximum_energy: 100
+  minimum_fitness: 20
+  maximum_fitness: 120
+  minimum_xp: 0
+  maximum_xp: 100
   racehorse_types:
     - flat
     - jump
