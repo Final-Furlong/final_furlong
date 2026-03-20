@@ -26,6 +26,10 @@ production:
     class: Racing::EnergyFitnessUpdaterJob
     queue: default
     schedule: 25 0 * * *
+  horse_natural_energy:
+    class: Racing::NaturalEnergyUpdaterJob
+    queue: default
+    schedule: 29 0 * * *
   horse_racing_data:
     class: UpdateRacehorseStatsJob
     queue: default
