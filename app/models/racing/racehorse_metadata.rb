@@ -80,7 +80,7 @@ module Racing
     scope :at_home, -> { where(at_home: true) }
     scope :not_at_home, -> { at_home.invert_where }
 
-    def update_grades(energy:, fitness:)
+    def update_grades(energy:, fitness:, update_legacy: false)
       modifier_percent = (energy * 0.2).clamp(10, 20)
       modifier = rand(0...modifier_percent)
       graded_score = (rand(1...2) == 1) ? modifier : modifier * -1
@@ -106,10 +106,28 @@ module Racing
         "A"
       end
       self.fitness_grade = grade
+      update_legacy_info if update_legacy
       if save
         [energy_grade, fitness_grade]
       else
         []
+      end
+    end
+
+    def update_legacy_info
+      legacy_id = horse.legacy_id
+      Legacy::Horse.transaction do
+        Legacy::Horse.where(ID: legacy_id).update(EnergyCurrent: energy,
+          Fitness: fitness,
+          DisplayEnergy: energy_grade,
+          DisplayFitness: fitness_grade)
+        Legacy::ViewTrainingSchedules.where(horse_id: legacy_id).update(
+          energy_current: energy,
+          fitness_current: fitness,
+          energy_grade:,
+          fitness_grade:
+        )
+        Legacy::ViewRacehorses.where(horse_id: legacy_id).update(energy_grade:, fitness_grade:)
       end
     end
 
