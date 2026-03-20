@@ -202,7 +202,10 @@ RSpec.describe Racing::RaceResultCreator do
         odds: "20:1",
         weight: 125,
         speed_factor: 95,
-        blinkers: true
+        blinkers: true,
+        energy_used: 60,
+        fitness_gained: 25,
+        natural_energy_used: 15
       },
       {
         finish_position: 2,
@@ -214,7 +217,10 @@ RSpec.describe Racing::RaceResultCreator do
         jockey_legacy_id: jockey2.legacy_id,
         odds: "10:1",
         weight: 125,
-        speed_factor: 91
+        speed_factor: 91,
+        energy_used: 60,
+        fitness_gained: 25,
+        natural_energy_used: 15
       }
     ]
   end
