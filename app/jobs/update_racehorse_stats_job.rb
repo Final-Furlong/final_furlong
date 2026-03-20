@@ -29,11 +29,15 @@ class UpdateRacehorseStatsJob < ApplicationJob
 
   def migrate_stats(horse:)
     data = horse.race_metadata || horse.build_race_metadata
+    attrs = {}
     stable = horse.manager
     legacy_horse = Legacy::Horse.find(horse.legacy_id)
     last_raced_at = Racing::RaceResult.joins(:horses).where(race_result_horses: { horse_id: horse.id })
       .maximum(:date)
-    last_race_abbr = Racing::RaceResultHorse.joins(:race).where(race: { date: last_raced_at }, horse:).first&.result_abbreviation
+    if data.last_raced_at.blank? || data.last_raced_at < last_raced_at
+      attrs[:last_raced_at] = last_raced_at
+      attrs[:latest_result_abbreviation] = Racing::RaceResultHorse.joins(:race).where(race: { date: last_raced_at }, horse:).first&.result_abbreviation
+    end
     last_boarded_at = if Horses::Boarding.current.exists?(horse_id: horse.id)
       Date.current
     else
@@ -74,23 +78,23 @@ class UpdateRacehorseStatsJob < ApplicationJob
     end
     racetrack ||= stable.racetrack
     energy_grade, fitness_grade = pick_grades(horse, legacy_horse.DisplayEnergy, legacy_horse.EnergyCurrent, legacy_horse.DisplayFitness, legacy_horse.Fitness)
-    attrs = {
-      last_raced_at:,
-      latest_result_abbreviation: last_race_abbr,
+    attrs.merge!(
       last_rested_at:,
       last_shipped_at:,
       last_injured_at:,
       currently_injured:,
       rest_days_since_last_race: rest_days,
       workouts_since_last_race:,
-      energy_grade:,
-      fitness_grade:,
       racetrack:,
       location: racetrack.location,
       location_string: location_name(horse),
       at_home: legacy_horse.Location == 59,
       in_transit: horse.racing_shipments.current.exists?
-    }
+    )
+    unless data.persisted?
+      attrs[:energy_grade] = energy_grade
+      attrs[:fitness_grade] = fitness_grade
+    end
     data.update!(attrs)
   end
 
