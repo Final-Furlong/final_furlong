@@ -29,7 +29,8 @@ module Racing
           race_horses.each do |race_horse|
             result.created = race_horse.valid?
             race_record = update_race_record(race_result:, surface:, race_horse:)
-            next if race_horse.save! && race_record.save!
+            stats = update_energy_fitness(horse: race_horse.horse, horses:)
+            next if race_horse.save! && race_record.save! && stats.save!
 
             result.created = false
             raise ActiveRecord::Rollback, race_horse.errors.full_messages.to_sentence
@@ -77,6 +78,20 @@ module Racing
 
         Horses::UpdateHorseAttributesJob.perform_later(horse)
       end
+    end
+
+    def update_energy_fitness(horse:, horses:)
+      stats = horse.racing_stats
+      finish = horses.find { |hash| hash[:legacy_id] == horse.legacy_id }
+      stats.energy -= finish[:energy_used]
+      stats.energy = Config::Racing.minimum_energy if stats.energy < Config::Racing.minimum_energy
+      stats.fitness += finish[:fitness_gained]
+      stats.fitness = Config::Racing.maximum_fitness if stats.fitness > Config::Racing.maximum_fitness
+      stats.xp_current += finish[:experience_gained]
+      stats.xp_current = Config::Racing.maximum_xp if stats.xp_current > Config::Racing.maximum_xp
+      stats.natural_energy_current -= [10, finish[:natural_energy_used]].min
+      horse.race_metadata&.update_grades(energy: stats.energy, fitness: stats.fitness, update_legacy: true)
+      stats
     end
 
     def update_race_record(race_result:, surface:, race_horse:)

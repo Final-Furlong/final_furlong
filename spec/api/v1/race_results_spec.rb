@@ -68,7 +68,10 @@ RSpec.describe Api::V1::RaceResults do
           weight: 100,
           speed_factor: 100,
           blinkers: true,
-          figure_8: true
+          figure_8: true,
+          energy_used: 50,
+          fitness_gained: 20,
+          natural_energy_used: 10
         },
         {
           finish_position: 2,
@@ -81,7 +84,10 @@ RSpec.describe Api::V1::RaceResults do
           odds: "20:1",
           weight: 110,
           speed_factor: 90,
-          wraps: true
+          wraps: true,
+          energy_used: 60,
+          fitness_gained: 25,
+          natural_energy_used: 15
         }
       ]
     }
