@@ -40,7 +40,7 @@ class Workouts::AutoWorkoutJob < ApplicationJob
             next
           end
           data = horse.race_metadata
-          case horse.manager.user&.setting&.racing&.[](:min_energy_for_workouts)
+          case horse.manager.user&.setting&.racing&.[](:min_energy_for_workout)
           when "A"
             if data.energy_grade != "A"
               skipped += 1
