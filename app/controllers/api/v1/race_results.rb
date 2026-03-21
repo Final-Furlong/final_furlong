@@ -37,6 +37,7 @@ module Api
             requires :weight, type: Integer, desc: "Weight", values: 10..200
             requires :speed_factor, type: Integer, desc: "Speed Factor", values: 0..1_000
             requires :energy_used, type: Integer, desc: "Energy Used In The Race", values: 0..2_000
+            requires :experience_gained, type: Integer, desc: "XP Gained In The Race", values: 0..2_000
             requires :fitness_gained, type: Integer, desc: "Fitness Gained In The Race", values: 0..2_000
             requires :natural_energy_used, type: Integer, desc: "Natural Energy Used In The Race", values: 0..2_000
             optional :blinkers, type: Boolean, default: false, desc: "Blinkers"
