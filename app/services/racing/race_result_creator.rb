@@ -29,7 +29,7 @@ module Racing
           race_horses.each do |race_horse|
             result.created = race_horse.valid?
             race_record = update_race_record(race_result:, surface:, race_horse:)
-            stats = update_energy_fitness(horse: race_horse.horse, horses:)
+            stats = update_stats(horse: race_horse.horse, horses:)
             next if race_horse.save! && race_record.save! && (stats.blank? || stats&.save!)
 
             result.created = false
@@ -80,7 +80,7 @@ module Racing
       end
     end
 
-    def update_energy_fitness(horse:, horses:)
+    def update_stats(horse:, horses:)
       stats = horse.racing_stats
       return unless stats
 
