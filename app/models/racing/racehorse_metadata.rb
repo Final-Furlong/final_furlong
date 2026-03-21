@@ -106,7 +106,7 @@ module Racing
         "A"
       end
       self.fitness_grade = grade
-      update_legacy_info if update_legacy
+      update_legacy_info(energy:, fitness:) if update_legacy
       if save
         [energy_grade, fitness_grade]
       else
@@ -114,7 +114,7 @@ module Racing
       end
     end
 
-    def update_legacy_info
+    def update_legacy_info(energy:, fitness:)
       legacy_id = horse.legacy_id
       Legacy::Horse.transaction do
         Legacy::Horse.where(ID: legacy_id).update(EnergyCurrent: energy,
