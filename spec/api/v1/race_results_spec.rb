@@ -71,7 +71,8 @@ RSpec.describe Api::V1::RaceResults do
           figure_8: true,
           energy_used: 50,
           fitness_gained: 20,
-          natural_energy_used: 10
+          natural_energy_used: 10,
+          experience_gained: 2
         },
         {
           finish_position: 2,
@@ -87,7 +88,8 @@ RSpec.describe Api::V1::RaceResults do
           wraps: true,
           energy_used: 60,
           fitness_gained: 25,
-          natural_energy_used: 15
+          natural_energy_used: 15,
+          experience_gained: 1
         }
       ]
     }
