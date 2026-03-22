@@ -175,22 +175,22 @@ RSpec.describe Auctions::BidCreator do
 
   context "when bid amount is not higher than maximum bid" do
     it "returns created false" do
-      create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
-      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
+      create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, bid_at: Time.current)
+      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, bid_at: 1.minute.ago)
       result = described_class.new.create_bid(bid_params.merge(current_bid: 6000, maximum_bid: 7000))
       expect(result.created?).to be false
     end
 
     it "returns error" do
-      create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
-      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
+      create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, bid_at: Time.current)
+      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, bid_at: 1.minute.ago)
       result = described_class.new.create_bid(bid_params.merge(current_bid: 6000, maximum_bid: 7000))
       expect(result.error).to eq "Current bid must be greater than or equal to #{Game::MoneyFormatter.new(7000 + Config::Auctions.minimum_increment)}"
     end
 
     it "creates 2 bids, one for current bidder + one for new current bid" do
-      create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, updated_at: 1.minute.ago)
-      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, updated_at: Time.current)
+      create(:auction_bid, auction:, horse:, current_bid: 5500, maximum_bid: 10_000, bid_at: Time.current)
+      create(:auction_bid, auction:, horse:, current_bid: 5000, maximum_bid: 5000, bid_at: 1.minute.ago)
       expect do
         described_class.new.create_bid(bid_params.merge(current_bid: 6000, maximum_bid: 7000))
       end.to change(Auctions::Bid, :count).by(2)
