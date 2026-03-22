@@ -222,7 +222,7 @@ module Auctions
     def previous_bid(id: nil)
       @previous_bid ||= Auctions::Bid.where(horse: auction_horse)
         .where.not(id:)
-        .order(maximum_bid: :desc, current_bid: :desc, bid_at: :desc).first
+        .order(Arel.sql("maximum_bid DESC NULLS LAST")).order(current_bid: :desc, bid_at: :desc).first
     end
 
     def previous_max_bid
