@@ -1,0 +1,28 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new( links: [{ name: Current.stable.name, href: current_stable_path },
+          { name: t(".title"), href: "#", title: true }]) do
+    = render Nav::Breadcrumbs::Actions::Component.new(actions: [:create_boarding], path: "/horses/actions/", object: nil)
+
+= turbo_frame_tag "#{Current.stable.slug}-boardings" do
+  .tabs.tabs-border.dark:border-neutral-400 role="tablist"
+    - if policy(%i[current_stable boarding]).list_current?
+      - count = Horses::Horse.racehorse.managed_by(Current.stable).where.associated(:current_boarding).count
+      - label = count.zero? ? t(".no_current") : t(".current", count: count)
+      input.tab type="radio" name="stable-boardings" aria-label=label id="stable-current-boardings"
+      .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+        = turbo_frame_tag "#{Current.stable.slug}-current-boardings", src: stable_current_boardings_path, loading: "lazy" do
+          .w-full.text-center
+            p.mx-auto= t(".loading_current_boardings")
+            .mt-2.mx-auto.skeleton.w-full
+
+    - if policy(%i[current_stable boarding]).list_historical?
+      - count = Horses::Boarding.ended.where(horse: Horses::Horse.racehorse.managed_by(Current.stable)).count
+      - if count.zero?
+        input.tab type="radio" name="stable-boardings" aria-label=t(".no_historical") id="stable-historical-boardings" disabled=true
+      - else
+        input.tab type="radio" name="stable-boardings" aria-label=t(".historical", count: count) id="stable-historical-boardings"
+        .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+          = turbo_frame_tag "#{Current.stable.slug}-boarding-history", src: stable_historical_boardings_path, loading: "lazy" do
+            .w-full.text-center
+              p.mx-auto= t(".loading_historical_boardings")
+              .mt-2.mx-auto.skeleton.w-full
