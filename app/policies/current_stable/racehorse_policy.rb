@@ -58,11 +58,14 @@ module CurrentStable
     end
 
     def board?
-      # TODO: migrate boarding
-      false
+      return false unless manager?
+
+      !Horses::Boarding.current.exists?(horse: record)
     end
 
     def stop_boarding?
+      return false unless manager?
+
       Horses::Boarding.current.exists?(horse: record)
     end
 

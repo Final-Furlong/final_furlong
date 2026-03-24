@@ -10,6 +10,32 @@ module Horse
       render "horse/events/boardings"
     end
 
+    def new
+      horse = Horses::Horse.find(params[:id])
+      @boarding = Horses::Boarding.new(horse:)
+      authorize @boarding
+    end
+
+    def create
+      horse = Horses::Horse.find(params[:id])
+      @boarding = Horses::Boarding.new(horse:)
+      authorize @boarding
+
+      result = Horses::BoardingCreator.new.start_boarding(horse:)
+      if result.created?
+        flash[:success] = t(".success")
+        redirect_to stable_boardings_path
+      else
+        respond_to do |format|
+          format.html { render :new, status: :unprocessable_entity }
+
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.replace("boarding-form", partial: "horse/boardings/form", locals: { boarding: @boarding, horse: })
+          end
+        end
+      end
+    end
+
     def destroy
       @boarding = Horses::Boarding.find(params[:id])
       authorize @boarding
