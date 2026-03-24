@@ -188,6 +188,22 @@ module Horses
       foal_name + ")"
     end
 
+    def name_with_boarding_info
+      data = race_metadata
+      return name if data.blank?
+
+      location = data.racetrack.name
+      "#{name} (#{[location, boarding_available_days].join(" - ")})"
+    end
+
+    def boarding_available_days
+      data = race_metadata
+      return 0 if data.blank?
+
+      current_year_days = boardings.current_year.where(location: data.location).sum(:days)
+      Config::Boarding.max_yearly_days - current_year_days.to_i
+    end
+
     def stillborn?
       self[:date_of_birth] == self[:date_of_death]
     end
