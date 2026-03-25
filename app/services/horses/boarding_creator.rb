@@ -2,8 +2,12 @@ module Horses
   class BoardingCreator < ApplicationService
     attr_reader :horse, :location
 
-    def start_boarding(horse:, legacy_racetrack:)
-      location = Location.joins(:racetrack).find_by(racetracks: { name: legacy_racetrack.Name })
+    def start_boarding(horse:, legacy_racetrack: nil)
+      location = if legacy_racetrack
+        Location.joins(:racetrack).find_by(racetracks: { name: legacy_racetrack.Name })
+      else
+        horse.race_metadata.location
+      end
 
       result = Result.new(created: false, horse:)
       unless location

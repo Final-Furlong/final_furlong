@@ -1,0 +1,59 @@
+= turbo_frame_tag "#{Current.stable.slug}-boarding-history" do
+  - if @boardings.blank?
+    p= t("current_stable.boardings.index.no_boardings")
+  - else
+    .mx-auto.overflow-x-auto.w-full.sm:hidden
+      - @boardings.each do |boarding|
+        - horse = boarding.horse
+        .card.bg-base-100.w-full.px-2.rounded-none
+          .card-body.p-0.rounded-none
+            .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+              input type="checkbox"
+              .collapse-title.font-semibold.font-medium
+                span class="text-#{horse.gender.downcase}"
+                  = horse.name || t("horse.unnamed")
+                span.float-right
+                  = l(boarding.end_date)
+              .collapse-content.text-sm
+                p
+                  span= t("horse.events.boardings.start_date")
+                  span.float-right= l(boarding.start_date)
+                p
+                  span= t("horse.events.boardings.end_date")
+                  span.float-right= l(boarding.end_date)
+                p
+                  span= t("horse.events.boardings.days")
+                  span.float-right
+                    - if boarding.days.to_i.positive?
+                      = boarding.days.to_i
+                    - else
+                      = (boarding.end_date - boarding.start_date).to_i
+                p
+                  span= t("horse.events.boardings.location")
+                  span.float-right= boarding.location.racetrack.name
+    .hidden.mx-auto.overflow-x-auto.border.rounded-md.w-full.sm:block.sm:w-5/6
+      table.table.table-zebra
+        thead
+          tr.border-b-1.border-gray-400.dark:border-neutral-600
+            th= t("horse.events.workouts.horse")
+            th= t("horse.events.boardings.start_date")
+            th= t("horse.events.boardings.end_date")
+            th= t("horse.events.boardings.location")
+            th= t("horse.events.boardings.days")
+        tbody
+          - @boardings.each do |boarding|
+            - horse = boarding.horse
+            tr
+              td class="text-#{horse.gender.downcase}"= link_to horse.name, horse_path(horse), data: { turbo_frame: "_top" }
+              td= l(boarding.start_date)
+              td= l(boarding.end_date)
+              td= boarding.location.racetrack.name
+              td
+                - if boarding.days.to_i.positive?
+                  = boarding.days.to_i
+                - else
+                  = (boarding.end_date - boarding.start_date).to_i
+
+  .float-right.mt-2
+    == @pagy.series_nav
+

@@ -1,0 +1,12 @@
+/# locals: (boarding:)
+= form_with model: boarding, url: stable_boardings_path, id: "boarding-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".horse")
+        = f.collection_select :horse_id, Horses::Horse.racehorse.where.missing(:current_boarding).managed_by(Current.stable).order(name: :asc).all, :id, :name_with_boarding_info, {}, { class: 'select' }
+      - if boarding.errors[:horse]
+        p.text-error= boarding.errors.where(:horse).map(&:full_message).join(', ')
+  .float-right
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t(".start"))

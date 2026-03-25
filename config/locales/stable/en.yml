@@ -16,8 +16,28 @@ en:
         selling: Selling (%{count})
         sold: Sold
         time_left: Time Left
+        title: Auctions
         view_auction: View Auction
         view_bidding: View Bids
+    boardings:
+      create:
+        success: Boarding was successfully started
+      form:
+        horse: Horse (Location - Days Available)
+        start: Start Boarding
+      index:
+        current: Current Boardings (%{count})
+        historical: Boarding History (%{count})
+        loading_current_boardings: Loading current boardings...
+        loading_historical_boardings: Loading boarding history...
+        no_boardings: No boardings
+        no_current: Current Boardings
+        no_historical: Boarding History
+        stop_boarding: Stop Boarding
+        title: Boardings
+      update:
+        failure: Boarding could not be stopped
+        success: Boarding was successfully stopped
     budgets:
       index:
         available_balance: 'Available: %{amount}'
@@ -182,6 +202,7 @@ en:
         no_schedules: Schedules
         no_workouts: Workouts
         schedules: Schedules (%{count})
+        title: Training
         training_summary: Summary
         workouts: Workouts (%{count})
     workouts:

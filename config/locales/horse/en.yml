@@ -3,6 +3,7 @@ en:
   horse:
     actions:
       boarding:
+        create: Create Boarding
         stop: Stop Boarding
       consign_to_auction: Consign to Auction
       create_lease_offer: Set for Lease
@@ -30,8 +31,15 @@ en:
         select_auction: Select An Auction
         title: Consign to Auction
     boardings:
+      create:
+        success: Boarding was successfully started
       destroy:
         success: Boarding was successfully stopped.
+      form:
+        days_left: Days Available
+        location: Current Location
+      new:
+        title: Start Boarding
       stop:
         confirm: Are you sure you want to stop boarding %{horse}?
         confirm_title: Stop Boarding
