@@ -200,7 +200,7 @@ module Horses
       data = race_metadata
       return 0 if data.blank?
 
-      current_year_days = boardings.current_year.where(location: data.location).sum(:days)
+      current_year_days = boardings.current_year.where(location_id: data.location_id).sum(:days)
       Config::Boarding.max_yearly_days - current_year_days.to_i
     end
 

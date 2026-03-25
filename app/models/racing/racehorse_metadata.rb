@@ -79,6 +79,7 @@ module Racing
     scope :max_workouts, ->(number) { where(workouts_since_last_race: ..number.to_i) }
     scope :at_home, -> { where(at_home: true) }
     scope :not_at_home, -> { at_home.invert_where }
+    scope :boardable, -> { where(at_home: false, in_transit: false) }
 
     def update_grades(energy:, fitness:, update_legacy: false)
       modifier_percent = (energy * 0.2).clamp(10, 20)

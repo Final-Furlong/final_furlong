@@ -4,7 +4,8 @@
     div
       fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
         legend.fieldset-legend= t(".horse")
-        = f.collection_select :horse_id, Horses::Horse.racehorse.where.missing(:current_boarding).managed_by(Current.stable).order(name: :asc).all, :id, :name_with_boarding_info, {}, { class: 'select' }
+        - query = Horses::Horse.racehorse.joins(:race_metadata).includes(race_metadata: { racetrack: :location }).where.missing(:current_boarding).managed_by(Current.stable).merge(::Racing::RacehorseMetadata.boardable)
+        = f.collection_select :horse_id, query.order(name: :asc).all, :id, :name_with_boarding_info, {}, { class: 'select' }
       - if boarding.errors[:horse]
         p.text-error= boarding.errors.where(:horse).map(&:full_message).join(', ')
   .float-right
