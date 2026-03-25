@@ -59,6 +59,11 @@ module CurrentStable
 
     def board?
       return false unless manager?
+      return false unless record.racehorse?
+
+      data = record.race_metadata
+      return false if data.in_transit?
+      return false if data.at_home?
 
       !Horses::Boarding.current.exists?(horse: record)
     end

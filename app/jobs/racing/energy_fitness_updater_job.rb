@@ -14,6 +14,7 @@ class Racing::EnergyFitnessUpdaterJob < ApplicationJob
 
       ActiveRecord::Base.transaction do
         # rubocop:disable Rails/SkipsModelValidations
+        Racing::RacingStats.where(natural_energy_gain: "0.000").update_all(Arel.sql("natural_energy_gain = (FLOOR(RANDOM() * (444 - 220 + 1) + 220) / 100)"))
         Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where(race_metadata: { at_home: true }))
           .update_all(Arel.sql("energy = (energy + ((natural_energy_gain + energy_regain) * #{days_since})), fitness = (fitness - #{days_since})"))
         Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.associated(:current_boarding))
