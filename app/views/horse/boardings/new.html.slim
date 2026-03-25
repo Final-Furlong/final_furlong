@@ -1,0 +1,8 @@
+ruby:
+  horse = @boarding.horse
+  content_for :title, t(".title")
+
+.text-center
+  h1.text-xl.font-bold= t(".title")
+
+= render "form", boarding: @boarding, horse: horse

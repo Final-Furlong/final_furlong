@@ -1,3 +1,7 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new( links: [{ name: Current.stable.name, href: current_stable_path },
+          { name: t(".title"), href: "#", title: true }])
+
 = turbo_frame_tag "#{Current.stable.slug}-trainings" do
   .tabs.tabs-border.dark:border-neutral-400 role="tablist"
     - if policy(Racing::TrainingSchedule).index?

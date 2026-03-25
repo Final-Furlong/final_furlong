@@ -1,0 +1,15 @@
+/# locals: (boarding:, horse:)
+= form_with model: boarding, url: horse_boardings_path(horse), id: "boarding-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+  - data = horse.race_metadata
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".location")
+        p.label= data.racetrack.name
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".days_left")
+        p.label= horse.boarding_available_days
+  .float-right
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t("current_stable.boardings.form.start"))
