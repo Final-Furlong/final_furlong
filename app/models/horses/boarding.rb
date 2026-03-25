@@ -7,7 +7,7 @@ module Horses
     validates :end_date, comparison: { greater_than_or_equal_to: :start_date }, allow_nil: true
     validates :days, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
-    scope :current, -> { where(start_date: ...Date.current).where(end_date: nil) }
+    scope :current, -> { where(start_date: ..Date.current).where(end_date: nil) }
     scope :current_year, -> do
       where(start_date: ..Date.current)
         .where("end_date IS NULL OR end_date > ?", Date.new(Date.current.year, 1, 1))
@@ -20,6 +20,10 @@ module Horses
 
     def current?
       end_date.nil?
+    end
+
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[days end_date horse_id location_id start_date]
     end
   end
 end
