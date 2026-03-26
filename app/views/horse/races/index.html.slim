@@ -10,10 +10,13 @@
           - @dashboard.annual_race_records.each do |record|
             li
               = link_to t(".race_year", age: record.year - dob_year, year: record.year), horse_races_path(year: record.year), data: { turbo_frame: "#{@dashboard.horse.slug}-races" }
+      = render Ui::ButtonizedLink::Component.new(url: horse_distance_race_record_path(@dashboard.horse), color: :neutal, data: { turbo_frame: "#{@dashboard.horse.slug}-race-list" }) do
+        = t(".stats")
   .clear-both
-  - if params[:year]
-    = render 'mobile_year', dashboard: @dashboard, dob_year: dob_year, year: params[:year]
-    = render 'desktop_year', dashboard: @dashboard, dob_year: dob_year, year: params[:year]
-  - else
-    = render 'mobile', dashboard: @dashboard, dob_year: dob_year
-    = render 'desktop', dashboard: @dashboard, dob_year: dob_year
+  = turbo_frame_tag "#{@dashboard.horse.slug}-race-list" do
+    - if params[:year]
+      = render 'mobile_year', dashboard: @dashboard, dob_year: dob_year, year: params[:year]
+      = render 'desktop_year', dashboard: @dashboard, dob_year: dob_year, year: params[:year]
+    - else
+      = render 'mobile', dashboard: @dashboard, dob_year: dob_year
+      = render 'desktop', dashboard: @dashboard, dob_year: dob_year

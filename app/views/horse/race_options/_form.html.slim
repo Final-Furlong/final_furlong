@@ -35,7 +35,7 @@
     div
       fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
         legend.fieldset-legend= t(".racing_style")
-        = f.select :racing_style, options_for_select(options.options_for_style_select, options.racing_style), { prompt: t(".jockey_decide") }, { class: 'select' }
+        = f.select :racing_style, options_for_select(options.options_for_style_select, options.racing_style), { include_blank: t(".jockey_decide") }, { class: 'select' }
         - if options.errors[:racing_style]
           p.text-error= options.errors.where(:racing_style).map(&:full_message).join(', ')
     div
