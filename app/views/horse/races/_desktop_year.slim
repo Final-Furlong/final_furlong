@@ -49,26 +49,27 @@
             td= t("horse.races.index.finish_time", time: race.finish_time_string)
             td= t("horse.races.index.speed_factor", number: finish.speed_factor || t("common.na"))
           tr
-            td colspan=4
+            td colspan=3
               - if winner == finish
-                strong.italic= horse.name
+                strong.italic class="text-#{horse.gender}"= horse.name
               - else
                 = render Ui::Link::Component.new(url: horse_path(winner.horse), extra_classes: "italic text-#{winner.horse.gender}", data: { turbo_frame: "_top" }) do
                   = winner.horse.name
               - if second
                 = " / "
                 - if second && second == finish
-                  strong.italic= horse.name
+                  strong.italic class="text-#{horse.gender}"= horse.name
                 - elsif second
                   = render Ui::Link::Component.new(url: horse_path(second.horse), extra_classes: "italic text-#{second.horse.gender}", data: { turbo_frame: "_top" }) do
                     = second.horse.name
                 - if third
                   = " / "
                   - if third && third == finish
-                    strong.italic= horse.name
+                    strong.italic class="text-#{horse.gender}"= horse.name
                   - elsif third
                     = render Ui::Link::Component.new(url: horse_path(third.horse), extra_classes: "italic text-#{third.horse.gender}", data: { turbo_frame: "_top" }) do
                       = third.horse.name
+            td= t("horse.races.index.equipment", equipment: finish.equipment_string(blank: t("common.none")))
           tr
             td colspan=4 class=("border-b-1 border-base-content" unless winner.fractions)
               = t("horse.races.index.running_line", line: finish.positions.gsub("|", "-"))

@@ -18,6 +18,7 @@ module Horses
         options.second_jockey = ::Racing::Jockey.active.find(params[:second_jockey]) if params[:second_jockey].present?
         options.third_jockey = ::Racing::Jockey.active.find(params[:third_jockey]) if params[:third_jockey].present?
         options.racing_style = params[:racing_style] if params[:racing_style].present?
+        options.racing_style = nil if params.key?(:racing_style) && params[:racing_style].blank?
         if params[:note_for_next_race].present?
           options.note_for_next_race = params[:note_for_next_race]
           options.next_race_note_created_at = Time.current
