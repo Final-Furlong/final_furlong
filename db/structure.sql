@@ -1059,6 +1059,655 @@ CREATE TABLE public.data_migrations (
 
 
 --
+-- Name: horses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.horses (
+    id bigint NOT NULL,
+    public_id character varying(12),
+    name character varying(18),
+    slug character varying,
+    date_of_birth date NOT NULL,
+    date_of_death date,
+    age integer DEFAULT 0 NOT NULL,
+    gender public.horse_gender NOT NULL,
+    status public.horse_status DEFAULT 'unborn'::public.horse_status NOT NULL,
+    sire_id bigint,
+    dam_id bigint,
+    owner_id bigint NOT NULL,
+    breeder_id bigint NOT NULL,
+    legacy_id integer,
+    location_bred_id bigint NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL,
+    leaser_id bigint
+);
+
+
+--
+-- Name: COLUMN horses.gender; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.horses.gender IS 'colt, filly, mare, stallion, gelding';
+
+
+--
+-- Name: COLUMN horses.status; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.horses.status IS 'unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased';
+
+
+--
+-- Name: race_result_horses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.race_result_horses (
+    id bigint NOT NULL,
+    race_id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    legacy_horse_id integer DEFAULT 0 NOT NULL,
+    post_parade integer DEFAULT 1 NOT NULL,
+    finish_position integer DEFAULT 1 NOT NULL,
+    positions character varying NOT NULL,
+    margins character varying NOT NULL,
+    fractions character varying,
+    jockey_id bigint,
+    equipment integer DEFAULT 0 NOT NULL,
+    odd_id bigint,
+    speed_factor integer DEFAULT 0 NOT NULL,
+    weight integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: race_results; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.race_results (
+    id bigint NOT NULL,
+    date date NOT NULL,
+    number integer DEFAULT 1 NOT NULL,
+    race_type public.race_type DEFAULT 'maiden'::public.race_type NOT NULL,
+    age public.race_age DEFAULT '2'::public.race_age NOT NULL,
+    male_only boolean DEFAULT false NOT NULL,
+    female_only boolean DEFAULT false NOT NULL,
+    distance numeric(3,1) DEFAULT 5.0 NOT NULL,
+    grade public.race_grade,
+    surface_id bigint NOT NULL,
+    condition public.track_condition,
+    name character varying,
+    purse bigint DEFAULT 0 NOT NULL,
+    claiming_price integer,
+    split public.race_splits,
+    time_in_seconds numeric(7,3) DEFAULT 0.0 NOT NULL,
+    slug character varying,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN race_results.race_type; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_results.race_type IS 'maiden, claiming, starter_allowance, nw1_allowance, nw2_allowance, nw3_allowance, allowance, stakes';
+
+
+--
+-- Name: COLUMN race_results.age; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_results.age IS '2, 2+, 3, 3+, 4, 4+';
+
+
+--
+-- Name: COLUMN race_results.grade; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_results.grade IS 'Ungraded, Grade 3, Grade 2, Grade 1';
+
+
+--
+-- Name: COLUMN race_results.condition; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_results.condition IS 'fast, good, slow, wet';
+
+
+--
+-- Name: COLUMN race_results.split; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_results.split IS '4Q, 2F';
+
+
+--
+-- Name: track_surfaces; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.track_surfaces (
+    id bigint NOT NULL,
+    surface public.track_surface DEFAULT 'dirt'::public.track_surface NOT NULL,
+    condition public.track_condition DEFAULT 'fast'::public.track_condition NOT NULL,
+    racetrack_id bigint NOT NULL,
+    banking integer NOT NULL,
+    jumps integer DEFAULT 0 NOT NULL,
+    length integer NOT NULL,
+    turn_distance integer NOT NULL,
+    turn_to_finish_length integer NOT NULL,
+    width integer NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN track_surfaces.surface; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.track_surfaces.surface IS 'dirt, turf, steeplechase';
+
+
+--
+-- Name: COLUMN track_surfaces.condition; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.track_surfaces.condition IS 'fast, good, slow, wet';
+
+
+--
+-- Name: distance_race_records; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.distance_race_records AS
+ SELECT h.id AS horse_id,
+    COALESCE(sprint_starts.starts, (0)::bigint) AS sprint_starts,
+    COALESCE(sprint_stakes_starts.starts, (0)::bigint) AS sprint_stakes_starts,
+    COALESCE(sprint_wins.wins, (0)::bigint) AS sprint_wins,
+    COALESCE(sprint_stakes_wins.wins, (0)::bigint) AS sprint_stakes_wins,
+    COALESCE(sprint_seconds.seconds, (0)::bigint) AS sprint_seconds,
+    COALESCE(sprint_stakes_seconds.seconds, (0)::bigint) AS sprint_stakes_seconds,
+    COALESCE(sprint_thirds.thirds, (0)::bigint) AS sprint_thirds,
+    COALESCE(sprint_stakes_thirds.thirds, (0)::bigint) AS sprint_stakes_thirds,
+    COALESCE(sprint_fourths.fourths, (0)::bigint) AS sprint_fourths,
+    COALESCE(sprint_stakes_fourths.fourths, (0)::bigint) AS sprint_stakes_fourths,
+    COALESCE(mid_starts.starts, (0)::bigint) AS mid_starts,
+    COALESCE(mid_stakes_starts.starts, (0)::bigint) AS mid_stakes_starts,
+    COALESCE(mid_wins.wins, (0)::bigint) AS mid_wins,
+    COALESCE(mid_stakes_wins.wins, (0)::bigint) AS mid_stakes_wins,
+    COALESCE(mid_seconds.seconds, (0)::bigint) AS mid_seconds,
+    COALESCE(mid_stakes_seconds.seconds, (0)::bigint) AS mid_stakes_seconds,
+    COALESCE(mid_thirds.thirds, (0)::bigint) AS mid_thirds,
+    COALESCE(mid_stakes_thirds.thirds, (0)::bigint) AS mid_stakes_thirds,
+    COALESCE(mid_fourths.fourths, (0)::bigint) AS mid_fourths,
+    COALESCE(mid_stakes_fourths.fourths, (0)::bigint) AS mid_stakes_fourths,
+    COALESCE(long_starts.starts, (0)::bigint) AS long_starts,
+    COALESCE(long_stakes_starts.starts, (0)::bigint) AS long_stakes_starts,
+    COALESCE(long_wins.wins, (0)::bigint) AS long_wins,
+    COALESCE(long_stakes_wins.wins, (0)::bigint) AS long_stakes_wins,
+    COALESCE(long_seconds.seconds, (0)::bigint) AS long_seconds,
+    COALESCE(long_stakes_seconds.seconds, (0)::bigint) AS long_stakes_seconds,
+    COALESCE(long_thirds.thirds, (0)::bigint) AS long_thirds,
+    COALESCE(long_stakes_thirds.thirds, (0)::bigint) AS long_stakes_thirds,
+    COALESCE(long_fourths.fourths, (0)::bigint) AS long_fourths,
+    COALESCE(long_stakes_fourths.fourths, (0)::bigint) AS long_stakes_fourths,
+    COALESCE(jump_sprint_starts.starts, (0)::bigint) AS jump_sprint_starts,
+    COALESCE(jump_sprint_stakes_starts.starts, (0)::bigint) AS jump_sprint_stakes_starts,
+    COALESCE(jump_sprint_wins.wins, (0)::bigint) AS jump_sprint_wins,
+    COALESCE(jump_sprint_stakes_wins.wins, (0)::bigint) AS jump_sprint_stakes_wins,
+    COALESCE(jump_sprint_seconds.seconds, (0)::bigint) AS jump_sprint_seconds,
+    COALESCE(jump_sprint_stakes_seconds.seconds, (0)::bigint) AS jump_sprint_stakes_seconds,
+    COALESCE(jump_sprint_thirds.thirds, (0)::bigint) AS jump_sprint_thirds,
+    COALESCE(jump_sprint_stakes_thirds.thirds, (0)::bigint) AS jump_sprint_stakes_thirds,
+    COALESCE(jump_sprint_fourths.fourths, (0)::bigint) AS jump_sprint_fourths,
+    COALESCE(jump_sprint_stakes_fourths.fourths, (0)::bigint) AS jump_sprint_stakes_fourths,
+    COALESCE(jump_mid_starts.starts, (0)::bigint) AS jump_mid_starts,
+    COALESCE(jump_mid_stakes_starts.starts, (0)::bigint) AS jump_mid_stakes_starts,
+    COALESCE(jump_mid_wins.wins, (0)::bigint) AS jump_mid_wins,
+    COALESCE(jump_mid_stakes_wins.wins, (0)::bigint) AS jump_mid_stakes_wins,
+    COALESCE(jump_mid_seconds.seconds, (0)::bigint) AS jump_mid_seconds,
+    COALESCE(jump_mid_stakes_seconds.seconds, (0)::bigint) AS jump_mid_stakes_seconds,
+    COALESCE(jump_mid_thirds.thirds, (0)::bigint) AS jump_mid_thirds,
+    COALESCE(jump_mid_stakes_thirds.thirds, (0)::bigint) AS jump_mid_stakes_thirds,
+    COALESCE(jump_mid_fourths.fourths, (0)::bigint) AS jump_mid_fourths,
+    COALESCE(jump_mid_stakes_fourths.fourths, (0)::bigint) AS jump_mid_stakes_fourths,
+    COALESCE(jump_long_starts.starts, (0)::bigint) AS jump_long_starts,
+    COALESCE(jump_long_stakes_starts.starts, (0)::bigint) AS jump_long_stakes_starts,
+    COALESCE(jump_long_wins.wins, (0)::bigint) AS jump_long_wins,
+    COALESCE(jump_long_stakes_wins.wins, (0)::bigint) AS jump_long_stakes_wins,
+    COALESCE(jump_long_seconds.seconds, (0)::bigint) AS jump_long_seconds,
+    COALESCE(jump_long_stakes_seconds.seconds, (0)::bigint) AS jump_long_stakes_seconds,
+    COALESCE(jump_long_thirds.thirds, (0)::bigint) AS jump_long_thirds,
+    COALESCE(jump_long_stakes_thirds.thirds, (0)::bigint) AS jump_long_stakes_thirds,
+    COALESCE(jump_long_fourths.fourths, (0)::bigint) AS jump_long_fourths,
+    COALESCE(jump_long_stakes_fourths.fourths, (0)::bigint) AS jump_long_stakes_fourths
+   FROM ((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((public.horses h
+     LEFT JOIN ( SELECT count(r.id) AS starts,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((r.distance <= 7.5) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) sprint_starts ON ((h.id = sprint_starts.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS starts,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((r.distance <= 7.5) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) sprint_stakes_starts ON ((h.id = sprint_stakes_starts.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.distance <= 7.5) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) sprint_wins ON ((h.id = sprint_wins.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.distance <= 7.5) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) sprint_stakes_wins ON ((h.id = sprint_stakes_wins.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS seconds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 2) AND (r.distance <= 7.5) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) sprint_seconds ON ((h.id = sprint_seconds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS seconds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 2) AND (r.distance <= 7.5) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) sprint_stakes_seconds ON ((h.id = sprint_stakes_seconds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS thirds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 3) AND (r.distance <= 7.5) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) sprint_thirds ON ((h.id = sprint_thirds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS thirds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 3) AND (r.distance <= 7.5) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) sprint_stakes_thirds ON ((h.id = sprint_stakes_thirds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS fourths,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 4) AND (r.distance <= 7.5) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) sprint_fourths ON ((h.id = sprint_fourths.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS fourths,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 4) AND (r.distance <= 7.5) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) sprint_stakes_fourths ON ((h.id = sprint_stakes_fourths.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS starts,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE (((r.distance >= 8.0) AND (r.distance <= 10.0)) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) mid_starts ON ((h.id = mid_starts.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS starts,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE (((r.distance >= 8.0) AND (r.distance <= 10.0)) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) mid_stakes_starts ON ((h.id = mid_stakes_starts.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND ((r.distance >= 8.0) AND (r.distance <= 10.0)) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) mid_wins ON ((h.id = mid_wins.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND ((r.distance >= 8.0) AND (r.distance <= 10.0)) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) mid_stakes_wins ON ((h.id = mid_stakes_wins.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS seconds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 2) AND ((r.distance >= 8.0) AND (r.distance <= 10.0)) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) mid_seconds ON ((h.id = mid_seconds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS seconds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 2) AND ((r.distance >= 8.0) AND (r.distance <= 10.0)) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) mid_stakes_seconds ON ((h.id = mid_stakes_seconds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS thirds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 3) AND ((r.distance >= 8.0) AND (r.distance <= 10.0)) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) mid_thirds ON ((h.id = mid_thirds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS thirds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 3) AND ((r.distance >= 8.0) AND (r.distance <= 10.0)) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) mid_stakes_thirds ON ((h.id = mid_stakes_thirds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS fourths,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 4) AND ((r.distance >= 8.0) AND (r.distance <= 10.0)) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) mid_fourths ON ((h.id = mid_fourths.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS fourths,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 4) AND ((r.distance >= 8.0) AND (r.distance <= 10.0)) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) mid_stakes_fourths ON ((h.id = mid_stakes_fourths.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS starts,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((r.distance > 10.0) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) long_starts ON ((h.id = long_starts.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS starts,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((r.distance > 10.0) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) long_stakes_starts ON ((h.id = long_stakes_starts.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.distance > 10.0) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) long_wins ON ((h.id = long_wins.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.distance > 10.0) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) long_stakes_wins ON ((h.id = long_stakes_wins.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS seconds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 2) AND (r.distance > 10.0) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) long_seconds ON ((h.id = long_seconds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS seconds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 2) AND (r.distance > 10.0) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) long_stakes_seconds ON ((h.id = long_stakes_seconds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS thirds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 3) AND (r.distance > 10.0) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) long_thirds ON ((h.id = long_thirds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS thirds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 3) AND (r.distance > 10.0) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) long_stakes_thirds ON ((h.id = long_stakes_thirds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS fourths,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 4) AND (r.distance > 10.0) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) long_fourths ON ((h.id = long_fourths.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS fourths,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 4) AND (r.distance > 10.0) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface <> 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) long_stakes_fourths ON ((h.id = long_stakes_fourths.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS starts,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((r.distance <= (12)::numeric) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_sprint_starts ON ((h.id = jump_sprint_starts.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS starts,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((r.distance <= (12)::numeric) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_sprint_stakes_starts ON ((h.id = jump_sprint_stakes_starts.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.distance <= (12)::numeric) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_sprint_wins ON ((h.id = jump_sprint_wins.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.distance <= (12)::numeric) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_sprint_stakes_wins ON ((h.id = jump_sprint_stakes_wins.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS seconds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 2) AND (r.distance <= (12)::numeric) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_sprint_seconds ON ((h.id = jump_sprint_seconds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS seconds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 2) AND (r.distance <= (12)::numeric) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_sprint_stakes_seconds ON ((h.id = jump_sprint_stakes_seconds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS thirds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 3) AND (r.distance <= (12)::numeric) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_sprint_thirds ON ((h.id = jump_sprint_thirds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS thirds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 3) AND (r.distance <= (12)::numeric) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_sprint_stakes_thirds ON ((h.id = jump_sprint_stakes_thirds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS fourths,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 4) AND (r.distance <= (12)::numeric) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_sprint_fourths ON ((h.id = jump_sprint_fourths.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS fourths,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 4) AND (r.distance <= (12)::numeric) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_sprint_stakes_fourths ON ((h.id = jump_sprint_stakes_fourths.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS starts,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE (((r.distance >= 12.5) AND (r.distance <= 18.0)) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_mid_starts ON ((h.id = jump_mid_starts.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS starts,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE (((r.distance >= 12.5) AND (r.distance <= 18.0)) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_mid_stakes_starts ON ((h.id = jump_mid_stakes_starts.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND ((r.distance >= 12.5) AND (r.distance <= 18.0)) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_mid_wins ON ((h.id = jump_mid_wins.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND ((r.distance >= 12.5) AND (r.distance <= 18.0)) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_mid_stakes_wins ON ((h.id = jump_mid_stakes_wins.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS seconds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 2) AND ((r.distance >= 12.5) AND (r.distance <= 18.0)) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_mid_seconds ON ((h.id = jump_mid_seconds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS seconds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 2) AND ((r.distance >= 12.5) AND (r.distance <= 18.0)) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_mid_stakes_seconds ON ((h.id = jump_mid_stakes_seconds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS thirds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 3) AND ((r.distance >= 12.5) AND (r.distance <= 18.0)) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_mid_thirds ON ((h.id = jump_mid_thirds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS thirds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 3) AND ((r.distance >= 12.5) AND (r.distance <= 18.0)) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_mid_stakes_thirds ON ((h.id = jump_mid_stakes_thirds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS fourths,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 4) AND ((r.distance >= 12.5) AND (r.distance <= 18.0)) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_mid_fourths ON ((h.id = jump_mid_fourths.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS fourths,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 4) AND ((r.distance >= 12.5) AND (r.distance <= 18.0)) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_mid_stakes_fourths ON ((h.id = jump_mid_stakes_fourths.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS starts,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((r.distance > 18.0) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_long_starts ON ((h.id = jump_long_starts.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS starts,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((r.distance > 18.0) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_long_stakes_starts ON ((h.id = jump_long_stakes_starts.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.distance > 18.0) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_long_wins ON ((h.id = jump_long_wins.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.distance > 18.0) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_long_stakes_wins ON ((h.id = jump_long_stakes_wins.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS seconds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 2) AND (r.distance > 18.0) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_long_seconds ON ((h.id = jump_long_seconds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS seconds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 2) AND (r.distance > 18.0) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_long_stakes_seconds ON ((h.id = jump_long_stakes_seconds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS thirds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 3) AND (r.distance > 18.0) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_long_thirds ON ((h.id = jump_long_thirds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS thirds,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 3) AND (r.distance > 18.0) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_long_stakes_thirds ON ((h.id = jump_long_stakes_thirds.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS fourths,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 4) AND (r.distance > 18.0) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_long_fourths ON ((h.id = jump_long_fourths.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS fourths,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 4) AND (r.distance > 18.0) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
+          GROUP BY rr.horse_id) jump_long_stakes_fourths ON ((h.id = jump_long_stakes_fourths.horse_id)));
+
+
+--
 -- Name: future_events; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1499,46 +2148,6 @@ CREATE SEQUENCE public.horse_sales_id_seq
 --
 
 ALTER SEQUENCE public.horse_sales_id_seq OWNED BY public.horse_sales.id;
-
-
---
--- Name: horses; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.horses (
-    id bigint NOT NULL,
-    public_id character varying(12),
-    name character varying(18),
-    slug character varying,
-    date_of_birth date NOT NULL,
-    date_of_death date,
-    age integer DEFAULT 0 NOT NULL,
-    gender public.horse_gender NOT NULL,
-    status public.horse_status DEFAULT 'unborn'::public.horse_status NOT NULL,
-    sire_id bigint,
-    dam_id bigint,
-    owner_id bigint NOT NULL,
-    breeder_id bigint NOT NULL,
-    legacy_id integer,
-    location_bred_id bigint NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL,
-    leaser_id bigint
-);
-
-
---
--- Name: COLUMN horses.gender; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.horses.gender IS 'colt, filly, mare, stallion, gelding';
-
-
---
--- Name: COLUMN horses.status; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.horses.status IS 'unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased';
 
 
 --
@@ -2453,92 +3062,6 @@ ALTER SEQUENCE public.race_options_id_seq OWNED BY public.race_options.id;
 
 
 --
--- Name: race_result_horses; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.race_result_horses (
-    id bigint NOT NULL,
-    race_id bigint NOT NULL,
-    horse_id bigint NOT NULL,
-    legacy_horse_id integer DEFAULT 0 NOT NULL,
-    post_parade integer DEFAULT 1 NOT NULL,
-    finish_position integer DEFAULT 1 NOT NULL,
-    positions character varying NOT NULL,
-    margins character varying NOT NULL,
-    fractions character varying,
-    jockey_id bigint,
-    equipment integer DEFAULT 0 NOT NULL,
-    odd_id bigint,
-    speed_factor integer DEFAULT 0 NOT NULL,
-    weight integer DEFAULT 0 NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
-);
-
-
---
--- Name: race_results; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.race_results (
-    id bigint NOT NULL,
-    date date NOT NULL,
-    number integer DEFAULT 1 NOT NULL,
-    race_type public.race_type DEFAULT 'maiden'::public.race_type NOT NULL,
-    age public.race_age DEFAULT '2'::public.race_age NOT NULL,
-    male_only boolean DEFAULT false NOT NULL,
-    female_only boolean DEFAULT false NOT NULL,
-    distance numeric(3,1) DEFAULT 5.0 NOT NULL,
-    grade public.race_grade,
-    surface_id bigint NOT NULL,
-    condition public.track_condition,
-    name character varying,
-    purse bigint DEFAULT 0 NOT NULL,
-    claiming_price integer,
-    split public.race_splits,
-    time_in_seconds numeric(7,3) DEFAULT 0.0 NOT NULL,
-    slug character varying,
-    created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
-);
-
-
---
--- Name: COLUMN race_results.race_type; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.race_results.race_type IS 'maiden, claiming, starter_allowance, nw1_allowance, nw2_allowance, nw3_allowance, allowance, stakes';
-
-
---
--- Name: COLUMN race_results.age; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.race_results.age IS '2, 2+, 3, 3+, 4, 4+';
-
-
---
--- Name: COLUMN race_results.grade; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.race_results.grade IS 'Ungraded, Grade 3, Grade 2, Grade 1';
-
-
---
--- Name: COLUMN race_results.condition; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.race_results.condition IS 'fast, good, slow, wet';
-
-
---
--- Name: COLUMN race_results.split; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.race_results.split IS '4Q, 2F';
-
-
---
 -- Name: race_qualifications; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
@@ -3235,40 +3758,6 @@ CREATE SEQUENCE public.stud_foal_records_id_seq
 --
 
 ALTER SEQUENCE public.stud_foal_records_id_seq OWNED BY public.stud_foal_records.id;
-
-
---
--- Name: track_surfaces; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.track_surfaces (
-    id bigint NOT NULL,
-    surface public.track_surface DEFAULT 'dirt'::public.track_surface NOT NULL,
-    condition public.track_condition DEFAULT 'fast'::public.track_condition NOT NULL,
-    racetrack_id bigint NOT NULL,
-    banking integer NOT NULL,
-    jumps integer DEFAULT 0 NOT NULL,
-    length integer NOT NULL,
-    turn_distance integer NOT NULL,
-    turn_to_finish_length integer NOT NULL,
-    width integer NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
-);
-
-
---
--- Name: COLUMN track_surfaces.surface; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.track_surfaces.surface IS 'dirt, turf, steeplechase';
-
-
---
--- Name: COLUMN track_surfaces.condition; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.track_surfaces.condition IS 'fast, good, slow, wet';
 
 
 --
@@ -7977,6 +8466,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260326124925'),
 ('20260318121037'),
 ('20260318100704'),
 ('20260317123610'),

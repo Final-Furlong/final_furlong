@@ -242,7 +242,8 @@ ActiveRecordDoctor.configure do
   detector :missing_unique_indexes,
     ignore_columns: [
       "Account::User(username)", # includes discarded_at WHERE
-      "Horses::StallionOption(horse_id)" # indexed as stud_id
+      "Horses::StallionOption(horse_id)", # indexed as stud_id
+      "Racing::DistanceRaceRecord(horse_id)" # group by horse_id view
     ]
 
   detector :unindexed_deleted_at,
@@ -260,7 +261,8 @@ ActiveRecordDoctor.configure do
     ignore_associations: [
       "Racing::AnnualRaceRecord.horse",
       "Racing::LifetimeRaceRecord.horse",
-      "Racing::RaceQualification.horse"
+      "Racing::RaceQualification.horse",
+      "Racing::DistanceRaceRecord.horse"
     ]
 
   detector :unindexed_foreign_keys,
