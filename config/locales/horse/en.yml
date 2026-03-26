@@ -44,6 +44,14 @@ en:
         confirm: Are you sure you want to stop boarding %{horse}?
         confirm_title: Stop Boarding
     created: Created
+    distance_race_records:
+      show:
+        flat_long: Flat (> 10f)
+        flat_mid: Flat (8-10f)
+        flat_sprint: Flat (<= 7.5f)
+        jump_long: Jump (> 18f)
+        jump_mid: Jump (12.5-18f)
+        jump_sprint: Jump (<= 12f)
     equipment:
       blinkers: B
       figure_8: F8
@@ -270,7 +278,9 @@ en:
         workout_stats: Workout Stats
     races:
       index:
+        by_distance: Races By Distance
         earnings: Earnings
+        equipment: 'Equipment: %{equipment}'
         finish_time: 'Time: %{time}'
         fourths: Fourths
         fractions: 'Fractions: %{fractions}'
@@ -280,11 +290,13 @@ en:
         points: Points
         points_amount: "%{points}pts"
         race_year: "%{age}yo (%{year})"
-        races: Races
+        races: View Races
+        record: Record
         running_line: 'Running Line: %{line}'
         seconds: Seconds
         speed_factor: 'Speed Factor: %{number}'
         starts: Starts
+        stats: Stats
         surface: 'Surface: %{surface}'
         thirds: Thirds
         unraced: Unraced

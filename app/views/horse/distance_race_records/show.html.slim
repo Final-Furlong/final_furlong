@@ -1,0 +1,156 @@
+= turbo_frame_tag "#{@horse.slug}-race-list" do
+  .join.join-vertical.bg-base-100.w-full
+    .collapse.collapse-arrow.join-item.border-base-300.border
+      input type="radio" name="race-list"
+      .collapse-title.font-semibold.text-center= t("horse.races.index.by_distance")
+      .collapse-content.text-sm.px-0.sm:p-8
+        table.mx-auto.table.table-zebra.w-full.sm:hidden
+          thead
+            tr
+              th
+              th= t("horse.races.index.record")
+          tbody
+            tr
+              td= t(".flat_sprint")
+              - if @record.sprint_starts.to_i.positive?
+                td.text-right
+                  = [@record.starts_string(prefix: "sprint"), @record.wins_string(prefix: "sprint"),
+                          @record.seconds_string(prefix: "sprint"), @record.thirds_string(prefix: "sprint"),
+                          @record.fourths_string(prefix: "sprint")].join('-')
+              - else
+                td.text-center= t("horse.unraced")
+            tr
+              td= t(".flat_mid")
+              - if @record.mid_starts.to_i.positive?
+                td.text-right
+                  = [@record.starts_string(prefix: "mid"), @record.wins_string(prefix: "mid"),
+                          @record.seconds_string(prefix: "mid"), @record.thirds_string(prefix: "mid"),
+                          @record.fourths_string(prefix: "mid")].join('-')
+              - else
+                td.text-center= t("horse.unraced")
+            tr
+              td= t(".flat_long")
+              - if @record.long_starts.to_i.positive?
+                td.text-right
+                  = [@record.starts_string(prefix: "long"), @record.wins_string(prefix: "long"),
+                          @record.seconds_string(prefix: "long"), @record.thirds_string(prefix: "long"),
+                          @record.fourths_string(prefix: "long")].join('-')
+                td.text-right= @record.starts_string(prefix: "long")
+                td.text-right= @record.wins_string(prefix: "long")
+                td.text-right= @record.seconds_string(prefix: "long")
+                td.text-right= @record.thirds_string(prefix: "long")
+                td.text-right= @record.fourths_string(prefix: "long")
+              - else
+                td.text-center= t("horse.unraced")
+            tr
+              td= t(".jump_sprint")
+              - if @record.jump_sprint_starts.to_i.positive?
+                td.text-right
+                  = [@record.starts_string(prefix: "jump_sprint"), @record.wins_string(prefix: "jump_sprint"),
+                          @record.seconds_string(prefix: "jump_sprint"), @record.thirds_string(prefix: "jump_sprint"),
+                          @record.fourths_string(prefix: "jump_sprint")].join('-')
+                td.text-right= @record.starts_string(prefix: "jump_sprint")
+                td.text-right= @record.wins_string(prefix: "jump_sprint")
+                td.text-right= @record.seconds_string(prefix: "jump_sprint")
+                td.text-right= @record.thirds_string(prefix: "jump_sprint")
+                td.text-right= @record.fourths_string(prefix: "jump_sprint")
+              - else
+                td.text-center= t("horse.unraced")
+            tr
+              td= t(".jump_mid")
+              - if @record.jump_mid_starts.to_i.positive?
+                td.text-right
+                  = [@record.starts_string(prefix: "jump_mid"), @record.wins_string(prefix: "jump_mid"),
+                          @record.seconds_string(prefix: "jump_mid"), @record.thirds_string(prefix: "jump_mid"),
+                          @record.fourths_string(prefix: "jump_mid")].join('-')
+                td.text-right= @record.starts_string(prefix: "jump_mid")
+                td.text-right= @record.wins_string(prefix: "jump_mid")
+                td.text-right= @record.seconds_string(prefix: "jump_mid")
+                td.text-right= @record.thirds_string(prefix: "jump_mid")
+                td.text-right= @record.fourths_string(prefix: "jump_mid")
+              - else
+                td.text-center= t("horse.unraced")
+            tr
+              td= t(".jump_long")
+              - if @record.jump_long_starts.to_i.positive?
+                td.text-right
+                  = [@record.starts_string(prefix: "jump_long"), @record.wins_string(prefix: "jump_long"),
+                          @record.seconds_string(prefix: "jump_long"), @record.thirds_string(prefix: "jump_long"),
+                          @record.fourths_string(prefix: "jump_long")].join('-')
+                td.text-right= @record.starts_string(prefix: "jump_long")
+                td.text-right= @record.wins_string(prefix: "jump_long")
+                td.text-right= @record.seconds_string(prefix: "jump_long")
+                td.text-right= @record.thirds_string(prefix: "jump_long")
+                td.text-right= @record.fourths_string(prefix: "jump_long")
+              - else
+                td.text-center= t("horse.unraced")
+        table.mx-auto.table.table-zebra.hidden.sm:block.w-1/2
+          thead
+            tr
+              th
+              th= t("horse.races.index.starts")
+              th= t("horse.races.index.wins")
+              th= t("horse.races.index.seconds")
+              th= t("horse.races.index.thirds")
+              th= t("horse.races.index.fourths")
+          tbody
+            tr
+              td= t(".flat_sprint")
+              - if @record.sprint_starts.to_i.positive?
+                td.text-right= @record.starts_string(prefix: "sprint")
+                td.text-right= @record.wins_string(prefix: "sprint")
+                td.text-right= @record.seconds_string(prefix: "sprint")
+                td.text-right= @record.thirds_string(prefix: "sprint")
+                td.text-right= @record.fourths_string(prefix: "sprint")
+              - else
+                td.text-center colspan=5 = t("horse.unraced")
+            tr
+              td= t(".flat_mid")
+              - if @record.mid_starts.to_i.positive?
+                td.text-right= @record.starts_string(prefix: "mid")
+                td.text-right= @record.wins_string(prefix: "mid")
+                td.text-right= @record.seconds_string(prefix: "mid")
+                td.text-right= @record.thirds_string(prefix: "mid")
+                td.text-right= @record.fourths_string(prefix: "mid")
+              - else
+                td.text-center colspan=5 = t("horse.unraced")
+            tr
+              td= t(".flat_long")
+              - if @record.long_starts.to_i.positive?
+                td.text-right= @record.starts_string(prefix: "long")
+                td.text-right= @record.wins_string(prefix: "long")
+                td.text-right= @record.seconds_string(prefix: "long")
+                td.text-right= @record.thirds_string(prefix: "long")
+                td.text-right= @record.fourths_string(prefix: "long")
+              - else
+                td.text-center colspan=5 = t("horse.unraced")
+            tr
+              td= t(".jump_sprint")
+              - if @record.jump_sprint_starts.to_i.positive?
+                td.text-right= @record.starts_string(prefix: "jump_sprint")
+                td.text-right= @record.wins_string(prefix: "jump_sprint")
+                td.text-right= @record.seconds_string(prefix: "jump_sprint")
+                td.text-right= @record.thirds_string(prefix: "jump_sprint")
+                td.text-right= @record.fourths_string(prefix: "jump_sprint")
+              - else
+                td.text-center colspan=5 = t("horse.unraced")
+            tr
+              td= t(".jump_mid")
+              - if @record.jump_mid_starts.to_i.positive?
+                td.text-right= @record.starts_string(prefix: "jump_mid")
+                td.text-right= @record.wins_string(prefix: "jump_mid")
+                td.text-right= @record.seconds_string(prefix: "jump_mid")
+                td.text-right= @record.thirds_string(prefix: "jump_mid")
+                td.text-right= @record.fourths_string(prefix: "jump_mid")
+              - else
+                td.text-center colspan=5 = t("horse.unraced")
+            tr
+              td= t(".jump_long")
+              - if @record.jump_long_starts.to_i.positive?
+                td.text-right= @record.starts_string(prefix: "jump_long")
+                td.text-right= @record.wins_string(prefix: "jump_long")
+                td.text-right= @record.seconds_string(prefix: "jump_long")
+                td.text-right= @record.thirds_string(prefix: "jump_long")
+                td.text-right= @record.fourths_string(prefix: "jump_long")
+              - else
+                td.text-center colspan=5 = t("horse.unraced")

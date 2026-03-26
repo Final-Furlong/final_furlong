@@ -23,7 +23,7 @@ module Racing
     def result_abbreviation
       race_info = [race.distance_abbr, race.surface_abbr].join(" ")
       position = "#{finish_position.ordinalize}/#{race.horses.count}"
-      equipment = (equipment_string == I18n.t("common.dash")) ? I18n.t("common.none") : equipment_string
+      equipment = finish.equipment_string(blank: I18n.t("common.none"))
       [race_info, position, equipment].join(" - ")
     end
   end
