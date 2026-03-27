@@ -243,7 +243,10 @@ ActiveRecordDoctor.configure do
     ignore_columns: [
       "Account::User(username)", # includes discarded_at WHERE
       "Horses::StallionOption(horse_id)", # indexed as stud_id
-      "Racing::DistanceRaceRecord(horse_id)" # group by horse_id view
+      "Racing::DistanceRaceRecord(horse_id)", # group by horse_id view
+      "Racing::ConditionRaceRecord(horse_id)", # group by horse_id view
+      "Racing::RaceTypeRaceRecord(horse_id)", # group by horse_id view
+      "Racing::SurfaceRaceRecord(horse_id)" # group by horse_id view
     ]
 
   detector :unindexed_deleted_at,
@@ -262,7 +265,12 @@ ActiveRecordDoctor.configure do
       "Racing::AnnualRaceRecord.horse",
       "Racing::LifetimeRaceRecord.horse",
       "Racing::RaceQualification.horse",
-      "Racing::DistanceRaceRecord.horse"
+      "Racing::DistanceRaceRecord.horse",
+      "Racing::ConditionRaceRecord.horse",
+      "Racing::EquipmentRaceRecord.horse",
+      "Racing::LocationRaceRecord.horse",
+      "Racing::RaceTypeRaceRecord.horse",
+      "Racing::SurfaceRaceRecord.horse"
     ]
 
   detector :unindexed_foreign_keys,

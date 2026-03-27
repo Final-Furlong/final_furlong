@@ -1,0 +1,144 @@
+/# locals: (record:)
+.card.card-border.bg-base-100.w-full.px-2.rounded-none
+  .card-body.p-0.rounded-none
+    .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
+      input type="checkbox"
+      .collapse-title.font-semibold.text-center
+        span= t("horse.races.index.by_race_type")
+      .collapse-content.text-sm
+        table.mx-auto.table.table-zebra.w-full.sm:hidden
+          thead
+            tr
+              th
+              th= t("horse.races.index.record")
+          tbody
+            tr
+              td= t("racing.race.allowance")
+              - if record.maiden_starts.to_i.positive?
+                td.text-right
+                  = [record.maiden_starts, record.maiden_wins, record.maiden_seconds, record.maiden_thirds, record.maiden_fourths].join ('-')
+              - else
+                td.text-center= t("horse.unraced")
+            tr
+              td= t("racing.race.allowance")
+              - if record.claiming_starts.to_i.positive?
+                td.text-right
+                  = [record.claiming_starts, record.claiming_wins, record.claiming_seconds, record.claiming_thirds, record.claiming_fourths].join ('-')
+              - else
+                td.text-center= t("horse.unraced")
+            tr
+              td= t("racing.race.allowance")
+              - if record.allowance_starts.to_i.positive?
+                td.text-right
+                  = [record.allowance_starts, record.allowance_wins, record.allowance_seconds, record.allowance_thirds, record.allowance_fourths].join ('-')
+              - else
+                td.text-center= t("horse.unraced")
+            tr
+              td= t("racing.race.ungraded")
+              - if record.ungraded_starts.to_i.positive?
+                td.text-right
+                  = [record.ungraded_starts, record.ungraded_wins, record.ungraded_seconds, record.ungraded_thirds, record.ungraded_fourths].join ('-')
+              - else
+                td.text-center= t("horse.unraced")
+            tr
+              td= t("racing.race.grade_3")
+              - if record.grade_3_starts.to_i.positive?
+                td.text-right
+                  = [record.grade_3_starts, record.grade_3_wins, record.grade_3_seconds, record.grade_3_thirds, record.grade_3_fourths].join ('-')
+              - else
+                td.text-center= t("horse.unraced")
+            tr
+              td= t("racing.race.grade_2")
+              - if record.grade_2_starts.to_i.positive?
+                td.text-right
+                  = [record.grade_2_starts, record.grade_2_wins, record.grade_2_seconds, record.grade_2_thirds, record.grade_2_fourths].join ('-')
+              - else
+                td.text-center= t("horse.unraced")
+            tr
+              td= t("racing.race.grade_1")
+              - if record.grade_1_starts.to_i.positive?
+                td.text-right
+                  = [record.grade_1_starts, record.grade_1_wins, record.grade_1_seconds, record.grade_1_thirds, record.grade_1_fourths].join ('-')
+              - else
+                td.text-center= t("horse.unraced")
+        .hidden.sm:block
+          table.mx-auto.table.table-zebra.w-1/2
+            thead
+              tr
+                th
+                th= t("horse.races.index.starts")
+                th= t("horse.races.index.wins")
+                th= t("horse.races.index.seconds")
+                th= t("horse.races.index.thirds")
+                th= t("horse.races.index.fourths")
+            tbody
+              tr
+                td= t("racing.race.maiden")
+                - if record.maiden_starts.to_i.positive?
+                  td.text-right= record.maiden_starts
+                  td.text-right= record.maiden_wins
+                  td.text-right= record.maiden_seconds
+                  td.text-right= record.maiden_thirds
+                  td.text-right= record.maiden_fourths
+                - else
+                  td.text-center colspan=5 = t("horse.unraced")
+              tr
+                td= t("racing.race.claiming")
+                - if record.claiming_starts.to_i.positive?
+                  td.text-right= record.claiming_starts
+                  td.text-right= record.claiming_wins
+                  td.text-right= record.claiming_seconds
+                  td.text-right= record.claiming_thirds
+                  td.text-right= record.claiming_fourths
+                - else
+                  td.text-center colspan=5 = t("horse.unraced")
+              tr
+                td= t("racing.race.allowance")
+                - if record.allowance_starts.to_i.positive?
+                  td.text-right= record.allowance_starts
+                  td.text-right= record.allowance_wins
+                  td.text-right= record.allowance_seconds
+                  td.text-right= record.allowance_thirds
+                  td.text-right= record.allowance_fourths
+                - else
+                  td.text-center colspan=5 = t("horse.unraced")
+              tr
+                td= t("racing.race.ungraded")
+                - if record.ungraded_starts.to_i.positive?
+                  td.text-right= record.ungraded_starts
+                  td.text-right= record.ungraded_wins
+                  td.text-right= record.ungraded_seconds
+                  td.text-right= record.ungraded_thirds
+                  td.text-right= record.ungraded_fourths
+                - else
+                  td.text-center colspan=5 = t("horse.unraced")
+              tr
+                td= t("racing.race.grade_3")
+                - if record.grade_3_starts.to_i.positive?
+                  td.text-right= record.grade_3_starts
+                  td.text-right= record.grade_3_wins
+                  td.text-right= record.grade_3_seconds
+                  td.text-right= record.grade_3_thirds
+                  td.text-right= record.grade_3_fourths
+                - else
+                  td.text-center colspan=5 = t("horse.unraced")
+              tr
+                td= t("racing.race.grade_2")
+                - if record.grade_2_starts.to_i.positive?
+                  td.text-right= record.grade_2_starts
+                  td.text-right= record.grade_2_wins
+                  td.text-right= record.grade_2_seconds
+                  td.text-right= record.grade_2_thirds
+                  td.text-right= record.grade_2_fourths
+                - else
+                  td.text-center colspan=5 = t("horse.unraced")
+              tr
+                td= t("racing.race.grade_1")
+                - if record.grade_1_starts.to_i.positive?
+                  td.text-right= record.grade_1_starts
+                  td.text-right= record.grade_1_wins
+                  td.text-right= record.grade_1_seconds
+                  td.text-right= record.grade_1_thirds
+                  td.text-right= record.grade_1_fourths
+                - else
+                  td.text-center colspan=5 = t("horse.unraced")

@@ -1,0 +1,7 @@
+= turbo_frame_tag "#{@horse.slug}-race-list" do
+  = render "distance", record: @distance_record
+  = render "surface", record: @surface_record
+  = render "condition", record: @condition_record
+  = render "race_type", record: @race_type_record
+  = render "equipment", records: @equipment_records
+  = render "location", records: @location_records

@@ -134,6 +134,7 @@ module Racing
         odd = Racing::Odd.find_by(display: horse[:odds])
         attrs = {
           horse: horse_class,
+          stable: horse_class.manager,
           post_parade: horse[:post_parade],
           positions: horse[:positions],
           margins: horse[:margins],
