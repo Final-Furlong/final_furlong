@@ -1,0 +1,44 @@
+/# locals: (records:)
+.card.card-border.bg-base-100.w-full.px-2.rounded-none
+  .card-body.p-0.rounded-none
+    .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
+      input type="checkbox"
+      .collapse-title.font-semibold.text-center
+        span= t("horse.races.index.by_location")
+      .collapse-content.text-sm
+        table.mx-auto.table.table-zebra.w-full.sm:hidden
+          thead
+            tr
+              th
+              th= t("horse.races.index.record")
+          tbody
+            - records.each do |record|
+              tr
+                td= record.name
+                td.text-right
+                  - if record.starts.to_i.positive?
+                    = [record.starts_string, record.wins_string, record.seconds_string, record.thirds_string, record.fourths_string].join('-')
+                  - else
+                    td.text-center= t("horse.unraced")
+        .hidden.sm:block
+          table.mx-auto.table.table-zebra.w-1/2
+            thead
+              tr
+                th
+                th= t("horse.races.index.starts")
+                th= t("horse.races.index.wins")
+                th= t("horse.races.index.seconds")
+                th= t("horse.races.index.thirds")
+                th= t("horse.races.index.fourths")
+            tbody
+              - records.each do |record|
+                tr
+                  td= record.name
+                  - if record.starts.to_i.positive?
+                    td.text-right= record.starts_string
+                    td.text-right= record.wins_string
+                    td.text-right= record.seconds_string
+                    td.text-right= record.thirds_string
+                    td.text-right= record.fourths_string
+                  - else
+                    td.text-center= t("horse.unraced")

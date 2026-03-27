@@ -22,7 +22,7 @@ resources :horses, except: %i[new create destroy] do
       resource :race_options, only: %i[edit update]
       resources :race_stats, only: %i[index]
       resources :races, only: :index
-      resource :distance_race_record, only: :show
+      resource :specific_race_record, only: :show
       resource :sale_offer, only: %i[new create destroy]
       resource :sale_offer_acceptance, only: :create
       resources :sales, only: :index

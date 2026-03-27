@@ -8,6 +8,7 @@ module Racing
     belongs_to :horse, class_name: "Horses::Horse", inverse_of: :race_result_finishes
     belongs_to :jockey, class_name: "Racing::Jockey", optional: true, inverse_of: :race_result_horses
     belongs_to :odd, class_name: "Racing::Odd", optional: true, inverse_of: :race_result_horses
+    belongs_to :stable, class_name: "Account::Stable", optional: true, inverse_of: :race_result_finishes
 
     validates :legacy_horse_id, :post_parade, :finish_position, :positions, :margins, :equipment,
       :speed_factor, :weight, presence: true
@@ -50,6 +51,7 @@ end
 #  legacy_horse_id :integer          default(0), not null, indexed
 #  odd_id          :bigint           indexed
 #  race_id         :bigint           not null, indexed
+#  stable_id       :bigint           indexed
 #
 # Indexes
 #
@@ -60,6 +62,7 @@ end
 #  index_race_result_horses_on_odd_id           (odd_id)
 #  index_race_result_horses_on_race_id          (race_id)
 #  index_race_result_horses_on_speed_factor     (speed_factor)
+#  index_race_result_horses_on_stable_id        (stable_id)
 #
 # Foreign Keys
 #
@@ -67,5 +70,6 @@ end
 #  fk_rails_...  (jockey_id => jockeys.id) ON DELETE => restrict ON UPDATE => cascade
 #  fk_rails_...  (odd_id => race_results.id) ON DELETE => nullify ON UPDATE => cascade
 #  fk_rails_...  (race_id => race_results.id) ON DELETE => cascade ON UPDATE => cascade
+#  fk_rails_...  (stable_id => stables.id)
 #
 

@@ -1,0 +1,101 @@
+/# locals: (record:)
+.card.card-border.bg-base-100.w-full.px-2.rounded-none
+  .card-body.p-0.rounded-none
+    .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
+      input type="checkbox"
+      .collapse-title.font-semibold.text-center
+        span= t("horse.races.index.by_condition")
+      .collapse-content.text-sm
+        table.mx-auto.table.table-zebra.w-full.sm:hidden
+          thead
+            tr
+              th
+              th= t("horse.races.index.record")
+          tbody
+            tr
+              td= t(".fast")
+              - if record.fast_starts.to_i.positive?
+                td.text-right
+                  = [record.starts_string(prefix: "fast"), record.wins_string(prefix: "fast"),
+                          record.seconds_string(prefix: "fast"), record.thirds_string(prefix: "fast"),
+                          record.fourths_string(prefix: "fast")].join('-')
+              - else
+                td.text-center= t("horse.unraced")
+            tr
+              td= t(".good")
+              - if record.good_starts.to_i.positive?
+                td.text-right
+                  = [record.starts_string(prefix: "good"), record.wins_string(prefix: "good"),
+                          record.seconds_string(prefix: "good"), record.thirds_string(prefix: "good"),
+                          record.fourths_string(prefix: "good")].join('-')
+              - else
+                td.text-center= t("horse.unraced")
+            tr
+              td= t(".wet")
+              - if record.wet_starts.to_i.positive?
+                td.text-right
+                  = [record.starts_string(prefix: "wet"), record.wins_string(prefix: "wet"),
+                          record.seconds_string(prefix: "wet"), record.thirds_string(prefix: "wet"),
+                          record.fourths_string(prefix: "wet")].join('-')
+              - else
+                td.text-center= t("horse.unraced")
+            tr
+              td= t(".slow")
+              - if record.wet_starts.to_i.positive?
+                td.text-right
+                  = [record.starts_string(prefix: "slow"), record.wins_string(prefix: "slow"),
+                          record.seconds_string(prefix: "slow"), record.thirds_string(prefix: "slow"),
+                          record.fourths_string(prefix: "slow")].join('-')
+              - else
+                td.text-center= t("horse.unraced")
+        .hidden.sm:block
+          table.mx-auto.table.table-zebra.w-1/2
+            thead
+              tr
+                th
+                th= t("horse.races.index.starts")
+                th= t("horse.races.index.wins")
+                th= t("horse.races.index.seconds")
+                th= t("horse.races.index.thirds")
+                th= t("horse.races.index.fourths")
+            tbody
+              tr
+                td= t(".fast")
+                - if record.fast_starts.to_i.positive?
+                  td.text-right= record.starts_string(prefix: "fast")
+                  td.text-right= record.wins_string(prefix: "fast")
+                  td.text-right= record.seconds_string(prefix: "fast")
+                  td.text-right= record.thirds_string(prefix: "fast")
+                  td.text-right= record.fourths_string(prefix: "fast")
+                - else
+                  td.text-center colspan=5 = t("horse.unraced")
+              tr
+                td= t(".good")
+                - if record.good_starts.to_i.positive?
+                  td.text-right= record.starts_string(prefix: "good")
+                  td.text-right= record.wins_string(prefix: "good")
+                  td.text-right= record.seconds_string(prefix: "good")
+                  td.text-right= record.thirds_string(prefix: "good")
+                  td.text-right= record.fourths_string(prefix: "good")
+                - else
+                  td.text-center colspan=5 = t("horse.unraced")
+              tr
+                td= t(".wet")
+                - if record.wet_starts.to_i.positive?
+                  td.text-right= record.starts_string(prefix: "wet")
+                  td.text-right= record.wins_string(prefix: "wet")
+                  td.text-right= record.seconds_string(prefix: "wet")
+                  td.text-right= record.thirds_string(prefix: "wet")
+                  td.text-right= record.fourths_string(prefix: "wet")
+                - else
+                  td.text-center colspan=5 = t("horse.unraced")
+              tr
+                td= t(".slow")
+                - if record.slow_starts.to_i.positive?
+                  td.text-right= record.starts_string(prefix: "slow")
+                  td.text-right= record.wins_string(prefix: "slow")
+                  td.text-right= record.seconds_string(prefix: "slow")
+                  td.text-right= record.thirds_string(prefix: "slow")
+                  td.text-right= record.fourths_string(prefix: "slow")
+                - else
+                  td.text-center colspan=5 = t("horse.unraced")

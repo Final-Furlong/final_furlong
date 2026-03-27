@@ -1,0 +1,82 @@
+/# locals: (record:)
+.card.card-border.bg-base-100.w-full.px-2.rounded-none
+  .card-body.p-0.rounded-none
+    .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
+      input type="checkbox"
+      .collapse-title.font-semibold.text-center
+        span= t("horse.races.index.by_surface")
+      .collapse-content.text-sm
+        table.mx-auto.table.table-zebra.w-full.sm:hidden
+          thead
+            tr
+              th
+              th= t("horse.races.index.record")
+          tbody
+            tr
+              td= t(".dirt")
+              - if record.dirt_starts.to_i.positive?
+                td.text-right
+                  = [record.starts_string(prefix: "dirt"), record.wins_string(prefix: "dirt"),
+                          record.seconds_string(prefix: "dirt"), record.thirds_string(prefix: "dirt"),
+                          record.fourths_string(prefix: "dirt")].join('-')
+              - else
+                td.text-center= t("horse.unraced")
+            tr
+              td= t(".turf")
+              - if record.turf_starts.to_i.positive?
+                td.text-right
+                  = [record.starts_string(prefix: "turf"), record.wins_string(prefix: "turf"),
+                          record.seconds_string(prefix: "turf"), record.thirds_string(prefix: "turf"),
+                          record.fourths_string(prefix: "turf")].join('-')
+              - else
+                td.text-center= t("horse.unraced")
+            tr
+              td= t(".jump")
+              - if record.jump_starts.to_i.positive?
+                td.text-right
+                  = [record.starts_string(prefix: "jump"), record.wins_string(prefix: "jump"),
+                          record.seconds_string(prefix: "jump"), record.thirds_string(prefix: "jump"),
+                          record.fourths_string(prefix: "jump")].join('-')
+              - else
+                td.text-center= t("horse.unraced")
+        .hidden.sm:block
+          table.mx-auto.table.table-zebra.w-1/2
+            thead
+              tr
+                th
+                th= t("horse.races.index.starts")
+                th= t("horse.races.index.wins")
+                th= t("horse.races.index.seconds")
+                th= t("horse.races.index.thirds")
+                th= t("horse.races.index.fourths")
+            tbody
+              tr
+                td= t(".dirt")
+                - if record.dirt_starts.to_i.positive?
+                  td.text-right= record.starts_string(prefix: "dirt")
+                  td.text-right= record.wins_string(prefix: "dirt")
+                  td.text-right= record.seconds_string(prefix: "dirt")
+                  td.text-right= record.thirds_string(prefix: "dirt")
+                  td.text-right= record.fourths_string(prefix: "dirt")
+                - else
+                  td.text-center colspan=5 = t("horse.unraced")
+              tr
+                td= t(".turf")
+                - if record.turf_starts.to_i.positive?
+                  td.text-right= record.starts_string(prefix: "turf")
+                  td.text-right= record.wins_string(prefix: "turf")
+                  td.text-right= record.seconds_string(prefix: "turf")
+                  td.text-right= record.thirds_string(prefix: "turf")
+                  td.text-right= record.fourths_string(prefix: "turf")
+                - else
+                  td.text-center colspan=5 = t("horse.unraced")
+              tr
+                td= t(".jump")
+                - if record.jump_starts.to_i.positive?
+                  td.text-right= record.starts_string(prefix: "jump")
+                  td.text-right= record.wins_string(prefix: "jump")
+                  td.text-right= record.seconds_string(prefix: "jump")
+                  td.text-right= record.thirds_string(prefix: "jump")
+                  td.text-right= record.fourths_string(prefix: "jump")
+                - else
+                  td.text-center colspan=5 = t("horse.unraced")
