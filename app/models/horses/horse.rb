@@ -38,7 +38,12 @@ module Horses
     # rubocop:disable Rails/HasManyOrHasOneDependent
     has_many :annual_race_records, class_name: "Racing::AnnualRaceRecord", inverse_of: :horse
     has_one :lifetime_race_record, class_name: "Racing::LifetimeRaceRecord", inverse_of: :horse
+    has_one :condition_race_record, class_name: "Racing::ConditionRaceRecord", inverse_of: :horse
     has_one :distance_race_record, class_name: "Racing::DistanceRaceRecord", inverse_of: :horse
+    has_many :equipment_race_records, class_name: "Racing::EquipmentRaceRecord", inverse_of: :horse
+    has_many :location_race_records, class_name: "Racing::LocationRaceRecord", inverse_of: :horse
+    has_one :race_type_race_record, class_name: "Racing::RaceTypeRaceRecord", inverse_of: :horse
+    has_one :surface_race_record, class_name: "Racing::SurfaceRaceRecord", inverse_of: :horse
     has_one :race_qualification, class_name: "Racing::RaceQualification"
     # rubocop:enable Rails/HasManyOrHasOneDependent
 

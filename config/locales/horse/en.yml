@@ -44,14 +44,6 @@ en:
         confirm: Are you sure you want to stop boarding %{horse}?
         confirm_title: Stop Boarding
     created: Created
-    distance_race_records:
-      show:
-        flat_long: Flat (> 10f)
-        flat_mid: Flat (8-10f)
-        flat_sprint: Flat (<= 7.5f)
-        jump_long: Jump (> 18f)
-        jump_mid: Jump (12.5-18f)
-        jump_sprint: Jump (<= 12f)
     equipment:
       blinkers: B
       figure_8: F8
@@ -278,7 +270,12 @@ en:
         workout_stats: Workout Stats
     races:
       index:
+        by_condition: Races By Track Condition
         by_distance: Races By Distance
+        by_equipment: Races By Equipment
+        by_location: Races By Location
+        by_race_type: Races By Race Type
+        by_surface: Races By Surface
         earnings: Earnings
         equipment: 'Equipment: %{equipment}'
         finish_time: 'Time: %{time}'
@@ -354,6 +351,23 @@ en:
         mode_road: Road
       new:
         title: Ship Horse
+    specific_race_records:
+      condition:
+        fast: Fast
+        good: Good
+        slow: Slow
+        wet: Wet
+      distance:
+        flat_long: Flat (> 10f)
+        flat_mid: Flat (8-10f)
+        flat_sprint: Flat (<= 7.5f)
+        jump_long: Jump (> 18f)
+        jump_mid: Jump (12.5-18f)
+        jump_sprint: Jump (<= 12f)
+      surface:
+        dirt: Dirt
+        jump: Steeplechase
+        turf: Turf
     titles:
       abbr:
         final_furlong: FFCh.
