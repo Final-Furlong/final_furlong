@@ -2881,7 +2881,6 @@ CREATE VIEW public.location_race_records AS
      LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
      LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
      LEFT JOIN public.racetracks rt ON ((ts.racetrack_id = rt.id)))
-  WHERE (rr.horse_id = 28480)
   GROUP BY rr.horse_id, rt.name;
 
 
@@ -9393,6 +9392,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260327184438'),
 ('20260327165832'),
 ('20260327165812'),
 ('20260327152034'),
