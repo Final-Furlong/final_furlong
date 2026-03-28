@@ -18,19 +18,21 @@ end
 #  amount                                                                                                                                                                                       :integer          default(0), not null
 #  balance                                                                                                                                                                                      :integer          default(0), not null
 #  description                                                                                                                                                                                  :text             not null, indexed
-#  created_at                                                                                                                                                                                   :datetime         not null
+#  created_at                                                                                                                                                                                   :datetime         not null, indexed => [legacy_stable_id], indexed => [stable_id]
 #  updated_at                                                                                                                                                                                   :datetime         not null
 #  legacy_budget_id                                                                                                                                                                             :integer          default(0), indexed
-#  legacy_stable_id                                                                                                                                                                             :integer          default(0), indexed
-#  stable_id                                                                                                                                                                                    :bigint           not null, indexed
+#  legacy_stable_id                                                                                                                                                                             :integer          default(0), indexed, indexed => [created_at]
+#  stable_id                                                                                                                                                                                    :bigint           not null, indexed, indexed => [created_at]
 #
 # Indexes
 #
-#  index_budget_transactions_on_activity_type     (activity_type)
-#  index_budget_transactions_on_description       (description)
-#  index_budget_transactions_on_legacy_budget_id  (legacy_budget_id)
-#  index_budget_transactions_on_legacy_stable_id  (legacy_stable_id)
-#  index_budget_transactions_on_stable_id         (stable_id)
+#  index_budget_transactions_on_activity_type                    (activity_type)
+#  index_budget_transactions_on_description                      (description)
+#  index_budget_transactions_on_legacy_budget_id                 (legacy_budget_id)
+#  index_budget_transactions_on_legacy_stable_id                 (legacy_stable_id)
+#  index_budget_transactions_on_legacy_stable_id_and_created_at  (legacy_stable_id,created_at)
+#  index_budget_transactions_on_stable_id                        (stable_id)
+#  index_budget_transactions_on_stable_id_and_created_at         (stable_id,created_at)
 #
 # Foreign Keys
 #

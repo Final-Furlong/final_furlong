@@ -105,7 +105,7 @@ end
 #  max_speed              :integer          default(0), not null
 #  midpack                :integer          default(0), not null
 #  min_speed              :integer          default(0), not null
-#  natural_energy_current :float            default(0.0), not null
+#  natural_energy_current :float            default(0.0), not null, indexed
 #  natural_energy_gain    :decimal(5, 3)    default(0.0), not null
 #  natural_energy_loss    :integer          default(0), not null
 #  off_pace               :integer          default(0), not null
@@ -134,7 +134,8 @@ end
 #
 # Indexes
 #
-#  index_racing_stats_on_horse_id  (horse_id) UNIQUE
+#  index_racing_stats_on_horse_id                (horse_id) UNIQUE
+#  index_racing_stats_on_natural_energy_current  (natural_energy_current)
 #
 # Foreign Keys
 #

@@ -14,14 +14,14 @@ end
 # Database name: primary
 #
 #  id                     :bigint           not null, primary key
-#  active                 :boolean          default(TRUE), not null, indexed
+#  active                 :boolean          default(TRUE), not null, indexed, indexed => [horse_id]
 #  early_termination_date :date             indexed
 #  end_date               :date             not null, indexed
 #  fee                    :integer          default(0), not null
 #  start_date             :date             not null, indexed
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  horse_id               :bigint           not null, uniquely indexed
+#  horse_id               :bigint           not null, uniquely indexed, indexed => [active]
 #  leaser_id              :bigint           not null, indexed
 #  owner_id               :bigint           not null, indexed
 #
@@ -31,6 +31,7 @@ end
 #  index_leases_on_early_termination_date  (early_termination_date)
 #  index_leases_on_end_date                (end_date)
 #  index_leases_on_horse_id                (horse_id) UNIQUE WHERE (active = true)
+#  index_leases_on_horse_id_and_active     (horse_id,active)
 #  index_leases_on_leaser_id               (leaser_id)
 #  index_leases_on_owner_id                (owner_id)
 #  index_leases_on_start_date              (start_date)

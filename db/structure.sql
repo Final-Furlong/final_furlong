@@ -6192,6 +6192,13 @@ CREATE INDEX index_activity_points_on_stable_id ON public.activity_points USING 
 
 
 --
+-- Name: index_activity_points_on_stable_id_and_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_activity_points_on_stable_id_and_created_at ON public.activity_points USING btree (stable_id, created_at);
+
+
+--
 -- Name: index_auction_bids_on_auction_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6556,10 +6563,24 @@ CREATE INDEX index_budget_transactions_on_legacy_stable_id ON public.budget_tran
 
 
 --
+-- Name: index_budget_transactions_on_legacy_stable_id_and_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_budget_transactions_on_legacy_stable_id_and_created_at ON public.budget_transactions USING btree (legacy_stable_id, created_at);
+
+
+--
 -- Name: index_budget_transactions_on_stable_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_budget_transactions_on_stable_id ON public.budget_transactions USING btree (stable_id);
+
+
+--
+-- Name: index_budget_transactions_on_stable_id_and_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_budget_transactions_on_stable_id_and_created_at ON public.budget_transactions USING btree (stable_id, created_at);
 
 
 --
@@ -6899,6 +6920,13 @@ CREATE INDEX index_horses_on_owner_id ON public.horses USING btree (owner_id);
 
 
 --
+-- Name: index_horses_on_owner_id_and_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horses_on_owner_id_and_status ON public.horses USING btree (owner_id, status);
+
+
+--
 -- Name: index_horses_on_public_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6924,6 +6952,13 @@ CREATE INDEX index_horses_on_slug ON public.horses USING btree (slug);
 --
 
 CREATE INDEX index_horses_on_status ON public.horses USING btree (status);
+
+
+--
+-- Name: index_horses_on_status_and_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horses_on_status_and_name ON public.horses USING btree (status, name);
 
 
 --
@@ -7113,6 +7148,13 @@ CREATE INDEX index_leases_on_end_date ON public.leases USING btree (end_date);
 --
 
 CREATE UNIQUE INDEX index_leases_on_horse_id ON public.leases USING btree (horse_id) WHERE (active = true);
+
+
+--
+-- Name: index_leases_on_horse_id_and_active; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_leases_on_horse_id_and_active ON public.leases USING btree (horse_id, active);
 
 
 --
@@ -7911,6 +7953,13 @@ CREATE INDEX index_racetracks_on_slug ON public.racetracks USING btree (slug);
 --
 
 CREATE UNIQUE INDEX index_racing_stats_on_horse_id ON public.racing_stats USING btree (horse_id);
+
+
+--
+-- Name: index_racing_stats_on_natural_energy_current; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racing_stats_on_natural_energy_current ON public.racing_stats USING btree (natural_energy_current);
 
 
 --
@@ -9392,6 +9441,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260328101055'),
 ('20260327184438'),
 ('20260327165832'),
 ('20260327165812'),
