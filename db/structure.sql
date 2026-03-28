@@ -6955,10 +6955,59 @@ CREATE INDEX index_horses_on_status ON public.horses USING btree (status);
 
 
 --
+-- Name: index_horses_on_status_and_age; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horses_on_status_and_age ON public.horses USING btree (status, age);
+
+
+--
+-- Name: index_horses_on_status_and_breeder_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horses_on_status_and_breeder_id ON public.horses USING btree (status, breeder_id);
+
+
+--
+-- Name: index_horses_on_status_and_dam_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horses_on_status_and_dam_id ON public.horses USING btree (status, dam_id);
+
+
+--
+-- Name: index_horses_on_status_and_gender; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horses_on_status_and_gender ON public.horses USING btree (status, gender);
+
+
+--
+-- Name: index_horses_on_status_and_leaser_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horses_on_status_and_leaser_id ON public.horses USING btree (status, leaser_id);
+
+
+--
 -- Name: index_horses_on_status_and_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_horses_on_status_and_name ON public.horses USING btree (status, name);
+
+
+--
+-- Name: index_horses_on_status_and_owner_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horses_on_status_and_owner_id ON public.horses USING btree (status, owner_id);
+
+
+--
+-- Name: index_horses_on_status_and_sire_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horses_on_status_and_sire_id ON public.horses USING btree (status, sire_id);
 
 
 --
@@ -9441,6 +9490,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260328113608'),
 ('20260328101055'),
 ('20260327184438'),
 ('20260327165832'),
