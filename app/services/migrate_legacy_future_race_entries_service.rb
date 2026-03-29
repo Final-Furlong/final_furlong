@@ -1,6 +1,6 @@
-class MigrateLegacyRaceEntriesService # rubocop:disable Metrics/ClassLength
+class MigrateLegacyFutureRaceEntriesService # rubocop:disable Metrics/ClassLength
   def call
-    Legacy::RaceEntry.find_each do |legacy_entry|
+    Legacy::FutureEntry.find_each do |legacy_entry|
       migrate_entry(legacy_entry:)
     end
   end
@@ -16,11 +16,19 @@ class MigrateLegacyRaceEntriesService # rubocop:disable Metrics/ClassLength
     race = Racing::RaceSchedule.find_by(date:, number:)
     return unless horse && race
 
-    entry = Racing::RaceEntry.find_or_initialize_by(horse:, date:)
+    entry = Racing::FutureRaceEntry.find_or_initialize_by(horse:, date:)
     entry.race = race
-    entry.created_at = legacy_entry.EntryDate
-    entry.post_parade = legacy_entry.PP.presence || 0
-    entry.weight = legacy_entry.Weight.presence || 0
+    entry.date = race.date
+    entry.created_at = legacy_entry.DateEntered - 4.years
+    entry.auto_enter = legacy_entry.AutoEnter
+    entry.auto_ship = legacy_entry.AutoShip
+    entry.ship_mode = case legacy_entry.ShipMethod
+    when "R"
+      "road"
+    else
+      "air"
+    end
+
     entry.racing_style = case legacy_entry.Instructions
     when 1
       "leading"
@@ -31,11 +39,9 @@ class MigrateLegacyRaceEntriesService # rubocop:disable Metrics/ClassLength
     when 4
       "closing"
     end
-    entry.first_jockey = Racing::Jockey.find_by(legacy_id: legacy_entry.Jock1)
+    entry.first_jockey = Racing::Jockey.find_by(legacy_id: legacy_entry.Jockey)
     entry.second_jockey = Racing::Jockey.find_by(legacy_id: legacy_entry.Jock2)
     entry.third_jockey = Racing::Jockey.find_by(legacy_id: legacy_entry.Jock3)
-    entry.jockey = Racing::Jockey.find_by(legacy_id: legacy_entry.Jockey)
-    entry.odd = Racing::Odd.find_by(display: Legacy::Odd.find_by(ID: legacy_entry.Odds)&.Odds)
 
     if legacy_entry.Equipment.to_i.positive?
       legacy_equipment = Legacy::Equipment.find(legacy_entry.Equipment)

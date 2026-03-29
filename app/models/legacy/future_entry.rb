@@ -2,6 +2,9 @@ module Legacy
   class FutureEntry < Record
     self.table_name = "ff_futureentries"
     self.primary_key = "ID"
+
+    belongs_to :race, class_name: "Legacy::Race", foreign_key: :Race
+    belongs_to :horse, class_name: "Legacy::Horse", foreign_key: :Horse
   end
 end
 

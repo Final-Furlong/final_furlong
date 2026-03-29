@@ -125,6 +125,8 @@ module Horses
     scope :sort_by_race_metadata_race_nulls_last_desc, -> { joins(:race_metadata).order("race_metadata.last_raced_at DESC NULLS LAST") }
     scope :sort_by_race_metadata_injury_nulls_last_asc, -> { joins(:race_metadata).order("race_metadata.last_injured_at ASC NULLS LAST") }
     scope :sort_by_race_metadata_injury_nulls_last_desc, -> { joins(:race_metadata).order("race_metadata.last_injured_at DESC NULLS LAST") }
+    scope :sort_by_race_metadata_entry_nulls_last_asc, -> { joins(:race_metadata).order("race_metadata.next_entry_date ASC NULLS LAST") }
+    scope :sort_by_race_metadata_entry_nulls_last_desc, -> { joins(:race_metadata).order("race_metadata.next_entry_date DESC NULLS LAST") }
     scope :min_energy, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.min_energy(value)) }
     scope :max_energy, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.max_energy(value)) }
     scope :energy_in, ->(max_value, min_value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.energy_within(max_value, min_value)) }

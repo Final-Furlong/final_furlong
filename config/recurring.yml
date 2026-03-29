@@ -64,12 +64,16 @@ production:
     schedule: at 11:45pm every day
   auction_sales:
     class: Auctions::ProcessSalesJob
-    queue: low_priority
+    queue: default
     schedule: every 12 hours at minute 8
   race_entry_migrate:
     class: Racing::RaceEntryMigrationJob
     queue: default
     schedule: every hour at minute 2
+  race_future_entry_migrate:
+    class: Racing::FutureEntryMigrationJob
+    queue: low_priority
+    schedule: every hour at minute 5
   shipping_migrate:
     class: UpdateLegacyShipmentsJob
     queue: low_priority

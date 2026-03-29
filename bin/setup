@@ -16,7 +16,7 @@ def setup(test_mode = false)
     system! "bundle check || bundle install"
 
     log "Installing node modules"
-    system! 'bin/pnpm', 'install', '--frozen-lockfile'
+    system! 'pnpm', 'install', '--frozen-lockfile'
 
     unless test_mode
       log "Dropping & recreating the development database"

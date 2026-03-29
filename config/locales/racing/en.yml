@@ -3,11 +3,17 @@ en:
   racing:
     distance_furlongs: "%{value} Furlongs"
     entries:
+      age: Age
+      equipment: Equipment
+      gender: Gender
+      name: Horse
       new:
         entry_fee: 'Entry Fee: %{fee}'
         entry_limit: You may enter %{horses} in this race.
         horses: 'Horses Entered: %{count}'
         title: Enter Race
+      parents: Sire x Dam
+      stable: Stable
     race:
       age: Age
       age_desc: for %{age}
