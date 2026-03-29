@@ -19,4 +19,5 @@
         td.font-normal.text-center colspan=5
           = t(".entry_fee", fee: Game::MoneyFormatter.new(race.entry_fee).to_s)
 
+= render "entries", race: race
 = render "horses_qualification", race: race

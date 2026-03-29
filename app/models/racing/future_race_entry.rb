@@ -1,6 +1,6 @@
 module Racing
   class FutureRaceEntry < ApplicationRecord
-    include FlagShihTzu
+    include Equipmentable
 
     belongs_to :horse, class_name: "Horses::Horse"
     belongs_to :race, class_name: "Racing::RaceSchedule"
@@ -14,12 +14,8 @@ module Racing
       inclusion: { in: [true, false] }
     validates :horse_id, uniqueness: { scope: :date }
 
-    has_flags 1 => :blinkers,
-      2 => :shadow_roll,
-      3 => :wraps,
-      4 => :figure_8,
-      5 => :no_whip,
-      :column => "equipment"
+    scope :future, -> { where("date > ?", Date.current) }
+    scope :past, -> { where(date: ...Date.current) }
   end
 end
 

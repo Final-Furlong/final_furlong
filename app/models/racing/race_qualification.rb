@@ -88,19 +88,21 @@ module Racing
       %w[allowance_placed claiming_qualified horse_id maiden_qualified nw1_allowance_qualified nw2_allowance_qualified nw3_allowance_qualified stakes_placed starter_allowance_qualified]
     end
 
-    def to_s
+    def to_s(mobile: false)
+      base_key = "racing.race"
+      base_key += ".mobile" if mobile
       base_qual = if maiden_qualified
-        I18n.t("racing.race.maiden")
+        I18n.t("#{base_key}.maiden")
       elsif nw1_allowance_qualified
-        I18n.t("racing.race.nw1_allowance")
+        I18n.t("#{base_key}.nw1_allowance")
       elsif nw2_allowance_qualified
-        I18n.t("racing.race.nw2_allowance")
+        I18n.t("#{base_key}.nw2_allowance")
       elsif nw3_allowance_qualified
-        I18n.t("racing.race.nw3_allowance")
+        I18n.t("#{base_key}.nw3_allowance")
       else
-        I18n.t("racing.race.allowance")
+        I18n.t("#{base_key}.allowance")
       end
-      base_qual += " (" + I18n.t("racing.race.starter_allowance") + ")" if starter_allowance_qualified
+      base_qual += " (" + I18n.t("#{base_key}.starter_allowance") + ")" if starter_allowance_qualified
       base_qual
     end
   end

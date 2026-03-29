@@ -44,6 +44,7 @@ en:
       name: Name
       next_foal: Next Foal
       next_race: Next Race
+      next_race_info: "%{date} %{track} #%{number}: %{distance} %{type} for %{age_gender} (%{surface})"
       not_for_sale: Not for Sale
       not_in_foal: Not In Foal
       number_of_workouts: Workouts
