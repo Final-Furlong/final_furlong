@@ -25,7 +25,14 @@
           td.text-center= horse.gender.first.upcase
           td.text-center= data&.energy_grade || t("common.dash")
           td.text-center= data&.fitness_grade || t("common.dash")
-          td.text-center= data.location_string
+          td.text-center
+            = data.location_string
+            - if data.in_transit?
+              .tooltip.ml-2.text-lg data-tip=t(".arrival", date: l(horse.racing_shipments.order(arrival_date: :desc).pick(:arrival_date)))
+                i.ph-fill.ph-truck.ml-2
+            - elsif horse.current_boarding.present?
+              .tooltip.ml-2.text-lg data-tip=t(".boarded", days: horse.current_boarding.count_days)
+                i.ph-fill.ph-barn.ml-2
           td.text-center= horse.race_qualification.to_s
           td.text-center
             - if data.last_raced_at
