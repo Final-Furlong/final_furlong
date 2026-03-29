@@ -6185,13 +6185,6 @@ CREATE INDEX index_activity_points_on_legacy_stable_id ON public.activity_points
 
 
 --
--- Name: index_activity_points_on_stable_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_activity_points_on_stable_id ON public.activity_points USING btree (stable_id);
-
-
---
 -- Name: index_activity_points_on_stable_id_and_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6556,24 +6549,10 @@ CREATE INDEX index_budget_transactions_on_legacy_budget_id ON public.budget_tran
 
 
 --
--- Name: index_budget_transactions_on_legacy_stable_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_budget_transactions_on_legacy_stable_id ON public.budget_transactions USING btree (legacy_stable_id);
-
-
---
 -- Name: index_budget_transactions_on_legacy_stable_id_and_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_budget_transactions_on_legacy_stable_id_and_created_at ON public.budget_transactions USING btree (legacy_stable_id, created_at);
-
-
---
--- Name: index_budget_transactions_on_stable_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_budget_transactions_on_stable_id ON public.budget_transactions USING btree (stable_id);
 
 
 --
@@ -6913,13 +6892,6 @@ CREATE INDEX index_horses_on_name ON public.horses USING btree (name);
 
 
 --
--- Name: index_horses_on_owner_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_horses_on_owner_id ON public.horses USING btree (owner_id);
-
-
---
 -- Name: index_horses_on_owner_id_and_status; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6945,13 +6917,6 @@ CREATE INDEX index_horses_on_sire_id ON public.horses USING btree (sire_id);
 --
 
 CREATE INDEX index_horses_on_slug ON public.horses USING btree (slug);
-
-
---
--- Name: index_horses_on_status; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_horses_on_status ON public.horses USING btree (status);
 
 
 --
@@ -9518,6 +9483,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260329094106'),
 ('20260329085637'),
 ('20260328113608'),
 ('20260328101055'),

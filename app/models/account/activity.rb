@@ -25,14 +25,13 @@ end
 #  updated_at                                                                               :datetime         not null
 #  budget_id                                                                                :bigint           indexed
 #  legacy_stable_id                                                                         :integer          default(0), not null, indexed
-#  stable_id                                                                                :bigint           not null, indexed, indexed => [created_at]
+#  stable_id                                                                                :bigint           not null, indexed => [created_at]
 #
 # Indexes
 #
 #  index_activity_points_on_activity_type             (activity_type)
 #  index_activity_points_on_budget_id                 (budget_id)
 #  index_activity_points_on_legacy_stable_id          (legacy_stable_id)
-#  index_activity_points_on_stable_id                 (stable_id)
 #  index_activity_points_on_stable_id_and_created_at  (stable_id,created_at)
 #
 # Foreign Keys

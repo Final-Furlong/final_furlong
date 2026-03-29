@@ -15,16 +15,16 @@
           form.flex.p-2 role="search"
             input[type="search" disabled=true placeholder=t(".search_placeholder") aria-label=t(".search_aria_label")]
       - if signed_in?
-        li.px-2.pt-2
+        li.px-2.pt-2.hidden.sm:block
           = link_to root_path do
             i.ph-fill.ph-house.text-2xl alt=t(".home")
             span.sr-only= t(".home")
 
-        li
+        li.hidden.sm:block
           = turbo_stream_from current_user, :notifications
           = render "layouts/notifications"
 
-        li.px-2.pt-2
+        li.px-2.pt-2.hidden.sm:block
           = link_to new_setting_path do
             i.ph-fill.ph-gear.text-2xl alt=t(".settings")
             span.sr-only= t(".settings")

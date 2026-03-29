@@ -185,6 +185,8 @@ en:
         workouts_since_last_race: Workouts Since Last Race
       show:
         age: Age
+        arrival: Will arrive on %{date}
+        boarded: Boarded for %{days} day(s)
         energy: Energy
         fitness: Fitness
         gender: Gender
