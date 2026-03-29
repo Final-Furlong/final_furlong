@@ -108,7 +108,7 @@ end
 #  gender(colt, filly, mare, stallion, gelding)                                                                       :enum             not null, indexed, indexed => [status]
 #  name                                                                                                               :string(18)       indexed, indexed => [status]
 #  slug                                                                                                               :string           indexed
-#  status(unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased) :enum             default("unborn"), not null, indexed => [owner_id], indexed, indexed => [age], indexed => [breeder_id], indexed => [dam_id], indexed => [gender], indexed => [leaser_id], indexed => [name], indexed => [owner_id], indexed => [sire_id]
+#  status(unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased) :enum             default("unborn"), not null, indexed => [owner_id], indexed => [age], indexed => [breeder_id], indexed => [dam_id], indexed => [gender], indexed => [leaser_id], indexed => [name], indexed => [owner_id], indexed => [sire_id]
 #  created_at                                                                                                         :datetime         not null
 #  updated_at                                                                                                         :datetime         not null
 #  breeder_id                                                                                                         :bigint           not null, indexed, indexed => [status]
@@ -116,7 +116,7 @@ end
 #  leaser_id                                                                                                          :bigint           indexed => [date_of_birth], indexed, indexed => [status]
 #  legacy_id                                                                                                          :integer          indexed
 #  location_bred_id                                                                                                   :bigint           not null, indexed
-#  owner_id                                                                                                           :bigint           not null, indexed => [date_of_birth], indexed, indexed => [status], indexed => [status]
+#  owner_id                                                                                                           :bigint           not null, indexed => [date_of_birth], indexed => [status], indexed => [status]
 #  public_id                                                                                                          :string(12)       indexed
 #  sire_id                                                                                                            :bigint           indexed, indexed => [status]
 #
@@ -134,12 +134,10 @@ end
 #  index_horses_on_legacy_id                    (legacy_id)
 #  index_horses_on_location_bred_id             (location_bred_id)
 #  index_horses_on_name                         (name)
-#  index_horses_on_owner_id                     (owner_id)
 #  index_horses_on_owner_id_and_status          (owner_id,status)
 #  index_horses_on_public_id                    (public_id)
 #  index_horses_on_sire_id                      (sire_id)
 #  index_horses_on_slug                         (slug)
-#  index_horses_on_status                       (status)
 #  index_horses_on_status_and_age               (status,age)
 #  index_horses_on_status_and_breeder_id        (status,breeder_id)
 #  index_horses_on_status_and_dam_id            (status,dam_id)
