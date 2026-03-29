@@ -3980,7 +3980,8 @@ CREATE TABLE public.racehorse_metadata (
     location_string character varying DEFAULT 'Farm'::character varying NOT NULL,
     last_injured_at date,
     currently_injured boolean DEFAULT false NOT NULL,
-    latest_result_abbreviation character varying
+    latest_result_abbreviation character varying,
+    next_entry_date date
 );
 
 
@@ -7872,6 +7873,13 @@ CREATE INDEX index_racehorse_metadata_on_location_string ON public.racehorse_met
 
 
 --
+-- Name: index_racehorse_metadata_on_next_entry_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_metadata_on_next_entry_date ON public.racehorse_metadata USING btree (next_entry_date);
+
+
+--
 -- Name: index_racehorse_metadata_on_racetrack_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -9483,6 +9491,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260329162434'),
 ('20260329094106'),
 ('20260329085637'),
 ('20260328113608'),

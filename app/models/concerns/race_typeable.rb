@@ -12,7 +12,7 @@ module RaceTypeable
 
     def race_type_string
       value = race_type.titleize.gsub("Nw1 ", "NW1 ").gsub("Nw2 ", "NW2 ").gsub("Nw3 ", "NW3 ")
-      value += " (#{grade})" if race_type.downcase == "stakes"
+      value += " (#{grade} - #{name})" if race_type.downcase == "stakes"
       value
     end
 
@@ -39,7 +39,7 @@ module RaceTypeable
         price = Game::MoneyFormatter.new(claiming_price).to_s
         I18n.t("racing.race.claiming_with_price", price:)
       else
-        I18n.t("racing.race.#{race_type.downcase}")
+        race_type_string
       end
       race_description += " " + I18n.t("racing.race.age_desc", age: race_age_string)
       if race_gender_string.present?

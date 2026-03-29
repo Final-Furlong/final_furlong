@@ -1,0 +1,23 @@
+table.mx-auto.mb-2.table-responsive.table-bordered.w-full.sm:w-2/3
+  thead
+    th= t("racing.entries.name")
+    th= t("racing.entries.age")
+    th= t("racing.entries.gender")
+    th= t("racing.entries.parents")
+    th= t("racing.entries.equipment")
+    th= t("racing.entries.stable")
+  tbody
+    - race.entries.each do |entry|
+      - horse = entry.horse
+      - pedigree = Horses::PedigreeDisplayService.new(horse)
+      tr
+        td class="text-#{horse.gender}"= link_to horse.name, horse_path(horse), data: { turbo_frame: "_top" }
+        td.text-center= horse.age
+        td.text-center= horse.gender.titleize[0]
+        td.text-center
+          = pedigree.sire_display(tag: true)
+          = " x "
+          = pedigree.dam_display(tag: true)
+        td= entry.equipment_string(blank: "")
+        td= link_to horse.manager.name, stable_path(horse.manager), data: { turbo_frame: "_top" }
+

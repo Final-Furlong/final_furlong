@@ -1,6 +1,6 @@
 = turbo_frame_tag "#{Current.stable.slug}-training-summary" do
   = render "filters", query: @query
-  table.table-responsive.table.bordered.table-zebra.table-sm.w-full
+  table.table-responsive.table.bordered.table-zebra.table-xs.w-full
     thead
       tr
         th.text-center= sort_link @query, :name, t(".horse")
@@ -15,6 +15,11 @@
             = t(".last_race")
             .tooltip.ml-2.text-lg data-tip=t(".last_race_hint")
               i.ph-fill.ph-info
+        th.text-center
+          = sort_link @query, :race_metadata_entry_nulls_last, [:race_metadata_entry_nulls_last, 'name asc'] do
+            = t(".next_race")
+          .tooltip.ml-2.text-lg data-tip=t(".next_race_hint")
+            i.ph-fill.ph-info
         th.text-center= sort_link @query, :race_metadata_injury_nulls_last, [:race_metadata_injury_nulls_last, 'name asc'], t(".last_injury")
     tbody
       - @horses.each do |horse|
@@ -33,7 +38,7 @@
             - elsif horse.current_boarding.present?
               .tooltip.ml-2.text-lg data-tip=t(".boarded", days: horse.current_boarding.count_days)
                 i.ph-fill.ph-barn.ml-2
-          td.text-center= horse.race_qualification.to_s
+          td.text-center= horse.race_qualification.to_s(mobile: true)
           td.text-center
             - if data.last_raced_at
               = l(data.last_raced_at, format: :month_day)
@@ -44,6 +49,24 @@
               = " | "
               = data.rest_days_since_last_race
               = ")"
+            - else
+              = t("common.dash")
+          td
+            - if horse.race_entries.present?
+              - next_entry = horse.race_entries.joins(:race).merge(Racing::RaceSchedule.order(date: :asc)).first
+              = l(next_entry.race.date, format: :month_day)
+              = " - "
+              = next_entry.race.distance_abbr
+              = " "
+              = [next_entry.race.track_surface.surface_abbr, next_entry.equipment_string(blank: "")].compact_blank.join(" - ")
+            - elsif horse.future_race_entries.present?
+              i.ph.ph-fill.ph-clock.mr-2
+              - next_entry = horse.future_race_entries.joins(:race).merge(Racing::RaceSchedule.order(date: :asc)).first
+              = l(next_entry.race.date, format: :month_day)
+              = " - "
+              = next_entry.race.distance_abbr
+              = " "
+              = [next_entry.race.track_surface.surface_abbr, next_entry.equipment_string(blank: "")].compact_blank.join(" - ")
             - else
               = t("common.dash")
           td

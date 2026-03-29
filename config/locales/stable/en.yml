@@ -195,6 +195,8 @@ en:
         last_race: Last Race
         last_race_hint: Race Info (Days Since | Rest Days Since)
         location: Location
+        next_race: Next Race
+        next_race_hint: Clock Icon indicates Scheduled Entry
         qualifying_level: Qualifying Race
     trainings:
       index:
