@@ -121,7 +121,18 @@
             th= t(".next_race")
             td
               - next_entry = horse.race_entries.joins(:race).order(race: { date: :asc }).first
-              = next_entry.inspect
+              - if next_entry
+                - next_race = next_entry.race
+                - date = l(next_race.date, format: :slashes)
+                - track = next_race.racetrack.name
+                - number = next_race.number
+                - distance = next_race.distance_abbr
+                - type = t("racing.race.#{next_race.race_type}")
+                - age_gender = [next_race.race_age_string, next_race.race_gender_string].compact.join(' ')
+                = render Ui::Link::Component.new(url: new_racing_entry_path(date: next_race.date, number: next_race.number), extra_classes: "mt-2", data: { turbo_frame: "_top" }) do
+                  = t(".next_race_info", date:, track:, number:, distance:, type:, age_gender:)
+              - else
+                = t("common.dash")
         tr
           th= t(".scheduled_race")
           td Not Yet Added

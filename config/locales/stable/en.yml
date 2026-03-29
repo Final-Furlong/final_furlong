@@ -195,6 +195,7 @@ en:
         last_race: Last Race
         last_race_hint: Race Info (Days Since | Rest Days Since)
         location: Location
+        next_race: Next Race
         qualifying_level: Qualifying Race
     trainings:
       index:

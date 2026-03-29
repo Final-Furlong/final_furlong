@@ -22,7 +22,7 @@ class Racing::RaceSchedule < ApplicationRecord
   validates :purse, numericality: { only_integer: true, greater_than_or_equal_to: 10_000, less_than_or_equal_to: 20_000_000 }
   validates :claiming_price, numericality: { only_integer: true, greater_than_or_equal_to: 5_000, less_than_or_equal_to: 50_000 }, if: :claiming?
 
-  delegate :racetrack, to: :track_surface
+  delegate :racetrack, :surface_abbr, to: :track_surface
 
   scope :future, -> { where("date > ?", Date.current) }
   scope :next_year, -> { where("date > ?", Date.current + 10.months) }
@@ -106,6 +106,10 @@ class Racing::RaceSchedule < ApplicationRecord
     end
     sort += Config::Racing.grades.find_index(grade) if grade
     sort
+  end
+
+  def distance_abbr
+    "#{distance.to_s.gsub(".0", "")}f"
   end
 
   def self.ransackable_attributes(_auth_object = nil)

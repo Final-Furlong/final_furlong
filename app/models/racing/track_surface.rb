@@ -18,6 +18,17 @@ module Racing
 
     def surface = super.to_s.inquiry
 
+    def surface_abbr
+      case surface
+      when "dirt"
+        "D"
+      when "turf"
+        "T"
+      else
+        "SC"
+      end
+    end
+
     def jump?
       surface.steeplechase?
     end
