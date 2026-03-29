@@ -95,10 +95,10 @@ end
 #  courage                :integer          default(0), not null
 #  desired_equipment      :integer          default(0), not null
 #  dirt                   :integer          default(0), not null
-#  energy                 :integer          default(0), not null
+#  energy                 :integer          default(0), not null, indexed
 #  energy_minimum         :integer          default(0), not null
 #  energy_regain          :integer          default(0), not null
-#  fitness                :integer          default(0), not null
+#  fitness                :integer          default(0), not null, indexed
 #  leading                :integer          default(0), not null
 #  loaf_percent           :integer          default(0), not null
 #  loaf_threshold         :integer          default(0), not null
@@ -106,7 +106,7 @@ end
 #  midpack                :integer          default(0), not null
 #  min_speed              :integer          default(0), not null
 #  natural_energy_current :float            default(0.0), not null, indexed
-#  natural_energy_gain    :decimal(5, 3)    default(0.0), not null
+#  natural_energy_gain    :decimal(5, 3)    default(0.0), not null, indexed
 #  natural_energy_loss    :integer          default(0), not null
 #  off_pace               :integer          default(0), not null
 #  peak_end_date          :date             not null
@@ -126,7 +126,7 @@ end
 #  turf                   :integer          default(0), not null
 #  turning                :integer          default(0), not null
 #  weight                 :integer          default(0), not null
-#  xp_current             :integer          default(0), not null
+#  xp_current             :integer          default(0), not null, indexed
 #  xp_rate                :integer          default(0), not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
@@ -134,8 +134,12 @@ end
 #
 # Indexes
 #
+#  index_racing_stats_on_energy                  (energy)
+#  index_racing_stats_on_fitness                 (fitness)
 #  index_racing_stats_on_horse_id                (horse_id) UNIQUE
 #  index_racing_stats_on_natural_energy_current  (natural_energy_current)
+#  index_racing_stats_on_natural_energy_gain     (natural_energy_gain)
+#  index_racing_stats_on_xp_current              (xp_current)
 #
 # Foreign Keys
 #

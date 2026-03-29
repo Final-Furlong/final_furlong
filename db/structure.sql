@@ -7998,6 +7998,20 @@ CREATE INDEX index_racetracks_on_slug ON public.racetracks USING btree (slug);
 
 
 --
+-- Name: index_racing_stats_on_energy; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racing_stats_on_energy ON public.racing_stats USING btree (energy);
+
+
+--
+-- Name: index_racing_stats_on_fitness; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racing_stats_on_fitness ON public.racing_stats USING btree (fitness);
+
+
+--
 -- Name: index_racing_stats_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8009,6 +8023,20 @@ CREATE UNIQUE INDEX index_racing_stats_on_horse_id ON public.racing_stats USING 
 --
 
 CREATE INDEX index_racing_stats_on_natural_energy_current ON public.racing_stats USING btree (natural_energy_current);
+
+
+--
+-- Name: index_racing_stats_on_natural_energy_gain; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racing_stats_on_natural_energy_gain ON public.racing_stats USING btree (natural_energy_gain);
+
+
+--
+-- Name: index_racing_stats_on_xp_current; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racing_stats_on_xp_current ON public.racing_stats USING btree (xp_current);
 
 
 --
@@ -9490,6 +9518,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260329085637'),
 ('20260328113608'),
 ('20260328101055'),
 ('20260327184438'),
