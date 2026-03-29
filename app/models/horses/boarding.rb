@@ -22,6 +22,10 @@ module Horses
       end_date.nil?
     end
 
+    def count_days
+      today? ? days : (Date.current - start_date).to_i
+    end
+
     def self.ransackable_attributes(_auth_object = nil)
       %w[days end_date horse_id location_id start_date]
     end

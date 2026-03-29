@@ -11,8 +11,8 @@
           fieldset.fieldset
             legend.fieldset-legend= t(".energy")
             .flex
-              = f.collection_select :min_energy, Config::Racing.letter_grades.map(&:upcase), :to_s, :to_s, { include_blank: true }, { class: 'select d-inline w-[60] mr-2' }
               = f.collection_select :max_energy, Config::Racing.letter_grades.map(&:upcase), :to_s, :to_s, { include_blank: true }, { class: 'select d-inline w-[60] mr-2' }
+              = f.collection_select :min_energy, Config::Racing.letter_grades.map(&:upcase), :to_s, :to_s, { include_blank: true }, { class: 'select d-inline w-[60] mr-2' }
         div
           fieldset.fieldset
             legend.fieldset-legend= t(".fitness")
