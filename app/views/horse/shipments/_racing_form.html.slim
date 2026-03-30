@@ -1,5 +1,5 @@
 /# locals: (shipment:, horse:)
-= form_with model: shipment, scope: :shipment, url: horse_shipments_path(horse), id: "shipment-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+= form_with model: shipment, scope: :shipment, url: horse_shipments_path(horse), id: "shipment-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top", controller: 'dependent-fields' } do |f|
   .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
     div
       fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
@@ -17,15 +17,10 @@
     div
       fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
         legend.fieldset-legend= t("horse.shipments.form.destination")
-        = f.select :ending_location, options_for_select(shipment.options_for_destination_select(horse), shipment.ending_location), {}, { class: 'select' }
+        = f.select :ending_location, options_for_select(shipment.options_for_destination_select(horse), shipment.ending_location), { prompt: t("horse.shipments.form.select_destination") }, { class: 'select', data: { dependent_fields_target: "hasDependents", dependant_turbo_frame_selector: '#destination_dependent_fields' } }
       - if shipment.errors[:ending_location]
         p.text-error= shipment.errors.where(:ending_location).map(&:full_message).join(', ')
-    div
-      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
-        legend.fieldset-legend= t("horse.shipments.form.mode")
-        = f.select :mode, options_for_select(shipment.options_for_mode_select, shipment.mode), {  }, { class: "select w-full" }
-        - if shipment.errors[:mode]
-          p.text-error= shipment.errors.where(:mode).map(&:full_message).join(', ')
+    = render "mode_select", shipment:, f:, horse:
   .float-right
     = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
     = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.save"))

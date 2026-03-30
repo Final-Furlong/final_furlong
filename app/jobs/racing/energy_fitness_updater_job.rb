@@ -77,6 +77,7 @@ class Racing::EnergyFitnessUpdaterJob < ApplicationJob
         end
         legacy_horse.save
         horses += 1
+        step.advance! from: legacy_horse.id
       end
     end
 

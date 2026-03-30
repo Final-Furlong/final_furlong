@@ -171,6 +171,7 @@ end
 #  last_shipped_at            :date             indexed
 #  latest_result_abbreviation :string
 #  location_string            :string           default("Farm"), not null, indexed
+#  next_entry_date            :date             indexed
 #  rest_days_since_last_race  :integer          default(0), not null, indexed
 #  workouts_since_last_race   :integer          default(0), not null, indexed
 #  created_at                 :datetime         not null
@@ -193,6 +194,7 @@ end
 #  index_racehorse_metadata_on_last_shipped_at            (last_shipped_at)
 #  index_racehorse_metadata_on_location_id                (location_id)
 #  index_racehorse_metadata_on_location_string            (location_string)
+#  index_racehorse_metadata_on_next_entry_date            (next_entry_date)
 #  index_racehorse_metadata_on_racetrack_id               (racetrack_id)
 #  index_racehorse_metadata_on_rest_days_since_last_race  (rest_days_since_last_race)
 #  index_racehorse_metadata_on_workouts_since_last_race   (workouts_since_last_race)

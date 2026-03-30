@@ -118,16 +118,6 @@ RSpec.describe Shipping::BroodmareShipment do
     end
   end
 
-  describe "#options_for_mode_select" do
-    it "returns correct array" do
-      shipment = build(:broodmare_shipment)
-      expect(shipment.options_for_mode_select).to eq([
-        [I18n.t("horse.shipments.form.mode_road"), "road"],
-        [I18n.t("horse.shipments.form.mode_air"), "air"]
-      ])
-    end
-  end
-
   describe "#options_for_destination_select" do
     it "returns correct array" do # rubocop:disable RSpec/ExampleLength
       stable_with_1_stud = create(:stable, name: "C Stable")

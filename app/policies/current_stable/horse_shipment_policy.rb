@@ -7,22 +7,25 @@ module CurrentStable
     end
 
     def create?
-      false # temporarily disable while PHP side is sorted out
-      # return false unless manager?
-      # return false unless shipping_allowed?
-      # if record.horse.racehorse?
-      #   last_date = Shipping::RacehorseShipment.where(horse: record.horse).maximum(:arrival_date)
-      #   return true unless last_date
-      #
-      #   return last_date < Date.current
-      # elsif record.horse.broodmare?
-      #   last_date = Shipping::BroodmareShipment.where(horse: record.horse).maximum(:arrival_date)
-      #   return true unless last_date
-      #
-      #   return last_date < Date.current
-      # end
-      #
-      # false
+      return false unless manager?
+      return false unless shipping_allowed?
+      if record.horse.racehorse?
+        return false if record.horse.race_entries.present?
+        return false if record.horse.current_boarding.present?
+        return false if record.horse.racing_shipments.future.present?
+        last_date = Shipping::RacehorseShipment.where(horse: record.horse).maximum(:arrival_date)
+        return true unless last_date
+
+        return last_date < Date.current
+      elsif record.horse.broodmare?
+        return false if record.horse.broodmare_shipments.future.present?
+        last_date = Shipping::BroodmareShipment.where(horse: record.horse).maximum(:arrival_date)
+        return true unless last_date
+
+        return last_date < Date.current
+      end
+
+      false
     end
 
     def destroy?

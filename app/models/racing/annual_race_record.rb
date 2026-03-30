@@ -37,7 +37,12 @@ end
 #  starts         :bigint
 #  thirds         :bigint
 #  wins           :bigint
-#  year           :integer          primary key
-#  horse_id       :bigint           primary key
+#  year           :integer          primary key, uniquely indexed => [horse_id]
+#  horse_id       :bigint           primary key, indexed, uniquely indexed => [year]
+#
+# Indexes
+#
+#  index_annual_race_records_on_horse_id           (horse_id)
+#  index_annual_race_records_on_year_and_horse_id  (year,horse_id) UNIQUE
 #
 

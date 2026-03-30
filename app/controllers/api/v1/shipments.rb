@@ -18,7 +18,7 @@ module Api
         end
         post "/" do
           error!({ error: "invalid", detail: "Missing racetrack ID" }, 500) if invalid_ship_to_track?
-          error!({ error: "invalid", detail: "Invalid date" }, 500) if permitted_paras[:date] < Date.current
+          error!({ error: "invalid", detail: "Invalid date" }, 500) if permitted_params[:date] < Date.current
 
           horse = Horses::Horse.find_by!(legacy_id: permitted_params[:legacy_id])
           location = if permitted_params[:shipment_type].end_with?("_to_farm")

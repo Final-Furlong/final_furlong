@@ -31,7 +31,6 @@ module Horse
           format.html { render :new, status: :unprocessable_entity }
 
           format.turbo_stream do
-            pd result
             partial = horse.racehorse? ? "horse/shipments/racing_form" : "horse/shipments/broodmare_form"
             render turbo_stream: turbo_stream.replace("shipment-form", partial:, locals: { shipment: result.shipment, horse: })
           end
@@ -54,6 +53,22 @@ module Horse
         flash[:error] = t("common.error")
         redirect_to horse_path(@horse)
       end
+    end
+
+    def destination_dependent_fields
+      horse = Horses::Horse.find(params[:id])
+      if horse.racehorse?
+        @shipment = horse.racing_shipments.build
+        @shipment.ending_location = if params[:ending_location_id] == "Farm"
+          horse.manager.racetrack.location
+        else
+          Location.find(params[:ending_location_id])
+        end
+      else
+        @shipment = horse.broodmare_shipments.build
+        @shipment.ending_farm = Account::Stable.find(params[:ending_location_id])
+      end
+      authorize @shipment, :create?, policy_class: CurrentStable::HorseShipmentPolicy
     end
 
     private

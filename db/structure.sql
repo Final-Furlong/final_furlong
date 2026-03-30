@@ -975,7 +975,8 @@ CREATE TABLE public.broodmare_shipments (
     starting_farm_id bigint NOT NULL,
     ending_farm_id bigint NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    scheduled boolean DEFAULT false NOT NULL
 );
 
 
@@ -4018,7 +4019,8 @@ CREATE TABLE public.racehorse_shipments (
     ending_location_id bigint NOT NULL,
     shipping_type public.shipping_type NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    scheduled boolean DEFAULT false NOT NULL
 );
 
 
@@ -6193,6 +6195,20 @@ CREATE INDEX index_activity_points_on_stable_id_and_created_at ON public.activit
 
 
 --
+-- Name: index_annual_race_records_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_annual_race_records_on_horse_id ON public.annual_race_records USING btree (horse_id);
+
+
+--
+-- Name: index_annual_race_records_on_year_and_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_annual_race_records_on_year_and_horse_id ON public.annual_race_records USING btree (year, horse_id);
+
+
+--
 -- Name: index_auction_bids_on_auction_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6519,6 +6535,13 @@ CREATE UNIQUE INDEX index_broodmare_shipments_on_horse_id_and_departure_date ON 
 --
 
 CREATE INDEX index_broodmare_shipments_on_mode ON public.broodmare_shipments USING btree (mode);
+
+
+--
+-- Name: index_broodmare_shipments_on_scheduled; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_broodmare_shipments_on_scheduled ON public.broodmare_shipments USING btree (scheduled);
 
 
 --
@@ -7929,6 +7952,13 @@ CREATE INDEX index_racehorse_shipments_on_mode ON public.racehorse_shipments USI
 
 
 --
+-- Name: index_racehorse_shipments_on_scheduled; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_racehorse_shipments_on_scheduled ON public.racehorse_shipments USING btree (scheduled);
+
+
+--
 -- Name: index_racehorse_shipments_on_shipping_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8013,10 +8043,10 @@ CREATE INDEX index_racing_stats_on_xp_current ON public.racing_stats USING btree
 
 
 --
--- Name: index_sale_offers_on_buyer_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_sale_offers_on_buyer_id_and_new_members_only; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_sale_offers_on_buyer_id ON public.sale_offers USING btree (buyer_id);
+CREATE INDEX index_sale_offers_on_buyer_id_and_new_members_only ON public.sale_offers USING btree (buyer_id, new_members_only);
 
 
 --
@@ -9121,7 +9151,7 @@ ALTER TABLE ONLY public.activity_points
 --
 
 ALTER TABLE ONLY public.training_schedules_horses
-    ADD CONSTRAINT fk_rails_a48e7af8f9 FOREIGN KEY (training_schedule_id) REFERENCES public.training_schedules(id) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
+    ADD CONSTRAINT fk_rails_a48e7af8f9 FOREIGN KEY (training_schedule_id) REFERENCES public.training_schedules(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -9185,7 +9215,7 @@ ALTER TABLE ONLY public.notifications
 --
 
 ALTER TABLE ONLY public.horses
-    ADD CONSTRAINT fk_rails_b1757e50ec FOREIGN KEY (breeder_id) REFERENCES public.stables(id) ON UPDATE CASCADE ON DELETE RESTRICT NOT VALID;
+    ADD CONSTRAINT fk_rails_b1757e50ec FOREIGN KEY (breeder_id) REFERENCES public.stables(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
@@ -9273,7 +9303,7 @@ ALTER TABLE ONLY public.future_events
 --
 
 ALTER TABLE ONLY public.training_schedules
-    ADD CONSTRAINT fk_rails_c52806e045 FOREIGN KEY (stable_id) REFERENCES public.stables(id) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
+    ADD CONSTRAINT fk_rails_c52806e045 FOREIGN KEY (stable_id) REFERENCES public.stables(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -9473,7 +9503,7 @@ ALTER TABLE ONLY public.lease_offers
 --
 
 ALTER TABLE ONLY public.horses
-    ADD CONSTRAINT fk_rails_fc5ea1ce34 FOREIGN KEY (dam_id) REFERENCES public.horses(id) ON UPDATE CASCADE ON DELETE SET NULL NOT VALID;
+    ADD CONSTRAINT fk_rails_fc5ea1ce34 FOREIGN KEY (dam_id) REFERENCES public.horses(id) ON UPDATE CASCADE ON DELETE SET NULL;
 
 
 --
@@ -9491,6 +9521,9 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260331121235'),
+('20260331093159'),
+('20260331084954'),
 ('20260329162434'),
 ('20260329094106'),
 ('20260329085637'),

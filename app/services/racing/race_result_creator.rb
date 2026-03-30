@@ -29,8 +29,8 @@ module Racing
           race_horses.each do |race_horse|
             result.created = race_horse.valid?
             race_record = update_race_record(race_result:, surface:, race_horse:)
-            stats = update_stats(horse: race_horse.horse, horses:)
-            next if race_horse.save! && race_record.save! && (stats.blank? || stats&.save!)
+            stats = update_stats(horse: race_horse.horse, race_horse:, horses:, date: race_date)
+            next if race_horse.save! && race_record.save! && (stats.blank? || stats.save!)
 
             result.created = false
             raise ActiveRecord::Rollback, race_horse.errors.full_messages.to_sentence
@@ -80,7 +80,7 @@ module Racing
       end
     end
 
-    def update_stats(horse:, horses:)
+    def update_stats(horse:, horses:, race_horse:, date:)
       stats = horse.racing_stats
       return unless stats
 
@@ -93,6 +93,7 @@ module Racing
       stats.xp_current = Config::Racing.maximum_xp if stats.xp_current > Config::Racing.maximum_xp
       stats.natural_energy_current -= [10, finish[:natural_energy_used]].min
       horse.race_metadata&.update_grades(energy: stats.energy, fitness: stats.fitness, update_legacy: true)
+      horse.race_metadata&.update(last_raced_at: date, latest_result_abbreviation: race_horse.result_abbreviation)
       stats
     end
 

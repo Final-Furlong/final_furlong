@@ -51,14 +51,12 @@ module Horses
         shipment.shipping_type = shipping_type(params)
 
         ActiveRecord::Base.transaction do
+          shipment.scheduled = shipment.future?
           if shipment.valid? && shipment.save
             unless shipment.future?
-              horse.race_stats&.update(in_transit: true)
-              legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
-              legacy_horse&.update(InTransit: 1)
-              Legacy::ViewRacehorses.find_by(horse_id: horse.legacy_id)&.update(in_transit: 1)
-              description = I18n.t("services.shipment_creator.description", horse: horse.name, start:
-                current_location_name, end: ending_location_name(params, stable))
+              end_location_name = ending_location_name(stable, shipment.shipping_type)
+              horse.race_metadata&.update(in_transit: true, location_string: end_location_name)
+              description = I18n.t("services.shipment_creator.description", horse: horse.name, start: current_location_name, end: end_location_name)
               Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: cost.abs * -1)
             end
 
@@ -68,6 +66,23 @@ module Horses
             store_shipment_errors
           end
           result.shipment = shipment
+        end
+        if result.created && !shipment.future?
+          location_id = if shipment.shipping_type == "track_to_farm"
+            59
+          else
+            track_name = Racetrack.where(location: shipment.ending_location).pick(:name)
+            Legacy::Racetrack.where(name: track_name).order(ID: :asc).pick(:ID)
+          end
+          Legacy::Horse.transaction do
+            legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
+            legacy_horse&.update(InTransit: 1, Location: location_id)
+            Legacy::ViewRacehorses.find_by(horse_id: horse.legacy_id)&.update(in_transit: 1, location: location_id)
+            if location_id != 59
+              track_name = Racetrack.where(location: shipment.ending_location).pick(:name)
+              Legacy::ViewTrainingSchedules.find_by(horse_id: horse.legacy_id)&.update(track_name:)
+            end
+          end
         end
         result
       end
@@ -106,13 +121,12 @@ module Horses
         end
       end
 
-      def ending_location_name(params, stable)
-        if horse.racehorse? && horse.racing.at_farm?
-          ::Racing::Racetrack.where(location: shipment.ending_location).pick(:name)
-        elsif params[:ending_location] == "Farm"
-          stable.name
+      def ending_location_name(stable, shipping_type)
+        if shipping_type == "track_to_track" || shipping_type == "farm_to_track"
+          name = ::Racing::Racetrack.where(location: shipment.ending_location).pick(:name)
+          I18n.t("horse.location.at_racetrack", name:)
         else
-          ::Racing::Racetrack.where(location: shipment.ending_location).pick(:name)
+          stable.name
         end
       end
 
