@@ -73,6 +73,7 @@ class Racing::NaturalEnergyUpdaterJob < ApplicationJob
         end
         legacy_horse.save
         horses += 1
+        step.advance! from: legacy_horse.id
       end
     end
     store_job_info(outcome: { horses: })

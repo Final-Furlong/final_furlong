@@ -1,0 +1,2 @@
+= capture_for_dynamic_fields(@shipment) do |form|
+  = turbo_stream.replace 'destination_dependent_fields', partial: "role_dependent_fields", locals: { f: form, horse: @shipment.horse, shipment: @shipment }

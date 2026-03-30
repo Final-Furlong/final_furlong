@@ -14,7 +14,7 @@ RSpec.describe Racing::RaceDayUpdaterJob, :perform_enqueueed_jobs do
   private
 
   def mock_service
-    @mock_service ||= instance_double(Racing::RaceRecordUpdater, update_records: true)
+    @mock_service ||= instance_double(Racing::RaceRecordUpdater, update_records: { studs_updated: 1, mares_updated: 1 })
   end
 
   def date

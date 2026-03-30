@@ -11,10 +11,12 @@ module Shipping
     validates :arrival_date, comparison: { greater_than: :departure_date }, if: :departure_date
     validates :mode, inclusion: { in: Config::Shipping.modes }, if: :mode
     validates :shipping_type, inclusion: { in: Config::Shipping.racehorse_types }
+    validates :scheduled, inclusion: { in: [true, false] }
 
     scope :current, -> { where(departure_date: ..Date.current).where("arrival_date > ?", Date.current) }
     scope :future, -> { where("departure_date > ?", Date.current) }
     scope :not_future, -> { where(departure_date: ..Date.current) }
+    scope :scheduled, -> { where(scheduled: true) }
 
     def future?
       departure_date > Date.current
@@ -39,7 +41,25 @@ module Shipping
     end
 
     def options_for_mode_select
-      Config::Shipping.modes.map { |mode| [I18n.t("horse.shipments.form.mode_#{mode}"), mode] }
+      starting_location ||= horse.racing.current_location
+      return [] if starting_location.blank? || ending_location.blank?
+
+      modes.map do |mode|
+        mode_days = route.send(:"#{mode}_days")
+        days = "#{mode_days} #{I18n.t("day").pluralize(mode_days)}"
+        cost = Game::MoneyFormatter.new(route.send(:"#{mode}_cost"))
+        [I18n.t("horse.shipments.form.mode_#{mode}", days:, cost:), mode]
+      end
+    end
+
+    def route
+      starting_location ||= horse.racing.current_location
+      route = Shipping::Route.with_locations(starting_location, ending_location)
+      route.is_a?(Shipping::Route) ? route : route.first
+    end
+
+    def modes
+      route&.modes || []
     end
   end
 end

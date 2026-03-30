@@ -347,8 +347,9 @@ en:
         departure_date_hint: Shipments can be schedule up to %{count} days in the future.
         destination: Destination
         mode: Mode
-        mode_air: Air
-        mode_road: Road
+        mode_air: Air (%{days} - %{cost})
+        mode_road: Road (%{days} - %{cost})
+        select_destination: Select a Destination
       new:
         title: Ship Horse
     specific_race_records:

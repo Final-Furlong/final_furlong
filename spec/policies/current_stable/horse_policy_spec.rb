@@ -13,8 +13,7 @@ RSpec.describe CurrentStable::HorsePolicy do
     it "allows correct actions" do
       horse.owner = user.stable
       expect(policy).to permit_actions(:show, :view_events, :view_sales,
-        :view_shipping, :view_workouts, :view_boarding)
-      expect(policy).not_to permit_actions(:ship)
+        :view_shipping, :view_workouts, :view_boarding, :ship)
     end
 
     context "when the horse is a broodmare" do

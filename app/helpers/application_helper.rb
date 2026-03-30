@@ -10,5 +10,15 @@ module ApplicationHelper
   def mobile_variant?
     request.variant.include?(:phone)
   end
+
+  def capture_for_dynamic_fields(model, &block)
+    response = nil
+
+    form_with(model:) do |form|
+      response = capture(form, &block)
+    end
+
+    response
+  end
 end
 
