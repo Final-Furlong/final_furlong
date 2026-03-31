@@ -3,6 +3,7 @@
 .mx-auto.overflow-x-auto.w-full.sm:hidden
   - dashboard.send(items.to_sym).each do |horse|
     - shipment = horse.send(type).send(query_type).order(arrival_date: :desc).first
+    - next unless shipment
     - data = dashboard.data(shipment)
     .card.bg-base-100.w-full.px-2.rounded-none
       .card-body.p-0.rounded-none
@@ -50,6 +51,7 @@
         tbody
           - dashboard.send(items.to_sym).each do |horse|
             - shipment = horse.send(type).send(query_type).order(arrival_date: :desc).first
+            - next unless shipment
             - data = dashboard.data(shipment)
             tr
               td.wb-break-all

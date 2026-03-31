@@ -53,7 +53,7 @@ module Horses
         end
         if result.created && !shipment.future?
           Legacy::Horse.transaction do
-            location_id = Legacy::Stable.where(name: shipment.ending_farm.name).pick(:ID)
+            location_id = Legacy::User.where(StableName: shipment.ending_farm.name).pick(:ID)
             legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
             legacy_horse&.update(InTransit: 1, Location: location_id)
           end
