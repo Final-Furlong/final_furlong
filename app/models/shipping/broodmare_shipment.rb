@@ -11,9 +11,11 @@ module Shipping
     validates :arrival_date, comparison: { greater_than: :departure_date }, if: :departure_date
     validates :ending_farm, comparison: { other_than: :starting_farm }, if: :starting_farm
     validates :mode, inclusion: { in: Config::Shipping.modes }
+    validates :scheduled, inclusion: { in: [true, false] }
 
     scope :current, -> { where(departure_date: ..Date.current) }
     scope :future, -> { where("departure_date > ?", Date.current) }
+    scope :scheduled, -> { where(scheduled: true) }
 
     def future?
       departure_date > Date.current
@@ -24,19 +26,17 @@ module Shipping
     end
 
     def options_for_destination_select
-      owned_stud_ids = Account::Stable.joins(:horses).merge(Horses::Horse.stud).group(:owner_id).count
+      starting_farm ||= horse.broodmare.current_location
+      owned_stud_ids = Account::Stable.joins(:horses).where.not(id: starting_farm.id).where(horses: { id: Horses::Horse.stud.where.missing(:current_lease).select(:id) }).group(:owner_id).count
 
       stables = []
       stable_ids = []
-      owned_stud_ids.each do |stable_id, stud_count|
+      owned_stud_ids.each do |stable_id, _stud_count|
         stable_ids << stable_id
-        leased_studs = Horses::Horse.where(owner: stable_id).stud.where.associated(:current_lease).count
-        stud_count -= leased_studs
-        if stud_count.positive?
-          stables << [Account::Stable.where(id: stable_id).pick(:name), stable_id]
-        end
+        stables << [Account::Stable.where(id: stable_id).pick(:name), stable_id]
       end
-      Horses::Horse.where(owner: stable_ids).stud.where.associated(:current_lease).find_each do |stud|
+      stable_ids << starting_farm.id
+      Horses::Horse.stud.joins(:current_lease).where.not(current_lease: { leaser_id: stable_ids }).find_each do |stud|
         manager = stud.manager
         stables << [manager.name, manager.id]
       end
@@ -44,7 +44,26 @@ module Shipping
     end
 
     def options_for_mode_select
-      Config::Shipping.modes.map { |mode| [I18n.t("horse.shipments.form.mode_#{mode}"), mode] }
+      starting_farm ||= horse.broodmare.current_location
+      return [] if starting_farm.blank? || ending_farm.blank?
+
+      modes.map do |mode|
+        mode_days = route.send(:"#{mode}_days")
+        days = "#{mode_days} #{I18n.t("day").pluralize(mode_days)}"
+        cost = Game::MoneyFormatter.new(route.send(:"#{mode}_cost"))
+        [I18n.t("horse.shipments.form.mode_#{mode}", days:, cost:), mode]
+      end
+    end
+
+    def route
+      starting_location = horse.broodmare.current_location.racetrack.location
+      ending_location = ending_farm.racetrack.location
+      route = Shipping::Route.with_locations(starting_location, ending_location)
+      route.is_a?(Shipping::Route) ? route : route.first
+    end
+
+    def modes
+      route&.modes || []
     end
   end
 end

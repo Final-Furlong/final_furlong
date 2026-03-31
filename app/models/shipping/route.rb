@@ -11,8 +11,30 @@ module Shipping
     validates :road_cost, presence: true, if: :road_days
 
     scope :with_locations, ->(starting, ending) {
-      where("(starting_location_id = :starting AND ending_location_id = :ending) OR (starting_location_id = :ending AND ending_location_id = :starting)", { starting:, ending: })
+      if starting == ending
+        same_location(starting)
+      else
+        where("(starting_location_id = :starting AND ending_location_id = :ending) OR (starting_location_id = :ending AND ending_location_id = :starting)", { starting:, ending: })
+      end
     }
+
+    def self.same_location(location_id)
+      new(
+        air_cost: nil,
+        air_days: nil,
+        road_cost: 25,
+        road_days: 1,
+        starting_location_id: location_id,
+        ending_location_id: location_id
+      )
+    end
+
+    def modes
+      list = []
+      list << "road" if road_cost && road_days
+      list << "air" if air_cost && air_days
+      list
+    end
   end
 end
 

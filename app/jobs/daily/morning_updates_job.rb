@@ -18,7 +18,8 @@ class Daily::MorningUpdatesJob < ApplicationJob
       Horses::UpdateLeasesJob, Horses::UpdateSalesJob,
       Horses::NameHorsesJob, Horses::UpdateBabiesJob,
       Horses::RetireMaresJob, Horses::KillMaresJob,
-      Daily::DeleteReadNotificationsJob]
+      Daily::DeleteReadNotificationsJob,
+      Racing::RestDayUpdaterJob]
   end
 end
 

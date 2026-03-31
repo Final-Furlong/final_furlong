@@ -26,7 +26,9 @@ resources :horses, except: %i[new create destroy] do
       resource :sale_offer, only: %i[new create destroy]
       resource :sale_offer_acceptance, only: :create
       resources :sales, only: :index
-      resources :shipments, only: %i[index new create]
+      resources :shipments, only: %i[index new create] do
+        get :destination_dependent_fields, on: :collection
+      end
       resources :workouts, only: %i[index new create]
       resources :workout_stats, only: %i[index]
     end

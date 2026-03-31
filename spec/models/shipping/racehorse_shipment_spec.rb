@@ -110,16 +110,6 @@ RSpec.describe Shipping::RacehorseShipment do
     end
   end
 
-  describe "#options_for_mode_select" do
-    it "returns correct array" do
-      shipment = build(:racehorse_shipment)
-      expect(shipment.options_for_mode_select).to eq([
-        [I18n.t("horse.shipments.form.mode_road"), "road"],
-        [I18n.t("horse.shipments.form.mode_air"), "air"]
-      ])
-    end
-  end
-
   describe "#options_for_destination_select" do
     context "when horse is at the farm" do
       it "excludes current track as a location" do

@@ -55,21 +55,21 @@ end
 # Database name: primary
 #
 #  id               :bigint           not null, primary key
-#  new_members_only :boolean          default(FALSE), not null
+#  new_members_only :boolean          default(FALSE), not null, indexed => [buyer_id]
 #  offer_start_date :date             not null, indexed
 #  price            :integer          default(0), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  buyer_id         :bigint           indexed
+#  buyer_id         :bigint           indexed => [new_members_only]
 #  horse_id         :bigint           not null, uniquely indexed
 #  owner_id         :bigint           not null, indexed
 #
 # Indexes
 #
-#  index_sale_offers_on_buyer_id          (buyer_id)
-#  index_sale_offers_on_horse_id          (horse_id) UNIQUE
-#  index_sale_offers_on_offer_start_date  (offer_start_date)
-#  index_sale_offers_on_owner_id          (owner_id)
+#  index_sale_offers_on_buyer_id_and_new_members_only  (buyer_id,new_members_only)
+#  index_sale_offers_on_horse_id                       (horse_id) UNIQUE
+#  index_sale_offers_on_offer_start_date               (offer_start_date)
+#  index_sale_offers_on_owner_id                       (owner_id)
 #
 # Foreign Keys
 #

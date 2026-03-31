@@ -36,10 +36,9 @@ module Horses
         shipment.arrival_date = shipment.departure_date + days(shipment, route).days
 
         ActiveRecord::Base.transaction do
+          shipment.scheduled = shipment.future?
           if shipment.valid? && shipment.save
             unless shipment.future?
-              legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
-              legacy_horse&.update(InTransit: 1)
               description = I18n.t("services.shipment_creator.description", horse: horse.name, start:
                 current_location_name, end: shipment.ending_farm.name)
               Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: cost.abs * -1)
@@ -51,6 +50,13 @@ module Horses
             result.error = shipment.errors.full_messages.to_sentence
           end
           result.shipment = shipment
+        end
+        if result.created && !shipment.future?
+          Legacy::Horse.transaction do
+            location_id = Legacy::Stable.where(name: shipment.ending_farm.name).pick(:ID)
+            legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
+            legacy_horse&.update(InTransit: 1, Location: location_id)
+          end
         end
         result
       end

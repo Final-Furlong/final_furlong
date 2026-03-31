@@ -1,0 +1,2 @@
+= form_with(model: @shipment, scope: :shipment, url: destination_dependent_fields_horse_shipments_url(@shipment.horse)) do |form|
+  = render partial: "mode_select", locals: { f: form, shipment: @shipment, horse: @shipment.horse }

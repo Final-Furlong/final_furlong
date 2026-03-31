@@ -31,7 +31,7 @@ RSpec.describe Daily::MorningUpdatesJob, :perform_enqueued_jobs do
     end
 
     it "stores job result" do
-      expect { described_class.perform_later }.to change(JobStat, :count).by(10)
+      expect { described_class.perform_later }.to change(JobStat, :count).by(11)
       expect(JobStat.find_by(name: described_class.name)).to have_attributes(
                                                                outcome: { classes: described_class.new.class_list.count }.stringify_keys
                                                              )

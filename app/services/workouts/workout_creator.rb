@@ -73,7 +73,10 @@ module Workouts
           stats.fitness += workout.fitness_gain
           stats.fitness = stats.fitness.clamp(-50, 100)
           stats.save
-          energy_grade, fitness_grade = horse.race_metadata.update_grades(energy: stats.energy, fitness: stats.fitness)
+          if (data = horse.race_metadata)
+            energy_grade, fitness_grade = data.update_grades(energy: stats.energy, fitness: stats.fitness)
+            data.update(workouts_since_last_race: data.workouts_since_last_race.to_i + 1)
+          end
           Legacy::Horse.where(ID: horse.legacy_id).update(
             EnergyCurrent: stats.energy,
             Fitness: stats.fitness,

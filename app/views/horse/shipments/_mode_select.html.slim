@@ -1,0 +1,8 @@
+/# locals: (shipment:, f:, horse:)
+= turbo_frame_tag 'destination_dependent_fields', data: { update_url: destination_dependent_fields_horse_shipments_url(horse), request_param_name: 'ending_location_id' } do
+  div
+    fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+      legend.fieldset-legend= t("horse.shipments.form.mode")
+      = f.select :mode, options_for_select(shipment.options_for_mode_select, shipment.mode), {  }, { class: "select w-full", disabled: shipment.options_for_mode_select.blank? }
+      - if shipment.errors[:mode]
+        p.text-error= shipment.errors.where(:mode).map(&:full_message).join(', ')
