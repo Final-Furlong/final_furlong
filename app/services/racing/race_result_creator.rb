@@ -38,7 +38,8 @@ module Racing
         end
         trigger_horse_attribute_updates(horses:)
         if max_race?(date:, number:)
-          Racing::RaceDayUpdaterJob.perform_later(date:) if max_race?(date:, number:)
+          Racing::RaceDayUpdaterJob.perform_later(date:)
+          Daily::ProcessFutureShipmentsJob.perform_later
           User::SendDeveloperNotifications.call(title: "FF Races Finished", message: "Races finished running!")
         end
         return result

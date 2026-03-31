@@ -1,17 +1,30 @@
 class Daily::ProcessFutureShipmentsJob < ApplicationJob
+  include ActiveJob::Continuable
+
   queue_as :low_priority
 
   def perform
-    return if run_today?
-
     today = Date.current
-    Shipping::BroodmareShipments.scheduled.where(departure_date: today).find_each do |shipment|
-      Horses::Horse::Broodmare::FutureShipmentProcessor.new.ship_horse(shipment:)
+    unless run_today?
+      broodmare_count = 0
+      step :broodmares do
+        Shipping::BroodmareShipments.scheduled.where(departure_date: today).find_each(start: step.cursor) do |shipment|
+          Horses::Horse::Broodmare::FutureShipmentProcessor.new.ship_horse(shipment:)
+          broodmare_count += 1
+          step.advance! from: shipment.id
+        end
+      end
     end
-    Shipping::RacehorseShipments.scheduled.where(departure_date: today).find_each do |shipment|
-      Horses::Horse::Racing::FutureShipmentProcessor.new.ship_horse(shipment:)
+
+    racehorse_count = 0
+    step :racehorses do
+      Shipping::RacehorseShipments.scheduled.where(departure_date: today).find_each(start: step.cursor) do |shipment|
+        Horses::Horse::Racing::FutureShipmentProcessor.new.ship_horse(shipment:)
+        racehorse_count += 1
+        step.advance! from: shipment.id
+      end
     end
-    outcome = { scheduled: true, broodmare_count: 0, racehorse_count: 0 }
+    outcome = { scheduled: true, broodmare_count:, racehorse_count: }
     store_job_info(outcome:)
   end
 end

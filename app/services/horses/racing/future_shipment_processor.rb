@@ -25,6 +25,15 @@ module Horses
           return
         end
 
+        if horse.race_entries.present?
+          next_entry = horse.race_entries.joins(:race).merge(Racing::RaceSchedule.order(date: :asc)).first
+          race = next_entry.race
+          if race.racetrack.location != shipment.ending_location || shipment.arrival_date > race.date
+            notify_failed_shipment(end_location_name, stable)
+            return
+          end
+        end
+
         current_location = horse.racing.current_location_name
         saved = false
         ActiveRecord::Base.transaction do
