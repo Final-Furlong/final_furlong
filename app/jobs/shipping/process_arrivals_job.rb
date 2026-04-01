@@ -6,6 +6,7 @@ class Shipping::ProcessArrivalsJob < ApplicationJob
 
     min_date = (last_run&.to_date || Date.current) - 1.day
 
+    horses = 0
     Shipping::RacehorseShipment.where("arrival_date > ? AND arrival_date <= ?", min_date, Date.current).find_each do |shipment|
       horse = shipment.horse
       next unless (date = horse.race_metadata)
@@ -16,7 +17,9 @@ class Shipping::ProcessArrivalsJob < ApplicationJob
       attrs[:last_shipped_home_at] = shipment.arrival_date if shipment.shipment_type == "track_to_farm"
 
       date.update(attrs)
+      horses += 1
     end
+    store_job_info(outcome: { horses:, date: min_date })
   end
 end
 
