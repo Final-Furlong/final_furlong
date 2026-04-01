@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   mount Api::Base, at: "/"
 
+  get "/health/app" => "customized_health#show", :as => :rails_health_check
+  get "/health/upstream" => "customized_health#upstream"
+
   draw(:admin)
   draw(:users)
   draw(:current_stable)
