@@ -73,6 +73,7 @@ end
 #  arrival_date                                                :date             not null, indexed
 #  departure_date                                              :date             not null, uniquely indexed => [horse_id]
 #  mode(road, air)                                             :enum             not null, indexed
+#  scheduled                                                   :boolean          default(FALSE), not null, indexed
 #  shipping_type(track_to_track, farm_to_track, track_to_farm) :enum             not null, indexed
 #  created_at                                                  :datetime         not null
 #  updated_at                                                  :datetime         not null
@@ -86,6 +87,7 @@ end
 #  index_racehorse_shipments_on_ending_location_id           (ending_location_id)
 #  index_racehorse_shipments_on_horse_id_and_departure_date  (horse_id,departure_date) UNIQUE
 #  index_racehorse_shipments_on_mode                         (mode)
+#  index_racehorse_shipments_on_scheduled                    (scheduled)
 #  index_racehorse_shipments_on_shipping_type                (shipping_type)
 #  index_racehorse_shipments_on_starting_location_id         (starting_location_id)
 #
