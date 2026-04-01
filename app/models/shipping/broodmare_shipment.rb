@@ -77,6 +77,7 @@ end
 #  arrival_date       :date             not null, indexed
 #  departure_date     :date             not null, uniquely indexed => [horse_id]
 #  mode(road, air)    :enum             not null, indexed
+#  scheduled          :boolean          default(FALSE), not null, indexed
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  ending_farm_id     :bigint           not null, indexed
@@ -89,6 +90,7 @@ end
 #  index_broodmare_shipments_on_ending_farm_id               (ending_farm_id)
 #  index_broodmare_shipments_on_horse_id_and_departure_date  (horse_id,departure_date) UNIQUE
 #  index_broodmare_shipments_on_mode                         (mode)
+#  index_broodmare_shipments_on_scheduled                    (scheduled)
 #  index_broodmare_shipments_on_starting_farm_id             (starting_farm_id)
 #
 # Foreign Keys
