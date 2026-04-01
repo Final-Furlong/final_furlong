@@ -29,13 +29,26 @@ module Racing
     scope :by_track, ->(track) { joins(:track_surface).merge(TrackSurface.send(track.to_sym)) }
     scope :by_type, ->(type) { where(race_type: type) }
     scope :by_date, ->(date) { where(date:) }
+    scope :before_date, ->(date) { where(date: ...date) }
     scope :since_date, ->(date) { where(date: date..) }
     scope :ordered_by_date, -> { order(date: :asc) }
 
     delegate :racetrack, to: :track_surface
 
+    def stakes?
+      race_type == "stakes"
+    end
+
+    def allowance?
+      race_type.downcase.include?("allowance")
+    end
+
     def claiming?
       race_type.to_s.casecmp("claiming").zero?
+    end
+
+    def maiden?
+      race_type == "maiden"
     end
 
     def finish_time_string

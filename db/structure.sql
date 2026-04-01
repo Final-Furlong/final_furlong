@@ -1111,7 +1111,9 @@ CREATE TABLE public.race_result_horses (
     weight integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
-    stable_id bigint
+    stable_id bigint,
+    earnings integer DEFAULT 0 NOT NULL,
+    points integer DEFAULT 0 NOT NULL
 );
 
 
@@ -9521,6 +9523,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260401134429'),
 ('20260331121235'),
 ('20260331093159'),
 ('20260331084954'),
