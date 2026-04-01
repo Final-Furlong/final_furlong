@@ -79,7 +79,7 @@
                   = t("horse.injuries.#{injury.injury_type.downcase.underscore}")
                   - if injury.leg
                     = " (#{injury.leg})"
-          - if horse.fractions
+          - if finish.fractions
             tr
               td.border-b-1.border-base-content colspan=4
-                = t("horse.races.index.fractions", fractions: horse.fractions.gsub("|", " | "))
+                = t("horse.races.index.fractions", fractions: finish.fractions.gsub("|", " | "))
