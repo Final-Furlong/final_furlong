@@ -107,29 +107,41 @@ module Racing
       horse = race_horse.horse
       record = horse.race_records.find_or_initialize_by(year: race_result.date.year, result_type: surface.surface.to_s.downcase)
       record.starts += 1
-      stakes_race = race_result.race_type == "stakes"
-      record.stakes_starts += 1 if stakes_race
+      stakes_race = race_result.stakes?
+      record.stakes_starts += 1 if race_result.stakes?
       case race_horse.finish_position
       when 1
         record.wins += 1
         record.stakes_wins += 1 if stakes_race
-        record.earnings += (race_result.purse * 0.6).to_i
       when 2
         record.seconds += 1
         record.stakes_seconds += 1 if stakes_race
-        record.earnings += (race_result.purse * 0.2).to_i
       when 3
         record.thirds += 1
         record.stakes_thirds += 1 if stakes_race
-        record.earnings += (race_result.purse * 0.1).to_i
       when 4
         record.fourths += 1
         record.stakes_fourths += 1 if stakes_race
-        record.earnings += (race_result.purse * 0.07).to_i
-      when 5
-        record.earnings += (race_result.purse * 0.03).to_i
       end
+      record.earnings += calculate_earnings(race_result.purse, race_horse.finish_position)
+      record.points = calculate_points(race_horse.finish_position, race_result).to_i
       record
+    end
+
+    def calculate_earnings(purse, finish_position)
+      (purse * Config::Racing.purses[finish_position - 1].to_i).to_i
+    end
+
+    def calculate_points(finish, race_result)
+      if race_result.stakes?
+        Config::Racing.points[:stakes][finish - 1]
+      elsif race_result.allowance?
+        Config::Racing.points[:allowance][finish - 1]
+      elsif race_result.claiming?
+        Config::Racing.points[:claiming][finish - 1]
+      elsif race_result.maiden?
+        Config::Racing.points[:maiden][finish - 1]
+      end
     end
 
     def process_race_horses(race_result:, horses:)
@@ -156,7 +168,9 @@ module Racing
           wraps: horse[:wraps],
           figure_8: horse[:figure_8],
           no_whip: horse[:no_whip],
-          created_at: race_result.date.beginning_of_day + race_result.number.minutes + horse[:post_parade].minutes
+          created_at: race_result.date.beginning_of_day + race_result.number.minutes + horse[:post_parade].minutes,
+          earnings: calculate_earnings(race_result.purse, horse[:finish_position]),
+          points: calculate_points(race_horse.finish_position, race_result)
         }
         race_horse.assign_attributes(attrs)
         race_horses << race_horse
