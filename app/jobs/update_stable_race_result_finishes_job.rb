@@ -1,18 +1,15 @@
 class UpdateStableRaceResultFinishesJob < ApplicationJob
-  include ActiveJob::Continuable
-
   queue_as :low_priority
 
   def perform
-    step :process do |step|
-      Racing::RaceResultHorse.where(stable_id: nil).find_each(start: step.cursor) do |rr_horse|
-        horse = rr_horse.horse
+    Racing::RaceResultHorse.where(stable_id: nil).order(id: :asc).limit(100) do |rr_horse|
+      horse = rr_horse.horse
 
-        stable = find_stable(horse, rr_horse.race.date, rr_horse.race.number)
-        rr_horse.update(stable:) if stable
-        step.advance! from: rr_horse.id
-      end
+      stable = find_stable(horse, rr_horse.race.date, rr_horse.race.number)
+      rr_horse.update(stable:) if stable
     end
+    remaining_count = Racing::RaceResultHorse.where(stable_id: nil).count
+    UpdateStableRaceResultFinishesJob.set(wait: 5.seconds).perform_later if remaining_count.positive?
   end
 
   private
