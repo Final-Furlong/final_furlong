@@ -94,7 +94,12 @@ module Racing
       stats.xp_current = Config::Racing.maximum_xp if stats.xp_current > Config::Racing.maximum_xp
       stats.natural_energy_current -= [10, finish[:natural_energy_used]].min
       horse.race_metadata&.update_grades(energy: stats.energy, fitness: stats.fitness, update_legacy: true)
-      horse.race_metadata&.update(last_raced_at: date, latest_result_abbreviation: race_horse.result_abbreviation)
+      next_entry_date = horse.race_entries.where("date > ?", date).minimum(:date) || horse.future_race_entries.where("date > ?", date).minimum(:date)
+      horse.race_metadata&.update(
+        last_raced_at: date,
+        latest_result_abbreviation: race_horse.result_abbreviation,
+        next_entry_date:
+      )
       stats
     end
 
