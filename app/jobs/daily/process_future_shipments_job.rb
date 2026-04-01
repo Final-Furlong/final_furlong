@@ -9,7 +9,7 @@ class Daily::ProcessFutureShipmentsJob < ApplicationJob
       broodmare_count = 0
       step :broodmares do |step|
         Shipping::BroodmareShipment.scheduled.where(departure_date: today).find_each(start: step.cursor) do |shipment|
-          Horses::Horse::Broodmare::FutureShipmentProcessor.new.ship_horse(shipment:)
+          Horses::Broodmare::FutureShipmentProcessor.new.ship_horse(shipment:)
           broodmare_count += 1
           step.advance! from: shipment.id
         end
@@ -19,7 +19,7 @@ class Daily::ProcessFutureShipmentsJob < ApplicationJob
     racehorse_count = 0
     step :racehorses do |step|
       Shipping::RacehorseShipment.scheduled.where(departure_date: today).find_each(start: step.cursor) do |shipment|
-        Horses::Horse::Racing::FutureShipmentProcessor.new.ship_horse(shipment:)
+        Horses::Racing::FutureShipmentProcessor.new.ship_horse(shipment:)
         racehorse_count += 1
         step.advance! from: shipment.id
       end
