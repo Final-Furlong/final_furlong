@@ -82,9 +82,9 @@
                   p
                     span= t("horse.races.mobile.running_line")
                     span.float-right= finish.positions.gsub("|", "-")
-                  - if winner.fractions
+                  - if horse.fractions
                     p
-                      span= t("horse.races.index.fractions", fractions: winner.fractions.gsub("|", " | "))
+                      span= t("horse.races.index.fractions", fractions: horse.fractions.gsub("|", " | "))
                   - if (injury = horse.historical_injuries.find_by(date: race.date))
                     p
                       span

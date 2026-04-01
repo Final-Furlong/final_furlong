@@ -18,10 +18,12 @@ end
 # Database name: primary
 #
 #  id              :bigint           not null, primary key
+#  earnings        :integer          default(0), not null
 #  equipment       :integer          default(0), not null
 #  finish_position :integer          default(1), not null, indexed
 #  fractions       :string
 #  margins         :string           not null
+#  points          :integer          default(0), not null
 #  positions       :string           not null
 #  post_parade     :integer          default(1), not null
 #  speed_factor    :integer          default(0), not null, indexed
