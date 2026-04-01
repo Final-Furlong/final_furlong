@@ -13,8 +13,8 @@ class Shipping::ProcessArrivalsJob < ApplicationJob
 
       racetrack = Racing::Racetrack.find_by(location: shipment.ending_location)
 
-      attrs = { in_transit: false, last_shipped_at: shipment.arrival_date, location: shipment.ending_location, racetrack:, at_home: shipment.shipment_type == "track_to_farm" }
-      attrs[:last_shipped_home_at] = shipment.arrival_date if shipment.shipment_type == "track_to_farm"
+      attrs = { in_transit: false, last_shipped_at: shipment.arrival_date, location: shipment.ending_location, racetrack:, at_home: shipment.shipping_type == "track_to_farm" }
+      attrs[:last_shipped_home_at] = shipment.arrival_date if shipment.shipping_type == "track_to_farm"
 
       date.update(attrs)
       horses += 1
