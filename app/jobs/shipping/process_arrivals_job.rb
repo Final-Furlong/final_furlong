@@ -10,7 +10,7 @@ class Shipping::ProcessArrivalsJob < ApplicationJob
       horse = shipment.horse
       next unless (date = horse.race_metadata)
 
-      racetrack = Racetrack.find_by(location: shipment.location)
+      racetrack = Racing::Racetrack.find_by(location: shipment.location)
 
       attrs = { in_transit: false, last_shipped_at: shipment.arrival_date, location: shipment.location, racetrack:, at_home: shipment.shipment_type == "track_to_farm" }
       attrs[:last_shipped_home_at] = shipment.arrival_date if shipment.shipment_type == "track_to_farm"

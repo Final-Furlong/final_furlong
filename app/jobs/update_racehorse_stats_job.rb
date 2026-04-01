@@ -8,7 +8,7 @@ class UpdateRacehorseStatsJob < ApplicationJob
     Account::Stable.where(racetrack: nil).update_all(racetrack_id: racetrack.id) # rubocop:disable Rails/SkipsModelValidations
     horses = 0
     step :process do |step|
-      Horses::Horse.racehorse.where.missing(:race_metadat).find_each(start: step.cursor) do |horse|
+      Horses::Horse.racehorse.where.missing(:race_metadata).find_each(start: step.cursor) do |horse|
         migrate_stats(horse:)
         horses += 1
         step.advance! from: horse.id

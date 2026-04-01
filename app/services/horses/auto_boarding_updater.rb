@@ -13,7 +13,7 @@ module Horses
 
         horse = boarding.horse
         if (data = horse.race_metadata)
-          data.update(last_boarded_at: Date.current, rest_days_since_last_race: data.rest_days_since_last_race.to_i + 1)
+          data.update(last_rested_at: Date.current, rest_days_since_last_race: data.rest_days_since_last_race.to_i + 1)
         end
         current_year_days += horse.boardings.current_year.where(location: boarding.location).sum(:days)
         if current_year_days >= Config::Boarding.max_yearly_days
