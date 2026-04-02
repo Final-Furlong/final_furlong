@@ -33,7 +33,7 @@
                   td.text-right= record.earnings_string
                 tr
                   td= t("horse.races.index.points")
-                  td.text-right= record.points
+                  td.text-right= record.points.to_i
 
         - dashboard.annual_race_records.each do |record|
           - description = t("horse.races.index.race_year", age: record.year.to_i - dob_year, year: record.year.to_i)
@@ -63,4 +63,4 @@
                     td.text-right= record.earnings_string
                   tr
                     td= t("horse.races.index.points")
-                    td.text-right= record.points
+                    td.text-right= record.points.to_i

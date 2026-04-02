@@ -26,7 +26,7 @@
               td= record.thirds_string
               td= record.fourths_string
               td.text-right= record.earnings_string
-              td.text-right= record.points
+              td.text-right= record.points.to_i
     - if (record = dashboard.lifetime_race_record)
       tfoot
         tr.border-t-1.border-gray-400.dark:border-neutral-600
@@ -37,4 +37,4 @@
           td= record.thirds_string
           td= record.fourths_string
           td.text-right= record.earnings_string
-          td.text-right= record.points
+          td.text-right= record.points.to_i

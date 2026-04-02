@@ -37,6 +37,7 @@ module Racing
         end
         trigger_horse_attribute_updates(horses:)
         if max_race?(date:, number:)
+          UpdateRaceResultHorseAbbreviationsJob.perform_later(date:)
           Racing::RaceDayUpdaterJob.perform_later(date:)
           Daily::ProcessFutureShipmentsJob.perform_later
           User::SendDeveloperNotifications.call(title: "FF Races Finished", message: "Races finished running!")
@@ -92,13 +93,11 @@ module Racing
       stats.xp_current += finish[:experience_gained]
       stats.xp_current = Config::Racing.maximum_xp if stats.xp_current > Config::Racing.maximum_xp
       stats.natural_energy_current -= [10, finish[:natural_energy_used]].min
-      horse.race_metadata&.update_grades(energy: stats.energy, fitness: stats.fitness, update_legacy: true)
-      next_entry_date = horse.race_entries.where("date > ?", date).minimum(:date) || horse.future_race_entries.where("date > ?", date).minimum(:date)
-      horse.race_metadata&.update(
-        last_raced_at: date,
-        latest_result_abbreviation: race_horse.result_abbreviation,
-        next_entry_date:
-      )
+      if (data = horse.race_metadata)
+        data.update_grades(energy: stats.energy, fitness: stats.fitness, update_legacy: true)
+        next_entry_date = horse.race_entries.where("date > ?", date).minimum(:date) || horse.future_race_entries.where("date > ?", date).minimum(:date)
+        data.update(last_raced_at: date, next_entry_date:)
+      end
       stats
     end
 

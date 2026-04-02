@@ -19,7 +19,7 @@
           = " - "
           = record.earnings_string
           = " - "
-          = t("horse.races.index.points_amount", points: record.points)
+          = t("horse.races.index.points_amount", points: record.points.to_i)
     tbody
       - if dashboard.annual_race_record.blank?
         tr
