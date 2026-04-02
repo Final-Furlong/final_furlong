@@ -51,6 +51,10 @@ en:
       none: None
       shadow_roll: SR
       wraps: W
+    entry_state:
+      current: Currently Entered
+      none: None
+      scheduled: Has Scheduled Entry
     events:
       boardings:
         current_boarding: Current

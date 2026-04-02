@@ -18,14 +18,10 @@ module CurrentStable
       elsif params.dig(:q, :gender_in) == "female"
         params[:q][:gender_in] = Horses::Gender::FEMALE_GENDERS
       end
-      if params.dig(:q, :race_entry) == "false"
-        params[:q][:no_race_entry] = true
-      end
 
       @query = @query.includes(:race_qualification, :race_metadata,
         :race_entries, :future_race_entries,
-        :current_boarding).ransack
-      params[:q]
+        :current_boarding).ransack(params[:q])
       @query.sorts = "name asc" if @query.sorts.blank?
 
       @pagy, @horses = pagy(@query.result)

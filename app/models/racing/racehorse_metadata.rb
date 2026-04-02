@@ -77,6 +77,8 @@ module Racing
     scope :max_rest_days, ->(number) { where(rest_days_since_last_race: ..number.to_i) }
     scope :min_workouts, ->(number) { where(workouts_since_last_race: number.to_i..) }
     scope :max_workouts, ->(number) { where(workouts_since_last_race: ..number.to_i) }
+    scope :injured_before, ->(days) { where("last_injured_at IS NULL OR last_injured_at < ?", Date.current - days.to_i.days) }
+    scope :injured_since, ->(days) { where(last_injured_at: (Date.current - days.to_i.days)..) }
     scope :at_home, -> { where(at_home: true) }
     scope :not_at_home, -> { at_home.invert_where }
     scope :boardable, -> { where(at_home: false, in_transit: false) }

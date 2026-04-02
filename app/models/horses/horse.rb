@@ -133,8 +133,16 @@ module Horses
     scope :min_fitness, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.min_fitness(value)) }
     scope :max_fitness, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.max_fitness(value)) }
     scope :fitness_in, ->(max_value, min_value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.fitness_within(max_value, min_value)) }
-    scope :race_entry, -> { where.associated(:race_entries) }
-    scope :no_race_entry, -> { where.missing(:race_entries) }
+    scope :entry_status, ->(status) {
+      case status.to_s.downcase
+      when "current"
+        where.associated(:race_entries)
+      when "scheduled"
+        where.missing(:race_entries).where.associated(:future_race_entries)
+      else
+        where.missing(:race_entries).where.missing(:future_race_entries)
+      end
+    }
     scope :injury_status, ->(value) {
       case value.to_s.downcase
       when "past"
@@ -268,7 +276,7 @@ module Horses
       %w[min_age max_age female not_female racehorse_status min_energy max_energy energy_in min_fitness max_fitness fitness_in
         runs_on_dirt runs_on_turf runs_on_steeplechase injury_status min_days_since_last_race max_days_since_last_race
         min_days_since_last_shipment max_days_since_last_shipment min_workouts_since_last_race max_workouts_since_last_race
-        race_entry no_race_entry injury_status min_rest_days_since_last_race max_rest_days_since_last_race min_days_since_last_shipment
+        entry_status injury_status min_rest_days_since_last_race max_rest_days_since_last_race min_days_since_last_shipment
         max_days_since_last_shipment min_workouts_since_last_race max_workouts_since_last_race]
     end
 

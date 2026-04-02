@@ -74,6 +74,10 @@ shared:
     - past
     - present
     - none
+  filter_entries:
+    - current
+    - scheduled
+    - none
   grades:
     - Ungraded
     - Grade 3

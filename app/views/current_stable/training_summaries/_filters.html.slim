@@ -51,9 +51,9 @@
           fieldset.fieldset
             legend.fieldset-legend= t(".entered_to_race")
             label.label
-              - %w[true false].each do |value|
-                = radio_button_tag "q[race_entry]", value, checked: params.dig(:q, :race_entry).to_s == value, class: "radio"
-                = t("common.text.#{value}")
+              - entry_options = Config::Racing.filter_entries.map do |entry|
+                - [entry, I18n.t("horse.entry_state.#{entry}")]
+              = f.collection_select :entry_status, entry_options, :first, :last, { include_blank: true }, { class: 'select d-inline' }
         div
           fieldset.fieldset
             legend.fieldset-legend= t(".injury")
