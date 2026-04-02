@@ -11,23 +11,23 @@ module RaceRecordable
     end
 
     def starts_string
-      stakes_string(starts, stakes_starts)
+      stakes_string(starts.to_i, stakes_starts.to_i)
     end
 
     def wins_string
-      stakes_string(wins, stakes_wins)
+      stakes_string(wins.to_i, stakes_wins.to_i)
     end
 
     def seconds_string
-      stakes_string(seconds, stakes_seconds)
+      stakes_string(seconds.to_i, stakes_seconds.to_i)
     end
 
     def thirds_string
-      stakes_string(thirds, stakes_thirds)
+      stakes_string(thirds.to_i, stakes_thirds.to_i)
     end
 
     def fourths_string
-      stakes_string(fourths, stakes_fourths)
+      stakes_string(fourths.to_i, stakes_fourths.to_i)
     end
 
     def earnings_string

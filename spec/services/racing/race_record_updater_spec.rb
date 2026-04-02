@@ -1,10 +1,12 @@
 RSpec.describe Racing::RaceRecordUpdater do
   it "triggers view updates" do
+    allow(Racing::RaceRecord).to receive(:refresh)
     allow(Racing::AnnualRaceRecord).to receive(:refresh)
     allow(Racing::LifetimeRaceRecord).to receive(:refresh)
 
     described_class.new.update_records(date:)
 
+    expect(Racing::RaceRecord).to have_received(:refresh)
     expect(Racing::AnnualRaceRecord).to have_received(:refresh)
     expect(Racing::LifetimeRaceRecord).to have_received(:refresh)
   end

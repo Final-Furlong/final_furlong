@@ -20,8 +20,9 @@ module Racing
     end
 
     def trigger_view_updates
-      Racing::AnnualRaceRecord.refresh
+      Racing::RaceRecord.refresh
       Racing::LifetimeRaceRecord.refresh
+      Racing::AnnualRaceRecord.refresh
     end
   end
 end
