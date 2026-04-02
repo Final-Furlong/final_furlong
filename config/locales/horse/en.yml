@@ -44,6 +44,10 @@ en:
         confirm: Are you sure you want to stop boarding %{horse}?
         confirm_title: Stop Boarding
     created: Created
+    entry_state:
+      current: Currently Entered
+      none: None
+      scheduled: Has Scheduled Entry
     equipment:
       blinkers: B
       figure_8: F8
@@ -51,10 +55,6 @@ en:
       none: None
       shadow_roll: SR
       wraps: W
-    entry_state:
-      current: Currently Entered
-      none: None
-      scheduled: Has Scheduled Entry
     events:
       boardings:
         current_boarding: Current
