@@ -15,7 +15,7 @@ class UpdateRaceResultHorseAbbreviationsJob < ApplicationJob
         recent_race = horse.race_result_finishes.order(id: :desc).first
         next unless recent_race
 
-        race_metadata.update_column(:latest_result_abbreviation, recent_race.result_abbreviation)
+        race_metadata.update(latest_result_abbreviation: recent_race.result_abbreviation)
       end
     end
   end
