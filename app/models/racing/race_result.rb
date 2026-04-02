@@ -28,6 +28,10 @@ module Racing
     scope :by_year, ->(year) { where("DATE_PART('Year', date) = ?", year) }
     scope :by_track, ->(track) { joins(:track_surface).merge(TrackSurface.send(track.to_sym)) }
     scope :by_type, ->(type) { where(race_type: type) }
+    scope :not_types, ->(types) {
+      types = [types] unless types.is_a? Array
+      where.not(race_type: types)
+    }
     scope :by_date, ->(date) { where(date:) }
     scope :before_date, ->(date) { where(date: ...date) }
     scope :since_date, ->(date) { where(date: date..) }

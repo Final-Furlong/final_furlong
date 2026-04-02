@@ -588,36 +588,189 @@ ALTER SEQUENCE public.activity_points_id_seq OWNED BY public.activity_points.id;
 
 
 --
--- Name: race_records; Type: TABLE; Schema: public; Owner: -
+-- Name: race_result_horses; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.race_records (
+CREATE TABLE public.race_result_horses (
     id bigint NOT NULL,
+    race_id bigint NOT NULL,
     horse_id bigint NOT NULL,
-    year integer DEFAULT 1996 NOT NULL,
-    result_type public.race_result_types DEFAULT 'dirt'::public.race_result_types,
-    starts integer DEFAULT 0 NOT NULL,
-    stakes_starts integer DEFAULT 0 NOT NULL,
-    wins integer DEFAULT 0 NOT NULL,
-    stakes_wins integer DEFAULT 0 NOT NULL,
-    seconds integer DEFAULT 0 NOT NULL,
-    stakes_seconds integer DEFAULT 0 NOT NULL,
-    thirds integer DEFAULT 0 NOT NULL,
-    stakes_thirds integer DEFAULT 0 NOT NULL,
-    fourths integer DEFAULT 0 NOT NULL,
-    stakes_fourths integer DEFAULT 0 NOT NULL,
-    points integer DEFAULT 0 NOT NULL,
-    earnings bigint DEFAULT 0 NOT NULL,
+    legacy_horse_id integer DEFAULT 0 NOT NULL,
+    post_parade integer DEFAULT 1 NOT NULL,
+    finish_position integer DEFAULT 1 NOT NULL,
+    positions character varying NOT NULL,
+    margins character varying NOT NULL,
+    fractions character varying,
+    jockey_id bigint,
+    equipment integer DEFAULT 0 NOT NULL,
+    odd_id bigint,
+    speed_factor integer DEFAULT 0 NOT NULL,
+    weight integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL,
+    stable_id bigint,
+    earnings integer DEFAULT 0 NOT NULL,
+    points integer DEFAULT 0 NOT NULL
+);
+
+
+--
+-- Name: race_results; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.race_results (
+    id bigint NOT NULL,
+    date date NOT NULL,
+    number integer DEFAULT 1 NOT NULL,
+    race_type public.race_type DEFAULT 'maiden'::public.race_type NOT NULL,
+    age public.race_age DEFAULT '2'::public.race_age NOT NULL,
+    male_only boolean DEFAULT false NOT NULL,
+    female_only boolean DEFAULT false NOT NULL,
+    distance numeric(3,1) DEFAULT 5.0 NOT NULL,
+    grade public.race_grade,
+    surface_id bigint NOT NULL,
+    condition public.track_condition,
+    name character varying,
+    purse bigint DEFAULT 0 NOT NULL,
+    claiming_price integer,
+    split public.race_splits,
+    time_in_seconds numeric(7,3) DEFAULT 0.0 NOT NULL,
+    slug character varying,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
 
 
 --
--- Name: COLUMN race_records.result_type; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN race_results.race_type; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN public.race_records.result_type IS 'dirt, turf, steeplechase';
+COMMENT ON COLUMN public.race_results.race_type IS 'maiden, claiming, starter_allowance, nw1_allowance, nw2_allowance, nw3_allowance, allowance, stakes';
+
+
+--
+-- Name: COLUMN race_results.age; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_results.age IS '2, 2+, 3, 3+, 4, 4+';
+
+
+--
+-- Name: COLUMN race_results.grade; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_results.grade IS 'Ungraded, Grade 3, Grade 2, Grade 1';
+
+
+--
+-- Name: COLUMN race_results.condition; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_results.condition IS 'fast, good, slow, wet';
+
+
+--
+-- Name: COLUMN race_results.split; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_results.split IS '4Q, 2F';
+
+
+--
+-- Name: track_surfaces; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.track_surfaces (
+    id bigint NOT NULL,
+    surface public.track_surface DEFAULT 'dirt'::public.track_surface NOT NULL,
+    condition public.track_condition DEFAULT 'fast'::public.track_condition NOT NULL,
+    racetrack_id bigint NOT NULL,
+    banking integer NOT NULL,
+    jumps integer DEFAULT 0 NOT NULL,
+    length integer NOT NULL,
+    turn_distance integer NOT NULL,
+    turn_to_finish_length integer NOT NULL,
+    width integer NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN track_surfaces.surface; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.track_surfaces.surface IS 'dirt, turf, steeplechase';
+
+
+--
+-- Name: COLUMN track_surfaces.condition; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.track_surfaces.condition IS 'fast, good, slow, wet';
+
+
+--
+-- Name: race_records; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.race_records AS
+ SELECT rr.horse_id,
+    date_part('Year'::text, r.date) AS year,
+    ts.surface,
+    count(rr.id) AS starts,
+    sum(
+        CASE
+            WHEN (r.race_type = 'stakes'::public.race_type) THEN 1
+            ELSE 0
+        END) AS stakes_starts,
+    sum(
+        CASE rr.finish_position
+            WHEN 1 THEN 1
+            ELSE 0
+        END) AS wins,
+    sum(
+        CASE
+            WHEN ((r.race_type = 'stakes'::public.race_type) AND (rr.finish_position = 1)) THEN 1
+            ELSE 0
+        END) AS stakes_wins,
+    sum(
+        CASE rr.finish_position
+            WHEN 2 THEN 1
+            ELSE 0
+        END) AS seconds,
+    sum(
+        CASE
+            WHEN ((r.race_type = 'stakes'::public.race_type) AND (rr.finish_position = 2)) THEN 1
+            ELSE 0
+        END) AS stakes_seconds,
+    sum(
+        CASE rr.finish_position
+            WHEN 3 THEN 1
+            ELSE 0
+        END) AS thirds,
+    sum(
+        CASE
+            WHEN ((r.race_type = 'stakes'::public.race_type) AND (rr.finish_position = 3)) THEN 1
+            ELSE 0
+        END) AS stakes_thirds,
+    sum(
+        CASE rr.finish_position
+            WHEN 4 THEN 1
+            ELSE 0
+        END) AS fourths,
+    sum(
+        CASE
+            WHEN ((r.race_type = 'stakes'::public.race_type) AND (rr.finish_position = 4)) THEN 1
+            ELSE 0
+        END) AS stakes_fourths,
+    sum(rr.earnings) AS earnings,
+    sum(rr.points) AS points
+   FROM ((public.race_result_horses rr
+     LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+     LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+  GROUP BY rr.horse_id, (date_part('Year'::text, r.date)), ts.surface
+  WITH NO DATA;
 
 
 --
@@ -625,8 +778,8 @@ COMMENT ON COLUMN public.race_records.result_type IS 'dirt, turf, steeplechase';
 --
 
 CREATE MATERIALIZED VIEW public.annual_race_records AS
- SELECT year,
-    horse_id,
+ SELECT horse_id,
+    year,
     sum(starts) AS starts,
     sum(stakes_starts) AS stakes_starts,
     sum(wins) AS wins,
@@ -640,7 +793,7 @@ CREATE MATERIALIZED VIEW public.annual_race_records AS
     sum(points) AS points,
     sum(earnings) AS earnings
    FROM public.race_records
-  GROUP BY year, horse_id
+  GROUP BY horse_id, year
   WITH NO DATA;
 
 
@@ -1091,95 +1244,6 @@ COMMENT ON COLUMN public.horses.status IS 'unborn, weanling, yearling, racehorse
 
 
 --
--- Name: race_result_horses; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.race_result_horses (
-    id bigint NOT NULL,
-    race_id bigint NOT NULL,
-    horse_id bigint NOT NULL,
-    legacy_horse_id integer DEFAULT 0 NOT NULL,
-    post_parade integer DEFAULT 1 NOT NULL,
-    finish_position integer DEFAULT 1 NOT NULL,
-    positions character varying NOT NULL,
-    margins character varying NOT NULL,
-    fractions character varying,
-    jockey_id bigint,
-    equipment integer DEFAULT 0 NOT NULL,
-    odd_id bigint,
-    speed_factor integer DEFAULT 0 NOT NULL,
-    weight integer DEFAULT 0 NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL,
-    stable_id bigint,
-    earnings integer DEFAULT 0 NOT NULL,
-    points integer DEFAULT 0 NOT NULL
-);
-
-
---
--- Name: race_results; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.race_results (
-    id bigint NOT NULL,
-    date date NOT NULL,
-    number integer DEFAULT 1 NOT NULL,
-    race_type public.race_type DEFAULT 'maiden'::public.race_type NOT NULL,
-    age public.race_age DEFAULT '2'::public.race_age NOT NULL,
-    male_only boolean DEFAULT false NOT NULL,
-    female_only boolean DEFAULT false NOT NULL,
-    distance numeric(3,1) DEFAULT 5.0 NOT NULL,
-    grade public.race_grade,
-    surface_id bigint NOT NULL,
-    condition public.track_condition,
-    name character varying,
-    purse bigint DEFAULT 0 NOT NULL,
-    claiming_price integer,
-    split public.race_splits,
-    time_in_seconds numeric(7,3) DEFAULT 0.0 NOT NULL,
-    slug character varying,
-    created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
-);
-
-
---
--- Name: COLUMN race_results.race_type; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.race_results.race_type IS 'maiden, claiming, starter_allowance, nw1_allowance, nw2_allowance, nw3_allowance, allowance, stakes';
-
-
---
--- Name: COLUMN race_results.age; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.race_results.age IS '2, 2+, 3, 3+, 4, 4+';
-
-
---
--- Name: COLUMN race_results.grade; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.race_results.grade IS 'Ungraded, Grade 3, Grade 2, Grade 1';
-
-
---
--- Name: COLUMN race_results.condition; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.race_results.condition IS 'fast, good, slow, wet';
-
-
---
--- Name: COLUMN race_results.split; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.race_results.split IS '4Q, 2F';
-
-
---
 -- Name: condition_race_records; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -1475,40 +1539,6 @@ CREATE VIEW public.condition_race_records AS
 CREATE TABLE public.data_migrations (
     version character varying NOT NULL
 );
-
-
---
--- Name: track_surfaces; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.track_surfaces (
-    id bigint NOT NULL,
-    surface public.track_surface DEFAULT 'dirt'::public.track_surface NOT NULL,
-    condition public.track_condition DEFAULT 'fast'::public.track_condition NOT NULL,
-    racetrack_id bigint NOT NULL,
-    banking integer NOT NULL,
-    jumps integer DEFAULT 0 NOT NULL,
-    length integer NOT NULL,
-    turn_distance integer NOT NULL,
-    turn_to_finish_length integer NOT NULL,
-    width integer NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
-);
-
-
---
--- Name: COLUMN track_surfaces.surface; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.track_surfaces.surface IS 'dirt, turf, steeplechase';
-
-
---
--- Name: COLUMN track_surfaces.condition; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.track_surfaces.condition IS 'fast, good, slow, wet';
 
 
 --
@@ -3497,7 +3527,7 @@ CREATE MATERIALIZED VIEW public.race_qualifications AS
  SELECT h.id AS horse_id,
         CASE ( SELECT count(*) AS count
                FROM public.lifetime_race_records
-              WHERE ((lifetime_race_records.horse_id = h.id) AND (lifetime_race_records.wins = 0)))
+              WHERE ((lifetime_race_records.horse_id = h.id) AND (lifetime_race_records.wins = (0)::numeric)))
             WHEN 1 THEN true
             ELSE
             CASE ( SELECT count(*) AS count
@@ -3581,25 +3611,6 @@ CREATE MATERIALIZED VIEW public.race_qualifications AS
           GROUP BY hs.horse_id) horse_sales ON ((h.id = horse_sales.horse_id)))
   WHERE (h.status = 'racehorse'::public.horse_status)
   WITH NO DATA;
-
-
---
--- Name: race_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.race_records_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: race_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.race_records_id_seq OWNED BY public.race_records.id;
 
 
 --
@@ -4433,247 +4444,92 @@ ALTER SEQUENCE public.stud_foal_records_id_seq OWNED BY public.stud_foal_records
 
 CREATE VIEW public.surface_race_records AS
  SELECT h.id AS horse_id,
-    COALESCE(dirt_starts.starts, (0)::bigint) AS dirt_starts,
-    COALESCE(dirt_stakes_starts.starts, (0)::bigint) AS dirt_stakes_starts,
-    COALESCE(dirt_wins.wins, (0)::bigint) AS dirt_wins,
-    COALESCE(dirt_stakes_wins.wins, (0)::bigint) AS dirt_stakes_wins,
-    COALESCE(dirt_seconds.seconds, (0)::bigint) AS dirt_seconds,
-    COALESCE(dirt_stakes_seconds.seconds, (0)::bigint) AS dirt_stakes_seconds,
-    COALESCE(dirt_thirds.thirds, (0)::bigint) AS dirt_thirds,
-    COALESCE(dirt_stakes_thirds.thirds, (0)::bigint) AS dirt_stakes_thirds,
-    COALESCE(dirt_fourths.fourths, (0)::bigint) AS dirt_fourths,
-    COALESCE(dirt_stakes_fourths.fourths, (0)::bigint) AS dirt_stakes_fourths,
-    COALESCE(turf_starts.starts, (0)::bigint) AS turf_starts,
-    COALESCE(turf_stakes_starts.starts, (0)::bigint) AS turf_stakes_starts,
-    COALESCE(turf_wins.wins, (0)::bigint) AS turf_wins,
-    COALESCE(turf_stakes_wins.wins, (0)::bigint) AS turf_stakes_wins,
-    COALESCE(turf_seconds.seconds, (0)::bigint) AS turf_seconds,
-    COALESCE(turf_stakes_seconds.seconds, (0)::bigint) AS turf_stakes_seconds,
-    COALESCE(turf_thirds.thirds, (0)::bigint) AS turf_thirds,
-    COALESCE(turf_stakes_thirds.thirds, (0)::bigint) AS turf_stakes_thirds,
-    COALESCE(turf_fourths.fourths, (0)::bigint) AS turf_fourths,
-    COALESCE(turf_stakes_fourths.fourths, (0)::bigint) AS turf_stakes_fourths,
-    COALESCE(jump_starts.starts, (0)::bigint) AS jump_starts,
-    COALESCE(jump_stakes_starts.starts, (0)::bigint) AS jump_stakes_starts,
-    COALESCE(jump_wins.wins, (0)::bigint) AS jump_wins,
-    COALESCE(jump_stakes_wins.wins, (0)::bigint) AS jump_stakes_wins,
-    COALESCE(jump_seconds.seconds, (0)::bigint) AS jump_seconds,
-    COALESCE(jump_stakes_seconds.seconds, (0)::bigint) AS jump_stakes_seconds,
-    COALESCE(jump_thirds.thirds, (0)::bigint) AS jump_thirds,
-    COALESCE(jump_stakes_thirds.thirds, (0)::bigint) AS jump_stakes_thirds,
-    COALESCE(jump_fourths.fourths, (0)::bigint) AS jump_fourths,
-    COALESCE(jump_stakes_fourths.fourths, (0)::bigint) AS jump_stakes_fourths
-   FROM ((((((((((((((((((((((((((((((public.horses h
-     LEFT JOIN ( SELECT count(r.id) AS starts,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE (ts.surface = 'dirt'::public.track_surface)
-          GROUP BY rr.horse_id) dirt_starts ON ((h.id = dirt_starts.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS starts,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface))
-          GROUP BY rr.horse_id) dirt_stakes_starts ON ((h.id = dirt_stakes_starts.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS wins,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (ts.surface = 'dirt'::public.track_surface))
-          GROUP BY rr.horse_id) dirt_wins ON ((h.id = dirt_wins.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS wins,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface))
-          GROUP BY rr.horse_id) dirt_stakes_wins ON ((h.id = dirt_stakes_wins.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS seconds,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (ts.surface = 'dirt'::public.track_surface))
-          GROUP BY rr.horse_id) dirt_seconds ON ((h.id = dirt_seconds.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS seconds,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface))
-          GROUP BY rr.horse_id) dirt_stakes_seconds ON ((h.id = dirt_stakes_seconds.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS thirds,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (ts.surface = 'dirt'::public.track_surface))
-          GROUP BY rr.horse_id) dirt_thirds ON ((h.id = dirt_thirds.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS thirds,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface))
-          GROUP BY rr.horse_id) dirt_stakes_thirds ON ((h.id = dirt_stakes_thirds.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS fourths,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 4) AND (ts.surface = 'dirt'::public.track_surface))
-          GROUP BY rr.horse_id) dirt_fourths ON ((h.id = dirt_fourths.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS fourths,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 4) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface))
-          GROUP BY rr.horse_id) dirt_stakes_fourths ON ((h.id = dirt_stakes_fourths.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS starts,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE (ts.surface = 'turf'::public.track_surface)
-          GROUP BY rr.horse_id) turf_starts ON ((h.id = turf_starts.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS starts,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface))
-          GROUP BY rr.horse_id) turf_stakes_starts ON ((h.id = turf_stakes_starts.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS wins,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (ts.surface = 'turf'::public.track_surface))
-          GROUP BY rr.horse_id) turf_wins ON ((h.id = turf_wins.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS wins,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface))
-          GROUP BY rr.horse_id) turf_stakes_wins ON ((h.id = turf_stakes_wins.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS seconds,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (ts.surface = 'turf'::public.track_surface))
-          GROUP BY rr.horse_id) turf_seconds ON ((h.id = turf_seconds.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS seconds,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface))
-          GROUP BY rr.horse_id) turf_stakes_seconds ON ((h.id = turf_stakes_seconds.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS thirds,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (ts.surface = 'turf'::public.track_surface))
-          GROUP BY rr.horse_id) turf_thirds ON ((h.id = turf_thirds.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS thirds,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface))
-          GROUP BY rr.horse_id) turf_stakes_thirds ON ((h.id = turf_stakes_thirds.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS fourths,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 4) AND (ts.surface = 'turf'::public.track_surface))
-          GROUP BY rr.horse_id) turf_fourths ON ((h.id = turf_fourths.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS fourths,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 4) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface))
-          GROUP BY rr.horse_id) turf_stakes_fourths ON ((h.id = turf_stakes_fourths.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS starts,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE (ts.surface = 'steeplechase'::public.track_surface)
-          GROUP BY rr.horse_id) jump_starts ON ((h.id = jump_starts.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS starts,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
-          GROUP BY rr.horse_id) jump_stakes_starts ON ((h.id = jump_stakes_starts.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS wins,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (ts.surface = 'steeplechase'::public.track_surface))
-          GROUP BY rr.horse_id) jump_wins ON ((h.id = jump_wins.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS wins,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
-          GROUP BY rr.horse_id) jump_stakes_wins ON ((h.id = jump_stakes_wins.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS seconds,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (ts.surface = 'steeplechase'::public.track_surface))
-          GROUP BY rr.horse_id) jump_seconds ON ((h.id = jump_seconds.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS seconds,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
-          GROUP BY rr.horse_id) jump_stakes_seconds ON ((h.id = jump_stakes_seconds.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS thirds,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (ts.surface = 'steeplechase'::public.track_surface))
-          GROUP BY rr.horse_id) jump_thirds ON ((h.id = jump_thirds.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS thirds,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
-          GROUP BY rr.horse_id) jump_stakes_thirds ON ((h.id = jump_stakes_thirds.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS fourths,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 4) AND (ts.surface = 'steeplechase'::public.track_surface))
-          GROUP BY rr.horse_id) jump_fourths ON ((h.id = jump_fourths.horse_id)))
-     LEFT JOIN ( SELECT count(r.id) AS fourths,
-            rr.horse_id
-           FROM ((public.race_result_horses rr
-             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
-             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 4) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface))
-          GROUP BY rr.horse_id) jump_stakes_fourths ON ((h.id = jump_stakes_fourths.horse_id)));
+    COALESCE(dirt.starts, (0)::numeric) AS dirt_starts,
+    COALESCE(dirt.stakes_starts, (0)::numeric) AS dirt_stakes_starts,
+    COALESCE(dirt.wins, (0)::numeric) AS dirt_wins,
+    COALESCE(dirt.stakes_wins, (0)::numeric) AS dirt_stakes_wins,
+    COALESCE(dirt.seconds, (0)::numeric) AS dirt_seconds,
+    COALESCE(dirt.stakes_seconds, (0)::numeric) AS dirt_stakes_seconds,
+    COALESCE(dirt.thirds, (0)::numeric) AS dirt_thirds,
+    COALESCE(dirt.stakes_thirds, (0)::numeric) AS dirt_stakes_thirds,
+    COALESCE(dirt.fourths, (0)::numeric) AS dirt_fourths,
+    COALESCE(dirt.stakes_fourths, (0)::numeric) AS dirt_stakes_fourths,
+    COALESCE(dirt.earnings, (0)::numeric) AS dirt_earnings,
+    COALESCE(dirt.points, (0)::numeric) AS dirt_points,
+    COALESCE(turf.starts, (0)::numeric) AS turf_starts,
+    COALESCE(turf.stakes_starts, (0)::numeric) AS turf_stakes_starts,
+    COALESCE(turf.wins, (0)::numeric) AS turf_wins,
+    COALESCE(turf.stakes_wins, (0)::numeric) AS turf_stakes_wins,
+    COALESCE(turf.seconds, (0)::numeric) AS turf_seconds,
+    COALESCE(turf.stakes_seconds, (0)::numeric) AS turf_stakes_seconds,
+    COALESCE(turf.thirds, (0)::numeric) AS turf_thirds,
+    COALESCE(turf.stakes_thirds, (0)::numeric) AS turf_stakes_thirds,
+    COALESCE(turf.fourths, (0)::numeric) AS turf_fourths,
+    COALESCE(turf.stakes_fourths, (0)::numeric) AS turf_stakes_fourths,
+    COALESCE(turf.earnings, (0)::numeric) AS turf_earnings,
+    COALESCE(turf.points, (0)::numeric) AS turf_points,
+    COALESCE(jump.starts, (0)::numeric) AS jump_starts,
+    COALESCE(jump.stakes_starts, (0)::numeric) AS jump_stakes_starts,
+    COALESCE(jump.wins, (0)::numeric) AS jump_wins,
+    COALESCE(jump.stakes_wins, (0)::numeric) AS jump_stakes_wins,
+    COALESCE(jump.seconds, (0)::numeric) AS jump_seconds,
+    COALESCE(jump.stakes_seconds, (0)::numeric) AS jump_stakes_seconds,
+    COALESCE(jump.thirds, (0)::numeric) AS jump_thirds,
+    COALESCE(jump.stakes_thirds, (0)::numeric) AS jump_stakes_thirds,
+    COALESCE(jump.fourths, (0)::numeric) AS jump_fourths,
+    COALESCE(jump.stakes_fourths, (0)::numeric) AS jump_stakes_fourths,
+    COALESCE(jump.earnings, (0)::numeric) AS jump_earnings,
+    COALESCE(jump.points, (0)::numeric) AS jump_points
+   FROM (((public.horses h
+     LEFT JOIN ( SELECT race_records.horse_id,
+            sum(race_records.starts) AS starts,
+            sum(race_records.stakes_starts) AS stakes_starts,
+            sum(race_records.wins) AS wins,
+            sum(race_records.stakes_wins) AS stakes_wins,
+            sum(race_records.seconds) AS seconds,
+            sum(race_records.stakes_seconds) AS stakes_seconds,
+            sum(race_records.thirds) AS thirds,
+            sum(race_records.stakes_thirds) AS stakes_thirds,
+            sum(race_records.fourths) AS fourths,
+            sum(race_records.stakes_fourths) AS stakes_fourths,
+            sum(race_records.earnings) AS earnings,
+            sum(race_records.points) AS points
+           FROM public.race_records
+          WHERE (race_records.surface = 'dirt'::public.track_surface)
+          GROUP BY race_records.horse_id) dirt ON ((h.id = dirt.horse_id)))
+     LEFT JOIN ( SELECT race_records.horse_id,
+            sum(race_records.starts) AS starts,
+            sum(race_records.stakes_starts) AS stakes_starts,
+            sum(race_records.wins) AS wins,
+            sum(race_records.stakes_wins) AS stakes_wins,
+            sum(race_records.seconds) AS seconds,
+            sum(race_records.stakes_seconds) AS stakes_seconds,
+            sum(race_records.thirds) AS thirds,
+            sum(race_records.stakes_thirds) AS stakes_thirds,
+            sum(race_records.fourths) AS fourths,
+            sum(race_records.stakes_fourths) AS stakes_fourths,
+            sum(race_records.earnings) AS earnings,
+            sum(race_records.points) AS points
+           FROM public.race_records
+          WHERE (race_records.surface = 'turf'::public.track_surface)
+          GROUP BY race_records.horse_id) turf ON ((h.id = turf.horse_id)))
+     LEFT JOIN ( SELECT race_records.horse_id,
+            sum(race_records.starts) AS starts,
+            sum(race_records.stakes_starts) AS stakes_starts,
+            sum(race_records.wins) AS wins,
+            sum(race_records.stakes_wins) AS stakes_wins,
+            sum(race_records.seconds) AS seconds,
+            sum(race_records.stakes_seconds) AS stakes_seconds,
+            sum(race_records.thirds) AS thirds,
+            sum(race_records.stakes_thirds) AS stakes_thirds,
+            sum(race_records.fourths) AS fourths,
+            sum(race_records.stakes_fourths) AS stakes_fourths,
+            sum(race_records.earnings) AS earnings,
+            sum(race_records.points) AS points
+           FROM public.race_records
+          WHERE (race_records.surface = 'steeplechase'::public.track_surface)
+          GROUP BY race_records.horse_id) jump ON ((h.id = jump.horse_id)))
+  WHERE ((COALESCE(dirt.starts, (0)::numeric) > (0)::numeric) OR (COALESCE(turf.starts, (0)::numeric) > (0)::numeric) OR (COALESCE(jump.starts, (0)::numeric) > (0)::numeric));
 
 
 --
@@ -5345,13 +5201,6 @@ ALTER TABLE ONLY public.race_options ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- Name: race_records id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.race_records ALTER COLUMN id SET DEFAULT nextval('public.race_records_id_seq'::regclass);
-
-
---
 -- Name: race_result_horses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -5913,14 +5762,6 @@ ALTER TABLE ONLY public.race_options
 
 
 --
--- Name: race_records race_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.race_records
-    ADD CONSTRAINT race_records_pkey PRIMARY KEY (id);
-
-
---
 -- Name: race_result_horses race_result_horses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6194,20 +6035,6 @@ CREATE INDEX index_activity_points_on_legacy_stable_id ON public.activity_points
 --
 
 CREATE INDEX index_activity_points_on_stable_id_and_created_at ON public.activity_points USING btree (stable_id, created_at);
-
-
---
--- Name: index_annual_race_records_on_horse_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_annual_race_records_on_horse_id ON public.annual_race_records USING btree (horse_id);
-
-
---
--- Name: index_annual_race_records_on_year_and_horse_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_annual_race_records_on_year_and_horse_id ON public.annual_race_records USING btree (year, horse_id);
 
 
 --
@@ -7219,13 +7046,6 @@ CREATE INDEX index_leases_on_start_date ON public.leases USING btree (start_date
 
 
 --
--- Name: index_lifetime_race_records_on_horse_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_lifetime_race_records_on_horse_id ON public.lifetime_race_records USING btree (horse_id);
-
-
---
 -- Name: index_locations_on_country_and_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7534,59 +7354,10 @@ CREATE INDEX index_race_options_on_third_jockey_id ON public.race_options USING 
 
 
 --
--- Name: index_race_qualifications_on_horse_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_race_records_on_horse_id_and_year_and_surface; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_race_qualifications_on_horse_id ON public.race_qualifications USING btree (horse_id);
-
-
---
--- Name: index_race_records_on_horse_id_and_year_and_result_type; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_race_records_on_horse_id_and_year_and_result_type ON public.race_records USING btree (horse_id, year, result_type);
-
-
---
--- Name: index_race_records_on_result_type; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_records_on_result_type ON public.race_records USING btree (result_type);
-
-
---
--- Name: index_race_records_on_stakes_starts; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_records_on_stakes_starts ON public.race_records USING btree (stakes_starts);
-
-
---
--- Name: index_race_records_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_records_on_stakes_wins ON public.race_records USING btree (stakes_wins);
-
-
---
--- Name: index_race_records_on_starts; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_records_on_starts ON public.race_records USING btree (starts);
-
-
---
--- Name: index_race_records_on_wins; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_records_on_wins ON public.race_records USING btree (wins);
-
-
---
--- Name: index_race_records_on_year; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_records_on_year ON public.race_records USING btree (year);
+CREATE UNIQUE INDEX index_race_records_on_horse_id_and_year_and_surface ON public.race_records USING btree (horse_id, year, surface);
 
 
 --
@@ -9269,14 +9040,6 @@ ALTER TABLE ONLY public.motor_taggable_tags
 
 
 --
--- Name: race_records fk_rails_c25fca6795; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.race_records
-    ADD CONSTRAINT fk_rails_c25fca6795 FOREIGN KEY (horse_id) REFERENCES public.horses(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
 -- Name: active_storage_attachments fk_rails_c3b3935057; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9523,6 +9286,11 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260402131223'),
+('20260402124137'),
+('20260402122124'),
+('20260402121036'),
+('20260402120124'),
 ('20260401134429'),
 ('20260331121235'),
 ('20260331093159'),

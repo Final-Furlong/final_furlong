@@ -36,7 +36,7 @@
                   td.text-right= record.points
 
         - dashboard.annual_race_records.each do |record|
-          - description = t("horse.races.index.race_year", age: record.year - dob_year, year: record.year)
+          - description = t("horse.races.index.race_year", age: record.year.to_i - dob_year, year: record.year.to_i)
           .collapse.collapse-arrow.join-item.border-base-300.border
             input type="radio" name="race-record"
             .collapse-title.font-semibold= description

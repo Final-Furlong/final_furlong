@@ -170,6 +170,7 @@ RSpec.describe "Leasing Journey" do
     return @horse if defined?(@horse)
 
     @horse = create(:horse, :racehorse, :with_appearance, owner: leaser)
+    Racing::RaceRecord.refresh
     Racing::LifetimeRaceRecord.refresh
     @horse
   end

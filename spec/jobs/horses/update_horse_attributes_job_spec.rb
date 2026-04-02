@@ -6,10 +6,10 @@ RSpec.describe Horses::UpdateHorseAttributesJob, :perform_enqueueed_jobs do
   end
 
   it "triggers lifetime race record view refresh" do
-    Racing::LifetimeRaceRecord.refresh
-    allow(Racing::LifetimeRaceRecord).to receive(:refresh)
+    Racing::RaceRecord.refresh
+    allow(Racing::RaceRecord).to receive(:refresh)
     described_class.perform_later(horse)
-    expect(Racing::LifetimeRaceRecord).to have_received(:refresh)
+    expect(Racing::RaceRecord).to have_received(:refresh)
   end
 
   it "triggers update service" do
