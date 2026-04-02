@@ -1,4 +1,4 @@
-SELECT year, horse_id,
+SELECT horse_id, year,
                SUM(starts)         AS starts,
                SUM(stakes_starts)  AS stakes_starts,
                SUM(wins)           AS wins,
@@ -12,5 +12,5 @@ SELECT year, horse_id,
                SUM(points)         AS points,
                SUM(earnings)       AS earnings
 FROM race_records
-GROUP BY year, horse_id
+GROUP BY horse_id, year
 WITH DATA;

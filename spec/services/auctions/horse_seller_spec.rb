@@ -556,8 +556,7 @@ RSpec.describe Auctions::HorseSeller do
 
   context "when horse is not the dam of unborn foals" do
     before do
-      Racing::LifetimeRaceRecord.refresh
-      Racing::RaceQualification.refresh
+      Racing::RaceRecord.refresh
       legacy_foal_1.destroy
       legacy_foal_2.destroy
       foal_1.destroy

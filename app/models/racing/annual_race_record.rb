@@ -26,23 +26,18 @@ end
 # Database name: primary
 #
 #  earnings       :decimal(, )
-#  fourths        :bigint
-#  points         :bigint
-#  seconds        :bigint
-#  stakes_fourths :bigint
-#  stakes_seconds :bigint
-#  stakes_starts  :bigint
-#  stakes_thirds  :bigint
-#  stakes_wins    :bigint
-#  starts         :bigint
-#  thirds         :bigint
-#  wins           :bigint
-#  year           :integer          primary key, uniquely indexed => [horse_id]
-#  horse_id       :bigint           primary key, indexed, uniquely indexed => [year]
-#
-# Indexes
-#
-#  index_annual_race_records_on_horse_id           (horse_id)
-#  index_annual_race_records_on_year_and_horse_id  (year,horse_id) UNIQUE
+#  fourths        :decimal(, )
+#  points         :decimal(, )
+#  seconds        :decimal(, )
+#  stakes_fourths :decimal(, )
+#  stakes_seconds :decimal(, )
+#  stakes_starts  :decimal(, )
+#  stakes_thirds  :decimal(, )
+#  stakes_wins    :decimal(, )
+#  starts         :decimal(, )
+#  thirds         :decimal(, )
+#  wins           :decimal(, )
+#  year           :float            primary key
+#  horse_id       :bigint           primary key
 #
 

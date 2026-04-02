@@ -36,8 +36,8 @@ module Racing
     private
 
     def stakes_string(basic, stakes)
-      value = basic.to_s
-      value += "(#{stakes})" if stakes.positive?
+      value = basic.to_i.to_s
+      value += "(#{stakes.to_i})" if stakes.to_i.positive?
       value
     end
   end
@@ -48,36 +48,42 @@ end
 # Table name: surface_race_records
 # Database name: primary
 #
-#  dirt_fourths        :bigint
-#  dirt_seconds        :bigint
-#  dirt_stakes_fourths :bigint
-#  dirt_stakes_seconds :bigint
-#  dirt_stakes_starts  :bigint
-#  dirt_stakes_thirds  :bigint
-#  dirt_stakes_wins    :bigint
-#  dirt_starts         :bigint
-#  dirt_thirds         :bigint
-#  dirt_wins           :bigint
-#  jump_fourths        :bigint
-#  jump_seconds        :bigint
-#  jump_stakes_fourths :bigint
-#  jump_stakes_seconds :bigint
-#  jump_stakes_starts  :bigint
-#  jump_stakes_thirds  :bigint
-#  jump_stakes_wins    :bigint
-#  jump_starts         :bigint
-#  jump_thirds         :bigint
-#  jump_wins           :bigint
-#  turf_fourths        :bigint
-#  turf_seconds        :bigint
-#  turf_stakes_fourths :bigint
-#  turf_stakes_seconds :bigint
-#  turf_stakes_starts  :bigint
-#  turf_stakes_thirds  :bigint
-#  turf_stakes_wins    :bigint
-#  turf_starts         :bigint
-#  turf_thirds         :bigint
-#  turf_wins           :bigint
+#  dirt_earnings       :decimal(, )
+#  dirt_fourths        :decimal(, )
+#  dirt_points         :decimal(, )
+#  dirt_seconds        :decimal(, )
+#  dirt_stakes_fourths :decimal(, )
+#  dirt_stakes_seconds :decimal(, )
+#  dirt_stakes_starts  :decimal(, )
+#  dirt_stakes_thirds  :decimal(, )
+#  dirt_stakes_wins    :decimal(, )
+#  dirt_starts         :decimal(, )
+#  dirt_thirds         :decimal(, )
+#  dirt_wins           :decimal(, )
+#  jump_earnings       :decimal(, )
+#  jump_fourths        :decimal(, )
+#  jump_points         :decimal(, )
+#  jump_seconds        :decimal(, )
+#  jump_stakes_fourths :decimal(, )
+#  jump_stakes_seconds :decimal(, )
+#  jump_stakes_starts  :decimal(, )
+#  jump_stakes_thirds  :decimal(, )
+#  jump_stakes_wins    :decimal(, )
+#  jump_starts         :decimal(, )
+#  jump_thirds         :decimal(, )
+#  jump_wins           :decimal(, )
+#  turf_earnings       :decimal(, )
+#  turf_fourths        :decimal(, )
+#  turf_points         :decimal(, )
+#  turf_seconds        :decimal(, )
+#  turf_stakes_fourths :decimal(, )
+#  turf_stakes_seconds :decimal(, )
+#  turf_stakes_starts  :decimal(, )
+#  turf_stakes_thirds  :decimal(, )
+#  turf_stakes_wins    :decimal(, )
+#  turf_starts         :decimal(, )
+#  turf_thirds         :decimal(, )
+#  turf_wins           :decimal(, )
 #  horse_id            :bigint           primary key
 #
 

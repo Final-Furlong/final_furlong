@@ -40,7 +40,7 @@
             legend.fieldset-legend= t(".runs_on")
             label.label
               - Config::Racing.surfaces.each do |surface|
-                = radio_button_tag "q[runs_on_#{surface}]", true, name: "q_runs_on", checked: params.dig(:q, "runs_on_#{surface}".to_sym).to_s == 'true', class: "radio"
+                = radio_button_tag "q[runs_on]", surface, checked: params.dig(:q, :runs_on).to_s == surface, class: "radio"
                 = t("racing.race.surface_#{surface}")
         div
           fieldset.fieldset

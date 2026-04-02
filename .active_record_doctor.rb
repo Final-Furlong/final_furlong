@@ -248,7 +248,9 @@ ActiveRecordDoctor.configure do
       "Racing::DistanceRaceRecord(horse_id)", # group by horse_id view
       "Racing::ConditionRaceRecord(horse_id)", # group by horse_id view
       "Racing::RaceTypeRaceRecord(horse_id)", # group by horse_id view
-      "Racing::SurfaceRaceRecord(horse_id)" # group by horse_id view
+      "Racing::SurfaceRaceRecord(horse_id)", # group by horse_id view
+      "Racing::LifetimeRaceRecord(horse_id)", # group by horse_id view
+      "Racing::RaceQualification(horse_id)" # group by horse_id view
     ]
 
   detector :unindexed_deleted_at,
@@ -271,6 +273,7 @@ ActiveRecordDoctor.configure do
       "Racing::ConditionRaceRecord.horse",
       "Racing::EquipmentRaceRecord.horse",
       "Racing::LocationRaceRecord.horse",
+      "Racing::RaceRecord.horse",
       "Racing::RaceTypeRaceRecord.horse",
       "Racing::SurfaceRaceRecord.horse"
     ]

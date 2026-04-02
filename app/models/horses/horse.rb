@@ -33,9 +33,9 @@ module Horses
     has_one :latest_race_result_finish, -> { order id: :desc }, class_name:
       "Racing::RaceResultHorse", inverse_of: :horse, dependent: :delete
     has_one :latest_race_result, class_name: "Racing::RaceResult", through: :latest_race_result_finish, source: :race
-    has_many :race_records, class_name: "Racing::RaceRecord", inverse_of: :horse, dependent: :delete_all
     has_many :workouts, class_name: "Workouts::Workout", inverse_of: :horse, dependent: :destroy
     # rubocop:disable Rails/HasManyOrHasOneDependent
+    has_many :race_records, class_name: "Racing::RaceRecord", inverse_of: :horse
     has_many :annual_race_records, class_name: "Racing::AnnualRaceRecord", inverse_of: :horse
     has_one :lifetime_race_record, class_name: "Racing::LifetimeRaceRecord", inverse_of: :horse
     has_one :condition_race_record, class_name: "Racing::ConditionRaceRecord", inverse_of: :horse
@@ -151,6 +151,16 @@ module Horses
         where.associated(:current_injuries)
       else
         where.missing(:historical_injuries)
+      end
+    }
+    scope :runs_on, ->(value) {
+      case value.to_s.downcase
+      when "dirt"
+        joins(:race_options).merge(::Racing::RaceOption.dirt)
+      when "turf"
+        joins(:race_options).merge(::Racing::RaceOption.turf)
+      else
+        joins(:race_options).merge(::Racing::RaceOption.jump)
       end
     }
     scope :min_rest_days_since_last_race, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.min_rest_days(value)) }
@@ -273,11 +283,11 @@ module Horses
     end
 
     def self.ransackable_scopes(_auth_object = nil)
-      %w[min_age max_age female not_female racehorse_status min_energy max_energy energy_in min_fitness max_fitness fitness_in
-        runs_on_dirt runs_on_turf runs_on_steeplechase injury_status min_days_since_last_race max_days_since_last_race
+      %w[min_age max_age female not_female racehorse_status min_energy max_energy energy_in
+        min_fitness max_fitness fitness_in runs_on injury_status min_days_since_last_race max_days_since_last_race
         min_days_since_last_shipment max_days_since_last_shipment min_workouts_since_last_race max_workouts_since_last_race
-        entry_status injury_status min_rest_days_since_last_race max_rest_days_since_last_race min_days_since_last_shipment
-        max_days_since_last_shipment min_workouts_since_last_race max_workouts_since_last_race]
+        entry_status injury_status min_rest_days_since_last_race max_rest_days_since_last_race
+        min_days_since_last_shipment max_days_since_last_shipment min_workouts_since_last_race max_workouts_since_last_race]
     end
 
     def self.ransackable_scopes_skip_sanitize_args

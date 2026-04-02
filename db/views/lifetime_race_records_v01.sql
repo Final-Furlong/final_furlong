@@ -13,4 +13,4 @@ SELECT horse_id,
        SUM(earnings)       AS earnings
 FROM race_records
 GROUP BY horse_id
-WITH DATA;
+WITH DATA

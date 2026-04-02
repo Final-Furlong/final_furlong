@@ -28,9 +28,8 @@ module Racing
           race_horses = process_race_horses(race_result:, horses:)
           race_horses.each do |race_horse|
             result.created = race_horse.valid?
-            race_record = update_race_record(race_result:, surface:, race_horse:)
             stats = update_stats(horse: race_horse.horse, race_horse:, horses:, date: race_date)
-            next if race_horse.save! && race_record.save! && (stats.blank? || stats.save!)
+            next if race_horse.save! && (stats.blank? || stats.save!)
 
             result.created = false
             raise ActiveRecord::Rollback, race_horse.errors.full_messages.to_sentence
@@ -101,31 +100,6 @@ module Racing
         next_entry_date:
       )
       stats
-    end
-
-    def update_race_record(race_result:, surface:, race_horse:)
-      horse = race_horse.horse
-      record = horse.race_records.find_or_initialize_by(year: race_result.date.year, result_type: surface.surface.to_s.downcase)
-      record.starts += 1
-      stakes_race = race_result.stakes?
-      record.stakes_starts += 1 if race_result.stakes?
-      case race_horse.finish_position
-      when 1
-        record.wins += 1
-        record.stakes_wins += 1 if stakes_race
-      when 2
-        record.seconds += 1
-        record.stakes_seconds += 1 if stakes_race
-      when 3
-        record.thirds += 1
-        record.stakes_thirds += 1 if stakes_race
-      when 4
-        record.fourths += 1
-        record.stakes_fourths += 1 if stakes_race
-      end
-      record.earnings += calculate_earnings(race_result.purse, race_horse.finish_position)
-      record.points = calculate_points(race_horse.finish_position, race_result).to_i
-      record
     end
 
     def calculate_earnings(purse, finish_position)
