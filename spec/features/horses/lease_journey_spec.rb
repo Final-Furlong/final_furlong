@@ -172,6 +172,7 @@ RSpec.describe "Leasing Journey" do
     @horse = create(:horse, :racehorse, :with_appearance, owner: leaser)
     Racing::RaceRecord.refresh
     Racing::LifetimeRaceRecord.refresh
+    Racing::RaceQualification.refresh
     @horse
   end
 end

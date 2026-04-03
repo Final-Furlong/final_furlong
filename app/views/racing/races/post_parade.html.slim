@@ -1,0 +1,9 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t("racing.races.index.title"), href: racing_races_path(date: @date) },
+                  { name: t(".title"), href: "#" }, { name: l(Date.parse(@date)), href: "#" }]) do
+
+- if policy(@races.first).claim?
+  .text-center
+    p= t(".claim_limit")
+    p= t(".claim_success")
+    p= t(".claim_failure")
