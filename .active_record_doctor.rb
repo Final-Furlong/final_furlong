@@ -275,7 +275,9 @@ ActiveRecordDoctor.configure do
       "Racing::LocationRaceRecord.horse",
       "Racing::RaceRecord.horse",
       "Racing::RaceTypeRaceRecord.horse",
-      "Racing::SurfaceRaceRecord.horse"
+      "Racing::SurfaceRaceRecord.horse",
+      "Racing::StableAnnualRaceRecord.stable",
+      "Racing::StableRaceRecord.stable"
     ]
 
   detector :unindexed_foreign_keys,

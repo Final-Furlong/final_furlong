@@ -45,6 +45,7 @@ RSpec.describe "Boarding" do
     @horse = create(:horse, :racehorse, :with_appearance, owner: stable)
     Racing::RaceRecord.refresh
     Racing::LifetimeRaceRecord.refresh
+    Racing::RaceQualification.refresh
     @horse
   end
 

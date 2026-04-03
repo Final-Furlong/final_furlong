@@ -2,14 +2,15 @@ class UpdateStableRaceResultFinishesJob < ApplicationJob
   queue_as :low_priority
 
   def perform
-    Racing::RaceResultHorse.where(stable_id: nil).order(id: :asc).limit(100) do |rr_horse|
+    Racing::RaceResultHorse.where(stable_id: nil).order(id: :asc).limit(100).each do |rr_horse|
       horse = rr_horse.horse
 
       stable = find_stable(horse, rr_horse.race.date, rr_horse.race.number)
-      rr_horse.update(stable:) if stable
+      rr_horse.assign_attributes(stable_id: stable.id)
+      rr_horse.save(validate: false)
     end
     remaining_count = Racing::RaceResultHorse.where(stable_id: nil).count
-    UpdateStableRaceResultFinishesJob.set(wait: 5.seconds).perform_later if remaining_count.positive?
+    UpdateStableRaceResultFinishesJob.perform_later if remaining_count.positive?
   end
 
   private

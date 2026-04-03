@@ -1,5 +1,6 @@
 shared:
   currency: $
+  claiming_deadline_days: 1
   entry_deadline_days: 2
   entry_fee_percent: 0.05
   entry_limit_2yo: 1
