@@ -71,16 +71,16 @@ module Horses
           location_id = if shipment.shipping_type == "track_to_farm"
             59
           else
-            track_name = Racetrack.where(location: shipment.ending_location).pick(:name)
-            Legacy::Racetrack.where(name: track_name).order(ID: :asc).pick(:ID)
+            track_name = ::Racing::Racetrack.where(location: shipment.ending_location).pick(:name)
+            ::Legacy::Racetrack.where(name: track_name).order(ID: :asc).pick(:ID)
           end
-          Legacy::Horse.transaction do
-            legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
+          ::Legacy::Horse.transaction do
+            legacy_horse = ::Legacy::Horse.find_by(ID: horse.legacy_id)
             legacy_horse&.update(InTransit: 1, Location: location_id)
-            Legacy::ViewRacehorses.find_by(horse_id: horse.legacy_id)&.update(in_transit: 1, location: location_id)
+            ::Legacy::ViewRacehorses.find_by(horse_id: horse.legacy_id)&.update(in_transit: 1, location: location_id)
             if location_id != 59
-              track_name = Racetrack.where(location: shipment.ending_location).pick(:name)
-              Legacy::ViewTrainingSchedules.find_by(horse_id: horse.legacy_id)&.update(track_name:)
+              track_name = ::Racing::Racetrack.where(location: shipment.ending_location).pick(:name)
+              ::Legacy::ViewTrainingSchedules.find_by(horse_id: horse.legacy_id)&.update(track_name:)
             end
           end
         end
