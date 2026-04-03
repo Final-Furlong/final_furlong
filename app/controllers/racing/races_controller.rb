@@ -11,6 +11,16 @@ module Racing
 
     def show
     end
+
+    def post_parade
+      query = policy_scope(Racing::RaceSchedule).includes(track_surface: :racetrack)
+      @date = params[:date].presence || Racing::RaceSchedule.future.minimum(:date)
+      query = query.where(date: @date)
+      query = query.order(number: :asc)
+
+      @races = query.to_a
+      authorize @races.first, :post_parade?
+    end
   end
 end
 
