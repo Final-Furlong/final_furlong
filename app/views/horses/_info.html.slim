@@ -99,6 +99,10 @@
         th= t(".track_record")
         td= horse.track_record || t("horse.unraced")
       - if horse.racehorse?
+        - if horse.race_qualification
+          tr
+            th= t(".race_qualification")
+            td= horse.race_qualification.to_s
         - if horse.race_metadata&.last_raced_at
           tr
             th= t(".last_race")

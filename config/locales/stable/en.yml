@@ -96,6 +96,20 @@ en:
         title: Leased Horses
       table:
         age_gender: Age/Gender
+    race_results:
+      index:
+        by_year: Race Results By Year
+        loading_results: Loading results...
+        loading_summary: Loading summary...
+        no_results: Results
+        otb_percentage: OTB %
+        percent: "%"
+        percentage: "%{percent}%"
+        results: Results (%{count})
+        summary: Summary
+        title: Stable Race Results
+        total: Totals
+        year: Year
     sale_offers:
       index:
         title: Horses Offered for Sale

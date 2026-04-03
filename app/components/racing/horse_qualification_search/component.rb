@@ -33,16 +33,7 @@ module Racing
       end
 
       def status_count(status)
-        query = Horses::Horse.racehorse.managed_by(Current.stable).min_age(min_age).max_age(max_age).joins(:race_metadata)
-        query = CurrentStable::RacehorsePolicy::Scope.new(Current.user, query).resolve
-        query = query.female if female
-        query = query.not_female if male
-        query = query.joins(:race_qualification).merge(Racing::RaceQualification.send(:qualified_for, status))
-        query = query.joins(:race_options).merge(Racing::RaceOption.distance_matching(race.distance))
-          .merge(Racing::RaceOption.send(race.surface_name.to_sym))
-        if surface_type.flat?
-          query = query.merge(Racing::RaceOption.send(surface_type.to_sym))
-        end
+        query = Racing::RaceQualificationQuery.new(status:, race:).qualified
         query.count
       end
 
@@ -51,11 +42,7 @@ module Racing
       end
 
       def max_age
-        if age.chars.include?("+")
-          10
-        else
-          min_age
-        end
+        race.max_age
       end
 
       def url_with_params(status)

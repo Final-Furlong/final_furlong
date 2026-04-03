@@ -29,7 +29,8 @@ module Accounts
       def actions
         [
           { key: :impersonate },
-          { key: :edit }
+          { key: :edit },
+          { key: :race_results, policy: CurrentStable::RaceResultPolicy }
         ]
       end
     end
