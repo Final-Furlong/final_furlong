@@ -17,12 +17,12 @@ RSpec.describe "Boarding" do
     within "dialog" do
       click_on t("common.confirm.yes")
     end
-    expect(page).not_to have_css "dialog"
+    expect(page).to have_no_css "dialog"
 
     visit horse_path(horse)
     choose "history"
     choose "boarding"
-    expect(page).not_to have_text t("horse.actions.boarding.stop")
+    expect(page).to have_no_text t("horse.actions.boarding.stop")
   end
 
   private
@@ -45,6 +45,7 @@ RSpec.describe "Boarding" do
     @horse = create(:horse, :racehorse, :with_appearance, owner: stable)
     Racing::RaceRecord.refresh
     Racing::LifetimeRaceRecord.refresh
+    Racing::RaceQualification.refresh
     @horse
   end
 

@@ -9,6 +9,10 @@ namespace :stable, module: "current_stable" do
   resources :horses, only: %i[index edit show update]
   resources :lease_offers, only: :index
   resources :leases, only: :index
+  resources :race_results, only: :index do
+    get :summary, on: :collection
+    get :list, on: :collection
+  end
   resources :sale_offers, only: :index
   resources :settings, only: %i[new]
   resources :shipments, only: :index

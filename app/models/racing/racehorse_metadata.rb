@@ -25,13 +25,13 @@ module Racing
       when "D"
         where(key => ["A", "B", "C", "D"])
       else
-        where(key => "F")
+        all
       end
     }
     scope :max_grade, ->(grade, key) {
       case grade.to_s.upcase
       when "A"
-        where(key => ["A", "B", "C", "D", "F"])
+        all
       when "B"
         where(key => ["B", "C", "D", "F"])
       when "C"

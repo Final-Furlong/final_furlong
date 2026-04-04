@@ -4,19 +4,7 @@ module Racing
       base_query = Horses::Horse.racehorse.includes(:race_options, race_metadata: :racetrack).where.missing(:race_entries)
       @query = policy_scope(base_query, policy_scope_class: CurrentStable::RacehorsePolicy::Scope)
       @race = Racing::RaceSchedule.find(params.dig(:q, :race)) if params.dig(:q, :race).present?
-      if status
-        @query = @query.joins(:race_qualification).merge(
-          Racing::RaceQualification.send(:qualified_for, status)
-        )
-      end
-      if @race
-        surface_type = @race.surface_type.to_s.inquiry
-        @query = @query.joins(:race_options)
-        @query = @query.merge(Racing::RaceOption.send(@race.surface_type.to_sym)) if surface_type.flat?
-        @query = @query.merge(Racing::RaceOption.distance_matching(@race.distance))
-          .merge(Racing::RaceOption.send(@race.surface_name.to_sym))
-        @query = @query.min_age(@race.min_age).max_age(@race.max_age)
-      end
+      @query = RaceQualificationQuery.new(race: @race, status:).qualified(apply_settings: false)
       @query = @query.ransack(params[:q])
       @query.sorts = ["name asc"] if @query.sorts.empty?
       @query.sorts.insert 0, Ransack::Nodes::Sort.extract(@query.context, "race_options_racehorse_type desc")
