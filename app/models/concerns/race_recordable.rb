@@ -2,6 +2,8 @@ module RaceRecordable
   extend ActiveSupport::Concern
 
   included do
+    include ActiveSupport::NumberHelper
+
     def places
       seconds + thirds
     end
@@ -37,8 +39,8 @@ module RaceRecordable
     private
 
     def stakes_string(basic, stakes)
-      value = basic.to_s
-      value += "(#{stakes})" if stakes.positive?
+      value = number_to_delimited(basic)
+      value += "(#{number_to_delimited(stakes)})" if stakes.positive?
       value
     end
   end

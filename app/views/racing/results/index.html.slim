@@ -6,6 +6,7 @@ ruby:
 - content_for :breadcrumbs do
   = render Nav::Breadcrumbs::Component.new(links: [{ name: t(".title"), href: "#" },
     { name: l(date), href: "#" }])
+    = render Nav::Breadcrumbs::Actions::Component.new(actions: [:race_results], path: "/stables/actions/", object: date)
 
 = render "prev_next_dates", prev_date:, next_date:
 .overflow-x-auto.rounded-box.border.bg-base-100

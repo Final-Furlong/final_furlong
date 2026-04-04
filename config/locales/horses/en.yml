@@ -52,6 +52,7 @@ en:
       offered_for_sale: 'Offered for sale (Price: %{price})'
       offered_for_sale_private_html: Offered for sale <em>(Private Treaty)</em>
       owner: Owner
+      race_qualification: Race Qualification
       sale_status: Sale Status
       scheduled_race: Scheduled Race
       status: Status

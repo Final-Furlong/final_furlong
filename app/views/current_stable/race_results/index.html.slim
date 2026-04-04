@@ -1,0 +1,24 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new( links: [{ name: Current.stable.name, href: current_stable_path },
+          { name: t(".title"), href: "#", title: true }])
+
+= turbo_frame_tag "#{Current.stable.slug}-results" do
+  .tabs.tabs-border.dark:border-neutral-400 role="tablist"
+    input.tab type="radio" name="stable-results" aria-label=t(".summary") id="results-summary" checked="true"
+    .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+      = turbo_frame_tag "#{Current.stable.slug}-results-summary", src: summary_stable_race_results_path do
+        .w-full.text-center
+          p.mx-auto= t(".loading_summary")
+          .mt-2.mx-auto.skeleton.w-full
+
+    - results_count = Current.stable.race_results.count
+    - if results_count.zero?
+      input.tab type="radio" name="stable-results" aria-label=t(".no_results") id="results-list" disabled=true
+    - else
+      input.tab type="radio" name="stable-results" aria-label=t(".results", count: results_count) id="results"
+      .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+        = turbo_frame_tag "#{Current.stable.slug}-results-list", src: list_stable_race_results_path, loading: "lazy" do
+          .w-full.text-center
+            p.mx-auto= t(".loading_results")
+            .mt-2.mx-auto.skeleton.w-full
+
