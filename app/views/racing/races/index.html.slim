@@ -4,7 +4,8 @@ ruby:
   next_date = Racing::RaceSchedule.where('date > ?', date).minimum(:date)
 - content_for :breadcrumbs do
   = render Nav::Breadcrumbs::Component.new(links: [{ name: t(".title"), href: "#" },
-    { name: l(date), href: "#" }])
+    { name: l(date), href: "#" }]) do
+    = render Nav::Breadcrumbs::Actions::Component.new(actions: [:post_parade], path: "/racing/races/", object: date)
 
 = render "prev_next_dates", prev_date:, next_date:
 .overflow-x-auto.rounded-box.border.bg-base-100

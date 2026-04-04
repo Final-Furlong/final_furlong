@@ -73,6 +73,7 @@ en:
       track: Track
       type: Type
       ungraded: Ungraded
+      view_post_parade: View Post Parade
     racehorses:
       status:
         last_race_hint: Last Race Date (Days)
@@ -84,6 +85,11 @@ en:
     races:
       index:
         title: Race Schedule
+      post_parade:
+        claim_failure: If unsuccessful, you will not be notified in any way. You will not be charged any claiming fee.
+        claim_limit: You may put in a claim for 1 horse only
+        claim_success: If successful, your claim will be processed after races have been run. You will be charged the claiming fee for the horse.
+        title: Post Parade
     results:
       fractions: Fractional Times
       horse_title: Horse (Jockey)

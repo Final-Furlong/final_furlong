@@ -20,6 +20,8 @@ module Account
     has_many :auction_bids, class_name: "Auctions::Bid", inverse_of: :bidder, dependent: :delete_all
     has_many :race_result_finishes, class_name: "Racing::RaceResultHorse", inverse_of: :stable, dependent: :nullify
     has_many :race_results, class_name: "Racing::RaceResult", through: :race_result_finishes, source: :race
+    has_many :annual_race_records, class_name: "Racing::StableAnnualRaceRecord", inverse_of: :stable
+    has_many :race_records, class_name: "Racing::StableRaceRecord", inverse_of: :stable
 
     validates :name, :miles_from_track, presence: true
     validates :name, uniqueness: { case_sensitive: false }

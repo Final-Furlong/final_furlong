@@ -20,6 +20,7 @@ module Racing
     scope :by_max_finish, ->(position) { where(finish_position: ..position) }
     scope :by_date, ->(date) { joins(:race).merge(RaceResult.by_date(date)) }
     scope :by_year, ->(year) { joins(:race).merge(RaceResult.by_year(year).ordered_by_date) }
+    scope :by_stable, ->(stable) { where(stable:) }
 
     def result_abbreviation
       race_info = [race.distance_abbr, race.surface_abbr].join(" ")

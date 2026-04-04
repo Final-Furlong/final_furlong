@@ -3552,37 +3552,16 @@ CREATE MATERIALIZED VIEW public.race_qualifications AS
             ELSE true
         END AS starter_allowance_qualified,
         CASE allowance_wins.wins
-            WHEN 0 THEN true
-            ELSE
-            CASE ( SELECT count(*) AS count
-                   FROM public.lifetime_race_records
-                  WHERE (lifetime_race_records.horse_id = h.id))
-                WHEN 1 THEN false
-                ELSE true
-            END
+            WHEN 1 THEN false
+            ELSE true
         END AS nw1_allowance_qualified,
         CASE allowance_wins.wins
-            WHEN 0 THEN true
-            WHEN 1 THEN true
-            ELSE
-            CASE ( SELECT count(*) AS count
-                   FROM public.lifetime_race_records
-                  WHERE (lifetime_race_records.horse_id = h.id))
-                WHEN 1 THEN false
-                ELSE true
-            END
+            WHEN 2 THEN false
+            ELSE true
         END AS nw2_allowance_qualified,
         CASE allowance_wins.wins
-            WHEN 0 THEN true
-            WHEN 1 THEN true
-            WHEN 2 THEN true
-            ELSE
-            CASE ( SELECT count(*) AS count
-                   FROM public.lifetime_race_records
-                  WHERE (lifetime_race_records.horse_id = h.id))
-                WHEN 1 THEN false
-                ELSE true
-            END
+            WHEN 3 THEN false
+            ELSE true
         END AS nw3_allowance_qualified,
         CASE ( SELECT count(r.id) AS count
                FROM (public.race_result_horses rr
@@ -4314,6 +4293,93 @@ CREATE SEQUENCE public.shipment_routes_id_seq
 --
 
 ALTER SEQUENCE public.shipment_routes_id_seq OWNED BY public.shipment_routes.id;
+
+
+--
+-- Name: stable_race_records; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.stable_race_records AS
+ SELECT rr.stable_id,
+    date_part('Year'::text, r.date) AS year,
+    ts.surface,
+    count(rr.id) AS starts,
+    sum(
+        CASE
+            WHEN (r.race_type = 'stakes'::public.race_type) THEN 1
+            ELSE 0
+        END) AS stakes_starts,
+    sum(
+        CASE rr.finish_position
+            WHEN 1 THEN 1
+            ELSE 0
+        END) AS wins,
+    sum(
+        CASE
+            WHEN ((r.race_type = 'stakes'::public.race_type) AND (rr.finish_position = 1)) THEN 1
+            ELSE 0
+        END) AS stakes_wins,
+    sum(
+        CASE rr.finish_position
+            WHEN 2 THEN 1
+            ELSE 0
+        END) AS seconds,
+    sum(
+        CASE
+            WHEN ((r.race_type = 'stakes'::public.race_type) AND (rr.finish_position = 2)) THEN 1
+            ELSE 0
+        END) AS stakes_seconds,
+    sum(
+        CASE rr.finish_position
+            WHEN 3 THEN 1
+            ELSE 0
+        END) AS thirds,
+    sum(
+        CASE
+            WHEN ((r.race_type = 'stakes'::public.race_type) AND (rr.finish_position = 3)) THEN 1
+            ELSE 0
+        END) AS stakes_thirds,
+    sum(
+        CASE rr.finish_position
+            WHEN 4 THEN 1
+            ELSE 0
+        END) AS fourths,
+    sum(
+        CASE
+            WHEN ((r.race_type = 'stakes'::public.race_type) AND (rr.finish_position = 4)) THEN 1
+            ELSE 0
+        END) AS stakes_fourths,
+    sum(rr.earnings) AS earnings,
+    sum(rr.points) AS points
+   FROM ((public.race_result_horses rr
+     LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+     LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+  GROUP BY rr.stable_id, (date_part('Year'::text, r.date)), ts.surface
+  WITH NO DATA;
+
+
+--
+-- Name: stable_annual_race_records; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.stable_annual_race_records AS
+ SELECT stable_id,
+    year,
+    sum(starts) AS starts,
+    sum(stakes_starts) AS stakes_starts,
+    sum(wins) AS wins,
+    sum(stakes_wins) AS stakes_wins,
+    sum(seconds) AS seconds,
+    sum(stakes_seconds) AS stakes_seconds,
+    sum(thirds) AS thirds,
+    sum(stakes_thirds) AS stakes_thirds,
+    sum(fourths) AS fourths,
+    sum(stakes_fourths) AS stakes_fourths,
+    sum(points) AS points,
+    sum(earnings) AS earnings
+   FROM public.stable_race_records
+  GROUP BY stable_id, year
+  WITH NO DATA;
 
 
 --
@@ -9286,6 +9352,10 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260403184144'),
+('20260403183905'),
+('20260403111453'),
+('20260403110015'),
 ('20260402131223'),
 ('20260402124137'),
 ('20260402122124'),
