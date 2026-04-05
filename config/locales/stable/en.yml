@@ -6,6 +6,8 @@ en:
         last_online: 'Last online at: %{date}'
         no_description: No description
   current_stable:
+    actions:
+      view_recent_results: View Recent Results
     auctions:
       index:
         bidder: Bidder
@@ -99,9 +101,11 @@ en:
     race_results:
       index:
         by_year: Race Results By Year
+        by_year_stakes: Stakes Results By Year
         loading_results: Loading results...
         loading_summary: Loading summary...
         no_results: Results
+        no_results_found: No results found.
         otb_percentage: OTB %
         percent: "%"
         percentage: "%{percent}%"
@@ -110,6 +114,11 @@ en:
         title: Stable Race Results
         total: Totals
         year: Year
+    recent_results:
+      show:
+        copied_forum_format: Copied!
+        copy_forum_format: Copy Results for Forum
+        title: Race Results for %{date}
     sale_offers:
       index:
         title: Horses Offered for Sale

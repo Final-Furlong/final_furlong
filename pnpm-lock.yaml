@@ -32,6 +32,9 @@ importers:
       '@stimulus-components/auto-submit':
         specifier: ^6.0.0
         version: 6.0.0(@hotwired/stimulus@3.2.2)
+      '@stimulus-components/clipboard':
+        specifier: ^5.0.0
+        version: 5.0.0(@hotwired/stimulus@3.2.2)
       '@stimulus-components/lightbox':
         specifier: ^4.0.0
         version: 4.0.0(@hotwired/stimulus@3.2.2)
@@ -814,6 +817,11 @@ packages:
     resolution: {integrity: sha512-GBwjjnNuDZey9kdJinTGyrkIMCNVnPrTQvqihC0pBiwieIMfZIp+TT7Giee0Z0DS+pX6WdJweIeo8xEYD/VZJg==}
     peerDependencies:
       '@hotwired/stimulus': ^3
+
+  '@stimulus-components/clipboard@5.0.0':
+    resolution: {integrity: sha512-gbwU1sVBiKfMGGCt6oyXx9mGD+cEcHBSqaz//5UVepoQqzl2jYEUWQGFIO0f48LMOamEQwR1azQKfHq6llv6oA==}
+    peerDependencies:
+      '@hotwired/stimulus': ^3.0.0
 
   '@stimulus-components/lightbox@4.0.0':
     resolution: {integrity: sha512-pj4PfnGANbc3Ef6I/5aPeRS8Tj2rK1b9dn8rlpJZs1K9narqM57ZtUTutHZsnOv95+4LqQVktj+auMgz+LKzjw==}
@@ -3323,6 +3331,10 @@ snapshots:
   '@simple-libs/stream-utils@1.2.0': {}
 
   '@stimulus-components/auto-submit@6.0.0(@hotwired/stimulus@3.2.2)':
+    dependencies:
+      '@hotwired/stimulus': 3.2.2
+
+  '@stimulus-components/clipboard@5.0.0(@hotwired/stimulus@3.2.2)':
     dependencies:
       '@hotwired/stimulus': 3.2.2
 

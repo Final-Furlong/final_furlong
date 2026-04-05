@@ -48,42 +48,42 @@ end
 # Table name: surface_race_records
 # Database name: primary
 #
-#  dirt_earnings       :decimal(, )
-#  dirt_fourths        :decimal(, )
-#  dirt_points         :decimal(, )
-#  dirt_seconds        :decimal(, )
-#  dirt_stakes_fourths :decimal(, )
-#  dirt_stakes_seconds :decimal(, )
-#  dirt_stakes_starts  :decimal(, )
-#  dirt_stakes_thirds  :decimal(, )
-#  dirt_stakes_wins    :decimal(, )
-#  dirt_starts         :decimal(, )
-#  dirt_thirds         :decimal(, )
-#  dirt_wins           :decimal(, )
-#  jump_earnings       :decimal(, )
-#  jump_fourths        :decimal(, )
-#  jump_points         :decimal(, )
-#  jump_seconds        :decimal(, )
-#  jump_stakes_fourths :decimal(, )
-#  jump_stakes_seconds :decimal(, )
-#  jump_stakes_starts  :decimal(, )
-#  jump_stakes_thirds  :decimal(, )
-#  jump_stakes_wins    :decimal(, )
-#  jump_starts         :decimal(, )
-#  jump_thirds         :decimal(, )
-#  jump_wins           :decimal(, )
-#  turf_earnings       :decimal(, )
-#  turf_fourths        :decimal(, )
-#  turf_points         :decimal(, )
-#  turf_seconds        :decimal(, )
-#  turf_stakes_fourths :decimal(, )
-#  turf_stakes_seconds :decimal(, )
-#  turf_stakes_starts  :decimal(, )
-#  turf_stakes_thirds  :decimal(, )
-#  turf_stakes_wins    :decimal(, )
-#  turf_starts         :decimal(, )
-#  turf_thirds         :decimal(, )
-#  turf_wins           :decimal(, )
+#  dirt_earnings       :bigint
+#  dirt_fourths        :integer
+#  dirt_points         :bigint
+#  dirt_seconds        :integer
+#  dirt_stakes_fourths :integer
+#  dirt_stakes_seconds :integer
+#  dirt_stakes_starts  :integer
+#  dirt_stakes_thirds  :integer
+#  dirt_stakes_wins    :integer
+#  dirt_starts         :integer
+#  dirt_thirds         :integer
+#  dirt_wins           :integer
+#  jump_earnings       :bigint
+#  jump_fourths        :integer
+#  jump_points         :bigint
+#  jump_seconds        :integer
+#  jump_stakes_fourths :integer
+#  jump_stakes_seconds :integer
+#  jump_stakes_starts  :integer
+#  jump_stakes_thirds  :integer
+#  jump_stakes_wins    :integer
+#  jump_starts         :integer
+#  jump_thirds         :integer
+#  jump_wins           :integer
+#  turf_earnings       :bigint
+#  turf_fourths        :integer
+#  turf_points         :bigint
+#  turf_seconds        :integer
+#  turf_stakes_fourths :integer
+#  turf_stakes_seconds :integer
+#  turf_stakes_starts  :integer
+#  turf_stakes_thirds  :integer
+#  turf_stakes_wins    :integer
+#  turf_starts         :integer
+#  turf_thirds         :integer
+#  turf_wins           :integer
 #  horse_id            :bigint           primary key
 #
 
