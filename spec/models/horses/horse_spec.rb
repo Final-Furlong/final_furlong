@@ -20,7 +20,7 @@ RSpec.describe Horses::Horse do
     it { is_expected.to have_many(:past_leases).class_name("Horses::Lease").dependent(:destroy) }
     it { is_expected.to have_one(:race_options).class_name("Racing::RaceOption").dependent(:delete) }
     it { is_expected.to have_one(:race_metadata).class_name("Racing::RacehorseMetadata").dependent(:delete) }
-    it { is_expected.to have_many(:race_result_finishes).class_name("Racing::RaceResultHorse").dependent(:delete_all) }
+    it { is_expected.to have_many(:race_result_finishes).class_name("Racing::RaceResultHorse").dependent(:destroy) }
     it { is_expected.to have_many(:race_results).class_name("Racing::RaceResult").through(:race_result_finishes) }
     it { is_expected.to have_one(:sale_offer).class_name("Horses::SaleOffer").dependent(:delete) }
     it { is_expected.to have_many(:sales).class_name("Horses::Sale").dependent(:delete_all) }

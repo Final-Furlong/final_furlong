@@ -20,18 +20,31 @@ en:
       allowance: Allowance
       claiming: Claiming
       claiming_with_price: Claiming (%{price})
+      date: Date
       distance: Distance
       equipment: Equipment
       female_only: Female
       final_furlong: Final
       finish: Finish
       first_quarter: 1/4
+      forum:
+        allowance_prefix: an
+        fifths: "**Fifths:**"
+        fourths: "**Fourths:**"
+        in: in
+        other_prefix: a
+        others: "**Also Rans:**"
+        seconds: "**Places:**"
+        stakes: the %{name} (%{grade})
+        thirds: "**Shows:**"
+        wins: "**Wins:**"
       furlongs: "%{number} Furlongs"
       gender: Gender
       grade: Grade
       grade_1: Grade 1
       grade_2: Grade 2
       grade_3: Grade 3
+      horse: Horse
       jockey: Jockey
       maiden: Maiden
       male_only: Male
@@ -60,7 +73,9 @@ en:
       post_position: Post
       post_position_expanded: Post Position
       purse: Purse
+      race: Race
       second_quarter: 1/2
+      speed_factor: Speed Factor
       stakes: Stakes
       starter_allowance: Starter Allowance
       stretch: Stretch

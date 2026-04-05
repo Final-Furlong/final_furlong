@@ -19,6 +19,7 @@ en:
       delete_with_name: Are you sure you want to delete %{name}?
     create: Create
     dash: "-"
+    day: Day
     distances:
       12_furlongs: 1 1/2 Miles
       16_furlongs: 2 Miles
@@ -37,6 +38,7 @@ en:
       8_furlongs: 1 Mile
     edit: Edit
     error: Something went wrong
+    month: Month
     none: None
     or: Or
     search_form:
@@ -49,6 +51,7 @@ en:
       'no': 'No'
       'true': 'Yes'
       'yes': 'Yes'
+    year: Year
   daisy_ui:
     abyss: Abyss
     acid: Acid

@@ -1,0 +1,31 @@
+/# locals: (query:)
+= turbo_search_form_for query, url: list_stable_race_results_path, method: :get, turbo_frame: "#{Current.stable.slug}-results-list-search" do |f|
+  .card.card-border.shadow-md.my-4.dark:border-1.dark:border-neutral-100/50
+    .card-body
+      .grid.grid-cols-1.sm:grid-cols-4.lg:grid-cols-6.mb-2.gap-4
+        div
+          fieldset.fieldset
+            legend.fieldset-legend= t("racing.race.horse")
+            = f.text_field :horse_name_i_cont, class: 'input', type: 'text'
+        div
+          fieldset.fieldset
+            legend.fieldset-legend= t("common.year")
+            - years = Racing::RaceResult.joins(:horses).where(horses: { stable: Current.stable }).select("DATE_PART('Year', date)::int").order(Arel.sql("DATE_PART('Year', date)::int DESC")).distinct
+            = f.collection_select :by_year, years, :date_part, :date_part, { include_blank: true }, { class: 'select d-inline w-[100] mr-2' }
+        div
+          fieldset.fieldset
+            legend.fieldset-legend= t("common.month")
+            = f.select :by_month, options_for_select(Date::MONTHNAMES.collect.with_index.to_a.reject { |data| data.last.zero? }), { include_blank: true, selected: params.dig(:q, :by_month).to_i }, { class: 'select d-inline w-[130] mr-2' }
+        div
+          fieldset.fieldset
+            legend.fieldset-legend= t("common.day")
+            = f.collection_select :by_day, (1..31).to_a, :to_s, :to_s, { include_blank: true }, { class: 'select d-inline w-[80] mr-2' }
+        div
+          fieldset.fieldset
+            legend.fieldset-legend= t("racing.race.finish")
+            = f.collection_select :finish_position_eq, (1..14).to_a, :to_s, :to_s, { include_blank: true }, { class: 'select d-inline w-[100] mr-2' }
+
+      .float-right.flex.mt-2.justify-content-end
+        = render Ui::ButtonizedLink::Component.new(url: list_stable_race_results_path, color: :error, style: :outline, size: :small, extra_classes: "me-2", http_method: :get, data: { action: "search#reset" }) do
+          = t("common.search_form.reset_filters")
+        = render Ui::SubmitButton::Component.new(form: f, size: :small, extra_classes: "d-lg-none", text: t("common.search_form.action"))
