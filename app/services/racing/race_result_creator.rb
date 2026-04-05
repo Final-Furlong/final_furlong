@@ -37,6 +37,7 @@ module Racing
         end
         trigger_horse_attribute_updates(horses:)
         if max_race?(date:, number:)
+          Racing::RaceResultHorse.counter_culture_fix_counts
           UpdateRaceResultHorseAbbreviationsJob.perform_later(date:)
           Racing::RaceDayUpdaterJob.perform_later(date:)
           Daily::ProcessFutureShipmentsJob.perform_later
@@ -102,7 +103,9 @@ module Racing
     end
 
     def calculate_earnings(purse, finish_position)
-      (purse * Config::Racing.purses[finish_position - 1].to_i).to_i
+      return 0 unless Config::Racing.purses[finish_position - 1]
+
+      (purse * Config::Racing.purses[finish_position - 1]).to_i
     end
 
     def calculate_points(finish, race_result)

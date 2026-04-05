@@ -1,0 +1,57 @@
+ruby:
+  title = t(".title", date: l(@date, format: :long))
+  prev_date = Racing::RaceResult.joins(:horses).where(date: ...@date).merge(Racing::RaceResultHorse.by_stable(Current.stable)).maximum(:date)
+  next_date = Racing::RaceResult.joins(:horses).where('date > ?', @date).merge(Racing::RaceResultHorse.by_stable(Current.stable)).minimum(:date)
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new( links: [{ name: Current.stable.name, href: current_stable_path },
+          { name: title, href: "#", title: true }])
+
+= render "prev_next_dates", prev_date:, next_date:
+
+- if @results.empty?
+  h4.text-muted.text-center.my-2
+    small= t("current_stable.race_results.index.no_results_found")
+- else
+  ruby:
+    dashboard = Dashboard::Stable::RecentResults.new(results: @results)
+  .w-full
+    .float-right
+      div data-controller="clipboard" data-clipboard-success-content-value=t(".copied_forum_format")
+        .hidden data-clipboard-target="source"
+          = dashboard.forum_text
+        button.btn.btn-success.btn-outline type="button" data-action="clipboard#copy" data-clipboard-target="button" = t(".copy_forum_format")
+    .clear-both
+
+  .overflow-x-auto.mt-2.rounded-box.border.border-base-content/5.bg-base-100
+    table.table-responsive.table.bordered.table-zebra.sortable.n-last
+      thead
+        tr
+          th= t("racing.race.number")
+          th= t("racing.race.race")
+          th= t("racing.race.track")
+          th= t("racing.race.horse")
+          th= t("racing.race.equipment")
+          th= t("racing.race.finish")
+          th= t("racing.race.speed_factor")
+          th
+      tbody
+        - @results.each do |result|
+          - race = result.race
+          - horse = result.horse
+          tr
+            td= race.number
+            td data-sort=race.race_type
+              = [race.race_short_furlongs_string, race.race_type_string, race.race_age_description, race.race_gender_string].compact_blank.join(" ")
+              = ", #{race.race_purse_string}"
+            td
+              = [race.race_surface_string, race.condition.titleize].join(" - ")
+            td class="text-#{horse.gender}" = link_to horse.budget_name, horse_path(horse), data: { turbo_frame: "_top" }
+            td= result.equipment_string(blank: "")
+            td= result.finish_position.ordinalize
+            td= result.speed_factor
+            td
+              = render Ui::ButtonizedLink::Component.new(url: racing_result_path(race.date, race.number), color: :neutral, extra_classes: "mt-2", data: { turbo_frame: "modal" }) do
+                i.ph.ph-fill.ph-eye
+      tfoot
+        tr
+          th.text-center colspan=7 = dashboard.results_string

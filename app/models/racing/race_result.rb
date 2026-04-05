@@ -8,7 +8,7 @@ module Racing
 
     belongs_to :track_surface, class_name: "Racing::TrackSurface", foreign_key: :surface_id, inverse_of: :completed_races
 
-    has_many :horses, class_name: "Racing::RaceResultHorse", inverse_of: :race, dependent: :delete_all
+    has_many :horses, class_name: "Racing::RaceResultHorse", inverse_of: :race, dependent: :destroy
 
     validates :date, :number, :race_type, :age, :distance, :purse, :time_in_seconds, presence: true
     validates :number, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 50 }
@@ -25,6 +25,8 @@ module Racing
     validates :purse, numericality: { only_integer: true, greater_than_or_equal_to: 10_000, less_than_or_equal_to: 20_000_000 }
     validates :claiming_price, numericality: { only_integer: true, greater_than_or_equal_to: 5_000, less_than_or_equal_to: 50_000 }, if: :claiming?
 
+    scope :by_day, ->(day) { where("DATE_PART('Day', date) = ?", day) }
+    scope :by_month, ->(month) { where("DATE_PART('Month', date) = ?", month) }
     scope :by_year, ->(year) { where("DATE_PART('Year', date) = ?", year) }
     scope :by_track, ->(track) { joins(:track_surface).merge(TrackSurface.send(track.to_sym)) }
     scope :by_type, ->(type) { where(race_type: type) }
@@ -71,6 +73,10 @@ module Racing
       track_surface.surface.to_s[0].upcase
     end
 
+    ransacker :year_eq do
+      Arel.sql("DATE_PART('Year', date)")
+    end
+
     def self.ransackable_attributes(_auth_object = nil)
       %w[age claiming_price condition date distance female_only grade male_only name number purse race_type time_in_seconds]
     end
@@ -94,6 +100,7 @@ end
 #  distance                                                                                                       :decimal(3, 1)    default(5.0), not null, indexed
 #  female_only                                                                                                    :boolean          default(FALSE), not null
 #  grade(Ungraded, Grade 3, Grade 2, Grade 1)                                                                     :enum             indexed
+#  horses_count                                                                                                   :integer          default(0), not null
 #  male_only                                                                                                      :boolean          default(FALSE), not null
 #  name                                                                                                           :string           indexed
 #  number                                                                                                         :integer          default(1), not null, indexed

@@ -73,6 +73,11 @@ module FinalFurlong
         resource "*", headers: :any, methods: %i[get post put delete options]
       end
     end
+
+    # inherit URL options from mailer options
+    config.after_initialize do |app|
+      app.routes.default_url_options = app.config.action_mailer.default_url_options
+    end
   end
 end
 

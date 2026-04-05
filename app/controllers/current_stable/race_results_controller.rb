@@ -11,14 +11,14 @@ module CurrentStable
     end
 
     def list
-      @query = policy_scope(Racing::RaceResult, policy_scope_class: CurrentStable::RaceResultPolicy::Scope).includes(track_surface: :racetrack)
+      @query = policy_scope(Racing::RaceResultHorse, policy_scope_class: CurrentStable::RaceResultHorsePolicy::Scope).includes(:race)
       date = params[:date].presence
       @query = @query.where(date:) if date
 
       @query = @query.ransack(params[:q])
-      @query.sorts = ["date asc", "number asc"] if @query.sorts.blank?
+      @query.sorts = ["race_date desc", "race_number asc"] if @query.sorts.blank?
 
-      @pagy, @races = pagy(@query.result)
+      @pagy, @results = pagy(@query.result)
     end
   end
 end

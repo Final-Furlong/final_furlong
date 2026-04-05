@@ -1,3 +1,4 @@
+
 SELECT
     h.id AS horse_id,
     CASE (
@@ -50,49 +51,16 @@ SELECT
         ELSE true
         END starter_allowance_qualified,
     CASE allowance_wins.wins
-        WHEN 0 then true
-        ELSE CASE (
-            SELECT
-                COUNT(*)
-            FROM
-                lifetime_race_records
-            WHERE
-                horse_id = h.id
-        )
-                 WHEN 1 THEN false
-                 ELSE true
-            END
+        WHEN 1 then false
+        ELSE true
         END nw1_allowance_qualified,
     CASE allowance_wins.wins
-        WHEN 0 then true
-        WHEN 1 then true
-        ELSE CASE (
-            SELECT
-                COUNT(*)
-            FROM
-                lifetime_race_records
-            WHERE
-                horse_id = h.id
-        )
-                 WHEN 1 THEN false
-                 ELSE true
-            END
+        WHEN 2 then false
+        ELSE true
         END nw2_allowance_qualified,
     CASE allowance_wins.wins
-        WHEN 0 then true
-        WHEN 1 then true
-        WHEN 2 then true
-        ELSE CASE (
-            SELECT
-                COUNT(*)
-            FROM
-                lifetime_race_records
-            WHERE
-                horse_id = h.id
-        )
-                 WHEN 1 THEN false
-                 ELSE true
-            END
+        WHEN 3 then false
+        ELSE true
         END nw3_allowance_qualified,
     CASE (
         SELECT

@@ -11,9 +11,14 @@ module RaceTypeable
     end
 
     def race_type_string
-      value = race_type.titleize.gsub("Nw1 ", "NW1 ").gsub("Nw2 ", "NW2 ").gsub("Nw3 ", "NW3 ")
-      value += " (#{grade} - #{name})" if race_type.downcase == "stakes"
-      value
+      if claiming?
+        price = Game::MoneyFormatter.new(claiming_price).to_s
+        I18n.t("racing.race.claiming_with_price", price:)
+      else
+        value = race_type.titleize.gsub("Nw1 ", "NW1 ").gsub("Nw2 ", "NW2 ").gsub("Nw3 ", "NW3 ")
+        value += " (#{grade} - #{name})" if race_type.downcase == "stakes"
+        value
+      end
     end
 
     def race_age_string
@@ -31,21 +36,34 @@ module RaceTypeable
       string
     end
 
-    def race_description_string
-      race_description = I18n.t("racing.results.race_number", number:) +
-        ", " + I18n.t("racing.race.furlongs", number: distance) + " "
-      race_description += " " + race_surface_string + " "
-      race_description += if claiming?
-        price = Game::MoneyFormatter.new(claiming_price).to_s
-        I18n.t("racing.race.claiming_with_price", price:)
-      else
-        race_type_string
-      end
-      race_description += " " + I18n.t("racing.race.age_desc", age: race_age_string)
+    def race_description_string(show_number: true)
+      race_description = ""
+      race_description += "#{race_number_string}, " if show_number
+      race_description += [race_furlongs_string, race_surface_string, race_type_string, race_age_description].join(" ")
       if race_gender_string.present?
         race_description += " " + race_gender_string
       end
-      race_description + ", " + Game::MoneyFormatter.new(purse).to_s
+      race_description + ", #{race_purse_string}"
+    end
+
+    def race_purse_string
+      Game::MoneyFormatter.new(purse).to_s
+    end
+
+    def race_age_description
+      I18n.t("racing.race.age_desc", age: race_age_string)
+    end
+
+    def race_short_furlongs_string
+      I18n.t("racing.race.mobile.furlongs", number: distance)
+    end
+
+    def race_furlongs_string
+      I18n.t("racing.race.furlongs", number: distance)
+    end
+
+    def race_number_string
+      I18n.t("racing.results.race_number", number:)
     end
 
     def race_surface_string

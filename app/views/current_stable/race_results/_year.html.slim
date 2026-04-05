@@ -27,33 +27,26 @@
                 th= t("current_stable.race_results.index.otb_percentage")
             tbody
               ruby:
-                starts = stakes = wins = stakes_wins = seconds =
-                        stakes_seconds = thirds = stakes_thirds = fourths =
-                                stakes_fourths = earnings = points = 0
+                starts = wins = seconds = thirds = fourths = earnings = points = 0
               - records.each do |record|
-                - starts += record.starts.to_i
-                - stakes += record.stakes_starts.to_i
-                - wins += record.wins.to_i
-                - stakes_wins += record.stakes_wins.to_i
-                - seconds += record.seconds.to_i
-                - stakes_seconds += record.stakes_seconds.to_i
-                - thirds += record.thirds.to_i
-                - stakes_thirds += record.stakes_thirds.to_i
-                - fourths += record.fourths.to_i
-                - stakes_fourths += record.stakes_fourths.to_i
-                - earnings += record.earnings.to_i
-                - points += record.points.to_i
+                - starts += record.starts
+                - wins += record.wins
+                - seconds += record.seconds
+                - thirds += record.thirds
+                - fourths += record.fourths
+                - earnings += record.earnings
+                - points += record.points
               - records.each do |record|
                 tr
-                  td= record.year.to_i
-                  td data-sort=record.starts.to_i = record.starts_string
-                  td data-sort=record.wins = record.wins_string
+                  td= record.year
+                  td= record.starts
+                  td= record.wins
                   td data-sort=record.win_percentage = t("current_stable.race_results.index.percentage", percent: record.win_percentage)
-                  td data-sort=record.seconds = record.seconds_string
+                  td= record.seconds
                   td data-sort=record.second_percentage = t("current_stable.race_results.index.percentage", percent: record.second_percentage)
-                  td data-sort=record.thirds = record.thirds_string
+                  td= record.thirds
                   td data-sort=record.third_percentage = t("current_stable.race_results.index.percentage", percent: record.third_percentage)
-                  td data-sort=record.fourths = record.fourths_string
+                  td= record.fourths
                   td data-sort=record.fourth_percentage = t("current_stable.race_results.index.percentage", percent: record.fourth_percentage)
                   td data-sort=record.earnings = Game::MoneyFormatter.new(record.earnings)
                   - earnings_pct = record.percentage(record.earnings, earnings)
@@ -67,32 +60,80 @@
               - record = records.last
               tr
                 th= t("current_stable.race_results.index.total")
-                th
-                  = number_with_delimiter(starts)
-                  - if stakes.positive?
-                    = "(#{number_with_delimiter(stakes)})"
-                th
-                  = number_with_delimiter(wins)
-                  - if stakes_wins.positive?
-                    = "(#{number_with_delimiter(stakes_wins)})"
+                th= number_with_delimiter(starts)
+                th= number_with_delimiter(wins)
                 th= t("current_stable.race_results.index.percentage", percent: record.percentage(wins, starts))
-                th
-                  = number_with_delimiter(seconds)
-                  - if stakes_seconds.positive?
-                    = "(#{number_with_delimiter(stakes_seconds)})"
+                th= number_with_delimiter(seconds)
                 th= t("current_stable.race_results.index.percentage", percent: record.percentage(seconds, starts))
-                th
-                  = number_with_delimiter(thirds)
-                  - if stakes_thirds.positive?
-                    = "(#{number_with_delimiter(stakes_thirds)})"
+                th= number_with_delimiter(thirds)
                 th= t("current_stable.race_results.index.percentage", percent: record.percentage(thirds, starts))
-                th
-                  = number_with_delimiter(fourths)
-                  - if stakes_fourths.positive?
-                    = "(#{number_with_delimiter(stakes_fourths)})"
+                th= number_with_delimiter(fourths)
                 th= t("current_stable.race_results.index.percentage", percent: record.percentage(fourths, starts))
                 th= Game::MoneyFormatter.new(earnings)
                 th= t("current_stable.race_results.index.percentage", percent: 100)
                 th= number_with_delimiter(points)
                 th= t("current_stable.race_results.index.percentage", percent: 100)
+                th= t("current_stable.race_results.index.percentage", percent: record.percentage(wins + seconds + thirds, starts))
+.card.card-border.bg-base-100.w-full.px-2.rounded-none
+  .card-body.p-0.rounded-none
+    .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
+      input type="checkbox"
+      .collapse-title.font-semibold.text-center
+        span= t("current_stable.race_results.index.by_year_stakes")
+      .collapse-content.text-sm
+        .hidden.sm:block
+          table.mx-auto.table.table-zebra.w-1/2.sortable
+            thead
+              tr
+                th= t("current_stable.race_results.index.year")
+                th= t("horse.races.index.starts")
+                th= t("horse.races.index.wins")
+                th= t("current_stable.race_results.index.percent")
+                th= t("horse.races.index.seconds")
+                th= t("current_stable.race_results.index.percent")
+                th= t("horse.races.index.thirds")
+                th= t("current_stable.race_results.index.percent")
+                th= t("horse.races.index.fourths")
+                th= t("current_stable.race_results.index.percent")
+                th= t("current_stable.race_results.index.otb_percentage")
+            tbody
+              ruby:
+                starts = wins = seconds = thirds = fourths = 0
+              - records.each do |record|
+                - starts += record.stakes_starts
+                - wins += record.stakes_wins
+                - seconds += record.stakes_seconds
+                - thirds += record.stakes_thirds
+                - fourths += record.stakes_fourths
+              - records.each do |record|
+                tr
+                  td= record.year
+                  td= record.stakes_starts
+                  td= record.stakes_wins
+                  - win_pct = record.percentage(record.stakes_wins, record.stakes_starts)
+                  td data-sort=win_pct = t("current_stable.race_results.index.percentage", percent: win_pct)
+                  td= record.stakes_seconds
+                  - place_pct = record.percentage(record.stakes_seconds, record.stakes_starts)
+                  td data-sort=place_pct = t("current_stable.race_results.index.percentage", percent: place_pct)
+                  td= record.stakes_thirds
+                  - show_pct = record.percentage(record.stakes_thirds, record.stakes_starts)
+                  td data-sort=show_pct = t("current_stable.race_results.index.percentage", percent: show_pct)
+                  td= record.stakes_fourths
+                  - fourth_pct = record.percentage(record.stakes_fourths, record.stakes_starts)
+                  td data-sort=fourth_pct = t("current_stable.race_results.index.percentage", percent: fourth_pct)
+                  - otb_pct = record.percentage(record.stakes_wins + record.stakes_seconds + record.stakes_thirds, record.stakes_starts)
+                  td data-sort=otb_pct = t("current_stable.race_results.index.percentage", percent: otb_pct)
+            tfoot
+              - record = records.last
+              tr
+                th= t("current_stable.race_results.index.total")
+                th= number_with_delimiter(starts)
+                th= number_with_delimiter(wins)
+                th= t("current_stable.race_results.index.percentage", percent: record.percentage(wins, starts))
+                th= number_with_delimiter(seconds)
+                th= t("current_stable.race_results.index.percentage", percent: record.percentage(seconds, starts))
+                th= number_with_delimiter(thirds)
+                th= t("current_stable.race_results.index.percentage", percent: record.percentage(thirds, starts))
+                th= number_with_delimiter(fourths)
+                th= t("current_stable.race_results.index.percentage", percent: record.percentage(fourths, starts))
                 th= t("current_stable.race_results.index.percentage", percent: record.percentage(wins + seconds + thirds, starts))

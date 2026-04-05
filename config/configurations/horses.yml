@@ -21,3 +21,6 @@ shared:
     - die
     - nominate
   max_premature_days: 30
+  forum_color_female: a40000
+  forum_color_male: 0892d0
+  forum_color_gelding: 138808
