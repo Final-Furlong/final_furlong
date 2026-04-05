@@ -5,7 +5,7 @@
     thead
       tr
         th.text-center.border-b-1.border-base-content colspan=5
-          = t("horse.races.index.race_year", age: year.to_i - dob_year, year: year)
+          = t("horse.races.index.race_year", age: year - dob_year, year: year)
           = ": ".html_safe
           = record.starts_string
           = "-"
@@ -19,7 +19,7 @@
           = " - "
           = record.earnings_string
           = " - "
-          = t("horse.races.index.points_amount", points: record.points.to_i)
+          = t("horse.races.index.points_amount", points: record.points)
     tbody
       - if dashboard.annual_race_record.blank?
         tr

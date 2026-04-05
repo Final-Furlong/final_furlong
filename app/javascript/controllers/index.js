@@ -2,8 +2,8 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
+import Clipboard from "@stimulus-components/clipboard"
 import { application } from "./application"
-
 import CountdownController from "./countdown_controller"
 import DependentFieldsController from "./dependent_fields_controller"
 import DynamicSelectController from "./dynamic_select_controller"
@@ -12,6 +12,7 @@ import Pwa__WebPushDemoController from "./pwa/web_push_demo_controller"
 import Pwa__WebPushSubscriptionController from "./pwa/web_push_subscription_controller"
 import SearchController from "./search_controller"
 
+application.register("clipboard", Clipboard)
 application.register("countdown", CountdownController)
 application.register("dependent-fields", DependentFieldsController)
 application.register("dynamic-select", DynamicSelectController)

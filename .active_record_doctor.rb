@@ -238,7 +238,8 @@ ActiveRecordDoctor.configure do
       "Racing::RaceEntry.post_parade", # default 0
       "Racing::RaceEntry.weight", # default 0
       "Racing::RaceResultHorse.earnings", # default 0
-      "Racing::RaceResultHorse.points" # default 0
+      "Racing::RaceResultHorse.points", # default 0
+      "Racing::RaceResult.horses_count" # default 0
     ]
 
   detector :missing_unique_indexes,

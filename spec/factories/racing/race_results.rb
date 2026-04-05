@@ -28,6 +28,7 @@ end
 #  distance                                                                                                       :decimal(3, 1)    default(5.0), not null, indexed
 #  female_only                                                                                                    :boolean          default(FALSE), not null
 #  grade(Ungraded, Grade 3, Grade 2, Grade 1)                                                                     :enum             indexed
+#  horses_count                                                                                                   :integer          default(0), not null
 #  male_only                                                                                                      :boolean          default(FALSE), not null
 #  name                                                                                                           :string           indexed
 #  number                                                                                                         :integer          default(1), not null, indexed

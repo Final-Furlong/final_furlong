@@ -15,10 +15,9 @@
     - if results_count.zero?
       input.tab type="radio" name="stable-results" aria-label=t(".no_results") id="results-list" disabled=true
     - else
-      input.tab type="radio" name="stable-results" aria-label=t(".results", count: results_count) id="results"
+      input.tab type="radio" name="stable-results" aria-label=t(".results", count: number_with_delimiter(results_count)) id="results"
       .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
         = turbo_frame_tag "#{Current.stable.slug}-results-list", src: list_stable_race_results_path, loading: "lazy" do
           .w-full.text-center
             p.mx-auto= t(".loading_results")
             .mt-2.mx-auto.skeleton.w-full
-

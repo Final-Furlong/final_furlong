@@ -30,6 +30,9 @@ en:
         no_auctions: There are no auctions available for consignment.
         select_auction: Select An Auction
         title: Consign to Auction
+    bbcode_age_sire: " (%{age}yo, %{sire})"
+    bbcode_colored_name: "[color=%{color}]%{name}[/color]"
+    bbcode_url: "[url=%{url}]%{name}[/url]"
     boardings:
       create:
         success: Boarding was successfully started

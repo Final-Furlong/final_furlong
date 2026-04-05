@@ -19,14 +19,34 @@ module Racing
     scope :by_finish, ->(position) { where(finish_position: position) }
     scope :by_max_finish, ->(position) { where(finish_position: ..position) }
     scope :by_date, ->(date) { joins(:race).merge(RaceResult.by_date(date)) }
-    scope :by_year, ->(year) { joins(:race).merge(RaceResult.by_year(year).ordered_by_date) }
+    scope :by_day, ->(day) { joins(:race).merge(RaceResult.by_day(day)) }
+    scope :by_month, ->(month) { joins(:race).merge(RaceResult.by_month(month)) }
+    scope :by_year, ->(year) { joins(:race).merge(RaceResult.by_year(year)) }
     scope :by_stable, ->(stable) { where(stable:) }
+
+    counter_culture :race, column_name: :horses_count
 
     def result_abbreviation
       race_info = [race.distance_abbr, race.surface_abbr].join(" ")
-      position = "#{finish_position.ordinalize}/#{race.horses.count}"
+      position = "#{finish_position.ordinalize}/#{race.horses_count}"
       equipment = equipment_string(blank: "")
       [race_info, position, equipment].compact_blank.join(" - ")
+    end
+
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[earnings equipment finish_position horse_id points race_id speed_factor]
+    end
+
+    def self.ransackable_associations(_auth_object = nil)
+      %w[horse jockey race]
+    end
+
+    def self.ransackable_scopes(_auth_object = nil)
+      %w[by_year by_month by_day]
+    end
+
+    def self.ransackable_scopes_skip_sanitize_args
+      %i[by_month by_day]
     end
   end
 end

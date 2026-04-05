@@ -11,6 +11,7 @@
     "@rails/activestorage": "^8.1.200",
     "@rails/request.js": "^0.0.12",
     "@stimulus-components/auto-submit": "^6.0.0",
+    "@stimulus-components/clipboard": "^5.0.0",
     "@stimulus-components/lightbox": "^4.0.0",
     "@stimulus-components/notification": "^3.0.0",
     "@tailwindcss/vite": "^4.2.2",

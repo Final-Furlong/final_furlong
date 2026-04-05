@@ -23,19 +23,19 @@ end
 # Database name: primary
 #
 #  earnings       :bigint
-#  fourths        :bigint
-#  points         :bigint
-#  seconds        :bigint
-#  stakes_fourths :bigint
-#  stakes_seconds :bigint
-#  stakes_starts  :bigint
-#  stakes_thirds  :bigint
-#  stakes_wins    :bigint
-#  starts         :bigint
+#  fourths        :integer
+#  points         :integer
+#  seconds        :integer
+#  stakes_fourths :integer
+#  stakes_seconds :integer
+#  stakes_starts  :integer
+#  stakes_thirds  :integer
+#  stakes_wins    :integer
+#  starts         :integer
 #  surface        :enum             primary key, uniquely indexed => [horse_id, year]
-#  thirds         :bigint
-#  wins           :bigint
-#  year           :float            primary key, uniquely indexed => [horse_id, surface]
+#  thirds         :integer
+#  wins           :integer
+#  year           :integer          primary key, uniquely indexed => [horse_id, surface]
 #  horse_id       :bigint           primary key, uniquely indexed => [year, surface]
 #
 # Indexes

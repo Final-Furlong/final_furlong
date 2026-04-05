@@ -1,2 +1,3 @@
 = turbo_frame_tag "#{Current.stable.slug}-results-list" do
-  p= "Coming soon!"
+  = render "list_filters", query: @query
+  = render "list_search", pagy: @pagy, results: @results

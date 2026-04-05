@@ -28,10 +28,10 @@ module Horses
     has_one :sale_offer, class_name: "Horses::SaleOffer", inverse_of: :horse, dependent: :delete
     has_many :sales, class_name: "Horses::Sale", inverse_of: :horse, dependent: :delete_all
 
-    has_many :race_result_finishes, class_name: "Racing::RaceResultHorse", inverse_of: :horse, dependent: :delete_all
+    has_many :race_result_finishes, class_name: "Racing::RaceResultHorse", inverse_of: :horse, dependent: :destroy
     has_many :race_results, class_name: "Racing::RaceResult", source: :race, through: :race_result_finishes
     has_one :latest_race_result_finish, -> { order id: :desc }, class_name:
-      "Racing::RaceResultHorse", inverse_of: :horse, dependent: :delete
+      "Racing::RaceResultHorse", inverse_of: :horse, dependent: :destroy
     has_one :latest_race_result, class_name: "Racing::RaceResult", through: :latest_race_result_finish, source: :race
     has_many :workouts, class_name: "Workouts::Workout", inverse_of: :horse, dependent: :destroy
     # rubocop:disable Rails/HasManyOrHasOneDependent

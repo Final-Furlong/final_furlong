@@ -19,27 +19,23 @@ end
 
 # == Schema Information
 #
-# Table name: race_records
+# Table name: stable_race_records
 # Database name: primary
 #
 #  earnings       :bigint
-#  fourths        :bigint
+#  fourths        :integer
 #  points         :bigint
-#  seconds        :bigint
-#  stakes_fourths :bigint
-#  stakes_seconds :bigint
-#  stakes_starts  :bigint
-#  stakes_thirds  :bigint
-#  stakes_wins    :bigint
-#  starts         :bigint
-#  surface        :enum             primary key, uniquely indexed => [horse_id, year]
-#  thirds         :bigint
-#  wins           :bigint
-#  year           :float            primary key, uniquely indexed => [horse_id, surface]
-#  horse_id       :bigint           primary key, uniquely indexed => [year, surface]
-#
-# Indexes
-#
-#  index_race_records_on_horse_id_and_year_and_surface  (horse_id,year,surface) UNIQUE
+#  seconds        :integer
+#  stakes_fourths :integer
+#  stakes_seconds :integer
+#  stakes_starts  :integer
+#  stakes_thirds  :integer
+#  stakes_wins    :integer
+#  starts         :integer
+#  surface        :enum             primary key
+#  thirds         :integer
+#  wins           :integer
+#  year           :integer          primary key
+#  stable_id      :bigint           primary key
 #
 

@@ -14,6 +14,10 @@ module CurrentStable
       index?
     end
 
+    def recent_race_results?
+      index?
+    end
+
     def show?
       return false if record.date > Date.current
 
