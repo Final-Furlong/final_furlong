@@ -26,7 +26,7 @@
             td= result.speed_factor
             td= [result.finish_position.ordinalize, race.horses_count].join("/")
             td
-              = render Ui::ButaonizedLink::Component.new(url: racing_result_path(race.date, race.number), color: :neutral, extra_classes: "mt-2", data: { turbo_frame: "modal" }) do
+              = render Ui::ButtonizedLink::Component.new(url: racing_result_path(race.date, race.number), color: :neutral, extra_classes: "mt-2", data: { turbo_frame: "modal" }) do
                   i.ph.ph-fill.ph-eye
 
     .float-right.mt-2
