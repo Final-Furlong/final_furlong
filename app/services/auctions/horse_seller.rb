@@ -89,8 +89,6 @@ module Auctions
         description = "#{auction.title}: Sold #{horse.budget_name} (ID# #{horse.legacy_id}) to #{buyer.name}"
         Accounts::BudgetTransactionCreator.new.create_transaction(stable: seller, description:, amount: bid.current_bid, activity_type: "selling")
 
-        Legacy::TrainingSchedule.where(Horse: horse.legacy_id).delete_all
-        Legacy::TrainingScheduleHorse.where(Horse: horse.legacy_id).delete_all
         # rubocop:disable Rails/SkipsModelValidations
         Legacy::ViewRacehorses.where(horse_id: horse.legacy_id).update_all("Owner = #{buyer.legacy_id}, can_be_sold = 0")
         # rubocop:enable Rails/SkipsModelValidations
@@ -104,13 +102,7 @@ module Auctions
         )
         Legacy::Horse.where(ID: horse.legacy_id).update(
           Owner: buyer.legacy_id,
-          SalePrice: -1,
-          SellTo: 0,
-          can_be_sold: 0,
           consigned_auction_id: nil
-        )
-        Legacy::ViewTrainingSchedules.where(horse_id: horse.legacy_id).update(
-          training_schedule_id: nil, training_schedule_horse_id: nil, owner: buyer.legacy_id
         )
         if Legacy::RaceEntry.joins(race: :type).merge(Legacy::RaceType.claiming).exists?(Horse: horse.legacy_id)
           Legacy::RaceEntry.joins(race: :type).merge(Legacy::RaceType.claiming).where(Horse: horse.legacy_id).delete_all
