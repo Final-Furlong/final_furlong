@@ -20,5 +20,15 @@ module ApplicationHelper
 
     response
   end
+
+  def stakes_string(basic, stakes)
+    pd basic
+    pd basic.class.name
+    pd stakes
+    pd stakes.class.name
+    value = number_to_delimited(basic)
+    value += "(#{number_to_delimited(stakes)})" if stakes.positive?
+    value
+  end
 end
 

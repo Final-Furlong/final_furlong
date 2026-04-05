@@ -1,0 +1,3 @@
+- date = Racing::RaceResult.joins(:horses).merge(Racing::RaceResultHorse.by_stable(Current.stable)).maximum(:date)
+- if date
+  = link_to t("current_stable.actions.view_recent_results"), stable_recent_results_path(date), class: classes, data: { turbo_frame: "_top" }

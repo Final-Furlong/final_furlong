@@ -1,0 +1,11 @@
+/# locals: (prev_date:, next_date:)
+
+.w-full.flex.mb-2
+  - if prev_date
+    .flex-1
+      = render Ui::ButtonizedLink::Component.new(color: :none, style: :outline, size: :small, url: stable_recent_results_path(prev_date), http_method: :get, data: { turbo_frame: "_top" }) do
+        = l(prev_date)
+  - if next_date
+    .flex-none
+      = render Ui::ButtonizedLink::Component.new(color: :none, style: :outline, size: :small, url: stable_recent_results_path(next_date), http_method: :get, data: { turbo_frame: "_top" }) do
+        = l(next_date)

@@ -637,7 +637,8 @@ CREATE TABLE public.race_results (
     time_in_seconds numeric(7,3) DEFAULT 0.0 NOT NULL,
     slug character varying,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    horses_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -716,56 +717,56 @@ COMMENT ON COLUMN public.track_surfaces.condition IS 'fast, good, slow, wet';
 
 CREATE MATERIALIZED VIEW public.race_records AS
  SELECT rr.horse_id,
-    date_part('Year'::text, r.date) AS year,
+    (date_part('Year'::text, r.date))::integer AS year,
     ts.surface,
-    count(rr.id) AS starts,
-    sum(
+    (count(rr.id))::integer AS starts,
+    (sum(
         CASE
             WHEN (r.race_type = 'stakes'::public.race_type) THEN 1
             ELSE 0
-        END) AS stakes_starts,
-    sum(
+        END))::integer AS stakes_starts,
+    (sum(
         CASE rr.finish_position
             WHEN 1 THEN 1
             ELSE 0
-        END) AS wins,
-    sum(
+        END))::integer AS wins,
+    (sum(
         CASE
             WHEN ((r.race_type = 'stakes'::public.race_type) AND (rr.finish_position = 1)) THEN 1
             ELSE 0
-        END) AS stakes_wins,
-    sum(
+        END))::integer AS stakes_wins,
+    (sum(
         CASE rr.finish_position
             WHEN 2 THEN 1
             ELSE 0
-        END) AS seconds,
-    sum(
+        END))::integer AS seconds,
+    (sum(
         CASE
             WHEN ((r.race_type = 'stakes'::public.race_type) AND (rr.finish_position = 2)) THEN 1
             ELSE 0
-        END) AS stakes_seconds,
-    sum(
+        END))::integer AS stakes_seconds,
+    (sum(
         CASE rr.finish_position
             WHEN 3 THEN 1
             ELSE 0
-        END) AS thirds,
-    sum(
+        END))::integer AS thirds,
+    (sum(
         CASE
             WHEN ((r.race_type = 'stakes'::public.race_type) AND (rr.finish_position = 3)) THEN 1
             ELSE 0
-        END) AS stakes_thirds,
-    sum(
+        END))::integer AS stakes_thirds,
+    (sum(
         CASE rr.finish_position
             WHEN 4 THEN 1
             ELSE 0
-        END) AS fourths,
-    sum(
+        END))::integer AS fourths,
+    (sum(
         CASE
             WHEN ((r.race_type = 'stakes'::public.race_type) AND (rr.finish_position = 4)) THEN 1
             ELSE 0
-        END) AS stakes_fourths,
+        END))::integer AS stakes_fourths,
     sum(rr.earnings) AS earnings,
-    sum(rr.points) AS points
+    (sum(rr.points))::integer AS points
    FROM ((public.race_result_horses rr
      LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
      LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
@@ -780,18 +781,18 @@ CREATE MATERIALIZED VIEW public.race_records AS
 CREATE MATERIALIZED VIEW public.annual_race_records AS
  SELECT horse_id,
     year,
-    sum(starts) AS starts,
-    sum(stakes_starts) AS stakes_starts,
-    sum(wins) AS wins,
-    sum(stakes_wins) AS stakes_wins,
-    sum(seconds) AS seconds,
-    sum(stakes_seconds) AS stakes_seconds,
-    sum(thirds) AS thirds,
-    sum(stakes_thirds) AS stakes_thirds,
-    sum(fourths) AS fourths,
-    sum(stakes_fourths) AS stakes_fourths,
+    (sum(starts))::integer AS starts,
+    (sum(stakes_starts))::integer AS stakes_starts,
+    (sum(wins))::integer AS wins,
+    (sum(stakes_wins))::integer AS stakes_wins,
+    (sum(seconds))::integer AS seconds,
+    (sum(stakes_seconds))::integer AS stakes_seconds,
+    (sum(thirds))::integer AS thirds,
+    (sum(stakes_thirds))::integer AS stakes_thirds,
+    (sum(fourths))::integer AS fourths,
+    (sum(stakes_fourths))::integer AS stakes_fourths,
     sum(points) AS points,
-    sum(earnings) AS earnings
+    (sum(earnings))::bigint AS earnings
    FROM public.race_records
   GROUP BY horse_id, year
   WITH NO DATA;
@@ -2823,18 +2824,18 @@ ALTER SEQUENCE public.leases_id_seq OWNED BY public.leases.id;
 
 CREATE MATERIALIZED VIEW public.lifetime_race_records AS
  SELECT horse_id,
-    sum(starts) AS starts,
-    sum(stakes_starts) AS stakes_starts,
-    sum(wins) AS wins,
-    sum(stakes_wins) AS stakes_wins,
-    sum(seconds) AS seconds,
-    sum(stakes_seconds) AS stakes_seconds,
-    sum(thirds) AS thirds,
-    sum(stakes_thirds) AS stakes_thirds,
-    sum(fourths) AS fourths,
-    sum(stakes_fourths) AS stakes_fourths,
+    (sum(starts))::integer AS starts,
+    (sum(stakes_starts))::integer AS stakes_starts,
+    (sum(wins))::integer AS wins,
+    (sum(stakes_wins))::integer AS stakes_wins,
+    (sum(seconds))::integer AS seconds,
+    (sum(stakes_seconds))::integer AS stakes_seconds,
+    (sum(thirds))::integer AS thirds,
+    (sum(stakes_thirds))::integer AS stakes_thirds,
+    (sum(fourths))::integer AS fourths,
+    (sum(stakes_fourths))::integer AS stakes_fourths,
     sum(points) AS points,
-    sum(earnings) AS earnings
+    (sum(earnings))::bigint AS earnings
    FROM public.race_records
   GROUP BY horse_id
   WITH NO DATA;
@@ -3527,7 +3528,7 @@ CREATE MATERIALIZED VIEW public.race_qualifications AS
  SELECT h.id AS horse_id,
         CASE ( SELECT count(*) AS count
                FROM public.lifetime_race_records
-              WHERE ((lifetime_race_records.horse_id = h.id) AND (lifetime_race_records.wins = (0)::numeric)))
+              WHERE ((lifetime_race_records.horse_id = h.id) AND (lifetime_race_records.wins = 0)))
             WHEN 1 THEN true
             ELSE
             CASE ( SELECT count(*) AS count
@@ -4301,60 +4302,60 @@ ALTER SEQUENCE public.shipment_routes_id_seq OWNED BY public.shipment_routes.id;
 
 CREATE MATERIALIZED VIEW public.stable_race_records AS
  SELECT rr.stable_id,
-    date_part('Year'::text, r.date) AS year,
+    (date_part('Year'::text, r.date))::integer AS year,
     ts.surface,
-    count(rr.id) AS starts,
-    sum(
+    (count(rr.id))::integer AS starts,
+    (sum(
         CASE
             WHEN (r.race_type = 'stakes'::public.race_type) THEN 1
             ELSE 0
-        END) AS stakes_starts,
-    sum(
+        END))::integer AS stakes_starts,
+    (sum(
         CASE rr.finish_position
             WHEN 1 THEN 1
             ELSE 0
-        END) AS wins,
-    sum(
+        END))::integer AS wins,
+    (sum(
         CASE
             WHEN ((r.race_type = 'stakes'::public.race_type) AND (rr.finish_position = 1)) THEN 1
             ELSE 0
-        END) AS stakes_wins,
-    sum(
+        END))::integer AS stakes_wins,
+    (sum(
         CASE rr.finish_position
             WHEN 2 THEN 1
             ELSE 0
-        END) AS seconds,
-    sum(
+        END))::integer AS seconds,
+    (sum(
         CASE
             WHEN ((r.race_type = 'stakes'::public.race_type) AND (rr.finish_position = 2)) THEN 1
             ELSE 0
-        END) AS stakes_seconds,
-    sum(
+        END))::integer AS stakes_seconds,
+    (sum(
         CASE rr.finish_position
             WHEN 3 THEN 1
             ELSE 0
-        END) AS thirds,
-    sum(
+        END))::integer AS thirds,
+    (sum(
         CASE
             WHEN ((r.race_type = 'stakes'::public.race_type) AND (rr.finish_position = 3)) THEN 1
             ELSE 0
-        END) AS stakes_thirds,
-    sum(
+        END))::integer AS stakes_thirds,
+    (sum(
         CASE rr.finish_position
             WHEN 4 THEN 1
             ELSE 0
-        END) AS fourths,
-    sum(
+        END))::integer AS fourths,
+    (sum(
         CASE
             WHEN ((r.race_type = 'stakes'::public.race_type) AND (rr.finish_position = 4)) THEN 1
             ELSE 0
-        END) AS stakes_fourths,
+        END))::integer AS stakes_fourths,
     sum(rr.earnings) AS earnings,
     sum(rr.points) AS points
    FROM ((public.race_result_horses rr
      LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
      LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-  GROUP BY rr.stable_id, (date_part('Year'::text, r.date)), ts.surface
+  GROUP BY rr.stable_id, ((date_part('Year'::text, r.date))::integer), ts.surface
   WITH NO DATA;
 
 
@@ -4365,18 +4366,18 @@ CREATE MATERIALIZED VIEW public.stable_race_records AS
 CREATE MATERIALIZED VIEW public.stable_annual_race_records AS
  SELECT stable_id,
     year,
-    sum(starts) AS starts,
-    sum(stakes_starts) AS stakes_starts,
-    sum(wins) AS wins,
-    sum(stakes_wins) AS stakes_wins,
-    sum(seconds) AS seconds,
-    sum(stakes_seconds) AS stakes_seconds,
-    sum(thirds) AS thirds,
-    sum(stakes_thirds) AS stakes_thirds,
-    sum(fourths) AS fourths,
-    sum(stakes_fourths) AS stakes_fourths,
-    sum(points) AS points,
-    sum(earnings) AS earnings
+    (sum(starts))::integer AS starts,
+    (sum(stakes_starts))::integer AS stakes_starts,
+    (sum(wins))::integer AS wins,
+    (sum(stakes_wins))::integer AS stakes_wins,
+    (sum(seconds))::integer AS seconds,
+    (sum(stakes_seconds))::integer AS stakes_seconds,
+    (sum(thirds))::integer AS thirds,
+    (sum(stakes_thirds))::integer AS stakes_thirds,
+    (sum(fourths))::integer AS fourths,
+    (sum(stakes_fourths))::integer AS stakes_fourths,
+    (sum(points))::bigint AS points,
+    (sum(earnings))::bigint AS earnings
    FROM public.stable_race_records
   GROUP BY stable_id, year
   WITH NO DATA;
@@ -4510,92 +4511,92 @@ ALTER SEQUENCE public.stud_foal_records_id_seq OWNED BY public.stud_foal_records
 
 CREATE VIEW public.surface_race_records AS
  SELECT h.id AS horse_id,
-    COALESCE(dirt.starts, (0)::numeric) AS dirt_starts,
-    COALESCE(dirt.stakes_starts, (0)::numeric) AS dirt_stakes_starts,
-    COALESCE(dirt.wins, (0)::numeric) AS dirt_wins,
-    COALESCE(dirt.stakes_wins, (0)::numeric) AS dirt_stakes_wins,
-    COALESCE(dirt.seconds, (0)::numeric) AS dirt_seconds,
-    COALESCE(dirt.stakes_seconds, (0)::numeric) AS dirt_stakes_seconds,
-    COALESCE(dirt.thirds, (0)::numeric) AS dirt_thirds,
-    COALESCE(dirt.stakes_thirds, (0)::numeric) AS dirt_stakes_thirds,
-    COALESCE(dirt.fourths, (0)::numeric) AS dirt_fourths,
-    COALESCE(dirt.stakes_fourths, (0)::numeric) AS dirt_stakes_fourths,
-    COALESCE(dirt.earnings, (0)::numeric) AS dirt_earnings,
-    COALESCE(dirt.points, (0)::numeric) AS dirt_points,
-    COALESCE(turf.starts, (0)::numeric) AS turf_starts,
-    COALESCE(turf.stakes_starts, (0)::numeric) AS turf_stakes_starts,
-    COALESCE(turf.wins, (0)::numeric) AS turf_wins,
-    COALESCE(turf.stakes_wins, (0)::numeric) AS turf_stakes_wins,
-    COALESCE(turf.seconds, (0)::numeric) AS turf_seconds,
-    COALESCE(turf.stakes_seconds, (0)::numeric) AS turf_stakes_seconds,
-    COALESCE(turf.thirds, (0)::numeric) AS turf_thirds,
-    COALESCE(turf.stakes_thirds, (0)::numeric) AS turf_stakes_thirds,
-    COALESCE(turf.fourths, (0)::numeric) AS turf_fourths,
-    COALESCE(turf.stakes_fourths, (0)::numeric) AS turf_stakes_fourths,
-    COALESCE(turf.earnings, (0)::numeric) AS turf_earnings,
-    COALESCE(turf.points, (0)::numeric) AS turf_points,
-    COALESCE(jump.starts, (0)::numeric) AS jump_starts,
-    COALESCE(jump.stakes_starts, (0)::numeric) AS jump_stakes_starts,
-    COALESCE(jump.wins, (0)::numeric) AS jump_wins,
-    COALESCE(jump.stakes_wins, (0)::numeric) AS jump_stakes_wins,
-    COALESCE(jump.seconds, (0)::numeric) AS jump_seconds,
-    COALESCE(jump.stakes_seconds, (0)::numeric) AS jump_stakes_seconds,
-    COALESCE(jump.thirds, (0)::numeric) AS jump_thirds,
-    COALESCE(jump.stakes_thirds, (0)::numeric) AS jump_stakes_thirds,
-    COALESCE(jump.fourths, (0)::numeric) AS jump_fourths,
-    COALESCE(jump.stakes_fourths, (0)::numeric) AS jump_stakes_fourths,
-    COALESCE(jump.earnings, (0)::numeric) AS jump_earnings,
-    COALESCE(jump.points, (0)::numeric) AS jump_points
+    COALESCE(dirt.starts, 0) AS dirt_starts,
+    COALESCE(dirt.stakes_starts, 0) AS dirt_stakes_starts,
+    COALESCE(dirt.wins, 0) AS dirt_wins,
+    COALESCE(dirt.stakes_wins, 0) AS dirt_stakes_wins,
+    COALESCE(dirt.seconds, 0) AS dirt_seconds,
+    COALESCE(dirt.stakes_seconds, 0) AS dirt_stakes_seconds,
+    COALESCE(dirt.thirds, 0) AS dirt_thirds,
+    COALESCE(dirt.stakes_thirds, 0) AS dirt_stakes_thirds,
+    COALESCE(dirt.fourths, 0) AS dirt_fourths,
+    COALESCE(dirt.stakes_fourths, 0) AS dirt_stakes_fourths,
+    COALESCE(dirt.earnings, (0)::bigint) AS dirt_earnings,
+    COALESCE(dirt.points, (0)::bigint) AS dirt_points,
+    COALESCE(turf.starts, 0) AS turf_starts,
+    COALESCE(turf.stakes_starts, 0) AS turf_stakes_starts,
+    COALESCE(turf.wins, 0) AS turf_wins,
+    COALESCE(turf.stakes_wins, 0) AS turf_stakes_wins,
+    COALESCE(turf.seconds, 0) AS turf_seconds,
+    COALESCE(turf.stakes_seconds, 0) AS turf_stakes_seconds,
+    COALESCE(turf.thirds, 0) AS turf_thirds,
+    COALESCE(turf.stakes_thirds, 0) AS turf_stakes_thirds,
+    COALESCE(turf.fourths, 0) AS turf_fourths,
+    COALESCE(turf.stakes_fourths, 0) AS turf_stakes_fourths,
+    COALESCE(turf.earnings, (0)::bigint) AS turf_earnings,
+    COALESCE(turf.points, (0)::bigint) AS turf_points,
+    COALESCE(jump.starts, 0) AS jump_starts,
+    COALESCE(jump.stakes_starts, 0) AS jump_stakes_starts,
+    COALESCE(jump.wins, 0) AS jump_wins,
+    COALESCE(jump.stakes_wins, 0) AS jump_stakes_wins,
+    COALESCE(jump.seconds, 0) AS jump_seconds,
+    COALESCE(jump.stakes_seconds, 0) AS jump_stakes_seconds,
+    COALESCE(jump.thirds, 0) AS jump_thirds,
+    COALESCE(jump.stakes_thirds, 0) AS jump_stakes_thirds,
+    COALESCE(jump.fourths, 0) AS jump_fourths,
+    COALESCE(jump.stakes_fourths, 0) AS jump_stakes_fourths,
+    COALESCE(jump.earnings, (0)::bigint) AS jump_earnings,
+    COALESCE(jump.points, (0)::bigint) AS jump_points
    FROM (((public.horses h
      LEFT JOIN ( SELECT race_records.horse_id,
-            sum(race_records.starts) AS starts,
-            sum(race_records.stakes_starts) AS stakes_starts,
-            sum(race_records.wins) AS wins,
-            sum(race_records.stakes_wins) AS stakes_wins,
-            sum(race_records.seconds) AS seconds,
-            sum(race_records.stakes_seconds) AS stakes_seconds,
-            sum(race_records.thirds) AS thirds,
-            sum(race_records.stakes_thirds) AS stakes_thirds,
-            sum(race_records.fourths) AS fourths,
-            sum(race_records.stakes_fourths) AS stakes_fourths,
-            sum(race_records.earnings) AS earnings,
+            (sum(race_records.starts))::integer AS starts,
+            (sum(race_records.stakes_starts))::integer AS stakes_starts,
+            (sum(race_records.wins))::integer AS wins,
+            (sum(race_records.stakes_wins))::integer AS stakes_wins,
+            (sum(race_records.seconds))::integer AS seconds,
+            (sum(race_records.stakes_seconds))::integer AS stakes_seconds,
+            (sum(race_records.thirds))::integer AS thirds,
+            (sum(race_records.stakes_thirds))::integer AS stakes_thirds,
+            (sum(race_records.fourths))::integer AS fourths,
+            (sum(race_records.stakes_fourths))::integer AS stakes_fourths,
+            (sum(race_records.earnings))::bigint AS earnings,
             sum(race_records.points) AS points
            FROM public.race_records
           WHERE (race_records.surface = 'dirt'::public.track_surface)
           GROUP BY race_records.horse_id) dirt ON ((h.id = dirt.horse_id)))
      LEFT JOIN ( SELECT race_records.horse_id,
-            sum(race_records.starts) AS starts,
-            sum(race_records.stakes_starts) AS stakes_starts,
-            sum(race_records.wins) AS wins,
-            sum(race_records.stakes_wins) AS stakes_wins,
-            sum(race_records.seconds) AS seconds,
-            sum(race_records.stakes_seconds) AS stakes_seconds,
-            sum(race_records.thirds) AS thirds,
-            sum(race_records.stakes_thirds) AS stakes_thirds,
-            sum(race_records.fourths) AS fourths,
-            sum(race_records.stakes_fourths) AS stakes_fourths,
-            sum(race_records.earnings) AS earnings,
+            (sum(race_records.starts))::integer AS starts,
+            (sum(race_records.stakes_starts))::integer AS stakes_starts,
+            (sum(race_records.wins))::integer AS wins,
+            (sum(race_records.stakes_wins))::integer AS stakes_wins,
+            (sum(race_records.seconds))::integer AS seconds,
+            (sum(race_records.stakes_seconds))::integer AS stakes_seconds,
+            (sum(race_records.thirds))::integer AS thirds,
+            (sum(race_records.stakes_thirds))::integer AS stakes_thirds,
+            (sum(race_records.fourths))::integer AS fourths,
+            (sum(race_records.stakes_fourths))::integer AS stakes_fourths,
+            (sum(race_records.earnings))::bigint AS earnings,
             sum(race_records.points) AS points
            FROM public.race_records
           WHERE (race_records.surface = 'turf'::public.track_surface)
           GROUP BY race_records.horse_id) turf ON ((h.id = turf.horse_id)))
      LEFT JOIN ( SELECT race_records.horse_id,
-            sum(race_records.starts) AS starts,
-            sum(race_records.stakes_starts) AS stakes_starts,
-            sum(race_records.wins) AS wins,
-            sum(race_records.stakes_wins) AS stakes_wins,
-            sum(race_records.seconds) AS seconds,
-            sum(race_records.stakes_seconds) AS stakes_seconds,
-            sum(race_records.thirds) AS thirds,
-            sum(race_records.stakes_thirds) AS stakes_thirds,
-            sum(race_records.fourths) AS fourths,
-            sum(race_records.stakes_fourths) AS stakes_fourths,
-            sum(race_records.earnings) AS earnings,
+            (sum(race_records.starts))::integer AS starts,
+            (sum(race_records.stakes_starts))::integer AS stakes_starts,
+            (sum(race_records.wins))::integer AS wins,
+            (sum(race_records.stakes_wins))::integer AS stakes_wins,
+            (sum(race_records.seconds))::integer AS seconds,
+            (sum(race_records.stakes_seconds))::integer AS stakes_seconds,
+            (sum(race_records.thirds))::integer AS thirds,
+            (sum(race_records.stakes_thirds))::integer AS stakes_thirds,
+            (sum(race_records.fourths))::integer AS fourths,
+            (sum(race_records.stakes_fourths))::integer AS stakes_fourths,
+            (sum(race_records.earnings))::bigint AS earnings,
             sum(race_records.points) AS points
            FROM public.race_records
           WHERE (race_records.surface = 'steeplechase'::public.track_surface)
           GROUP BY race_records.horse_id) jump ON ((h.id = jump.horse_id)))
-  WHERE ((COALESCE(dirt.starts, (0)::numeric) > (0)::numeric) OR (COALESCE(turf.starts, (0)::numeric) > (0)::numeric) OR (COALESCE(jump.starts, (0)::numeric) > (0)::numeric));
+  WHERE ((COALESCE(dirt.starts, 0) > 0) OR (COALESCE(turf.starts, 0) > 0) OR (COALESCE(jump.starts, 0) > 0));
 
 
 --
@@ -9352,6 +9353,11 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260405164943'),
+('20260405164448'),
+('20260405163236'),
+('20260405155703'),
+('20260405103608'),
 ('20260403184144'),
 ('20260403183905'),
 ('20260403111453'),

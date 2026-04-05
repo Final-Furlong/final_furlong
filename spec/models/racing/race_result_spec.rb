@@ -1,7 +1,7 @@
 RSpec.describe Racing::RaceResult do
   describe "associations" do
     it { is_expected.to belong_to(:track_surface).class_name("Racing::TrackSurface").with_foreign_key(:surface_id).inverse_of(:completed_races) }
-    it { is_expected.to have_many(:horses).class_name("Racing::RaceResultHorse").inverse_of(:race).dependent(:delete_all) }
+    it { is_expected.to have_many(:horses).class_name("Racing::RaceResultHorse").inverse_of(:race).dependent(:destroy) }
   end
 
   describe "validations" do
