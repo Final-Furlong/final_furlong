@@ -30,6 +30,7 @@ class Auctions::ProcessSalesJob < ApplicationJob
           sold_horses += 1
         else
           error = result.error
+          raise error
         end
         succeeded = result.sold?
       end
@@ -63,4 +64,3 @@ class Auctions::ProcessSalesJob < ApplicationJob
     Auctions::ProcessSalesJob.set(wait_until: next_updated_at).perform_later(auction) unless Time.current > next_updated_at
   end
 end
-
