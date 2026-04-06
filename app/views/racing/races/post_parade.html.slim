@@ -1,9 +1,71 @@
 - content_for :breadcrumbs do
+  - date = @date.is_a?(Date) ? @date : Date.parse(@date)
   = render Nav::Breadcrumbs::Component.new(links: [{ name: t("racing.races.index.title"), href: racing_races_path(date: @date) },
-                  { name: t(".title"), href: "#" }, { name: l(Date.parse(@date)), href: "#" }]) do
+                  { name: t(".title"), href: "#" }, { name: l(date), href: "#" }]) do
 
-- if policy(@races.first).claim?
-  .text-center
-    p= t(".claim_limit")
-    p= t(".claim_success")
-    p= t(".claim_failure")
+- if @races.empty?
+  h4.text-muted.text-center.my-2
+    small= t(".no_races")
+- else
+  - claiming_race = @races.find { |race| race.race_type == 'claiming' }
+  - if claiming_race && !Racing::Claim.joins(entry: :race).where(entry: { race: @races }, claimer: Current.stable).exists?
+    .text-center
+      p= t(".claim_limit")
+      p= t(".claim_success")
+      p= t(".claim_failure")
+  - @races.each do |race|
+    - columns = race.claiming? ? 12 : 11
+    .mx-auto.rounded-box.border.border-base-content/5.bg-base-100.mb-8
+      table.table.table-responsive.table-zebra.m-2
+        thead
+          tr
+            th.text-center colspan=columns = race.race_description_string
+          tr
+            th.text-center colspan=columns = "#{race.entries_count} #{Horses::Horse.model_name.human.pluralize(race.entries_count)}"
+          tr
+            th= t("racing.race.post_position_abbr")
+            th= t("racing.race.horse")
+            th= t("racing.race.age")
+            th= t("racing.race.gender")
+            th= t("racing.entries.parents")
+            th= t("racing.entries.record")
+            th= t("racing.race.jockey")
+            th= t("racing.race.equipment")
+            th= t("racing.race.weight")
+            th= t("racing.race.odds")
+            th= t("racing.entries.owner")
+            - if race.claiming?
+              th= t("racing.race.claim")
+        tbody
+          - race.entries.each do |entry|
+            - horse = entry.horse
+            - pedigree = Horses::PedigreeDisplayService.new(horse)
+            tr
+              td= entry.post_parade if entry.post_parade.positive?
+              td class="text-#{horse.gender}"= link_to horse.budget_name, horse_path(horse), data: { turbo_frame: "modal" }
+              td= horse.age
+              td= horse.gender[0].upcase
+              td
+                = pedigree.sire_display(tag: true)
+                = " x "
+                = pedigree.dam_display(tag: true)
+              td= horse.lifetime_race_record&.to_s || t("horse.unraced")
+              td= entry.jockey.full_name if entry.jockey
+              td= entry.equipment_string(blank: "")
+              td= entry.weight if entry.weight.positive?
+              td= entry.odd&.to_s if entry.odd
+              td= link_to horse.manager.name, stable_path(horse.manager), data: { turbo_frame: "_top" }
+              - if race.race_type == 'claiming'
+                td
+                  - if policy(entry).claim?
+                    = render Ui::Button::Component.new(url: racing_entry_claims_path(entry), style: :outline, size: :small,
+                          http_method: :post, data: { turbo_confirm: t("racing.entries.claim.create_confirm", name: entry.horse.name), turbo_frame: "_top" }) do
+                      = t("racing.entries.claim.create")
+                  - elsif policy(entry).claim_result.failure == :current_claim
+                    - claim = entry.claims.find_by(claimer: Current.stable)
+                    = render Ui::Button::Component.new(url: racing_entry_claim_path(entry, claim), color: :error, style: :outline, size: :small,
+                        http_method: :delete, data: { turbo_confirm: t("racing.entries.claim.delete_confirm", name: entry.horse.name), turbo_frame: "_top" }) do
+                      = t("racing.entries.claim.cancel")
+                  - else
+                    = render Ui::Button::Component.new(url: '#', disabled: true, style: :outline, size: :small) do
+                      = I18n.t("racing.entries.claim.#{policy(entry).claim_result.failure}")
