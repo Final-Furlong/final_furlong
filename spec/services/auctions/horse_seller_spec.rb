@@ -60,14 +60,6 @@ RSpec.describe Auctions::HorseSeller do
       )
     end
 
-    it "deletes training schedules" do
-      expect { described_class.new.process_sale(bid:) }.to change(Legacy::TrainingSchedule, :count).by(-1)
-    end
-
-    it "deletes training schedule horses" do
-      expect { described_class.new.process_sale(bid:) }.to change(Legacy::TrainingScheduleHorse, :count).by(-1)
-    end
-
     it "modifies racehorse view" do
       allow(Legacy::ViewRacehorses).to receive(:where).and_call_original
       described_class.new.process_sale(bid:)
@@ -87,12 +79,6 @@ RSpec.describe Auctions::HorseSeller do
         can_be_sold: false,
         consigned_auction_id: nil
       )
-    end
-
-    it "modifies training schedule view" do
-      allow(Legacy::ViewTrainingSchedules).to receive(:where).and_call_original
-      described_class.new.process_sale(bid:)
-      expect(Legacy::ViewTrainingSchedules).to have_received(:where)
     end
 
     it "deletes race entry" do

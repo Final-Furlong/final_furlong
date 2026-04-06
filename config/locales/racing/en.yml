@@ -1,9 +1,26 @@
 ---
 en:
   racing:
+    claims:
+      create:
+        failure: Could not submit claim
+        success: Claim was successfully submitted
+      destroy:
+        failure: Could not delete claim
+        success: Claim was successfully deleted
     distance_furlongs: "%{value} Furlongs"
     entries:
       age: Age
+      claim:
+        another_claim: Claim
+        cancel: Cancel
+        create: Claim Horse
+        create_confirm: Are you sure you want to submit a claim for %{name}?
+        current_claim: Active Claim
+        deadline_past: Claim
+        delete_confirm: Are you sure you want to delete your claim for %{name}?
+        not_logged_in: Log In
+        owns_horse: Your Horse
       equipment: Equipment
       gender: Gender
       name: Horse
@@ -12,12 +29,15 @@ en:
         entry_limit: You may enter %{horses} in this race.
         horses: 'Horses Entered: %{count}'
         title: Enter Race
+      owner: Owner
       parents: Sire x Dam
+      record: Record
       stable: Stable
     race:
       age: Age
       age_desc: for %{age}
       allowance: Allowance
+      claim: Claim
       claiming: Claiming
       claiming_with_price: Claiming (%{price})
       date: Date
@@ -71,6 +91,7 @@ en:
       nw3_allowance: NW3 Allowance
       odds: Odds
       post_position: Post
+      post_position_abbr: PP
       post_position_expanded: Post Position
       purse: Purse
       race: Race
@@ -89,6 +110,7 @@ en:
       type: Type
       ungraded: Ungraded
       view_post_parade: View Post Parade
+      weight: Weight
     racehorses:
       status:
         last_race_hint: Last Race Date (Days)
@@ -104,6 +126,7 @@ en:
         claim_failure: If unsuccessful, you will not be notified in any way. You will not be charged any claiming fee.
         claim_limit: You may put in a claim for 1 horse only
         claim_success: If successful, your claim will be processed after races have been run. You will be charged the claiming fee for the horse.
+        no_races: No races scheduled on this day.
         title: Post Parade
     results:
       fractions: Fractional Times
