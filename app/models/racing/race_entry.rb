@@ -9,6 +9,7 @@ module Racing
     belongs_to :second_jockey, class_name: "Racing::Jockey", optional: true
     belongs_to :third_jockey, class_name: "Racing::Jockey", optional: true
     belongs_to :odd, class_name: "Racing::Odd", optional: true
+    has_many :claims, inverse_of: :entry, dependent: :delete_all
 
     validates :date, :equipment, presence: true
     validates :date, comparison: { greater_than_or_equal_to: -> { Date.current } }

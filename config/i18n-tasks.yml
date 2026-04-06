@@ -111,8 +111,8 @@ ignore_missing:
     - simple_form..*
     - components.*
     - view_components.*
-  'en-GB':
-    - '*'
+  "en-GB":
+    - "*"
 
 ## Consider these keys used:
 # ignore_unused:
@@ -148,6 +148,7 @@ ignore_unused:
   - horse.events.*
   - horse.type.*
   - horse.lease_terminations.form.*
+  - racing.entries.claim.*
   - racing.workout_comments.*
   - users.{create,update}.success
   - horses.index.auctions*
