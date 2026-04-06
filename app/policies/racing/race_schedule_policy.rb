@@ -16,9 +16,8 @@ module Racing
 
     def claim?
       return false unless logged_in?
-      false # TODO: replace with check for claims in this race
 
-      # record.claiming_deadline >= Date.current
+      record.claiming_deadline >= Date.current
     end
   end
 end

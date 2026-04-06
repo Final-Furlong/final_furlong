@@ -1,6 +1,7 @@
 module Racing
   class LifetimeRaceRecord < ApplicationRecord
     include RaceRecordable
+    include ActionView::Helpers::NumberHelper
 
     self.table_name = "lifetime_race_records"
     self.primary_key = :horse_id
@@ -20,6 +21,10 @@ module Racing
 
     def self.populated?
       Scenic.database.populated?(table_name)
+    end
+
+    def to_s
+      "#{race_record_races_only} - #{number_with_delimiter(points)}#{"pt".pluralize(points)} - #{Game::MoneyFormatter.new(earnings)}"
     end
 
     def race_record_races_only

@@ -5,6 +5,10 @@ module Racing
     has_many :race_result_horses, class_name: "Racing::RaceResultHorse", inverse_of: :odd, dependent: :nullify
 
     validates :display, :value, presence: true
+
+    def to_s
+      display
+    end
   end
 end
 
