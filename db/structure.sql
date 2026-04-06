@@ -1205,6 +1205,40 @@ ALTER SEQUENCE public.budget_transactions_id_seq OWNED BY public.budget_transact
 
 
 --
+-- Name: claims; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.claims (
+    id bigint NOT NULL,
+    entry_id bigint NOT NULL,
+    claimer_id bigint NOT NULL,
+    owner_id bigint NOT NULL,
+    race_date date NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: claims_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.claims_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: claims_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.claims_id_seq OWNED BY public.claims.id;
+
+
+--
 -- Name: horses; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -5037,6 +5071,13 @@ ALTER TABLE ONLY public.budget_transactions ALTER COLUMN id SET DEFAULT nextval(
 
 
 --
+-- Name: claims id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.claims ALTER COLUMN id SET DEFAULT nextval('public.claims_id_seq'::regclass);
+
+
+--
 -- Name: future_events id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -5554,6 +5595,14 @@ ALTER TABLE ONLY public.broodmare_shipments
 
 ALTER TABLE ONLY public.budget_transactions
     ADD CONSTRAINT budget_transactions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: claims claims_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.claims
+    ADD CONSTRAINT claims_pkey PRIMARY KEY (id);
 
 
 --
@@ -6480,6 +6529,27 @@ CREATE INDEX index_budget_transactions_on_legacy_stable_id_and_created_at ON pub
 --
 
 CREATE INDEX index_budget_transactions_on_stable_id_and_created_at ON public.budget_transactions USING btree (stable_id, created_at);
+
+
+--
+-- Name: index_claims_on_claimer_id_and_race_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_claims_on_claimer_id_and_race_date ON public.claims USING btree (claimer_id, race_date);
+
+
+--
+-- Name: index_claims_on_entry_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_claims_on_entry_id ON public.claims USING btree (entry_id);
+
+
+--
+-- Name: index_claims_on_race_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_claims_on_race_date ON public.claims USING btree (race_date);
 
 
 --
@@ -8723,6 +8793,14 @@ ALTER TABLE ONLY public.workouts
 
 
 --
+-- Name: claims fk_rails_47eefda5dc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.claims
+    ADD CONSTRAINT fk_rails_47eefda5dc FOREIGN KEY (claimer_id) REFERENCES public.stables(id);
+
+
+--
 -- Name: broodmare_shipments fk_rails_4b660bbb6a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9000,6 +9078,14 @@ ALTER TABLE ONLY public.training_schedules_horses
 
 ALTER TABLE ONLY public.future_race_entries
     ADD CONSTRAINT fk_rails_a52f4526d8 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
+-- Name: claims fk_rails_a5ff22eb50; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.claims
+    ADD CONSTRAINT fk_rails_a5ff22eb50 FOREIGN KEY (entry_id) REFERENCES public.race_entries(id);
 
 
 --
@@ -9323,6 +9409,14 @@ ALTER TABLE ONLY public.race_entries
 
 
 --
+-- Name: claims fk_rails_fa191784ea; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.claims
+    ADD CONSTRAINT fk_rails_fa191784ea FOREIGN KEY (owner_id) REFERENCES public.stables(id);
+
+
+--
 -- Name: lease_offers fk_rails_fb816dc261; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9353,6 +9447,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260406111816'),
 ('20260405164943'),
 ('20260405164448'),
 ('20260405163236'),
