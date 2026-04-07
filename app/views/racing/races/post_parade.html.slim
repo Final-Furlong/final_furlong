@@ -37,7 +37,7 @@
             - if race.claiming?
               th= t("racing.race.claim")
         tbody
-          - race.entries.each do |entry|
+          - race.entries.order(post_parade: :asc, name: :asc).each do |entry|
             - horse = entry.horse
             - pedigree = Horses::PedigreeDisplayService.new(horse)
             tr
