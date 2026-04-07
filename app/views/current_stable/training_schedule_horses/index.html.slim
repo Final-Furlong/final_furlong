@@ -8,22 +8,14 @@ hr.my-2
 
 .mx-auto.overflow-x-auto.w-full.sm:hidden
   p.text-center= t(".horse")
-  - horses.each do |horse|
-    - data = horse.race_metadata
-    - options = horse.race_options
+  - horses.includes(:training_schedule, :lifetime_race_record).each do |horse|
     .card.bg-base-100.w-full.px-2.rounded-none
       .card-body.p-0.rounded-none
         .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
           input type="checkbox"
           .collapse-title.font-semibold.font-medium
             span class="text-#{horse.gender.downcase}"
-              = horse.name
-            span.float-right
-              - if data&.energy_grade && data&.fitness_grade
-                span.float-right
-                  = data.energy_grade
-                  = "/"
-                  = data.fitness_grade
+              = horse.name_with_title
           .collapse-content.text-sm
             p
               span= t(".age_gender")
@@ -47,12 +39,12 @@ hr.my-2
           td= t(".age_gender")
           td= t("common.actions.title")
       tbody
-        - horses.each do |horse|
+        - horses.includes(:training_schedule, :lifetime_race_record).each do |horse|
           - horse_schedule = horse.training_schedule
           tr
             td class="text-#{horse.gender.downcase}"
               = render Ui::Link::Component.new(url: horse_path(horse), data: { turbo_frame: "_top" }) do
-                = horse.name
+                = horse.name_with_title
             td.wb-break-all
               = horse.age
               = "yo "

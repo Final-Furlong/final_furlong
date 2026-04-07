@@ -48,18 +48,19 @@ end
 # Table name: lifetime_race_records
 # Database name: primary
 #
-#  earnings       :bigint
-#  fourths        :integer
-#  points         :bigint
-#  seconds        :integer
-#  stakes_fourths :integer
-#  stakes_seconds :integer
-#  stakes_starts  :integer
-#  stakes_thirds  :integer
-#  stakes_wins    :integer
-#  starts         :integer
-#  thirds         :integer
-#  wins           :integer
-#  horse_id       :bigint           primary key
+#  earnings           :bigint
+#  fourths            :integer
+#  points             :bigint
+#  seconds            :integer
+#  stakes_fourths     :integer
+#  stakes_seconds     :integer
+#  stakes_starts      :integer
+#  stakes_thirds      :integer
+#  stakes_wins        :integer
+#  starts             :integer
+#  thirds             :integer
+#  title_abbreviation :text
+#  wins               :integer
+#  horse_id           :bigint           primary key
 #
 

@@ -10,3 +10,4 @@ class Racing::RaceEntryMigrationJob < ApplicationJob
     store_job_info(outcome: { new_entries: new_count - count, deleted_entries: })
   end
 end
+

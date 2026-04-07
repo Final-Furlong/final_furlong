@@ -172,6 +172,7 @@ module Horses
     scope :max_workouts_since_last_race, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.max_workouts(value)) }
 
     delegate :title, :breeding_record, :dosage_text, :track_record, to: :horse_attributes, allow_nil: true
+    delegate :title_abbreviation, to: :lifetime_race_record, allow_nil: true
 
     # broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
 
@@ -208,11 +209,20 @@ module Horses
     def budget_name
       return name if name.present?
 
-      foal_name = "Unnamed ("
-      foal_name += sire_id ? sire.name : "Created"
+      foal_name = "#{I18n.t("horse.unnamed")} ("
+      foal_name += sire_id ? sire.name : I18n.t("horse.created")
       foal_name += " x "
-      foal_name += dam_id ? dam.name : "Created"
+      foal_name += dam_id ? dam.name : I18n.t("horse.created")
       foal_name + ")"
+    end
+
+    def name_with_title
+      return I18n.t("horse.unnamed") if name.blank?
+
+      list = []
+      list << title_abbreviation if title_abbreviation.present?
+      list << name
+      list.join(" ")
     end
 
     def name_with_boarding_info
@@ -365,3 +375,4 @@ end
 #  fk_rails_...  (owner_id => stables.id) ON DELETE => restrict ON UPDATE => cascade
 #  fk_rails_...  (sire_id => horses.id) ON DELETE => nullify ON UPDATE => cascade
 #
+

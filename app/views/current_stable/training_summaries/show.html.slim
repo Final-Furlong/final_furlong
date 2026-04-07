@@ -25,7 +25,7 @@
       - @horses.each do |horse|
         - data = horse.race_metadata
         tr
-          td class="text-#{horse.gender.downcase}"= link_to horse.name, horse_path(horse), data: { turbo_frame: "_top" }
+          td class="text-#{horse.gender.downcase}"= link_to horse.name_with_title, horse_path(horse), data: { turbo_frame: "_top" }
           td.text-center= horse.age
           td.text-center= horse.gender.first.upcase
           td.text-center= data&.energy_grade || t("common.dash")

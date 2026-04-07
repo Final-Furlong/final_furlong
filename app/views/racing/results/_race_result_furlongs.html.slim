@@ -10,7 +10,7 @@ ruby:
         = race.race_description_string
         = " | "
         = track_description
-    - race.horses.order(finish_position: :asc).each do |finisher|
+    - race.horses.includes(:horse, :jockey, :odd).order(finish_position: :asc).each do |finisher|
       - horse = finisher.horse
       .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
         input type="checkbox"
@@ -115,7 +115,7 @@ ruby:
           th= t("racing.race.equipment")
           th= t("racing.results.speed_factor")
         tbody
-          - race.horses.order(finish_position: :asc).each do |finisher|
+          - race.horses.includes(:horse, :jockey, :odd).order(finish_position: :asc).each do |finisher|
             - horse = finisher.horse
             tr
               td data-sort=horse.name

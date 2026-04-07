@@ -11,7 +11,7 @@
               input type="checkbox"
               .collapse-title.font-semibold.font-medium
                 span class="text-#{horse.gender.downcase}"
-                  = horse.name || t("horse.unnamed")
+                  = horse.name_with_title
                 span.float-right
                   = l(boarding.end_date)
               .collapse-content.text-sm
@@ -56,4 +56,3 @@
 
   .float-right.mt-2
     == @pagy.series_nav
-

@@ -26,15 +26,15 @@
             tbody.table-group-divider
               - horses.each do |horse|
                 tr
-                  td.wb-break-all= horse.name || t("horse.unnamed")
+                  td.wb-break-all= horse.name_with_title
                   - unless @active_status.to_s == 'yearling' || @active_status.to_s == 'weanling'
                     td.wb-break-all= horse.age
                   - unless @active_status.to_s == 'broodmare' || @active_status.to_s == "stud"
                     td= t("horses.genders.#{horse.gender}")
                   - if @active_status.to_s == 'yearling' || @active_status.to_s == 'weanling'
                     - pedigree = Horses::PedigreeDisplayService.new(horse)
-                    td.wb-break-all= pedigree.sire_display(tag: true, target: '_top')
-                    td.wb-break-all= pedigree.dam_display(tag: true, target: '_top')
+                    td.wb-break-all= pedigree.sire_display(tag: true, include_title: true, target: '_top')
+                    td.wb-break-all= pedigree.dam_display(tag: true, include_title: true, target: '_top')
                   - unless @active_status.to_s == 'yearling' || @active_status.to_s == 'weanling'
                     - if @active_status.to_s == 'racehorse'
                       td

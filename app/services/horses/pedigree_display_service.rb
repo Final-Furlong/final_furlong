@@ -9,66 +9,75 @@ module Horses
       @routes = Rails.application.routes.url_helpers
     end
 
-    def sire_display(tag: false, target: nil)
+    def sire_display(tag: false, target: nil, include_title: false)
       if horse.sire.present?
         component = Ui::Link::Component.new(url: routes.horse_path(horse.sire.slug), data: { turbo_frame: target })
         ApplicationController.new.view_context.render(component) do
-          horse.sire.name
+          name(horse: horse.sire, include_title:)
         end
       else
         display_created(tag)
       end
     end
 
-    def sire_sire_display(tag: false, target: nil)
+    def name(horse:, include_title: false)
+      return I18n.t("horse.created") if horse&.name.blank?
+
+      name_elements = []
+      name_elements << horse.title_abbreviation if include_title
+      name_elements << horse.name
+      name_elements.compact_blank.join(" ")
+    end
+
+    def sire_sire_display(tag: false, target: nil, include_title: false)
       if horse.sire&.sire.present?
         component = Ui::Link::Component.new(url: routes.horse_path(horse.sire.sire.slug), data: { turbo_frame: target })
         ApplicationController.new.view_context.render(component) do
-          horse.sire.sire.name
+          name(horse: horse.sire.sire, include_title:)
         end
       else
         display_created(tag)
       end
     end
 
-    def sire_dam_display(tag: false, target: nil)
+    def sire_dam_display(tag: false, target: nil, include_title: false)
       if horse.sire&.dam.present?
         component = Ui::Link::Component.new(url: routes.horse_path(horse.sire.dam.slug), data: { turbo_frame: target })
         ApplicationController.new.view_context.render(component) do
-          horse.sire.dam.name
+          name(horse: horse.sire.dam, include_title:)
         end
       else
         display_created(tag)
       end
     end
 
-    def dam_display(tag: false, target: nil)
+    def dam_display(tag: false, target: nil, include_title: false)
       if horse.dam.present?
         component = Ui::Link::Component.new(url: routes.horse_path(horse.dam.slug), data: { turbo_frame: target })
         ApplicationController.new.view_context.render(component) do
-          horse.dam.name
+          name(horse: horse.dam.dam, include_title:)
         end
       else
         display_created(tag)
       end
     end
 
-    def dam_sire_display(tag: false, target: nil)
+    def dam_sire_display(tag: false, target: nil, include_title: false)
       if horse.dam&.sire.present?
         component = Ui::Link::Component.new(url: routes.horse_path(horse.dam.sire.slug), data: { turbo_frame: target })
         ApplicationController.new.view_context.render(component) do
-          horse.dam.sire.name
+          name(horse: horse.dam.sire, include_title:)
         end
       else
         display_created(tag)
       end
     end
 
-    def dam_dam_display(tag: false, target: nil)
+    def dam_dam_display(tag: false, target: nil, include_title: false)
       if horse.dam&.dam.present?
         component = Ui::Link::Component.new(url: routes.horse_path(horse.dam.dam.slug), data: { turbo_frame: target })
         ApplicationController.new.view_context.render(component) do
-          horse.dam.dam.name
+          name(horse: horse.dam.dam, include_title:)
         end
       else
         display_created(tag)

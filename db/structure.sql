@@ -2869,7 +2869,16 @@ CREATE MATERIALIZED VIEW public.lifetime_race_records AS
     (sum(fourths))::integer AS fourths,
     (sum(stakes_fourths))::integer AS stakes_fourths,
     sum(points) AS points,
-    (sum(earnings))::bigint AS earnings
+    (sum(earnings))::bigint AS earnings,
+        CASE
+            WHEN (sum(points) >= 1500) THEN 'FFCh.'::text
+            WHEN (sum(points) >= 1000) THEN 'WCh.'::text
+            WHEN (sum(points) >= 750) THEN 'ICh.'::text
+            WHEN (sum(points) >= 500) THEN 'NCh.'::text
+            WHEN (sum(points) >= 300) THEN 'GCh.'::text
+            WHEN (sum(points) >= 100) THEN 'Ch.'::text
+            ELSE ''::text
+        END AS title_abbreviation
    FROM public.race_records
   GROUP BY horse_id
   WITH NO DATA;
@@ -9454,6 +9463,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260407123640'),
 ('20260406111816'),
 ('20260405164943'),
 ('20260405164448'),

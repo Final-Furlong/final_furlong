@@ -12,7 +12,7 @@
         th= t(".name")
         td
           = turbo_frame_tag :horse_name do
-            = horse.name || t("horse.unnamed")
+            = horse.name_with_title
             - if Horses::HorsePolicy.new(Current.user, horse).edit_name?
               = render Ui::ButtonizedLink::Component.new(url: edit_name_horse_path(horse), style: :outline, size: :small, extra_classes: "ml-2", http_method: :get) do
                 = t("common.actions.edit")
