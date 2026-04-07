@@ -34,7 +34,7 @@ ruby:
               span.float-right= horse.status.titleize
             p
               span= Horses::Horse.human_attribute_name("sire")
-              span.float-right= pedigree.sire_display(tag: true)
+              span.float-right= pedigree.sire_display(tag: true, include_title: true)
             p
               span= Horses::Horse.human_attribute_name("dam")
               span.float-right= pedigree.dam_display(tag: true)
@@ -81,7 +81,7 @@ ruby:
                 = t("common.actions.view")
 .hidden.mx-auto.overflow-x-auto.rounded-md.w-full.sm:block
   .table-responsive-md
-    table.table.table-responsive.table-zebra.table-sm.sortable.n-last
+    table.table.table-responsive.table-zebra.table-sm.sortable.asc.n-last
       thead
         tr
           th= Horses::Horse.human_attribute_name("name")
@@ -105,12 +105,12 @@ ruby:
             tr
               td.wb-break-all class="text-#{horse.gender.downcase}" data-sort=horse.name
                 = render Ui::Link::Component.new(url: horse_path(horse), data: { turbo_frame: "_top" }) do
-                  = (horse.name || t("horse.unnamed"))
+                  = horse.name_with_title
               td= horse.age
               td= horse.status.titleize
               - pedigree = Horses::PedigreeDisplayService.new(horse)
-              td.wb-break-all= pedigree.sire_display(tag: true, target: '_top')
-              td.wb-break-all= pedigree.dam_display(tag: true, target: '_top')
+              td.wb-break-all data-sort=pedigree.name(horse: horse.sire) = pedigree.sire_display(tag: true, include_title: true, target: '_top')
+              td.wb-break-all data-sort=pedigree.name(horse: horse.dam) = pedigree.dam_display(tag: true, include_title: true, target: '_top')
               td.wb-break-all
                 - if horse.racehorse?
                   = horse.lifetime_race_record&.race_record_races_only || t("horse.unraced")
@@ -139,12 +139,12 @@ ruby:
               td
                 = bid.bidder.name if bid
               - if type == :unsold
-                td
-                  - if bid && bid.current_bid >= auction_horse.reserve_price.to_i
-                    - sell_time = [bid.bid_at + auction.hours_until_sold.hours, auction.end_time].min
-                    = relative_time_in_words(sell_time)
-                  - else
-                    = relative_time_in_words(auction.end_time)
+                - if bid && bid.current_bid >= auction_horse.reserve_price.to_i
+                  - sell_time = [bid.bid_at + auction.hours_until_sold.hours, auction.end_time].min
+                - else
+                  - sell_time = auction.end_time
+                td data-sort=sell_time
+                  = relative_time_in_words(sell_time)
               td
                 = render Ui::ButtonizedLink::Component.new(color: :neutral, url: auction_horse_path(auction, auction_horse), data: { turbo_frame: "_top" }) do
                   i.ph-fill.ph-eye

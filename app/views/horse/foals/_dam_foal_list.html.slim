@@ -8,7 +8,7 @@
           input type="checkbox"
           .collapse-title.font-semibold.font-medium
             span class="text-#{foal.gender.downcase}"
-              = foal.name || t("horse.unnamed")
+              = foal.name_with_title
             span.float-right
               = foal.date_of_birth.year
           .collapse-content.text-sm.border-t-1.border-base-content/40
@@ -17,7 +17,7 @@
               span.float-right= foal.gender.titleize
             p
               span= t(".sire")
-              span.float-right= pedigree.sire_display(tag: true, target: '_top')
+              span.float-right= pedigree.sire_display(tag: true, include_title: true, target: '_top')
             p
               span= t(".status")
               span.float-right= foal.status.titleize
@@ -45,7 +45,7 @@
           .collapse-content.text-sm.border-t-1.border-base-content/40
             p
               span= t(".sire")
-              span.float-right= pedigree.sire_display(tag: true, target: '_top')
+              span.float-right= pedigree.sire_display(tag: true, include_title: true, target: '_top')
             p
               span= t(".due_date")
               span.float-right= "due date here"
@@ -70,10 +70,10 @@
         tr
           td class="text-#{foal.gender}"
             = render Ui::Link::Component.new(color: :none, url: horse_path(foal), data: { turbo_frame: "_top" }) do
-              = (foal.name || t("horse.unnamed"))
+              = foal.name_with_title
           td= foal.date_of_birth.year
           td= foal.gender.titleize
-          td= pedigree.sire_display(tag: true, target: '_top')
+          td= pedigree.sire_display(tag: true, include_title: true, target: '_top')
           td= foal.status.titleize
           td
             - if foal.stillborn?
@@ -87,6 +87,6 @@
           td= t("common.dash")
           td
             = render Ui::Link::Component.new(color: :none, url: horse_path(unborn_foal.sire), data: { turbo_frame: "_top" }) do
-              = unborn_foal.sire.name
+              = unborn_foal.sire.name_with_title
           td colspan=2
             = "due date here"

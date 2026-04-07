@@ -10,7 +10,7 @@
           span.float-right= "Due date year"
         - else
           span class="text-#{foal.gender.downcase}"
-            = foal.name || t("horse.unnamed")
+            = foal.name_with_title
       .collapse-content.text-sm.border-t-1.border-base-content/40
         - unless unborn
           p

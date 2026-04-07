@@ -19,7 +19,7 @@
               - lease_offers.each do |lease_offer|
                 - horse = lease_offer.horse
                 tr
-                  td.wb-break-all= horse.name || t("horse.unnamed")
+                  td.wb-break-all= horse.name_with_title
                   td.wb-break-all
                     = horse.age
                     = "yo "

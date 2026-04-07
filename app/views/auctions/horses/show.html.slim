@@ -2,7 +2,7 @@
 - current_tab = params[:tab] || :details
 - content_for :breadcrumbs do
   = render Nav::Breadcrumbs::Component.new(links: [{ name: @auction.title, href: auction_path(@auction) },
-          { name: horse.name || t("horse.unnamed"), href: "#" }])
+          { name: horse.name_with_title, href: "#" }])
 
 .card.card-border.mt-2.shadow-md.dark:border-1.dark:border-neutral-100
   .tabs.tabs-border.dark:border-neutral-400 role="tablist"

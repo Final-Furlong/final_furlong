@@ -19,7 +19,7 @@
               - sale_offers.each do |sale_offer|
                 - horse = sale_offer.horse
                 tr
-                  td.wb-break-all= horse.name || t("horse.unnamed")
+                  td.wb-break-all= horse.name_with_title
                   td.wb-break-all
                     = horse.age
                     = "yo "
