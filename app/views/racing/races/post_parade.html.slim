@@ -9,13 +9,83 @@
 - else
   - claiming_race = @races.find { |race| race.race_type == 'claiming' }
   - if claiming_race && !Racing::Claim.joins(entry: :race).where(entry: { race: @races }, claimer: Current.stable).exists?
-    .text-center
+    .text-left.md:text-center
       p= t(".claim_limit")
       p= t(".claim_success")
       p= t(".claim_failure")
   - @races.each do |race|
+    .sm:hidden
+      .card.card-border.bg-base-100.w-full.px-2.rounded-none.mb-4
+        .card-body.p-0.rounded-none
+          .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+            input type="checkbox"
+            .collapse-title.font-semibold.font-medium
+              span= race.race_description_string
+              br/
+              span= "#{race.entries_count} #{Horses::Horse.model_name.human.pluralize(race.entries_count)}"
+            .collapse-content.text-sm.border-t-1.border-base-content/40
+              div
+                - race.entries.includes(:jockey, :odd, horse: [:owner, :lifetime_race_record, :sire, :dam, current_lease: :leaser]).order(post_parade: :asc).merge(Racing::RaceEntry.ordered_by_name).each do |entry|
+                  - horse = entry.horse
+                  - pedigree = Horses::PedigreeDisplayService.new(horse)
+                  .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+                    input type="checkbox"
+                    .collapse-title.font-semibold.font-medium
+                      span class="text-#{horse.gender}"= horse.name_with_title
+                    .collapse-content.text-sm.border-t-1.border-base-content/40
+                      - if entry.post_parade.positive?
+                        p
+                          span= t("racing.race.post_parade")
+                          span.float-right= entry.post_parade
+                      p
+                        span= t("racing.race.age")
+                        span.float-right= horse.age
+                      p
+                        span= t("racing.race.gender")
+                        span.float-right= horse.gender.titleize
+                      p
+                        span= t("horses.info.sire")
+                        span.float-right= pedigree.sire_display(tag: true, include_title: true)
+                      p
+                        span= t("horses.info.dam")
+                        span.float-right= pedigree.dam_display(tag: true, include_title: true)
+                      p
+                        span= t("racing.entries.record")
+                        span.float-right= horse.lifetime_race_record&.to_s || t("horse.unraced")
+                      - if entry.jockey
+                        p
+                          span= t("racing.race.jockey")
+                          span.float-right= entry.jockey.full_name
+                      p
+                        span= t("racing.race.equipment")
+                        span.float-right= entry.equipment_string(blank: I18n.t("common.none"))
+                      - if entry.weight.positive?
+                        p
+                          span= t("racing.race.weight")
+                          span.float-right= entry.weight
+                      - if entry.odd
+                        p
+                          span= t("racing.race.odds")
+                          span.float-right= entry.odd&.to_s
+                      p
+                        span= t("racing.entries.owner")
+                        span.float-right= link_to horse.manager.name, stable_path(horse.manager), data: { turbo_frame: "_top" }
+                      - if race.race_type == 'claiming'
+                        p
+                          - if policy(entry).claim?
+                            = render Ui::Button::Component.new(url: racing_entry_claims_path(entry), style: :outline, size: :small,
+                              http_method: :post, data: { turbo_confirm: t("racing.entries.claim.create_confirm", name: entry.horse.name), turbo_frame: "_top" }) do
+                              = t("racing.entries.claim.create")
+                          - elsif policy(entry).claim_result.failure == :current_claim
+                            - claim = entry.claims.find_by(claimer: Current.stable)
+                            = render Ui::Button::Component.new(url: racing_entry_claim_path(entry, claim), color: :error, style: :outline, size: :small,
+                              http_method: :delete, data: { turbo_confirm: t("racing.entries.claim.delete_confirm", name: entry.horse.name), turbo_frame: "_top" }) do
+                              = t("racing.entries.claim.cancel")
+                          - else
+                            = render Ui::Button::Component.new(url: '#', disabled: true, style: :outline, size: :small) do
+                              = I18n.t("racing.entries.claim.#{policy(entry).claim_result.failure}")
     - columns = race.claiming? ? 12 : 11
-    .mx-auto.rounded-box.border.border-base-content/5.bg-base-100.mb-8
+    .hidden.sm:block.mx-auto.rounded-box.border.border-base-content/5.bg-base-100.mb-8
       table.table.table-responsive.table-zebra.m-2
         thead
           tr
@@ -42,13 +112,13 @@
             - pedigree = Horses::PedigreeDisplayService.new(horse)
             tr
               td= entry.post_parade if entry.post_parade.positive?
-              td class="text-#{horse.gender}"= link_to horse.budget_name, horse_path(horse), data: { turbo_frame: "modal" }
+              td class="text-#{horse.gender}"= link_to horse.name_with_title, horse_path(horse), data: { turbo_frame: "modal" }
               td= horse.age
               td= horse.gender[0].upcase
               td
-                = pedigree.sire_display(tag: true)
+                = pedigree.sire_display(tag: true, include_title: true)
                 = " x "
-                = pedigree.dam_display(tag: true)
+                = pedigree.dam_display(tag: true, include_title: true)
               td= horse.lifetime_race_record&.to_s || t("horse.unraced")
               td= entry.jockey.full_name if entry.jockey
               td= entry.equipment_string(blank: "")
