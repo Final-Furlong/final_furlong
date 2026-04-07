@@ -107,6 +107,7 @@ module Horses
       dir = "ASC" unless %w[asc desc].include?(dir.downcase)
       includes(:dam).order("dams_horses.name #{dir.upcase}")
     end
+    scope :order_by_name, ->(dir = "asc") { order(name: dir.to_sym) }
     scope :with_owner, ->(stable) { where(owner: stable) }
     scope :without_lease, -> { where.missing(:current_lease) }
     scope :with_leaser, ->(stable) { joins(:current_lease).where(current_lease: { leaser: stable }) }
@@ -364,4 +365,3 @@ end
 #  fk_rails_...  (owner_id => stables.id) ON DELETE => restrict ON UPDATE => cascade
 #  fk_rails_...  (sire_id => horses.id) ON DELETE => nullify ON UPDATE => cascade
 #
-

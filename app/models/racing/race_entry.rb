@@ -22,6 +22,7 @@ module Racing
 
     scope :future, -> { where("date > ?", Date.current) }
     scope :past, -> { where(date: ...Date.current) }
+    scope :ordered_by_name, -> { joins(:horse).merge(Horses::Horse.order_by_name) }
 
     counter_culture :race, column_name: "entries_count"
   end
