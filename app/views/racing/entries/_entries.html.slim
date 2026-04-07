@@ -9,16 +9,16 @@
         th= t("racing.entries.equipment")
         th= t("racing.entries.stable")
       tbody
-        - race.entries.each do |entry|
+        - race.entries.includes(horse: [:lifetime_race_record, :sire, :dam]).each do |entry|
           - horse = entry.horse
           - pedigree = Horses::PedigreeDisplayService.new(horse)
           tr
-            td class="text-#{horse.gender}"= link_to horse.name, horse_path(horse), data: { turbo_frame: "_top" }
+            td class="text-#{horse.gender}"= link_to horse.name_with_title, horse_path(horse), data: { turbo_frame: "_top" }
             td.text-center= horse.age
             td.text-center= horse.gender.titleize[0]
             td.text-center
-              = pedigree.sire_display(tag: true)
+              = pedigree.sire_display(tag: true, include_title: true)
               = " x "
-              = pedigree.dam_display(tag: true)
+              = pedigree.dam_display(tag: true, include_title: true)
             td= entry.equipment_string(blank: "")
             td= link_to horse.manager.name, stable_path(horse.manager), data: { turbo_frame: "_top" }

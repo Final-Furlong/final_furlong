@@ -18,7 +18,7 @@
           - leases.each do |lease|
             - horse = lease.horse
             tr
-              td.wb-break-all= link_to horse.name || t("horse.unnamed"), horse_path(horse), target: "_top"
+              td.wb-break-all= link_to horse.name_with_title, horse_path(horse), target: "_top"
               td.wb-break-all
                 = horse.age
                 = "yo "

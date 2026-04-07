@@ -36,10 +36,10 @@
       - dashboard.born_foals.each do |foal|
         - pedigree = Horses::PedigreeDisplayService.new(foal)
         tr
-          td= link_to (foal.name || t("horse.unnamed")), horse_path(foal)
+          td class="text-#{foal.gender}"= link_to foal.name_with_title, horse_path(foal), data: { turbo_frame: "_top" }
           td= foal.date_of_birth.year
           td= foal.gender.titleize
-          td= pedigree.dam_display(tag: true, target: "_top")
+          td= pedigree.dam_display(tag: true, include_title: true, target: "_top")
           td= foal.status.titleize
           td
             - if foal.stillborn?
@@ -53,6 +53,6 @@
           td= t("horse.foal_due").titleize
           td= unborn_foal.date_of_birth.year
           td= t("common.dash")
-          td= link_to unborn_foal.dam.name, horse_path(unborn_foal.dam)
+          td= link_to unborn_foal.dam.name_with_title, horse_path(unborn_foal.dam)
           td colspan=2
             = "due date here"
