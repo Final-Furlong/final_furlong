@@ -82,6 +82,15 @@ module Racing
     scope :at_home, -> { where(at_home: true) }
     scope :not_at_home, -> { at_home.invert_where }
     scope :boardable, -> { where(at_home: false, in_transit: false) }
+    scope :shippable_to_location, ->(id, cost, days) {
+      # n.b. DISTINCT UNNEST(ARRAY[]) is postgres-specific syntax
+      where("location_id = :id OR location_id IN
+        (SELECT DISTINCT UNNEST(ARRAY[starting_location_id, ending_location_id]) FROM shipment_routes
+        WHERE ((starting_location_id = location_id AND ending_location_id = :id) OR (starting_location_id = :id AND ending_location_id = location_id))
+          AND ((road_days IS NOT NULL AND road_days <= :days AND road_cost <= :cost) OR
+            (air_days IS NOT NULL AND air_days <= :days AND air_cost <= :cost)))",
+        { id:, cost:, days: })
+    }
 
     def update_grades(energy:, fitness:, update_legacy: false)
       modifier_percent = (energy * 0.2).clamp(10, 20)

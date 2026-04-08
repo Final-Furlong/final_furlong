@@ -68,6 +68,22 @@ en:
       description_leaser: 'Lease Fee: %{horse} from %{stable} [%{start_date} to %{end_date}]'
       description_owner: Leased %{horse} to %{stable} [%{start_date} to %{end_date}]
       not_for_lease: This horse is not for lease
+    races:
+      entry_creator:
+        cannot_afford_entry: You cannot afford to enter this race
+        deadline_past: The deadline for entering this race is in the past
+        entries_not_open: Entries are not open for this race
+        horse_cannot_ship_in_time: "%{name} cannot make it to the track in time for this race"
+        horse_has_entry: "%{name} is already entered to race on this day"
+        horse_in_transit_elsewhere: "%{name} is in transit to another location"
+        horse_in_transit_not_in_time: "%{name} is in transit and will not arrive in time for this race"
+        horse_needs_shipping: "%{name} needs to be shipped to the track"
+        horse_not_flat: This is a flat race and this horse is a jumper
+        horse_not_qualified: "%{name} is not qualified to run in this race"
+        horse_not_racehorse: This horse is not a racehorse
+        max_entries: This race is full
+        max_entries_stable: You already have the max entries in this race
+        stable_not_manager: You do not own (or lease) this horse
     sale_creator:
       cannot_afford_purchase: You cannot afford the purchase price
       description_buyer: Purchased %{horse} from %{stable}

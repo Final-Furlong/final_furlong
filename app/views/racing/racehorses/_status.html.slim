@@ -45,7 +45,7 @@
                 - stats = horse.race_metadata
                 - options = horse.race_options
                 tr
-                  td.wb-break-all data-sort=horse.name
+                  td.wb-break-all data-sort=horse.name class="text-#{horse.gender}"
                     = link_to horse.name, horse_path(horse), data: { turbo_frame: "modal" }
                     - if race.track_surface.jump? && !options.racehorse_type.jump?
                       .tooltip.ml-2.text-lg.text-warning data-tip=t(".not_a_jumper")

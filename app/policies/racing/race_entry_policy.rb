@@ -19,10 +19,11 @@ module Racing
     end
 
     def new?
+      return false unless logged_in?
       return false if record.date < Date.current
       return false if Date.current > record.race.entry_deadline
 
-      logged_in?
+      Racing::RaceQualificationQuery.new(race: record.race).qualified.exists?
     end
 
     def claim?
