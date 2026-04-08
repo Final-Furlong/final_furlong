@@ -7,7 +7,7 @@
         td.text-secondary-content.text-center= t("horse.races.index.unraced")
   - else
     h1.text-lg.text-center.border-b-1.border-neutral-content.mb-2
-      = t("horse.races.index.race_year", age: year - dob_year, year: year)
+      = t("horse.races.index.race_year", age: year.to_i - dob_year, year: year)
       = ": ".html_safe
       = record.starts_string
       = "-"

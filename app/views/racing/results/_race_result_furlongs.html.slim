@@ -117,6 +117,8 @@ ruby:
         tbody
           - race.horses.includes(:horse, :jockey, :odd).order(finish_position: :asc).each do |finisher|
             - horse = finisher.horse
+            - pd finisher
+            - pd horse
             tr
               td data-sort=horse.name
                 span class="text-#{horse.gender}"
@@ -126,7 +128,7 @@ ruby:
                 = finisher.jockey&.full_name
                 = ")"
               td= finisher.weight
-              td data-sort=finisher.odd.value = finisher.odd.display
+              td data-sort=finisher.odd&.value = finisher.odd&.display
               td= finisher.post_parade
               - if race.split == '2F'
                 - positions = finisher.positions.split('|')
