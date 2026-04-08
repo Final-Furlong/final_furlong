@@ -82,6 +82,15 @@ module Racing
     scope :at_home, -> { where(at_home: true) }
     scope :not_at_home, -> { at_home.invert_where }
     scope :boardable, -> { where(at_home: false, in_transit: false) }
+    scope :shippable_to_location, ->(id, cost, days) {
+      # n.b. DISTINCT UNNEST(ARRAY[]) is postgres-specific syntax
+      where("location_id = :id OR location_id IN
+        (SELECT DISTINCT UNNEST(ARRAY[starting_location_id, ending_location_id]) FROM shipment_routes
+        WHERE ((starting_location_id = location_id AND ending_location_id = :id) OR (starting_location_id = :id AND ending_location_id = location_id))
+          AND ((road_days IS NOT NULL AND road_days <= :days AND road_cost <= :cost) OR
+            (air_days IS NOT NULL AND air_days <= :days AND air_cost <= :cost)))",
+        { id:, cost:, days: })
+    }
 
     def update_grades(energy:, fitness:, update_legacy: false)
       modifier_percent = (energy * 0.2).clamp(10, 20)
@@ -124,12 +133,6 @@ module Racing
           Fitness: fitness,
           DisplayEnergy: energy_grade,
           DisplayFitness: fitness_grade)
-        Legacy::ViewTrainingSchedules.where(horse_id: legacy_id).update(
-          energy_current: energy,
-          fitness_current: fitness,
-          energy_grade:,
-          fitness_grade:
-        )
         Legacy::ViewRacehorses.where(horse_id: legacy_id).update(energy_grade:, fitness_grade:)
       end
     end
@@ -139,6 +142,22 @@ module Racing
       return 0 if starting_location == location
 
       Shipping::Route.with_locations(starting_location, location).pluck(:miles).uniq.first
+    end
+
+    def grade_at_least?(grade, key)
+      value = send(key.to_sym).to_s.upcase
+      case grade.to_s.upcase
+      when "A"
+        value == grade
+      when "B"
+        ["A", "B"].include?(value)
+      when "C"
+        ["A", "B", "C"].include?(value)
+      when "D"
+        ["A", "B", "C", "D"].include?(value)
+      else
+        true
+      end
     end
 
     def self.ransackable_attributes(_auth_object = nil)
