@@ -3,6 +3,9 @@ class MigrateLegacyFutureRaceEntriesService # rubocop:disable Metrics/ClassLengt
     Legacy::FutureEntry.find_each do |legacy_entry|
       migrate_entry(legacy_entry:)
     end
+    Racing::RaceSchedule.entries_open.select(:date).distinct.each do |entry|
+      Racing::FutureRaceEntry.where(date: entry.date).delete_all
+    end
   end
 
   private
@@ -18,6 +21,7 @@ class MigrateLegacyFutureRaceEntriesService # rubocop:disable Metrics/ClassLengt
 
     entry = Racing::FutureRaceEntry.find_or_initialize_by(horse:, date:)
     entry.race = race
+    entry.stable = horse.manager
     entry.date = race.date
     entry.created_at = legacy_entry.DateEntered - 4.years
     entry.auto_enter = legacy_entry.AutoEnter

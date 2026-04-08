@@ -1,0 +1,27 @@
+ruby:
+  current_auctions = AuctionPolicy::Scope.new(Current.user, Auction.current).resolve.count
+  future_auctions = AuctionPolicy::Scope.new(Current.user, Auction.upcoming_soon).resolve.count
+- if (current_auctions + future_auctions).positive?
+  .card.bg-base-100.w-full
+    .card-body.p-0.rounded-none
+      details.collapse.collapse-arrow.bg-base-100
+        summary.text-center.collapse-title.font-semibold
+          = Auction.model_name.name.pluralize(current_auctions + future_auctions)
+          = " (#{current_auctions + future_auctions})"
+        .collapse-content.text-sm
+          - if current_auctions.positive?
+            p
+              span= t(".current_auction_count", count: current_auctions)
+              = "&nbsp;".html_safe
+              - AuctionPolicy::Scope.new(Current.user, Auction.current).resolve.find_each do |auction|
+                = link_to auction.title, auction_path(auction), class: "link", target: "_top"
+                = "&nbsp;".html_safe
+          - if Auctions::Horse.associated_with_stable(Current.stable).unsold.exists?
+            p= link_to t(".auction_watch_page"), stable_auctions_path, class: "link", target: "_top"
+          - if future_auctions.positive?
+            p
+              span= t(".future_auction_count", count: future_auctions)
+              = "&nbsp;".html_safe
+              - AuctionPolicy::Scope.new(Current.user, Auction.upcoming_soon).resolve.find_each do |auction|
+                = link_to auction.title, auction_path(auction), class: "link", target: "_top"
+                = "&nbsp;".html_safe

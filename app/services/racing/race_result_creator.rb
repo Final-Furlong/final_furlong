@@ -99,7 +99,7 @@ module Racing
       if (data = horse.race_metadata)
         data.update_grades(energy: stats.energy, fitness: stats.fitness, update_legacy: true)
         next_entry_date = horse.race_entries.where("date > ?", date).minimum(:date) || horse.future_race_entries.where("date > ?", date).minimum(:date)
-        data.update(last_raced_at: date, next_entry_date:, racetrack:, location: racetrack.location)
+        data.update(last_raced_at: date, next_entry_date:, racetrack:, location: racetrack.location, location_string: I18n.t("horse.location.at_racetrack", name: racetrack.name))
       end
       stats
     end
