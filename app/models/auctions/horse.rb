@@ -40,6 +40,7 @@ module Auctions
     scope :broodmare, -> { joins(:horse).merge(Horses::Horse.broodmare) }
     scope :yearling, -> { joins(:horse).merge(Horses::Horse.yearling) }
     scope :weanling, -> { joins(:horse).merge(Horses::Horse.weanling) }
+    scope :associated_with_stable, ->(stable) { where("(seller_id = :id OR buyer_id = :id)", { id: stable.id }) }
 
     delegate :name, :sire, :dam, :age, :gender, :status, to: :horse
 

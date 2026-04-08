@@ -45,7 +45,6 @@ module Horses
         { key: :remove_from_auction },
         { key: :breed, policy: CurrentStable::BroodmarePolicy },
         { key: :update_race_options, policy: CurrentStable::RacehorsePolicy },
-        { key: :enter_race, policy: CurrentStable::RacehorsePolicy },
         { key: :scratch_race, policy: CurrentStable::RacehorsePolicy },
         { key: :run_workout, policy: CurrentStable::RacehorsePolicy },
         { key: :run_jump_trial, policy: CurrentStable::RacehorsePolicy },

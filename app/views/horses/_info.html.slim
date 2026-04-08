@@ -60,9 +60,12 @@
             th= t(".location")
             td
               - if horse.racehorse?
-                = horse.racing.current_location_name
+                = horse.race_metadata.location_string
                 - if horse.racing.in_transit?
                   em.ml-2= t(".in_transit", date: l(horse.racing.last_shipment.arrival_date))
+                - elsif (board = horse.current_boarding)
+                  - days = "#{board.count_days} #{I18n.t("common.day").pluralize(board.count_days)}"
+                  em.ml-2= t(".boarded", days:)
               - else
                 = horse.broodmare.current_location_name
                 - if horse.broodmare.in_transit?
@@ -134,7 +137,7 @@
                 - type = t("racing.race.#{next_race.race_type}")
                 - age_gender = [next_race.race_age_string, next_race.race_gender_string].compact.join(' ')
                 - surface = next_race.race_surface_string
-                = render Ui::Link::Component.new(url: new_racing_entry_path(date: next_race.date, number: next_race.number), extra_classes: "mt-2", data: { turbo_frame: "_top" }) do
+                = render Ui::Link::Component.new(url: new_racing_race_entry_path(next_race), extra_classes: "mt-2", data: { turbo_frame: "_top" }) do
                   = t(".next_race_info", date:, track:, number:, distance:, type:, age_gender:, surface:)
               - else
                 = t("common.dash")

@@ -78,10 +78,6 @@ module Horses
             legacy_horse = ::Legacy::Horse.find_by(ID: horse.legacy_id)
             legacy_horse&.update(InTransit: 1, Location: location_id)
             ::Legacy::ViewRacehorses.find_by(horse_id: horse.legacy_id)&.update(in_transit: 1, location: location_id)
-            if location_id != 59
-              track_name = ::Racing::Racetrack.where(location: shipment.ending_location).pick(:name)
-              ::Legacy::ViewTrainingSchedules.find_by(horse_id: horse.legacy_id)&.update(track_name:)
-            end
           end
         end
         result

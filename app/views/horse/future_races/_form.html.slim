@@ -1,0 +1,71 @@
+/# locals: (entry:, horse:, url:, error: nil, edit: false)
+= form_with model: entry, url: , id: "race-entry-form", html: { class: "form mt-4", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+  p.px-4.text-info
+    = [l(entry.race.date), entry.race.race_description_string].join(" - ")
+    = " (#{entry.race.racetrack.name})"
+  - if entry.racehorse_type.flat? && entry.race.jump?
+    p.px-4.text-error
+      i.ph.ph-fill.ph-warning.mr-2
+      = t("racing.racehorses.status.not_a_jumper")
+  - if @min_days.positive? && @existing_schedules.any? { |es| (entry.race.date - es).to_i.abs < @min_days }
+    p.px-4.text-warning
+      i.ph.ph-fill.ph-warning.mr-2
+      = t("horse.future_races.index.min_days_not_met", days: @min_days)
+  - unless error.blank?
+    p.alert.alert-error= error
+  = f.hidden_field :race_id, value: entry.race_id
+  .grid.grid-cols-1.sm:grid-cols-2.my-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t("racing.entry_options.form.racing_style")
+        = f.select :racing_style, options_for_select(entry.options_for_style_select, entry.racing_style), { include_blank: t("racing.entry_options.form.jockey_decide") }, { class: 'select' }
+        - if entry.errors[:racing_style]
+          p.text-error= entry.errors.where(:racing_style).map(&:full_message).join(', ')
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t("racing.entry_options.form.first_jockey")
+        = f.select :first_jockey, options_for_select(entry.options_for_jockey_select(entry.racehorse_type), entry.first_jockey_id), { include_blank: true }, { class: 'select' }
+        - if entry.errors[:first_jockey]
+          p.text-error= entry.errors.where(:first_jockey).map(&:full_message).join(', ')
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t("racing.entry_options.form.second_jockey")
+        = f.select :second_jockey, options_for_select(entry.options_for_jockey_select(entry.racehorse_type), entry.second_jockey_id), { include_blank: true }, { class: 'select' }
+        - if entry.errors[:second_jockey]
+          p.text-error= entry.errors.where(:second_jockey).map(&:full_message).join(', ')
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t("racing.entry_options.form.third_jockey")
+        = f.select :third_jockey, options_for_select(entry.options_for_jockey_select(entry.racehorse_type), entry.third_jockey_id), { include_blank: true }, { class: 'select' }
+        - if entry.errors[:third_jockey]
+          p.text-error= entry.errors.where(:third_jockey).map(&:full_message).join(', ')
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      = render Ui::EquipmentForm::Component.new(blinkers: entry.blinkers, shadow_roll: entry.shadow_roll, wraps: entry.wraps,
+              figure_8: entry.figure_8, no_whip: entry.no_whip, disabled: false, classes: "", id: "racing_future_race_entry", object: entry)
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".shipping_explanation", name: @horse.name)
+        label.label.inline= t(".shipping_method")
+        = f.select :mode, options_for_select(entry.options_for_mode_select, entry.ship_mode), { prompt: t(".shipping_either") }, { class: "select w-full" }
+        p.label= t(".shipping_hint")
+        - if entry.errors[:ship_mode]
+          p.text-error= entry.errors.where(:ship_mode).map(&:full_message).join(', ')
+        label.label.inline= t(".shipping_date")
+        = f.select :ship_date, options_for_select(entry.options_for_date_select, entry.entry_ship_date), { }, { class: "select w-full" }
+        - if entry.errors[:shipping_date]
+          p.text-error= entry.errors.where(:shipping_date).map(&:full_message).join(', ')
+        label.label
+          = f.check_box :ship_only_if_horse_is_entered, { class: "checkbox" }
+          = t(".shipping_only_if_horse_is_entered")
+        - if entry.errors[:ship_only_if_horse_is_entered]
+          p.text-error= entry.errors.where(:ship_date).map(&:full_message).join(', ')
+        label.label
+          = f.check_box :auto_enter, { class: "checkbox" }
+          = t(".auto_enter")
+        - if entry.errors[:auto_enter]
+          p.text-error= entry.errors.where(:auto_enter).map(&:full_message).join(', ')
+  .float-right
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.save"))

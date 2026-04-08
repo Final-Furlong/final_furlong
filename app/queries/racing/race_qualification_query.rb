@@ -21,6 +21,8 @@ module Racing
       end
       @query = query.joins(:race_qualification).merge(Racing::RaceQualification.send(:qualified_for, status)) if status.present?
       if race
+        days = (race.date - Date.current).to_i
+        @query = query.merge(Racing::RacehorseMetadata.shippable_to_location(race.racetrack.location_id, Current.stable.available_balance, days))
         @query = query.min_age(min_age).max_age(max_age)
         @query = query.female if female_only
         @query = query.not_female if male_only

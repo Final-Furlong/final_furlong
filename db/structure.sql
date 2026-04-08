@@ -130,6 +130,33 @@ CREATE TYPE public.budget_activity_type AS ENUM (
 
 
 --
+-- Name: future_entry_errors; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.future_entry_errors AS ENUM (
+    'race_full',
+    'not_at_track',
+    'already_entered',
+    'not_qualified',
+    'max_entries',
+    'cannot_afford_shipping',
+    'cannot_ship_in_time',
+    'cannot_afford_entry'
+);
+
+
+--
+-- Name: future_entry_statuses; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.future_entry_statuses AS ENUM (
+    'entered',
+    'errored',
+    'skipped'
+);
+
+
+--
 -- Name: future_event_types; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -2185,7 +2212,10 @@ CREATE TABLE public.future_race_entries (
     ship_only_if_horse_is_entered boolean DEFAULT false NOT NULL,
     ship_date date,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    stable_id bigint NOT NULL,
+    entry_status public.future_entry_statuses,
+    entry_error public.future_entry_errors
 );
 
 
@@ -2201,6 +2231,20 @@ COMMENT ON COLUMN public.future_race_entries.racing_style IS 'leading,off_pace,m
 --
 
 COMMENT ON COLUMN public.future_race_entries.ship_mode IS 'road, air';
+
+
+--
+-- Name: COLUMN future_race_entries.entry_status; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.future_race_entries.entry_status IS 'entered,errored,skipped';
+
+
+--
+-- Name: COLUMN future_race_entries.entry_error; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.future_race_entries.entry_error IS 'race_full,not_at_track,already_entered,not_qualified,max_entries,cannot_afford_shipping,cannot_ship_in_time,cannot_afford_entry';
 
 
 --
@@ -3439,7 +3483,8 @@ CREATE TABLE public.race_entries (
     odd_id bigint,
     weight integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    stable_id bigint NOT NULL
 );
 
 
@@ -3595,16 +3640,16 @@ CREATE MATERIALIZED VIEW public.race_qualifications AS
             WHEN 0 THEN false
             ELSE true
         END AS starter_allowance_qualified,
-        CASE allowance_wins.wins
-            WHEN 1 THEN false
+        CASE
+            WHEN (allowance_wins.wins >= 1) THEN false
             ELSE true
         END AS nw1_allowance_qualified,
-        CASE allowance_wins.wins
-            WHEN 2 THEN false
+        CASE
+            WHEN (allowance_wins.wins >= 2) THEN false
             ELSE true
         END AS nw2_allowance_qualified,
-        CASE allowance_wins.wins
-            WHEN 3 THEN false
+        CASE
+            WHEN (allowance_wins.wins >= 3) THEN false
             ELSE true
         END AS nw3_allowance_qualified,
         CASE ( SELECT count(r.id) AS count
@@ -6079,6 +6124,13 @@ ALTER TABLE ONLY public.workouts
 
 
 --
+-- Name: idx_on_horse_id_first_jockey_id_second_jockey_id_th_4d3e2bb186; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_horse_id_first_jockey_id_second_jockey_id_th_4d3e2bb186 ON public.race_entries USING btree (horse_id, first_jockey_id, second_jockey_id, third_jockey_id);
+
+
+--
 -- Name: idx_on_horse_id_first_jockey_id_second_jockey_id_th_b7c0ac41cd; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6611,6 +6663,20 @@ CREATE INDEX index_future_race_entries_on_date ON public.future_race_entries USI
 
 
 --
+-- Name: index_future_race_entries_on_entry_error; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_race_entries_on_entry_error ON public.future_race_entries USING btree (entry_error);
+
+
+--
+-- Name: index_future_race_entries_on_entry_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_race_entries_on_entry_status ON public.future_race_entries USING btree (entry_status);
+
+
+--
 -- Name: index_future_race_entries_on_equipment; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6685,6 +6751,13 @@ CREATE INDEX index_future_race_entries_on_ship_when_entries_open ON public.futur
 --
 
 CREATE INDEX index_future_race_entries_on_ship_when_horse_is_entered ON public.future_race_entries USING btree (ship_when_horse_is_entered);
+
+
+--
+-- Name: index_future_race_entries_on_stable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_future_race_entries_on_stable_id ON public.future_race_entries USING btree (stable_id);
 
 
 --
@@ -7413,6 +7486,13 @@ CREATE INDEX index_race_entries_on_racing_style ON public.race_entries USING btr
 --
 
 CREATE INDEX index_race_entries_on_second_jockey_id ON public.race_entries USING btree (second_jockey_id);
+
+
+--
+-- Name: index_race_entries_on_stable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_entries_on_stable_id ON public.race_entries USING btree (stable_id);
 
 
 --
@@ -8969,6 +9049,14 @@ ALTER TABLE ONLY public.stables
 
 
 --
+-- Name: race_entries fk_rails_701c85b5f6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_entries
+    ADD CONSTRAINT fk_rails_701c85b5f6 FOREIGN KEY (stable_id) REFERENCES public.stables(id);
+
+
+--
 -- Name: racetracks fk_rails_7135862009; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9070,6 +9158,14 @@ ALTER TABLE ONLY public.racing_stats
 
 ALTER TABLE ONLY public.boardings
     ADD CONSTRAINT fk_rails_91c5c287e6 FOREIGN KEY (location_id) REFERENCES public.locations(id);
+
+
+--
+-- Name: future_race_entries fk_rails_92359a897e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.future_race_entries
+    ADD CONSTRAINT fk_rails_92359a897e FOREIGN KEY (stable_id) REFERENCES public.stables(id);
 
 
 --
@@ -9519,6 +9615,10 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260416105850'),
+('20260416091719'),
+('20260415095724'),
+('20260415092857'),
 ('20260414194536'),
 ('20260407123640'),
 ('20260406111816'),

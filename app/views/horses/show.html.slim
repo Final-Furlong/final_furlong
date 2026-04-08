@@ -16,6 +16,16 @@
         p.mx-auto= t(".loading_pedigree")
         .mt-2.mx-auto.skeleton.w-full
 
+  - if CurrentStable::RacehorsePolicy.new(Current.user, horse).enter_race?
+    - entries_count = horse.race_entries.count + horse.future_race_entries.count
+    - label = entries_count.zero? ? t(".no_entries") : t(".entries", count: entries_count)
+    input.tab[ type="radio" name="horse" aria-label=label id="entries" ]
+      .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+        = turbo_frame_tag "#{@horse.slug}-entries", src: horse_entries_path(@horse), loading: "lazy" do
+          .w-full.text-center
+            p.mx-auto= t(".loading_entries")
+            .mt-2.mx-auto.skeleton.w-full
+
   input.tab[ type="radio" name="horse" aria-label=t(".races") id="races"
     disabled=!horse.lifetime_race_record
   ]
