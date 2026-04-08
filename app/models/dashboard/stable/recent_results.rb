@@ -134,7 +134,7 @@ module Dashboard
 
       def race_type_string(race)
         if race.stakes?
-          grade = I18n.t("racing.race.mobile.#{race.grade}")
+          grade = I18n.t("racing.race.mobile.#{race.grade.downcase.tr(" ", "_")}")
           I18n.t("racing.race.forum.stakes", name: race.name, grade:)
         else
           prefix_key = race.race_type.to_s.casecmp("allowance").zero? ? "allowance_prefix" : "other_prefix"
