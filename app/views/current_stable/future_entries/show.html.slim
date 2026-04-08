@@ -1,0 +1,35 @@
+- title =  t(".title", date: l(@date))
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new( links: [{ name: Current.stable.name, href: current_stable_path },
+                                                    { name: title, href: "#", title: true }],
+                                            mobile_links: [{ name: Current.stable.name, href: current_stable_path },
+                                                    { name: t(".title"), href: "#", title: true }])
+p.font-bold.text-center.w-full.my-2= "#{@results.count} #{Horses::Horse.model_name.human.pluralize(@results.count)}"
+table.table.table-responsive.table-zebra.sortable.n-last
+  thead
+    tr
+      th= t("racing.race.date")
+      th= t("racing.race.horse")
+      th= t("racing.race.track")
+      th= t("racing.race.race")
+      th= t("racing.race.surface")
+      th= t(".result")
+  tbody
+    - @results.each do |result|
+      - race = result.race
+      - horse = result.horse
+      tr
+        td= l(race.date)
+        td class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), target: "_top"
+        td= race.racetrack.name
+        td= race.race_description_string
+        td= race.track_surface.surface_short
+        td
+          - if result.entry_status == "entered"
+            span.badge.badge-success.badge-outline= t(".entered")
+          - elsif result.entry_status == "skipped"
+            span.badge.badge-warning.badge-outline= t(".skipped")
+          - elsif result.entry_status == "errored"
+            span.badge.badge-error.badge-outline= t(".errored", message: t(".#{result.entry_error}"))
+          - else
+            = result.inspect

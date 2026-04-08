@@ -1,0 +1,77 @@
+/# locals: (horse:, current_entries:, scheduled_entries:)
+.card.card-border.bg-base-100.w-full.px-2
+  .card-body.p-0.rounded-none
+    .collapse.collapse-open.bg-base-100.border-base-content/50.border.border-1
+      input type="checkbox"
+      .collapse-title.font-semibold.font-medium
+        p.text-center= t(".current_entries")
+      .collapse-content.pt-4.text-sm.border-t-1.border-base-content/40
+        - if current_entries.size.zero? && scheduled_entries.size.zero?
+          p.text-center= t(".no_current_entries")
+        - else
+          table.table.table-responsive.sortable.n-last
+            thead
+              tr
+                th= t("racing.race.date")
+                th= t("racing.race.number")
+                th= t("racing.race.track")
+                th= t("racing.race.race")
+                th= t("racing.race.equipment")
+                th= t("racing.race.entries_count")
+                th= t("common.actions.title")
+            tbody
+              - current_entries.each do |entry|
+                - race = entry.race
+                tr
+                  td= l(race.date)
+                  td= race.number
+                  td= race.racetrack.name
+                  td
+                    = link_to new_racing_race_entry_path(race), class: "link", data: { turbo_frame: "_top" } do
+                      = race.race_description_string(show_number: false)
+                  td= entry.equipment_string(blank: "")
+                  td= race.entries_count
+                  td
+                    - if policy(entry).edit?
+                      = render Ui::ButtonizedLink::Component.new(url: edit_racing_race_entry_option_path(race, entry), size: :small, style: :outline, extra_classes: 'inline', data: { turbo_frame: "modal" }) do
+                        i.ph-fill.ph-pencil
+                        = t(".edit")
+                    - if policy(entry).scratch?
+                      = render Ui::Button::Component.new(url: racing_race_entry_path(race, entry), color: :error, style: :outline, size: :small, form_class: 'inline',
+                        http_method: :delete, data: { turbo_confirm: t("racing.entries.entries.scratch_confirm"), turbo_confirm_title: t("racing.entries.entries.scratch_confirm_title", name: @horse.name) }) do
+                        = t("racing.entries.entries.scratch")
+              - scheduled_entries.each do |entry|
+                - race = entry.race
+                tr
+                  td= l(race.date)
+                  td= race.number
+                  td= race.racetrack.name
+                  td= race.race_description_string(show_number: false)
+                  td= entry.equipment_string(blank: "")
+                  td= t("common.dash")
+                  td
+                    - if policy(entry).edit?
+                      = render Ui::ButtonizedLink::Component.new(url: edit_horse_future_race_path(entry.horse, race), size: :small, style: :outline, extra_classes: 'inline', data: { turbo_frame: "modal" }) do
+                        i.ph-fill.ph-pencil
+                        = t(".edit")
+                    - if policy(entry).destroy?
+                      = render Ui::Button::Component.new(url: horse_future_race_path(entry.horse, race), color: :error, style: :outline, size: :small, form_class: 'inline',
+                        http_method: :delete, data: { turbo_confirm: t("racing.entries.future_entries.delete_confirm"), turbo_confirm_title: t("racing.entries.future_entries.delete_confirm_title", name: @horse.name) }) do
+                        = t("common.actions.delete")
+
+.card.card-border.bg-base-100.w-full.px-2.pt-4
+  .card-body.p-0.rounded-none
+    .collapse.collapse-open.bg-base-100.border-base-content/50.border.border-1
+      input type="checkbox"
+      .collapse-title.font-semibold.font-medium
+        p.text-center= t(".future_races")
+      .collapse-content.pt-4.text-sm.border-t-1.border-base-content/40
+        - if CurrentStable::RacehorsePolicy.new(Current.user, @horse).schedule_race?
+          = turbo_frame_tag "#{horse.slug}-future-races", src: horse_future_races_path(horse), loading: "lazy" do
+            .w-full.text-center
+              p.mx-auto= t(".loading_future_races")
+              .mt-2.mx-auto.skeleton.w-full
+        - else
+          = turbo_frame_tag "#{horse.slug}-future-races" do
+            .w-full.text-center.text-warning
+              p= t(".max_future_entries")

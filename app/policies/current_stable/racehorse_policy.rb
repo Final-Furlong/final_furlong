@@ -25,7 +25,6 @@ module CurrentStable
       def game_settings
         return {} unless user.setting.racing
         {
-
           minimum_energy: user.setting.racing.min_energy_for_race_entry,
           minimum_days_since_last_race: user.setting.racing.min_days_delay_from_last_race,
           minimum_days_since_last_injury: user.setting.racing.min_days_delay_from_last_injury,
@@ -43,13 +42,11 @@ module CurrentStable
     end
 
     def view_race_stats?
-      return false unless record.racehorse?
-
-      manager?
+      racehorse_and_manager?
     end
 
     def view_workout_stats?
-      view_race_stats?
+      racehorse_and_manager?
     end
 
     def nominate?
@@ -58,8 +55,13 @@ module CurrentStable
     end
 
     def enter_race?
-      # TODO: migrate race entries + implement them
-      false
+      racehorse_and_manager?
+    end
+
+    def schedule_race?
+      return false unless racehorse_and_manager?
+
+      record.future_race_entries.count < Config::Racing.future_race_limit
     end
 
     def scratch_race?
@@ -95,6 +97,12 @@ module CurrentStable
     end
 
     private
+
+    def racehorse_and_manager?
+      return false unless record.racehorse?
+
+      manager?
+    end
 
     def owner_not_leased?
       owner? && record.current_lease.blank?
