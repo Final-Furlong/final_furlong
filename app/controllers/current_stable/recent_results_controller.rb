@@ -6,7 +6,7 @@ module CurrentStable
       @query = @query.where(race: { date: @date }).order(race: { number: :asc })
       authorize @query.first.race
 
-      @pagy, @results = pagy(@query)
+      @results = @query.to_a
     end
   end
 end
