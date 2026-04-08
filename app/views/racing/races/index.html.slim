@@ -29,7 +29,7 @@ ruby:
           td.pr-0 data-sort=race.entries_count
             span= race.entries_count
             - if policy(Racing::RaceEntry.new(race:, date: race.date)).new?
-              = link_to new_racing_entry_path(date: race.date, number: race.number), class: "ml-2", target: "modal" do
+              = link_to new_racing_entry_path(date: race.date, number: race.number), class: "ml-2", data: { turbo_frame: "_top" } do
                 i.ph.ph-plus
           td= race.number
           td= race.racetrack.name

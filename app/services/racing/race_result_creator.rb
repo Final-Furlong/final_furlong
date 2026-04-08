@@ -28,7 +28,7 @@ module Racing
           race_horses = process_race_horses(race_result:, horses:)
           race_horses.each do |race_horse|
             result.created = race_horse.valid?
-            stats = update_stats(horse: race_horse.horse, race_horse:, horses:, date: race_date)
+            stats = update_stats(horse: race_horse.horse, race_horse:, horses:, date: race_date, racetrack: surface.racetrack)
             next if race_horse.save! && (stats.blank? || stats.save!)
 
             result.created = false
@@ -38,6 +38,8 @@ module Racing
         trigger_horse_attribute_updates(horses:)
         if max_race?(date:, number:)
           Racing::RaceResultHorse.counter_culture_fix_counts
+          Racing::RaceRecord.refresh
+          Racing::LifetimeRaceRecord.refresh
           UpdateRaceResultHorseAbbreviationsJob.perform_later(date:)
           Racing::RaceDayUpdaterJob.perform_later(date:)
           Daily::ProcessFutureShipmentsJob.perform_later
@@ -82,7 +84,7 @@ module Racing
       end
     end
 
-    def update_stats(horse:, horses:, race_horse:, date:)
+    def update_stats(horse:, horses:, race_horse:, date:, racetrack:)
       stats = horse.racing_stats
       return unless stats
 
@@ -97,7 +99,7 @@ module Racing
       if (data = horse.race_metadata)
         data.update_grades(energy: stats.energy, fitness: stats.fitness, update_legacy: true)
         next_entry_date = horse.race_entries.where("date > ?", date).minimum(:date) || horse.future_race_entries.where("date > ?", date).minimum(:date)
-        data.update(last_raced_at: date, next_entry_date:)
+        data.update(last_raced_at: date, next_entry_date:, racetrack:, location: racetrack.location)
       end
       stats
     end
