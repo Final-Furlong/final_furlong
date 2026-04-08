@@ -31,9 +31,9 @@ module Racing
             end
             horse.training_schedules_horse&.destroy
             description = "Claimed: #{horse.name} from race #{entry.race.number}"
-            Accounts::BudgetTransactionCreator.new.create_transaction(stable: owner, description:, amount: claim_price, activity_type: "claimed_horse")
+            Accounts::BudgetTransactionCreator.new.create_transaction(stable: owner, description:, amount: claim_price)
             description = "Claim: #{horse.name} from race #{entry.race.number}"
-            Accounts::BudgetTransactionCreator.new.create_transaction(stable: claimer, description:, amount: claim_price * -1, activity_type: "claimed_horse")
+            Accounts::BudgetTransactionCreator.new.create_transaction(stable: claimer, description:, amount: claim_price * -1)
             Horses::Sale.create!(date: race.date, price: claiming_price, private: false, buyer: claimer, seller: owner, horse:)
           end
           if horse.reload.owner == claimer
