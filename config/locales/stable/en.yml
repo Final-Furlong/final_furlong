@@ -85,6 +85,31 @@ en:
         total_gained: Total Money Gained
         total_lost: Total Money Lost
         total_spent: Total Money Spent
+    current_boardings:
+      index:
+        mobile_explanation: Horses are displayed with Energy/Fitness (Days Boarded)
+    future_entries:
+      show:
+        already_entered: Already racing on this day
+        cannot_afford_entry: Cannot afford to entry
+        cannot_afford_shipping: Cannot afford to ship
+        cannot_ship_in_time: Cannot ship in time
+        energy_too_low: Energy too low
+        entered: Entered
+        errored: 'Error: %{message}'
+        max_entries: Max horses entered from your stable
+        not_at_track: Not at the track
+        not_qualified: Not qualified for race
+        race_full: Race Full
+        result: Entry Result
+        scheduled: Scheduled
+        skipped: Not Entered
+        title: Scheduled Entries
+        title_with_date: Scheduled Entries for %{date}
+        too_few_days_since_last_injury: Not long enough since last injury
+        too_few_days_since_last_race: Not long enough since last race
+        too_few_rest_days: Too few rest days
+        too_few_workouts: Too few workouts
     horses:
       index:
         lease_offers: Lease Offers (%{count})
@@ -236,6 +261,16 @@ en:
       create:
         success: Workout for %{horse} ran successfully
   stables:
+    alerts:
+      alerts_title: Stable Alerts
+      auctions:
+        auction_watch_page: View your auction watch page
+        current_auction_count:
+          one: There is %{count} auction currently happening.
+          other: There are %{count} auctions currently happening.
+        future_auction_count:
+          one: There is %{count} auction coming up in the next two weeks.
+          other: There are %{count} auctions coming up in the next two weeks.
     edit:
       header: Edit Stable
     index:

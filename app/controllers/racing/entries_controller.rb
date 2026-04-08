@@ -15,9 +15,23 @@ module Racing
     end
 
     def new
-      race = Racing::RaceSchedule.find_by!(date: params[:date], number: params[:number])
+      race = Racing::RaceSchedule.find(params[:race_id])
       @entry = Racing::RaceEntry.new(date: race.date, race:)
-      authorize @entry
+      authorize @entry, :show?
+    end
+
+    def destroy
+      race = Racing::RaceSchedule.find(params[:race_id])
+      @entry = Racing::RaceEntry.find(params[:id])
+      authorize @entry, :scratch?
+
+      result = Racing::EntryScratcher.new.scratch_entry(entry: @entry, stable: Current.stable)
+      if result.scratched?
+        flash[:success] = result.message
+      else
+        flash[:error] = result.error
+      end
+      redirect_to new_racing_race_entry_path(race)
     end
   end
 end

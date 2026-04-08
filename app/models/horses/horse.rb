@@ -198,7 +198,7 @@ module Horses
     end
 
     def manager
-      current_lease&.persisted? ? current_lease.leaser : owner
+      leaser || owner
     end
 
     def location_bred_name

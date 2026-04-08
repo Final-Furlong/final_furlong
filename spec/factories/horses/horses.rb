@@ -32,6 +32,14 @@ FactoryBot.define do
       broodmare
     end
 
+    trait :racehorse do
+      status { "racehorse" }
+
+      after(:create) do |horse|
+        create(:racehorse_metadata, horse:)
+      end
+    end
+
     trait :weanling do
       name { nil }
       status { "weanling" }
