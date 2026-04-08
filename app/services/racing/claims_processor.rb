@@ -23,7 +23,7 @@ module Racing
         owner = winning_claim.owner
         claimer = winning_claim.claimer
 
-        if claimer.available_budget.to_i > claim_price
+        if claimer.available_balance.to_i > claim_price
           ActiveRecord::Base.transaction do
             horse.update(owner: claimer)
             if (auction_horse = horse.auction_horse)
