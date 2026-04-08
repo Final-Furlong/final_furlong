@@ -3,7 +3,7 @@ en:
   account:
     stables:
       stable:
-        last_online: 'Last online at: %{date}'
+        last_online: "Last online at: %{date}"
         no_description: No description
   current_stable:
     actions:
@@ -42,7 +42,7 @@ en:
         success: Boarding was successfully stopped
     budgets:
       index:
-        available_balance: 'Available: %{amount}'
+        available_balance: "Available: %{amount}"
         category:
           activity_points: Activity Points
           all_breeding: All Breeding
@@ -70,9 +70,9 @@ en:
           sold_or_bought: Sold/Bought/Leased
         no_transactions: Could not find any transactions.
         title: Budget
-        title_with_available: 'Budget: (%{total}, %{available} available)'
-        title_with_total: 'Budget: %{total}'
-        total_balance: 'Total: %{amount}'
+        title_with_available: "Budget: (%{total}, %{available} available)"
+        title_with_total: "Budget: %{total}"
+        total_balance: "Total: %{amount}"
       search:
         category: Category
         date_from: Date From
@@ -85,6 +85,26 @@ en:
         total_gained: Total Money Gained
         total_lost: Total Money Lost
         total_spent: Total Money Spent
+    current_boardings:
+      index:
+        mobile_explanation: Horses are displayed with Energy/Fitness (Days Boarded)
+    future_entries:
+      show:
+        already_entered: Already racing on this day
+        cannot_afford_entry: Cannot afford to entry
+        cannot_afford_shipping: Cannot afford to ship
+        cannot_ship_in_time: Cannot ship in time
+        entered: Entered
+        errored: "Error: %{message}"
+        max_entries: Max horses entered from your stable
+        not_at_track: Not at the track
+        not_qualified: Not qualified for race
+        race_full: Race Full
+        result: Entry Result
+        scheduled: Scheduled
+        skipped: Not Entered
+        title: Scheduled Entries
+        title_with_date: Scheduled Entries for %{date}
     horses:
       index:
         lease_offers: Lease Offers (%{count})
@@ -124,8 +144,8 @@ en:
         title: Horses Offered for Sale
     settings:
       new:
-        browser_subscribed: 'Status: YES! Your browser is currently subscribed to push notifications'
-        browser_unsubscribed: 'Status: Your browser is NOT subscribed to push notifications'
+        browser_subscribed: "Status: YES! Your browser is currently subscribed to push notifications"
+        browser_unsubscribed: "Status: Your browser is NOT subscribed to push notifications"
         instructions: Try sending a web push notification using the form below. The first text box will be used as a title and the second text box represents the message body. Click the button to send a push notification to yourself.
         notification: Hi from Final Furlong
         notification_not_supported: Notifications are not supported in your browser
@@ -186,7 +206,7 @@ en:
         title: New Training Schedule
       show:
         manage_horses: Horses (%{count})
-        title: 'Training Schedule: %{name}'
+        title: "Training Schedule: %{name}"
         workouts_count: Workouts (%{count})
       update:
         success: Training Schedule was successfully updated.
@@ -236,6 +256,16 @@ en:
       create:
         success: Workout for %{horse} ran successfully
   stables:
+    alerts:
+      alerts_title: Stable Alerts
+      auctions:
+        auction_watch_page: View your auction watch page
+        current_auction_count:
+          one: There is %{count} auction currently happening.
+          other: There are %{count} auctions currently happening.
+        future_auction_count:
+          one: There is %{count} auction coming up in the next two weeks.
+          other: There are %{count} auctions coming up in the next two weeks.
     edit:
       header: Edit Stable
     index:

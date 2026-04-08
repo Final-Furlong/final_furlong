@@ -225,7 +225,8 @@ RSpec.describe Racing::RaceResultCreator do
   def horse1
     return @horse1 if defined?(@horse1)
 
-    @horse1 = create(:horse, legacy_id: 10)
+    @horse1 = create(:horse, :racehorse, legacy_id: 10)
+    @horse1.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
     create(:race_entry, horse: @horse1, race:, jockey: jockey1)
     @horse1
   end
@@ -233,7 +234,8 @@ RSpec.describe Racing::RaceResultCreator do
   def horse2
     return @horse2 if defined?(@horse2)
 
-    @horse2 = create(:horse, legacy_id: 20)
+    @horse2 = create(:horse, :racehorse, legacy_id: 20)
+    @horse2.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
     create(:race_entry, horse: @horse2, race:, jockey: jockey2)
     @horse2
   end

@@ -8,22 +8,39 @@ en:
         link: View Bidding
     destroy:
       success: Notification was successfully deleted
+    future_entry_processing_notification:
+      entered_horses:
+        zero: No horses were entered
+        one: 1 horse was entered
+        other: "%{count} horses were entered"
+      errored_horses:
+        zero: No horses were skipped due to errors
+        one: 1 horse was skipped due to errors
+        other: "%{count} horses were skipped due to errors"
+      message: Automatic entries for %{date} have run. %{entered}, %{skipped}, %{errored}
+      skipped_horses:
+        zero: No horses were skipped
+        one: 1 horse was skipped
+        other: "%{count} horses were skipped"
+      title: Scheduled Entries
+      view_future_entries:
+        link: View Details
     horse_born_notification:
       message: The foal for %{sire} x %{dam} was born
       message_created: The created foal was born
-      title: 'Foal Birth: %{mare}'
+      title: "Foal Birth: %{mare}"
     horse_died_notification:
       message: "%{horse} has died"
       title: Horse Died
     horse_premature_notification:
       message: The foal for %{sire} x %{dam} was born premature
-      title: 'Foal Birth: %{mare}'
+      title: "Foal Birth: %{mare}"
     horse_retired_notification:
       message: "%{horse} has been retired"
       title: Horse Retired
     horse_stillborn_notification:
       message: The foal for %{sire} x %{dam} was stillborn
-      title: 'Stillborn Foal: %{mare}'
+      title: "Stillborn Foal: %{mare}"
     index:
       info: Info
       no_notifications: You have no notifications.
@@ -36,7 +53,7 @@ en:
       message: The lease on %{name} has ended.
       title: Lease Ended
     lease_offer_expiry_notification:
-      message: 'The lease offer on %{horse} for %{duration} (Fee: %{fee}) has expired.'
+      message: "The lease offer on %{horse} for %{duration} (Fee: %{fee}) has expired."
       title: Lease Offer Expired
     lease_offer_notification:
       accept_lease:
@@ -58,7 +75,7 @@ en:
       message: "%{stable} has purchased %{horse} for %{price}"
       title: Horse Sold
     sale_offer_expiry_notification:
-      message: 'The sale offer on %{horse} (Price: %{price}) has expired.'
+      message: "The sale offer on %{horse} (Price: %{price}) has expired."
       title: Sale Offer Expired
     sale_offer_notification:
       buy_horse:

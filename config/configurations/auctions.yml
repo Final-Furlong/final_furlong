@@ -1,4 +1,5 @@
 shared:
+  future_auction_notification_days: 14
   max_auctions_per_stable: 1
   minimum_start_date_days_delay: 7
   minimum_duration_days: 7

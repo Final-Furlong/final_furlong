@@ -21,7 +21,15 @@ en:
         delete_confirm: Are you sure you want to delete your claim for %{name}?
         not_logged_in: Log In
         owns_horse: Your Horse
+      entries:
+        edit: Update
+        scratch: Scratch
+        scratch_confirm: Are you sure you want to scratch?
+        scratch_confirm_title: Scratch %{name}
       equipment: Equipment
+      future_entries:
+        delete_confirm: Are you sure you want to delete this entry?
+        delete_confirm_title: Delete Scheduled Entry for %{name}
       gender: Gender
       name: Horse
       new:
@@ -63,6 +71,7 @@ en:
       claiming_with_price: Claiming (%{price})
       date: Date
       distance: Distance
+      entries_count: Entries
       equipment: Equipment
       female_only: Female
       final_furlong: Final
@@ -135,11 +144,14 @@ en:
       weight: Weight
     racehorses:
       status:
+        enter: Enter
         last_race_hint: Last Race Date (Days)
         last_rest_hint: Last Date At Farm (Rest Days)
         last_shipped_hint: Last Shipment Date (Days)
         location_hint: Racetrack (Miles from This Race)
         not_a_jumper: This horse has not switched to SC
+        schedule: Schedule
+        scheduled: Scheduled
         workouts_hint: Since Last Race
     races:
       index:
@@ -161,6 +173,13 @@ en:
       race_number: 'Race #%{number}'
       speed_factor: Speed Factor
       weight: Lbs.
+    shipping:
+      future_races:
+        entries_open: When entries open
+        horse_entered: When horse is entered
+      mode:
+        air: Air
+        road: Road
     style:
       closing: Closer
       leading: Leading

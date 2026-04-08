@@ -18,6 +18,15 @@ module Racing
 
     def surface = super.to_s.inquiry
 
+    def surface_short
+      case surface
+      when "dirt", "turf"
+        surface.capitalize
+      else
+        surface_abbr
+      end
+    end
+
     def surface_abbr
       case surface
       when "dirt"
