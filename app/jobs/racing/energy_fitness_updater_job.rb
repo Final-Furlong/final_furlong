@@ -12,54 +12,52 @@ class Racing::EnergyFitnessUpdaterJob < ApplicationJob
       date_last_run = last_run
       days_since = (Date.current - date_last_run.to_date).to_i
 
-      ActiveRecord::Base.transaction do
-        # rubocop:disable Rails/SkipsModelValidations
-        Racing::RacingStats.where(natural_energy_gain: "0.000").update_all(Arel.sql("natural_energy_gain = (FLOOR(RANDOM() * (444 - 220 + 1) + 220) / 100)"))
-        Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where(race_metadata: { at_home: true }))
-          .update_all(Arel.sql("energy = (energy + ((natural_energy_gain + energy_regain) * #{days_since})), fitness = (fitness - #{days_since})"))
-        Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.associated(:current_boarding))
-          .update_all(Arel.sql("energy = (energy + ((natural_energy_gain + energy_regain) * #{days_since})), fitness = (fitness - #{days_since})"))
-        Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.missing(:current_boarding).where(race_metadata: { at_home: false }))
-          .update_all(Arel.sql("energy = (energy + (energy_regain * #{days_since})), fitness = (fitness - #{days_since})"))
-        Racing::RacingStats.where("energy > 100").update_all(energy: 100)
-        Racing::RacingStats.where("energy < -100").update_all(energy: -100)
-        Racing::RacingStats.where("fitness < 20").update_all(fitness: 20)
-        Racing::RacingStats.where("fitness > 120").update_all(fitness: 120)
-        Racing::RacingStats.where("xp_current > 100").update_all(xp_current: 100)
+      # rubocop:disable Rails/SkipsModelValidations
+      Racing::RacingStats.where(natural_energy_gain: "0.000").update_all(Arel.sql("natural_energy_gain = (FLOOR(RANDOM() * (444 - 220 + 1) + 220) / 100)"))
+      Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where(race_metadata: { at_home: true }))
+        .update_all(Arel.sql("energy = (energy + ((natural_energy_gain + energy_regain) * #{days_since})), fitness = (fitness - #{days_since})"))
+      Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.associated(:current_boarding))
+        .update_all(Arel.sql("energy = (energy + ((natural_energy_gain + energy_regain) * #{days_since})), fitness = (fitness - #{days_since})"))
+      Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.missing(:current_boarding).where(race_metadata: { at_home: false }))
+        .update_all(Arel.sql("energy = (energy + (energy_regain * #{days_since})), fitness = (fitness - #{days_since})"))
+      Racing::RacingStats.where("energy > 100").update_all(energy: 100)
+      Racing::RacingStats.where("energy < -100").update_all(energy: -100)
+      Racing::RacingStats.where("fitness < 20").update_all(fitness: 20)
+      Racing::RacingStats.where("fitness > 120").update_all(fitness: 120)
+      Racing::RacingStats.where("xp_current > 100").update_all(xp_current: 100)
 
-        Racing::RacehorseMetadata
-          .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL (racing_stats.energy * ((91 + FLOOR(RANDOM() * 20))/100)) <= ?", 40))
-          .update_all(energy_grade: "F")
-        Racing::RacehorseMetadata
-          .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.energy * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 41, 60))
-          .update_all(energy_grade: "D")
-        Racing::RacehorseMetadata
-          .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.energy * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 61, 70))
-          .update_all(energy_grade: "C")
-        Racing::RacehorseMetadata.joins(horse: :racing_stats)
-          .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.energy * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 71, 90))
-          .update_all(energy_grade: "B")
-        Racing::RacehorseMetadata
-          .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.energy * ((91 + FLOOR(RANDOM() * 20))/100)) > ?", 90))
-          .update_all(energy_grade: "A")
+      Racing::RacehorseMetadata
+        .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.energy * ((91 + FLOOR(RANDOM() * 20))/100)) <= ?", 40))
+        .update_all(energy_grade: "F")
+      Racing::RacehorseMetadata
+        .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.energy * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 41, 60))
+        .update_all(energy_grade: "D")
+      Racing::RacehorseMetadata
+        .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.energy * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 61, 70))
+        .update_all(energy_grade: "C")
+      Racing::RacehorseMetadata.joins(horse: :racing_stats)
+        .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.energy * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 71, 90))
+        .update_all(energy_grade: "B")
+      Racing::RacehorseMetadata
+        .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.energy * ((91 + FLOOR(RANDOM() * 20))/100)) > ?", 90))
+        .update_all(energy_grade: "A")
 
-        Racing::RacehorseMetadata
-          .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL (racing_stats.fitness * ((91 + FLOOR(RANDOM() * 20))/100)) <= ?", 40))
-          .update_all(fitness_grade: "F")
-        Racing::RacehorseMetadata
-          .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.fitness * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 41, 60))
-          .update_all(fitness_grade: "D")
-        Racing::RacehorseMetadata
-          .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.fitness * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 61, 70))
-          .update_all(fitness_grade: "C")
-        Racing::RacehorseMetadata.joins(horse: :racing_stats)
-          .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.fitness * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 71, 90))
-          .update_all(fitness_grade: "B")
-        Racing::RacehorseMetadata
-          .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.fitness * ((91 + FLOOR(RANDOM() * 20))/100)) > ?", 90))
-          .update_all(fitness_grade: "A")
-        # rubocop:enable Rails/SkipsModelValidations
-      end
+      Racing::RacehorseMetadata
+        .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.fitness * ((91 + FLOOR(RANDOM() * 20))/100)) <= ?", 40))
+        .update_all(fitness_grade: "F")
+      Racing::RacehorseMetadata
+        .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.fitness * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 41, 60))
+        .update_all(fitness_grade: "D")
+      Racing::RacehorseMetadata
+        .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.fitness * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 61, 70))
+        .update_all(fitness_grade: "C")
+      Racing::RacehorseMetadata.joins(horse: :racing_stats)
+        .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.fitness * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 71, 90))
+        .update_all(fitness_grade: "B")
+      Racing::RacehorseMetadata
+        .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.fitness * ((91 + FLOOR(RANDOM() * 20))/100)) > ?", 90))
+        .update_all(fitness_grade: "A")
+      # rubocop:enable Rails/SkipsModelValidations
     end
 
     step :process do |step|
@@ -87,13 +85,6 @@ class Racing::EnergyFitnessUpdaterJob < ApplicationJob
         .exec_query("
           UPDATE horse_racehorses_mv hv LEFT JOIN ff_horses h ON hv.horse_id = h.ID
           SET hv.energy_grade = h.DisplayEnergy, hv.fitness_grade = h.DisplayFitness
-        ")
-      Legacy::Record
-        .connection
-        .exec_query("
-          UPDATE horse_training_schedules_mv hv LEFT JOIN ff_horses h ON hv.horse_id = h.ID
-          SET hv.energy_current = h.EnergyCurrent, hv.fitness = h.Fitness,
-            hv.energy_grade = h.DisplayEnergy, hv.fitness_grade = h.DisplayFitness
         ")
     end
     store_job_info(outcome: { horses: })
