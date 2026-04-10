@@ -55,7 +55,7 @@ module Horses
       if horse.dam.present?
         component = Ui::Link::Component.new(url: routes.horse_path(horse.dam.slug), data: { turbo_frame: target })
         ApplicationController.new.view_context.render(component) do
-          name(horse: horse.dam.dam, include_title:)
+          name(horse: horse.dam, include_title:)
         end
       else
         display_created(tag)

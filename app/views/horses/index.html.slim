@@ -28,7 +28,7 @@
 
 .card.card-border.mt-2.p-4.shadow-md.border-1.border-base-100
   = turbo_stream_from "horses"
-  = render Horses::StatusList::Component.new(version: request_variant, variants: [:desktop], statuses:, active_status:,
+  = render Horses::StatusList::Component.new(version: request_variant, variants: [:desktop, :mobile], statuses:, active_status:,
                                              params:, path_name: "horses_path")
   .card-body
     = turbo_frame_tag "horses" do
