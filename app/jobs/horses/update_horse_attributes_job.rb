@@ -5,3 +5,4 @@ class Horses::UpdateHorseAttributesJob < ApplicationJob
     ::Horses::UpdateHorseAttributesService.new.call(horse:)
   end
 end
+

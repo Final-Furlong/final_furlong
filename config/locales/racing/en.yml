@@ -25,9 +25,9 @@ en:
       gender: Gender
       name: Horse
       new:
-        entry_fee: "Entry Fee: %{fee}"
+        entry_fee: 'Entry Fee: %{fee}'
         entry_limit: You may enter %{horses} in this race.
-        horses: "Horses Entered: %{count}"
+        horses: 'Horses Entered: %{count}'
         title: Enter Race
       owner: Owner
       parents: Sire x Dam
@@ -126,7 +126,6 @@ en:
         claim_failure: If unsuccessful, you will not be notified in any way. You will not be charged any claiming fee.
         claim_limit: You may put in a claim for 1 horse only
         claim_success: If successful, your claim will be processed after races have been run. You will be charged the claiming fee for the horse.
-        entries: Entries
         no_races: No races scheduled on this day.
         title: Post Parade
     results:
@@ -137,7 +136,7 @@ en:
         title: Race Results
       injuries: Injuries
       no_injuries: No Injuries
-      race_number: "Race #%{number}"
+      race_number: 'Race #%{number}'
       speed_factor: Speed Factor
       weight: Lbs.
     style:

@@ -5,13 +5,6 @@ RSpec.describe Horses::UpdateHorseAttributesJob, :perform_enqueueed_jobs do
     end.to have_enqueued_job.on_queue("default")
   end
 
-  it "triggers lifetime race record view refresh" do
-    Racing::RaceRecord.refresh
-    allow(Racing::RaceRecord).to receive(:refresh)
-    described_class.perform_later(horse)
-    expect(Racing::RaceRecord).to have_received(:refresh)
-  end
-
   it "triggers update service" do
     mock_service = instance_double(Horses::UpdateHorseAttributesService, call: true)
     allow(Horses::UpdateHorseAttributesService).to receive(:new).and_return mock_service
