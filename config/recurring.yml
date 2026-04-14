@@ -69,7 +69,7 @@ production:
   race_entry_filler:
     class: Racing::RaceFillerJob
     queue: default
-    schedule: at 1:14am on Tuesday and Friday
+    schedule: 14 1 * * 2,5 # Tues/Sat AM
   race_entry_migrate:
     class: Racing::RaceEntryMigrationJob
     queue: default
