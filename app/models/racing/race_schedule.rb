@@ -74,6 +74,10 @@ class Racing::RaceSchedule < ApplicationRecord
     "flat"
   end
 
+  def jump?
+    surface_type == "jump"
+  end
+
   def surface_name
     track_surface.surface.downcase
   end

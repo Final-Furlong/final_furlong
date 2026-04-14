@@ -119,14 +119,25 @@ end
 # Table name: race_qualifications
 # Database name: primary
 #
-#  allowance_placed            :boolean
-#  claiming_qualified          :boolean
-#  maiden_qualified            :boolean
-#  nw1_allowance_qualified     :boolean
-#  nw2_allowance_qualified     :boolean
-#  nw3_allowance_qualified     :boolean
-#  stakes_placed               :boolean
-#  starter_allowance_qualified :boolean
+#  allowance_placed            :boolean          indexed
+#  claiming_qualified          :boolean          indexed
+#  maiden_qualified            :boolean          indexed
+#  nw1_allowance_qualified     :boolean          indexed
+#  nw2_allowance_qualified     :boolean          indexed
+#  nw3_allowance_qualified     :boolean          indexed
+#  stakes_placed               :boolean          indexed
+#  starter_allowance_qualified :boolean          indexed
 #  horse_id                    :bigint           primary key
+#
+# Indexes
+#
+#  index_race_qualifications_on_allowance_placed             (allowance_placed)
+#  index_race_qualifications_on_claiming_qualified           (claiming_qualified)
+#  index_race_qualifications_on_maiden_qualified             (maiden_qualified)
+#  index_race_qualifications_on_nw1_allowance_qualified      (nw1_allowance_qualified)
+#  index_race_qualifications_on_nw2_allowance_qualified      (nw2_allowance_qualified)
+#  index_race_qualifications_on_nw3_allowance_qualified      (nw3_allowance_qualified)
+#  index_race_qualifications_on_stakes_placed                (stakes_placed)
+#  index_race_qualifications_on_starter_allowance_qualified  (starter_allowance_qualified)
 #
 

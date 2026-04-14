@@ -19,10 +19,12 @@ module Racing
     validates :weight, numericality: { only_integer: true }
     validates :racing_style, inclusion: { in: Config::Racing.styles }, allow_nil: true
     validates :horse_id, uniqueness: { scope: :date }
+    validates :jockey_id, uniqueness: { scope: :race_id }, allow_nil: true
 
     scope :future, -> { where("date > ?", Date.current) }
     scope :past, -> { where(date: ...Date.current) }
     scope :ordered_by_name, -> { joins(:horse).merge(Horses::Horse.order_by_name) }
+    scope :needs_pre_race, -> { where("(post_parade = 0 OR weight = 0 OR jockey_id IS NULL OR odd_id IS NULL)") }
 
     counter_culture :race, column_name: "entries_count"
   end
@@ -43,25 +45,26 @@ end
 #  updated_at                                     :datetime         not null
 #  first_jockey_id                                :bigint           indexed
 #  horse_id                                       :bigint           not null, uniquely indexed => [date]
-#  jockey_id                                      :bigint           indexed
+#  jockey_id                                      :bigint           indexed, uniquely indexed => [race_id]
 #  odd_id                                         :bigint           indexed
-#  race_id                                        :bigint           not null, indexed
+#  race_id                                        :bigint           not null, indexed, uniquely indexed => [jockey_id]
 #  second_jockey_id                               :bigint           indexed
 #  third_jockey_id                                :bigint           indexed
 #
 # Indexes
 #
-#  index_race_entries_on_date               (date)
-#  index_race_entries_on_equipment          (equipment)
-#  index_race_entries_on_first_jockey_id    (first_jockey_id)
-#  index_race_entries_on_horse_id_and_date  (horse_id,date) UNIQUE
-#  index_race_entries_on_jockey_id          (jockey_id)
-#  index_race_entries_on_odd_id             (odd_id)
-#  index_race_entries_on_post_parade        (post_parade)
-#  index_race_entries_on_race_id            (race_id)
-#  index_race_entries_on_racing_style       (racing_style)
-#  index_race_entries_on_second_jockey_id   (second_jockey_id)
-#  index_race_entries_on_third_jockey_id    (third_jockey_id)
+#  index_race_entries_on_date                   (date)
+#  index_race_entries_on_equipment              (equipment)
+#  index_race_entries_on_first_jockey_id        (first_jockey_id)
+#  index_race_entries_on_horse_id_and_date      (horse_id,date) UNIQUE
+#  index_race_entries_on_jockey_id              (jockey_id)
+#  index_race_entries_on_odd_id                 (odd_id)
+#  index_race_entries_on_post_parade            (post_parade)
+#  index_race_entries_on_race_id                (race_id)
+#  index_race_entries_on_race_id_and_jockey_id  (race_id,jockey_id) UNIQUE
+#  index_race_entries_on_racing_style           (racing_style)
+#  index_race_entries_on_second_jockey_id       (second_jockey_id)
+#  index_race_entries_on_third_jockey_id        (third_jockey_id)
 #
 # Foreign Keys
 #

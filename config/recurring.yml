@@ -70,6 +70,10 @@ production:
     class: Racing::RaceFillerJob
     queue: default
     schedule: 14 1 * * 2,5 # Tues/Sat AM
+  race_entry_prerace:
+    class: Racing::PreRaceJob
+    queue: default
+    schedule: 14 2 * * 2,5 # Tues/Sat AM
   race_entry_migrate:
     class: Racing::RaceEntryMigrationJob
     queue: default

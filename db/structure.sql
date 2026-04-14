@@ -7402,6 +7402,13 @@ CREATE INDEX index_race_entries_on_race_id ON public.race_entries USING btree (r
 
 
 --
+-- Name: index_race_entries_on_race_id_and_jockey_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_race_entries_on_race_id_and_jockey_id ON public.race_entries USING btree (race_id, jockey_id);
+
+
+--
 -- Name: index_race_entries_on_racing_style; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7504,6 +7511,62 @@ CREATE INDEX index_race_options_on_second_jockey_id ON public.race_options USING
 --
 
 CREATE INDEX index_race_options_on_third_jockey_id ON public.race_options USING btree (third_jockey_id);
+
+
+--
+-- Name: index_race_qualifications_on_allowance_placed; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_qualifications_on_allowance_placed ON public.race_qualifications USING btree (allowance_placed);
+
+
+--
+-- Name: index_race_qualifications_on_claiming_qualified; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_qualifications_on_claiming_qualified ON public.race_qualifications USING btree (claiming_qualified);
+
+
+--
+-- Name: index_race_qualifications_on_maiden_qualified; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_qualifications_on_maiden_qualified ON public.race_qualifications USING btree (maiden_qualified);
+
+
+--
+-- Name: index_race_qualifications_on_nw1_allowance_qualified; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_qualifications_on_nw1_allowance_qualified ON public.race_qualifications USING btree (nw1_allowance_qualified);
+
+
+--
+-- Name: index_race_qualifications_on_nw2_allowance_qualified; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_qualifications_on_nw2_allowance_qualified ON public.race_qualifications USING btree (nw2_allowance_qualified);
+
+
+--
+-- Name: index_race_qualifications_on_nw3_allowance_qualified; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_qualifications_on_nw3_allowance_qualified ON public.race_qualifications USING btree (nw3_allowance_qualified);
+
+
+--
+-- Name: index_race_qualifications_on_stakes_placed; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_qualifications_on_stakes_placed ON public.race_qualifications USING btree (stakes_placed);
+
+
+--
+-- Name: index_race_qualifications_on_starter_allowance_qualified; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_qualifications_on_starter_allowance_qualified ON public.race_qualifications USING btree (starter_allowance_qualified);
 
 
 --
@@ -9463,6 +9526,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260414194536'),
 ('20260407123640'),
 ('20260406111816'),
 ('20260405164943'),

@@ -34,7 +34,6 @@ class MigrateLegacyRaceEntriesService # rubocop:disable Metrics/ClassLength
     entry.first_jockey = Racing::Jockey.find_by(legacy_id: legacy_entry.Jock1)
     entry.second_jockey = Racing::Jockey.find_by(legacy_id: legacy_entry.Jock2)
     entry.third_jockey = Racing::Jockey.find_by(legacy_id: legacy_entry.Jock3)
-    entry.jockey = Racing::Jockey.find_by(legacy_id: legacy_entry.Jockey)
     entry.odd = Racing::Odd.find_by(display: Legacy::Odd.find_by(ID: legacy_entry.Odds)&.Odds)
 
     if legacy_entry.Equipment.to_i.positive?

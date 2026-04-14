@@ -124,3 +124,22 @@ shared:
     maiden:
       - 2
       - 1
+  weights:
+    apprentice_jockey_bonus: 3
+    female_bonus: 3
+    younger_bonus: 2
+    maiden_bonus_open_allowance: 3
+    maiden_bonus_non_open_allowance: 2
+    maiden_bonus_stakes: 5
+    maiden: 122
+    claiming_15000: 122
+    claiming_40000: 126
+    claiming: 130
+    starter_allowance: 124
+    nw1_allowance: 126
+    nw2_allowance: 128
+    nw3_allowance: 130
+    allowance: 132
+    stakes: 134
+    stakes_handicap_min: 108
+    stakes_handicap_max: 150

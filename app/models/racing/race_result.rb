@@ -37,7 +37,9 @@ module Racing
     scope :by_date, ->(date) { where(date:) }
     scope :before_date, ->(date) { where(date: ...date) }
     scope :since_date, ->(date) { where(date: date..) }
-    scope :ordered_by_date, -> { order(date: :asc) }
+    scope :ordered_by_date, ->(dir = :asc) { order(date: dir.to_sym) }
+    scope :min_distance, ->(distance) { where(distance: distance..) }
+    scope :max_distance, ->(distance) { where(distance: ..distance) }
 
     delegate :racetrack, to: :track_surface
 
