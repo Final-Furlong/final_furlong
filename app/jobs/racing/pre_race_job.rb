@@ -11,7 +11,7 @@ class Racing::PreRaceJob < ApplicationJob
 
     step :process do |step|
       entries = Racing::RaceEntry.where(date: tomorrow).needs_pre_race
-      Racing::RaceSchedule.joins(:entries).where(entries:).find_each(start: step.cursor) do |race|
+      Racing::RaceSchedule.where(date: tomorrow).joins(:entries).where(entries:).find_each(start: step.cursor) do |race|
         index = 1
         taken_jockey_ids = race.entries.where.not(jockey: nil).pluck(:jockey_id)
         race.entries.order("RANDOM()").each do |entry|
