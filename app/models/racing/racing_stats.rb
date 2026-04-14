@@ -17,7 +17,7 @@ module Racing
       :traffic, :turf, :turning, :weight, :xp_current, :xp_rate,
       presence: true
 
-    scope :min_energy, ->(energy) { where('energy >= ?', energy) }
+    scope :min_energy, ->(energy) { where(energy: energy..) }
 
     has_flags 1 => :blinkers,
       2 => :shadow_roll,
@@ -147,3 +147,4 @@ end
 #
 #  fk_rails_...  (horse_id => horses.id)
 #
+

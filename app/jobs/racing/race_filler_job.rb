@@ -12,7 +12,7 @@ class Racing::RaceFillerJob < ApplicationJob
     return unless owner
 
     step :process_regular do |step|
-      Racing::RaceSchedule.includes(:track_surface).where(date: tomorrow).where.not(race_type: "stakes").where("entries_count < ?", Config::Racing.minimum_horses).find_each(start: step.cursor) do |race|
+      Racing::RaceSchedule.includes(:track_surface).where(date: tomorrow).where.not(race_type: "stakes").where(entries_count: ...Config::Racing.minimum_horses).find_each(start: step.cursor) do |race|
         horses_needed = Config::Racing.minimum_horses - race.entries_count
         horses, races = process_race(Config::Racing.minimum_horses, horses_needed, race, owner, horses, races)
         step.advance! from: race.id
@@ -20,7 +20,7 @@ class Racing::RaceFillerJob < ApplicationJob
     end
 
     step :process_stakes do |step|
-      Racing::RaceSchedule.where(date: tomorrow).where(race_type: "stakes").where("entries_count < ?", Config::Racing.minimum_horses_stakes).find_each(start: step.cursor) do |race|
+      Racing::RaceSchedule.where(date: tomorrow).where(race_type: "stakes").where(entries_count: ...Config::Racing.minimum_horses_stakes).find_each(start: step.cursor) do |race|
         horses_needed = Config::Racing.minimum_horses_stakes - race.entries_count
         horses, races = process_race(Config::Racing.minimum_horses_stakes, horses_needed, race, owner, horses, races)
         step.advance! from: race.id
@@ -66,3 +66,4 @@ class Racing::RaceFillerJob < ApplicationJob
     [horses, races]
   end
 end
+
