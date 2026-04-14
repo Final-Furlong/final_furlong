@@ -33,6 +33,27 @@ en:
       parents: Sire x Dam
       record: Record
       stable: Stable
+    entry_options:
+      budget_description: 'Entry Fee: %{date}, Race %{number} - %{name}'
+      create:
+        failure: "%{name} could not be entered"
+        success: "%{name} was successfully entered"
+      edit:
+        title: Update %{name} Options
+      form:
+        first_jockey: First Choice Jockey
+        jockey_decide: Let the jockey decide
+        next_race_note: 'Note on the next race entry: %{content}'
+        racing_style: Running Style
+        second_jockey: Second Choice Jockey
+        third_jockey: Third Choice Jockey
+      new:
+        title: Enter %{name}
+      shipment_form:
+        needs_shipping: "%{name} needs to be shipped to the track"
+      update:
+        failure: "%{name} entry options could not be updated"
+        success: "%{name} entry options were successfully updated"
     race:
       age: Age
       age_desc: for %{age}
@@ -90,6 +111,7 @@ en:
       nw2_allowance: NW2 Allowance
       nw3_allowance: NW3 Allowance
       odds: Odds
+      post_parade: Post Parade
       post_position: Post
       post_position_abbr: PP
       post_position_expanded: Post Position

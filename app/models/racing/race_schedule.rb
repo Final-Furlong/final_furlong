@@ -28,12 +28,18 @@ class Racing::RaceSchedule < ApplicationRecord
   scope :next_year, -> { where("date > ?", Date.current + 10.months) }
   scope :past, -> { where(date: ...Date.current) }
 
+  def race_type = super.to_s.inquiry
+
+  def entry_open_date
+    date - Config::Racing.entry_open_days.days
+  end
+
   def entry_deadline
-    date - Config::Game.entry_deadline_days.days
+    date - Config::Racing.entry_deadline_days.days
   end
 
   def claiming_deadline
-    date - Config::Game.claiming_deadline_days.days
+    date - Config::Racing.claiming_deadline_days.days
   end
 
   def past?
@@ -41,13 +47,13 @@ class Racing::RaceSchedule < ApplicationRecord
   end
 
   def entry_limit
-    entry_limit = age.start_with?("2") ? Config::Game.entry_limit_2yo : Config::Game.entry_limit_older
-    entry_limit += Config::Game.entry_limit_increase_final_day if Date.current == entry_deadline
+    entry_limit = age.start_with?("2") ? Config::Racing.entry_limit_2yo : Config::Racing.entry_limit_older
+    entry_limit += Config::Racing.entry_limit_increase_final_day if Date.current == entry_deadline
     entry_limit
   end
 
   def entry_fee
-    purse * Config::Game.entry_fee_percent
+    purse * Config::Racing.entry_fee_percent
   end
 
   def min_age

@@ -1,4 +1,14 @@
 shared:
+  claiming_deadline_days: 1
+  entry_open_days: 7
+  entry_deadline_days: 2
+  entry_fee_percent: 0.05
+  entry_limit_2yo: 1
+  entry_limit_older: 2
+  entry_limit_increase_final_day: 1
+  entry_limit_overall: 14
+  future_race_limit: 5
+  future_race_max_days: 90
   max_racing_age: 10
   minimum_distance: 5.0
   maximum_distance: 24.0
@@ -8,6 +18,9 @@ shared:
   maximum_fitness: 120
   minimum_xp: 0
   maximum_xp: 100
+  minimum_horses: 6
+  minimum_horses_stakes: 10
+  minimum_energy_racefiller: 80
   racehorse_types:
     - flat
     - jump

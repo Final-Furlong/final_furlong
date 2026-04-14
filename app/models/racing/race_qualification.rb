@@ -23,7 +23,13 @@ module Racing
         query
       end
     }
-    scope :qualified_for_exactly, ->(type) { where("#{type}_qualified": true) }
+    scope :qualified_for_exactly, ->(type) {
+      if Config::Racing.non_qualified_types.include?(type)
+        all
+      else
+        where("#{type}_qualified": true)
+      end
+    }
     scope :not_qualified_for, ->(type) { where("#{type}_qualified": false) }
     scope :sort_by_qualified_asc, -> {
       order(Arel.sql("CASE

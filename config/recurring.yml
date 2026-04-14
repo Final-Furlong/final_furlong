@@ -66,6 +66,10 @@ production:
     class: Auctions::ProcessSalesJob
     queue: default
     schedule: every 12 hours at minute 8
+  race_entry_filler:
+    class: Racing::RaceFillerJob
+    queue: default
+    schedule: at 1:14am on Tuesday and Friday
   race_entry_migrate:
     class: Racing::RaceEntryMigrationJob
     queue: default
