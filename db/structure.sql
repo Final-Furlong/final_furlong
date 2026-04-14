@@ -7395,13 +7395,6 @@ CREATE INDEX index_race_entries_on_post_parade ON public.race_entries USING btre
 
 
 --
--- Name: index_race_entries_on_race_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_entries_on_race_id ON public.race_entries USING btree (race_id);
-
-
---
 -- Name: index_race_entries_on_race_id_and_jockey_id; Type: INDEX; Schema: public; Owner: -
 --
 

@@ -47,7 +47,7 @@ end
 #  horse_id                                       :bigint           not null, uniquely indexed => [date]
 #  jockey_id                                      :bigint           indexed, uniquely indexed => [race_id]
 #  odd_id                                         :bigint           indexed
-#  race_id                                        :bigint           not null, indexed, uniquely indexed => [jockey_id]
+#  race_id                                        :bigint           not null, uniquely indexed => [jockey_id]
 #  second_jockey_id                               :bigint           indexed
 #  third_jockey_id                                :bigint           indexed
 #
@@ -60,7 +60,6 @@ end
 #  index_race_entries_on_jockey_id              (jockey_id)
 #  index_race_entries_on_odd_id                 (odd_id)
 #  index_race_entries_on_post_parade            (post_parade)
-#  index_race_entries_on_race_id                (race_id)
 #  index_race_entries_on_race_id_and_jockey_id  (race_id,jockey_id) UNIQUE
 #  index_race_entries_on_racing_style           (racing_style)
 #  index_race_entries_on_second_jockey_id       (second_jockey_id)
