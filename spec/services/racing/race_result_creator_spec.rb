@@ -172,17 +172,21 @@ RSpec.describe Racing::RaceResultCreator do
 
   def params
     {
-      date: Date.current,
-      number: 1,
-      race_type: "maiden",
-      distance: 10.5,
-      age: "3",
+      date: race.date,
+      number: race.number,
+      race_type: race.race_type,
+      distance: race.distance,
+      age: race.age,
       surface:,
       condition: "fast",
       time: 75.2,
-      purse: 15_000,
+      purse: race.purse,
       horses:
     }
+  end
+
+  def race
+    @race ||= create(:race_schedule, race_type: "maiden", date: Date.current, number: 1, distance: 10.5, age: "3", track_surface: surface, purse: 15_000)
   end
 
   def surface
@@ -198,11 +202,7 @@ RSpec.describe Racing::RaceResultCreator do
         margins: "1|1|1|1|Head",
         fractions: "0:10|0:20|0:30|0:40|0:50",
         legacy_id: horse1.legacy_id,
-        jockey_legacy_id: jockey1.legacy_id,
-        odds: "20:1",
-        weight: 125,
         speed_factor: 95,
-        blinkers: true,
         energy_used: 60,
         fitness_gained: 25,
         natural_energy_used: 15
@@ -214,9 +214,6 @@ RSpec.describe Racing::RaceResultCreator do
         margins: "1|1|1|1|Head",
         fractions: "0:10|0:20|0:30|0:40|0:50",
         legacy_id: horse2.legacy_id,
-        jockey_legacy_id: jockey2.legacy_id,
-        odds: "10:1",
-        weight: 125,
         speed_factor: 91,
         energy_used: 60,
         fitness_gained: 25,
@@ -226,11 +223,19 @@ RSpec.describe Racing::RaceResultCreator do
   end
 
   def horse1
-    @horse1 ||= create(:horse, legacy_id: 10)
+    return @horse1 if defined?(@horse1)
+
+    @horse1 = create(:horse, legacy_id: 10)
+    create(:race_entry, horse: @horse1, race:, jockey: jockey1)
+    @horse1
   end
 
   def horse2
-    @horse2 ||= create(:horse, legacy_id: 20)
+    return @horse2 if defined?(@horse2)
+
+    @horse2 = create(:horse, legacy_id: 20)
+    create(:race_entry, horse: @horse2, race:, jockey: jockey2)
+    @horse2
   end
 
   def jockey1

@@ -127,8 +127,7 @@ module Racing
       horses.each do |horse|
         race_horse = Racing::RaceResultHorse.find_or_initialize_by(race: race_result, legacy_horse_id: horse[:legacy_id])
         horse_class = Horses::Horse.find_by(legacy_id: horse[:legacy_id])
-        jockey = Racing::Jockey.find_by(legacy_id: horse[:jockey_legacy_id])
-        odd = Racing::Odd.find_by(display: horse[:odds])
+        entry = Racing::RaceEntry.joins(:race).where(race: { number: race_result.number, date: race_result.date }).find_by(horse: horse_class)
         attrs = {
           horse: horse_class,
           stable: horse_class.manager,
@@ -138,14 +137,14 @@ module Racing
           fractions: horse[:fractions],
           speed_factor: horse[:speed_factor],
           finish_position: horse[:finish_position],
-          weight: horse[:weight],
-          jockey:,
-          odd:,
-          blinkers: horse[:blinkers],
-          shadow_roll: horse[:shadow_roll],
-          wraps: horse[:wraps],
-          figure_8: horse[:figure_8],
-          no_whip: horse[:no_whip],
+          weight: entry.weight,
+          jockey: entry.jockey,
+          odd: entry.odd,
+          blinkers: entry.blinkers,
+          shadow_roll: entry.shadow_roll,
+          wraps: entry.wraps,
+          figure_8: entry.figure_8,
+          no_whip: entry.no_whip,
           created_at: race_result.date.beginning_of_day + race_result.number.minutes + horse[:post_parade].minutes,
           earnings: calculate_earnings(race_result.purse, horse[:finish_position]),
           points: calculate_points(race_horse.finish_position, race_result)
