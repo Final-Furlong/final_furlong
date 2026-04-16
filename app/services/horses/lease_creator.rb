@@ -30,7 +30,6 @@ module Horses
           legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
           legacy_horse&.update(Leased: 1, Leaser: stable.legacy_id)
           Legacy::ViewRacehorses.find_by(horse_id: horse.legacy_id)&.update(leased: 1, leaser: stable.legacy_id)
-          Legacy::ViewTrainingSchedules.find_by(horse_id: horse.legacy_id)&.update(leased: 1, leaser: stable.legacy_id)
           description = I18n.t("services.lease_creator.description_leaser",
             horse: horse.name,
             stable: horse.owner.name,

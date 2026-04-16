@@ -3,17 +3,22 @@
     p= t("current_stable.boardings.index.no_boardings")
   - else
     .mx-auto.overflow-x-auto.w-full.sm:hidden
+      p.text-sm.my-2= t(".mobile_explanation")
       - @boardings.each do |boarding|
         - horse = boarding.horse
+        - data = horse.race_metadata
         .card.bg-base-100.w-full.px-2.rounded-none
           .card-body.p-0.rounded-none
-            .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+            .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
               input type="checkbox"
               .collapse-title.font-semibold.font-medium
                 span class="text-#{horse.gender.downcase}"
                   = horse.name_with_title
                 span.float-right
-                  = l(boarding.start_date)
+                  = [data&.energy_grade, data&.fitness_grade].compact_blank.join("/")
+                  = " ("
+                  = boarding.count_days
+                  = ")"
               .collapse-content.text-sm
                 p
                   span= t("horse.events.boardings.start_date")
@@ -24,6 +29,12 @@
                 p
                   span= t("horse.events.boardings.location")
                   span.float-right= boarding.location.racetrack.name
+                p
+                  span= t("current_stable.training_summaries.show.energy")
+                  span.float-right= data&.energy_grade
+                p
+                  span= t("current_stable.training_summaries.show.fitness")
+                  span.float-right= data&.fitness_grade
                 p.text-center
                   = render Ui::ButtonizedLink::Component.new(color: :error, style: :outline, url: stable_boarding_path(boarding), data: { turbo_method: 'put', turbo_frame: "_top" }) do
                     = t("current_stable.boardings.index.stop_boarding")
@@ -35,15 +46,20 @@
             th= t("horse.events.boardings.start_date")
             th= t("horse.events.boardings.location")
             th= t("horse.events.boardings.days")
+            th= t("current_stable.training_summaries.show.energy")
+            th= t("current_stable.training_summaries.show.fitness")
             th
         tbody
           - @boardings.each do |boarding|
             - horse = boarding.horse
+            - data = horse.race_metadata
             tr
               td class="text-#{horse.gender.downcase}"= link_to horse.name, horse_path(horse), data: { turbo_frame: "_top" }
               td= l(boarding.start_date)
               td= boarding.location.racetrack.name
               td= (Date.current - boarding.start_date).to_i
+              td= data&.energy_grade
+              td= data&.fitness_grade
               td
                 = render Ui::ButtonizedLink::Component.new(color: :error, style: :outline, url: stable_boarding_path(boarding), data: { turbo_method: 'put', turbo_frame: "_top" }) do
                   = t("current_stable.boardings.index.stop_boarding")

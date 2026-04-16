@@ -89,7 +89,9 @@
       table.table.table-responsive.table-zebra.m-2
         thead
           tr
-            th.text-center colspan=columns = race.race_description_string
+            th.text-center colspan=columns
+              = race.race_description_string
+              = " (#{race.racetrack.name})"
           tr
             th.text-center colspan=columns = "#{race.entries_count} #{Horses::Horse.model_name.human.pluralize(race.entries_count)}"
           tr
@@ -120,7 +122,7 @@
                 = " x "
                 = pedigree.dam_display(tag: true, include_title: true)
               td= horse.lifetime_race_record&.to_s || t("horse.unraced")
-              td= entry.jockey.full_name if entry.jockey
+              td= entry.jockey.full_name if entry.jockey && entry.post_parade.positive?
               td= entry.equipment_string(blank: "")
               td= entry.weight if entry.weight.positive?
               td= entry.odd&.to_s if entry.odd

@@ -25,7 +25,6 @@ module Horses
         id = horse.legacy_id
         Legacy::Horse.where(ID: id).update(Name: name)
         Legacy::ViewRacehorses.where(horse_id: id).update(horse_name: name)
-        Legacy::ViewTrainingSchedules.where(horse_id: id).update(horse_name: name)
         Legacy::ViewBroodmares.where(horse_id: id).update(horse_name: name)
       end
     end

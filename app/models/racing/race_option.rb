@@ -1,6 +1,7 @@
 module Racing
   class RaceOption < ApplicationRecord
     include Equipmentable
+    include RaceRunnable
 
     belongs_to :horse, class_name: "Horses::Horse"
     belongs_to :first_jockey, class_name: "Racing::Jockey", optional: true
@@ -56,18 +57,6 @@ module Racing
         surface_list << "dirt" if trains_on_dirt
         surface_list << "turf" if trains_on_turf
         surface_list
-      end
-    end
-
-    def options_for_style_select
-      Config::Racing.styles.map do |style|
-        [I18n.t("racing.style.#{style}"), style]
-      end
-    end
-
-    def options_for_jockey_select(type)
-      Racing::Jockey.active.send(type.to_sym).ordered_by_name.all.map do |jockey|
-        [jockey.full_name, jockey.id]
       end
     end
 
