@@ -5,7 +5,7 @@ module Racing
 
     attr_accessor :entry_ship_date
 
-    enum :entry_status, { entered: "entered", errored: "errored", skipped: "skipped" }
+    # enum :entry_status, { entered: "entered", errored: "errored", skipped: "skipped" }
 
     belongs_to :horse, class_name: "Horses::Horse"
     belongs_to :race, class_name: "Racing::RaceSchedule"
