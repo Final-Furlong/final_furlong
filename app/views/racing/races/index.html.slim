@@ -28,9 +28,12 @@ ruby:
         tr
           td.pr-0 data-sort=race.entries_count
             span= race.entries_count
-            - if policy(Racing::RaceEntry.new(race:, date: race.date)).new?
-              = link_to new_racing_entry_path(date: race.date, number: race.number), class: "ml-2", data: { turbo_frame: "_top" } do
+            - entry_policy = policy(Racing::RaceEntry.new(race:, date: race.date))
+            = link_to new_racing_race_entry_path(race), class: "ml-2", data: { turbo_frame: "_top" } do
+              - if entry_policy.new? && entry_policy.create?
                 i.ph.ph-plus
+              - elsif race.entries_count.positive?
+                i.ph.ph-fill.ph-eye
           td= race.number
           td= race.racetrack.name
           td data-sort=race.race_type_sort

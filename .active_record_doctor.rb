@@ -165,7 +165,6 @@ ActiveRecordDoctor.configure do
     "Legacy::WorkoutType",
     "Legacy::ViewBroodmares",
     "Legacy::ViewRacehorses",
-    "Legacy::ViewTrainingSchedules",
     "Motor::Alert",
     "Motor::AlertLock",
     "Motor::ApiConfig",

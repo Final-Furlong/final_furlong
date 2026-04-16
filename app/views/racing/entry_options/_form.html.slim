@@ -1,0 +1,41 @@
+/# locals: (entry:, horse:, url:, error: nil, edit: false)
+= form_with model: entry, url: , id: "race-entry-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+  - unless error.blank?
+    p.alert.alert-error= error
+  - if horse.race_options&.note_for_next_race
+    p.alert.alert-warning= t(".next_race_note", content: horse.race_options.note_for_next_race)
+  = f.hidden_field :horse_id, value: horse.id
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".racing_style")
+        = f.select :racing_style, options_for_select(entry.options_for_style_select, entry.racing_style), { include_blank: t(".jockey_decide") }, { class: 'select' }
+        - if entry.errors[:racing_style]
+          p.text-error= entry.errors.where(:racing_style).map(&:full_message).join(', ')
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".first_jockey")
+        = f.select :first_jockey, options_for_select(entry.options_for_jockey_select(entry.racehorse_type), entry.first_jockey_id), { include_blank: true }, { class: 'select' }
+        - if entry.errors[:first_jockey]
+          p.text-error= entry.errors.where(:first_jockey).map(&:full_message).join(', ')
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".second_jockey")
+        = f.select :second_jockey, options_for_select(entry.options_for_jockey_select(entry.racehorse_type), entry.second_jockey_id), { include_blank: true }, { class: 'select' }
+        - if entry.errors[:second_jockey]
+          p.text-error= entry.errors.where(:second_jockey).map(&:full_message).join(', ')
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".third_jockey")
+        = f.select :third_jockey, options_for_select(entry.options_for_jockey_select(entry.racehorse_type), entry.third_jockey_id), { include_blank: true }, { class: 'select' }
+        - if entry.errors[:third_jockey]
+          p.text-error= entry.errors.where(:third_jockey).map(&:full_message).join(', ')
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      = render Ui::EquipmentForm::Component.new(blinkers: entry.blinkers, shadow_roll: entry.shadow_roll, wraps: entry.wraps,
+              figure_8: entry.figure_8, no_whip: entry.no_whip, disabled: false, classes: "", id: "racing_race_entry", object: entry)
+    = render("shipment_form", horse:, entry:, form: f) if !edit && horse.race_metadata.racetrack != entry.race.racetrack
+  .float-right
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.save"))
