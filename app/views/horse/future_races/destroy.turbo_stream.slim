@@ -1,0 +1,3 @@
+= turbo_stream.replace("messages", partial: "layouts/flash")
+= turbo_stream.replace("#{@horse.slug}-entries", partial: "horse/entries/entries", locals: { horse: @horse, current_entries: @current_entries, scheduled_entries: @scheduled_entries })
+= turbo_stream.replace("breadcrumbs", partial: "horses/breadcrumbs", locals: { horse: @horse.reload })

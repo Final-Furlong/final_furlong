@@ -8,6 +8,23 @@ en:
         link: View Bidding
     destroy:
       success: Notification was successfully deleted
+    future_entry_processing_notification:
+      entered_horses:
+        one: 1 horse was entered
+        other: "%{count} horses were entered"
+        zero: No horses were entered
+      errored_horses:
+        one: 1 horse was skipped due to errors
+        other: "%{count} horses were skipped due to errors"
+        zero: No horses were skipped due to errors
+      message: Automatic entries for %{date} have run. %{entered}, %{skipped}, %{errored}
+      skipped_horses:
+        one: 1 horse was skipped
+        other: "%{count} horses were skipped"
+        zero: No horses were skipped
+      title: Scheduled Entries
+      view_future_entries:
+        link: View Details
     horse_born_notification:
       message: The foal for %{sire} x %{dam} was born
       message_created: The created foal was born

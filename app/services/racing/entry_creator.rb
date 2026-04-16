@@ -7,7 +7,7 @@ module Racing
       @horse = horse
       @ship_mode = shipping_mode.to_s.inquiry
       race_date = Date.parse(race.date.to_s)
-      entry = Racing::RaceEntry.new(race:, date: race_date, horse:)
+      entry = Racing::RaceEntry.new(race:, date: race_date, horse:, stable:)
       entry.racing_style = racing_style if racing_style.present?
       entry.first_jockey = Racing::Jockey.find_by(id: first_jockey) if first_jockey.present?
       entry.second_jockey = Racing::Jockey.find_by(id: second_jockey) if second_jockey.present?
@@ -56,7 +56,7 @@ module Racing
         return result
       end
 
-      if race.entries.where(horse: Horses::Horse.racehorse.managed_by(stable)).count >= race.entry_limit
+      if race.entries.where(stable:).count >= race.entry_limit
         result.error = error("max_entries_stable")
         return result
       end
@@ -69,7 +69,7 @@ module Racing
       fee = race.entry_fee
       data = horse.race_metadata
       @race_location = race.racetrack.location
-      max_travel_days = (race.entry_deadline - Date.current).to_i
+      max_travel_days = (race.travel_deadline - Date.current).to_i
       needs_shipment = false
       if data.location != race_location && !data.in_transit
         if ship_mode.present?
@@ -101,7 +101,7 @@ module Racing
         if shipment.ending_location != race_location
           result.error = I18n.t("services.races.entry_creator.horse_in_transit_elsewhere", name: horse.name)
           return result
-        elsif shipment.arrival_date > race.entry_deadline
+        elsif shipment.arrival_date > race.travel_deadline
           result.error = I18n.t("services.races.entry_creator.horse_in_transit_not_in_time", name: horse.name)
           return result
         end

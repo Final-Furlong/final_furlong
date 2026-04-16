@@ -1,0 +1,8 @@
+ruby:
+  title = t(".title", name: @horse.name)
+  content_for :title, title
+
+.text-center
+  h1.text-xl.font-bold= title
+
+= render "form", horse: @horse, entry: @entry, edit: false, url: horse_future_race_path(@horse, @entry)

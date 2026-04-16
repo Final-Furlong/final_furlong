@@ -18,6 +18,7 @@ class MigrateLegacyRaceEntriesService # rubocop:disable Metrics/ClassLength
 
     entry = Racing::RaceEntry.find_or_initialize_by(horse:, date:)
     entry.race = race
+    entry.stable = horse.manager
     entry.created_at = legacy_entry.EntryDate
     entry.post_parade = legacy_entry.PP.presence || 0
     entry.weight = legacy_entry.Weight.presence || 0

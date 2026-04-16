@@ -1,0 +1,41 @@
+- title = @date ? t(".title_with_date", date: l(@date)) : t(".title")
+- pagy_hash = @pagy.data_hash(data_keys: %i[count limit])
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new( links: [{ name: Current.stable.name, href: current_stable_path },
+                                                    { name: title, href: "#", title: true }],
+                                            mobile_links: [{ name: Current.stable.name, href: current_stable_path },
+                                                    { name: t(".title"), href: "#", title: true }])
+p.font-bold.text-center.w-full.my-2= "#{pagy_hash[:count]} #{Horses::Horse.model_name.human.pluralize(pagy_hash[:count])}"
+table.table.table-responsive.table-zebra.sortable.n-last
+  thead
+    tr
+      th= t("racing.race.date")
+      th= t("racing.race.horse")
+      th= t("racing.race.track")
+      th= t("racing.race.race")
+      th= t("racing.race.surface")
+      th= t(".result")
+  tbody
+    - @results.each do |result|
+      - race = result.race
+      - horse = result.horse
+      tr
+        td= l(race.date)
+        td class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), target: "_top"
+        td= race.racetrack.name
+        td class="#{'link' if (Date.current > race.entry_open_date)}"
+          = link_to_if (Date.current > race.entry_open_date), race.race_description_string, new_racing_race_entry_path(race)
+        td= race.track_surface.surface_short
+        td
+          - if result.entry_status == "entered"
+            span.badge.badge-success.badge-outline= t(".entered")
+          - elsif result.entry_status == "skipped"
+            span.badge.badge-warning.badge-outline= t(".skipped")
+          - elsif result.entry_status == "errored"
+            span.badge.badge-error.badge-outline= t(".errored", message: t(".#{result.entry_error}"))
+          - else
+            span.badge.badge-secondary.badge-outline= t(".scheduled")
+
+  - if pagy_hash[:count] > pagy_hash[:limit]
+    .float-right
+      == @pagy.series_nav

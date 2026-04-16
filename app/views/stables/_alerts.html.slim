@@ -1,0 +1,9 @@
+.mt-4.overflow-x-auto.mx-auto.w-full class="sm:w-3/4 bg-base-100"
+  .card.card-border.bg-base-100.w-full.px-2.rounded-md.border.border-primary
+    .card-body.p-0.rounded-none
+      .collapse.collapse-open.bg-base-100
+        input type="checkbox" aria-label="Stable Alerts"
+        .collapse-title.font-semibold.font-medium
+          p.font-bold.text-center= t(".alerts_title")
+        .collapse-content.text-sm.border-t-1.border-base-content/40.p-0
+          = render "stables/alerts/auctions"
