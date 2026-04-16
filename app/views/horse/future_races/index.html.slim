@@ -1,0 +1,42 @@
+= turbo_frame_tag "#{@horse.slug}-future-races" do
+  - if @races.size.zero?
+    p.text-center= t(".no_future_races")
+  - else
+    p.alert.alert-info.alert-outline= t(".entry_limit", count: Config::Racing.future_race_limit)
+    - racehorse_type = @horse.race_options.racehorse_type.to_s.inquiry
+    table.table.table-responsive.sortable.n-last
+      thead
+        tr
+          th= t("racing.race.date")
+          th= t("racing.race.track")
+          th= t("racing.race.race")
+          th= t("racing.race.surface")
+          th= t("common.actions.title")
+      tbody
+        - @races.each do |race|
+          tr
+            td= l(race.date)
+            td= race.racetrack.name
+            td= race.race_description_string(show_number: false)
+            td= race.track_surface.surface_short
+            td
+              - if @min_days.positive? && @existing_schedules.any? { |es| (race.date - es).to_i.abs < @min_days }
+                span.text-warning
+                  .tooltip.mr-2.text-lg data-tip=t(".min_days_not_met", days: @min_days)
+                    i.ph.ph-fill.ph-warning
+              - if racehorse_type.flat? && race.jump?
+                span.text-error
+                  .tooltip.mr-2.text-lg data-tip=t("racing.racehorses.status.not_a_jumper")
+                    i.ph.ph-fill.ph-warning
+
+              - if race.entries_open?
+                = render Ui::ButtonizedLink::Component.new(url: new_racing_race_entry_path(race), size: :small, style: :outline, extra_classes: 'inline', data: { turbo_frame: "_top" }) do
+                  i.ph-fill.ph-arrow
+                  = t(".enter")
+              - else
+                = render Ui::ButtonizedLink::Component.new(url: horse_new_future_race_path(@horse, race), size: :small, style: :outline, extra_classes: 'inline', data: { turbo_frame: "modal" }) do
+                  i.ph-fill.ph-pencil
+                  = t(".schedule")
+
+    .float-right.mt-2
+      == @pagy.series_nav

@@ -47,6 +47,16 @@ en:
         confirm: Are you sure you want to stop boarding %{horse}?
         confirm_title: Stop Boarding
     created: Created
+    entries:
+      entries:
+        current_entries: Current Entries
+        edit: Edit
+        energy_grade: Current Energy (%{grade})
+        fitness_grade: Current Fitness (%{grade})
+        future_races: Future Races
+        loading_future_races: Loading future races...
+        max_future_entries: You cannot schedule more entries for this horse
+        no_current_entries: There are no current or scheduled entries.
     entry_state:
       current: Currently Entered
       none: None
@@ -168,6 +178,34 @@ en:
       sire_foals:
         foals: Foals
         summary: Summary
+    future_races:
+      create:
+        failure: The scheduled entry for %{name} could not be created
+        success: The race for %{name} was successfully scheduled
+      destroy:
+        failure: The scheduled entry for %{name} could not be deleted
+        success: The scheduled entry for %{name} was successfully deleted
+      edit:
+        title: Update Schedule for %{name}
+      form:
+        auto_enter: Auto-enter this horse when entries open.
+        shipping_date: Shipping Date
+        shipping_either: Either
+        shipping_explanation: Select shipping options in case %{name} is not at the track.
+        shipping_hint: Either will try Road first but use Air if Road is too slow.
+        shipping_method: Shipping Method
+        shipping_only_if_horse_is_entered: Ship only if horse is entered in the race.
+      index:
+        enter: Enter
+        entry_limit: You may schedule up to %{count} future races
+        min_days_not_met: This race is less than %{days} day(s) from an existing/scheduled entry.
+        no_future_races: This horse does not qualify for any future races.
+        schedule: Schedule
+      new:
+        title: Schedule Race for %{name}
+      update:
+        failure: The scheduled entry for %{name} could not be updated
+        success: The scheduled entry for %{name} was successfully updated
     height: "%{height}h"
     in_foal: in foal
     injuries:

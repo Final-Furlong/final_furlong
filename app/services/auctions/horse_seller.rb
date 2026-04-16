@@ -111,7 +111,9 @@ module Auctions
           Legacy::Horse.where("DOB > ?", Date.current + 4.years).where(Dam: horse.legacy_id).update(Owner: buyer.legacy_id)
         end
         if Horses::Horse.unborn.exists?(dam: horse)
-          Horses::Horse.unborn.where(dam: horse).update(owner: buyer)
+          Horses::Horse.unborn.where(dam: horse).find_each do |foal|
+            foal.update(owner: buyer)
+          end
         end
         auction_horse.update(sold_at: Time.current)
         horse.update(owner: buyer)

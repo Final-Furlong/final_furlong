@@ -8,8 +8,9 @@
         th= t("racing.entries.parents")
         th= t("racing.entries.equipment")
         th= t("racing.entries.stable")
+        th
       tbody
-        - race.entries.includes(horse: [:lifetime_race_record, :sire, :dam]).each do |entry|
+        - race.entries.includes(horse: [:lifetime_race_record, :owner, current_lease: :leaser, sire: [:lifetime_race_record], dam: [:lifetime_race_record]]).each do |entry|
           - horse = entry.horse
           - pedigree = Horses::PedigreeDisplayService.new(horse)
           tr
@@ -22,3 +23,17 @@
               = pedigree.dam_display(tag: true, include_title: true)
             td= entry.equipment_string(blank: "")
             td= link_to horse.manager.name, stable_path(horse.manager), data: { turbo_frame: "_top" }
+            - if policy(entry).edit? || policy(entry).scratch? || policy(entry).claim?
+              td
+                - if policy(entry).edit?
+                  = render Ui::ButtonizedLink::Component.new(url: edit_racing_race_entry_option_path(race, entry), size: :small, style: :outline, extra_classes: 'inline', data: { turbo_frame: "modal" }) do
+                    i.ph-fill.ph-pencil
+                    = t(".edit")
+                - if policy(entry).scratch?
+                  = render Ui::Button::Component.new(url: racing_race_entry_path(race, entry), color: :error, style: :outline, size: :small, form_class: 'inline',
+                    http_method: :delete, data: { turbo_confirm: t(".scratch_confirm"), turbo_confirm_title: t(".scratch_confirm_title", name: horse.name) }) do
+                    = t(".scratch")
+                - if policy(entry).claim?
+                  = render Ui::Button::Component.new(url: racing_entry_claims_path(entry), style: :outline, size: :small,
+                        http_method: :post, data: { turbo_confirm: t("racing.entries.claim.create_confirm", name: entry.horse.name), turbo_frame: "_top" }) do
+                    = t("racing.entries.claim.create")

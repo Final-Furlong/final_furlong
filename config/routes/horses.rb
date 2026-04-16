@@ -4,6 +4,10 @@ namespace :horses, module: "horses" do
 end
 
 resources :horses, except: %i[new create destroy] do
+  scope module: :horse do
+    resources :future_races, except: :new
+    get "future_races/:race_id/new", to: "future_races#new", as: :new_future_race
+  end
   member do
     get :image
     get :thumbnail
@@ -12,6 +16,7 @@ resources :horses, except: %i[new create destroy] do
       resource :auction_consignment, only: %i[new create]
       resources :boardings, only: %i[index new create destroy]
       resources :events, only: :index
+      resources :entries, only: :index
       resources :foals, only: :index
       resources :images, only: :index
       resources :injuries, only: :index

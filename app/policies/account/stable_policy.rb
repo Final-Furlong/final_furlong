@@ -25,6 +25,10 @@ module Account
     def impersonate?
       admin? && record.user != user
     end
+
+    def show_alerts?
+      record.user == user
+    end
   end
 end
 

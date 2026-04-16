@@ -19,6 +19,20 @@ module Racing
 
       record.claiming_deadline >= Date.current
     end
+
+    def enter?
+      return false unless logged_in?
+      return false if Racing::RaceResult.exists?(date: record.date, number: record.number)
+
+      Date.current >= record.entry_open_date
+    end
+
+    def schedule?
+      return false unless logged_in?
+      return false if Racing::RaceResult.exists?(date: record.date, number: record.number)
+
+      record.entry_open_date >= Date.current
+    end
   end
 end
 
