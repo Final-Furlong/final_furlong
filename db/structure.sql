@@ -141,7 +141,12 @@ CREATE TYPE public.future_entry_errors AS ENUM (
     'max_entries',
     'cannot_afford_shipping',
     'cannot_ship_in_time',
-    'cannot_afford_entry'
+    'cannot_afford_entry',
+    'energy_too_low',
+    'too_few_days_since_last_race',
+    'too_few_days_since_last_injury',
+    'too_few_rest_days',
+    'too_few_workouts'
 );
 
 
@@ -156,7 +161,6 @@ CREATE TYPE public.future_entry_statuses AS ENUM (
 );
 
 
---
 -- Name: future_event_types; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -9615,6 +9619,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260416223107'),
 ('20260416105850'),
 ('20260416091719'),
 ('20260415095724'),
@@ -9805,4 +9810,3 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220502093637'),
 ('20220426211810'),
 ('20220403152231');
-
