@@ -40,11 +40,15 @@ module Shipping
       list.sort
     end
 
-    def options_for_mode_select
+    def options_for_mode_select(max_days = 100)
       starting_location ||= horse.racing.current_location
       return [] if starting_location.blank? || ending_location.blank?
 
-      modes.map do |mode|
+      available_modes = modes.filter do |mode|
+        mode_days = route.send(:"#{mode}_days")
+        mode_days.to_i.positive? && mode_days <= max_days
+      end
+      available_modes.map do |mode|
         mode_days = route.send(:"#{mode}_days")
         days = "#{mode_days} #{I18n.t("day").pluralize(mode_days)}"
         cost = Game::MoneyFormatter.new(route.send(:"#{mode}_cost"))

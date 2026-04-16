@@ -9,6 +9,7 @@ en:
       for_lease: For Lease (%{count})
       for_sale: For Sale (%{count})
     info:
+      boarded: Boarded for %{days}
       bookings:
         one: 1 Booking
         other: "%{count} Bookings"
@@ -80,15 +81,18 @@ en:
         only_you: You
         sell_to: Available To
     show:
+      entries: Entries (%{count})
       foals: Foals
       history: History
       info: Info
+      loading_entries: Loading entries...
       loading_foals: Loading foals...
       loading_history: Loading history...
       loading_images: Loading images...
       loading_pedigree: Loading pedigree...
       loading_race_stats: Loading race stats...
       loading_races: Loading race records...
+      no_entries: Entries
       pedigree: Pedigree
       photos: Photos
       race_stats: Race Stats

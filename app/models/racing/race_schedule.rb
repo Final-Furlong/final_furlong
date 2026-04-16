@@ -27,6 +27,50 @@ class Racing::RaceSchedule < ApplicationRecord
   scope :future, -> { where("date > ?", Date.current) }
   scope :next_year, -> { where("date > ?", Date.current + 10.months) }
   scope :past, -> { where(date: ...Date.current) }
+  scope :entries_open, -> { where("date BETWEEN ? AND ?", Date.current + Config::Racing.entry_deadline_days.days, Date.current + (Config::Racing.entry_open_days + 1).days) }
+  scope :entries_not_yet_open, -> { future.where(date: (Date.current + (Config::Racing.entry_open_days + 1).days)..) }
+  scope :for_age, ->(age) {
+    case age.to_i
+    when 2
+      where(age: ["2", "2+"])
+    when 3
+      where(age: ["2+", "3", "3+"])
+    when 4
+      where(age: ["2+", "3+", "4", "4+"])
+    else
+      where(age: ["3+", "4+"])
+    end
+  }
+  scope :for_racehorse_type, ->(type) {
+    case type.to_s.downcase
+    when "flat"
+      all
+    when "jump"
+      joins(:track_surface).merge(Racing::TrackSurface.steeplechase)
+    end
+  }
+  scope :for_race_qualification, ->(qual) {
+    types = %w[allowance stakes]
+    types << "maiden" if qual.maiden_qualified
+    types << "claiming" if qual.claiming_qualified
+    types << "starter_allowance" if qual.starter_allowance_qualified
+    types << "nw1_allowance" if qual.nw1_allowance_qualified
+    types << "nw2_allowance" if qual.nw2_allowance_qualified
+    types << "nw3_allowance" if qual.nw3_allowance_qualified
+    where(race_type: types)
+  }
+  scope :for_race_options, ->(options) {
+    query = case options.racehorse_type.to_s.downcase
+    when "flat"
+      all
+    when "jump"
+      joins(:track_surface).merge(Racing::TrackSurface.steeplechase)
+    end
+    query = query.where(distance: options.minimum_distance..)
+    query = query.where(distance: ..options.maximum_distance)
+    query
+  }
+  scope :ordered_by_race_type, -> { in_order_of(:race_type, Config::Racing.all_types) }
 
   def race_type = super.to_s.inquiry
 
@@ -38,12 +82,20 @@ class Racing::RaceSchedule < ApplicationRecord
     date - Config::Racing.entry_deadline_days.days
   end
 
+  def travel_deadline
+    date - Config::Racing.travel_deadline_days.days
+  end
+
   def claiming_deadline
     date - Config::Racing.claiming_deadline_days.days
   end
 
   def past?
     date < Date.current
+  end
+
+  def requires_qualification?
+    false # TODO: add qualification for BC/BS races
   end
 
   def entry_limit

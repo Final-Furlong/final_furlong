@@ -9,6 +9,11 @@ FactoryBot.define do
     turn_to_finish_length { 1000 }
     width { 100 }
     racetrack
+
+    trait :jump do
+      jumps { 10 }
+      surface { "steeplechase" }
+    end
   end
 end
 

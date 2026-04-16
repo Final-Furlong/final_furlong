@@ -31,6 +31,7 @@ class Auction < ApplicationRecord
 
   scope :current, -> { where(start_time: ..Time.current, end_time: Time.current..) }
   scope :upcoming, -> { where("start_time > ?", Time.current) }
+  scope :upcoming_soon, -> { where("start_time > ? AND start_time < ?", Time.current, (Date.current + Config::Auctions.future_auction_notification_days.days).end_of_day) }
   scope :past, -> { where(end_time: ..Time.current) }
   scope :by_auctioneer, ->(auctioneer) { where(auctioneer:) }
   scope :outside_horses_allowed, -> { where(outside_horses_allowed: true) }
