@@ -10,3 +10,14 @@
               .w-full.text-center
                 p.mx-auto= t(".loading_stats")
                 .mt-2.mx-auto.skeleton.w-full
+
+    - if policy.view_jockeys?
+      - jockeys_count = Racing::HorseJockeyRelationship.where(horse: @horse).count
+      - label = jockeys_count.positive? ? t(".jockeys", count: jockeys_count) : t(".no_jockeys")
+      input.tab type="radio" name="horse-stat" aria-label=label id="jockeys" disabled=jockeys_count.zero?
+        - if jockeys_count.positive?
+          .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+            = turbo_frame_tag "#{@horse.slug}-jockeys", src: horse_jockeys_path(@horse), loading: "lazy" do
+              .w-full.text-center
+                p.mx-auto= t(".loading_jockeys")
+                .mt-2.mx-auto.skeleton.w-full

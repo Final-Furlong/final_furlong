@@ -64,5 +64,4 @@ hr.my-2
                   .form-actions
                     = render Ui::SubmitButton::Component.new(form: f, style: :outline, size: :small, text: t("current_stable.training_schedules.horse.add"))
 
-    .float-right.mt-2
-      == @pagy.series_nav
+    = render Ui::Pagination::Component.new(pagy: @pagy, classes: 'mt-2')

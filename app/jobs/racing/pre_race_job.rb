@@ -30,12 +30,12 @@ class Racing::PreRaceJob < ApplicationJob
   private
 
   def process_entry(entry, race, index, taken_jockey_ids)
-    attrs = { post_parade: index }
+    attrs = { post_parade: index, first_jockey: nil, second_jockey: nil, third_jockey: nil }
     attrs[:jockey] = pick_jockey(entry, race, taken_jockey_ids) if entry.jockey.blank?
     attrs[:odd] = pick_odd(entry, race) if entry.odd.blank?
     entry.update(attrs)
     attrs[:weight] = pick_weight(entry, race) unless entry.weight.to_i.zero?
-    entry.update(attrs)
+    entry.update!(attrs)
     entry.jockey_id
   end
 

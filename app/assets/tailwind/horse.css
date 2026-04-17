@@ -69,3 +69,22 @@ td.gelding {
   justify-self: anchor-center;
 }
 /* stylelint-enable property-no-unknown */
+
+.stars-5 {
+  color: var(--color-yellow-500);
+}
+.stars-4 {
+  color: var(--color-purple-700);
+}
+.stars-3 {
+  color: var(--color-sky-700);
+}
+.stars-2 {
+  color: var(--color-lime-700);
+}
+.stars-1 {
+  color: var(--color-yellow-700);
+}
+.stars-0 {
+  color: var(--color-red-700);
+}

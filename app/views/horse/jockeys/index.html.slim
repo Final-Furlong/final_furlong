@@ -1,0 +1,27 @@
+= turbo_frame_tag "#{@horse.slug}-jockeys" do
+  - if @relationships.empty?
+  - else
+    table.table.table-responsive.sortable.n-last
+      thead
+        tr
+          th= t("racing.jockeys.first_name")
+          th= t("racing.jockeys.last_name")
+          th= t("racing.jockeys.experience")
+          th= t("racing.jockeys.happiness")
+      tbody
+        - @relationships.each do |relationship|
+          - jockey = relationship.jockey
+          tr
+            td= jockey.first_name
+            td= jockey.last_name
+            td class="stars-#{relationship.experience_stars}" data-sort=relationship.experience_stars
+              - relationship.experience_stars.times do |n|
+                i.ph.ph-fill.ph-star
+              - (5 - relationship.experience_stars).times do |n|
+                i.ph.ph-star
+            td class="stars-#{relationship.happiness_stars}" data-sort=relationship.happiness_stars
+              - relationship.happiness_stars.times do |n|
+                i.ph.ph-fill.ph-star
+              - (5 - relationship.happiness_stars).times do |n|
+                i.ph.ph-star
+    = render Ui::Pagination::Component.new(pagy: @pagy)

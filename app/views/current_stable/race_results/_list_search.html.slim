@@ -29,5 +29,4 @@
               = render Ui::ButtonizedLink::Component.new(url: racing_result_path(race.date, race.number), color: :neutral, extra_classes: "mt-2", data: { turbo_frame: "modal" }) do
                   i.ph.ph-fill.ph-eye
 
-    .float-right.mt-2
-      == pagy.series_nav
+    = render Ui::Pagination::Component.new(pagy: @pagy, classes: 'mt-2')

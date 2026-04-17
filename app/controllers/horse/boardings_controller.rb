@@ -3,7 +3,7 @@ module Horse
     skip_after_action :verify_pundit_authorization, only: :index
 
     def index
-      horse = Horses::Horse.find(params[:id])
+      horse = Horses::Horse.find(params[:horse_id])
       authorize horse, :view_boarding?, policy_class: CurrentStable::HorsePolicy
 
       @dashboard = Dashboard::Horse::Boarding.new(horse:)
@@ -11,13 +11,13 @@ module Horse
     end
 
     def new
-      horse = Horses::Horse.find(params[:id])
+      horse = Horses::Horse.find(params[:horse_id])
       @boarding = Horses::Boarding.new(horse:)
       authorize @boarding
     end
 
     def create
-      horse = Horses::Horse.find(params[:id])
+      horse = Horses::Horse.find(params[:horse_id])
       @boarding = Horses::Boarding.new(horse:)
       authorize @boarding
 
@@ -37,7 +37,8 @@ module Horse
     end
 
     def destroy
-      @boarding = Horses::Boarding.find(params[:id])
+      horse = Horses::Horse.find(params[:horse_id])
+      @boarding = Horses::Boarding.find_by(horse:, id: params[:id])
       authorize @boarding
 
       result = Horses::BoardingUpdater.new.stop_boarding(boarding: @boarding)

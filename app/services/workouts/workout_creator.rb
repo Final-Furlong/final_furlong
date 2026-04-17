@@ -64,8 +64,9 @@ module Workouts
         ActiveRecord::Base.transaction do
           relationship = Racing::HorseJockeyRelationship.find_or_initialize_by(horse: workout.horse, jockey: workout.jockey)
           relationship.experience += gained_xp
-          relationship.experience = 100 if relationship.experience > 100
+          relationship.experience = relationship.experience.clamp(0, 100)
           relationship.happiness += gained_happiness
+          relationship.happiness = relationship.happiness.clamp(0, 100)
           relationship.save
           stats = horse.racing_stats
           stats.energy -= workout.energy_loss

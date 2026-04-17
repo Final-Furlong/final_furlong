@@ -114,5 +114,4 @@ hr.my-2
               = render Ui::Button::Component.new(color: :error, style: :outline, size: :small, http_method: :delete, form_class: "inline", data:, url: stable_training_schedule_horse_path(schedule, horse)) do
                 = t("current_stable.training_schedules.horse.remove")
 
-    .float-right.mt-2
-      == @pagy.series_nav
+    = render Ui::Pagination::Component.new(pagy: @pagy, classes: 'mt-2')
