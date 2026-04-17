@@ -1,4 +1,12 @@
 .px-4.py-5.my-5.text-center
   h1.display-5.fw-bold= t(".hello")
-  .col-lg-6.mx-auto
-    p.lead.mb-4= t(".bay_description")
+.mt-4.overflow-x-auto.mx-auto.w-full class="sm:w-3/4 bg-base-100"
+  .card.card-border.bg-base-100.w-full.px-2.rounded-md.border.border-primary
+    .card-body.p-0.rounded-none
+      .collapse.collapse-open.bg-base-100
+        input type="checkbox" aria-label=t(".site_stats")
+        .collapse-title.font-semibold.font-medium
+          p.font-bold.text-center= t(".site_stats")
+        .collapse-content.text-sm.border-t-1.border-base-content/40.p-0
+          = render "pages/stats/racing"
+          = render "pages/stats/horses"

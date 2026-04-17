@@ -3,6 +3,7 @@ en:
   horses:
     edit_name_form:
       name_hint: Max %{count} characters
+    horse: Horse
     index:
       auctions: Auctions (%{count})
       auctions_upcoming: Future Auctions (%{count})
