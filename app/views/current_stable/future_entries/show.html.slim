@@ -36,6 +36,4 @@ table.table.table-responsive.table-zebra.sortable.n-last
           - else
             span.badge.badge-secondary.badge-outline= t(".scheduled")
 
-  - if pagy_hash[:count] > pagy_hash[:limit]
-    .float-right
-      == @pagy.series_nav
+  = render Ui::Pagination::Component.new(pagy: @pagy)

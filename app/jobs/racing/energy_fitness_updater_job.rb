@@ -25,6 +25,8 @@ class Racing::EnergyFitnessUpdaterJob < ApplicationJob
       Racing::RacingStats.where("fitness < 20").update_all(fitness: 20)
       Racing::RacingStats.where("fitness > 120").update_all(fitness: 120)
       Racing::RacingStats.where("xp_current > 100").update_all(xp_current: 100)
+      Racing::HorseJockeyRelationship.where('experience < ?', 0).update_all('experience = abs(experience)')
+      Racing::HorseJockeyRelationship.where('happiness < ?', 0).update_all('happiness = abs(happiness)')
 
       Racing::RacehorseMetadata
         .where(horse: Horses::Horse.racehorse.joins(:racing_stats).where("CEIL(racing_stats.energy * ((91 + FLOOR(RANDOM() * 20))/100)) <= ?", 40))
@@ -90,4 +92,3 @@ class Racing::EnergyFitnessUpdaterJob < ApplicationJob
     store_job_info(outcome: { horses: })
   end
 end
-

@@ -25,5 +25,4 @@ div class="sm:hidden"
     = turbo_frame_tag "budgets" do
       = render "table", dashboard: @dashboard
 
-.float-right.mt-2
-  == @dashboard.pagy.series_nav(slots: mobile_variant? ? 3 : 9)
+= render Ui::Pagination::Component.new(pagy: @dashboard.pagy, classes: 'mt-2')

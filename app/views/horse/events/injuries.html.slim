@@ -17,5 +17,4 @@
                 - if injury.leg
                   = " (#{injury.leg})"
 
-  .float-right.mt-2
-    == @pagy.series_nav
+  = render Ui::Pagination::Component.new(pagy: @pagy, classes: 'mt-2')

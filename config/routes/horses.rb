@@ -5,6 +5,7 @@ end
 
 resources :horses, except: %i[new create destroy] do
   scope module: :horse do
+    resources :boardings, only: %i[index new create destroy]
     resources :future_races, except: :new
     get "future_races/:race_id/new", to: "future_races#new", as: :new_future_race
   end
@@ -14,12 +15,12 @@ resources :horses, except: %i[new create destroy] do
     get :edit_name
     scope module: :horse, as: "horse" do
       resource :auction_consignment, only: %i[new create]
-      resources :boardings, only: %i[index new create destroy]
       resources :events, only: :index
       resources :entries, only: :index
       resources :foals, only: :index
       resources :images, only: :index
       resources :injuries, only: :index
+      resources :jockeys, only: :index
       resource :lease_offer, only: %i[new create destroy]
       resource :lease_offer_acceptance, only: :create
       resource :lease_termination, only: %i[new create]
