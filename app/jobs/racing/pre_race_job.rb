@@ -438,15 +438,15 @@ class Racing::PreRaceJob < ApplicationJob
     if entry.first_jockey_id
       first_jock = Racing::Jockey.find_by(id: entry.first_jockey_id)
       if taken_jockey_ids.exclude?(first_jock.id) && (race.jump? || first_jock.jockey_type == "flat")
-        return first_jock.id
+        return first_jock
       elsif entry.second_jockey_id
         second_jock = Racing::Jockey.find_by(id: entry.second_jockey_id)
         if taken_jockey_ids.exclude?(second_jock.id) && (race.jump? || second_jock.jockey_type == "flat")
-          return second_jock.id
+          return second_jock
         elsif entry.third_jockey_id
           third_jock = Racing::Jockey.find_by(id: entry.third_jock_id)
           if taken_jockey_ids.exclude?(third_jock.id) && (race.jump? || third_jock.jockey_type == "flat")
-            return third_jock.id
+            return third_jock
           end
         end
       end
