@@ -31,6 +31,7 @@ class Racing::RaceSchedule < ApplicationRecord
   scope :entries_not_yet_open, -> { future.where(date: (Date.current + (Config::Racing.entry_open_days + 1).days)..) }
   scope :entries_not_closed, -> { where("date > ?", Date.current + Config::Racing.entry_deadline_days.days) }
   scope :available_for_scheduling, -> { future.entries_not_closed.where(date: ..(Date.current + Config::Racing.future_race_max_schedule_days.days)) }
+  scope :by_type, ->(type) { where(race_type: type) }
   scope :for_age, ->(age) {
     case age.to_i
     when 2
@@ -73,6 +74,7 @@ class Racing::RaceSchedule < ApplicationRecord
     query
   }
   scope :ordered_by_race_type, -> { in_order_of(:race_type, Config::Racing.all_types) }
+  scope :ordered_by_date, ->(dir = :asc) { order(date: dir.to_sym) }
 
   def race_type = super.to_s.inquiry
 
