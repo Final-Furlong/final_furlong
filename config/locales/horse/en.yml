@@ -267,7 +267,7 @@ en:
         request_refund: I would like to request a refund of approximately %{amount}
       new:
         confirm: Confirm Lease Termination
-        end_date: 'The lease is currently scheduled to end on %{date}. Original Fee: %{fee}'
+        end_date: "The lease is currently scheduled to end on %{date}. Original Fee: %{fee}"
         title: End Lease
     leased_html: Leased to %{stable} until %{date}
     location:
@@ -302,8 +302,8 @@ en:
         runs_on_turf: Races on Turf
         sample_note: Try wraps next time, also try 8-9f
         second_jockey: Second Choice Jockey
-        suggested_maximum: 'Suggested Maximum: %{value}'
-        suggested_minimum: 'Suggested Minimum: %{value}'
+        suggested_maximum: "Suggested Maximum: %{value}"
+        suggested_minimum: "Suggested Minimum: %{value}"
         third_jockey: Third Choice Jockey
         trains_on_dirt: Trains on Dirt
         trains_on_turf: Trains on Turf
@@ -311,7 +311,10 @@ en:
         success: Racing options were successfully saved.
     race_stats:
       index:
+        jockeys: Jockeys (%{count})
         loading_stats: Loading workout stats...
+        loading_jockeys: Loading jockeys...
+        no_jockeys: Jockeys
         workout_stats: Workout Stats
     races:
       index:
@@ -322,38 +325,38 @@ en:
         by_race_type: Races By Race Type
         by_surface: Races By Surface
         earnings: Earnings
-        equipment: 'Equipment: %{equipment}'
-        finish_time: 'Time: %{time}'
+        equipment: "Equipment: %{equipment}"
+        finish_time: "Time: %{time}"
         fourths: Fourths
-        fractions: 'Fractions: %{fractions}'
+        fractions: "Fractions: %{fractions}"
         injury: Injury
         lifetime: Lifetime
-        place: 'Place: %{number}'
+        place: "Place: %{number}"
         points: Points
         points_amount: "%{points}pts"
         race_year: "%{age}yo (%{year})"
         races: View Races
         record: Record
-        running_line: 'Running Line: %{line}'
+        running_line: "Running Line: %{line}"
         seconds: Seconds
-        speed_factor: 'Speed Factor: %{number}'
+        speed_factor: "Speed Factor: %{number}"
         starts: Starts
         stats: Stats
-        surface: 'Surface: %{surface}'
+        surface: "Surface: %{surface}"
         thirds: Thirds
         unraced: Unraced
         view_race: View Race
         wins: Wins
         year: Year
       mobile:
-        finish_time: 'Time:'
-        place: 'Place:'
-        running_line: 'Running Line:'
-        second: 'Second:'
-        speed_factor: 'Speed Factor:'
-        surface: 'Surface:'
-        third: 'Third:'
-        winner: 'Winner:'
+        finish_time: "Time:"
+        place: "Place:"
+        running_line: "Running Line:"
+        second: "Second:"
+        speed_factor: "Speed Factor:"
+        surface: "Surface:"
+        third: "Third:"
+        winner: "Winner:"
     sale_offer_acceptances:
       create:
         success: Horse was successfully purchased

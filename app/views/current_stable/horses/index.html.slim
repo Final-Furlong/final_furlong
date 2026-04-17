@@ -25,5 +25,4 @@
     = turbo_frame_tag "horses" do
       = render "table", horses: @horses, query: @query
 
-.float-right.mt-2
-  == @pagy.series_nav
+= render Ui::Pagination::Component.new(pagy: @pagy, classes: 'mt-2')

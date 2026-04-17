@@ -33,16 +33,16 @@ en:
       gender: Gender
       name: Horse
       new:
-        entry_fee: 'Entry Fee: %{fee}'
+        entry_fee: "Entry Fee: %{fee}"
         entry_limit: You may enter %{horses} in this race.
-        horses: 'Horses Entered: %{count}'
+        horses: "Horses Entered: %{count}"
         title: Enter Race
       owner: Owner
       parents: Sire x Dam
       record: Record
       stable: Stable
     entry_options:
-      budget_description: 'Entry Fee: %{date}, Race %{number} - %{name}'
+      budget_description: "Entry Fee: %{date}, Race %{number} - %{name}"
       create:
         failure: "%{name} could not be entered"
         success: "%{name} was successfully entered"
@@ -51,7 +51,7 @@ en:
       form:
         first_jockey: First Choice Jockey
         jockey_decide: Let the jockey decide
-        next_race_note: 'Note on the next race entry: %{content}'
+        next_race_note: "Note on the next race entry: %{content}"
         racing_style: Running Style
         second_jockey: Second Choice Jockey
         third_jockey: Third Choice Jockey
@@ -62,6 +62,11 @@ en:
       update:
         failure: "%{name} entry options could not be updated"
         success: "%{name} entry options were successfully updated"
+    jockeys:
+      experience: Experience
+      first_name: First Name
+      happiness: Happiness
+      last_name: Last Name
     race:
       age: Age
       age_desc: for %{age}
@@ -170,7 +175,7 @@ en:
         title: Race Results
       injuries: Injuries
       no_injuries: No Injuries
-      race_number: 'Race #%{number}'
+      race_number: "Race #%{number}"
       speed_factor: Speed Factor
       weight: Lbs.
     shipping:

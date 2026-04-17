@@ -99,5 +99,4 @@
                       = render Ui::ButtonizedLink::Component.new(url: horse_new_future_race_path(horse, race), size: :small, data: { turbo_frame: "modal" }) do
                         i.ph-fill.ph-arrow-fat-right
                         = t(".schedule")
-      .float-right
-        == pagy.series_nav
+      = render Ui::Pagination::Component.new(pagy: @pagy)
