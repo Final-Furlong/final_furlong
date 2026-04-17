@@ -37,7 +37,6 @@ class UpdateStillwaterHorsesJob < ApplicationJob
         horse.future_race_entries.each do |entry|
           entry.update(first_jockey: options.first_jockey, second_jockey: options.second_jockey, third_jockey: options.third_jockey)
         end
-        step.advance! from: legacy_hj.id
       end
     end
   end

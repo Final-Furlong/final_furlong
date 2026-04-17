@@ -26,7 +26,7 @@
             tbody.table-group-divider
               - horses.each do |horse|
                 tr
-                  td.wb-break-all= horse.name_with_title
+                  td.wb-break-all class="text-#{horse.gender}"= horse.name_with_title
                   - unless @active_status.to_s == 'yearling' || @active_status.to_s == 'weanling'
                     td.wb-break-all= horse.age
                   - unless @active_status.to_s == 'broodmare' || @active_status.to_s == "stud"
@@ -38,7 +38,7 @@
                   - unless @active_status.to_s == 'yearling' || @active_status.to_s == 'weanling'
                     - if @active_status.to_s == 'racehorse'
                       td
-                        = horse.track_record
+                        = horse.track_record || t("horse.unraced")
                     - if @active_status.to_s == 'broodmare'
                       td
                         = horse.broodmare.breed_ranking_string

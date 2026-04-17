@@ -1,66 +1,48 @@
 / User Sidebar
-li.px-2
-  details open=true
-    summary= t("layouts.sidenav.my_stable")
-    ul
-      li
-        a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
-          href=stable_horses_path
-          class="hover:bg-gray-100 dark:hover:bg-gray-700"
-        ]
-          i.ph-fill.ph-horse
-          span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.stable.horses")
-      li
-        a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
-          href=stable_budgets_path
-          class="hover:bg-gray-100 dark:hover:bg-gray-700"
-        ]
-          i.ph-fill.ph-coins
-          span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.stable.budget")
-      li
-        a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
-          href=stable_shipments_path
-          class="hover:bg-gray-100 dark:hover:bg-gray-700"
-        ]
-          i.ph-fill.ph-truck
-          span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.stable.shipping")
-      - if Auctions::Bid.where(bidder: Current.stable).exists?
-        li
-          a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
-            href=stable_auctions_path
-            class="hover:bg-gray-100 dark:hover:bg-gray-700"
-          ]
-            i.ph-fill.ph-gavel
-            span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.stable.auctions")
-      li
-        a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
-          href=stable_boardings_path
-          class="hover:bg-gray-100 dark:hover:bg-gray-700"
-        ]
-          i.ph-fill.ph-barn
-          span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.stable.boarding")
-      li
-        a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
-          href=stable_trainings_path
-          class="hover:bg-gray-100 dark:hover:bg-gray-700"
-        ]
-          i.ph-fill.ph-timer
-          span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.stable.training")
-li.px-2
-  details open=true
-    summary= t("layouts.sidenav.stable.racing_divider")
-    ul
-      li
-        a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
-          href=racing_races_path
-          class="hover:bg-gray-100 dark:hover:bg-gray-700"
-        ]
-          i.ph-fill.ph-calendar-blank
-          span.ms-3= t("layouts.sidenav.stable.race_schedule")
-      li
-        a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
-          href=racing_results_path
-          class="hover:bg-gray-100 dark:hover:bg-gray-700"
-        ]
-          i.ph-fill.ph-flag-checkered
-          span.ms-3= t("layouts.sidenav.stable.race_results")
+li
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right data-tip=t("layouts.sidenav.my_stable")
+    a.transition.duration-75 href=root_path
+      i.ph.ph-fill.ph-house
+      span.flex-1.ms-3.whitespace-nowrap.is-drawer-close:hidden= t("layouts.sidenav.my_stable")
+li
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right data-tip=t("layouts.sidenav.stable.horses")
+    a.transition.duration-75 href=stable_horses_path
+      i.ph.ph-fill.ph-horse
+      span.flex-1.ms-3.whitespace-nowrap.is-drawer-close:hidden= t("layouts.sidenav.stable.horses")
+li
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right data-tip=t("layouts.sidenav.stable.budget")
+    a.transition.duration-75 href=stable_budgets_path
+      i.ph.ph-fill.ph-coins
+      span.flex-1.ms-3.whitespace-nowrap.is-drawer-close:hidden= t("layouts.sidenav.stable.budget")
+li
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right data-tip=t("layouts.sidenav.stable.shipping")
+    a.transition.duration-75 href=stable_shipments_path
+      i.ph.ph-fill.ph-truck
+      span.flex-1.ms-3.whitespace-nowrap.is-drawer-close:hidden= t("layouts.sidenav.stable.shipping")
+- if Auctions::Bid.where(bidder: Current.stable).exists?
+  li
+    button.is-drawer-close:tooltip.is-drawer-close:tooltip-right data-tip=t("layouts.sidenav.stable.auctions")
+      a.transition.duration-75 href=stable_auctions_path
+        i.ph.ph-fill.ph-gavel
+        span.flex-1.ms-3.whitespace-nowrap.is-drawer-close:hidden= t("layouts.sidenav.stable.auctions")
+li
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right data-tip=t("layouts.sidenav.stable.boarding")
+    a.transition.duration-75 href=stable_boardings_path
+      i.ph.ph-fill.ph-barn
+      span.flex-1.ms-3.whitespace-nowrap.is-drawer-close:hidden= t("layouts.sidenav.stable.boarding")
+li
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right data-tip=t("layouts.sidenav.stable.training")
+    a.transition.duration-75 href=stable_trainings_path
+      i.ph.ph-fill.ph-timer
+      span.flex-1.ms-3.whitespace-nowrap.is-drawer-close:hidden= t("layouts.sidenav.stable.training")
+.divider.my-0
+li
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right data-tip=t("layouts.sidenav.stable.race_schedule")
+    a.transition.duration-75 href=racing_races_path
+      i.ph.ph-fill.ph-calendar-blank
+      span.flex-1.ms-3.whitespace-nowrap.is-drawer-close:hidden= t("layouts.sidenav.stable.race_schedule")
+li
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right data-tip=t("layouts.sidenav.stable.race_results")
+    a.transition.duration-75 href=racing_results_path
+      i.ph.ph-fill.ph-flag-checkered
+      span.flex-1.ms-3.whitespace-nowrap.is-drawer-close:hidden= t("layouts.sidenav.stable.race_results")
