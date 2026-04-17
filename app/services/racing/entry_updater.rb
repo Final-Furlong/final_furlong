@@ -15,10 +15,9 @@ module Racing
       entry.wraps = wraps.present?
       entry.figure_8 = figure_8.present?
       entry.no_whip = no_whip.present?
-      pd entry
       result = Result.new(entry:)
 
-      if race.entry_deadline < Date.current
+      if race.date <= Date.current
         result.error = error("deadline_past")
         return result
       end
