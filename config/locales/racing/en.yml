@@ -167,6 +167,7 @@ en:
         claim_success: If successful, your claim will be processed after races have been run. You will be charged the claiming fee for the horse.
         no_races: No races scheduled on this day.
         title: Post Parade
+    racing: Racing
     results:
       fractions: Fractional Times
       horse_title: Horse (Jockey)

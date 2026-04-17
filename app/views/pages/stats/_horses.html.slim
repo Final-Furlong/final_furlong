@@ -1,0 +1,19 @@
+.card.bg-base-100.w-full.border-t-1.rounded-none
+  .card-body.p-0.rounded-none
+    details.collapse.collapse-arrow.bg-base-100 open=true
+      summary.text-center.collapse-title.font-semibold
+        = t("horses.horse").pluralize
+      .collapse-content.text-sm
+        .border-t-1.mb-2
+          - horses_count = Horses::Horse.alive.count
+          p.mt-2= t(".horses_count_with_app", number: number_with_delimiter(horses_count), horses: t("horses.horse").downcase.pluralize, app: Config::Game.title)
+          - horses_count = Horses::Horse.racehorse.count
+          p= t(".horses_count", number: number_with_delimiter(horses_count), horses: t("horses.statuses.racehorse").downcase.pluralize)
+          - horses_count = Horses::Horse.stud.count
+          p= t(".horses_count", number: number_with_delimiter(horses_count), horses: t("horses.statuses.stud").downcase.pluralize)
+          - horses_count = Horses::Horse.broodmare.count
+          p= t(".horses_count", number: number_with_delimiter(horses_count), horses: t("horses.statuses.broodmare").downcase.pluralize)
+          - horses_count = Horses::Horse.yearling.count
+          p= t(".horses_count", number: number_with_delimiter(horses_count), horses: t("horses.statuses.yearling").downcase.pluralize)
+          - horses_count = Horses::Horse.weanling.count
+          p= t(".horses_count", number: number_with_delimiter(horses_count), horses: t("horses.statuses.weanling").downcase.pluralize)

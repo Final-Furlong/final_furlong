@@ -271,6 +271,13 @@ en:
         future_auction_count:
           one: There is %{count} auction coming up in the next two weeks.
           other: There are %{count} auctions coming up in the next two weeks.
+      races:
+        claiming_alert_count:
+          one: '1 horse is available to claim on '
+          other: "%{count} horses are available to claim on "
+        existing_claim: ". You have submitted a claim."
+        race_entry_count: Your stable has %{count} %{horses} entered to race on %{date}
+        result_count: Your stable had %{count} %{horses} race on %{date}
     edit:
       header: Edit Stable
     index:
