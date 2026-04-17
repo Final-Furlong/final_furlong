@@ -7,7 +7,7 @@ module Racing
       @horse = horse
       stable = Account::Stable.find_by(name: Config::Game.stable)
       race_date = Date.parse(race.date.to_s)
-      entry = Racing::RaceEntry.new(race:, date: race_date, horse:)
+      entry = Racing::RaceEntry.new(race:, date: race_date, horse:, stable:)
       result = Result.new(entry:)
 
       return result if Date.current < race.entry_open_date
@@ -87,4 +87,3 @@ module Racing
     end
   end
 end
-
