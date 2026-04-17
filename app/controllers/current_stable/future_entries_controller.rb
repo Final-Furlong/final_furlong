@@ -11,7 +11,6 @@ module CurrentStable
       authorize @query.first, policy_class: CurrentStable::FutureRaceEntryPolicy
 
       @pagy, @results = pagy(:offset, @query)
-      pd @pagy.data_hash(data_keys: %i[count limit])
     end
   end
 end

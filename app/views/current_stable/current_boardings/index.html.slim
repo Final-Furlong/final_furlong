@@ -64,5 +64,4 @@
                 = render Ui::ButtonizedLink::Component.new(color: :error, style: :outline, url: stable_boarding_path(boarding), data: { turbo_method: 'put', turbo_frame: "_top" }) do
                   = t("current_stable.boardings.index.stop_boarding")
 
-  .float-right.mt-2
-    == @pagy.series_nav
+  = render Ui::Pagination::Component.new(pagy: @pagy, classes: 'mt-2')

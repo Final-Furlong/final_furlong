@@ -108,5 +108,4 @@
               td= workout.activity_time(:total)
               td=workout.comment.to_s(horse.name, horse.female?)
 
-  .float-right.mt-2
-    == @pagy.series_nav
+  = render Ui::Pagination::Component.new(pagy: @pagy, classes: 'mt-2')

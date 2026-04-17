@@ -311,7 +311,10 @@ en:
         success: Racing options were successfully saved.
     race_stats:
       index:
+        jockeys: Jockeys (%{count})
+        loading_jockeys: Loading jockeys...
         loading_stats: Loading workout stats...
+        no_jockeys: Jockeys
         workout_stats: Workout Stats
     races:
       index:

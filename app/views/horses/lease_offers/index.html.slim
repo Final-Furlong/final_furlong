@@ -7,5 +7,4 @@
     = turbo_frame_tag "horse-lease-offers" do
       = render "table", lease_offers: @lease_offers, query: @query
 
-.float-right.mt-2
-  == @pagy.series_nav
+= render Ui::Pagination::Component.new(pagy: @pagy, classes: 'mt-2')

@@ -8,6 +8,17 @@ module Racing
     validates :experience, :happiness, presence: true
     validates :experience, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
     validates :happiness, numericality: { only_integer: true, less_than_or_equal_to: 100 }
+
+    scope :for_type, ->(type) { joins(:jockey).merge(Racing::Jockey.send(type.to_sym)) }
+    scope :ordered_by_best, -> { order(Arel.sql("FLOOR(horse_jockey_relationships.experience / 20) DESC, FLOOR(happiness / 20) DESC")) }
+
+    def experience_stars
+      experience.abs.fdiv(20).floor
+    end
+
+    def happiness_stars
+      happiness.abs.fdiv(20).floor
+    end
   end
 end
 
