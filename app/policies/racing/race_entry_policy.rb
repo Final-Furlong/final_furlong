@@ -45,7 +45,7 @@ module Racing
       return false unless logged_in?
       return false if record.date < Date.current
       race = record.race
-      return false if Date.current > race.entry_deadline
+      return false if Racing::RaceResult.exists?(date: race.date, number: race.number)
 
       horse = record.horse
       return true unless horse
