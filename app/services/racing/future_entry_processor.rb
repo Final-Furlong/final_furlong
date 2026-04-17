@@ -23,7 +23,7 @@ module Racing
       race_day = date + days_to_race.days
 
       Racing::FutureRaceEntry.where(date: race_day).find_each do |entry|
-        entry.destroy! if Racing::RaceEntry.exists?(date: race_day, race: entry.race, horse: entry.horse)
+        entry.destroy! if entry.entry_status.nil? && Racing::RaceEntry.exists?(date: race_day, race: entry.race, horse: entry.horse)
       end
 
       Racing::RaceSchedule.where(date: race_day).where.associated(:future_entries).distinct.find_each do |race|
