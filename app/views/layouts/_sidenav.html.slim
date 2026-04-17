@@ -1,42 +1,29 @@
-input.drawer-toggle#sidebar-toggle type="checkbox"
-nav.drawer-side.overflow-scroll.h-full.border-0.sm:border-r-1.border-neutral-content/50
-  label.drawer-overlay for="sidebar-toggle" aria-label=t(".close_menu")
-  ul.menu.bg-base-200.text-base-content.min-h-full.w-80.py-4.px-0.border-r-1.border-gray-500/50[
-    class="sm:border-0 dark:border-neutral-100/50"
-  ]
-    li.px-4
-      a.flex.items-center.p-2.rounded-lg.hover:bg-gray-100.dark:hover:bg-gray-700[
-        href=root_path
-      ]
-        = image_tag "logo_dark.png", class: "h-6 md:h-12 w-auto block dark:hidden", alt: "Final Furlong Logo"
-        = image_tag "logo_light.png", class: "h-6 md:h-12 w-auto hidden dark:block", alt: "Final Furlong Logo"
-        span.font-semibold.ms-3.text-lg= t("game_title")
-    = render "layouts/user_sidenav" if signed_in?
-    li.px-2
-      details open=true
-        summary= t("layouts.sidenav.game_divider")
-        ul
-          li
-            a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
-              href=stables_path
-              class="hover:bg-gray-100 dark:hover:bg-gray-700"
-            ]
-              i.ph-fill.ph-barn
-              span.ms-3= t("layouts.sidenav.stables")
-          li
-            a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
-              href=horses_path
-              class="hover:bg-gray-100 dark:hover:bg-gray-700"
-            ]
-              i.ph-fill.ph-horse
-              span.flex-1.ms-3.whitespace-nowrap= t("layouts.sidenav.all_horses")
-    = render "layouts/admin_sidenav" if signed_in? && Current.user.admin?
-    - unless Rails.env.development?
-      li.px-4
-        = render Ui::Link::Component.new(url: "https://www.finalfurlong.org/",
-                extra_classes: "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700") do
-          i.ph-fill.ph-backspace
-          span.flex-1.ms-3.whitespace-nowrap= t(".main_app")
+.drawer-side.is-drawer-close:overflow-visible
+  label.drawer-overlay for="menu-drawer" aria-label=t(".close_menu")
+  .flex.min-h-full.flex-col.items-start.bg-base-200.is-drawer-close:w-14.is-drawer-open:w-64
+    ul.menu.w-full.grow
+      li
+      = render "layouts/user_sidenav" if signed_in?
+      .divider.my-0
+      li
+        button.is-drawer-close:tooltip.is-drawer-close:tooltip-right data-tip=t("layouts.sidenav.stables")
+          a.transition.duration-75 href=stables_path
+            i.ph.ph-fill.ph-barn
+            span.flex-1.ms-3.whitespace-nowrap.is-drawer-close:hidden= t("layouts.sidenav.stables")
+      li
+        button.is-drawer-close:tooltip.is-drawer-close:tooltip-right data-tip=t("layouts.sidenav.all_horses")
+          a.transition.duration-75 href=horses_path
+            i.ph.ph-fill.ph-horse
+            span.flex-1.ms-3.whitespace-nowrap.is-drawer-close:hidden= t("layouts.sidenav.all_horses")
+      .divider.my-0
+      = render "layouts/admin_sidenav" if signed_in? && Current.user.admin?
+      - unless Rails.env.development?
+        li
+          button.is-drawer-close:tooltip.is-drawer-close:tooltip-right data-tip=t(".main_app")
+            = render Ui::Link::Component.new(url: "https://www.finalfurlong.org/",
+                  extra_classes: "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700") do
+              i.ph.ph-fill.ph-backspace
+              span.flex-1.ms-3.whitespace-nowrap.is-drawer-close:hidden= t(".main_app")
 
-    - unless signed_in?
-      = render Nav::I18n::Component.new(locale: I18n.locale, version: :tablet, variants: request.variant)
+      - unless signed_in?
+        = render Nav::I18n::Component.new(locale: I18n.locale, version: :tablet, variants: request.variant)

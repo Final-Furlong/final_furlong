@@ -1,19 +1,18 @@
-.navbar.bg-base-100.shadow-sm.border-neutral-content/80.border-b-1#top_nav
-  .flex-none
-    ul
-      li
-        label.float-left.btn.drawer-button.lg:hidden for="sidebar-toggle"
-          span.sr-only= t("layouts.nav.open_main_menu")
-          i.ph.ph-list.text-2xl#icon-show-sidenav
+.navbar.w-full.bg-base-100.shadow-sm.border-neutral-content/80.border-b-1#top_nav
   .flex-1
+    label.btn.btn.square.btn-ghost.is-drawer-open:hidden for="menu-drawer" aria-label=t(".open_menu")
+      i.ph.ph-caret-double-right
+    = image_tag "logo_dark.png", class: "h-6 md:h-12 w-auto inline dark:hidden", alt: "Final Furlong Logo"
+    = image_tag "logo_light.png", class: "h-6 md:h-12 w-auto hidden dark:inline", alt: "Final Furlong Logo"
+    span.font-semibold.ms-3.text-lg= t("game_title")
   .flex-none.gap-2
     ul.menu-horizontal.bg-base-200.text-base-content.min-h-full[
       class="sm:border-0 dark:border-neutral-100/50"
     ]
       li.pr-4
         .hidden.border.rounded-md.md:block
-          form.flex.p-2 role="search"
-            input[type="search" disabled=true placeholder=t(".search_placeholder") aria-label=t(".search_aria_label")]
+          form.flex.p-2 role="search" disabled=true
+            input type="search" disabled=true placeholder=t(".search_placeholder") aria-label=t(".search_aria_label")
       - if signed_in?
         li.px-2.pt-2.hidden.sm:block
           = link_to root_path do
