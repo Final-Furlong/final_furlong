@@ -38,5 +38,4 @@
                   i.ph-fill.ph-pencil
                   = t(".schedule")
 
-    .float-right.mt-2
-      == @pagy.series_nav
+    = render Ui::Pagination::Component.new(pagy: @pagy, classes: 'mt-2')

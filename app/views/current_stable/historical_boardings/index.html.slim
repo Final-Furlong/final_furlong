@@ -54,5 +54,4 @@
                 - else
                   = (boarding.end_date - boarding.start_date).to_i
 
-  .float-right.mt-2
-    == @pagy.series_nav
+  = render Ui::Pagination::Component.new(pagy: @pagy, classes: 'mt-2')

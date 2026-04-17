@@ -49,6 +49,10 @@ module CurrentStable
       racehorse_and_manager?
     end
 
+    def view_jockeys?
+      racehorse_and_manager?
+    end
+
     def nominate?
       # TODO: migrate racehorse noms + implement them
       false
