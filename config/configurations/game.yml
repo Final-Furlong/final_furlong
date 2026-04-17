@@ -2,6 +2,7 @@ shared:
   currency: $
   notification_expiration_after_reading: 30
   online_minutes: 15
+  title: Final Furlong
   stable: Final Furlong
   username: FFadmin
   username_minimum_length: 3

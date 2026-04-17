@@ -52,7 +52,7 @@ end
 #
 #  fk_rails_...  (horse_id => horses.id) ON DELETE => restrict ON UPDATE => cascade
 #  fk_rails_...  (jockey_id => jockeys.id) ON DELETE => restrict ON UPDATE => cascade
-#  fk_rails_...  (odd_id => race_results.id) ON DELETE => nullify ON UPDATE => cascade
+#  fk_rails_...  (odd_id => race_odds.id)
 #  fk_rails_...  (race_id => race_results.id) ON DELETE => cascade ON UPDATE => cascade
 #  fk_rails_...  (stable_id => stables.id)
 #
