@@ -1,0 +1,27 @@
+.card.bg-base-100.w-full
+  .card-body.p-0.rounded-none
+    details.collapse.collapse-arrow.bg-base-100 open=true
+      summary.text-center.collapse-title.font-semibold
+        = t("racing.racing")
+      .collapse-content.text-sm
+        .border-t-1.mb-2
+          - races_count = Racing::RaceResult.count
+          p.mt-2= t(".races_count", number: number_with_delimiter(races_count), races: t("racing.race.race").downcase.pluralize)
+          ruby:
+            recent_race_date = Racing::RaceResult.maximum(:date)
+            race_count = Racing::RaceResult.where(date: recent_race_date).count
+            days_ago = (Date.current - recent_race_date).to_i
+            horses_count = Racing::RaceResult.where(date: recent_race_date).sum(:horses_count)
+          p
+            = t(".recent_races_count", count: race_count)
+            = t(".days_ago_count", count: days_ago)
+            = t(".horses_count", count: horses_count, horses: t("horses.horse").downcase.pluralize)
+          ruby:
+            next_race_date = Racing::RaceSchedule.where('date >= ?', Date.current).minimum(:date)
+            race_count = Racing::RaceSchedule.where(date: next_race_date).count
+            days_from_now = (next_race_date - Date.current).to_i
+            horses_count = Racing::RaceEntry.where(date: next_race_date).count
+          p
+            = t(".next_races_count", count: race_count)
+            = t(".days_from_now_count", count: days_from_now)
+            = t(".horses_count", count: horses_count, horses: t("horses.horse").downcase.pluralize)

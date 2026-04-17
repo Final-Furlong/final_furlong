@@ -1,0 +1,35 @@
+ruby:
+  date = [Current.user.last_sign_in_at.to_date, Date.current - Config::Stables.max_race_result_alert_days.days].min
+  recent_races = Racing::RaceResultHorse.joins(:race).where(stable: Current.stable).merge(Racing::RaceResult.since_date(date).ordered_by_date(:desc)).group(:date).count
+  claiming_races = Racing::RaceEntry.joins(:race, :horse).where(race: Racing::RaceSchedule.future.by_type("claiming").select(:id)).where.not(horse: { owner: Current.stable }).group(:date).count
+  stable_entries = Racing::RaceEntry.joins(:race).where(stable: Current.stable).where(race: Racing::RaceSchedule.future.select(:id)).group(:date).count
+  total_count = recent_races.size + claiming_races.size + stable_entries.size
+- if total_count.positive?
+  .card.bg-base-100.w-full
+    .card-body.p-0.rounded-none
+      details.collapse.collapse-arrow.bg-base-100 open=true
+        summary.text-center.collapse-title.font-semibold
+          = t("racing.racing").capitalize.pluralize(total_count)
+          = " (#{total_count})"
+        .collapse-content.text-sm
+          - recent_races.each do |recent_race|
+            - horses = Horses::Horse.model_name.human.downcase.pluralize(recent_race.last)
+            - date = recent_race.first
+            p
+              = link_to stable_recent_results_path(date), data: { turbo_frame: "_top" } do
+                = t(".result_count", count: recent_race.last, horses:, date: l(date, format: :long))
+          - claiming_races.each do |claiming_race|
+            - horses = Horses::Horse.model_name.human.downcase.pluralize(claiming_race.last)
+            - date = claiming_race.first
+            p
+              = link_to post_parade_racing_races_path(date: date), data: { turbo_frame: "_top" } do
+                = t(".claiming_alert_count", count: claiming_race.last)
+                = l(date, format: :long)
+              - if Racing::Claim.where(claimer: Current.stable, race_date: date).exists?
+                = t(".existing_claim")
+          - stable_entries.each do |stable_entry|
+            - horses = Horses::Horse.model_name.human.downcase.pluralize(stable_entry.last)
+            - date = stable_entry.first
+            p
+              = link_to stable_recent_results_path(date), data: { turbo_frame: "_top" } do
+                = t(".race_entry_count", count: stable_entry.last, horses:, date: l(date, format: :long))
