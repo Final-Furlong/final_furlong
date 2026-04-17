@@ -125,7 +125,7 @@ module Racing
         if stop_boarding
           ::Horses::BoardingUpdater.new.stop_boarding(boarding: horse.current_boarding)
         end
-        Racing::FutureRaceEntry.find_by(race:, horse:).destroy!
+        Racing::FutureRaceEntry.find_by(race:, horse:)&.destroy
         description = I18n.t("racing.entry_options.budget_description", date: race.date, number: race.number, name: horse.name)
         Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: race.entry_fee.to_i * -1, activity_type: "entering")
         result.created = entry.save!

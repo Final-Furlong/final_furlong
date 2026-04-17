@@ -8,11 +8,15 @@ module Racing
     scope :by_horse, ->(id) { where(horse_id: id) }
     scope :qualified_for, ->(type) {
       if Config::Racing.non_qualified_types.include?(type)
-        query = all
-        previous_qualification_levels(type).each do |qual_type|
-          query = query.not_qualified_for(qual_type)
+        if type.to_s == "stakes"
+          where(stakes_placed: true)
+        else
+          query = where(stakes_placed: false)
+          previous_qualification_levels(type).each do |qual_type|
+            query = query.not_qualified_for(qual_type)
+          end
+          query
         end
-        query
       elsif type.to_s == "maiden"
         where("#{type}_qualified": true)
       else
