@@ -24,6 +24,7 @@ class Racing::RaceSchedule < ApplicationRecord
 
   delegate :racetrack, :surface_abbr, to: :track_surface
 
+  scope :future_including_today, -> { where(date: Date.current..) }
   scope :future, -> { where("date > ?", Date.current) }
   scope :next_year, -> { where("date > ?", Date.current + 10.months) }
   scope :past, -> { where(date: ...Date.current) }

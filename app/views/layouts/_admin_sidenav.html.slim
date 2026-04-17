@@ -1,19 +1,10 @@
 / Admin Sidebar
-li.px-2
-  details open=true
-    summary= t("layouts.sidenav.admin_divider")
-    ul
-      li
-        a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
-          href=mission_control_jobs_path
-          class="hover:bg-gray-100 dark:hover:bg-gray-700"
-        ]
-          i.ph.ph-fill.ph-robot
-          span.ms-3= t("layouts.sidenav.jobs")
-      li
-        a.flex.items-center.w-full.p-2.transition.duration-75.rounded-lg[
-          href=admin_job_stats_path
-          class="hover:bg-gray-100 dark:hover:bg-gray-700"
-        ]
-          i.ph.ph-fill.ph-chart-bar-horizontal
-          span.ms-3= t("layouts.sidenav.job_stats")
+li
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right#admin-jobs-link data-tip=t("layouts.sidenav.jobs")
+    a.transition.duration-75 href=mission_control_jobs_path
+      i.ph.ph-fill.ph-robot
+      span.flex-1.ms-3.whitespace-nowrap.is-drawer-close:hidden= t("layouts.sidenav.jobs")
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right#admin-job-stats-link data-tip=t("layouts.sidenav.job_stats")
+    a.transition.duration-75 href=mission_control_jobs_path
+      i.ph.ph-fill.ph-chart-bar-horizontal
+      span.flex-1.ms-3.whitespace-nowrap.is-drawer-close:hidden= t("layouts.sidenav.job_stats")
