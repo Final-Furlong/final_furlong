@@ -6,11 +6,19 @@ class UpdateRacehorseStatsJob < ApplicationJob
   def perform
     racetrack = Racing::Racetrack.find_by(name: "Churchill Downs")
     Account::Stable.where(racetrack: nil).update_all(racetrack_id: racetrack.id) # rubocop:disable Rails/SkipsModelValidations
-    horses = 0
-    step :process do |step|
+    new_horses = 0
+    step :process_missing do |step|
       Horses::Horse.racehorse.where.missing(:race_metadata).find_each(start: step.cursor) do |horse|
         migrate_stats(horse:)
-        horses += 1
+        new_horses += 1
+        step.advance! from: horse.id
+      end
+    end
+    updated_horses = 0
+    step :process_locations do |step|
+      Horses::Horse.racehorse.where.associated(:race_metadata).find_each(start: step.cursor) do |horse|
+        migrate_location(horse:)
+        updated_horses += 1
         step.advance! from: horse.id
       end
     end
@@ -22,10 +30,25 @@ class UpdateRacehorseStatsJob < ApplicationJob
         step.advance! from: horse.id
       end
     end
-    store_job_info(outcome: { horses:, deleted: })
+    store_job_info(outcome: { new_horses:, updated_horses:, deleted: })
   end
 
   private
+
+  def migrate_location(horse:)
+    data = horse.race_metadata
+    name = if data.at_home?
+      horse.manager.name
+    else
+      racetrack_name = Racing::Racetrack.where(location: data.location).pick(:name)
+      if horse.current_boarding.present?
+        I18n.t("horse.location.at_boarding_farm", name: racetrack_name)
+      else
+        I18n.t("horse.location.at_racetrack", name: racetrack_name)
+      end
+    end
+    data.update(location_string: name)
+  end
 
   def migrate_stats(horse:)
     data = horse.race_metadata || horse.build_race_metadata

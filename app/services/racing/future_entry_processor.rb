@@ -144,22 +144,22 @@ module Racing
           end
         end
         if (min_days = racing_settings.min_days_delay_from_last_race).positive?
-          unless data.last_raced_at && (race.date - data.last_raced_at).to_i < min_days
+          if data.last_raced_at && (race.date - data.last_raced_at).to_i < min_days
             result[:message] = "too_few_days_since_last_race"
           end
         end
         if (min_days = racing_settings.min_days_delay_from_last_injury).positive?
-          unless data.last_injured_at && (race.date - data.last_injured_at).to_i < min_days
+          if data.last_injured_at && (race.date - data.last_injured_at).to_i < min_days
             result[:message] = "too_few_days_since_last_injury"
           end
         end
         if (min_days = racing_settings.min_days_rest_between_races).positive?
-          unless data.rest_days_since_last_race.to_i < min_days
+          if data.rest_days_since_last_race.to_i < min_days
             result[:message] = "too_few_rest_days"
           end
         end
         if racing_settings.min_workouts_between_races.positive?
-          unless data.workouts_since_last_race.to_i < min_days
+          if data.workouts_since_last_race.to_i < min_days
             result[:message] = "too_few_workouts"
           end
         end
