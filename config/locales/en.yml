@@ -40,8 +40,29 @@ en:
       error: Hold on, you need to be activated!
       message: In the main game, click the link for activating your account here. Then come back!
     home:
-      bay_description: Bay is a color.
-      hello: Hi!
+      hello: Welcome to Final Furlong!
+      site_stats: Site Stats
+    stats:
+      horses:
+        horses_count: "%{number} %{horses}"
+        horses_count_with_app: "%{number} %{horses} in %{app}"
+      racing:
+        days_ago_count:
+          one: yesterday
+          other: "%{count} days ago"
+          zero: today
+        days_from_now_count:
+          one: tomorrow
+          other: in %{count} days
+          zero: today
+        horses_count: " with %{count} %{horses}"
+        next_races_count:
+          one: '1 race will be run '
+          other: "%{count} races will be run "
+        races_count: "%{number} %{races} have been run"
+        recent_races_count:
+          one: '1 race was run '
+          other: "%{count} races were run "
   racing:
     training_schedules:
       activity_with_distance: "%{activity} for %{distance}"

@@ -161,6 +161,7 @@ CREATE TYPE public.future_entry_statuses AS ENUM (
 );
 
 
+--
 -- Name: future_event_types; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -9073,7 +9074,7 @@ ALTER TABLE ONLY public.racetracks
 --
 
 ALTER TABLE ONLY public.race_result_horses
-    ADD CONSTRAINT fk_rails_7254168319 FOREIGN KEY (odd_id) REFERENCES public.race_results(id) ON UPDATE CASCADE ON DELETE SET NULL NOT VALID;
+    ADD CONSTRAINT fk_rails_7254168319 FOREIGN KEY (odd_id) REFERENCES public.race_odds(id);
 
 
 --
@@ -9619,6 +9620,8 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260417141626'),
+('20260417135842'),
 ('20260416223107'),
 ('20260416105850'),
 ('20260416091719'),
@@ -9810,3 +9813,4 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220502093637'),
 ('20220426211810'),
 ('20220403152231');
+
