@@ -1,0 +1,38 @@
+- title = @date ? t(".title_with_date", date: l(@date)) : t(".title")
+- pagy_hash = @pagy.data_hash(data_keys: %i[count limit])
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new( links: [{ name: Current.stable.name, href: current_stable_path },
+                                                    { name: title, href: "#", title: true }])
+p.font-bold.text-center.w-full.my-2= "#{pagy_hash[:count]} #{t("racing.race.race").downcase.pluralize(pagy_hash[:count])}"
+table.table.table-responsive.table-zebra.sortable.n-last
+  thead
+    tr
+      th= t("racing.race.date")
+      th= t("racing.race.horse")
+      th= t("racing.race.track")
+      th= t("racing.race.race")
+      th= t("racing.race.surface")
+      th= t("racing.race.equipment")
+      th= t("common.actions.title")
+  tbody
+    - @results.each do |entry|
+      - race = entry.race
+      - horse = entry.horse
+      tr
+        td= l(race.date)
+        td class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), target: "_top"
+        td= race.racetrack.name
+        td= link_to race.race_description_string, new_racing_race_entry_path(race), target: "_top"
+        td= race.track_surface.surface_short
+        td= entry.equipment_string(blank: "")
+        td
+          - if policy(entry).edit?
+            = render Ui::ButtonizedLink::Component.new(url: edit_racing_race_entry_option_path(race, entry), size: :small, style: :outline, extra_classes: 'inline', data: { turbo_frame: "modal" }) do
+              i.ph-fill.ph-pencil
+              = t("racing.entries.entries.edit")
+          - if policy(entry).scratch?
+            = render Ui::Button::Component.new(url: racing_race_entry_path(race, entry), color: :error, style: :outline, size: :small, form_class: 'inline',
+              http_method: :delete, data: { turbo_confirm: t("racing.entries.entries.scratch_confirm"), turbo_confirm_title: t("racing.entries.entries.scratch_confirm_title", name: horse.name) }) do
+              = t("racing.entries.entries.scratch")
+
+  = render Ui::Pagination::Component.new(pagy: @pagy)
