@@ -88,6 +88,10 @@ en:
     current_boardings:
       index:
         mobile_explanation: Horses are displayed with Energy/Fitness (Days Boarded)
+    current_entries:
+      index:
+        title: Current Race Entries
+        title_with_date: Current Race Entries for %{date}
     future_entries:
       show:
         already_entered: Already racing on this day

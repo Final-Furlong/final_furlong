@@ -1,7 +1,9 @@
 /# locals: (query:)
 = turbo_search_form_for query, url: stable_training_summary_path, method: :get, turbo_frame: "#{Current.stable.slug}-training-summary" do |f|
-  .card.card-border.shadow-md.my-4.dark:border-1.dark:border-neutral-100/50
-    .card-body
+  .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1
+    input type="checkbox"
+    .collapse-title.font-semibold.font-medium= t("common.filters")
+    .collapse-content.text-sm.border-t-1.border-base-content/40
       .grid.grid-cols-1.sm:grid-cols-4.lg:grid-cols-6.mb-2.gap-4
         div
           fieldset.fieldset
@@ -80,7 +82,7 @@
               = f.text_field :min_workouts_since_last_race, class: 'input mr-2', type: 'text', placeholder: t(".min")
               = f.text_field :max_workouts_since_last_race, class: 'input', type: 'text', placeholder: t(".max")
 
-      .float-right.flex.mt-2.justify-content-end
-        = render Ui::ButtonizedLink::Component.new(url: stable_training_summary_path, color: :error, style: :outline, size: :small, extra_classes: "me-2", http_method: :get, data: { action: "search#reset" }) do
-          = t("common.search_form.reset_filters")
-        = render Ui::SubmitButton::Component.new(form: f, size: :small, extra_classes: "d-lg-none", text: t("common.search_form.action"))
+        .float-right.flex.mt-2.justify-content-end
+          = render Ui::ButtonizedLink::Component.new(url: stable_training_summary_path, color: :error, style: :outline, size: :small, extra_classes: "me-2", http_method: :get, data: { action: "search#reset" }) do
+            = t("common.search_form.reset_filters")
+          = render Ui::SubmitButton::Component.new(form: f, size: :small, extra_classes: "d-lg-none", text: t("common.search_form.action"))
