@@ -4,7 +4,6 @@ html(lang= I18n.locale)
   body
     = render "layouts/confirm_dialog"
     .drawer.lg:drawer-open
-      input.drawer-toggle#menu-drawer type="checkbox"
       main.drawer-content
         label.drawer-overlay for="menu-drawer" aria-label=t(".close_menu")
         - unless signed_in?
