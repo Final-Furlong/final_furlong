@@ -4,8 +4,8 @@ html(lang= I18n.locale)
   body
     = render "layouts/confirm_dialog"
     .drawer.lg:drawer-open
-      main.drawer-content
-        label.drawer-overlay for="menu-drawer" aria-label=t(".close_menu")
+      main class="drawer-content"
+        label for="menu-drawer" aria-label=t(".close_menu") class="drawer-overlay"
         - unless signed_in?
           .float-right
             = render Nav::I18n::Component.new(locale: I18n.locale, version: :phone, variants: request.variant)
