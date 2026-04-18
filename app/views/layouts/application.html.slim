@@ -3,15 +3,15 @@ html(lang= I18n.locale)
   = render "layouts/head"
   body
     = render "layouts/confirm_dialog"
-    .drawer.h-screen.lg:drawer-open
-      input id="sidebar-toggle" type="checkbox" class="drawer-toggle"
+    .drawer.lg:drawer-open
+      input.drawer-toggle#menu-drawer type="checkbox"
       main.drawer-content
         - unless signed_in?
           .float-right
             = render Nav::I18n::Component.new(locale: I18n.locale, version: :phone, variants: request.variant)
         = render "layouts/top_nav"
         = yield :breadcrumbs
-        .container.p-6.clear-both.mb-16.sm:p-4.sm:mb-2
+        .p-6.clear-both.mb-16.sm:p-4.sm:mb-2
           = render Users::ImpersonatingBanner::Component.new
           = render partial: "layouts/flash"
           = yield

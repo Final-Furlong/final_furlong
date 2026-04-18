@@ -18,6 +18,7 @@ ruby:
             p
               = link_to stable_recent_results_path(date), data: { turbo_frame: "_top" } do
                 = t(".result_count", count: recent_race.last, horses:, date: l(date, format: :long))
+          p.my-1
           - claiming_races.each do |claiming_race|
             - horses = Horses::Horse.model_name.human.downcase.pluralize(claiming_race.last)
             - date = claiming_race.first
@@ -27,9 +28,10 @@ ruby:
                 = l(date, format: :long)
               - if Racing::Claim.where(claimer: Current.stable, race_date: date).exists?
                 = t(".existing_claim")
+          p.my-1
           - stable_entries.each do |stable_entry|
             - horses = Horses::Horse.model_name.human.downcase.pluralize(stable_entry.last)
             - date = stable_entry.first
             p
-              = link_to stable_recent_results_path(date), data: { turbo_frame: "_top" } do
+              = link_to stable_current_entries_path(date), data: { turbo_frame: "_top" } do
                 = t(".race_entry_count", count: stable_entry.last, horses:, date: l(date, format: :long))

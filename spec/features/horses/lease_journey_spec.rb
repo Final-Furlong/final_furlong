@@ -35,9 +35,7 @@ RSpec.describe "Leasing Journey" do
     end
     expect(page).to have_text t("horse.lease_offer_acceptances.create.success")
     expect(page).to have_text "Leased to #{leasee.name}"
-    within ".drawer-side" do
-      click_on t("layouts.sidenav.stable.budget")
-    end
+    visit stable_budgets_path
     expect(page).to have_text "Lease Fee: #{horse.name}"
     sign_out(leasee_user)
     visit root_path
@@ -69,9 +67,7 @@ RSpec.describe "Leasing Journey" do
       expect(page).not_to have_css("dialog")
       expect(page).to have_text t("horse.lease_terminations.create.success_with_termination")
       expect(page).not_to have_text t("horses.info.lease_termination_requested")
-      within ".drawer-side" do
-        click_on t("layouts.sidenav.stable.budget")
-      end
+      visit stable_budgets_path
       expect(page).to have_text "Lease Refund: #{horse.name}"
     end
   end
@@ -104,9 +100,7 @@ RSpec.describe "Leasing Journey" do
     click_on t("horse.actions.lease_offer.accept")
     expect(page).to have_text t("horse.lease_offer_acceptances.create.success")
     expect(page).to have_text "Leased to #{leasee.name}"
-    within ".drawer-side" do
-      click_on t("layouts.sidenav.stable.budget")
-    end
+    visit stable_budgets_path
     expect(page).to have_text "Lease Fee: #{horse.name}"
     sign_out(leasee_user)
     visit root_path
@@ -131,9 +125,7 @@ RSpec.describe "Leasing Journey" do
       click_on t("common.actions.save")
       expect(page).to have_text t("horse.lease_terminations.create.success_with_termination")
       expect(page).not_to have_text t("horses.info.lease_termination_requested")
-      within ".drawer-side" do
-        click_on t("layouts.sidenav.stable.budget")
-      end
+      visit stable_budgets_path
       expect(page).to have_text "Lease Refund: #{horse.name}"
     end
   end

@@ -5,13 +5,12 @@ namespace :stable, module: "current_stable" do
   resources :boardings, only: %i[index new create update]
   resources :budgets, only: %i[index]
   resources :current_boardings, only: :index
-  get "/future_entries", to: "future_entries#show", as: :future_entries_all
-  get "/future_entries/:date", to: "future_entries#show", as: :future_entries
+  get "/current_entries(/:date)", to: "current_entries#index", as: :current_entries
+  get "/future_entries(/:date)", to: "future_entries#show", as: :future_entries
   resources :historical_boardings, only: :index
   resources :horses, only: %i[index edit show update]
   resources :lease_offers, only: :index
   resources :leases, only: :index
-  resources :race_entries, only: :index
   resources :race_results, only: :index do
     get :summary, on: :collection
     get :list, on: :collection
