@@ -31,3 +31,4 @@ module ApplicationHelper
     value
   end
 end
+
