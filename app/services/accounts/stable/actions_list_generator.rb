@@ -30,9 +30,10 @@ module Accounts
         [
           { key: :impersonate },
           { key: :edit },
-          { key: :race_results, policy: CurrentStable::RaceResultPolicy },
+          { key: :current_entries, policy: CurrentStable::RaceEntryPolicy },
           { key: :recent_race_results, policy: CurrentStable::RaceResultPolicy },
-          { key: :future_races, policy: CurrentStable::FutureRaceEntryPolicy }
+          { key: :future_races, policy: CurrentStable::FutureRaceEntryPolicy },
+          { key: :race_results, policy: CurrentStable::RaceResultPolicy }
         ]
       end
     end

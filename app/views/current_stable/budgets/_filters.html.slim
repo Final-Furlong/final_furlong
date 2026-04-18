@@ -1,23 +1,26 @@
 /# locals: (dashboard:)
-.card.card-border.shadow-md.my-4.dark:border-1.dark:border-neutral-100/50
-  .card-body
-    = search_form_for dashboard.query, url: stable_budgets_path, html: { class: "d-flex flex-column", autocomplete: "off" },
-            data: { controller: "search", 'search-target': "form", 'turbo-frame' => "stable-budget-search" } do |f|
-      .grid.grid-cols-1.mb-2.gap-4.md:grid-cols-4
-        div
-          = f.input :budget_description, label: false, required: false, placeholder: I18n.t("current_stable.budgets.search.description"),
-                  hint: I18n.t("current_stable.budgets.search.description_hint"),
-                  input_html: { data: { action: "search#search", min_characters: 2 } }
-        div
-          = f.input :created_at_gteq, label: false, required: false, hint: I18n.t("current_stable.budgets.search.date_from"),
-                  input_html: { type: :date, data: { action: "search#search", min_characters: 2 } }
-        div
-          = f.input :created_at_lteq, label: false, required: false, hint: I18n.t("current_stable.budgets.search.date_to"),
-                  input_html: { type: :date, data: { action: "search#search", min_characters: 2 } }
-        div
-          = f.input :budget_category, collection: dashboard.categories, label: false, required: false,
-                  prompt: I18n.t("current_stable.budgets.search.category")
-      .float-right.flex.mt-2.justify-content-end
-        = render Ui::ButtonizedLink::Component.new(color: :error, style: :outline, size: :small, extra_classes: "me-2", http_method: :get, data: { action: "search#reset" }) do
-          = t("common.search_form.reset_filters")
-        = render Ui::SubmitButton::Component.new(form: f, size: :small, extra_classes: "d-lg-none", text: t("common.search_form.action"))
+.collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1
+  input type="checkbox"
+  .collapse-title.font-semibold.font-medium= t("common.filters")
+  .collapse-content.text-sm.border-t-1.border-base-content/40
+    .mt-4
+      = search_form_for dashboard.query, url: stable_budgets_path, html: { class: "d-flex flex-column", autocomplete: "off" },
+              data: { controller: "search", 'search-target': "form", 'turbo-frame' => "stable-budget-search" } do |f|
+        .grid.grid-cols-1.mb-2.gap-4.md:grid-cols-4
+          div
+            = f.input :budget_description, label: false, required: false, placeholder: I18n.t("current_stable.budgets.search.description"),
+                    hint: I18n.t("current_stable.budgets.search.description_hint"),
+                    input_html: { data: { action: "search#search", min_characters: 2 } }
+          div
+            = f.input :created_at_gteq, label: false, required: false, hint: I18n.t("current_stable.budgets.search.date_from"),
+                    input_html: { type: :date, data: { action: "search#search", min_characters: 2 } }
+          div
+            = f.input :created_at_lteq, label: false, required: false, hint: I18n.t("current_stable.budgets.search.date_to"),
+                    input_html: { type: :date, data: { action: "search#search", min_characters: 2 } }
+          div
+            = f.input :budget_category, collection: dashboard.categories, label: false, required: false,
+                    prompt: I18n.t("current_stable.budgets.search.category")
+        .float-right.flex.mt-2.justify-content-end
+          = render Ui::ButtonizedLink::Component.new(color: :error, style: :outline, size: :small, extra_classes: "me-2", http_method: :get, data: { action: "search#reset" }) do
+            = t("common.search_form.reset_filters")
+          = render Ui::SubmitButton::Component.new(form: f, size: :small, extra_classes: "d-lg-none", text: t("common.search_form.action"))
