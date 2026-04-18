@@ -4477,6 +4477,40 @@ CREATE MATERIALIZED VIEW public.stable_annual_race_records AS
 
 
 --
+-- Name: stable_notes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.stable_notes (
+    id bigint NOT NULL,
+    stable_id bigint NOT NULL,
+    title character varying NOT NULL,
+    text text,
+    private boolean DEFAULT true NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: stable_notes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.stable_notes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: stable_notes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.stable_notes_id_seq OWNED BY public.stable_notes.id;
+
+
+--
 -- Name: stables; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -5445,6 +5479,13 @@ ALTER TABLE ONLY public.shipment_routes ALTER COLUMN id SET DEFAULT nextval('pub
 
 
 --
+-- Name: stable_notes id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stable_notes ALTER COLUMN id SET DEFAULT nextval('public.stable_notes_id_seq'::regclass);
+
+
+--
 -- Name: stables id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -6030,6 +6071,14 @@ ALTER TABLE ONLY public.settings
 
 ALTER TABLE ONLY public.shipment_routes
     ADD CONSTRAINT shipment_routes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: stable_notes stable_notes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stable_notes
+    ADD CONSTRAINT stable_notes_pkey PRIMARY KEY (id);
 
 
 --
@@ -8194,6 +8243,34 @@ CREATE INDEX index_shipment_routes_on_road_days ON public.shipment_routes USING 
 
 
 --
+-- Name: index_stable_notes_on_private; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_stable_notes_on_private ON public.stable_notes USING btree (private);
+
+
+--
+-- Name: index_stable_notes_on_stable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_stable_notes_on_stable_id ON public.stable_notes USING btree (stable_id);
+
+
+--
+-- Name: index_stable_notes_on_text; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_stable_notes_on_text ON public.stable_notes USING btree (text);
+
+
+--
+-- Name: index_stable_notes_on_title; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_stable_notes_on_title ON public.stable_notes USING btree (title);
+
+
+--
 -- Name: index_stables_on_available_balance; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8723,6 +8800,14 @@ CREATE UNIQUE INDEX motor_queries_name_unique_index ON public.motor_queries USIN
 --
 
 CREATE UNIQUE INDEX motor_tags_name_unique_index ON public.motor_tags USING btree (name);
+
+
+--
+-- Name: stable_notes fk_rails_004315d530; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stable_notes
+    ADD CONSTRAINT fk_rails_004315d530 FOREIGN KEY (stable_id) REFERENCES public.stables(id);
 
 
 --
@@ -9620,6 +9705,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260418142600'),
 ('20260417141626'),
 ('20260417135842'),
 ('20260416223107'),

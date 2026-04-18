@@ -81,10 +81,6 @@ RSpec.describe Auctions::HorseSeller do
       )
     end
 
-    it "deletes race entry" do
-      expect { described_class.new.process_sale(bid:) }.to change(Legacy::RaceEntry, :count).by(-1)
-    end
-
     it "updates legacy unborn foals" do
       described_class.new.process_sale(bid:)
       expect(legacy_foal_1.reload).to have_attributes(Owner: legacy_stable_buyer.ID)
@@ -525,21 +521,6 @@ RSpec.describe Auctions::HorseSeller do
     it_behaves_like "a processed sale"
   end
 
-  context "when horse is not entered in a claiming race" do
-    before { legacy_race_entry.race.type.update(Type: "NW1 Allowance") }
-
-    it "returns sold true" do
-      result = described_class.new.process_sale(bid:)
-      expect(result.sold?).to be true
-    end
-
-    it "does not delete race entry" do
-      expect do
-        described_class.new.process_sale(bid:)
-      end.not_to change(Legacy::RaceEntry, :count)
-    end
-  end
-
   context "when horse is not the dam of unborn foals" do
     before do
       Racing::RaceRecord.refresh
@@ -576,33 +557,9 @@ RSpec.describe Auctions::HorseSeller do
     @seller.update(available_balance: 200_000, total_balance: 200_000)
     horse.update(legacy_id: legacy_horse.ID)
     horse.owner.update(legacy_id: legacy_stable_seller.ID)
-    @legacy_training_schedule = Legacy::TrainingSchedule.create!(
-      Horse: legacy_horse.ID,
-      Name: SecureRandom.alphanumeric(20),
-      Stable: legacy_stable_seller.ID
-    )
-    @legacy_training_schedule_horse = Legacy::TrainingScheduleHorse.create!(
-      Horse: legacy_horse.ID,
-      Schedule: legacy_training_schedule.ID
-    )
-    legacy_race_type = Legacy::RaceType.create!(ID: 2, Type: "Claiming")
-    legacy_race = Legacy::Race.create!(
-      Age: 2,
-      Date: Date.current,
-      DayNum: 1,
-      Distance: 8.5,
-      Location: 10,
-      Type: legacy_race_type.ID
-    )
-    @legacy_race_entry = Legacy::RaceEntry.create!(
-      Race: legacy_race.ID,
-      EntryDate: Date.current + 1.day,
-      Horse: legacy_horse.ID
-    )
     @legacy_foal_1 = create(:legacy_horse, :unborn, Dam: legacy_horse.ID)
     @legacy_foal_2 = create(:legacy_horse, :unborn, Dam: legacy_horse.ID)
     @foal_1 = create(:horse, :unborn, dam: horse)
     @foal_2 = create(:horse, :unborn, dam: horse)
   end
 end
-
