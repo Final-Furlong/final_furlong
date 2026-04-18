@@ -9,12 +9,12 @@ nav class="drawer-side is-drawer-close:overflow-visible"
       = render "layouts/user_sidenav" if signed_in?
       .divider.my-0
       li
-        button data-tip=t("layouts.sidenav.stables") class="is-drawer-close:tooltip.is-drawer-close:tooltip-right"
+        button data-tip=t("layouts.sidenav.stables") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
           a.transition.duration-75 href=stables_path
             i.ph.ph-fill.ph-barn
             span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stables")
       li
-        button data-tip=t("layouts.sidenav.all_horses") class="is-drawer-close:tooltip.is-drawer-close:tooltip-right"
+        button data-tip=t("layouts.sidenav.all_horses") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
           a.transition.duration-75 href=horses_path
             i.ph.ph-fill.ph-horse
             span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.all_horses")
@@ -22,7 +22,7 @@ nav class="drawer-side is-drawer-close:overflow-visible"
       = render "layouts/admin_sidenav" if signed_in? && Current.user.admin?
       - unless Rails.env.development?
         li
-          button data-tip=t(".main_app") class="is-drawer-close:tooltip.is-drawer-close:tooltip-right"
+          button data-tip=t(".main_app") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
             = render Ui::Link::Component.new(url: "https://www.finalfurlong.org/",
                   extra_classes: "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700") do
               i.ph.ph-fill.ph-backspace

@@ -1,48 +1,48 @@
 / User Sidebar
 li
-  button data-tip=t("layouts.sidenav.my_stable") class="is-drawer-close:tooltip.is-drawer-close:tooltip-right"
+  button data-tip=t("layouts.sidenav.my_stable") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
     a.transition.duration-75 href=root_path
       i.ph.ph-fill.ph-house
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.my_stable")
 li
-  button data-tip=t("layouts.sidenav.stable.horses") class="is-drawer-close:tooltip.is-drawer-close:tooltip-right"
+  button data-tip=t("layouts.sidenav.stable.horses") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
     a.transition.duration-75 href=stable_horses_path
       i.ph.ph-fill.ph-horse
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.horses")
 li
-  button data-tip=t("layouts.sidenav.stable.budget") class="is-drawer-close:tooltip.is-drawer-close:tooltip-right"
+  button data-tip=t("layouts.sidenav.stable.budget") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
     a.transition.duration-75 href=stable_budgets_path
       i.ph.ph-fill.ph-coins
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.budget")
 li
-  button data-tip=t("layouts.sidenav.stable.shipping") class="is-drawer-close:tooltip.is-drawer-close:tooltip-right"
+  button data-tip=t("layouts.sidenav.stable.shipping") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
     a.transition.duration-75#my-shipments-link href=stable_shipments_path
       i.ph.ph-fill.ph-truck
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.shipping")
 - if Auctions::Bid.where(bidder: Current.stable).exists?
   li
-    button data-tip=t("layouts.sidenav.stable.auctions") class="is-drawer-close:tooltip.is-drawer-close:tooltip-right"
+    button data-tip=t("layouts.sidenav.stable.auctions") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
       a.transition.duration-75#my-auctions-link href=stable_auctions_path
         i.ph.ph-fill.ph-gavel
         span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.auctions")
 li
-  button data-tip=t("layouts.sidenav.stable.boarding") class="is-drawer-close:tooltip.is-drawer-close:tooltip-right"
+  button data-tip=t("layouts.sidenav.stable.boarding") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
     a.transition.duration-75#my-boardings-link href=stable_boardings_path
       i.ph.ph-fill.ph-barn
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.boarding")
 li
-  button data-tip=t("layouts.sidenav.stable.training") class="is-drawer-close:tooltip.is-drawer-close:tooltip-right"
+  button data-tip=t("layouts.sidenav.stable.training") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
     a.transition.duration-75#my-trainings-link href=stable_trainings_path
       i.ph.ph-fill.ph-timer
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.training")
 .divider.my-0
 li
-  button data-tip=t("layouts.sidenav.stable.race_schedule") class="is-drawer-close:tooltip.is-drawer-close:tooltip-right"
+  button data-tip=t("layouts.sidenav.stable.race_schedule") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
     a.transition.duration-75 href=racing_races_path
       i.ph.ph-fill.ph-calendar-blank
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.race_schedule")
 li
-  button data-tip=t("layouts.sidenav.stable.race_results") class="is-drawer-close:tooltip.is-drawer-close:tooltip-right"
+  button data-tip=t("layouts.sidenav.stable.race_results") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
     a.transition.duration-75 href=racing_results_path
       i.ph.ph-fill.ph-flag-checkered
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.race_results")
