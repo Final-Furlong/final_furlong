@@ -10,6 +10,10 @@ module CurrentStable
       owner? || leaser?
     end
 
+    def view_in_old_app?
+      true
+    end
+
     def geld?
       false # TODO: implement gelding
       # return false unless owner? || admin?
@@ -142,4 +146,3 @@ module CurrentStable
     end
   end
 end
-

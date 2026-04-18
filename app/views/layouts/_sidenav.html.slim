@@ -23,8 +23,7 @@ nav class="drawer-side is-drawer-close:overflow-visible"
       - unless Rails.env.development?
         li
           button data-tip=t(".main_app") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-            = render Ui::Link::Component.new(url: "https://www.finalfurlong.org/",
-                  extra_classes: "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700") do
+            = render Ui::Link::Component.new(url: Rails.application.credentials.dig(:old_app, :url)) do
               i.ph.ph-fill.ph-backspace
               span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t(".main_app")
 

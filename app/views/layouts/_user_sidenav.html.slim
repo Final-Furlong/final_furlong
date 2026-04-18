@@ -16,23 +16,23 @@ li
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.budget")
 li
   button data-tip=t("layouts.sidenav.stable.shipping") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-    a.transition.duration-75#my-shipments-link href=stable_shipments_path
+    a.transition.duration-75 href=stable_shipments_path
       i.ph.ph-fill.ph-truck
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.shipping")
 - if Auctions::Bid.where(bidder: Current.stable).exists?
   li
     button data-tip=t("layouts.sidenav.stable.auctions") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-      a.transition.duration-75#my-auctions-link href=stable_auctions_path
+      a.transition.duration-75 href=stable_auctions_path
         i.ph.ph-fill.ph-gavel
         span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.auctions")
 li
   button data-tip=t("layouts.sidenav.stable.boarding") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-    a.transition.duration-75#my-boardings-link href=stable_boardings_path
+    a.transition.duration-75 href=stable_boardings_path
       i.ph.ph-fill.ph-barn
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.boarding")
 li
   button data-tip=t("layouts.sidenav.stable.training") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-    a.transition.duration-75#my-trainings-link href=stable_trainings_path
+    a.transition.duration-75 href=stable_trainings_path
       i.ph.ph-fill.ph-timer
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.training")
 .divider.my-0

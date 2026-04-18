@@ -28,6 +28,7 @@ module Horses
 
     def actions
       [
+        { key: :view_in_old_app },
         { key: :geld },
         { key: :change_status },
         { key: :ship },
