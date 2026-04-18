@@ -1,32 +1,32 @@
 input#menu-drawer type="checkbox" class="drawer-toggle"
-nav.drawer-side.is-drawer-close:overflow-visible
-  .flex.min-h-full.flex-col.items-start.bg-base-200.is-drawer-close:w-14.is-drawer-open:w-48
+nav class="drawer-side .is-drawer-close:overflow-visible"
+  .flex.min-h-full.flex-col.items-start.bg-base-200 class="is-drawer-close:w-14.is-drawer-open:w-48"
     ul.menu.w-full.grow
-      li.is-drawer-close:hidden
-        label.drawer-overlay for="menu-drawer" aria-label=t(".close_menu")
+      li class="is-drawer-close:hidden"
+        label for="menu-drawer" aria-label=t(".close_menu") class="drawer-overlay"
           i.ph.ph-caret-double-left.mr-2
           = t(".close_menu")
       = render "layouts/user_sidenav" if signed_in?
       .divider.my-0
       li
-        button.is-drawer-close:tooltip.is-drawer-close:tooltip-right#stables-link data-tip=t("layouts.sidenav.stables")
+        button data-tip=t("layouts.sidenav.stables") class="is-drawer-close:tooltip.is-drawer-close:tooltip-right"
           a.transition.duration-75 href=stables_path
             i.ph.ph-fill.ph-barn
-            span.flex-1.ms-3.whitespace-nowrap.is-drawer-close:hidden= t("layouts.sidenav.stables")
+            span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stables")
       li
-        button.is-drawer-close:tooltip.is-drawer-close:tooltip-right#horses-link data-tip=t("layouts.sidenav.all_horses")
+        button data-tip=t("layouts.sidenav.all_horses") class="is-drawer-close:tooltip.is-drawer-close:tooltip-right"
           a.transition.duration-75 href=horses_path
             i.ph.ph-fill.ph-horse
-            span.flex-1.ms-3.whitespace-nowrap.is-drawer-close:hidden= t("layouts.sidenav.all_horses")
+            span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.all_horses")
       .divider.my-0
       = render "layouts/admin_sidenav" if signed_in? && Current.user.admin?
       - unless Rails.env.development?
         li
-          button.is-drawer-close:tooltip.is-drawer-close:tooltip-right#main-app-link data-tip=t(".main_app")
+          button data-tip=t(".main_app") class="is-drawer-close:tooltip.is-drawer-close:tooltip-right"
             = render Ui::Link::Component.new(url: "https://www.finalfurlong.org/",
                   extra_classes: "flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700") do
               i.ph.ph-fill.ph-backspace
-              span.flex-1.ms-3.whitespace-nowrap.is-drawer-close:hidden= t(".main_app")
+              span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t(".main_app")
 
       - unless signed_in?
         = render Nav::I18n::Component.new(locale: I18n.locale, version: :tablet, variants: request.variant)

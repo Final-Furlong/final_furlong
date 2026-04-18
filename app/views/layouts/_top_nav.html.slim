@@ -1,6 +1,6 @@
 .navbar.w-full.bg-base-100.shadow-sm.border-neutral-content/80.border-b-1#top_nav
   .flex-1#logo
-    label.btn.btn.square.btn-ghost.is-drawer-open:hidden for="menu-drawer" aria-label=t(".open_menu")
+    label.btn.btn.square.btn-ghost for="menu-drawer" aria-label=t(".open_menu") class="is-drawer-open:hidden"
       i.ph.ph-caret-double-right
     = image_tag "logo_dark.png", class: "h-6 md:h-12 w-auto inline dark:hidden", alt: "Final Furlong Logo"
     = image_tag "logo_light.png", class: "h-6 md:h-12 w-auto hidden dark:inline", alt: "Final Furlong Logo"
