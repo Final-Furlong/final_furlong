@@ -6,6 +6,7 @@ html(lang= I18n.locale)
     .drawer.lg:drawer-open
       input.drawer-toggle#menu-drawer type="checkbox"
       main.drawer-content
+        label.drawer-overlay for="menu-drawer" aria-label=t(".close_menu")
         - unless signed_in?
           .float-right
             = render Nav::I18n::Component.new(locale: I18n.locale, version: :phone, variants: request.variant)

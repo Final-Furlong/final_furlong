@@ -1,11 +1,10 @@
 .drawer-side.is-drawer-close:overflow-visible
   .flex.min-h-full.flex-col.items-start.bg-base-200.is-drawer-close:w-14.is-drawer-open:w-48
     ul.menu.w-full.grow
-      li.is-drawer-close:hidden
+      li.lg:hidden
         label.drawer-overlay for="menu-drawer" aria-label=t(".close_menu")
-          .is-drawer-close:hidden
-            i.ph.ph-caret-double-left.mr-2
-            = t(".close_menu")
+          i.ph.ph-caret-double-left.mr-2
+          = t(".close_menu")
       = render "layouts/user_sidenav" if signed_in?
       .divider.my-0
       li
