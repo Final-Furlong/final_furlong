@@ -13,7 +13,7 @@ export default defineConfig(_configEnv => ({
     }),
     VitePluginRadar({
       simpleanalytics: {
-        enabled: true
+        enabled: process.env.RAILS_ENV == "production"
       }
     }),
     tailwindcss()
