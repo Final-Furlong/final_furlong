@@ -4483,8 +4483,8 @@ CREATE MATERIALIZED VIEW public.stable_annual_race_records AS
 CREATE TABLE public.stable_notes (
     id bigint NOT NULL,
     stable_id bigint NOT NULL,
-    title character varying NOT NULL,
-    text text,
+    title character varying(200) NOT NULL,
+    text text NOT NULL,
     private boolean DEFAULT true NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL

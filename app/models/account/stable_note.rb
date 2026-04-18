@@ -5,7 +5,6 @@ module Account
     validates :title, :text, presence: true
     validates :private, inclusion: { in: [true, false] }
     validates :title, length: { in: 3..200 }
-    validates :text, length: { in: 3..2_000 }
   end
 end
 
@@ -16,8 +15,8 @@ end
 #
 #  id         :bigint           not null, primary key
 #  private    :boolean          default(TRUE), not null, indexed
-#  text       :text             indexed
-#  title      :string           not null, indexed
+#  text       :text             not null, indexed
+#  title      :string(200)      not null, indexed
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  stable_id  :bigint           not null, indexed
