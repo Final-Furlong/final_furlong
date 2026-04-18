@@ -7,43 +7,16 @@ class Horses::Horse::Racing < ActiveRecord::AssociatedObject
   record.scope :runs_on_turf, -> { joins(:race_options).merge(::Racing::RaceOption.turf) }
   record.scope :runs_on_steeplechase, -> { joins(:race_options).merge(::Racing::RaceOption.jump) }
 
-  def current_location
-    if last_shipment.nil?
-      record.manager.racetrack.location
-    else
-      last_shipment.ending_location
-    end
-  end
-
   def at_farm?
-    return true if last_shipment.nil?
-
-    case last_shipment.shipping_type
-    when "track_to_track", "farm_to_track"
-      false
-    when "track_to_farm"
-      true
-    end
+    record.race_metadata.at_home?
   end
 
   def in_transit?
-    return false if last_shipment.nil?
-
-    last_shipment.arrival_date > Date.current
+    record.race_metadata.in_transit?
   end
 
   def current_location_name
-    if last_shipment.nil?
-      return record.manager.name
-    end
-
-    case last_shipment.shipping_type
-    when "track_to_track", "farm_to_track"
-      name = Racing::Racetrack.where(location: last_shipment.ending_location).pick(:name)
-      I18n.t("horse.location.at_racetrack", name:)
-    when "track_to_farm"
-      record.manager.name
-    end
+    record.race_metadata.location.name
   end
 
   def last_shipment

@@ -9,7 +9,7 @@ module Horses
         @result = Result.new(shipment:)
         stable = horse.manager
 
-        shipment.starting_location = horse.racing.current_location
+        shipment.starting_location = horse.race_metadata.location
         shipment.ending_location = if params[:ending_location] == "Farm"
           stable.racetrack.location
         else
@@ -112,9 +112,7 @@ module Horses
       end
 
       def current_location_name
-        if horse.racehorse?
-          horse.racing.current_location_name
-        end
+        horse.race_metadata.location.name
       end
 
       def ending_location_name(stable, shipping_type)

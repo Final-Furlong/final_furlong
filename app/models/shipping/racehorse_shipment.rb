@@ -31,7 +31,7 @@ module Shipping
       list = []
       unless horse.racing.at_farm?
         list << [horse.manager.name, "Farm"]
-        location_query = location_query.where.not(id: horse.racing.current_location.id)
+        location_query = location_query.where.not(id: horse.race_metadata.location.id)
       end
       list += location_query.select(:id).map do |location|
         [Racing::Racetrack.where(location_id: location.id).pick(:name), location.id]
@@ -41,7 +41,7 @@ module Shipping
     end
 
     def options_for_mode_select(max_days = 100)
-      starting_location ||= horse.racing.current_location
+      starting_location ||= horse.race_metadata.location
       return [] if starting_location.blank? || ending_location.blank?
 
       available_modes = modes.filter do |mode|
@@ -57,7 +57,7 @@ module Shipping
     end
 
     def route
-      starting_location ||= horse.racing.current_location
+      starting_location ||= horse.race_metadata.location
       route = Shipping::Route.with_locations(starting_location, ending_location)
       route.is_a?(Shipping::Route) ? route : route.first
     end

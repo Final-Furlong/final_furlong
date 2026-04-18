@@ -13,7 +13,7 @@ module Horses
 
         stable = horse.manager
         end_location_name = ending_location_name(stable, shipment.shipping_type)
-        if horse.racing.current_location != shipment.starting_location
+        if horse.race_metadata.location != shipment.starting_location
           notify_failed_shipment(end_location_name, stable)
           return
         end
@@ -34,7 +34,7 @@ module Horses
           end
         end
 
-        current_location = horse.racing.current_location_name
+        current_location = horse.race_metadata.location_name
         saved = false
         ActiveRecord::Base.transaction do
           shipment.update(scheduled: false)
