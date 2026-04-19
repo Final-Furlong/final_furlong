@@ -12,8 +12,8 @@ module Horse
       if status_params[:status]
         authorize @horse, "status_#{status_params[:status]}?", policy_class: CurrentStable::HorsePolicy
 
-        new_status = Horses::Status::ACTIVE_BREEDING_STATUSES.include?(@horse.status) ? "retired_#{@horse.status}" : status_params[:status]
-        if @horse.update(status: new_status)
+        result = Horses::StatusUpdater.new.update_status(horse: @horse, status: status_params[:status])
+        if result.updated?
           flash[:success] = t(".success", name: @horse.name, status: status_params[:status].titleize)
           redirect_to horse_path(@horse)
         else
