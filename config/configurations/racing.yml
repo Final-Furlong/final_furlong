@@ -24,6 +24,11 @@ shared:
   minimum_horses: 6
   minimum_horses_stakes: 10
   minimum_energy_racefiller: 80
+  min_races_to_retire: 10
+  min_stud_stakes_wins: 7
+  min_stud_stakes_places: 3
+  min_stud_grade_1_stakes_wins: 1
+  min_stud_grade_1_stakes_places: 2
   travel_deadline_days: 1
   racehorse_types:
     - flat

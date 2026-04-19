@@ -10,6 +10,7 @@ module Horses
 
     scope :current, -> { where(date: ...Date.current).where("rest_date > ?", Date.current) }
     scope :healed, -> { where(rest_date: ...Date.current) }
+    scope :retireable, -> { where(injury_type: ["broken leg", "heart attack"]) }
 
     def self.ransackable_attributes(_auth_object = nil)
       %w[date horse_id injury_type leg]
