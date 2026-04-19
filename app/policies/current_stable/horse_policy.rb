@@ -65,9 +65,9 @@ module CurrentStable
       stakes_places += (lrr.stakes_wins - Config::Racing.min_stud_stakes_wins)
       return Failure(:not_enough_stakes_places) if stakes_places < Config::Racing.min_stud_stakes_places
 
-      grade_1_wins = record.race_result_finishes.by_finish(1).joins(:race).merge(Racing::RaceResult.by_grade("Grade 1"))
+      grade_1_wins = record.race_result_finishes.by_finish(1).joins(:race).merge(Racing::RaceResult.by_grade("Grade 1")).count
       return Failure(:not_enough_grade_1_wins) if grade_1_wins < Config::Racing.min_stud_grade_1_stakes_wins
-      grade_1_places = record.race_result_finishes.by_max_finish(3).joins(:race).merge(Racing::RaceResult.by_grade("Grade 1"))
+      grade_1_places = record.race_result_finishes.by_max_finish(3).joins(:race).merge(Racing::RaceResult.by_grade("Grade 1")).count
       return Failure(:not_enough_grade_1_places) if grade_1_places < Config::Racing.min_stud_grade_1_stakes_places
 
       Success()
