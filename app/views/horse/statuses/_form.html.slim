@@ -1,0 +1,21 @@
+/# locals: (horse:)
+ruby:
+  possible_statuses = Horses::Status.new(horse.status).possible_new_status
+  statuses = possible_statuses.select { |status| CurrentStable::HorsePolicy.new(Current.user, horse).send(:"status_#{status}?") }
+= form_with model: horse, url: horse_status_path(horse), id: "status-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+  alert.alert.alert-info.alert-outline= t(".status_info")
+  fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+    legend.fieldset-legend= t(".status")
+    - statuses.each do |status|
+      label.label
+        input.radio type="radio" value=status name="horses_horse[status]" id="horses_horse_status_#{status.downcase}"
+        = I18n.t("horses.statuses.#{status.downcase}")
+    - if horse.racehorse? && !horse.female? && !statuses.include?("stud")
+      p
+        span.text-warning
+          i.ph.ph-warning.mr-2
+          = t(".not_qualified_for_stud")
+          = t(".#{CurrentStable::HorsePolicy.new(Current.user, horse).status_stud_result.failure.to_s.downcase}")
+    .float-right
+      = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+      = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.save"))

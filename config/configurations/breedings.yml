@@ -4,3 +4,4 @@ shared:
     - approved
     - bred
     - denied
+  min_age: 4

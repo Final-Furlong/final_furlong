@@ -29,7 +29,8 @@ module Racing
           race_horses.each do |race_horse|
             result.created = race_horse.valid?
             stats = update_stats(horse: race_horse.horse, race_horse:, horses:, date: race_date, racetrack: surface.racetrack)
-            next if race_horse.save! && (stats.blank? || stats.save!)
+            options = update_options(horse: race_horse.horse, surface:) if surface.surface == "steeplechase"
+            next if race_horse.save! && (options.blank? || options.save!) && (stats.blank? || stats.save!)
 
             result.created = false
             raise ActiveRecord::Rollback, race_horse.errors.full_messages.to_sentence
@@ -82,6 +83,17 @@ module Racing
 
         Horses::UpdateHorseAttributesJob.perform_later(horse)
       end
+    end
+
+    def update_options(horse:, surface:)
+      options = horse.race_options
+      return unless options
+
+      attrs = { racehorse_type: "jump" }
+      attrs[:first_jockey_id] = nil if Racing::Jockey.active.flat.exists?(id: options.first_jockey_id)
+      attrs[:second_jockey_id] = nil if Racing::Jockey.active.flat.exists?(id: options.second_jockey_id)
+      attrs[:third_jockey_id] = nil if Racing::Jockey.active.flat.exists?(id: options.third_jockey_id)
+      options.assign_attributes(attrs)
     end
 
     def update_stats(horse:, horses:, race_horse:, date:, racetrack:)

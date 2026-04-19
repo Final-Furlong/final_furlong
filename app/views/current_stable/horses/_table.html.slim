@@ -38,7 +38,7 @@
                   - unless @active_status.to_s == 'yearling' || @active_status.to_s == 'weanling'
                     - if @active_status.to_s == 'racehorse'
                       td
-                        = horse.track_record || t("horse.unraced")
+                        = horse.lifetime_race_record&.race_record_races_only || t("horse.unraced")
                     - if @active_status.to_s == 'broodmare'
                       td
                         = horse.broodmare.breed_ranking_string

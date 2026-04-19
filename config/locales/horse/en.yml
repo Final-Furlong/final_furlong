@@ -5,6 +5,7 @@ en:
       boarding:
         create: Create Boarding
         stop: Stop Boarding
+      change_status: Change Status
       consign_to_auction: Consign to Auction
       create_lease_offer: Set for Lease
       create_sale_offer: Set for Sale
@@ -420,6 +421,23 @@ en:
         dirt: Dirt
         jump: Steeplechase
         turf: Turf
+    statuses:
+      edit:
+        title: Edit %{name} Status
+      form:
+        not_enough_grade_1_places: Needs at least 2 Grade 1 places (or further wins)
+        not_enough_grade_1_wins: Needs at least 1 Grade 1 win
+        not_enough_races: Needs at least 10 races
+        not_enough_stakes_places: Needs at least 3 stakes places (or further wins)
+        not_enough_stakes_wins: Needs at least 7 stakes wins
+        not_old_enough: Must be at least 4 years old
+        not_qualified_for_stud: 'Not yet stud qualified: '
+        status: New Status
+        status_info: Horses must be at least 4 years old and have raced 10 times to retire to breeding.
+        unraced: Has not raced enough
+      update:
+        failure: "%{name} could not be changed to %{status}"
+        success: "%{name} status has been updated to %{status}"
     titles:
       abbr:
         final_furlong: FFCh.

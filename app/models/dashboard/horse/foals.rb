@@ -8,7 +8,7 @@ module Dashboard
         @horse = horse
         if horse.female?
           @born_foals = horse.foals.born.includes(:sire, :horse_attributes).order(date_of_birth: :asc)
-          @unborn_foal = horse.next_foal.includes(:stud)
+          @unborn_foal = horse.next_foal&.includes(:stud)
           @breeding_record = horse.broodmare_foal_record || horse.build_broodmare_foal_record
         else
           @breeding_record = horse.stud_foal_record || horse.build_stud_foal_record

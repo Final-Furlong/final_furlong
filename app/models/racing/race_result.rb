@@ -34,6 +34,7 @@ module Racing
       types = [types] unless types.is_a? Array
       where.not(race_type: types)
     }
+    scope :by_grade, ->(grade) { where(grade:) }
     scope :by_date, ->(date) { where(date:) }
     scope :before_date, ->(date) { where(date: ...date) }
     scope :since_date, ->(date) { where(date: date..) }
