@@ -17,6 +17,7 @@ module Horses
     SEARCH_STATUSES = %w[racehorse broodmare stud weanling yearling retired deceased]
     LEASEABLE_STATUSES = %w[racehorse broodmare stud]
     SELLABLE_STATUSES = %w[racehorse broodmare stud yearling weanling]
+    RETIREABLE_STATUSES = %w[racehorse broodmare stud yearling weanling]
 
     def initialize(status)
       @status = status.to_s
@@ -40,6 +41,17 @@ module Horses
 
     def breeding?
       BREEDING_STATUSES.include?(@status)
+    end
+
+    def possible_new_status
+      case @status.downcase
+      when "racehorse"
+        ["broodmare", "stud", "retired"]
+      when "broodmare", "stud", "yearling", "weanling"
+        ["retired"]
+      else
+        []
+      end
     end
   end
 end

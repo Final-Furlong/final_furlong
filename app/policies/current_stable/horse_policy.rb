@@ -1,5 +1,7 @@
 module CurrentStable
   class HorsePolicy < ApplicationPolicy
+    include Dry::Monads[:result]
+
     class Scope < ApplicationPolicy::Scope
       def resolve
         scope.managed_by(stable).alive
@@ -23,11 +25,56 @@ module CurrentStable
     end
 
     def change_status?
-      false # TODO: implement status update
-      # return true if admin?
+      return false if record.current_lease
+      return false unless Horses::Status::LIVING_STATUSES.include?(record.status)
+      return false if Horses::Status::RETIRED_STATUSES.include?(record.status)
 
-      # owner_not_leased? || admin?
+      owner? || admin?
     end
+
+    def status_retired?
+      Horses::Status::RETIREABLE_STATUSES.include?(record.status)
+    end
+
+    def status_broodmare?
+      return false unless status_retired?
+      return false unless record.female?
+      return false if record.status == "broodmare"
+      return true if record.historical_injuries.retireable.exists?
+      return true if record.lifetime_race_record&.starts.to_i >= Config::Racing.min_races_to_retire
+
+      false
+    end
+
+    def status_stud?
+      return false unless status_retired?
+      return false if record.status == "stud"
+      return false if record.female?
+
+      status_stud_result.success?
+    end
+
+    def status_stud_result
+      return Failure(:not_old_enough) if record.age < Config::Breedings.min_age
+      lrr = record.lifetime_race_record
+      return Failure(:unraced) unless lrr
+
+      return Failure(:not_enough_races) if lrr.starts.to_i < Config::Racing.min_races_to_retire
+      return Failure(:not_enough_stakes_wins) if lrr.stakes_wins.to_i < Config::Racing.min_stud_stakes_wins
+      stakes_places = lrr.stakes_seconds.to_i + lrr.stakes_thirds
+      stakes_places += (lrr.stakes_wins - Config::Racing.min_stud_stakes_wins)
+      return Failure(:not_enough_stakes_places) if stakes_places < Config::Racing.min_stud_stakes_places
+
+      grade_1_wins = record.race_result_finishes.by_finish(1).joins(:race).merge(Racing::RaceResult.by_grade("Grade 1"))
+      return Failure(:not_enough_grade_1_wins) if grade_1_wins < Config::Racing.min_stud_grade_1_stakes_wins
+      grade_1_places = record.race_result_finishes.by_max_finish(3).joins(:race).merge(Racing::RaceResult.by_grade("Grade 1"))
+      return Failure(:not_enough_grade_1_places) if grade_1_places < Config::Racing.min_stud_grade_1_stakes_places
+
+      Success()
+    end
+
+    # when "racehorse"
+    # ["stud"]
 
     def ship?
       shipment = if record.racehorse?
