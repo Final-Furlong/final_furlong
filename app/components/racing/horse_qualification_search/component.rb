@@ -25,6 +25,10 @@ module Racing
         list = Config::Racing.all_types.slice(0, Config::Racing.all_types.find_index(race_type) + 1)
         list.delete("claiming") unless race_type == "claiming"
         list.delete("starter_allowance") unless race_type == "starter_allowance"
+        if Config::Racing.non_qualified_types.include?(race_type)
+          list << "allowance" unless list.include?("allowance")
+          list << "stakes" unless list.include?("stakes")
+        end
         list
       end
 

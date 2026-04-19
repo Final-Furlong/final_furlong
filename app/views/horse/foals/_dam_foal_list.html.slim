@@ -34,24 +34,21 @@
                 = render Ui::ButtonizedLink::Component.new(color: :neutral, url: horse_path(foal), data: { turbo_frame: "_top" }) do
                   = t("common.actions.view")
   - if (unborn_foal = dashboard.unborn_foal)
-    - pedigree = Horses::PedigreeDisplayService.new(unborn_foal)
+    - pedigree = Horses::PedigreeDisplayService.new(Horses::Horse.new(sire: unborn_foal.stud))
     .card.card-border.bg-base-100.w-full.px-2.rounded-none
       .card-body.p-0.rounded-none
         .collapse.collapse-open.bg-base-100.border-base-content/50.border.border-1.rounded-none
           input type="checkbox"
           .collapse-title.font-semibold.font-medium
             span= t("horse.in_foal").titleize
-            span.float-right= "Due date year"
+            span.float-right= l(unborn_foal.due_date)
           .collapse-content.text-sm.border-t-1.border-base-content/40
             p
               span= t(".sire")
               span.float-right= pedigree.sire_display(tag: true, include_title: true, target: '_top')
-            p
-              span= t(".due_date")
-              span.float-right= "due date here"
             p.text-center
-              = render Ui::ButtonizedLink::Component.new(color: :neutral, url: horse_path(unborn_foal.sire), data: { turbo_frame: "_top" }) do
-                = unborn_foal.sire.name
+              = render Ui::ButtonizedLink::Component.new(color: :neutral, url: horse_path(unborn_foal.stud), data: { turbo_frame: "_top" }) do
+                = unborn_foal.stud.name
 .hidden.mx-auto.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100.shadow-md.w-full[
   class="sm:block sm:w-3/4 dark:border-neutral-100"
 ]
@@ -83,10 +80,10 @@
       - if (unborn_foal = dashboard.unborn_foal)
         tr
           td= t("horse.in_foal").titleize
-          td= unborn_foal.date_of_birth.year
+          td= unborn_foal.due_date.year
           td= t("common.dash")
           td
-            = render Ui::Link::Component.new(color: :none, url: horse_path(unborn_foal.sire), data: { turbo_frame: "_top" }) do
-              = unborn_foal.sire.name_with_title
+            = render Ui::Link::Component.new(color: :none, url: horse_path(unborn_foal.stud), data: { turbo_frame: "_top" }) do
+              = unborn_foal.stud.name_with_title
           td colspan=2
-            = "due date here"
+            = t(".due_date_info", date: l(unborn_foal.due_date))

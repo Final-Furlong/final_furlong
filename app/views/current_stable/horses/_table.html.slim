@@ -18,7 +18,7 @@
                 th= Horses::Horse.human_attribute_name("track_record")
               - elsif @active_status.to_s == 'broodmare' || @active_status.to_s == 'stud'
                 th= Horses::Horse.human_attribute_name("breed_record")
-                th= Horses::Horse.human_attribute_name("next_foal")
+                th= sort_link query, :next_foal_due_date, Horses::Horse.human_attribute_name("next_foal")
               - elsif @active_status.to_s == 'yearling' || @active_status.to_s == 'weanling'
                 th= Horses::Horse.human_attribute_name("sire")
                 th= Horses::Horse.human_attribute_name("dam")

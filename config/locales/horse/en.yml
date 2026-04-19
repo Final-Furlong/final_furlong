@@ -140,6 +140,7 @@ en:
     foals:
       dam_foal_list:
         due_date: Due Date
+        due_date_info: Due on %{date}
         gender: Gender
         name: Name
         record: Record
@@ -161,6 +162,7 @@ en:
         summary: Summary
       sire_foal_list:
         dam: Dam
+        due_date_info: Due on %{date}
         gender: Gender
         name: Name
         record: Record

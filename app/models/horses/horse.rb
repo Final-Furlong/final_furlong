@@ -66,6 +66,8 @@ module Horses
     has_many :broodmare_shipments, class_name: "Shipping::BroodmareShipment", dependent: :delete_all
     has_many :due_dates, -> { where.not(status: "denied") }, class_name: "Horses::Breeding", dependent: :delete_all, inverse_of: :mare
     has_one :next_foal, -> { where(status: "bred") }, class_name: "Horses::Breeding", dependent: :delete, inverse_of: :mare
+    has_one :parent_breeding_record, class_name: "Horses::Breeding", dependent: :delete, inverse_of: :first_foal
+    has_one :twin_parent_breeding_record, class_name: "Horses::Breeding", dependent: :delete, inverse_of: :second_foal
 
     has_many :stud_foals, class_name: "Horses::Horse", inverse_of: :sire, dependent: :nullify
     has_many :breedings, class_name: "Horses::Breeding", dependent: :delete_all, inverse_of: :stud
@@ -290,7 +292,7 @@ module Horses
     end
 
     def self.ransackable_associations(_auth_object = nil)
-      %w[breeder dam location_bred owner sire race_stats race_metadata race_options race_qualification race_results latest_race_result latest_injury]
+      %w[breeder dam location_bred owner sire race_stats race_metadata race_options race_qualification race_results latest_race_result latest_injury next_foal]
     end
 
     def self.ransackable_scopes(_auth_object = nil)

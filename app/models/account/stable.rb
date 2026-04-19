@@ -17,6 +17,7 @@ module Account
       dependent: :restrict_with_exception
     has_many :training_schedules, class_name: "Racing::TrainingSchedule", inverse_of: :stable,
       dependent: :restrict_with_exception
+    has_many :breedings, class_name: "Horses::Breeding", inverse_of: :stable, dependent: :delete_all
     has_many :auctions, class_name: "Auction", inverse_of: :auctioneer, dependent: :restrict_with_exception
     has_many :auction_bids, class_name: "Auctions::Bid", inverse_of: :bidder, dependent: :delete_all
     has_many :race_result_finishes, class_name: "Racing::RaceResultHorse", inverse_of: :stable, dependent: :nullify

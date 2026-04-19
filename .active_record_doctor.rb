@@ -277,7 +277,8 @@ ActiveRecordDoctor.configure do
     ignore_tables: [
       "new_horse_genetics",
       "new_race_result_horses",
-      "horse_genetics"
+      "horse_genetics",
+      "breedings"
     ]
 
   detector :extraneous_indexes,

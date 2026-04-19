@@ -1065,16 +1065,20 @@ ALTER SEQUENCE public.breeding_stats_id_seq OWNED BY public.breeding_stats.id;
 
 CREATE TABLE public.breedings (
     id bigint NOT NULL,
-    mare_id bigint NOT NULL,
+    mare_id bigint,
     stud_id bigint NOT NULL,
     year integer DEFAULT 0 NOT NULL,
     date date,
     due_date date,
     fee integer DEFAULT 0 NOT NULL,
     status public.breeding_statuses NOT NULL,
-    legacy_id integer DEFAULT 0 NOT NULL,
+    legacy_id integer DEFAULT 0,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    first_foal_id bigint,
+    second_foal_id bigint,
+    open_booking boolean DEFAULT false NOT NULL,
+    stable_id bigint NOT NULL
 );
 
 
@@ -6451,17 +6455,38 @@ CREATE INDEX index_breedings_on_due_date ON public.breedings USING btree (due_da
 
 
 --
--- Name: index_breedings_on_legacy_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_breedings_on_first_foal_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_breedings_on_legacy_id ON public.breedings USING btree (legacy_id);
+CREATE UNIQUE INDEX index_breedings_on_first_foal_id ON public.breedings USING btree (first_foal_id);
 
 
 --
 -- Name: index_breedings_on_mare_id_and_stud_id_and_year; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_breedings_on_mare_id_and_stud_id_and_year ON public.breedings USING btree (mare_id, stud_id, year) WHERE (status <> 'denied'::public.breeding_statuses);
+CREATE UNIQUE INDEX index_breedings_on_mare_id_and_stud_id_and_year ON public.breedings USING btree (mare_id, stud_id, year) WHERE ((open_booking IS FALSE) AND (status <> 'denied'::public.breeding_statuses));
+
+
+--
+-- Name: index_breedings_on_open_booking; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breedings_on_open_booking ON public.breedings USING btree (open_booking);
+
+
+--
+-- Name: index_breedings_on_second_foal_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breedings_on_second_foal_id ON public.breedings USING btree (second_foal_id);
+
+
+--
+-- Name: index_breedings_on_stable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breedings_on_stable_id ON public.breedings USING btree (stable_id);
 
 
 --
@@ -9051,6 +9076,22 @@ ALTER TABLE ONLY public.broodmare_shipments
 
 
 --
+-- Name: breedings fk_rails_51aefdd74c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breedings
+    ADD CONSTRAINT fk_rails_51aefdd74c FOREIGN KEY (first_foal_id) REFERENCES public.horses(id);
+
+
+--
+-- Name: breedings fk_rails_52d06a70cd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breedings
+    ADD CONSTRAINT fk_rails_52d06a70cd FOREIGN KEY (stable_id) REFERENCES public.stables(id);
+
+
+--
 -- Name: leases fk_rails_53972bd5e0; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9096,6 +9137,14 @@ ALTER TABLE ONLY public.sale_offers
 
 ALTER TABLE ONLY public.race_result_horses
     ADD CONSTRAINT fk_rails_5a43ac707f FOREIGN KEY (horse_id) REFERENCES public.horses(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: breedings fk_rails_5eecde6c7a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breedings
+    ADD CONSTRAINT fk_rails_5eecde6c7a FOREIGN KEY (second_foal_id) REFERENCES public.horses(id);
 
 
 --
@@ -9705,6 +9754,13 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260419140607'),
+('20260419135647'),
+('20260419122356'),
+('20260419121539'),
+('20260419121213'),
+('20260419111419'),
+('20260419090039'),
 ('20260418142600'),
 ('20260417141626'),
 ('20260417135842'),

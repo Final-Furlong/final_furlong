@@ -1,6 +1,6 @@
 module Horses
   class StallionOption < ApplicationRecord
-    belongs_to :stud, class_name: "Horses::Horse", inverse_of: :stud_option
+    belongs_to :stud, class_name: "Horses::Horse", inverse_of: :stud_options
 
     validates :stud_fee, :outside_mares_allowed, :outside_mares_per_stable, presence: true
     validates :approval_required, :breed_to_game_mares, inclusion: { in: [true, false] }

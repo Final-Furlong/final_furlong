@@ -51,8 +51,7 @@
       - dashboard.unborn_foals.each do |unborn_foal|
         tr
           td= t("horse.foal_due").titleize
-          td= unborn_foal.date_of_birth.year
+          td= unborn_foal.year
           td= t("common.dash")
-          td= link_to unborn_foal.dam.name_with_title, horse_path(unborn_foal.dam)
-          td colspan=2
-            = "due date here"
+          td= link_to unborn_foal.mare.name_with_title, horse_path(unborn_foal.mare)
+          td colspan=2 =t(".due_date_info", date: l(unborn_foal.due_date))

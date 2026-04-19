@@ -33,6 +33,7 @@ class UpdateLegacyHorsesJob < ApplicationJob
 
   def migrate_legacy_horse(legacy_horse:)
     result = MigrateLegacyHorseService.new(horse: legacy_horse).call
+    pd result.inspect
     if result
       result = MigrateLegacyHorseAppearanceService.new(legacy_horse:).call
       if result
@@ -42,6 +43,7 @@ class UpdateLegacyHorsesJob < ApplicationJob
     end
   rescue ActiveRecord::RecordInvalid => e
     message = "ID: #{legacy_horse.id}, #{e.message}"
+    pd message
     raise e, message:
   end
 end

@@ -1,5 +1,5 @@
 /# locals: (foal:, unborn:)
-- pedigree = Horses::PedigreeDisplayService.new(foal)
+- pedigree = Horses::PedigreeDisplayService.new(unborn ? Horses::Horse.new(dam: foal.mare) : foal)
 .card.card-border.bg-base-100.w-full.px-2.rounded-none
   .card-body.p-0.rounded-none
     .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
@@ -7,7 +7,7 @@
       .collapse-title.font-semibold.font-medium
         - if unborn
           span= t("horse.in_foal").titleize
-          span.float-right= "Due date year"
+          span.float-right= foal.year
         - else
           span class="text-#{foal.gender.downcase}"
             = foal.name_with_title
@@ -24,8 +24,9 @@
             span= t("horse.foals.dam_foal_list.due_date")
             span.float-right= "due date here"
           p.text-center
-            = render Ui::ButtonizedLink::Component.new(url: horse_path(foal.dam), color: :neutal, data: { turbo_frame: "_top" }) do
-              = foal.dam.name
+            - mare = unborn ? foal.mare : foal.dam
+            = render Ui::ButtonizedLink::Component.new(url: horse_path(mare), color: :neutal, data: { turbo_frame: "_top" }) do
+              = mare.name
         - else
           p
             span= t("horse.foals.sire_foal_list.status")
