@@ -1,6 +1,6 @@
 /# locals: (entry:, horse:, form:)
 - shipment = horse.racing_shipments.build(starting_location: horse.race_metadata.location, ending_location: entry.race.racetrack.location)
-- max_travel_days = (entry.race.entry_deadline - Date.current).to_i
+- max_travel_days = (entry.race.travel_deadline - Date.current).to_i
 div
   fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
     legend.fieldset-legend= t(".needs_shipping", name: horse.name)
