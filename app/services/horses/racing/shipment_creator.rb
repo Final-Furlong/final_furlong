@@ -50,12 +50,13 @@ module Horses
         shipment.arrival_date = shipment.departure_date + ((shipment.mode == "road") ? route[:road_days] : route[:air_days]).days
         shipment.shipping_type = shipping_type(params)
 
+        ending_racetrack = ::Racing::Racetrack.where(location: shipment.ending_location)
         ActiveRecord::Base.transaction do
           shipment.scheduled = shipment.future?
           if shipment.valid? && shipment.save
             unless shipment.future?
               end_location_name = ending_location_name(stable, shipment.shipping_type)
-              horse.race_metadata&.update(in_transit: true, location_string: end_location_name)
+              horse.race_metadata&.update(in_transit: true, location_string: end_location_name, location: shipment.ending_location, racetrack: ending_racetrack)
               description = I18n.t("services.shipment_creator.description", horse: horse.name, start: current_location_name, end: end_location_name)
               Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: cost.abs * -1)
             end
@@ -71,8 +72,7 @@ module Horses
           location_id = if shipment.shipping_type == "track_to_farm"
             59
           else
-            track_name = ::Racing::Racetrack.where(location: shipment.ending_location).pick(:name)
-            ::Legacy::Racetrack.where(name: track_name).order(ID: :asc).pick(:ID)
+            ::Legacy::Racetrack.where(name: ending_racetrack.name).order(ID: :asc).pick(:ID)
           end
           ::Legacy::Horse.transaction do
             legacy_horse = ::Legacy::Horse.find_by(ID: horse.legacy_id)
