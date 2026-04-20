@@ -5,3 +5,5 @@ shared:
     - bred
     - denied
   min_age: 4
+  stud_breeders_cup_nomination_deadline_month: 2
+  stud_breeders_cup_nomination_deadline_day: 14
