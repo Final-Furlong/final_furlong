@@ -120,7 +120,11 @@ module Racing
 
       ActiveRecord::Base.transaction do
         if needs_shipment && ship_mode.present?
-          Horses::Racing::ShipmentCreator.new.ship_horse(horse:, params: shipment_params)
+          ship_result = Horses::Racing::ShipmentCreator.new.ship_horse(horse:, params: shipment_params)
+          unless ship_result.created?
+            result.error = ship_result.error
+            raise ActiveRecord::Rollback
+          end
         end
         if stop_boarding
           ::Horses::BoardingUpdater.new.stop_boarding(boarding: horse.current_boarding)
