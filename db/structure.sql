@@ -62,6 +62,19 @@ CREATE TYPE public.activity_type AS ENUM (
 
 
 --
+-- Name: birth_events; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.birth_events AS ENUM (
+    'twins_alive',
+    'twins_death',
+    'stillborn',
+    'death',
+    'birth'
+);
+
+
+--
 -- Name: breed_rankings; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -1078,7 +1091,8 @@ CREATE TABLE public.breedings (
     first_foal_id bigint,
     second_foal_id bigint,
     open_booking boolean DEFAULT false NOT NULL,
-    stable_id bigint NOT NULL
+    stable_id bigint NOT NULL,
+    event public.birth_events
 );
 
 
@@ -1087,6 +1101,13 @@ CREATE TABLE public.breedings (
 --
 
 COMMENT ON COLUMN public.breedings.status IS 'pending, approved, bred, denied';
+
+
+--
+-- Name: COLUMN breedings.event; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.breedings.event IS 'twins_alive, twins_death, stillborn, death, birth';
 
 
 --
@@ -6502,6 +6523,13 @@ CREATE INDEX index_breedings_on_due_date ON public.breedings USING btree (due_da
 
 
 --
+-- Name: index_breedings_on_event; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breedings_on_event ON public.breedings USING btree (event);
+
+
+--
 -- Name: index_breedings_on_first_foal_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -9823,6 +9851,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260420131740'),
 ('20260420091346'),
 ('20260419140607'),
 ('20260419135647'),

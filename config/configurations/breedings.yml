@@ -7,3 +7,9 @@ shared:
   min_age: 4
   stud_breeders_cup_nomination_deadline_month: 2
   stud_breeders_cup_nomination_deadline_day: 14
+  birth_events:
+    - twins_alive
+    - twins_death
+    - stillborn
+    - death
+    - birth

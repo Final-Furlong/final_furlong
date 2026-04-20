@@ -11,7 +11,7 @@ module Horses
     validates :fee, :status, presence: true
     validates :mare_id, presence: true, unless: :open_booking
     validates :year, :date, presence: true, if: :approved?
-    validates :due_date, presence: true, if: :bred?
+    validates :year, :date, :due_date, presence: true, if: :bred?
     validates :status, inclusion: { in: Config::Breedings.statuses }
     validates :fee, numericality: { greater_than_or_equal_to: 0 }
     validates :due_date, comparison: { greater_than: :date }, allow_nil: true
@@ -26,6 +26,24 @@ module Horses
     def self.ransackable_attributes(_auth_object = nil)
       %w[date due_date fee mare_id status stud_id year]
     end
+
+    def pick_event
+      return event unless event.nil?
+
+      if rand(1..2000) == 1
+        (rand(1..2) == 1) ? "twins_alive" : "twins_death"
+      elsif rand(1..500) == 1
+        "stillborn"
+      elsif rand(1..750) == 1
+        "death"
+      else
+        "birth"
+      end
+    end
+
+    def pick_due_date
+      date + rand(335..345).days
+    end
   end
 end
 
@@ -34,25 +52,27 @@ end
 # Table name: breedings
 # Database name: primary
 #
-#  id                                      :bigint           not null, primary key
-#  date                                    :date             indexed
-#  due_date                                :date             indexed
-#  fee                                     :integer          default(0), not null
-#  open_booking                            :boolean          default(FALSE), not null, indexed
-#  status(pending, approved, bred, denied) :enum             not null, indexed
-#  year                                    :integer          default(0), not null, uniquely indexed => [mare_id, stud_id], indexed
-#  created_at                              :datetime         not null
-#  updated_at                              :datetime         not null
-#  first_foal_id                           :bigint           uniquely indexed
-#  mare_id                                 :bigint           uniquely indexed => [stud_id, year]
-#  second_foal_id                          :bigint           uniquely indexed
-#  stable_id                               :bigint           not null, indexed
-#  stud_id                                 :bigint           not null, uniquely indexed => [mare_id, year], indexed
+#  id                                                       :bigint           not null, primary key
+#  date                                                     :date             indexed
+#  due_date                                                 :date             indexed
+#  event(twins_alive, twins_death, stillborn, death, birth) :enum             indexed
+#  fee                                                      :integer          default(0), not null
+#  open_booking                                             :boolean          default(FALSE), not null, indexed
+#  status(pending, approved, bred, denied)                  :enum             not null, indexed
+#  year                                                     :integer          default(0), not null, uniquely indexed => [mare_id, stud_id], indexed
+#  created_at                                               :datetime         not null
+#  updated_at                                               :datetime         not null
+#  first_foal_id                                            :bigint           uniquely indexed
+#  mare_id                                                  :bigint           uniquely indexed => [stud_id, year]
+#  second_foal_id                                           :bigint           uniquely indexed
+#  stable_id                                                :bigint           not null, indexed
+#  stud_id                                                  :bigint           not null, uniquely indexed => [mare_id, year], indexed
 #
 # Indexes
 #
 #  index_breedings_on_date                          (date)
 #  index_breedings_on_due_date                      (due_date)
+#  index_breedings_on_event                         (event)
 #  index_breedings_on_first_foal_id                 (first_foal_id) UNIQUE
 #  index_breedings_on_mare_id_and_stud_id_and_year  (mare_id,stud_id,year) UNIQUE WHERE ((open_booking IS FALSE) AND (status <> 'denied'::breeding_statuses))
 #  index_breedings_on_open_booking                  (open_booking)
