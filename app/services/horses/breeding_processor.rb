@@ -37,7 +37,7 @@ module Horses
 
         description = "Stud Booking: #{stud.name} & #{mare.name}"
         Accounts::BudgetTransactionCreator.new.create_transaction(stable: stud.manager, description:, amount: breeding.fee.abs, activity_type: "breeding")
-        breeding.assign_attributes(event: breeding.pick_event, status: "bred", due_date: breeding.pick_due_date)
+        breeding.assign_attributes(mare:, event: breeding.pick_event, status: "bred", due_date: breeding.pick_due_date)
         if breeding.save!
           result.updated = true
           result.breeding = breeding

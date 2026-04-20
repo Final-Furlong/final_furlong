@@ -76,11 +76,11 @@ module Racing
           route = Shipping::Route.with_locations(race_location, data.location).first
           costs = []
           days = []
-          if ship_mode.road? && route.road_days && route.road_days < max_travel_days
+          if ship_mode.road? && route.road_days && route.road_days <= max_travel_days
             costs << route.road_cost
             days << route.road_days
           end
-          if ship_mode.air? && route.air_days && route.air_days < max_travel_days
+          if ship_mode.air? && route.air_days && route.air_days <= max_travel_days
             costs << route.air_cost
             days << route.air_days
           end
