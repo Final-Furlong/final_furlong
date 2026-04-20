@@ -53,3 +53,4 @@ class Horses::UpdateBabiesJob < ApplicationJob
     )
   end
 end
+
