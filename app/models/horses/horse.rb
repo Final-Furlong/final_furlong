@@ -71,6 +71,7 @@ module Horses
 
     has_many :stud_foals, class_name: "Horses::Horse", inverse_of: :sire, dependent: :nullify
     has_many :breedings, class_name: "Horses::Breeding", dependent: :delete_all, inverse_of: :stud
+    has_many :stud_nominations, class_name: "Horses::Stud::BreedersCupNomination", dependent: :delete_all, inverse_of: :stud
 
     has_one :breeding_stats, class_name: "Horses::BreedingStats", dependent: :delete, inverse_of: :horse
 

@@ -438,6 +438,12 @@ en:
       update:
         failure: "%{name} could not be changed to %{status}"
         success: "%{name} status has been updated to %{status}"
+    stud_nominations:
+      index:
+        foals: Foals
+        racers: Racers
+        stakes_winners: Stakes Winners
+        winners: Winners
     titles:
       abbr:
         final_furlong: FFCh.

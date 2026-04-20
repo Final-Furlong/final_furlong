@@ -4592,6 +4592,38 @@ ALTER SEQUENCE public.stallion_options_id_seq OWNED BY public.stallion_options.i
 
 
 --
+-- Name: stud_breeders_cup_nominations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.stud_breeders_cup_nominations (
+    id bigint NOT NULL,
+    stud_id bigint NOT NULL,
+    year integer NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: stud_breeders_cup_nominations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.stud_breeders_cup_nominations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: stud_breeders_cup_nominations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.stud_breeders_cup_nominations_id_seq OWNED BY public.stud_breeders_cup_nominations.id;
+
+
+--
 -- Name: stud_foal_records; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -5504,6 +5536,13 @@ ALTER TABLE ONLY public.stallion_options ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: stud_breeders_cup_nominations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stud_breeders_cup_nominations ALTER COLUMN id SET DEFAULT nextval('public.stud_breeders_cup_nominations_id_seq'::regclass);
+
+
+--
 -- Name: stud_foal_records id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -6099,6 +6138,14 @@ ALTER TABLE ONLY public.stables
 
 ALTER TABLE ONLY public.stallion_options
     ADD CONSTRAINT stallion_options_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: stud_breeders_cup_nominations stud_breeders_cup_nominations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stud_breeders_cup_nominations
+    ADD CONSTRAINT stud_breeders_cup_nominations_pkey PRIMARY KEY (id);
 
 
 --
@@ -8401,6 +8448,20 @@ CREATE UNIQUE INDEX index_stallion_options_on_stud_id ON public.stallion_options
 
 
 --
+-- Name: index_stud_breeders_cup_nominations_on_stud_id_and_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_stud_breeders_cup_nominations_on_stud_id_and_year ON public.stud_breeders_cup_nominations USING btree (stud_id, year);
+
+
+--
+-- Name: index_stud_breeders_cup_nominations_on_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_stud_breeders_cup_nominations_on_year ON public.stud_breeders_cup_nominations USING btree (year);
+
+
+--
 -- Name: index_stud_foal_records_on_born_foals_count; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -9700,6 +9761,14 @@ ALTER TABLE ONLY public.race_result_horses
 
 
 --
+-- Name: stud_breeders_cup_nominations fk_rails_f402a892ce; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stud_breeders_cup_nominations
+    ADD CONSTRAINT fk_rails_f402a892ce FOREIGN KEY (stud_id) REFERENCES public.horses(id);
+
+
+--
 -- Name: workouts fk_rails_f459544cd4; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9754,6 +9823,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260420091346'),
 ('20260419140607'),
 ('20260419135647'),
 ('20260419122356'),

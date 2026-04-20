@@ -54,7 +54,6 @@ module Horses
         { key: :nominate, policy: CurrentStable::RacehorsePolicy },
         { key: :update_stud_options, policy: CurrentStable::StallionPolicy },
         { key: :manage_bookings, policy: CurrentStable::StallionPolicy },
-        { key: :nominate, policy: CurrentStable::StallionPolicy },
         { key: :view_comments },
         { key: :nominate_weanling }
       ]

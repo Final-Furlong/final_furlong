@@ -21,6 +21,7 @@ module Horses
     enum :status, Config::Breedings.statuses.reduce({}) { |hash, value| hash.merge({ value.to_sym => value }) }
 
     scope :by_year, ->(year) { where(year:) }
+    scope :not_denied, -> { where.not(status: "denied") }
 
     def self.ransackable_attributes(_auth_object = nil)
       %w[date due_date fee mare_id status stud_id year]

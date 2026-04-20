@@ -44,6 +44,14 @@
         p.mx-auto= t(".loading_foals")
         .mt-2.mx-auto.skeleton.w-full
 
+  - if CurrentStable::StallionPolicy.new(Current.user, horse).view_nominations?
+    input.tab[ type="radio" name="horse" aria-label=t(".nominations") id="nominations" ]
+    .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+      = turbo_frame_tag "#{@horse.slug}-nominations", src: horse_stud_nominations_path(@horse), loading: "lazy" do
+        .w-full.text-center
+          p.mx-auto= t(".loading_nominations")
+          .mt-2.mx-auto.skeleton.w-full
+
   - if CurrentStable::HorsePolicy.new(Current.user, horse).view_events?
     input.tab[ type="radio" name="horse" aria-label=t(".history") id="history" ]
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4

@@ -10,7 +10,8 @@ module Racing
 
     scope :by_horse, ->(id) { where(horse_id: id) }
     scope :winner, -> { where(wins: 1..) }
-    scope :stakes_winner, -> { where(stakes_wins: 1) }
+    scope :single_stakes_winner, -> { where(stakes_wins: 1) }
+    scope :stakes_winner, -> { where(stakes_wins: 1..) }
     scope :multi_stakes_winner, -> { where("stakes_wins > ?", 1) }
     scope :millionaire, -> { where(earnings: 1_000_000..1_999_999) }
     scope :multi_millionaire, -> { where(earnings: 2_000_000) }

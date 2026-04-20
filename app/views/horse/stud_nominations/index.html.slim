@@ -1,0 +1,20 @@
+= turbo_frame_tag "#{@horse.slug}-nominations" do
+  .mt-4.mx-auto.overflow-x-auto.rounded-box.border.bg-base-100.w-full.border-base-content/30.sm:w-1/2
+    table.table.table-responsive.w-1/2.sortable.n-last
+      thead
+        tr
+          th= t("common.year")
+          th= t(".foals")
+          th= t(".racers")
+          th= t(".winners")
+          th= t(".stakes_winners")
+          th= t("common.actions.title")
+      tbody
+        - @dashboard.years.each do |year_info|
+          tr
+            td= year_info[:year]
+            td= year_info[:foals]
+            td= year_info[:racers]
+            td= year_info[:winners]
+            td= year_info[:stakes_winners]
+            td= year_info[:status]

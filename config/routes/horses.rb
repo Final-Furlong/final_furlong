@@ -24,6 +24,8 @@ resources :horses, except: %i[new create destroy] do
       resource :lease_offer, only: %i[new create destroy]
       resource :lease_offer_acceptance, only: :create
       resource :lease_termination, only: %i[new create]
+      resource :stud_nonimation, only: %i[new create]
+      resources :stud_nominations, only: :index
       resource :pedigree, only: :show
       resource :race_options, only: %i[edit update]
       resources :race_stats, only: %i[index]

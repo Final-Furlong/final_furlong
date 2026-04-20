@@ -11,8 +11,11 @@ module CurrentStable
     end
 
     def nominate?
-      # TODO: migrate stallion noms + implement them
-      false
+      owner_not_leased?
+    end
+
+    def view_nominations?
+      record.stud_foals.born.exists?
     end
 
     private

@@ -19,7 +19,7 @@ module Horses
         if attrs[:raced_foals_count].positive?
           attrs[:winning_foals_count] = horse.foals.born.joins(:lifetime_race_record).merge(::Racing::LifetimeRaceRecord.winner).count
           if attrs[:winning_foals_count].positive?
-            attrs[:stakes_winning_foals_count] = horse.foals.born.joins(:lifetime_race_record).merge(::Racing::LifetimeRaceRecord.stakes_winner).count
+            attrs[:stakes_winning_foals_count] = horse.foals.born.joins(:lifetime_race_record).merge(::Racing::LifetimeRaceRecord.single_stakes_winner).count
             attrs[:multi_stakes_winning_foals_count] = horse.foals.born.joins(:lifetime_race_record).merge(::Racing::LifetimeRaceRecord.multi_stakes_winner).count
             attrs[:stakes_winning_foals_count] += attrs[:multi_stakes_winning_foals_count]
           end
