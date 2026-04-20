@@ -21,7 +21,6 @@ class Shipping::ProcessArrivalsJob < ApplicationJob
         at_home: shipment.shipping_type == "track_to_farm"
       )
       Legacy::Horse.where(ID: horse.legacy_id).update(InTransit: 0)
-      ::Legacy::ViewRacehorses.find_by(horse_id: horse.legacy_id)&.update(in_transit: 0)
       horses += 1
     end
     Shipping::BroodmareShipment.where("arrival_date > ? AND arrival_date <= ?", min_date, Date.current).find_each do |shipment|

@@ -25,8 +25,7 @@
                   .tooltip.ml-2.text-lg data-tip=t(".last_rest_hint")
                     i.ph-fill.ph-info
               th
-                = sort_link query, :race_metadata_racetrack_name do
-                  = Horses::Horse.human_attribute_name("location")
+                = Horses::Horse.human_attribute_name("location")
                   .tooltip.ml-2.text-lg data-tip=t(".location_hint")
                     i.ph-fill.ph-info
               th

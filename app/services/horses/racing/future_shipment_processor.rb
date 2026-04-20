@@ -34,11 +34,12 @@ module Horses
           end
         end
 
-        current_location = horse.race_metadata.location_name
+        racetrack = Racing::Racetrack.where(location: shipment.ending_location)
+        current_location = horse.race_metadata.location.name
         saved = false
         ActiveRecord::Base.transaction do
           shipment.update(scheduled: false)
-          horse.race_metadata&.update(in_transit: true, last_shipped_at: Time.current, location_string: end_location_name)
+          horse.race_metadata&.update(in_transit: true, last_shipped_at: Time.current, location_string: end_location_name, location: racetrack.location, racetrack: racetrac)
           description = I18n.t("services.shipment_creator.description", horse: horse.name, start: current_location, end: end_location_name)
           Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: cost.abs * -1)
           saved = true
@@ -47,7 +48,7 @@ module Horses
           location_id = if shipment.shipping_type == "track_to_farm"
             59
           else
-            track_name = Racing::Racetrack.where(location: shipment.ending_location).pick(:name)
+            track_name = racetrack.name
             Legacy::Racetrack.where(name: track_name).order(ID: :asc).pick(:ID)
           end
           Legacy::Horse.transaction do

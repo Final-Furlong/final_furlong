@@ -444,7 +444,7 @@ class Racing::PreRaceJob < ApplicationJob
         if taken_jockey_ids.exclude?(second_jock.id) && (race.jump? || second_jock.jockey_type == "flat")
           return second_jock
         elsif entry.third_jockey_id
-          third_jock = Racing::Jockey.find_by(id: entry.third_jock_id)
+          third_jock = Racing::Jockey.find_by(id: entry.third_jockey_id)
           if taken_jockey_ids.exclude?(third_jock.id) && (race.jump? || third_jock.jockey_type == "flat")
             return third_jock
           end
