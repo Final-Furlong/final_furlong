@@ -20,7 +20,6 @@ class Horses::UpdateBabiesJob < ApplicationJob
         end
         if horse.dam
           horse.dam.due_dates.where(status: "bred").where(date: ...horse.date_of_birth).delete_all
-          Legacy::Breeding.where(Mare: horse.dam.legacy_id).where.not(Due: nil).delete_all
         end
       end
     end
@@ -54,4 +53,3 @@ class Horses::UpdateBabiesJob < ApplicationJob
     )
   end
 end
-
