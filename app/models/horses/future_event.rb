@@ -3,13 +3,15 @@ module Horses
     belongs_to :horse, class_name: "Horses::Horse", inverse_of: :future_events
 
     validates :date, :event_type, presence: true
-    validates :date, comparison: { greater_than_or_equal_to: Date.current }
+    validates :date, comparison: { greater_than_or_equal_to: Date.current }, unless: :nominate?
 
     enum :event_type, Config::Horses.future_events.reduce({}) { |hash, value| hash.merge({ value.to_sym => value }) }
 
     scope :past, -> { where(date: ..Date.current) }
+    scope :current_year, -> { where("DATE_PART('Year', date) = ?", Date.current.year) }
     scope :retirement, -> { where(event_type: "retire") }
     scope :death, -> { where(event_type: "die") }
+    scope :nomination, -> { where(event_type: "nominate") }
   end
 end
 
