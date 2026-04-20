@@ -121,18 +121,25 @@ module Racing
       ActiveRecord::Base.transaction do
         if needs_shipment && ship_mode.present?
           ship_result = Horses::Racing::ShipmentCreator.new.ship_horse(horse:, params: shipment_params)
-          unless ship_result.created?
+          if ship_result.created?
+            if stop_boarding
+              boarding_result = ::Horses::BoardingUpdater.new.stop_boarding(boarding: horse.current_boarding)
+              if boarding_result.updated?
+                Racing::FutureRaceEntry.find_by(race:, horse:)&.destroy
+                description = I18n.t("racing.entry_options.budget_description", date: race.date, number: race.number, name: horse.name)
+                Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: race.entry_fee.to_i * -1, activity_type: "entering")
+                result.created = entry.save
+              else
+                result.created = false
+                result.error = "Could not stop boarding"
+                raise ActiveRecord::Rollback
+              end
+            end
+          else
             result.error = ship_result.error
             raise ActiveRecord::Rollback
           end
         end
-        if stop_boarding
-          ::Horses::BoardingUpdater.new.stop_boarding(boarding: horse.current_boarding)
-        end
-        Racing::FutureRaceEntry.find_by(race:, horse:)&.destroy
-        description = I18n.t("racing.entry_options.budget_description", date: race.date, number: race.number, name: horse.name)
-        Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: race.entry_fee.to_i * -1, activity_type: "entering")
-        result.created = entry.save!
       end
       result
     end
