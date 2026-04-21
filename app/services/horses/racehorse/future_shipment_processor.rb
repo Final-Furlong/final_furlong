@@ -39,7 +39,7 @@ module Horses
         saved = false
         ActiveRecord::Base.transaction do
           shipment.update(scheduled: false)
-          horse.race_metadata&.update(in_transit: true, last_shipped_at: Time.current, location_string: end_location_name, location: racetrack.location, racetrack: racetrac)
+          horse.race_metadata&.update(in_transit: true, last_shipped_at: Time.current, location_string: end_location_name, location: racetrack.location, racetrack:)
           description = I18n.t("services.shipment_creator.description", horse: horse.name, start: current_location, end: end_location_name)
           Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: cost.abs * -1)
           saved = true
