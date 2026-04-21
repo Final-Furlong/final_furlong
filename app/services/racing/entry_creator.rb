@@ -123,19 +123,23 @@ module Racing
         if needs_shipment && ship_mode.present?
           ship_result = Horses::Racing::ShipmentCreator.new.ship_horse(horse:, params: shipment_params)
           if ship_result.created?
-            if stop_boarding
-              boarding_result = ::Horses::BoardingUpdater.new.stop_boarding(boarding: horse.current_boarding)
-              if boarding_result.updated?
-                continue = true
-              else
-                continue = false
-                result.created = false
-                result.error = "Could not stop boarding"
-                raise ActiveRecord::Rollback
-              end
-            end
+            continue = true
           else
+            continue = false
             result.error = ship_result.error
+            raise ActiveRecord::Rollback
+          end
+        else
+          continue = true
+        end
+        if stop_boarding && continue
+          boarding_result = ::Horses::BoardingUpdater.new.stop_boarding(boarding: horse.current_boarding)
+          if boarding_result.updated?
+            continue = true
+          else
+            continue = false
+            result.created = false
+            result.error = "Could not stop boarding"
             raise ActiveRecord::Rollback
           end
         else

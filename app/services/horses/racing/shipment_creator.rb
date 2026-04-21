@@ -50,7 +50,7 @@ module Horses
         shipment.arrival_date = shipment.departure_date + ((shipment.mode == "road") ? route[:road_days] : route[:air_days]).days
         shipment.shipping_type = shipping_type(params)
 
-        ending_racetrack = ::Racing::Racetrack.where(location: shipment.ending_location)
+        ending_racetrack = ::Racing::Racetrack.find_by(location: shipment.ending_location)
         ActiveRecord::Base.transaction do
           shipment.scheduled = shipment.future?
           if shipment.valid? && shipment.save
@@ -77,7 +77,6 @@ module Horses
           ::Legacy::Horse.transaction do
             legacy_horse = ::Legacy::Horse.find_by(ID: horse.legacy_id)
             legacy_horse&.update(InTransit: 1, Location: location_id)
-            ::Legacy::ViewRacehorses.find_by(horse_id: horse.legacy_id)&.update(in_transit: 1, location: location_id)
           end
         end
         result

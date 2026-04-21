@@ -59,7 +59,6 @@ module Horses
     def update_legacy_tables(horse)
       legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
       legacy_horse&.update(Leased: 0, Leaser: 0)
-      Legacy::ViewRacehorses.find_by(horse_id: horse.legacy_id)&.update(leased: 0, leaser: 0)
     end
 
     def process_refund

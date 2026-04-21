@@ -89,9 +89,6 @@ module Auctions
         description = "#{auction.title}: Sold #{horse.budget_name} (ID# #{horse.legacy_id}) to #{buyer.name}"
         Accounts::BudgetTransactionCreator.new.create_transaction(stable: seller, description:, amount: bid.current_bid, activity_type: "selling")
 
-        # rubocop:disable Rails/SkipsModelValidations
-        Legacy::ViewRacehorses.where(horse_id: horse.legacy_id).update_all("Owner = #{buyer.legacy_id}, can_be_sold = 0")
-        # rubocop:enable Rails/SkipsModelValidations
         Horses::Sale.create!(
           date: Date.current,
           seller:,

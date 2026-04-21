@@ -21,3 +21,4 @@ unless Rails.env.local?
     config.send_default_pii = true
   end
 end
+

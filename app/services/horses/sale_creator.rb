@@ -38,7 +38,6 @@ module Horses
           end
           legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
           legacy_horse&.update(Owner: stable.legacy_id)
-          Legacy::ViewRacehorses.find_by(horse_id: horse.legacy_id)&.update(owner: stable.legacy_id)
 
           ::SaleAcceptanceNotification.create!(
             user: horse.owner.user,

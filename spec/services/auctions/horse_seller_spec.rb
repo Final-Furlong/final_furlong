@@ -60,12 +60,6 @@ RSpec.describe Auctions::HorseSeller do
       )
     end
 
-    it "modifies racehorse view" do
-      allow(Legacy::ViewRacehorses).to receive(:where).and_call_original
-      described_class.new.process_sale(bid:)
-      expect(Legacy::ViewRacehorses).to have_received(:where)
-    end
-
     it "creates horse sale transaction" do
       expect { described_class.new.process_sale(bid:) }.to change(Horses::Sale, :count).by(1)
     end
@@ -563,4 +557,3 @@ RSpec.describe Auctions::HorseSeller do
     @foal_2 = create(:horse, :unborn, dam: horse)
   end
 end
-
