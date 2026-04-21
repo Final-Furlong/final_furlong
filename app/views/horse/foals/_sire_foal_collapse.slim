@@ -22,7 +22,7 @@
         - if unborn
           p
             span= t("horse.foals.dam_foal_list.due_date")
-            span.float-right= l(unborn.due_date)
+            span.float-right= l(foal.due_date)
           p.text-center
             - mare = unborn ? foal.mare : foal.dam
             = render Ui::ButtonizedLink::Component.new(url: horse_path(mare), color: :neutal, data: { turbo_frame: "_top" }) do
