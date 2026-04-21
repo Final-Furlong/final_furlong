@@ -40,7 +40,6 @@ module Racing
           if horse.reload.owner == claimer
             Legacy::Horse.transaction do
               Legacy::Horse.where(ID: horse.legacy_id).update(Owner: claimer.legacy_id)
-              Legacy::ViewRacehorses.where(horse_id: horse.legacy_id).update(owner: claimer.legacy_id, can_be_sold: 0)
             end
             claimed = true
           end

@@ -156,8 +156,6 @@ ActiveRecordDoctor.configure do
     "Legacy::UserStyle",
     "Legacy::UserWarning",
     "Legacy::Weather",
-    "Legacy::ViewBroodmares",
-    "Legacy::ViewRacehorses",
     "Motor::Alert",
     "Motor::AlertLock",
     "Motor::ApiConfig",

@@ -133,7 +133,6 @@ module Racing
           Fitness: fitness,
           DisplayEnergy: energy_grade,
           DisplayFitness: fitness_grade)
-        Legacy::ViewRacehorses.where(horse_id: legacy_id).update(energy_grade:, fitness_grade:)
       end
     end
 

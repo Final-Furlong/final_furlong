@@ -80,15 +80,6 @@ class Racing::EnergyFitnessUpdaterJob < ApplicationJob
         step.advance! from: legacy_horse.id
       end
     end
-
-    step :update_views do
-      Legacy::Record
-        .connection
-        .exec_query("
-          UPDATE horse_racehorses_mv hv LEFT JOIN ff_horses h ON hv.horse_id = h.ID
-          SET hv.energy_grade = h.DisplayEnergy, hv.fitness_grade = h.DisplayFitness
-        ")
-    end
     store_job_info(outcome: { horses: })
   end
 end
