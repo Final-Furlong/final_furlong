@@ -34,7 +34,7 @@ module Horses
           end
         end
 
-        racetrack = ::Racing::Racetrack.where(location: shipment.ending_location)
+        racetrack = ::Racing::Racetrack.find_by(location: shipment.ending_location)
         current_location = horse.race_metadata.location.name
         saved = false
         ActiveRecord::Base.transaction do
