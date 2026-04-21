@@ -15,6 +15,7 @@ module Horses
     validates :status, inclusion: { in: Config::Breedings.statuses }
     validates :fee, numericality: { greater_than_or_equal_to: 0 }
     validates :due_date, comparison: { greater_than: :date }, allow_nil: true
+    validates :mare_id, comparison: { other_than: :stud_id }, allow_nil: true
     validates :first_foal, presence: true, if: :second_foal
     validates :open_booking, inclusion: { in: [true, false] }
 

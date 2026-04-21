@@ -15,10 +15,10 @@ module Api
             mare = Horses::Horse.find_by!(legacy_id: params[:legacy_mare_id])
             year = Date.current.year
 
-            breeding = Horses::Breeding.not_denied.find_by!(id: params[:id], year:, stud:, mare:)
+            breeding = Horses::Breeding.not_denied.find_by(id: params[:id], year:, stud:, mare:)
             breeding ||= Horses::Breeding.not_denied.find_by!(id: params[:id], year:, stud:, open_booking: true, stable: mare.manager)
 
-            result = Horses::BreedingProcessor.new.do_breeding(breeding:, mare:)
+            result = Horses::BreedingProcessor.new.do_breeding(breeding:, mare:, stud:)
             error!({ error: "invalid", detail: result.error }, 500) unless result.updated?
 
             { breeding_id: result.breeding.id }

@@ -2,10 +2,10 @@ module Horses
   class BreedingProcessor < ApplicationService
     attr_reader :breeding, :mare, :stud
 
-    def do_breeding(breeding:, mare:)
+    def do_breeding(breeding:, mare:, stud:)
       @breeding = breeding
       @mare = mare
-      @stud = breeding.stud
+      @stud = stud
 
       result = Result.new(breeding:)
       if breeding.status == "bred"
@@ -71,3 +71,4 @@ module Horses
     end
   end
 end
+
