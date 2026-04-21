@@ -19,7 +19,7 @@ class Daily::ProcessFutureShipmentsJob < ApplicationJob
     racehorse_count = 0
     step :racehorses do |step|
       Shipping::RacehorseShipment.scheduled.where(departure_date: today).find_each(start: step.cursor) do |shipment|
-        Horses::Racing::FutureShipmentProcessor.new.ship_horse(shipment:)
+        Horses::Racehorse::FutureShipmentProcessor.new.ship_horse(shipment:)
         racehorse_count += 1
         step.advance! from: shipment.id
       end
@@ -49,7 +49,7 @@ class Daily::ProcessFutureShipmentsJob < ApplicationJob
         end
         shipment.arrival_date = today + days.days
         shipment.shipping_type = horse.race_metadata.at_home? ? "farm_to_track" : "track_to_track"
-        Horses::Racing::FutureShipmentProcessor.new.ship_horse(shipment:)
+        Horses::Racehorse::FutureShipmentProcessor.new.ship_horse(shipment:)
         racehorse_count += 1
         step.advance! from: entry.id
       end
