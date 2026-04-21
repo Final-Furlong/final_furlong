@@ -53,5 +53,5 @@
           td= t("horse.foal_due").titleize
           td= unborn_foal.year
           td= t("common.dash")
-          td= link_to unborn_foal.mare.name_with_title, horse_path(unborn_foal.mare)
+          td= link_to unborn_foal.mare.name_with_title, horse_path(unborn_foal.mare), data: { turbo_frame: "_top" }
           td colspan=2 =t(".due_date_info", date: l(unborn_foal.due_date))
