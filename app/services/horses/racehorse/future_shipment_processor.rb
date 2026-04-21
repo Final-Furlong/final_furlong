@@ -51,11 +51,7 @@ module Horses
             track_name = racetrack.name
             Legacy::Racetrack.where(name: track_name).order(ID: :asc).pick(:ID)
           end
-          Legacy::Horse.transaction do
-            legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
-            legacy_horse&.update(InTransit: 1, Location: location_id)
-            Legacy::ViewRacehorses.find_by(horse_id: horse.legacy_id)&.update(in_transit: 1, location: location_id)
-          end
+          Legacy::Horse.find_by(ID: horse.legacy_id)&.update(InTransit: 1, Location: location_id)
         end
       end
 
