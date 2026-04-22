@@ -2,6 +2,7 @@ module Racing
   class TrackSurface < ApplicationRecord
     belongs_to :racetrack
 
+    has_many :weather_forecasts, class_name: "WeatherForecast", foreign_key: :surface_id, inverse_of: :surface, dependent: :delete_all
     has_many :scheduled_races, class_name: "RaceSchedule", dependent: :restrict_with_exception
     has_many :completed_races, class_name: "RaceResult", dependent: :restrict_with_exception
 
@@ -15,6 +16,7 @@ module Racing
     scope :turf, -> { where(surface: "turf") }
     scope :steeplechase, -> { where(surface: "steeplechase") }
     scope :flat, -> { where(surface: ["dirt", "turf"]) }
+    scope :ordered_by_surface, -> { in_order_of(:surface, %w[dirt turf steeplechase]) }
 
     def surface = super.to_s.inquiry
 

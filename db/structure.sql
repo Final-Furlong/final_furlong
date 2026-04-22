@@ -416,6 +416,18 @@ CREATE TYPE public.racing_style AS ENUM (
 
 
 --
+-- Name: season_list; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.season_list AS ENUM (
+    'winter',
+    'spring',
+    'summer',
+    'fall'
+);
+
+
+--
 -- Name: shipping_mode; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -4784,6 +4796,42 @@ CREATE VIEW public.surface_race_records AS
 
 
 --
+-- Name: track_season_info; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.track_season_info (
+    id bigint NOT NULL,
+    location_id bigint NOT NULL,
+    season public.season_list NOT NULL,
+    fast_chance integer DEFAULT 0,
+    good_chance integer DEFAULT 0,
+    wet_chance integer DEFAULT 0,
+    slow_chance integer DEFAULT 0,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: track_season_info_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.track_season_info_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: track_season_info_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.track_season_info_id_seq OWNED BY public.track_season_info.id;
+
+
+--
 -- Name: track_surfaces_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -5612,6 +5660,13 @@ ALTER TABLE ONLY public.stud_foal_records ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: track_season_info id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.track_season_info ALTER COLUMN id SET DEFAULT nextval('public.track_season_info_id_seq'::regclass);
+
+
+--
 -- Name: track_surfaces id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -6223,6 +6278,14 @@ ALTER TABLE ONLY public.stud_breeders_cup_nominations
 
 ALTER TABLE ONLY public.stud_foal_records
     ADD CONSTRAINT stud_foal_records_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: track_season_info track_season_info_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.track_season_info
+    ADD CONSTRAINT track_season_info_pkey PRIMARY KEY (id);
 
 
 --
@@ -8560,6 +8623,13 @@ CREATE UNIQUE INDEX index_stud_foal_records_on_horse_id ON public.stud_foal_reco
 
 
 --
+-- Name: index_track_season_info_on_location_id_and_season; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_track_season_info_on_location_id_and_season ON public.track_season_info USING btree (location_id, season);
+
+
+--
 -- Name: index_track_surfaces_on_racetrack_id_and_surface; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -9899,6 +9969,14 @@ ALTER TABLE ONLY public.claims
 
 
 --
+-- Name: track_season_info fk_rails_fb5ceb49ac; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.track_season_info
+    ADD CONSTRAINT fk_rails_fb5ceb49ac FOREIGN KEY (location_id) REFERENCES public.locations(id);
+
+
+--
 -- Name: lease_offers fk_rails_fb816dc261; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9929,6 +10007,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260422134246'),
 ('20260422101647'),
 ('20260420131740'),
 ('20260420091346'),
