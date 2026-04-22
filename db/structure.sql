@@ -4974,6 +4974,47 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: weather_forecasts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.weather_forecasts (
+    id bigint NOT NULL,
+    surface_id bigint NOT NULL,
+    date date NOT NULL,
+    condition public.track_condition,
+    rain_chance integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN weather_forecasts.condition; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.weather_forecasts.condition IS 'fast, good, slow, wet';
+
+
+--
+-- Name: weather_forecasts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.weather_forecasts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: weather_forecasts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.weather_forecasts_id_seq OWNED BY public.weather_forecasts.id;
+
+
+--
 -- Name: workout_activities; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -5606,6 +5647,13 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
+-- Name: weather_forecasts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.weather_forecasts ALTER COLUMN id SET DEFAULT nextval('public.weather_forecasts_id_seq'::regclass);
+
+
+--
 -- Name: workout_activities id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -6215,6 +6263,14 @@ ALTER TABLE ONLY public.user_push_subscriptions
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: weather_forecasts weather_forecasts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.weather_forecasts
+    ADD CONSTRAINT weather_forecasts_pkey PRIMARY KEY (id);
 
 
 --
@@ -8651,6 +8707,20 @@ CREATE UNIQUE INDEX index_users_on_username ON public.users USING btree (usernam
 
 
 --
+-- Name: index_weather_forecasts_on_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_weather_forecasts_on_date ON public.weather_forecasts USING btree (date);
+
+
+--
+-- Name: index_weather_forecasts_on_surface_id_and_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_weather_forecasts_on_surface_id_and_date ON public.weather_forecasts USING btree (surface_id, date);
+
+
+--
 -- Name: index_workout_activities_on_activity; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -9058,6 +9128,14 @@ ALTER TABLE ONLY public.user_push_subscriptions
 
 ALTER TABLE ONLY public.future_race_entries
     ADD CONSTRAINT fk_rails_2947652e21 FOREIGN KEY (first_jockey_id) REFERENCES public.jockeys(id);
+
+
+--
+-- Name: weather_forecasts fk_rails_2d379c6da6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.weather_forecasts
+    ADD CONSTRAINT fk_rails_2d379c6da6 FOREIGN KEY (surface_id) REFERENCES public.track_surfaces(id);
 
 
 --
@@ -9851,6 +9929,7 @@ ALTER TABLE ONLY public.workouts
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260422101647'),
 ('20260420131740'),
 ('20260420091346'),
 ('20260419140607'),
