@@ -557,3 +557,4 @@ RSpec.describe Auctions::HorseSeller do
     @foal_2 = create(:horse, :unborn, dam: horse)
   end
 end
+

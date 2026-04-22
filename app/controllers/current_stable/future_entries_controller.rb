@@ -1,7 +1,7 @@
 module CurrentStable
   class FutureEntriesController < AuthenticatedController
     def show
-      @query = policy_scope(Racing::FutureRaceEntry.where(stable: Current.stable)).includes(:race)
+      @query = policy_scope(Racing::FutureRaceEntry.current_or_future.where(stable: Current.stable)).includes(:race)
       @query = @query.includes(race: { track_surface: :racetrack }, horse: :lifetime_race_record)
       if params[:date]
         @date = Date.parse(params[:date]) if params[:date]

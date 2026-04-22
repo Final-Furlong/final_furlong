@@ -21,6 +21,7 @@ module Racing
       inclusion: { in: [true, false] }
     validates :horse_id, uniqueness: { scope: :date }
 
+    scope :current_or_future, -> { where("#{table_name}.date >= ?", Date.current) }
     scope :future, -> { where("date > ?", Date.current) }
     scope :past, -> { where(date: ...Date.current) }
     scope :processed, -> { where.not(entry_status: nil) }
