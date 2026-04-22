@@ -1,11 +1,20 @@
 /# locals: (horse:, current_entries:, scheduled_entries:)
+- data = horse.race_metadata
 .w-full.text-center.mb-4
-  - grade = horse.race_metadata.energy_grade
+  - grade = data.energy_grade
   span.badge.mr-2 class="badge-#{%w[A B].include?(grade) ? "success" : (grade == "C" ? "warning" : "error")}"
     = t(".energy_grade", grade: grade)
-  - grade = horse.race_metadata.fitness_grade
-  span.badge class="badge-#{%w[A B].include?(grade) ? "success" : (grade == "C" ? "warning" : "error")}"
+  - grade = data.fitness_grade
+  span.badge.mr-2 class="badge-#{%w[A B].include?(grade) ? "success" : (grade == "C" ? "warning" : "error")}"
     = t(".fitness_grade", grade: grade)
+  span.badge.badge-info
+    = t(".location", location: data.location_string)
+    - if data.in_transit?
+      .tooltip.text-lg data-tip=t("current_stable.training_summaries.show.arrival", date: l(horse.racing_shipments.order(arrival_date: :desc).pick(:arrival_date)))
+        i.ph-fill.ph-truck.ml-2
+    - elsif horse.current_boarding.present?
+      .tooltip.text-lg data-tip=t("current_stable.training_summaries.show.boarded", days: horse.current_boarding.count_days)
+        i.ph-fill.ph-barn.ml-2
 .card.card-border.bg-base-100.w-full.px-2
   .card-body.p-0.rounded-none
     .collapse.collapse-open.bg-base-100.border-base-content/50.border.border-1

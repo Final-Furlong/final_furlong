@@ -53,9 +53,10 @@ en:
       entries:
         current_entries: Current Entries
         edit: Edit
-        energy_grade: Current Energy (%{grade})
-        fitness_grade: Current Fitness (%{grade})
+        energy_grade: "Current Energy: %{grade}"
+        fitness_grade: "Current Fitness: %{grade}"
         future_races: Future Races
+        location: "Located At: %{location}"
         loading_future_races: Loading future races...
         max_future_entries: You cannot schedule more entries for this horse
         no_current_entries: There are no current or scheduled entries.
@@ -271,7 +272,7 @@ en:
         request_refund: I would like to request a refund of approximately %{amount}
       new:
         confirm: Confirm Lease Termination
-        end_date: 'The lease is currently scheduled to end on %{date}. Original Fee: %{fee}'
+        end_date: "The lease is currently scheduled to end on %{date}. Original Fee: %{fee}"
         title: End Lease
     leased_html: Leased to %{stable} until %{date}
     location:
@@ -306,8 +307,8 @@ en:
         runs_on_turf: Races on Turf
         sample_note: Try wraps next time, also try 8-9f
         second_jockey: Second Choice Jockey
-        suggested_maximum: 'Suggested Maximum: %{value}'
-        suggested_minimum: 'Suggested Minimum: %{value}'
+        suggested_maximum: "Suggested Maximum: %{value}"
+        suggested_minimum: "Suggested Minimum: %{value}"
         third_jockey: Third Choice Jockey
         trains_on_dirt: Trains on Dirt
         trains_on_turf: Trains on Turf
@@ -329,38 +330,38 @@ en:
         by_race_type: Races By Race Type
         by_surface: Races By Surface
         earnings: Earnings
-        equipment: 'Equipment: %{equipment}'
-        finish_time: 'Time: %{time}'
+        equipment: "Equipment: %{equipment}"
+        finish_time: "Time: %{time}"
         fourths: Fourths
-        fractions: 'Fractions: %{fractions}'
+        fractions: "Fractions: %{fractions}"
         injury: Injury
         lifetime: Lifetime
-        place: 'Place: %{number}'
+        place: "Place: %{number}"
         points: Points
         points_amount: "%{points}pts"
         race_year: "%{age}yo (%{year})"
         races: View Races
         record: Record
-        running_line: 'Running Line: %{line}'
+        running_line: "Running Line: %{line}"
         seconds: Seconds
-        speed_factor: 'Speed Factor: %{number}'
+        speed_factor: "Speed Factor: %{number}"
         starts: Starts
         stats: Stats
-        surface: 'Surface: %{surface}'
+        surface: "Surface: %{surface}"
         thirds: Thirds
         unraced: Unraced
         view_race: View Race
         wins: Wins
         year: Year
       mobile:
-        finish_time: 'Time:'
-        place: 'Place:'
-        running_line: 'Running Line:'
-        second: 'Second:'
-        speed_factor: 'Speed Factor:'
-        surface: 'Surface:'
-        third: 'Third:'
-        winner: 'Winner:'
+        finish_time: "Time:"
+        place: "Place:"
+        running_line: "Running Line:"
+        second: "Second:"
+        speed_factor: "Speed Factor:"
+        surface: "Surface:"
+        third: "Third:"
+        winner: "Winner:"
     sale_offer_acceptances:
       create:
         success: Horse was successfully purchased
@@ -431,7 +432,7 @@ en:
         not_enough_stakes_places: Needs at least 3 stakes places (or further wins)
         not_enough_stakes_wins: Needs at least 7 stakes wins
         not_old_enough: Must be at least 4 years old
-        not_qualified_for_stud: 'Not yet stud qualified: '
+        not_qualified_for_stud: "Not yet stud qualified: "
         status: New Status
         status_info: Horses must be at least 4 years old and have raced 10 times to retire to breeding.
         unraced: Has not raced enough
