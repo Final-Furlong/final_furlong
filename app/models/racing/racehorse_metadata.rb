@@ -69,9 +69,9 @@ module Racing
       end
       where(key => (grades1 & grades2).to_a)
     }
-    scope :raced_before, ->(days) { where(last_raced_at: ..(Date.current - days.to_i.days)) }
+    scope :raced_before, ->(days) { where("last_raced_at IS NULL OR last_raced_at < ?", Date.current - days.to_i.days) }
     scope :raced_since, ->(days) { where(last_raced_at: (Date.current - days.to_i.days)..) }
-    scope :shipped_before, ->(days) { where(last_shipped_at: ..(Date.current - days.to_i.days)) }
+    scope :shipped_before, ->(days) { where("last_shipped_at IS NULL OR last_shipped_at < ?", Date.current - days.to_i.days) }
     scope :shipped_since, ->(days) { where(last_shipped_at: (Date.current - days.to_i.days)..) }
     scope :min_rest_days, ->(number) { where(rest_days_since_last_race: number.to_i..) }
     scope :max_rest_days, ->(number) { where(rest_days_since_last_race: ..number.to_i) }
