@@ -9,6 +9,7 @@ namespace :stable, module: "current_stable" do
   get "/future_entries(/:date)", to: "future_entries#show", as: :future_entries
   resources :historical_boardings, only: :index
   resources :horses, only: %i[index edit show update]
+  resources :jump_trials, only: %i[index create]
   resources :lease_offers, only: :index
   resources :leases, only: :index
   resources :race_results, only: :index do

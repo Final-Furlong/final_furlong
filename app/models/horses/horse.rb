@@ -69,6 +69,7 @@ module Horses
     has_one :parent_breeding_record, class_name: "Horses::Breeding", dependent: :delete, inverse_of: :first_foal
     has_one :twin_parent_breeding_record, class_name: "Horses::Breeding", dependent: :delete, inverse_of: :second_foal
 
+    has_one :famous_stud, class_name: "Horses::Stud::FamousStud", inverse_of: :horse, dependent: :delete
     has_many :stud_foals, class_name: "Horses::Horse", inverse_of: :sire, dependent: :nullify
     has_many :breedings, class_name: "Horses::Breeding", dependent: :delete_all, inverse_of: :stud
     has_many :stud_nominations, class_name: "Horses::Stud::BreedersCupNomination", dependent: :delete_all, inverse_of: :stud
@@ -86,6 +87,7 @@ module Horses
     validate :name_required, on: :update
     validates_horse_name :name, on: :update, if: :name_changed?
 
+    scope :game_owned, -> { joins(:owner).where(owner: { name: Config::Game.stable }) }
     scope :alive, -> { where(status: Status::LIVING_STATUSES) }
     scope :retired, -> { where(status: Status::RETIRED_STATUSES) }
     scope :born, -> { where(date_of_birth: ..Date.current) }
@@ -96,10 +98,10 @@ module Horses
     scope :not_created, -> { where("sire_id IS NULL AND dam_id IS NULL") }
     scope :female, -> { where(gender: Gender::FEMALE_GENDERS) }
     scope :not_female, -> { where.not(gender: Gender::FEMALE_GENDERS) }
-    scope :max_yob, ->(year) { where("DATE_PART('Year', date_of_birth) <= ?", year) }
-    scope :min_age, ->(age) { where("DATE_PART('Year', date_of_birth) <= ?", Date.current.year - age.to_i) }
-    scope :max_age, ->(age) { where("DATE_PART('Year', date_of_birth) >= ?", Date.current.year - age.to_i) }
-    scope :with_yob, ->(year) { where("DATE_PART('Year', date_of_birth) = ?", year) }
+    scope :max_yob, ->(year) { where("DATE_PART('Year', #{table_name}.date_of_birth) <= ?", year) }
+    scope :min_age, ->(age) { where("DATE_PART('Year', #{table_name}.date_of_birth) <= ?", Date.current.year - age.to_i) }
+    scope :max_age, ->(age) { where("DATE_PART('Year', #{table_name}.date_of_birth) >= ?", Date.current.year - age.to_i) }
+    scope :with_yob, ->(year) { where("DATE_PART('Year', #{table_name}.date_of_birth) = ?", year) }
     scope :with_sire, -> { where.associated(:sire) }
     scope :with_dam, -> { where.associated(:dam) }
     scope :order_by_yob, ->(dir = "asc") do
@@ -173,6 +175,7 @@ module Horses
     scope :max_days_since_last_shipment, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.shipped_since(value)) }
     scope :min_workouts_since_last_race, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.min_workouts(value)) }
     scope :max_workouts_since_last_race, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.max_workouts(value)) }
+    scope :random_order, -> { order("RANDOM()") }
 
     delegate :title, :breeding_record, :dosage_text, :track_record, to: :horse_attributes, allow_nil: true
     delegate :title_abbreviation, to: :lifetime_race_record, allow_nil: true

@@ -34,3 +34,14 @@
               p.mx-auto= t(".loading_workouts")
               .mt-2.mx-auto.skeleton.w-full
 
+    - if policy(Workouts::JumpTrial).index?
+      - trials_count = Workouts::JumpTrial.where(horse: Horses::Horse.managed_by(Current.stable)).count
+      - if trials_count.zero?
+        input.tab type="radio" name="stable-trainings" aria-label=t(".no_jump_trials") id="jump-trials" disabled=true
+      - else
+        input.tab type="radio" name="stable-trainings" aria-label=t(".jump_trials", count: trials_count) id="jump-trials"
+        .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+          = turbo_frame_tag "#{Current.stable.slug}-training-jump-trials", src: stable_jump_trials_path, loading: "lazy" do
+            .w-full.text-center
+              p.mx-auto= t(".loading_jump_trials")
+              .mt-2.mx-auto.skeleton.w-full

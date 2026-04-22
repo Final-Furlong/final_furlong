@@ -10,6 +10,7 @@ RSpec.describe Auctions::CreateMonthlyAuctionJob, :perform_enqueued_jobs do
       it "does not create auction" do
         travel_to Date.new(Date.current.year, Date.current.month, 1) do
           final_furlong
+          create_views
           described_class.perform_later
 
           expect do
@@ -22,6 +23,7 @@ RSpec.describe Auctions::CreateMonthlyAuctionJob, :perform_enqueued_jobs do
     context "when auction does not exist" do
       it "creates auction" do
         final_furlong
+        create_views
         travel_to Date.new(Date.current.year, Date.current.month, 1) do
           expect do
             described_class.perform_later
@@ -31,6 +33,7 @@ RSpec.describe Auctions::CreateMonthlyAuctionJob, :perform_enqueued_jobs do
 
       it "works when wrapping to new year" do
         final_furlong
+        create_views
         travel_to Date.new(Date.current.year, 12, 1) do
           expect do
             described_class.perform_later
@@ -40,6 +43,7 @@ RSpec.describe Auctions::CreateMonthlyAuctionJob, :perform_enqueued_jobs do
 
       it "works when first of the month is a Saturday" do
         final_furlong
+        create_views
         travel_to Date.new(Date.current.year, 10, 1) do
           expect do
             described_class.perform_later
@@ -48,18 +52,21 @@ RSpec.describe Auctions::CreateMonthlyAuctionJob, :perform_enqueued_jobs do
       end
 
       context "when auction creation fails" do
+        # rubocop:disable RSpec/ExampleLength
         it "creates auction" do
           auction = build_stubbed(:auction, title: nil)
           auction.valid?
           result = instance_double(Auctions::AutoAuctionCreator::Result, created?: false, auction:)
           allow_any_instance_of(Auctions::AutoAuctionCreator).to receive(:create_auction).and_return result # rubocop:disable RSpec/AnyInstance
           final_furlong
+          create_views
           travel_to Date.new(Date.current.year, 12, 1) do
             expect do
               described_class.perform_later
             end.to raise_error described_class::AuctionNotCreated, "Title can't be blank and Title is too short (minimum is 10 characters)"
           end
         end
+        # rubocop:enable RSpec/ExampleLength
       end
     end
   end
@@ -69,6 +76,12 @@ RSpec.describe Auctions::CreateMonthlyAuctionJob, :perform_enqueued_jobs do
   def final_furlong
     name = "Final Furlong"
     @final_furlong ||= Account::Stable.find_by(name:) || create(:stable, name:)
+  end
+
+  def create_views
+    Racing::RaceRecord.refresh
+    Racing::AnnualRaceRecord.refresh
+    Racing::LifetimeRaceRecord.refresh
   end
 end
 

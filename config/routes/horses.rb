@@ -21,6 +21,7 @@ resources :horses, except: %i[new create destroy] do
       resources :images, only: :index
       resources :injuries, only: :index
       resources :jockeys, only: :index
+      resources :jump_trials, only: %i[index new create]
       resource :lease_offer, only: %i[new create destroy]
       resource :lease_offer_acceptance, only: :create
       resource :lease_termination, only: %i[new create]
