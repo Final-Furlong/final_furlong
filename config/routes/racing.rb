@@ -12,5 +12,6 @@ namespace :racing do
   resources :results, only: :index
   get "races/:date/:number", to: "races#show", as: :race
   get "results/:date/:number", to: "results#show", as: :result
+  resources :tracks, only: :index
 end
 

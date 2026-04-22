@@ -74,6 +74,7 @@ en:
       claim: Claim
       claiming: Claiming
       claiming_with_price: Claiming (%{price})
+      condition: Condition
       date: Date
       distance: Distance
       entries_count: Entries
@@ -191,6 +192,13 @@ en:
       leading: Leading
       midpack: Midpack
       off_pace: Off the Pace
+    tracks:
+      index:
+        forecast_explanation: Rain is the chance of rain for tomorrow and the following race day(s)
+        rain: Rain (%{date})
+        rain_percent: "%{percent}%"
+        title: Racetracks
+        tomorrow_rain: Rain (Tomorrow)
     workout_comments:
       bolt: "%{name} bolted during training."
       confidence_20: "%{name} was unresponsive."

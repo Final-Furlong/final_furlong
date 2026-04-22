@@ -1,0 +1,34 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t(".title"), href: "#" }])
+
+.overflow-x-auto.bg-base-100
+  p.alert.alert-info.alert-outline= t(".forecast_explanation")
+  table.table.table-responsive.table-zebra.sortable.asc.n-last.table-xs.md:table-md
+    thead
+      tr
+        th.table-cell.sm:hidden
+        th= t("racing.race.track")
+        th= t("racing.race.condition")
+        th= t(".tomorrow_rain")
+        - if Date.tomorrow != @next_race_dates.first.date
+          th
+            = t(".rain", date: l(@next_race_dates.first.date))
+        th
+          = t(".rain", date: l(@next_race_dates.last.date))
+
+    tbody
+      - @racetracks.each do |track|
+        tr
+          td= track.name
+          td
+            - track.surfaces.ordered_by_surface.each do |surface|
+              - surface_name = surface.surface
+              span.mr-2.badge.badge-outline class="badge-#{surface_name.dirt? ? "warning" : "success"}"
+                = "#{surface.surface.titleize} (#{surface.condition.titleize})"
+          - tomorrow_rain = Racing::WeatherForecast.where(surface: track.surfaces).by_date(Date.tomorrow).average(:rain_chance).floor
+          td= t(".rain_percent", percent: tomorrow_rain)
+          - if Date.tomorrow != @next_race_dates.first.date
+            - day_rain = Racing::WeatherForecast.where(surface: track.surfaces).by_date(@next_race_dates.first.date).average(:rain_chance).floor
+            td= t(".rain_percent", percent: day_rain)
+          - day_rain = Racing::WeatherForecast.where(surface: track.surfaces).by_date(@next_race_dates.last.date).average(:rain_chance).floor
+          td= t(".rain_percent", percent: day_rain)

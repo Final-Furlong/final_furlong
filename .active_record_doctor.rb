@@ -241,7 +241,8 @@ ActiveRecordDoctor.configure do
       "Racing::RaceTypeRaceRecord(horse_id)", # group by horse_id view
       "Racing::SurfaceRaceRecord(horse_id)", # group by horse_id view
       "Racing::LifetimeRaceRecord(horse_id)", # group by horse_id view
-      "Racing::RaceQualification(horse_id)" # group by horse_id view
+      "Racing::RaceQualification(horse_id)", # group by horse_id view
+      "Racing::TrackSeasonInfo(location_id, season)" # enum that doesn't need lower
     ]
 
   detector :unindexed_deleted_at,
