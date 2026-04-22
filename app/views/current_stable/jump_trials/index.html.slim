@@ -1,0 +1,41 @@
+= turbo_frame_tag "#{Current.stable.slug}-training-jump-trials" do
+  - if @trials.blank?
+    p= t(".no_trials")
+  - else
+    .mx-auto.overflow-x-auto.w-full.sm:hidden
+      - @trials.each do |trial|
+        .card.bg-base-100.w-full.px-2.rounded-none
+          .card-body.p-0.rounded-none
+            .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+              input type="checkbox"
+              .collapse-title.font-semibold.font-medium
+                span= l(trial.date)
+              .collapse-content.text-sm
+    .hidden.mx-auto.overflow-x-auto.border.rounded-md.w-full.sm:block.sm:w-5/6
+      table.table.table-zebra
+        thead
+          tr.border-b-1.border-gray-400.dark:border-neutral-600
+            th= t("horse.events.workouts.horse")
+            th= t("horse.events.workouts.date")
+            th= t("horse.events.workouts.jockey")
+            th= t("horse.events.workouts.racetrack")
+            th= t("horse.events.workouts.comment")
+            th= t("horse.events.workouts.time")
+        tbody
+          - @trials.each do |trial|
+            - horse = trial.horse
+            - jockey = trial.jockey
+            - racetrack = trial.racetrack
+            tr
+              td class="text-#{horse.gender.downcase}"= link_to horse.name, horse_path(horse), data: { turbo_frame: "_top" }
+              td= l(trial.date)
+              td= jockey.full_name
+              td
+                = racetrack.name
+                = " ("
+                = trial.condition.titleize
+                = ")"
+              td= trial.comment.to_s(horse.name, horse.female?)
+              td= trial.time_string
+
+  = render Ui::Pagination::Component.new(pagy: @pagy, classes: 'mt-2')
