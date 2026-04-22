@@ -37,11 +37,13 @@ RSpec.describe "Impersonate Stable Index" do
     expect(page).to have_css "#impersonation-alert"
     expect(page).to have_current_path root_path, ignore_query: true
     expect(page).to have_text t("view_components.users.impersonating_banner.title", stable: stable.name, username: user.username)
+    visit current_stable_path
     expect(page).to have_text t("view_components.users.online_badge.offline")
     click_on t("view_components.users.impersonating_banner.sign_out")
     expect(page).to have_current_path root_path, ignore_query: true
     expect(page).not_to have_css "#impersonation-alert"
     expect(page).to have_text t("users.stop_impersonating.success")
+    visit current_stable_path
     expect(page).to have_text admin_stable.name
   end
 end

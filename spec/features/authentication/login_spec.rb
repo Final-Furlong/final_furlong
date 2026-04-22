@@ -13,6 +13,7 @@ RSpec.describe "Login Spec" do
 
     expect(page).to have_text t("devise.sessions.signed_in")
     expect(page).to have_current_path root_path, ignore_query: true
+    visit current_stable_path
     within(".badge") do
       expect(page).to have_text t("view_components.users.online_badge.online")
     end
@@ -28,6 +29,7 @@ RSpec.describe "Login Spec" do
     click_on t("devise.sessions.new.sign_in")
 
     expect(page).to have_text t("devise.sessions.signed_in")
+    visit current_stable_path
     within(".badge") do
       expect(page).to have_text t("view_components.users.online_badge.online")
     end
