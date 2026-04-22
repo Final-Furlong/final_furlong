@@ -1037,7 +1037,7 @@ GEM
     yalphabetize (0.12.1)
       psych-comments
     yaml (0.4.0)
-    yard (0.9.38)
+    yard (0.9.42)
     yard-activesupport-concern (0.0.1)
       yard (>= 0.8)
     yard-solargraph (0.1.0)
@@ -1595,7 +1595,7 @@ CHECKSUMS
   yaaf (3.1.0) sha256=0dd407ea7c7032b653974252b8394581828e7cc31d5461ea0bfba01764fd1258
   yalphabetize (0.12.1) sha256=07afe91abaaa785e6528e6b8d44fe0e665e29510c9665c8e13ca3261e7b51fa2
   yaml (0.4.0) sha256=240e69d1e6ce3584d6085978719a0faa6218ae426e034d8f9b02fb54d3471942
-  yard (0.9.38) sha256=721fb82afb10532aa49860655f6cc2eaa7130889df291b052e1e6b268283010f
+  yard (0.9.42) sha256=4e2be01f8623556093497731d44c801e600d7c9759ec7a35a2dd5dd83bbbba68
   yard-activesupport-concern (0.0.1) sha256=be790cb0efc23e2e87677063598ac8b743586154657bbd9655a7f03ce78390ef
   yard-solargraph (0.1.0) sha256=a19a4619c942181a618fb9458970a9d2534cf7fda69fc43949629a7948a5930e
   zeitwerk (2.7.5) sha256=d8da92128c09ea6ec62c949011b00ed4a20242b255293dd66bf41545398f73dd
