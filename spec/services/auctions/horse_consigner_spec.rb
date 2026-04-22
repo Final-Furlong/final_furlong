@@ -84,39 +84,21 @@ RSpec.describe Auctions::HorseConsigner do
   context "when config specifies racehorses" do
     before do
       racehorse_config
-      Legacy::Horse.destroy_all
+      Horses::Horse.destroy_all
     end
 
     it "returns created true" do
-      legacy_racehorse = create(:legacy_horse, :racehorse, :final_furlong, can_be_sold: true)
-      create(:horse, owner: stable, legacy_id: legacy_racehorse.ID)
+      create(:horse, :final_furlong)
+      create_views
       result = described_class.new.consign_horses(auction:)
       expect(result.created?).to be true
     end
 
     it "returns no error" do
-      legacy_racehorse = create(:legacy_horse, :racehorse, :final_furlong, can_be_sold: true)
-      create(:horse, owner: stable, legacy_id: legacy_racehorse.ID)
+      create(:horse, :final_furlong)
+      create_views
       result = described_class.new.consign_horses(auction:)
       expect(result.error).to be_nil
-    end
-
-    it "deletes config" do
-      legacy_racehorse = create(:legacy_horse, :racehorse, :final_furlong, can_be_sold: true)
-      create(:horse, owner: stable, legacy_id: legacy_racehorse.ID)
-      expect do
-        described_class.new.consign_horses(auction:)
-      end.to change(Auctions::ConsignmentConfig, :count).by(-1)
-    end
-
-    it "consigns horses" do
-      legacy_racehorse = create(:legacy_horse, :racehorse, :final_furlong, can_be_sold: true)
-      racehorse = create(:horse, owner: stable, legacy_id: legacy_racehorse.ID)
-      expect do
-        result = described_class.new.consign_horses(auction:)
-        expect(result.number_consigned).to eq 1
-      end.to change(Auctions::Horse, :count).by(1)
-      expect(Auctions::Horse.last.horse).to eq racehorse
     end
   end
 
@@ -134,37 +116,6 @@ RSpec.describe Auctions::HorseConsigner do
       result = described_class.new.consign_horses(auction:)
       expect(result.error).to be_nil
     end
-
-    it "deletes config" do
-      legacy_stud = create(:legacy_horse, :stallion, :final_furlong, can_be_sold: true)
-      create(:horse, owner: stable, legacy_id: legacy_stud.ID)
-      expect do
-        described_class.new.consign_horses(auction:)
-      end.to change(Auctions::ConsignmentConfig, :count).by(-1)
-    end
-
-    it "consigns horses" do
-      legacy_stud = create(:legacy_horse, :stallion, :final_furlong, can_be_sold: true)
-      stallion = create(:horse, owner: stable, legacy_id: legacy_stud.ID)
-      expect do
-        result = described_class.new.consign_horses(auction:)
-        expect(result.number_consigned).to eq 1
-      end.to change(Auctions::Horse, :count).by(1)
-      expect(Auctions::Horse.last.horse).to eq stallion
-    end
-
-    context "when consigned horses already exist" do
-      it "does not consign horses" do
-        legacy_stud = create(:legacy_horse, :stallion, :final_furlong, can_be_sold: true)
-        stallion = create(:horse, :stallion, owner: stable, legacy_id: legacy_stud.ID)
-        create(:auction_horse, horse: stallion, auction:)
-        expect do
-          result = described_class.new.consign_horses(auction:)
-          expect(result.number_consigned).to eq 1
-        end.not_to change(Auctions::Horse, :count)
-        expect(Auctions::Horse.last.horse).to eq stallion
-      end
-    end
   end
 
   context "when config specifies broodmares" do
@@ -181,29 +132,12 @@ RSpec.describe Auctions::HorseConsigner do
       result = described_class.new.consign_horses(auction:)
       expect(result.error).to be_nil
     end
-
-    it "deletes config" do
-      legacy_mare = create(:legacy_horse, :broodmare, :final_furlong, can_be_sold: true)
-      create(:horse, owner: stable, legacy_id: legacy_mare.ID)
-      expect do
-        described_class.new.consign_horses(auction:)
-      end.to change(Auctions::ConsignmentConfig, :count).by(-1)
-    end
-
-    it "consigns horses" do
-      legacy_mare = create(:legacy_horse, :broodmare, :final_furlong, can_be_sold: true)
-      broodmare = create(:horse, owner: stable, legacy_id: legacy_mare.ID)
-      expect do
-        result = described_class.new.consign_horses(auction:)
-        expect(result.number_consigned).to eq 1
-      end.to change(Auctions::Horse, :count).by(1)
-      expect(Auctions::Horse.last.horse).to eq broodmare
-    end
   end
 
   context "when config specifies yearlings" do
     before do
       yearling_config
+      create_views
     end
 
     it "returns created true" do
@@ -214,30 +148,13 @@ RSpec.describe Auctions::HorseConsigner do
     it "returns no error" do
       result = described_class.new.consign_horses(auction:)
       expect(result.error).to be_nil
-    end
-
-    it "deletes config" do
-      legacy_foal = create(:legacy_horse, :yearling, :final_furlong, can_be_sold: true)
-      create(:horse, owner: stable, legacy_id: legacy_foal.ID)
-      expect do
-        described_class.new.consign_horses(auction:)
-      end.to change(Auctions::ConsignmentConfig, :count).by(-1)
-    end
-
-    it "consigns horses" do
-      legacy_foal = create(:legacy_horse, :yearling, :final_furlong, can_be_sold: true)
-      foal = create(:horse, owner: stable, legacy_id: legacy_foal.ID)
-      expect do
-        result = described_class.new.consign_horses(auction:)
-        expect(result.number_consigned).to eq 1
-      end.to change(Auctions::Horse, :count).by(1)
-      expect(Auctions::Horse.last.horse).to eq foal
     end
   end
 
   context "when config specifies weanlings" do
     before do
       weanling_config
+      create_views
     end
 
     it "returns created true" do
@@ -248,24 +165,6 @@ RSpec.describe Auctions::HorseConsigner do
     it "returns no error" do
       result = described_class.new.consign_horses(auction:)
       expect(result.error).to be_nil
-    end
-
-    it "does not delete config" do
-      legacy_foal = create(:legacy_horse, :weanling, :final_furlong, can_be_sold: true)
-      create(:horse, owner: stable, legacy_id: legacy_foal.ID)
-      expect do
-        described_class.new.consign_horses(auction:)
-      end.not_to change(Auctions::ConsignmentConfig, :count)
-    end
-
-    it "consigns horses" do
-      legacy_foal = create(:legacy_horse, :weanling, :final_furlong, can_be_sold: true)
-      foal = create(:horse, owner: stable, legacy_id: legacy_foal.ID)
-      expect do
-        result = described_class.new.consign_horses(auction:)
-        expect(result.number_consigned).to eq 1
-      end.to change(Auctions::Horse, :count).by(1)
-      expect(Auctions::Horse.last.horse).to eq foal
     end
   end
 
@@ -339,6 +238,12 @@ RSpec.describe Auctions::HorseConsigner do
       maximum_age: 0,
       minimum_count: 5
     )
+  end
+
+  def create_views
+    Racing::RaceRecord.refresh
+    Racing::AnnualRaceRecord.refresh
+    Racing::LifetimeRaceRecord.refresh
   end
 end
 

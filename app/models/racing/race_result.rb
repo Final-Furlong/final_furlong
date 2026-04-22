@@ -1,6 +1,7 @@
 module Racing
   class RaceResult < ApplicationRecord
     include RaceTypeable
+    include Timeable
 
     self.table_name = "race_results"
 
@@ -12,7 +13,6 @@ module Racing
 
     validates :date, :number, :race_type, :age, :distance, :purse, :time_in_seconds, presence: true
     validates :number, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 50 }
-    validates :time_in_seconds, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1_000 }
     validates :split, inclusion: { in: SPLITS }
     validates :race_type, inclusion: { in: Config::Racing.all_types }
     validates :age, inclusion: { in: Config::Racing.ages }
@@ -58,14 +58,6 @@ module Racing
 
     def maiden?
       race_type == "maiden"
-    end
-
-    def finish_time_string
-      minutes = (time_in_seconds / 60).floor
-      seconds = (time_in_seconds % 60).floor
-      remainder = (time_in_seconds % 60).to_s.split(".").last
-      seconds = [seconds, remainder].join(".")
-      [minutes, seconds].join(":")
     end
 
     def distance_abbr

@@ -7,6 +7,7 @@ class Workouts::AutoWorkoutJob < ApplicationJob
     return if run_today?(date:)
     return unless run_today?(name: "Racing::EnergyFitnessUpdaterJob", date:)
     return unless run_today?(name: "UpdateRacehorseStatsJob", date:)
+    return unless run_today?(name: "Racing::FutureEntryProcessingJob", date:)
 
     yesterday = date - 1.day
     skipped = 0
@@ -35,7 +36,7 @@ class Workouts::AutoWorkoutJob < ApplicationJob
             skipped += 1
             next
           end
-          if Legacy::RaceEntry.exists?(Horse: horse.legacy_id)
+          if horse.race_entries.present?
             skipped += 1
             next
           end

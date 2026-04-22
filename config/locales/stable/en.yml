@@ -3,7 +3,7 @@ en:
   account:
     stables:
       stable:
-        last_online: 'Last online at: %{date}'
+        last_online: "Last online at: %{date}"
         no_description: No description
   current_stable:
     actions:
@@ -42,7 +42,7 @@ en:
         success: Boarding was successfully stopped
     budgets:
       index:
-        available_balance: 'Available: %{amount}'
+        available_balance: "Available: %{amount}"
         category:
           activity_points: Activity Points
           all_breeding: All Breeding
@@ -70,9 +70,9 @@ en:
           sold_or_bought: Sold/Bought/Leased
         no_transactions: Could not find any transactions.
         title: Budget
-        title_with_available: 'Budget: (%{total}, %{available} available)'
-        title_with_total: 'Budget: %{total}'
-        total_balance: 'Total: %{amount}'
+        title_with_available: "Budget: (%{total}, %{available} available)"
+        title_with_total: "Budget: %{total}"
+        total_balance: "Total: %{amount}"
       search:
         category: Category
         date_from: Date From
@@ -100,7 +100,7 @@ en:
         cannot_ship_in_time: Cannot ship in time
         energy_too_low: Energy too low
         entered: Entered
-        errored: 'Error: %{message}'
+        errored: "Error: %{message}"
         max_entries: Max horses entered from your stable
         not_at_track: Not at the track
         not_qualified: Not qualified for race
@@ -153,8 +153,8 @@ en:
         title: Horses Offered for Sale
     settings:
       new:
-        browser_subscribed: 'Status: YES! Your browser is currently subscribed to push notifications'
-        browser_unsubscribed: 'Status: Your browser is NOT subscribed to push notifications'
+        browser_subscribed: "Status: YES! Your browser is currently subscribed to push notifications"
+        browser_unsubscribed: "Status: Your browser is NOT subscribed to push notifications"
         instructions: Try sending a web push notification using the form below. The first text box will be used as a title and the second text box represents the message body. Click the button to send a push notification to yourself.
         notification: Hi from Final Furlong
         notification_not_supported: Notifications are not supported in your browser
@@ -215,7 +215,7 @@ en:
         title: New Training Schedule
       show:
         manage_horses: Horses (%{count})
-        title: 'Training Schedule: %{name}'
+        title: "Training Schedule: %{name}"
         workouts_count: Workouts (%{count})
       update:
         success: Training Schedule was successfully updated.
@@ -252,9 +252,12 @@ en:
         qualifying_level: Qualifying Race
     trainings:
       index:
+        jump_trials: Jump Trials (%{count})
+        loading_jump_trials: Loading jump trials...
         loading_schedules: Loading schedules...
         loading_training_summary: Loading training summary...
         loading_workouts: Loading workouts...
+        no_jump_trials: Jump Trials
         no_schedules: Schedules
         no_workouts: Workouts
         schedules: Schedules (%{count})
@@ -277,7 +280,7 @@ en:
           other: There are %{count} auctions coming up in the next two weeks.
       races:
         claiming_alert_count:
-          one: '1 horse is available to claim on '
+          one: "1 horse is available to claim on "
           other: "%{count} horses are available to claim on "
         existing_claim: ". You have submitted a claim."
         race_entry_count: Your stable has %{count} %{horses} entered to race on %{date}
