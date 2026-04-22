@@ -63,7 +63,6 @@ gem "grape_logging"
 gem "grape_on_rails_routes"
 
 # Admin
-gem "motor-admin"
 gem "pretender"
 
 # UI

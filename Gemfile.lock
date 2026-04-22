@@ -117,12 +117,7 @@ GEM
       activesupport (>= 6.0.0)
     anyway_config (2.8.0)
       ruby-next-core (~> 1.0)
-    ar_lazy_preload (1.1.2)
-      rails (>= 5.2)
     ast (2.4.3)
-    audited (5.8.0)
-      activerecord (>= 5.2, < 8.2)
-      activesupport (>= 5.2, < 8.2)
     autoprefixer-rails (10.4.21.0)
       execjs (~> 2)
     awesome_print (1.9.2)
@@ -166,7 +161,6 @@ GEM
       thor (~> 1.0)
     byebug (13.0.0)
       reline (>= 0.6.0)
-    cancancan (3.6.1)
     capistrano (3.20.0)
       airbrussh (>= 1.0.0)
       i18n
@@ -218,7 +212,6 @@ GEM
       activerecord (>= 4.2)
       activesupport (>= 4.2)
     crass (1.0.6)
-    csv (3.3.5)
     cuprite (0.15.1)
       capybara (~> 3.0)
       ferrum (~> 0.15.0)
@@ -552,13 +545,6 @@ GEM
       railties (>= 7.1)
       stimulus-rails
       turbo-rails
-    motor-admin (0.5.0)
-      ar_lazy_preload (~> 1.0)
-      audited (~> 5.0)
-      cancancan (~> 3.0)
-      csv (>= 3.0)
-      fugit (~> 1.0)
-      rails (>= 5.2)
     msgpack (1.8.0)
     multi_json (1.19.1)
     mustermann (3.0.4)
@@ -1132,7 +1118,6 @@ DEPENDENCIES
   lograge
   mailtrap
   mission_control-jobs
-  motor-admin
   mysql2
   nanoid
   net-ssh
@@ -1232,9 +1217,7 @@ CHECKSUMS
   airbrussh (1.6.0) sha256=7e2cf581f2319d2c2b2b672c9fc486efb4dfcfed4bd2dadbef5f10b8b2a000d0
   annotaterb (4.21.0) sha256=29d63b647be64f86b4a8f3c69110538bf1a6a5b2289de2276491e228fdac8da3
   anyway_config (2.8.0) sha256=f6797a7231f81202dcd3d0c07284e836e45713e761d320180348b13a5c7c9306
-  ar_lazy_preload (1.1.2) sha256=9a864086da4417bcf693194e43f008e0e861390e76978901c9606cd6e54bbf60
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
-  audited (5.8.0) sha256=35cd63f9ee1eb2a1f773e7abf5915bb4e870b6338173e27c31e0e604e353f371
   autoprefixer-rails (10.4.21.0) sha256=71b48caf850fc25275abd96f0b1fdd51c82e1c9b99cd30085cacb05da9c70235
   awesome_print (1.9.2) sha256=e99b32b704acff16d768b3468680793ced40bfdc4537eb07e06a4be11133786e
   axe-core-api (4.11.1) sha256=a6460506449a692030620a0574fee7afa6cd38cfbbf6620d20bf4d53d33a80cc
@@ -1256,7 +1239,6 @@ CHECKSUMS
   builder (3.3.0) sha256=497918d2f9dca528fdca4b88d84e4ef4387256d984b8154e9d5d3fe5a9c8835f
   bundler-audit (0.9.3) sha256=81c8766c71e47d0d28a0f98c7eed028539f21a6ea3cd8f685eb6f42333c9b4e9
   byebug (13.0.0) sha256=d2263efe751941ca520fa29744b71972d39cbc41839496706f5d9b22e92ae05d
-  cancancan (3.6.1) sha256=975c1d5cbf58d5df48a9452a7f61ae3d254608cd87570402f5925a8864c56b62
   capistrano (3.20.0) sha256=0113e58dda99add0342e56a244f664734c59f442c5ed734f5303b0b559b479c9
   capistrano-bundler (2.2.0) sha256=47b4cf2ea17ea132bb0a5cabc5663443f5190a54f4da5b322d04e1558ff1468c
   capistrano-deploytags (1.0.7) sha256=8b3d8ff1a192f551868496f6f5e7845d386a4b7650d35256db4bd68ffcba11c3
@@ -1278,7 +1260,6 @@ CHECKSUMS
   connection_pool (3.0.2) sha256=33fff5ba71a12d2aa26cb72b1db8bba2a1a01823559fb01d29eb74c286e62e0a
   counter_culture (3.12.1) sha256=8a880092321941732bfa639c449a133ff08c5197c29e853371cc03c486e43980
   crass (1.0.6) sha256=dc516022a56e7b3b156099abc81b6d2b08ea1ed12676ac7a5657617f012bd45d
-  csv (3.3.5) sha256=6e5134ac3383ef728b7f02725d9872934f523cb40b961479f69cf3afa6c8e73f
   cuprite (0.15.1) sha256=0b3a25b2e408b345dfa0bae8bc5e7f021f913737c746edece9ca9fbb57eba259
   data_migrate (11.3.1) sha256=18b9b2189d15e482d5335f3fc2248b8b447204bd8257ded872dd077737168ffb
   date (3.5.1) sha256=750d06384d7b9c15d562c76291407d89e368dda4d4fff957eb94962d325a0dc0
@@ -1403,7 +1384,6 @@ CHECKSUMS
   mini_mime (1.1.5) sha256=8681b7e2e4215f2a159f9400b5816d85e9d8c6c6b491e96a12797e798f8bccef
   minitest (6.0.2) sha256=db6e57956f6ecc6134683b4c87467d6dd792323c7f0eea7b93f66bd284adbc3d
   mission_control-jobs (1.1.0) sha256=b13da9cde3344fec7c744b79d2a34c3ecd454f45d4d593d4c968ba762315e84c
-  motor-admin (0.5.0) sha256=37857152764eb7f1ded72dfb8f4ac849166ea5175057ba2f243e37b888d167a0
   msgpack (1.8.0) sha256=e64ce0212000d016809f5048b48eb3a65ffb169db22238fb4b72472fecb2d732
   multi_json (1.19.1) sha256=7aefeff8f2c854bf739931a238e4aea64592845e0c0395c8a7d2eea7fdd631b7
   mustermann (3.0.4) sha256=85fadcb6b3c6493a8b511b42426f904b7f27b282835502233dd154daab13aa22

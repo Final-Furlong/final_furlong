@@ -1,10 +1,12 @@
 module Racing
   class WeatherForecast < ApplicationRecord
-    belongs_to :surface, class_name: "TrackSurface"
+    belongs_to :surface, class_name: "TrackSurface", inverse_of: :weather_forecasts
 
     validates :date, :rain_chance, presence: true
     validates :date, comparison: { greater_than_or_equal_to: Date.current }
     validates :rain_chance, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
+
+    scope :by_date, ->(date) { where(date:) }
   end
 end
 
