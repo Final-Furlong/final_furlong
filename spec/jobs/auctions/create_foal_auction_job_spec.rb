@@ -9,6 +9,7 @@ RSpec.describe Auctions::CreateFoalAuctionJob, :perform_enqueued_jobs do
     context "when auction already exists" do
       it "does not create auction" do
         final_furlong
+        create_views
         travel_to Time.zone.local(2025, 11, 1, 0, 0, 0) do
           described_class.perform_later
 
@@ -22,6 +23,7 @@ RSpec.describe Auctions::CreateFoalAuctionJob, :perform_enqueued_jobs do
     context "when auction does not exist" do
       it "creates auction" do
         final_furlong
+        create_views
         travel_to Time.zone.local(2025, 11, 1, 0, 0, 0) do
           expect do
             described_class.perform_later
@@ -32,6 +34,7 @@ RSpec.describe Auctions::CreateFoalAuctionJob, :perform_enqueued_jobs do
       context "when current date is later than Nov 15" do
         it "does not create auction" do
           final_furlong
+          create_views
           travel_to Time.zone.local(2025, 11, 16, 0, 0, 0) do
             expect do
               described_class.perform_later
@@ -41,18 +44,21 @@ RSpec.describe Auctions::CreateFoalAuctionJob, :perform_enqueued_jobs do
       end
 
       context "when auction creation fails" do
+        # rubocop:disable RSpec/ExampleLength
         it "does not create auction" do
           auction = build_stubbed(:auction, title: nil)
           auction.valid?
           result = instance_double(Auctions::FoalAuctionCreator::Result, created?: false, auction:)
           allow_any_instance_of(Auctions::FoalAuctionCreator).to receive(:create_auction).and_return result # rubocop:disable RSpec/AnyInstance
           final_furlong
+          create_views
           travel_to Time.zone.local(2025, 11, 1, 0, 0, 0) do
             expect do
               described_class.perform_later
             end.to raise_error described_class::AuctionNotCreated, "Title can't be blank and Title is too short (minimum is 10 characters)"
           end
         end
+        # rubocop:enable RSpec/ExampleLength
       end
     end
   end
@@ -62,6 +68,12 @@ RSpec.describe Auctions::CreateFoalAuctionJob, :perform_enqueued_jobs do
   def final_furlong
     name = "Final Furlong"
     @final_furlong ||= Account::Stable.find_by(name:) || create(:stable, name:)
+  end
+
+  def create_views
+    Racing::RaceRecord.refresh
+    Racing::AnnualRaceRecord.refresh
+    Racing::LifetimeRaceRecord.refresh
   end
 end
 

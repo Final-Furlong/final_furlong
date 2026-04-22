@@ -1,5 +1,7 @@
 module Horses
   class StudFoalRecord < ApplicationRecord
+    include BreedRankable
+
     self.table_name = "stud_foal_records"
 
     belongs_to :stud, class_name: "Horse", foreign_key: :horse_id, inverse_of: :stud_foal_record
@@ -22,12 +24,6 @@ module Horses
     validates :multi_stakes_winning_foals_count, comparison: { less_than_or_equal_to: :stakes_winning_foals_count }
     validates :millionaire_foals_count, comparison: { less_than_or_equal_to: :raced_foals_count }
     validates :multi_millionaire_foals_count, comparison: { less_than_or_equal_to: :millionaire_foals_count }
-
-    def breed_ranking_string
-      return I18n.t("common.none") if breed_ranking.blank?
-
-      "#{breed_ranking.titleize} (#{total_foal_points.fdiv(total_foal_races).round(1)})"
-    end
 
     def living_foals_count
       born_foals_count - stillborn_foals_count

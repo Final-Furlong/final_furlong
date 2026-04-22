@@ -58,8 +58,6 @@ en:
         invalid_location: Invalid boarding location
         location_not_found: Invalid boarding location
         max_days_reached: Horse has spent the max time boarded at this location
-      deletion:
-        in_progress: Cannot cancel a boarding that is already running
       updater:
         already_ended: This boarding has already ended
         budget_description: Board for %{name} for %{days}
@@ -70,7 +68,7 @@ en:
         mare_not_eligible: Mare is not eligible for this breeding
     lease_creator:
       cannot_afford_lease: You cannot afford the lease fee
-      description_leaser: 'Lease Fee: %{horse} from %{stable} [%{start_date} to %{end_date}]'
+      description_leaser: "Lease Fee: %{horse} from %{stable} [%{start_date} to %{end_date}]"
       description_owner: Leased %{horse} to %{stable} [%{start_date} to %{end_date}]
       not_for_lease: This horse is not for lease
     races:

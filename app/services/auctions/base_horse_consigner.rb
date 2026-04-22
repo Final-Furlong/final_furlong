@@ -7,11 +7,11 @@ module Auctions
     private
 
     def base_query
-      Legacy::Horse.game_owned
+      Horses::Horse.game_owned.where.missing(:auction_horse)
     end
 
     def consigned_to_auction
-      Horses::Horse.where.associated(:auction_horse).pluck(:legacy_id)
+      Horses::Horse.where.associated(:auction_horse).pluck(:id)
     end
   end
 end
