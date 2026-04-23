@@ -7,6 +7,11 @@ FactoryBot.define do
     owner factory: :stable
     breeder { owner }
     location_bred factory: :location
+    age { Date.current.year - date_of_birth.year }
+
+    trait :final_furlong do
+      owner { Account::Stable.find_by(name: Config::Game.stable) || create(:stable, name: Config::Game.stable) }
+    end
 
     trait :plain do
       appearance { association :horse_appearance, :plain, horse: instance }

@@ -2193,6 +2193,37 @@ CREATE VIEW public.equipment_race_records AS
 
 
 --
+-- Name: famous_studs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.famous_studs (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: famous_studs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.famous_studs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: famous_studs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.famous_studs_id_seq OWNED BY public.famous_studs.id;
+
+
+--
 -- Name: future_events; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2826,6 +2857,44 @@ CREATE SEQUENCE public.jockeys_id_seq
 --
 
 ALTER SEQUENCE public.jockeys_id_seq OWNED BY public.jockeys.id;
+
+
+--
+-- Name: jump_trials; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.jump_trials (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    jockey_id bigint NOT NULL,
+    date date NOT NULL,
+    condition public.track_condition NOT NULL,
+    racetrack_id bigint NOT NULL,
+    distance integer DEFAULT 0 NOT NULL,
+    comment_id bigint NOT NULL,
+    time_in_seconds integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: jump_trials_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.jump_trials_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: jump_trials_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.jump_trials_id_seq OWNED BY public.jump_trials.id;
 
 
 --
@@ -5317,6 +5386,13 @@ ALTER TABLE ONLY public.claims ALTER COLUMN id SET DEFAULT nextval('public.claim
 
 
 --
+-- Name: famous_studs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.famous_studs ALTER COLUMN id SET DEFAULT nextval('public.famous_studs_id_seq'::regclass);
+
+
+--
 -- Name: future_events id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -5412,6 +5488,13 @@ ALTER TABLE ONLY public.job_stats ALTER COLUMN id SET DEFAULT nextval('public.jo
 --
 
 ALTER TABLE ONLY public.jockeys ALTER COLUMN id SET DEFAULT nextval('public.jockeys_id_seq'::regclass);
+
+
+--
+-- Name: jump_trials id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.jump_trials ALTER COLUMN id SET DEFAULT nextval('public.jump_trials_id_seq'::regclass);
 
 
 --
@@ -5881,6 +5964,14 @@ ALTER TABLE ONLY public.data_migrations
 
 
 --
+-- Name: famous_studs famous_studs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.famous_studs
+    ADD CONSTRAINT famous_studs_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: future_events future_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5990,6 +6081,14 @@ ALTER TABLE ONLY public.job_stats
 
 ALTER TABLE ONLY public.jockeys
     ADD CONSTRAINT jockeys_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: jump_trials jump_trials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.jump_trials
+    ADD CONSTRAINT jump_trials_pkey PRIMARY KEY (id);
 
 
 --
@@ -6894,6 +6993,13 @@ CREATE INDEX index_claims_on_race_date ON public.claims USING btree (race_date);
 
 
 --
+-- Name: index_famous_studs_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_famous_studs_on_horse_id ON public.famous_studs USING btree (horse_id);
+
+
+--
 -- Name: index_future_events_on_date; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7451,6 +7557,41 @@ CREATE UNIQUE INDEX index_jockeys_on_unique_name ON public.jockeys USING btree (
 --
 
 CREATE INDEX index_jockeys_on_weight ON public.jockeys USING btree (weight);
+
+
+--
+-- Name: index_jump_trials_on_comment_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jump_trials_on_comment_id ON public.jump_trials USING btree (comment_id);
+
+
+--
+-- Name: index_jump_trials_on_horse_id_and_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_jump_trials_on_horse_id_and_date ON public.jump_trials USING btree (horse_id, date);
+
+
+--
+-- Name: index_jump_trials_on_jockey_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jump_trials_on_jockey_id ON public.jump_trials USING btree (jockey_id);
+
+
+--
+-- Name: index_jump_trials_on_racetrack_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jump_trials_on_racetrack_id ON public.jump_trials USING btree (racetrack_id);
+
+
+--
+-- Name: index_jump_trials_on_time_in_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jump_trials_on_time_in_seconds ON public.jump_trials USING btree (time_in_seconds);
 
 
 --
@@ -9361,6 +9502,14 @@ ALTER TABLE ONLY public.training_schedules_horses
 
 
 --
+-- Name: jump_trials fk_rails_57755b0ae8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.jump_trials
+    ADD CONSTRAINT fk_rails_57755b0ae8 FOREIGN KEY (jockey_id) REFERENCES public.jockeys(id);
+
+
+--
 -- Name: sale_offers fk_rails_58132ad6b6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9529,6 +9678,14 @@ ALTER TABLE ONLY public.racing_stats
 
 
 --
+-- Name: jump_trials fk_rails_919986e46a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.jump_trials
+    ADD CONSTRAINT fk_rails_919986e46a FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
 -- Name: boardings fk_rails_91c5c287e6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -9590,6 +9747,14 @@ ALTER TABLE ONLY public.activity_points
 
 ALTER TABLE ONLY public.active_storage_variant_records
     ADD CONSTRAINT fk_rails_993965df05 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
+
+
+--
+-- Name: jump_trials fk_rails_99433bffc7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.jump_trials
+    ADD CONSTRAINT fk_rails_99433bffc7 FOREIGN KEY (racetrack_id) REFERENCES public.racetracks(id);
 
 
 --
@@ -9881,6 +10046,14 @@ ALTER TABLE ONLY public.race_options
 
 
 --
+-- Name: jump_trials fk_rails_e6a94debd8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.jump_trials
+    ADD CONSTRAINT fk_rails_e6a94debd8 FOREIGN KEY (comment_id) REFERENCES public.workout_comments(id);
+
+
+--
 -- Name: horse_jockey_relationships fk_rails_e6dddc69ab; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -10001,12 +10174,22 @@ ALTER TABLE ONLY public.workouts
 
 
 --
+-- Name: famous_studs fk_rails_fd68c5f771; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.famous_studs
+    ADD CONSTRAINT fk_rails_fd68c5f771 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260423093916'),
+('20260422183538'),
 ('20260422134246'),
 ('20260422101647'),
 ('20260420131740'),

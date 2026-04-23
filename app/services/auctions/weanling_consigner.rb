@@ -1,15 +1,16 @@
 module Auctions
   class WeanlingConsigner < BaseHorseConsigner
     def select_horses(number:, min_age: 0, max_age: 0, stakes_quality: false)
-      stakes_horses = Legacy::RaceRecord.stakes_quality.select(:Horse).distinct
-
-      query = base_query.weanling.age_between(min_age, max_age).where.not(ID: consigned_to_auction)
-      query = if stakes_quality
-        query.where(Dam: stakes_horses)
+      query = base_query.weanling
+      if stakes_quality
+        query = query.joins(dam: :lifetime_race_record).merge(Racing::LifetimeRaceRecord.stakes_level)
+        query.random_order.limit(number)
       else
-        query.where.not(Dam: stakes_horses).or(query.where(Dam: nil))
+        non_stakes = base_query.joins(dam: :lifetime_race_record).merge(Racing::LifetimeRaceRecord.not_stakes_level).random_order.limit(number)
+        missing_dam = base_query.where.missing(:dam).random_order.limit(number)
+        horses = non_stakes + missing_dam
+        horses.shuffle.slice(0, number)
       end
-      query.random_order.limit(number)
     end
   end
 end

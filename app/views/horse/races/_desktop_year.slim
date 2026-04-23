@@ -46,7 +46,7 @@
               - number = "#{finish.finish_position.ordinalize}/#{race.horses.count}"
               = t("horse.races.index.place", number: number)
             td= t("horse.races.index.surface", surface: race.track_surface.surface.capitalize)
-            td= t("horse.races.index.finish_time", time: race.finish_time_string)
+            td= t("horse.races.index.finish_time", time: race.time_string)
             td= t("horse.races.index.speed_factor", number: finish.speed_factor || t("common.na"))
           tr
             td colspan=3
