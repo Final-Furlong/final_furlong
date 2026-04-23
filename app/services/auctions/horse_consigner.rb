@@ -23,47 +23,42 @@ module Auctions
       end
 
       number_consigned = 0
-      ActiveRecord::Base.transaction do
-        auction.consignment_configs.each do |config|
-          horse_type_check = config.horse_type.to_s.downcase
-          horse_type_number_consigned = Auctions::Horse.joins(:horse).where(auction:).merge(Horses::Horse.send(horse_type_check.to_sym)).count
-          consigner_class = case config.horse_type.to_s.downcase
-          when "racehorse"
-            Auctions::RacehorseConsigner
-          when "stud"
-            Auctions::StallionConsigner
-          when "broodmare"
-            Auctions::BroodmareConsigner
-          when "yearling"
-            Auctions::YearlingConsigner
-          when "weanling"
-            Auctions::WeanlingConsigner
-          else
-            raise UnknownConsignmentTypeError
-          end
-          legacy_horses = consigner_class.new.select_horses(
-            number: config.minimum_count - horse_type_number_consigned,
-            stakes_quality: config.stakes_quality,
-            min_age: config.minimum_age, max_age: config.maximum_age
-          ).select(:ID)
-          legacy_horses.each do |horse|
-            creator_result = Auctions::LegacyHorseCreator.new.create_horse(auction:, legacy_horse_id: horse.ID)
-            if creator_result.created?
-              horse_type_number_consigned += 1
-            else
-              next
-            end
-          end
-          config.destroy if horse_type_number_consigned >= config.minimum_count
-          number_consigned += horse_type_number_consigned
+      auction.consignment_configs.each do |config|
+        horse_type_check = config.horse_type.to_s.downcase
+        horse_type_number_consigned = Auctions::Horse.joins(:horse).where(auction:).merge(Horses::Horse.send(horse_type_check.to_sym)).count
+        consigner_class = case config.horse_type.to_s.downcase
+        when "racehorse"
+          Auctions::RacehorseConsigner
+        when "stud"
+          Auctions::StallionConsigner
+        when "broodmare"
+          Auctions::BroodmareConsigner
+        when "yearling"
+          Auctions::YearlingConsigner
+        when "weanling"
+          Auctions::WeanlingConsigner
+        else
+          raise UnknownConsignmentTypeError
         end
-        result.number_consigned = number_consigned
-        result.created = true
-        result
-      rescue ActiveRecord::ActiveRecordError => e
-        result.error = e.message
-        result
+        horses = consigner_class.new.select_horses(
+          number: config.minimum_count - horse_type_number_consigned,
+          stakes_quality: config.stakes_quality,
+          min_age: config.minimum_age, max_age: config.maximum_age
+        )
+        horses.each do |horse|
+          creator_result = Auctions::AutoHorseCreator.new.create_horse(auction:, horse:)
+          if creator_result.created?
+            horse_type_number_consigned += 1
+          else
+            next
+          end
+        end
+        config.destroy if horse_type_number_consigned >= config.minimum_count
+        number_consigned += horse_type_number_consigned
       end
+      result.number_consigned = number_consigned
+      result.created = true
+      result
     end
 
     class Result

@@ -101,9 +101,6 @@ module Auctions
           Owner: buyer.legacy_id,
           consigned_auction_id: nil
         )
-        if Legacy::RaceEntry.joins(race: :type).merge(Legacy::RaceType.claiming).exists?(Horse: horse.legacy_id)
-          Legacy::RaceEntry.joins(race: :type).merge(Legacy::RaceType.claiming).where(Horse: horse.legacy_id).delete_all
-        end
         if Legacy::Horse.where("DOB > ?", Date.current + 4.years).exists?(Dam: horse.legacy_id)
           Legacy::Horse.where("DOB > ?", Date.current + 4.years).where(Dam: horse.legacy_id).update(Owner: buyer.legacy_id)
         end
