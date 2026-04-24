@@ -15,6 +15,7 @@ module Horses
             process_refund if termination.both_sides_accept_refund?
             update_legacy_tables(lease.horse)
             lease.update(active: false, early_termination_date: Date.current)
+            lease.horse.update(manager: lease.horse.owner)
             termination.destroy!
             result.terminated = true
           else

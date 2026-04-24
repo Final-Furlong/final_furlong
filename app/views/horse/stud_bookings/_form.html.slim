@@ -1,0 +1,10 @@
+/# locals: (stud:, booking:)
+= form_with model: booking, url: horse_stud_bookings_path(stud), id: "booking-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top", controller: 'dependent-fields' } do |f|
+  p.mt-4= t(".date_range", start: l(booking.slot.start_date), end: l(booking.slot.date))
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        label.label
+          = f.select :stable_id, options_for_select(booking.options_for_stable_select, booking.mare&.manager&.id), { prompt: t(".select_stable") }, { class: 'select', data: { dependent_fields_target: "hasDependents", dependant_turbo_frame_selector: '#stable_dependent_fields' } }
+          - if booking.errors[:stable]
+            p.text-error= booking.errors.where(:stable).map(&:full_message).join(', ')

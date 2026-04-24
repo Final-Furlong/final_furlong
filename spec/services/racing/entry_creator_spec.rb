@@ -98,7 +98,11 @@ RSpec.describe Racing::EntryCreator do
       it_behaves_like "an entry with errors" do
         let(:error) { I18n.t("services.races.entry_creator.stable_not_manager") }
 
-        before { create(:lease, horse:, leaser: create(:stable)) }
+        before do
+          leaser = create(:stable)
+          create(:lease, horse:, leaser:)
+          horse.update(manager: leaser)
+        end
       end
     end
 

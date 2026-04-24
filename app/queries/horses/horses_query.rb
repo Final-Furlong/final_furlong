@@ -29,10 +29,7 @@ module Horses
       end
 
       def managed_by(stable)
-        born.where(
-          "(#{arel_table.name}.owner_id = :id AND #{arel_table.name}.leaser_id IS NULL) OR #{arel_table.name}.leaser_id = :id",
-          id: stable
-        )
+        where(manager: stable)
       end
 
       def sort_by_status_asc
