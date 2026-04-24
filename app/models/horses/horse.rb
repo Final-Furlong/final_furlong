@@ -34,6 +34,7 @@ module Horses
       "Racing::RaceResultHorse", inverse_of: :horse, dependent: :destroy
     has_one :latest_race_result, class_name: "Racing::RaceResult", through: :latest_race_result_finish, source: :race
     has_many :workouts, class_name: "Workouts::Workout", inverse_of: :horse, dependent: :destroy
+    has_many :jump_trials, class_name: "Workouts::JumpTrial", inverse_of: :horse, dependent: :delete_all
     # rubocop:disable Rails/HasManyOrHasOneDependent
     has_many :race_records, class_name: "Racing::RaceRecord", inverse_of: :horse
     has_many :annual_race_records, class_name: "Racing::AnnualRaceRecord", inverse_of: :horse

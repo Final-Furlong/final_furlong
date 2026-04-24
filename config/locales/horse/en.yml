@@ -16,6 +16,8 @@ en:
         cancel: Cancel Lease Offer
         reject: Reject Lease
       remove_from_auction: Remove From Auction
+      run_jump_trial: Do Jump Trial
+      run_workout: Do Workout
       sale_offer:
         accept: Buy Horse
         cancel: Cancel Sale Offer
@@ -83,13 +85,16 @@ en:
         boarding: Boarding (%{count})
         highlights: Highlights
         injuries: Injuries (%{count})
+        jump_trials: Jump Trials (%{count})
         loading_boarding: Loading boarding...
         loading_injuries: Loading injuries...
+        loading_jump_trials: Loading jump trials...
         loading_sales: Loading sales/leases...
         loading_shipping: Loading shipping...
         loading_workouts: Loading workouts...
         no_boarding: Boarding
         no_injuries: Injuries
+        no_jump_trials: Jump Trials
         no_sales: Sales/Leases
         no_shipping: Shipping
         no_workouts: Workouts
@@ -99,6 +104,13 @@ en:
       injuries:
         date: Date
         injury: Injury
+      jump_trials:
+        comment: Comment
+        date: Date
+        horse: Horse
+        jockey: Jockey
+        racetrack: Racetrack
+        time: Time
       sales:
         buyer: Buyer
         date: Date
@@ -226,6 +238,18 @@ en:
       none: No injuries
       past: Has a past injury
       present: Currently injured
+    jump_trials:
+      create:
+        failure: Jump Trial could not be performed.
+        success: Jump Trial was successfully completed.
+      form:
+        distance_explanation: All trials cover a distance of 1 mile and include 10 jumps.
+        do_trial: Do Trial
+        energy_explanation: Horses will not be injured during jump trials, but will have their energy/fitness levels affected (like normal workouts).
+        horse_explanation: Flat racers aged 3 and over can be tried up to 5 times over jumps.
+        jockey_explanation: As they have no experience with jump jockeys, horses will be worked out by a random jockey. However, that jockey will act with the same knowledge of the horse as the flat jockey with the most experience (if any).
+      new:
+        title: Jump Trial for %{name}
     lease_offer_acceptances:
       create:
         success: Lease was accepted
