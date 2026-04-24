@@ -26,6 +26,18 @@
               p.mx-auto= t(".loading_workouts")
               .mt-2.mx-auto.skeleton.w-full
 
+    - if policy.view_jump_trials?
+      - trials_count = horse.jump_trials.count
+      - if trials_count.zero?
+        input.tab type="radio" name="horse-event" aria-label=t(".no_jump_trials") id="jump-trials" disabled=true
+      - else
+        input.tab type="radio" name="horse-event" aria-label=t(".jump_trials", count: trials_count) id="jump-trials"
+        .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+          = turbo_frame_tag "#{horse.slug}-jump-trial-history", src: horse_jump_trials_path(horse), loading: "lazy" do
+            .w-full.text-center
+              p.mx-auto= t(".loading_jump_trials")
+              .mt-2.mx-auto.skeleton.w-full
+
     - if policy.view_boarding?
       - boardings_count = horse.boardings.count
       - boardings_count += 1 if horse.association(:current_boarding).scope.exists?
