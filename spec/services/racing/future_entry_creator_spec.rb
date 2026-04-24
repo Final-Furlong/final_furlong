@@ -95,8 +95,9 @@ RSpec.describe Racing::FutureEntryCreator do
         let(:error) { I18n.t("services.races.future_entry_creator.stable_not_manager") }
 
         before do
-          lease = create(:lease, horse:, leaser: create(:stable))
-          horse.update(leaser_id: lease.leaser_id)
+          leaser = create(:stable)
+          create(:lease, horse:, leaser:)
+          horse.update(manager: leaser)
         end
       end
     end

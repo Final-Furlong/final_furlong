@@ -2,6 +2,7 @@ module Horses
   class Breeding < ApplicationRecord
     self.ignored_columns += [:legacy_id]
 
+    belongs_to :slot, class_name: "Breeding::Slot", inverse_of: :breedings, optional: true
     belongs_to :mare, class_name: "Horses::Horse", inverse_of: :breedings, optional: true
     belongs_to :stud, class_name: "Horses::Horse", inverse_of: :breedings
     belongs_to :stable, class_name: "Account::Stable", inverse_of: :breedings
@@ -21,8 +22,11 @@ module Horses
 
     enum :status, Config::Breedings.statuses.reduce({}) { |hash, value| hash.merge({ value.to_sym => value }) }
 
+    scope :current_year, -> { by_year(Date.current.year) }
     scope :by_year, ->(year) { where(year:) }
     scope :not_denied, -> { where.not(status: "denied") }
+    scope :not_missed, -> { joins(:slot).merge(::Breeding::Slot.not_missed) }
+    scope :missed, -> { joins(:slot).merge(::Breeding::Slot.missed) }
 
     def self.ransackable_attributes(_auth_object = nil)
       %w[date due_date fee mare_id status stud_id year]
@@ -45,6 +49,19 @@ module Horses
     def pick_due_date
       date + rand(335..345).days
     end
+
+    def missed?
+      return true if slot.month < date.month
+
+      date.day < slot.end_day
+    end
+
+    def options_for_stable_select
+      [[stud.manager.name, stud.manager.id]]
+      Account::Stable.active.joins(:horses).where(horses: Horses::Horse.broodmare).distinct.order(name: :asc).map do |stable|
+        [stable.name, stable.id]
+      end
+    end
   end
 end
 
@@ -66,6 +83,7 @@ end
 #  first_foal_id                                            :bigint           uniquely indexed
 #  mare_id                                                  :bigint           uniquely indexed => [stud_id, year]
 #  second_foal_id                                           :bigint           uniquely indexed
+#  slot_id                                                  :bigint           indexed
 #  stable_id                                                :bigint           not null, indexed
 #  stud_id                                                  :bigint           not null, uniquely indexed => [mare_id, year], indexed
 #
@@ -78,6 +96,7 @@ end
 #  index_breedings_on_mare_id_and_stud_id_and_year  (mare_id,stud_id,year) UNIQUE WHERE ((open_booking IS FALSE) AND (status <> 'denied'::breeding_statuses))
 #  index_breedings_on_open_booking                  (open_booking)
 #  index_breedings_on_second_foal_id                (second_foal_id) UNIQUE
+#  index_breedings_on_slot_id                       (slot_id)
 #  index_breedings_on_stable_id                     (stable_id)
 #  index_breedings_on_status                        (status)
 #  index_breedings_on_stud_id                       (stud_id)
@@ -88,6 +107,7 @@ end
 #  fk_rails_...  (first_foal_id => horses.id)
 #  fk_rails_...  (mare_id => horses.id)
 #  fk_rails_...  (second_foal_id => horses.id)
+#  fk_rails_...  (slot_id => breeding_slots.id)
 #  fk_rails_...  (stable_id => stables.id)
 #  fk_rails_...  (stud_id => horses.id)
 #

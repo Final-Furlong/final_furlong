@@ -184,5 +184,5 @@
             th= t(".next_foal")
             td
               span
-                = t(".in_foal", stud: link_to(stud.name, horse_path(stud))).html_safe
+                = t(".in_foal", stud: link_to(stud.name, horse_path(stud), data: { turbo_frame: "_top" })).html_safe
                 = t(".due_date", date: l(horse.next_foal.due_date, format: :slashes))

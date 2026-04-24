@@ -6,6 +6,7 @@ FactoryBot.define do
     date_of_birth { Date.current - 3.years }
     owner factory: :stable
     breeder { owner }
+    manager { owner }
     location_bred factory: :location
     age { Date.current.year - date_of_birth.year }
 
@@ -129,6 +130,7 @@ end
 #  leaser_id                                                                                                          :bigint           indexed => [date_of_birth], indexed, indexed => [status]
 #  legacy_id                                                                                                          :integer          indexed
 #  location_bred_id                                                                                                   :bigint           not null, indexed
+#  manager_id                                                                                                         :bigint           indexed
 #  owner_id                                                                                                           :bigint           not null, indexed => [date_of_birth], indexed => [status], indexed => [status]
 #  public_id                                                                                                          :string(12)       indexed
 #  sire_id                                                                                                            :bigint           indexed, indexed => [status]
@@ -146,6 +148,7 @@ end
 #  index_horses_on_leaser_id                    (leaser_id)
 #  index_horses_on_legacy_id                    (legacy_id)
 #  index_horses_on_location_bred_id             (location_bred_id)
+#  index_horses_on_manager_id                   (manager_id)
 #  index_horses_on_name                         (name)
 #  index_horses_on_owner_id_and_status          (owner_id,status)
 #  index_horses_on_public_id                    (public_id)
@@ -166,6 +169,7 @@ end
 #  fk_rails_...  (dam_id => horses.id) ON DELETE => nullify ON UPDATE => cascade
 #  fk_rails_...  (leaser_id => stables.id)
 #  fk_rails_...  (location_bred_id => locations.id) ON DELETE => restrict ON UPDATE => cascade
+#  fk_rails_...  (manager_id => stables.id)
 #  fk_rails_...  (owner_id => stables.id) ON DELETE => restrict ON UPDATE => cascade
 #  fk_rails_...  (sire_id => horses.id) ON DELETE => nullify ON UPDATE => cascade
 #

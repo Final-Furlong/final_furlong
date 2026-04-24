@@ -27,8 +27,6 @@ module Horses
       )
       ActiveRecord::Base.transaction do
         if lease.valid? && lease.save
-          legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
-          legacy_horse&.update(Leased: 1, Leaser: stable.legacy_id)
           description = I18n.t("services.lease_creator.description_leaser",
             horse: horse.name,
             stable: horse.owner.name,
@@ -42,6 +40,7 @@ module Horses
             end_date: I18n.l(lease.end_date))
           Accounts::BudgetTransactionCreator.new.create_transaction(stable: horse.owner, description:, amount: lease.fee.abs)
 
+          horse.update(manager: stable)
           ::LeaseAcceptanceNotification.create!(
             user: horse.owner.user,
             params: {
@@ -58,8 +57,12 @@ module Horses
           result.created = false
           result.error = lease.errors.full_messages.to_sentence
         end
-        result.lease = lease
       end
+      if result.created?
+        legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
+        legacy_horse&.update(Leased: 1, Leaser: stable.legacy_id)
+      end
+      result.lease = lease
       result
     end
 

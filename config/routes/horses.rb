@@ -8,6 +8,7 @@ resources :horses, except: %i[new create destroy] do
     resources :boardings, only: %i[index new create destroy]
     resources :future_races, except: :new
     get "future_races/:race_id/new", to: "future_races#new", as: :new_future_race
+    resources :stud_bookings
   end
   member do
     get :image
