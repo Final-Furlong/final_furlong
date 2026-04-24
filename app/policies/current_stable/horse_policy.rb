@@ -73,9 +73,6 @@ module CurrentStable
       Success()
     end
 
-    # when "racehorse"
-    # ["stud"]
-
     def ship?
       shipment = if record.racehorse?
         Shipping::RacehorseShipment.new(horse: record)
@@ -152,6 +149,10 @@ module CurrentStable
       return false unless manager?
 
       record.racehorse?
+    end
+
+    def view_jump_trials?
+      view_workouts?
     end
 
     def view_injuries?
