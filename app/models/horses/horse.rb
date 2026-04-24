@@ -8,6 +8,7 @@ module Horses
 
     belongs_to :breeder, class_name: "Account::Stable"
     belongs_to :owner, class_name: "Account::Stable"
+    belongs_to :manager, class_name: "Account::Stable", optional: true
     belongs_to :sire, class_name: "Horse", optional: true
     belongs_to :dam, class_name: "Horse", optional: true
     belongs_to :location_bred, class_name: "Location"
@@ -117,12 +118,7 @@ module Horses
     scope :with_owner, ->(stable) { where(owner: stable) }
     scope :without_lease, -> { where.missing(:current_lease) }
     scope :with_leaser, ->(stable) { joins(:current_lease).where(current_lease: { leaser: stable }) }
-    scope :managed_by, ->(stable) {
-      born.where(
-        "(#{arel_table.name}.owner_id = :id AND #{arel_table.name}.leaser_id IS NULL) OR #{arel_table.name}.leaser_id = :id",
-        id: stable
-      )
-    }
+    scope :managed_by, ->(stable) { born.where(manager: stable) }
     scope :racehorse_status, ->(status) {
       joins(:race_qualification).merge(::Racing::RaceQualification.send(:qualified_for, status))
     }
@@ -202,10 +198,6 @@ module Horses
 
     def male?
       !female?
-    end
-
-    def manager
-      leaser || owner
     end
 
     def location_bred_name
@@ -342,6 +334,7 @@ end
 #  leaser_id                                                                                                          :bigint           indexed => [date_of_birth], indexed, indexed => [status]
 #  legacy_id                                                                                                          :integer          indexed
 #  location_bred_id                                                                                                   :bigint           not null, indexed
+#  manager_id                                                                                                         :bigint           indexed
 #  owner_id                                                                                                           :bigint           not null, indexed => [date_of_birth], indexed => [status], indexed => [status]
 #  public_id                                                                                                          :string(12)       indexed
 #  sire_id                                                                                                            :bigint           indexed, indexed => [status]
@@ -359,6 +352,7 @@ end
 #  index_horses_on_leaser_id                    (leaser_id)
 #  index_horses_on_legacy_id                    (legacy_id)
 #  index_horses_on_location_bred_id             (location_bred_id)
+#  index_horses_on_manager_id                   (manager_id)
 #  index_horses_on_name                         (name)
 #  index_horses_on_owner_id_and_status          (owner_id,status)
 #  index_horses_on_public_id                    (public_id)
@@ -379,6 +373,7 @@ end
 #  fk_rails_...  (dam_id => horses.id) ON DELETE => nullify ON UPDATE => cascade
 #  fk_rails_...  (leaser_id => stables.id)
 #  fk_rails_...  (location_bred_id => locations.id) ON DELETE => restrict ON UPDATE => cascade
+#  fk_rails_...  (manager_id => stables.id)
 #  fk_rails_...  (owner_id => stables.id) ON DELETE => restrict ON UPDATE => cascade
 #  fk_rails_...  (sire_id => horses.id) ON DELETE => nullify ON UPDATE => cascade
 #

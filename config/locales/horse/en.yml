@@ -463,11 +463,42 @@ en:
       update:
         failure: "%{name} could not be changed to %{status}"
         success: "%{name} status has been updated to %{status}"
+    stud_bookings:
+      form:
+        date_range: Booking for %{start} to %{end}
+        select_stable: Select Stable
+      index:
+        approved_count:
+          one: 1 Approved
+          other: "%{count} Approved"
+        bred: Bred (Due %{date})
+        bred_count:
+          one: 1 Bred
+          other: "%{count} Bred"
+        create_booking: Create Booking
+        fee: Fee
+        mare: Mare
+        missed: Missed (Booked for %{date})
+        missed_count:
+          one: 1 Missed
+          other: "%{count} Missed"
+        no_mare: No mare booked
+        not_yet_bred: Not Bred Yet (Booked for %{date})
+        slot: Slot
+        stable: Stable
+        status: Status
+        title: "%{year} Bookings"
+      new:
+        title: New Booking for %{name}
     stud_nominations:
       index:
         foals: Foals
+        nominate: Nominate
+        nominated: Already Nominated
+        not_nominated: Not Nominated
         racers: Racers
         stakes_winners: Stakes Winners
+        title: Breeders' Cup Nominations
         winners: Winners
     titles:
       abbr:
