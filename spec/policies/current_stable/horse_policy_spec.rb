@@ -12,6 +12,7 @@ RSpec.describe CurrentStable::HorsePolicy do
   context "when user owns the horse" do
     it "allows correct actions" do
       horse.owner = user.stable
+      horse.manager = user.stable
       expect(policy).to permit_actions(:show, :view_events, :view_sales,
         :view_shipping, :view_workouts, :view_boarding, :ship)
     end
@@ -39,6 +40,7 @@ RSpec.describe CurrentStable::HorsePolicy do
   context "when user leases the horse" do
     it "allows correct actions" do
       create(:lease, horse:, leaser: user.stable)
+      horse.update(manager: user.stable)
       expect(policy).to permit_actions(:show, :view_events, :view_sales,
         :view_shipping, :view_workouts, :view_boarding)
     end

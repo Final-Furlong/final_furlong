@@ -1,6 +1,7 @@
 = turbo_frame_tag "#{@horse.slug}-nominations" do
+  p.text-center.font-bold.text-lg= t(".title")
   .mt-4.mx-auto.overflow-x-auto.rounded-box.border.bg-base-100.w-full.border-base-content/30.sm:w-1/2
-    table.table.table-responsive.w-1/2.sortable.n-last
+    table.table.table-responsive.w-full.sortable.n-last
       thead
         tr
           th= t("common.year")
@@ -17,4 +18,4 @@
             td= year_info[:racers]
             td= year_info[:winners]
             td= year_info[:stakes_winners]
-            td= year_info[:status]
+            td= t(".#{year_info[:status]}")

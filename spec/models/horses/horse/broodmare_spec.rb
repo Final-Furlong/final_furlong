@@ -23,6 +23,7 @@ RSpec.describe Horses::Horse::Broodmare do
         it "return leaser" do
           broodmare = create(:horse, :broodmare).broodmare
           lease = create(:lease, horse: broodmare.record)
+          broodmare.record.update(manager: lease.leaser)
           expect(broodmare.current_location).to eq lease.leaser
         end
       end
@@ -59,6 +60,7 @@ RSpec.describe Horses::Horse::Broodmare do
         it "return leaser" do
           broodmare = create(:horse, :broodmare).broodmare
           lease = create(:lease, horse: broodmare.record)
+          broodmare.record.update(manager: lease.leaser)
           expect(broodmare.current_location_name).to eq lease.leaser.name
         end
       end
