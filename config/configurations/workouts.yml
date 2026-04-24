@@ -41,6 +41,7 @@ shared:
   max_distance_for_2yos: 16
   max_gallop_for_2yos: 8
   max_schedules_per_stable: 10
+  max_jump_trials_per_horse: 5
   walk:
     distances:
       - 4
@@ -139,3 +140,10 @@ shared:
     min_furlongs: 1
     max_furlongs: 6
     stride_length: max
+  jump_trial:
+    energy_loss_per_second_min: 0.032
+    energy_loss_per_second_max: 0.047
+    fitness_gain_per_second_min: 0.088
+    fitness_gain_per_second_max: 0.180
+    jumps_number: 10
+    min_age: 3

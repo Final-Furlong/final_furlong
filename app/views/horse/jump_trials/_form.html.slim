@@ -1,0 +1,17 @@
+/# locals: (horse:, trial:)
+- options = horse.race_options || horse.build_race_options
+= form_with model: trial, url: horse_jump_trials_path(horse), id: "jump-trial-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+  .alert.alert-info.alert-outline.my-2
+    div
+      span= t(".horse_explanation")
+      br/
+      span= t(".distance_explanation")
+      br/
+      span= t(".energy_explanation")
+      br/
+      span= t(".jockey_explanation")
+  - if trial.errors[:base]
+    p.text-error.mb-2= trial.errors.where(:base).map(&:full_message).join(', ')
+  .float-right
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick: "dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t(".do_trial"))
