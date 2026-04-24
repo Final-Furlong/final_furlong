@@ -16,6 +16,8 @@ en:
         cancel: Cancel Lease Offer
         reject: Reject Lease
       remove_from_auction: Remove From Auction
+      run_jump_trial: Do Jump Trial
+      run_workout: Do Workout
       sale_offer:
         accept: Buy Horse
         cancel: Cancel Sale Offer
@@ -53,11 +55,11 @@ en:
       entries:
         current_entries: Current Entries
         edit: Edit
-        energy_grade: 'Current Energy: %{grade}'
-        fitness_grade: 'Current Fitness: %{grade}'
+        energy_grade: "Current Energy: %{grade}"
+        fitness_grade: "Current Fitness: %{grade}"
         future_races: Future Races
         loading_future_races: Loading future races...
-        location: 'Located At: %{location}'
+        location: "Located At: %{location}"
         max_future_entries: You cannot schedule more entries for this horse
         no_current_entries: There are no current or scheduled entries.
     entry_state:
@@ -83,13 +85,16 @@ en:
         boarding: Boarding (%{count})
         highlights: Highlights
         injuries: Injuries (%{count})
+        jump_trials: Jump Trials (%{count})
         loading_boarding: Loading boarding...
         loading_injuries: Loading injuries...
+        loading_jump_trials: Loading jump trials...
         loading_sales: Loading sales/leases...
         loading_shipping: Loading shipping...
         loading_workouts: Loading workouts...
         no_boarding: Boarding
         no_injuries: Injuries
+        no_jump_trials: Jump Trials
         no_sales: Sales/Leases
         no_shipping: Shipping
         no_workouts: Workouts
@@ -99,6 +104,13 @@ en:
       injuries:
         date: Date
         injury: Injury
+      jump_trials:
+        comment: Comment
+        date: Date
+        horse: Horse
+        jockey: Jockey
+        racetrack: Racetrack
+        time: Time
       sales:
         buyer: Buyer
         date: Date
@@ -226,6 +238,18 @@ en:
       none: No injuries
       past: Has a past injury
       present: Currently injured
+    jump_trials:
+      create:
+        failure: Jump Trial could not be performed.
+        success: Jump Trial was successfully completed.
+      form:
+        distance_explanation: All trials cover a distance of 1 mile and include 10 jumps.
+        do_trial: Do Trial
+        energy_explanation: Horses will not be injured during jump trials, but will have their energy/fitness levels affected (like normal workouts).
+        horse_explanation: Flat racers aged 3 and over can be tried up to 5 times over jumps.
+        jockey_explanation: As they have no experience with jump jockeys, horses will be worked out by a random jockey. However, that jockey will act with the same knowledge of the horse as the flat jockey with the most experience (if any).
+      new:
+        title: Jump Trial for %{name}
     lease_offer_acceptances:
       create:
         success: Lease was accepted
@@ -272,7 +296,7 @@ en:
         request_refund: I would like to request a refund of approximately %{amount}
       new:
         confirm: Confirm Lease Termination
-        end_date: 'The lease is currently scheduled to end on %{date}. Original Fee: %{fee}'
+        end_date: "The lease is currently scheduled to end on %{date}. Original Fee: %{fee}"
         title: End Lease
     leased_html: Leased to %{stable} until %{date}
     location:
@@ -307,8 +331,8 @@ en:
         runs_on_turf: Races on Turf
         sample_note: Try wraps next time, also try 8-9f
         second_jockey: Second Choice Jockey
-        suggested_maximum: 'Suggested Maximum: %{value}'
-        suggested_minimum: 'Suggested Minimum: %{value}'
+        suggested_maximum: "Suggested Maximum: %{value}"
+        suggested_minimum: "Suggested Minimum: %{value}"
         third_jockey: Third Choice Jockey
         trains_on_dirt: Trains on Dirt
         trains_on_turf: Trains on Turf
@@ -330,38 +354,38 @@ en:
         by_race_type: Races By Race Type
         by_surface: Races By Surface
         earnings: Earnings
-        equipment: 'Equipment: %{equipment}'
-        finish_time: 'Time: %{time}'
+        equipment: "Equipment: %{equipment}"
+        finish_time: "Time: %{time}"
         fourths: Fourths
-        fractions: 'Fractions: %{fractions}'
+        fractions: "Fractions: %{fractions}"
         injury: Injury
         lifetime: Lifetime
-        place: 'Place: %{number}'
+        place: "Place: %{number}"
         points: Points
         points_amount: "%{points}pts"
         race_year: "%{age}yo (%{year})"
         races: View Races
         record: Record
-        running_line: 'Running Line: %{line}'
+        running_line: "Running Line: %{line}"
         seconds: Seconds
-        speed_factor: 'Speed Factor: %{number}'
+        speed_factor: "Speed Factor: %{number}"
         starts: Starts
         stats: Stats
-        surface: 'Surface: %{surface}'
+        surface: "Surface: %{surface}"
         thirds: Thirds
         unraced: Unraced
         view_race: View Race
         wins: Wins
         year: Year
       mobile:
-        finish_time: 'Time:'
-        place: 'Place:'
-        running_line: 'Running Line:'
-        second: 'Second:'
-        speed_factor: 'Speed Factor:'
-        surface: 'Surface:'
-        third: 'Third:'
-        winner: 'Winner:'
+        finish_time: "Time:"
+        place: "Place:"
+        running_line: "Running Line:"
+        second: "Second:"
+        speed_factor: "Speed Factor:"
+        surface: "Surface:"
+        third: "Third:"
+        winner: "Winner:"
     sale_offer_acceptances:
       create:
         success: Horse was successfully purchased
@@ -432,7 +456,7 @@ en:
         not_enough_stakes_places: Needs at least 3 stakes places (or further wins)
         not_enough_stakes_wins: Needs at least 7 stakes wins
         not_old_enough: Must be at least 4 years old
-        not_qualified_for_stud: 'Not yet stud qualified: '
+        not_qualified_for_stud: "Not yet stud qualified: "
         status: New Status
         status_info: Horses must be at least 4 years old and have raced 10 times to retire to breeding.
         unraced: Has not raced enough

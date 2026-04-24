@@ -1,0 +1,53 @@
+= turbo_frame_tag "#{@horse.slug}-jump-trial-history" do
+  - if CurrentStable::RacehorsePolicy.new(Current.user, @horse).run_jump_trial?
+    p= "do the jump trial thing"
+  - if @trials.blank?
+    p= t(".no_trials")
+  - else
+    .mx-auto.overflow-x-auto.w-full.sm:hidden
+      - @trials.each do |trial|
+        - horse = trial.horse
+        - jockey = trial.jockey
+        - racetrack = trial.racetrack
+        .card.bg-base-100.w-full.px-2.rounded-none
+          .card-body.p-0.rounded-none
+            .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+              input type="checkbox"
+              .collapse-title.font-semibold.font-medium
+                span= l(trial.date)
+              .collapse-content.text-sm
+                p
+                  span= t(".jockey")
+                  span.float-right= jockey.full_name
+                p
+                  span= t(".racetrack")
+                  span.float-right= "#{racetrack.name} (#{trial.condition.titleize})"
+                p
+                  span= t(".time")
+                  span.float-right= trial.time_string || t("common.dash")
+                p.mt-2
+                  span= t(".comment")
+                p
+                  span= trial.comment.to_s(horse.name, horse.female?)
+    .hidden.mx-auto.overflow-x-auto.border.rounded-md.w-full.sm:block.sm:w-5/6
+      table.table.table-zebra
+        thead
+          tr.border-b-1.border-gray-400.dark:border-neutral-600
+            th= t(".date")
+            th= t(".jockey")
+            th= t(".racetrack")
+            th= t(".time")
+            th= t(".comment")
+        tbody
+          - @trials.each do |trial|
+            - horse = trial.horse
+            - jockey = trial.jockey
+            - racetrack = trial.racetrack
+            tr
+              td data-sort=trial.date = l(trial.date)
+              td data-sort="#{jockey.last_name}, #{jockey.first_name}" = jockey.full_name
+              td= "#{racetrack.name} (#{trial.condition.titleize})"
+              td= trial.time_string
+              td= trial.comment.to_s(horse.name, horse.female?)
+
+  = render Ui::Pagination::Component.new(pagy: @pagy, classes: 'mt-2')

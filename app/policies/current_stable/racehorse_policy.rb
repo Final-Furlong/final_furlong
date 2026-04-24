@@ -68,11 +68,6 @@ module CurrentStable
       record.future_race_entries.count < Config::Racing.future_race_limit
     end
 
-    def scratch_race?
-      # TODO: migrate race entries + implement scratching
-      false
-    end
-
     def board?
       return false unless manager?
       return false unless record.racehorse?
@@ -91,13 +86,34 @@ module CurrentStable
     end
 
     def run_workout?
-      # TODO: finish training schedules + workouts
-      false
+      return false unless record.racehorse?
+
+      data = record.race_metadata
+      return false unless data
+      return false if data.in_transit
+      return false if data.at_home
+      return false if record.current_boarding.present?
+      return false if Workouts::Workout.exists?(horse: record, date: Date.current)
+      return false if Workouts::JumpTrial.exists?(horse: record, date: Date.current)
+
+      manager?
     end
 
     def run_jump_trial?
-      # TODO: migrate jump trials + implement them
-      false
+      return false unless record.racehorse?
+
+      return false if record.age < Config::Workouts.dig(:jump_trial, :min_age)
+      return false if record.race_options&.racehorse_type == "jump"
+      data = record.race_metadata
+      return false unless data
+      return false if data.in_transit
+      return false if data.at_home
+      return false if record.current_boarding.present?
+      return false if Workouts::Workout.exists?(horse: record, date: Date.current)
+      return false if Workouts::JumpTrial.exists?(horse: record, date: Date.current)
+      return false if Workouts::JumpTrial.where(horse: record).count >= Config::Workouts.max_jump_trials_per_horse
+
+      manager?
     end
 
     private
