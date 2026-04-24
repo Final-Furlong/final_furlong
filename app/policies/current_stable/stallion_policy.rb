@@ -6,8 +6,9 @@ module CurrentStable
     end
 
     def manage_bookings?
-      # TODO: implement stud booking
-      false
+      return false unless record.stud?
+
+      manager?
     end
 
     def nominate?
@@ -26,6 +27,10 @@ module CurrentStable
 
     def owner?
       record.owner == user&.stable
+    end
+
+    def manager?
+      record.manager == user&.stable
     end
   end
 end

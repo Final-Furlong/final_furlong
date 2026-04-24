@@ -1050,6 +1050,39 @@ CREATE TABLE public.boardings (
 
 
 --
+-- Name: breeding_slots; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.breeding_slots (
+    id bigint NOT NULL,
+    month integer NOT NULL,
+    start_day integer NOT NULL,
+    end_day integer NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: breeding_slots_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.breeding_slots_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: breeding_slots_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.breeding_slots_id_seq OWNED BY public.breeding_slots.id;
+
+
+--
 -- Name: breeding_stats; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1104,7 +1137,8 @@ CREATE TABLE public.breedings (
     second_foal_id bigint,
     open_booking boolean DEFAULT false NOT NULL,
     stable_id bigint NOT NULL,
-    event public.birth_events
+    event public.birth_events,
+    slot_id bigint
 );
 
 
@@ -1329,7 +1363,8 @@ CREATE TABLE public.horses (
     location_bred_id bigint NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
-    leaser_id bigint
+    leaser_id bigint,
+    manager_id bigint
 );
 
 
@@ -5344,6 +5379,13 @@ ALTER TABLE ONLY public.auctions ALTER COLUMN id SET DEFAULT nextval('public.auc
 
 
 --
+-- Name: breeding_slots id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breeding_slots ALTER COLUMN id SET DEFAULT nextval('public.breeding_slots_id_seq'::regclass);
+
+
+--
 -- Name: breeding_stats id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -5905,6 +5947,14 @@ ALTER TABLE ONLY public.auctions
 
 ALTER TABLE ONLY public.boardings
     ADD CONSTRAINT boardings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: breeding_slots breeding_slots_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breeding_slots
+    ADD CONSTRAINT breeding_slots_pkey PRIMARY KEY (id);
 
 
 --
@@ -6713,6 +6763,34 @@ CREATE INDEX index_boardings_on_start_date ON public.boardings USING btree (star
 
 
 --
+-- Name: index_breeding_slots_on_end_day; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeding_slots_on_end_day ON public.breeding_slots USING btree (end_day);
+
+
+--
+-- Name: index_breeding_slots_on_month; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeding_slots_on_month ON public.breeding_slots USING btree (month);
+
+
+--
+-- Name: index_breeding_slots_on_month_and_start_day_and_end_day; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeding_slots_on_month_and_start_day_and_end_day ON public.breeding_slots USING btree (month, start_day, end_day);
+
+
+--
+-- Name: index_breeding_slots_on_start_day; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeding_slots_on_start_day ON public.breeding_slots USING btree (start_day);
+
+
+--
 -- Name: index_breeding_stats_on_dosage; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6773,6 +6851,13 @@ CREATE INDEX index_breedings_on_open_booking ON public.breedings USING btree (op
 --
 
 CREATE UNIQUE INDEX index_breedings_on_second_foal_id ON public.breedings USING btree (second_foal_id);
+
+
+--
+-- Name: index_breedings_on_slot_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breedings_on_slot_id ON public.breedings USING btree (slot_id);
 
 
 --
@@ -7340,6 +7425,13 @@ CREATE INDEX index_horses_on_legacy_id ON public.horses USING btree (legacy_id);
 --
 
 CREATE INDEX index_horses_on_location_bred_id ON public.horses USING btree (location_bred_id);
+
+
+--
+-- Name: index_horses_on_manager_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horses_on_manager_id ON public.horses USING btree (manager_id);
 
 
 --
@@ -9270,6 +9362,14 @@ ALTER TABLE ONLY public.race_entries
 
 
 --
+-- Name: horses fk_rails_0e19a25fa6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horses
+    ADD CONSTRAINT fk_rails_0e19a25fa6 FOREIGN KEY (manager_id) REFERENCES public.stables(id);
+
+
+--
 -- Name: auction_horses fk_rails_0ff758e7f8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -10062,6 +10162,14 @@ ALTER TABLE ONLY public.horse_jockey_relationships
 
 
 --
+-- Name: breedings fk_rails_e841eee8a3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breedings
+    ADD CONSTRAINT fk_rails_e841eee8a3 FOREIGN KEY (slot_id) REFERENCES public.breeding_slots(id);
+
+
+--
 -- Name: race_entries fk_rails_ea1274a9a3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -10188,6 +10296,9 @@ ALTER TABLE ONLY public.famous_studs
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260424163019'),
+('20260424131517'),
+('20260424124133'),
 ('20260423204443'),
 ('20260423093916'),
 ('20260422183538'),

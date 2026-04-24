@@ -127,8 +127,8 @@ RSpec.describe Shipping::BroodmareShipment do
       create_list(:horse, 2, :stallion, owner: stable_with_2_studs)
 
       stable_with_leased_stud = create(:stable, name: "D Stable")
-      leased_stud = create(:horse, :stallion, owner: stable_with_leased_stud)
       leaser = create(:stable, name: "A Stable")
+      leased_stud = create(:horse, :stallion, owner: stable_with_leased_stud, manager: leaser)
       create(:lease, horse: leased_stud, leaser:)
 
       shipment = build(:broodmare_shipment)
