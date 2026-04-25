@@ -7,7 +7,8 @@ class Workouts::AutoWorkoutJob < ApplicationJob
     return if run_today?(date:)
     return unless run_today?(name: "Racing::EnergyFitnessUpdaterJob", date:)
     return unless run_today?(name: "UpdateRacehorseStatsJob", date:)
-    return unless run_today?(name: "Racing::FutureEntryProcessingJob", date:)
+    weekday = date.strftime("%A").downcase
+    return unless %w[monday tuesday thursday friday].include?(weekday) && run_today?(name: "Racing::FutureEntryProcessingJob", date:)
 
     yesterday = date - 1.day
     skipped = 0

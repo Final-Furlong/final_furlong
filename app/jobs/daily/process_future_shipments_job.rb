@@ -57,8 +57,8 @@ class Daily::ProcessFutureShipmentsJob < ApplicationJob
 
     step :racehorse_future_entries_opening_day do |step|
       today = Date.current
-      today.strftime("%A").downcase
-      return unless %w[tuesday friday].include?("weekday")
+      weekday = today.strftime("%A").downcase
+      return unless %w[tuesday friday].include?(weekday)
 
       Racing::FutureRaceEntry.where(ship_when_entries_open: true, ship_only_if_horse_is_entered: false).find_each(start: step.cursor) do |entry|
         race = entry.race
