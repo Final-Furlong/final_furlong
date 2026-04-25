@@ -26,21 +26,22 @@ module Horses
       )
       ActiveRecord::Base.transaction do
         if sale.valid? && sale.save
+          original_owner = horse.owner
           price = Game::MoneyFormatter.new(sale.price).to_s
           description = I18n.t("services.sale_creator.description_buyer", horse: horse.name, stable: horse.owner.name, price:)
           Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: sale.price.abs * -1)
           description = I18n.t("services.sale_creator.description_seller", horse: horse.name, stable: stable.name, price:)
-          Accounts::BudgetTransactionCreator.new.create_transaction(stable: horse.owner, description:, amount: sale.price.abs)
+          Accounts::BudgetTransactionCreator.new.create_transaction(stable: original_owner, description:, amount: sale.price.abs)
 
-          horse.update(owner: stable)
+          horse.update(owner: stable, manager: stable)
           Horses::Horse.unborn.where(dam: horse).find_each do |foal|
-            foal.update(owner: stable)
+            foal.update(owner: stable, manager: stable)
           end
           legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
           legacy_horse&.update(Owner: stable.legacy_id)
 
           ::SaleAcceptanceNotification.create!(
-            user: horse.owner.user,
+            user: original_owner.user,
             params: {
               horse_id: horse.slug,
               horse_name: horse.name,

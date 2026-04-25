@@ -106,11 +106,11 @@ module Auctions
         end
         if Horses::Horse.unborn.exists?(dam: horse)
           Horses::Horse.unborn.where(dam: horse).find_each do |foal|
-            foal.update(owner: buyer)
+            foal.update(owner: buyer, manager: buyer)
           end
         end
         auction_horse.update(sold_at: Time.current)
-        horse.update(owner: buyer)
+        horse.update(owner: buyer, manager: buyer)
         Auctions::Horse.counter_culture_fix_counts
 
         result.sold = true

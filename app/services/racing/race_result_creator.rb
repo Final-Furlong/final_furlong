@@ -159,7 +159,7 @@ module Racing
           no_whip: entry.no_whip,
           created_at: race_result.date.beginning_of_day + race_result.number.minutes + horse[:post_parade].minutes,
           earnings: calculate_earnings(race_result.purse, horse[:finish_position]),
-          points: calculate_points(race_horse.finish_position, race_result)
+          points: calculate_points(race_horse.finish_position, race_result).to_i
         }
         race_horse.assign_attributes(attrs)
         race_horses << race_horse
