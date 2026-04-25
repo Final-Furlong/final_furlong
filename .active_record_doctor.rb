@@ -116,13 +116,11 @@ ActiveRecordDoctor.configure do
     "Legacy::PendingRetirement",
     "Legacy::QualifiedHorse",
     "Legacy::QualifiedRace",
+    "Legacy::Racetrack",
     "Legacy::Record",
-    "Legacy::RaceResult",
-    "Legacy::RaceResultHorse",
     "Legacy::Skin",
     "Legacy::SpeedRecord",
     "Legacy::StableNote",
-    "Legacy::StableRaceRecord",
     "Legacy::TripleCrownTitle",
     "Legacy::TripleCrownWinner",
     "Legacy::User",
@@ -130,41 +128,13 @@ ActiveRecordDoctor.configure do
     "Legacy::UserColor",
     "Legacy::UserPreference",
     "Legacy::UserStyle",
-    "Legacy::UserWarning",
-    "Motor::Alert",
-    "Motor::AlertLock",
-    "Motor::ApiConfig",
-    "Motor::Config",
-    "Motor::Dashboard",
-    "Motor::Form",
-    "Motor::Note",
-    "Motor::NoteTag",
-    "Motor::NoteTagTag",
-    "Motor::Notification",
-    "Motor::Reminder",
-    "Motor::Query",
-    "Motor::Resource",
-    "Motor::Tag",
-    "Motor::Taggable",
-    "Motor::TaggableTag"
+    "Legacy::UserWarning"
   ]
-
-  detector :incorrect_dependent_option,
-    ignore_models: [
-      "Motor::Alert",
-      "Motor::Dashboard",
-      "Motor::Form",
-      "Motor::Query",
-      "Motor::Tag"
-    ]
 
   detector :missing_non_null_constraint,
     ignore_tables: [
       "ff_horses",
       "ff_trackdata",
-      "ff_training_schedules",
-      "ff_training_schedule_details",
-      "ff_training_schedule_horses",
       "ff_users"
     ],
     ignore_columns: [

@@ -2,6 +2,9 @@
   - bred_count = Horses::Breeding.current_year.bred.where(stud: @horse).count
   - approved_count = Horses::Breeding.current_year.approved.not_missed.where(stud: @horse).count
   - missed_count = Horses::Breeding.current_year.approved.missed.where(stud: @horse).count
+  - last_race_date = @horse.race_result_finishes.joins(:race).merge(Racing::RaceResult.ordered_by_date(:desc)).first.race.date
+  - raced_this_year = last_race_date.year == Date.current.year
+  - min_breed_date = last_race_date + 1.day if raced_this_year
   p.font-bold.text-center.text-lg
     = t(".title", year: Date.current.year)
     - if bred_count.positive?
@@ -10,6 +13,11 @@
       span.ml-2.badge.badge-info = t(".approved_count", count: approved_count)
     - if missed_count.positive?
       span.ml-2.badge.badge-error = t(".missed_count", count: missed_count)
+  - if raced_this_year
+    p
+      span.text-warning
+        i.ph.ph-warning.mr-2
+        = t(".min_date", name: @horse.name, date: l(last_race_date), min_date: l(min_breed_date))
   table.table.table-responsive.table-zebra.sortable.n-last.asc
     thead
       tr
@@ -21,6 +29,8 @@
         th= t("common.actions.title")
     tbody
       - Breeding::Slot.ordered.each do |slot|
+        - next if raced_this_year && slot.month < min_breed_date.month
+        - next if raced_this_year && slot.end_day < min_breed_date.day
         - bred_count = 0
         - mares_count = 0
         - Horses::Breeding.current_year.bred.where(slot:, stud: @horse).includes(mare: :lifetime_race_record).each do |breeding|
@@ -40,8 +50,12 @@
             - mares_count += 1
             tr
               td data-sort=Date.new(Date.current.year, slot.month, slot.end_day).to_s = slot.to_s
-              td data-sort=mare.name = link_to mare.name_with_title, horse_path(mare), data: { turbo_frame: "_top" }
-              td= link_to mare.manager.name, stable_path(mare.manager), data: { turbo_frame: "_top" }
+              td data-sort=mare&.name
+                - if mare
+                  = link_to mare.name_with_title, horse_path(mare), data: { turbo_frame: "_top" }
+                - else
+                  span.text-base-content/50 = t(".any_mare")
+              td= link_to breeding.stable.name, stable_path(breeding.stable), data: { turbo_frame: "_top" }
               td data-sort=breeding.fee = Game::MoneyFormatter.new(breeding.fee)
               - if breeding.missed?
                 td data-sort="missed-#{breeding.date}"
@@ -56,5 +70,5 @@
               td.text-center.text-base-content/50 colspan=5 = t(".no_mare")
             - else
               td.text-center colspan=5
-                = render Ui::ButtonizedLink::Component.new(url: new_horse_stud_booking_path(@horse, slot_id: slot.id), disabled: true, style: :outline, size: :small, data: { turbo_frame: "modal" }) do
+                = render Ui::ButtonizedLink::Component.new(url: new_horse_stud_booking_path(@horse, slot_id: slot.id), style: :outline, size: :small, data: { turbo_frame: "modal" }) do
                   = t(".create_booking")

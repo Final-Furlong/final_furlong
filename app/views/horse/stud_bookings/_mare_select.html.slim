@@ -1,0 +1,9 @@
+/# locals: (stud:, booking:, form:)
+- @broodmares ||= []
+= turbo_frame_tag 'stable_dependent_fields' do
+  div
+    fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+      legend.fieldset-legend= t(".mare")
+      = form.collection_select :mare_id, @broodmares, :id, :name, { prompt: t(".any_mare") }, { class: "select", disabled: @broodmares.empty?, data: { stud_booking_target: "mares" } }
+      - if booking.errors[:mare]
+        p.text-error= booking.errors.where(:mare).map(&:full_message).join(', ')
