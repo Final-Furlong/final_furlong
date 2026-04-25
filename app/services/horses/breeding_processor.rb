@@ -6,6 +6,7 @@ module Horses
       @breeding = breeding
       @mare = mare
       @stud = stud
+      @breeding.stud = stud
 
       result = Result.new(breeding:)
       if breeding.status == "bred"
@@ -16,7 +17,7 @@ module Horses
         return result
       end
 
-      if breeding.mare != mare && !breeding.open_booking
+      if breeding.mare_id != mare.id && !breeding.open_booking?
         result.error = error("mare_not_eligible")
         return result
       end
@@ -37,7 +38,9 @@ module Horses
 
         description = "Stud Booking: #{stud.name} & #{mare.name}"
         Accounts::BudgetTransactionCreator.new.create_transaction(stable: stud.manager, description:, amount: breeding.fee.abs, activity_type: "breeding")
-        breeding.assign_attributes(stud:, mare:, event: breeding.pick_event, status: "bred", due_date: breeding.pick_due_date)
+        breeding.event = breeding.pick_event
+        breeding.status = "bred"
+        breeding.due_date = breeding.pick_due_date
         if breeding.save!
           result.updated = true
           result.breeding = breeding
