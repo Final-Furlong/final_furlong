@@ -6,7 +6,7 @@ module Horses
       @breeding = breeding
       @mare = mare
       @stud = stud
-      @breeding.stud = stud
+      breeding.stud = stud
 
       result = Result.new(breeding:)
       if breeding.status == "bred"
@@ -20,6 +20,9 @@ module Horses
       if breeding.mare_id != mare.id && !breeding.open_booking?
         result.error = error("mare_not_eligible")
         return result
+      elsif breeding.open_booking?
+        breeding.mare = mare
+        breeding.open_booking = false
       end
 
       if breeding.stable != mare.manager
