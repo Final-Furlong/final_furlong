@@ -43,16 +43,14 @@ RSpec.describe Api::V1::RaceResults do
 
   private
 
+  def race
+    @race ||= create(:race_schedule, date: Date.current, number: 1, race_type: "maiden", distance: 9.0, age: "3", track_surface: surface)
+  end
+
   def params
     @params ||= {
       date: Date.current.to_s,
       number: 1,
-      race_type: "maiden",
-      distance: 9.0,
-      age: "3",
-      track_name: racetrack.name,
-      track_surface: surface.surface,
-      condition: "good",
       time: 81.0,
       purse: 20_000,
       horses: [
@@ -104,7 +102,7 @@ RSpec.describe Api::V1::RaceResults do
   end
 
   def surface
-    @surface ||= create(:track_surface, racetrack:)
+    @surface ||= create(:track_surface, racetrack:, condition: "good")
   end
 
   def horse1

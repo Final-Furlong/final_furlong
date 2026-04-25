@@ -1,26 +1,28 @@
 module Racing
   class RaceResultCreator
-    def create_result(date:, number:, race_type:, distance:, age:, surface:, condition:, time:, purse:, horses:,
-      grade: nil, name: nil, claiming_price: nil, male_only: false, female_only: false)
-      race_date = Date.parse(date.to_s)
-      race_result = Racing::RaceResult.find_or_initialize_by(date: race_date, number:)
+    attr_reader :date
+
+    def create_result(race:, time:, horses:)
+      @date = race.date
+      race_result = Racing::RaceResult.find_or_initialize_by(date:, number: race.number)
       result = Result.new(race_result:)
+      surface = race.track_surface
       ActiveRecord::Base.transaction do
         attrs = {
-          age:,
-          distance:,
-          male_only:,
-          female_only:,
-          race_type:,
-          grade:,
-          name:,
-          purse:,
-          claiming_price:,
+          age: race.age,
+          distance: race.distance,
+          male_only: race.male_only,
+          female_only: race.female_only,
+          race_type: race.race_type,
+          grade: race.grade,
+          name: race.name,
+          purse: race.purse,
+          claiming_price: race.claiming_price,
           track_surface: surface,
-          condition:,
+          condition: surface.condition,
           split: "2F",
           time_in_seconds: time,
-          created_at: race_date.beginning_of_day + number.minutes
+          created_at: date.beginning_of_day + race.number.minutes
         }
         race_result.update!(attrs)
 
@@ -28,7 +30,7 @@ module Racing
           race_horses = process_race_horses(race_result:, horses:)
           race_horses.each do |race_horse|
             result.created = race_horse.valid?
-            stats = update_stats(horse: race_horse.horse, race_horse:, horses:, date: race_date, racetrack: surface.racetrack)
+            stats = update_stats(horse: race_horse.horse, race_horse:, horses:, date:, racetrack: surface.racetrack)
             options = update_options(horse: race_horse.horse, surface:) if surface.surface == "steeplechase"
             next if race_horse.save! && (options.blank? || options.save!) && (stats.blank? || stats.save!)
 
@@ -37,7 +39,7 @@ module Racing
           end
         end
         trigger_horse_attribute_updates(horses:)
-        if max_race?(date:, number:)
+        if max_race?(date:, number: race.number)
           Racing::RaceResultHorse.counter_culture_fix_counts
           Racing::RaceRecord.refresh
           Racing::LifetimeRaceRecord.refresh

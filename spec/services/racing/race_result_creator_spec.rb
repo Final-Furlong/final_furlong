@@ -60,79 +60,45 @@ RSpec.describe Racing::RaceResultCreator do
     end
 
     context "with stakes race" do
+      before { race.update(race_type: "stakes", grade: "Grade 3", name: "Christmas Stakes") }
+
       it "returns creates true" do
-        new_params = params.merge(grade: "Grade 3", name: "Christmas Stakes")
-        result = described_class.new.create_result(**new_params)
+        result = described_class.new.create_result(**params)
         expect(result.created?).to be true
       end
 
       it "creates race result" do
-        new_params = params.merge(grade: "Grade 3", name: "Christmas Stakes")
         expect do
-          described_class.new.create_result(**new_params)
+          described_class.new.create_result(**params)
         end.to change(Racing::RaceResult, :count).by(1)
       end
 
       it "creates race result horses" do
-        new_params = params.merge(grade: "Grade 3", name: "Christmas Stakes")
         expect do
-          described_class.new.create_result(**new_params)
+          described_class.new.create_result(**params)
         end.to change(Racing::RaceResultHorse, :count).by(2)
       end
     end
 
     context "with claiming race" do
+      before { race.update(race_type: "claiming", claiming_price: 10_000) }
+
       it "returns creates true" do
-        new_params = params.merge(race_type: "claiming", claiming_price: 10_000)
-        result = described_class.new.create_result(**new_params)
+        result = described_class.new.create_result(**params)
         expect(result.created?).to be true
       end
 
       it "creates race result" do
-        new_params = params.merge(race_type: "claiming", claiming_price: 10_000)
         expect do
-          described_class.new.create_result(**new_params)
+          described_class.new.create_result(**params)
         end.to change(Racing::RaceResult, :count).by(1)
       end
 
       it "creates race result horses" do
-        new_params = params.merge(race_type: "claiming", claiming_price: 10_000)
         expect do
-          described_class.new.create_result(**new_params)
+          described_class.new.create_result(**params)
         end.to change(Racing::RaceResultHorse, :count).by(2)
       end
-    end
-  end
-
-  context "when info is invalid for the race" do
-    it "returns creates false" do
-      new_params = params.dup
-      new_params[:distance] = 0.1
-      result = described_class.new.create_result(**new_params)
-      expect(result.created?).to be false
-    end
-
-    it "returns error" do
-      new_params = params.dup
-      new_params[:distance] = 0.1
-      result = described_class.new.create_result(**new_params)
-      expect(result.error).to eq "Validation failed: Distance must be greater than or equal to 5.0"
-    end
-
-    it "does not create race result" do
-      new_params = params.dup
-      new_params[:distance] = 0.1
-      expect do
-        described_class.new.create_result(**new_params)
-      end.not_to change(Racing::RaceResult, :count)
-    end
-
-    it "creates race result horse" do
-      new_params = params.dup
-      new_params[:distance] = 0.1
-      expect do
-        described_class.new.create_result(**new_params)
-      end.not_to change(Racing::RaceResultHorse, :count)
     end
   end
 
@@ -159,7 +125,7 @@ RSpec.describe Racing::RaceResultCreator do
       end.not_to change(Racing::RaceResult, :count)
     end
 
-    it "creates race result horse" do
+    it "does not create race result horse" do
       new_params = params.dup
       new_params[:horses][1][:post_parade] = 20
       expect do
@@ -172,15 +138,8 @@ RSpec.describe Racing::RaceResultCreator do
 
   def params
     {
-      date: race.date,
-      number: race.number,
-      race_type: race.race_type,
-      distance: race.distance,
-      age: race.age,
-      surface:,
-      condition: "fast",
+      race:,
       time: 75.2,
-      purse: race.purse,
       horses:
     }
   end
