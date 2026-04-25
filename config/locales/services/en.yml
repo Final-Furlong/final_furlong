@@ -106,3 +106,8 @@ en:
       not_for_sale: This horse is not for sale
     shipment_creator:
       description: Shipped %{horse} from %{start} to %{end}
+    stud_booking_updater:
+      horse_was_racing: Breeding cannot happen on this date as the horse was racing
+      max_mares_per_stable: The maximum number of mares from your stable have booked to this stud
+      max_outside_mares: The maximum number of outside mares have booked to this stud
+      slot_taken: This booking slot is no longer available

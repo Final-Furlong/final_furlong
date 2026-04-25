@@ -24,6 +24,7 @@ en:
         reject: Reject Sale
       ship: Ship Horse
       update_race_options: Set Racing Options
+      update_stud_options: Set Stud Options
       view_in_old_app: View in Main App
       view_sales: Sales History
     auction_consignments:
@@ -464,10 +465,17 @@ en:
         failure: "%{name} could not be changed to %{status}"
         success: "%{name} status has been updated to %{status}"
     stud_bookings:
+      create:
+        failure: Could not create booking
+        success: Booking was successfully created
       form:
         date_range: Booking for %{start} to %{end}
+        fee: Fee
+        mare_max_due_date: 'Note: Mares who are in foal and are not due before %{date} will not be shown, as they will not be able to use this booking slot.'
+        max_amount: Maximum %{amount}
         select_stable: Select Stable
       index:
+        any_mare: Any Mare
         approved_count:
           one: 1 Approved
           other: "%{count} Approved"
@@ -478,6 +486,7 @@ en:
         create_booking: Create Booking
         fee: Fee
         mare: Mare
+        min_date: "%{name} last raced on %{date}, so can be bred anytime after %{min_date}"
         missed: Missed (Booked for %{date})
         missed_count:
           one: 1 Missed
@@ -488,6 +497,9 @@ en:
         stable: Stable
         status: Status
         title: "%{year} Bookings"
+      mare_select:
+        any_mare: Allow Any Mare
+        mare: Pick A Mare
       new:
         title: New Booking for %{name}
     stud_nominations:
@@ -500,6 +512,28 @@ en:
         stakes_winners: Stakes Winners
         title: Breeders' Cup Nominations
         winners: Winners
+    stud_options:
+      create:
+        failure: Could not set stud options
+        success: Stud options were successfully created
+      edit:
+        title: Update Stud Options for %{name}
+      form:
+        approval_required: Require approval to breed
+        breed_to_game_mares: Breed to FF-owned mares
+        breed_to_game_mares_hint: This will only happen for past bookings that are not used
+        fee: Stud Fee
+        max_amount: Maximum %{amount}
+        outside_mares_allowed: Outside Mare Limit
+        outside_mares_hint: Total number of outside mares allowed per year
+        outside_mares_per_stable: Outside Mare Limit Per Stable
+        outside_mares_stable_hint: Limit per stable of mares per year
+        stud_fee_hint: This can be changed for specific breedings. This cannot be changed during the breeding season.
+      new:
+        title: Set Stud Options for %{name}
+      update:
+        failure: Could not update stud options
+        success: Stud options were successfully updated
     titles:
       abbr:
         final_furlong: FFCh.
