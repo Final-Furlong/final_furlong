@@ -31,8 +31,6 @@ module Api
           error!({ error: "invalid", detail: "Missing horses" }, 500) if permitted_params[:horses].empty?
 
           race = Racing::RaceSchedule.find_by(date: permitted_params[:date], number: permitted_params[:number])
-          pd race
-
           result = Racing::RaceResultCreator.new.create_result(race:, time: permitted_params[:time], horses: permitted_params[:horses])
           error!({ error: "invalid", detail: result.error }, 500) unless result.created?
 
