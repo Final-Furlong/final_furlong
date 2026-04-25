@@ -1,10 +1,39 @@
-/# locals: (stud:, booking:)
-= form_with model: booking, url: horse_stud_bookings_path(stud), id: "booking-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top", controller: 'dependent-fields' } do |f|
+/# locals: (stud:, booking:, error: nil)
+- options = stud.stud_options
+= form_with model: booking, url: horse_stud_bookings_path(stud), id: "booking-form", html: { class: "form", novalidate: true },
+  data: { turbo_frame: "_top", controller: 'stud-booking',
+          'stud-booking-mares-url-value' => stable_dependent_fields_horse_stud_bookings_url(stud.id, ':stable_id', ':slot_id'),
+          'stud-booking-selected-slot-id-value' => booking.slot_id, 'stud-booking-placeholder-value' => t("horse.stud_bookings.mare_select.any_mare") } do |f|
+  - unless error.blank?
+    p.alert.alert-error.alert-outline= error
   p.mt-4= t(".date_range", start: l(booking.slot.start_date), end: l(booking.slot.date))
-  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
-    div
-      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
-        label.label
-          = f.select :stable_id, options_for_select(booking.options_for_stable_select, booking.mare&.manager&.id), { prompt: t(".select_stable") }, { class: 'select', data: { dependent_fields_target: "hasDependents", dependant_turbo_frame_selector: '#stable_dependent_fields' } }
-          - if booking.errors[:stable]
-            p.text-error= booking.errors.where(:stable).map(&:full_message).join(', ')
+  - if booking.max_due_date
+    p
+      span.text-warning
+        i.ph.ph-warning.mr-2
+        = t(".mare_max_due_date", date: l(booking.max_due_date))
+
+  = f.hidden_field :slot_id, value: booking.slot_id
+  div
+    fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+      label.label
+        = f.select :stable_id, options_for_select(booking.options_for_stable_select, booking.stable_id), { prompt: t(".select_stable") }, { class: 'select',
+          data: { stud_booking_target: "stable", action: "change->stud-booking#stableChanged" } }
+        - if booking.errors[:stable]
+          p.text-error= booking.errors.where(:stable).map(&:full_message).join(', ')
+
+  = render "mare_select", form: f, booking:, stud:
+
+  div
+    fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+      legend.fieldset-legend= t(".fee")
+      label.input
+        i.ph.ph-currency-dollar
+        - stud_fee = booking.persisted? ? booking.fee : (booking.stable == stud.manager ? 0 : options.stud_fee)
+        = f.text_field :fee, value: stud_fee, class: "text-md grow", placeholder: t(".max_amount", amount: Game::MoneyFormatter.new(Config::Breedings.max_stud_fee).to_s)
+      - if booking.errors[:fee]
+        p.text-error= booking.errors.where(:fee).map(&:full_message).join(', ')
+
+  .float-right
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.create"))

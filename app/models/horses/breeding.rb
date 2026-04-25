@@ -3,7 +3,7 @@ module Horses
     self.ignored_columns += [:legacy_id]
 
     belongs_to :slot, class_name: "Breeding::Slot", inverse_of: :breedings, optional: true
-    belongs_to :mare, class_name: "Horses::Horse", inverse_of: :breedings, optional: true
+    belongs_to :mare, class_name: "Horses::Horse", inverse_of: :next_foal, optional: true
     belongs_to :stud, class_name: "Horses::Horse", inverse_of: :breedings
     belongs_to :stable, class_name: "Account::Stable", inverse_of: :breedings
     belongs_to :first_foal, class_name: "Horses::Horse", inverse_of: :parent_breeding_record, optional: true
@@ -25,6 +25,7 @@ module Horses
     scope :current_year, -> { by_year(Date.current.year) }
     scope :by_year, ->(year) { where(year:) }
     scope :not_denied, -> { where.not(status: "denied") }
+    scope :taken, -> { where(status: %w[approved bred]) }
     scope :not_missed, -> { joins(:slot).merge(::Breeding::Slot.not_missed) }
     scope :missed, -> { joins(:slot).merge(::Breeding::Slot.missed) }
 
@@ -57,10 +58,22 @@ module Horses
     end
 
     def options_for_stable_select
-      [[stud.manager.name, stud.manager.id]]
-      Account::Stable.active.joins(:horses).where(horses: Horses::Horse.broodmare).distinct.order(name: :asc).map do |stable|
-        [stable.name, stable.id]
+      list = [[stud.manager.name, stud.manager.id]]
+      Account::Stable.where.not(id: stud.manager_id).active.joins(:horses).where(horses: Horses::Horse.broodmare).distinct.order(name: :asc).each do |stable|
+        list << [stable.name, stable.id]
       end
+      list
+    end
+
+    def max_due_date
+      nil
+
+      # TODO: implement this query for broodmares
+      # this_slot = Config::Breedings.slots.find_index { |s| s[:month] == slot.month && s[:end] == slot.end_day }
+      # return unless (Config::Breedings.slots.count - this_slot) > 5
+
+      # max_slot = Config::Breedings.slots[this_slot + 5]
+      # Date.new(Date.current.year, max_slot[:month], max_slot[:end])
     end
   end
 end
