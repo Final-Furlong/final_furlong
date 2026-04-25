@@ -11,20 +11,23 @@ table.table.table-responsive.table-zebra.sortable.n-last
       th= t("racing.race.horse")
       th= t("racing.race.track")
       th= t("racing.race.race")
-      th= t("racing.race.surface")
+      th= t("racing.race.equipment")
+      th colspan=2 = t(".energy_fitness")
       th= t("racing.race.equipment")
       th= t("common.actions.title")
   tbody
     - @results.each do |entry|
       - race = entry.race
       - horse = entry.horse
+      - data = horse.race_metadata
       tr
         td= l(race.date)
         td class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), target: "_top"
         td= race.racetrack.name
         td= link_to race.race_description_string, new_racing_race_entry_path(race), target: "_top"
-        td= race.track_surface.surface_short
         td= entry.equipment_string(blank: "")
+        td= data.energy_grade
+        td= data.fitness_grade
         td
           - if policy(entry).edit?
             = render Ui::ButtonizedLink::Component.new(url: edit_racing_race_entry_option_path(race, entry), size: :small, style: :outline, extra_classes: 'inline', data: { turbo_frame: "modal" }) do
