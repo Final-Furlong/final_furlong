@@ -1,0 +1,16 @@
+/# locals: (mare:, breeding:, min_date:, max_date:, error: nil)
+= form_with model: breeding, url: foal_horse_path(mare, breeding), method: :post, id: "foal-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+  - unless error.blank?
+    p.alert.alert-error.alert-outline= error
+
+  div
+    fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+      legend.fieldset-legend= t(".select_day")
+      label.label
+        = f.select :day, options_for_select(breeding.options_for_day_select(min_date, max_date), breeding.date&.day), { }, { class: 'select' }
+        - if breeding.errors[:date]
+          p.text-error= breeding.errors.where(:date).map(&:full_message).join(', ')
+
+  .float-right
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t(".submit"))

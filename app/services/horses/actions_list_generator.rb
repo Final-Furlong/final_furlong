@@ -44,7 +44,6 @@ module Horses
         { key: :destroy, policy: CurrentStable::SaleOfferPolicy, object: :sale_offer },
         { key: :consign_to_auction },
         { key: :remove_from_auction },
-        { key: :breed, policy: CurrentStable::BroodmarePolicy },
         { key: :update_race_options, policy: CurrentStable::RacehorsePolicy },
         { key: :run_workout, policy: CurrentStable::RacehorsePolicy },
         { key: :run_jump_trial, policy: CurrentStable::RacehorsePolicy },

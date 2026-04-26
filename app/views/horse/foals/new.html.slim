@@ -1,0 +1,15 @@
+ruby:
+  stud = @breeding.stud
+  slot = @breeding.slot
+  min_date = slot.start_date
+  min_date = Date.current if slot.start_date < Date.current
+  max_date = slot.date
+p.mb-2.text-center.font-bold.text-lg= t(".breed", stud: stud.name_with_title)
+- if min_date != max_date
+  p= t(".date_range", min: l(min_date), max: l(max_date))
+- else
+  p= t(".date_single", date: l(max_date))
+
+p.my-2= t(".fee", fee: Game::MoneyFormatter.new(@breeding.fee))
+
+= render "form", mare: @breeding.mare, breeding: @breeding, min_date:, max_date:
