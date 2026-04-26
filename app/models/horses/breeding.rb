@@ -28,6 +28,8 @@ module Horses
     scope :taken, -> { where(status: %w[approved bred]) }
     scope :not_missed, -> { joins(:slot).merge(::Breeding::Slot.not_missed) }
     scope :missed, -> { joins(:slot).merge(::Breeding::Slot.missed) }
+    scope :ordered_by_status, -> { in_order_of(:status, %w[bred approved pending denied]) }
+    scope :available_for_mare, ->(mare) { where("(mare_id = ? OR (mare_id IS NULL AND open_booking = TRUE AND stable_id = ?))", mare.id, mare.manager_id) }
 
     def self.ransackable_attributes(_auth_object = nil)
       %w[date due_date fee mare_id status stud_id year]
@@ -55,6 +57,12 @@ module Horses
       return true if slot.month < date.month
 
       date.day < slot.end_day
+    end
+
+    def options_for_day_select(min_date, max_date)
+      (min_date.day..max_date.day).map do |day|
+        [day, day]
+      end
     end
 
     def options_for_stable_select
