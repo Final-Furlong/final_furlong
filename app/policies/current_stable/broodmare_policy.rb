@@ -1,8 +1,10 @@
 module CurrentStable
   class BroodmarePolicy < ApplicationPolicy
     def breed?
-      # TODO: implement mare breeding
-      false
+      return false unless record.broodmare?
+      return false if record.next_foal
+
+      manager?
     end
 
     private
@@ -12,7 +14,11 @@ module CurrentStable
     end
 
     def owner?
-      record.owner == user&.stable
+      record.owner == stable
+    end
+
+    def manager?
+      record.manager == stable
     end
   end
 end

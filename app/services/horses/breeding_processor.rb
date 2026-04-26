@@ -30,6 +30,11 @@ module Horses
         return result
       end
 
+      if mare.broodmare.current_location != breeding.stud.manager
+        result.error = error("mare_needs_shipping")
+        return result
+      end
+
       if breeding.fee >= mare.manager.available_balance.to_i
         result.error = error("cannot_afford_fee")
         return result

@@ -65,6 +65,7 @@ en:
       processor:
         cannot_afford_fee: You cannot afford this breeding
         mare_already_bred: Mare is already in foal
+        mare_needs_shipping: Mare needs shipping to the stallion's stable
         mare_not_eligible: Mare is not eligible for this breeding
     lease_creator:
       cannot_afford_lease: You cannot afford the lease fee

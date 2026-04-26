@@ -2,7 +2,7 @@ module Horses
   class BreedingPolicy < ::ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
       def resolve
-        scope.where(year: Date.current.year)
+        scope.current_year
       end
     end
 

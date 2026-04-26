@@ -67,7 +67,7 @@ module Horses
     has_many :foals, class_name: "Horses::Horse", inverse_of: :dam, dependent: :nullify
     has_many :broodmare_shipments, class_name: "Shipping::BroodmareShipment", dependent: :delete_all
     has_many :due_dates, -> { where.not(status: "denied") }, class_name: "Horses::Breeding", dependent: :delete_all, inverse_of: :mare
-    has_one :next_foal, -> { where(status: "bred") }, class_name: "Horses::Breeding", dependent: :delete, inverse_of: :mare
+    has_one :next_foal, -> { where(status: "bred").where("due_date > ?", Date.current) }, class_name: "Horses::Breeding", dependent: :delete, inverse_of: :mare
     has_one :parent_breeding_record, class_name: "Horses::Breeding", dependent: :delete, inverse_of: :first_foal
     has_one :twin_parent_breeding_record, class_name: "Horses::Breeding", dependent: :delete, inverse_of: :second_foal
 
