@@ -10289,6 +10289,7 @@ ALTER TABLE ONLY public.famous_studs
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260426105032'),
 ('20260424194935'),
 ('20260424163019'),
 ('20260424131517'),
