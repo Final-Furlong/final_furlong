@@ -9,7 +9,7 @@ module Breeding
     validates :end_day, uniqueness: { scope: %i[month start_day] }
 
     scope :ordered, -> { order(month: :asc, start_day: :asc) }
-    scope :missed, -> { where("month < :month OR (month = :month AND :day < end_day)", { month: Date.current.month, day: Date.current.day }) }
+    scope :missed, -> { where("month < :month OR (month = :month AND end_day < :day)", { month: Date.current.month, day: Date.current.day }) }
     scope :not_missed, -> { where("month > :month OR (month = :month AND end_day > :day)", { month: Date.current.month, day: Date.current.day }) }
 
     def to_s

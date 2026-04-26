@@ -1,0 +1,46 @@
+/# locals: (options:, horse:)
+= form_with model: options, url: horse_stud_options_path(horse), id: "stud-options-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+
+  div
+    fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+      legend.fieldset-legend= t(".fee")
+      label.input
+        i.ph.ph-currency-dollar
+        = f.text_field :stud_fee, value: options.stud_fee.presence || nil, class: "text-md grow", placeholder: t(".max_amount", amount: Game::MoneyFormatter.new(Config::Breedings.max_stud_fee).to_s), disabled: horse.breedings.current_year.exists?
+      p.label= t(".stud_fee_hint")
+      - if options.errors[:stud_fee]
+        p.text-error= options.errors.where(:stud_fee).map(&:full_message).join(', ')
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".outside_mares_allowed")
+        = f.text_field :outside_mares_allowed, class: 'input validator', required: true
+        p.label= t(".outside_mares_hint")
+        - if options.errors[:outside_mares_allowed]
+          p.text-error= options.errors.where(:outside_mares_allowed).map(&:full_message).join(', ')
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        label.label
+          = f.checkbox :approval_required, class: 'toggle validator', required: true
+          = t(".approval_required")
+          - if options.errors[:approval_required]
+            p.text-error= options.errors.where(:approval_required).map(&:full_message).join(', ')
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".outside_mares_per_stable")
+        = f.text_field :outside_mares_per_stable, class: 'input validator', required: true
+        p.label= t(".outside_mares_stable_hint")
+        - if options.errors[:outside_mares_per_stable]
+          p.text-error= options.errors.where(:outside_mares_per_stable).map(&:full_message).join(', ')
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        label.label
+          = f.checkbox :breed_to_game_mares, class: 'toggle validator', required: true
+          = t(".breed_to_game_mares")
+        p.label= t(".breed_to_game_mares_hint")
+        - if options.errors[:breed_to_game_mares]
+          p.text-error= options.errors.where(:breed_to_game_mares).map(&:full_message).join(', ')
+  .float-right
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.save"))

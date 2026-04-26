@@ -4,6 +4,8 @@ module Horses
 
     validates :stud_fee, :outside_mares_allowed, :outside_mares_per_stable, presence: true
     validates :approval_required, :breed_to_game_mares, inclusion: { in: [true, false] }
+    validates :outside_mares_per_stable, comparison: { less_than_or_equal_to: :outside_mares_allowed }
+    validates :stud_fee, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: Config::Breedings.max_stud_fee }
   end
 end
 

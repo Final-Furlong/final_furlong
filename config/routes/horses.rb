@@ -8,7 +8,12 @@ resources :horses, except: %i[new create destroy] do
     resources :boardings, only: %i[index new create destroy]
     resources :future_races, except: :new
     get "future_races/:race_id/new", to: "future_races#new", as: :new_future_race
-    resources :stud_bookings
+    resources :stud_bookings do
+      collection do
+        get "/stable_dependent_fields/:stable_id/:slot_id", to: "stud_bookings#stable_dependent_fields", as: :stable_dependent_fields
+      end
+      # get :stable_dependent_fields, on: :collection
+    end
   end
   member do
     get :image
@@ -40,6 +45,7 @@ resources :horses, except: %i[new create destroy] do
         get :destination_dependent_fields, on: :collection
       end
       resource :status, only: %i[edit update]
+      resource :stud_options, only: %i[new create edit update]
       resources :workouts, only: %i[index new create]
       resources :workout_stats, only: %i[index]
     end
