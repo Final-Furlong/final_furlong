@@ -3772,11 +3772,8 @@ CREATE MATERIALIZED VIEW public.race_qualifications AS
                 ELSE true
             END
         END AS maiden_qualified,
-        CASE ( SELECT count(r.id) AS count
-               FROM (public.race_result_horses rr
-                 LEFT JOIN public.race_results r ON ((r.id = rr.race_id)))
-              WHERE ((rr.horse_id = h.id) AND (r.date > GREATEST(horse_sales.sale_date, h.date_of_birth))))
-            WHEN 3 THEN true
+        CASE
+            WHEN (claiming_races.starts >= 3) THEN true
             ELSE false
         END AS claiming_qualified,
         CASE ( SELECT count(r.id) AS count
@@ -3819,10 +3816,16 @@ CREATE MATERIALIZED VIEW public.race_qualifications AS
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type, 'stakes'::public.race_type])))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-     LEFT JOIN ( SELECT max(hs.date) AS sale_date,
-            hs.horse_id
-           FROM public.horse_sales hs
-          GROUP BY hs.horse_id) horse_sales ON ((h.id = horse_sales.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS starts,
+            rr.horse_id
+           FROM (public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((r.id = rr.race_id)))
+          WHERE (r.date > GREATEST(( SELECT max(hs.date) AS sale_date
+                   FROM public.horse_sales hs
+                  WHERE (hs.horse_id = rr.horse_id)), ( SELECT horses.date_of_birth
+                   FROM public.horses
+                  WHERE (horses.id = rr.horse_id))))
+          GROUP BY rr.horse_id) claiming_races ON ((h.id = claiming_races.horse_id)))
   WHERE (h.status = 'racehorse'::public.horse_status)
   WITH NO DATA;
 
@@ -10289,6 +10292,7 @@ ALTER TABLE ONLY public.famous_studs
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260426114022'),
 ('20260426105032'),
 ('20260424194935'),
 ('20260424163019'),
