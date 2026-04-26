@@ -116,7 +116,6 @@ ActiveRecordDoctor.configure do
     "Legacy::PendingRetirement",
     "Legacy::QualifiedHorse",
     "Legacy::QualifiedRace",
-    "Legacy::Racetrack",
     "Legacy::Record",
     "Legacy::RaceResult",
     "Legacy::RaceResultHorse",

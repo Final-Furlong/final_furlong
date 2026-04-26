@@ -68,17 +68,6 @@ module Horses
           end
           result.shipment = shipment
         end
-        if result.created && !shipment.future?
-          location_id = if shipment.shipping_type == "track_to_farm"
-            59
-          else
-            ::Legacy::Racetrack.where(name: ending_racetrack.name).order(ID: :asc).pick(:ID)
-          end
-          ::Legacy::Horse.transaction do
-            legacy_horse = ::Legacy::Horse.find_by(ID: horse.legacy_id)
-            legacy_horse&.update(InTransit: 1, Location: location_id)
-          end
-        end
         result
       end
 

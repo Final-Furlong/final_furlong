@@ -44,15 +44,6 @@ module Horses
           Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: cost.abs * -1)
           saved = true
         end
-        if saved
-          location_id = if shipment.shipping_type == "track_to_farm"
-            59
-          else
-            track_name = racetrack.name
-            Legacy::Racetrack.where(name: track_name).order(ID: :asc).pick(:ID)
-          end
-          Legacy::Horse.find_by(ID: horse.legacy_id)&.update(InTransit: 1, Location: location_id)
-        end
       end
 
       private
