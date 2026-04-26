@@ -1,8 +1,9 @@
 module CurrentStable
   class StallionPolicy < ApplicationPolicy
     def update_stud_options?
-      # TODO: implement stud options
-      false
+      return false unless record.stud?
+
+      manager?
     end
 
     def manage_bookings?
@@ -12,6 +13,8 @@ module CurrentStable
     end
 
     def nominate?
+      return false unless record.stud?
+
       owner_not_leased?
     end
 
