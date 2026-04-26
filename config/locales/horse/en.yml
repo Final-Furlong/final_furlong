@@ -154,6 +154,8 @@ en:
         total_time: Total Time
     foal_due: Foal Due
     foals:
+      create:
+        success: Mare was successfully bred
       dam_foal_list:
         due_date: Due Date
         due_date_info: Due on %{date}
@@ -176,6 +178,14 @@ en:
         foals: Foals
         foals_with_count: Foals (%{count})
         summary: Summary
+      form:
+        select_day: Select Day
+        submit: Breed
+      new:
+        breed: Breed to %{stud}
+        date_range: Breeding can happen between %{min} and %{max}
+        date_single: Breeding can happen on %{date}
+        fee: 'Breeding Fee: %{fee}'
       sire_foal_list:
         dam: Dam
         due_date_info: Due on %{date}
@@ -305,6 +315,25 @@ en:
       at_boarding_farm: "%{name} Boarding Farm"
       at_farm: Farm
       at_racetrack: "%{name} Racetrack"
+    mare_bookings:
+      index:
+        approved: Approved
+        bred: Bred
+        breed: Breed
+        confirm_breeding: Are you sure you want to do this breeding?
+        confirm_breeding_title: Breed to %{name}
+        date: Date
+        denied: Denied
+        fee: Fee
+        in_foal: "%{mare} is in foal to %{stud}, due on %{due}"
+        in_transit: In Transit
+        min_date: "%{name} last raced on %{date}, so can be bred anytime after %{min_date}"
+        missed: Booking Date Missed
+        pending: Pending
+        ship: Ship to %{stable}
+        status: Status
+        stud: Stud
+        title: Breed %{name}
     markings:
       bald_face: bald face
       blaze: blaze

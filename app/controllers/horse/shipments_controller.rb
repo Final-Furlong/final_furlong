@@ -14,6 +14,8 @@ module Horse
       horse = Horses::Horse.find(params[:id])
       @shipment = horse.racehorse? ? horse.racing_shipments.build : horse.broodmare_shipments.build
       authorize @shipment, :create?, policy_class: CurrentStable::HorseShipmentPolicy
+
+      @shipment.ending_farm = Account::Stable.find(params[:end_farm_id]) if horse.broodmare? && params[:end_farm_id]
     end
 
     def create

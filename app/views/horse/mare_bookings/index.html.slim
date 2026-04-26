@@ -1,0 +1,51 @@
+= turbo_frame_tag "#{@horse.slug}-mare-bookings" do
+  ruby:
+    last_race_date = @horse.race_result_finishes.joins(:race).merge(Racing::RaceResult.ordered_by_date(:desc)).first.race.date
+    raced_this_year = last_race_date.year == Date.current.year
+    min_breed_date = last_race_date + 1.day if raced_this_year
+  p.font-bold.text-center.text-lg
+    = t(".title", name: @horse.name)
+  - if @horse.next_foal.present?
+    p.badge.badge-success.badge-outline = t(".in_foal", mare: @horse.name, due: l(@horse.next_foal.due_date), stud: @horse.next_foal.stud.name)
+  - else
+    - if raced_this_year
+      p
+        span.text-warning
+          i.ph.ph-warning.mr-2
+          = t(".min_date", name: @horse.name, date: l(last_race_date), min_date: l(min_breed_date))
+
+    table.table.table-responsive.table-zebra.sortable.n-last.asc
+      thead
+        tr
+          td= t(".date")
+          td= t(".stud")
+          td= t(".fee")
+          td= t(".status")
+          td= t("common.actions.title")
+      tbody
+        - @bookings.find_each do |booking|
+          - stud = booking.stud
+          - slot = booking.slot
+          tr
+            td= "#{slot.formatted_start_day} - #{slot}"
+            td= link_to stud.name_with_title, horse_path(stud), data: { turbo_frame: "_top" }
+            td= Game::MoneyFormatter.new(booking.fee)
+            td= t(".#{booking.status}")
+            td
+              - if booking.pending?
+                span.badge.badge-warning.badge-outline= t(".pending")
+              - elsif booking.denied?
+                span.badge.badge-warning.badge-error= t(".denied")
+              - elsif booking.bred?
+                span.badge.badge-success.badge-error= t(".bred")
+              - elsif slot.date >= Date.current && CurrentStable::FoalPolicy.new(Current.user, @horse).create?
+                - if @horse.broodmare.current_location == booking.stud.manager && !@horse.broodmare.in_transit?
+                  = render Ui::ButtonizedLink::Component.new(url: new_foal_horse_path(@horse, booking), style: :outline, size: :small, data: { turbo_frame: "modal" }) do
+                    = t(".breed")
+                - elsif @horse.broodmare.in_transit?
+                  span.badge.badge-info.badge-outline= t(".in_transit")
+                - else
+                  = render Ui::ButtonizedLink::Component.new(url: new_horse_shipment_path(@horse, end_farm_id: booking.stud.manager_id), color: :warning, style: :outline, size: :small, data: { turbo_frame: "modal" }) do
+                    = t(".ship", stable: booking.stud.manager.name)
+              - else
+                span.badge.badge-error.badge-outline= t(".missed")
