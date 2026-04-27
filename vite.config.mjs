@@ -1,16 +1,15 @@
 import tailwindcss from "@tailwindcss/vite"
+import rails from "rails-vite-plugin"
 import { defineConfig } from "vite"
+import manifestSRI from "vite-plugin-manifest-sri"
 import { VitePluginRadar } from "vite-plugin-radar"
-import Rails from "vite-plugin-rails"
 
 export default defineConfig(_configEnv => ({
   plugins: [
-    Rails({
-      envVars: { RAILS_ENV: process.env.RAILS_ENV || "development" },
-      fullReload: {
-        additionalPaths: ["app/assets/**/*", "app/content/**/*", "config/locales/**/*", "app/views/**/*"]
-      }
+    rails({
+      sourceDir: "app/javascript"
     }),
+    manifestSRI(),
     VitePluginRadar({
       simpleanalytics: {
         enabled: process.env.RAILS_ENV == "production"
