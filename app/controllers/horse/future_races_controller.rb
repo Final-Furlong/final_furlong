@@ -11,6 +11,7 @@ module Horse
       dates = Racing::RaceSchedule.where(id: entry_ids).select(:date).distinct
 
       @query = Racing::RaceSchedule.where.not(date: dates.map(&:date)).available_for_scheduling.for_age(@horse.age)
+        .for_gender(@horse.gender)
         .for_race_options(@horse.race_options).for_race_qualification(@horse.race_qualification)
         .includes(track_surface: :racetrack)
         .order(date: :asc).ordered_by_race_type

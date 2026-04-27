@@ -45,6 +45,13 @@ class Racing::RaceSchedule < ApplicationRecord
       where(age: ["3+", "4+"])
     end
   }
+  scope :for_gender, ->(gender) {
+    if Horses::Gender::FEMALE_GENDERS.include?(gender.to_s.downcase)
+      where(female_only: true).or(where(male_only: false))
+    else
+      where(male_only: true).or(where(female_only: false))
+    end
+  }
   scope :for_racehorse_type, ->(type) {
     case type.to_s.downcase
     when "flat"
