@@ -73,7 +73,13 @@ class Racing::RaceSchedule < ApplicationRecord
   scope :for_race_options, ->(options) {
     query = case options.racehorse_type.to_s.downcase
     when "flat"
-      all
+      if options.trains_on_dirt && !options.trains_on_turf
+        joins(:track_surface).merge(Racing::TrackSurface.dirt)
+      elsif options.trains_on_turf && !options.trains_on_dirt
+        joins(:track_surface).merge(Racing::TrackSurface.turf)
+      else
+        all
+      end
     when "jump"
       joins(:track_surface).merge(Racing::TrackSurface.steeplechase)
     end
