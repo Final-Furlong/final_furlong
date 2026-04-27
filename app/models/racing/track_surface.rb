@@ -14,6 +14,8 @@ module Racing
 
     scope :dirt, -> { where(surface: "dirt") }
     scope :turf, -> { where(surface: "turf") }
+    scope :dirt_or_jump, -> { where(surface: %w[dirt steeplechase]) }
+    scope :turf_or_jump, -> { where(surface: %w[turf steeplechase]) }
     scope :steeplechase, -> { where(surface: "steeplechase") }
     scope :flat, -> { where(surface: ["dirt", "turf"]) }
     scope :ordered_by_surface, -> { in_order_of(:surface, %w[dirt turf steeplechase]) }

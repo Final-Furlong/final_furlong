@@ -74,9 +74,9 @@ class Racing::RaceSchedule < ApplicationRecord
     query = case options.racehorse_type.to_s.downcase
     when "flat"
       if options.trains_on_dirt && !options.trains_on_turf
-        joins(:track_surface).merge(Racing::TrackSurface.dirt)
+        joins(:track_surface).merge(Racing::TrackSurface.dirt_or_jump)
       elsif options.trains_on_turf && !options.trains_on_dirt
-        joins(:track_surface).merge(Racing::TrackSurface.turf)
+        joins(:track_surface).merge(Racing::TrackSurface.turf_or_jump)
       else
         all
       end
