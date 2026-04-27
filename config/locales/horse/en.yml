@@ -56,13 +56,14 @@ en:
       entries:
         current_entries: Current Entries
         edit: Edit
-        energy_grade: 'Current Energy: %{grade}'
-        fitness_grade: 'Current Fitness: %{grade}'
+        energy_grade: 'Current Energy: '
+        fitness_grade: 'Current Fitness: '
         future_races: Future Races
         loading_future_races: Loading future races...
         location: 'Located At: %{location}'
         max_future_entries: You cannot schedule more entries for this horse
         no_current_entries: There are no current or scheduled entries.
+        qualification: 'Qualification: %{qualification}'
     entry_state:
       current: Currently Entered
       none: None

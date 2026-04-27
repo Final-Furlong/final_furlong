@@ -2,19 +2,25 @@
 - data = horse.race_metadata
 .w-full.text-center.mb-4
   - grade = data.energy_grade
-  span.badge.mr-2 class="badge-#{%w[A B].include?(grade) ? "success" : (grade == "C" ? "warning" : "error")}"
-    = t(".energy_grade", grade: grade)
+  - grade_class = %w[A B].include?(grade) ? "success" : (grade == "C" ? "warning" : "error")
+  button.btn.btn-outline.btn-sm.mr-2 class="btn-#{grade_class}"
+    = t(".energy_grade")
+    .badge.badge-sm class="badge-#{grade_class}" = grade
   - grade = data.fitness_grade
-  span.badge.mr-2 class="badge-#{%w[A B].include?(grade) ? "success" : (grade == "C" ? "warning" : "error")}"
-    = t(".fitness_grade", grade: grade)
-  span.badge.badge-info
+  - grade_class = %w[A B].include?(grade) ? "success" : (grade == "C" ? "warning" : "error")
+  button.btn.btn-outline.btn-sm.mr-2 class="btn-#{grade_class}"
+    = t(".fitness_grade")
+    .badge.badge-sm class="badge-#{grade_class}" = grade
+  button.btn.btn-outline.btn-sm.btn-info.mr-2
     = t(".location", location: data.location_string)
     - if data.in_transit?
       .tooltip.text-lg data-tip=t("current_stable.training_summaries.show.arrival", date: l(horse.racing_shipments.order(arrival_date: :desc).pick(:arrival_date)))
-        i.ph-fill.ph-truck.ml-2
+        i.ph-fill.ph-truck
     - elsif horse.current_boarding.present?
       .tooltip.text-lg data-tip=t("current_stable.training_summaries.show.boarded", days: horse.current_boarding.count_days)
-        i.ph-fill.ph-barn.ml-2
+        i.ph-fill.ph-barn
+  button.btn.btn-outline.btn-sm.btn-info
+    = t(".qualification", qualification: horse.race_qualification.to_s)
 .card.card-border.bg-base-100.w-full.px-2
   .card-body.p-0.rounded-none
     .collapse.collapse-open.bg-base-100.border-base-content/50.border.border-1
