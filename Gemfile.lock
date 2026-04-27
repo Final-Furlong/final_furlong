@@ -245,7 +245,6 @@ GEM
     dotenv_validator (1.3.0)
       fast_blank (~> 1.0.0)
     drb (2.2.3)
-    dry-cli (1.4.1)
     dry-configurable (1.3.0)
       dry-core (~> 1.1)
       zeitwerk (~> 2.6)
@@ -551,7 +550,6 @@ GEM
       ruby2_keywords (~> 0.0.1)
     mustermann-grape (1.1.0)
       mustermann (>= 1.0.0)
-    mutex_m (0.3.0)
     mysql2 (0.5.7)
       bigdecimal
     nanoid (2.0.0)
@@ -655,8 +653,6 @@ GEM
       rack (>= 2.0.0)
     rack-mini-profiler (4.0.1)
       rack (>= 1.2.0)
-    rack-proxy (0.7.7)
-      rack
     rack-session (1.0.2)
       rack (< 3)
     rack-test (2.2.0)
@@ -693,6 +689,8 @@ GEM
       activerecord
       railties
       ruby-pg-extras (= 5.6.16)
+    rails_vite (0.2.2)
+      railties (>= 7.0)
     railties (8.1.3)
       actionpack (= 8.1.3)
       activesupport (= 8.1.3)
@@ -986,15 +984,6 @@ GEM
       axiom-types (~> 0.1)
       coercible (~> 1.0)
       descendants_tracker (~> 0.0, >= 0.0.3)
-    vite_rails (3.10.0)
-      railties (>= 5.1, < 9)
-      vite_ruby (~> 3.0, >= 3.2.2)
-    vite_ruby (3.10.0)
-      dry-cli (>= 0.7, < 2)
-      logger (~> 1.6)
-      mutex_m
-      rack-proxy (~> 0.6, >= 0.6.1)
-      zeitwerk (~> 2.2)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.1)
@@ -1137,6 +1126,7 @@ DEPENDENCIES
   rails (~> 8.1)
   rails-i18n
   rails-pg-extras
+  rails_vite
   ransack!
   reek
   requestjs-rails
@@ -1185,7 +1175,6 @@ DEPENDENCIES
   undercover
   view_component
   view_component-contrib
-  vite_rails
   web-console
   web-push
   whenever
@@ -1275,7 +1264,6 @@ CHECKSUMS
   dotenv-rails (3.2.0) sha256=657e25554ba622ffc95d8c4f1670286510f47f2edda9f68293c3f661b303beab
   dotenv_validator (1.3.0) sha256=7549d552e1959649ac739289d9614c3fd6c5c5304d6ea1c1c8216da8c5c2fdcc
   drb (2.2.3) sha256=0b00d6fdb50995fe4a45dea13663493c841112e4068656854646f418fda13373
-  dry-cli (1.4.1) sha256=b8015bb76c708aa8705a36faf694973e75eeeffca39b89c8e172dc6f66a7d874
   dry-configurable (1.3.0) sha256=882d862858567fc1210d2549d4c090f34370fc1bb7c5c1933de3fe792e18afa8
   dry-core (1.2.0) sha256=0cc5a7da88df397f153947eeeae42e876e999c1e30900f3c536fb173854e96a1
   dry-inflector (1.3.1) sha256=7fb0c2bb04f67638f25c52e7ba39ab435d922a3a5c3cd196120f63accb682dcc
@@ -1388,7 +1376,6 @@ CHECKSUMS
   multi_json (1.19.1) sha256=7aefeff8f2c854bf739931a238e4aea64592845e0c0395c8a7d2eea7fdd631b7
   mustermann (3.0.4) sha256=85fadcb6b3c6493a8b511b42426f904b7f27b282835502233dd154daab13aa22
   mustermann-grape (1.1.0) sha256=8d258a986004c8f01ce4c023c0b037c168a9ed889cf5778068ad54398fa458c5
-  mutex_m (0.3.0) sha256=cfcb04ac16b69c4813777022fdceda24e9f798e48092a2b817eb4c0a782b0751
   mysql2 (0.5.7) sha256=ba09ede515a0ae8a7192040a1b778c0fb0f025fa5877e9be895cd325fa5e9d7b
   nanoid (2.0.0) sha256=78a5c93c1595981fb37712a166d7ea1ef15a679553e5d3c72337f231febd8bfc
   nenv (0.3.0) sha256=d9de6d8fb7072228463bf61843159419c969edb34b3cef51832b516ae7972765
@@ -1446,7 +1433,6 @@ CHECKSUMS
   rack-accept (0.4.5) sha256=66247b5449db64ebb93ae2ec4af4764b87d1ae8a7463c7c68893ac13fa8d4da2
   rack-cors (2.0.2) sha256=415d4e1599891760c5dc9ef0349c7fecdf94f7c6a03e75b2e7c2b54b82adda1b
   rack-mini-profiler (4.0.1) sha256=485810c23211f908196c896ea10cad72ed68780ee2998bec1f1dfd7558263d78
-  rack-proxy (0.7.7) sha256=446a4b57001022145d5c3ba73b775f66a2260eaf7420c6907483141900395c8a
   rack-session (1.0.2) sha256=a02115e5420b4de036839b9811e3f7967d73446a554b42aa45106af335851d76
   rack-test (2.2.0) sha256=005a36692c306ac0b4a9350355ee080fd09ddef1148a5f8b2ac636c720f5c463
   rackup (1.0.1) sha256=ba86604a28989fe1043bff20d819b360944ca08156406812dca6742b24b3c249
@@ -1455,6 +1441,7 @@ CHECKSUMS
   rails-html-sanitizer (1.7.0) sha256=28b145cceaf9cc214a9874feaa183c3acba036c9592b19886e0e45efc62b1e89
   rails-i18n (8.1.0) sha256=52d5fd6c0abef28d84223cc05647f6ae0fd552637a1ede92deee9545755b6cf3
   rails-pg-extras (5.6.16) sha256=8aae9a3c8279355cf4bdbed31e820f56c6c9238b3b45fbb491372660b8eb2de5
+  rails_vite (0.2.2) sha256=d6dd891889e934ab8de008cd17e7c8d83bdd88197df5972be5d499a62d553d2e
   railties (8.1.3) sha256=913eb0e0cb520aac687ffd74916bd726d48fa21f47833c6292576ef6a286de22
   rainbow (3.1.1) sha256=039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a
   rake (13.3.1) sha256=8c9e89d09f66a26a01264e7e3480ec0607f0c497a861ef16063604b1b08eb19c
@@ -1560,8 +1547,6 @@ CHECKSUMS
   view_component (4.2.0) sha256=f250a3397a794336354f73c229b3b7549af0b24906551b99a03492b54cb5233d
   view_component-contrib (0.2.5) sha256=4a6baee5abf2a317ba333a3cdd032bcd13b0f4cbdc57628ca3c8866f159e5f8e
   virtus (2.0.0) sha256=8841dae4eb7fcc097320ba5ea516bf1839e5d056c61ee27138aa4bddd6e3d1c2
-  vite_rails (3.10.0) sha256=8c4471554870c043e8d9ff7d379302a01d147ade2cd61476ddf020fed32a107a
-  vite_ruby (3.10.0) sha256=7d4468adbce161a182873bed4469363e4fc01df77504c66d3519a2b3d0ebb3f4
   warden (1.2.9) sha256=46684f885d35a69dbb883deabf85a222c8e427a957804719e143005df7a1efd0
   web-console (4.2.1) sha256=e7bcf37a10ea2b4ec4281649d1cee461b32232d0a447e82c786e6841fd22fe20
   web-push (3.1.0) sha256=501ab00340c58fb70dabda59f28a86b3cccb0930c6f1f30721b2a5b24de7187d
