@@ -123,4 +123,3 @@ end
 #  fk_rails_...  (stable_id => stables.id)
 #  fk_rails_...  (third_jockey_id => jockeys.id)
 #
-

@@ -7,6 +7,7 @@ class Racing::RaceDayUpdaterJob < ApplicationJob
     claimed = Racing::ClaimsProcessor.new.process_claims(date:)
     result[:injuries] = injuries
     result[:claims] = claimed
+    Racing::FutureRaceEntry.joins(:race).where(race: { date: }).delete_all
     Racing::RaceEntry.joins(:race).where(race: { date: }).delete_all
     Racing::RaceScheduleUpdater.new.update_schedule
     store_job_info(outcome: result)
