@@ -14,7 +14,7 @@ set :rbenv_ruby, "3.4.5"
 append :linked_files, "config/database.yml", ".rbenv-vars", ".nvmrc"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpacker", "public/system",
   "vendor", "storage", ".bundle", "public/uploads", "public/vite"
-append :assets_manifests, "public/vite/.vite/manifest*.*"
+append :assets_manifests, "public/vite/manifest*.*"
 
 SSHKit.config.command_map[:npm] = "/home/www/.nvm/versions/node/v25.1.0/bin/npm"
 SSHKit.config.command_map[:node] = "/home/www/.nvm/versions/node/v25.1.0/bin/node"
