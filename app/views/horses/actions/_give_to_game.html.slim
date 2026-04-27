@@ -1,3 +1,3 @@
 = link_to t("horse.actions.give_to_game"), horse_owner_path(object), class: classes,
         data: { turbo_method: :put, turbo_confirm: t("horse.give_to_game.confirm", name: object.name),
-                turbo_confirm_title: t("horse.give_to_game.confirm_title"), turbo_frame: "modal" }
+                turbo_confirm_title: t("horse.give_to_game.confirm_title"), turbo_frame: "_top" }
