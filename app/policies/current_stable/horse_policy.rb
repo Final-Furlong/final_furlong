@@ -16,6 +16,13 @@ module CurrentStable
       true
     end
 
+    def give_to_game?
+      return false if record.deceased?
+      return false if record.stillborn?
+
+      owner?
+    end
+
     def geld?
       false # TODO: implement gelding
       # return false unless owner? || admin?

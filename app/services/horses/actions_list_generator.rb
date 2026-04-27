@@ -31,6 +31,7 @@ module Horses
         { key: :view_in_old_app },
         { key: :geld },
         { key: :change_status },
+        { key: :give_to_game },
         { key: :ship },
         { key: :change_owner, policy: Admin::HorsePolicy },
         { key: :create_lease_offer, policy: CurrentStable::LeaseOfferPolicy },
