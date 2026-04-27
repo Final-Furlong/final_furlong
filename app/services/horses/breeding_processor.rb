@@ -2,11 +2,19 @@ module Horses
   class BreedingProcessor < ApplicationService
     attr_reader :breeding, :mare, :stud
 
-    def do_breeding(breeding:, mare:, stud:)
+    def do_breeding(breeding:, mare:, stud:, day: nil)
       @breeding = breeding
       @mare = mare
       @stud = stud
       breeding.stud = stud
+      if day.present?
+        @breeding.date = Date.new(@breeding.date.year, @breeding.date.month, day.to_i)
+      end
+
+      if breeding.date < Date.current
+        result.error = error("date_in_past")
+        return result
+      end
 
       result = Result.new(breeding:)
       if breeding.status == "bred"
@@ -27,6 +35,16 @@ module Horses
 
       if breeding.stable != mare.manager
         result.error = error("mare_not_eligible")
+        return result
+      end
+
+      if mare.broodmare.current_location != breeding.stud.manager
+        result.error = error("mare_needs_shipping")
+        return result
+      end
+
+      if mare.broodmare.in_transit?
+        result.error = error("mare_in_transit")
         return result
       end
 

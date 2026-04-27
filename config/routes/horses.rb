@@ -8,17 +8,19 @@ resources :horses, except: %i[new create destroy] do
     resources :boardings, only: %i[index new create destroy]
     resources :future_races, except: :new
     get "future_races/:race_id/new", to: "future_races#new", as: :new_future_race
+    resources :mare_bookings
     resources :stud_bookings do
       collection do
         get "/stable_dependent_fields/:stable_id/:slot_id", to: "stud_bookings#stable_dependent_fields", as: :stable_dependent_fields
       end
-      # get :stable_dependent_fields, on: :collection
     end
   end
   member do
     get :image
     get :thumbnail
     get :edit_name
+    get "foal/:booking_id", to: "horse/foals#new", as: :new_foal
+    post "foal/:booking_id", to: "horse/foals#create", as: :foal
     scope module: :horse, as: "horse" do
       resource :auction_consignment, only: %i[new create]
       resources :events, only: :index

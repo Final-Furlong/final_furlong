@@ -44,6 +44,14 @@
         p.mx-auto= t(".loading_foals")
         .mt-2.mx-auto.skeleton.w-full
 
+  - if CurrentStable::BroodmarePolicy.new(Current.user, horse).breed?
+    input.tab[ type="radio" name="horse" aria-label=t(".mare_bookings") id="mare-bookings" ]
+    .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+      = turbo_frame_tag "#{@horse.slug}-mare-bookings", src: horse_mare_bookings_path(@horse), loading: "lazy" do
+        .w-full.text-center
+          p.mx-auto= t(".loading_mare_bookings")
+          .mt-2.mx-auto.skeleton.w-full
+
   - if CurrentStable::StallionPolicy.new(Current.user, horse).manage_bookings?
     input.tab[ type="radio" name="horse" aria-label=t(".stud_bookings") id="stud-bookings" ]
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
