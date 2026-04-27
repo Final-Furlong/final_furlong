@@ -237,7 +237,7 @@ en:
         failure: The scheduled entry for %{name} could not be updated
         success: The scheduled entry for %{name} was successfully updated
     give_to_game:
-      confirm: Are you sure you want to give %{name} to Final Furlong?
+      confirm: Are you sure you want to give %{name} to Final Furlong? You will not be paid for this horse.
       confirm_title: Transfer to Final Furlong
     height: "%{height}h"
     in_foal: in foal
