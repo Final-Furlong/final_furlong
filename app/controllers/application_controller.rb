@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   allow_browser versions: :modern
-  impersonates :user, method: :current_user, with: ->(id) { Account::User.find_by(id:) }
+  impersonates :user, method: :current_user, with: ->(id) { Account::User.includes(:stable, :setting).find_by(id:) }
 
   layout :pick_layout
 

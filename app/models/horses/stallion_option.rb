@@ -10,6 +10,8 @@ module Horses
     scope :no_approval, -> { where(approval_required: false) }
     scope :approval, -> { no_approval.invert_where }
     scope :outside_mares_allowed, -> { where("outside_mares_allowed > 0") }
+    scope :bookings_available, -> { where(total_booked_count: ...Config::Breedings.max_mares_per_year) }
+    scope :outside_bookings_available, -> { where("outside_mares_allowed > outside_mares_count") }
   end
 end
 
@@ -22,8 +24,10 @@ end
 #  approval_required        :boolean          default(FALSE), not null, indexed
 #  breed_to_game_mares      :boolean          default(FALSE), not null, indexed
 #  outside_mares_allowed    :integer          default(0), not null, indexed
+#  outside_mares_count      :integer          default(0), not null, indexed
 #  outside_mares_per_stable :integer          default(0), not null, indexed
 #  stud_fee                 :integer          default(0), not null, indexed
+#  total_booked_count       :integer          default(0), not null, indexed
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #  stud_id                  :bigint           not null, uniquely indexed
@@ -33,9 +37,11 @@ end
 #  index_stallion_options_on_approval_required         (approval_required)
 #  index_stallion_options_on_breed_to_game_mares       (breed_to_game_mares)
 #  index_stallion_options_on_outside_mares_allowed     (outside_mares_allowed)
+#  index_stallion_options_on_outside_mares_count       (outside_mares_count)
 #  index_stallion_options_on_outside_mares_per_stable  (outside_mares_per_stable)
 #  index_stallion_options_on_stud_fee                  (stud_fee)
 #  index_stallion_options_on_stud_id                   (stud_id) UNIQUE
+#  index_stallion_options_on_total_booked_count        (total_booked_count)
 #
 # Foreign Keys
 #
