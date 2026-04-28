@@ -329,6 +329,8 @@ GEM
       rspec (>= 3.6)
     formatador (1.2.3)
       reline
+    freezolite (0.6.0)
+      require-hooks (~> 0.2)
     friendly_id (5.6.0)
       activerecord (>= 4.0.0)
     fspath (3.1.2)
@@ -552,6 +554,7 @@ GEM
       mustermann (>= 1.0.0)
     mysql2 (0.5.7)
       bigdecimal
+    n_plus_one_control (0.8.0)
     nanoid (2.0.0)
     nenv (0.3.0)
     net-imap (0.6.3)
@@ -725,6 +728,7 @@ GEM
       rack (>= 1.4)
     requestjs-rails (0.0.14)
       railties (>= 7.1.0)
+    require-hooks (0.3.0)
     responders (3.2.0)
       actionpack (>= 7.0)
       railties (>= 7.0)
@@ -741,6 +745,8 @@ GEM
     rspec-expectations (3.13.5)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
+    rspec-instafail (1.0.0)
+      rspec
     rspec-mocks (3.13.7)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
@@ -1019,6 +1025,7 @@ GEM
     yard-solargraph (0.1.0)
       yard (~> 0.9)
     zeitwerk (2.7.5)
+    zonebie (0.6.1)
 
 PLATFORMS
   aarch64-linux
@@ -1083,6 +1090,7 @@ DEPENDENCIES
   fixture_factory
   flag_shih_tzu
   flatware-rspec
+  freezolite
   friendly_id
   good_migrations
   grape
@@ -1109,6 +1117,7 @@ DEPENDENCIES
   mailtrap
   mission_control-jobs
   mysql2
+  n_plus_one_control
   nanoid
   net-ssh
   pagy
@@ -1133,6 +1142,7 @@ DEPENDENCIES
   requestjs-rails
   responders
   rspec
+  rspec-instafail
   rspec-rails
   rspec_junit_formatter
   rubocop
@@ -1183,6 +1193,7 @@ DEPENDENCIES
   whenever-test
   yaaf
   yalphabetize
+  zonebie
 
 CHECKSUMS
   action_text-trix (2.1.18) sha256=3fdb83f8bff4145d098be283cdd47ac41caf5110bfa6df4695ed7127d7fb3642
@@ -1301,6 +1312,7 @@ CHECKSUMS
   flatware (2.3.4) sha256=33464fc43fb7bae4cb13e44787f5b7dc63515f3a6280acc26667c5d2ffa5d41b
   flatware-rspec (2.3.4) sha256=cba63a6ea683a4249af749980677b3942e79af5c6ef40c10c6a62dac689413bf
   formatador (1.2.3) sha256=19fa898133c2c26cdbb5d09f6998c1e137ad9427a046663e55adfe18b950d894
+  freezolite (0.6.0) sha256=a1305e324738633a30904b50f085bebe7b43c64ebc1e23ce848ee0eeaf3b1dfd
   friendly_id (5.6.0) sha256=28e221cd53fbd21586321164c1c6fd0c9ba8dde13969cb2363679f44726bb0c3
   fspath (3.1.2) sha256=b5ac9bafb97e2c8f8f9e303cd98ebd484be76fe9aa588bc4d01c6d99e78c9d75
   fugit (1.12.1) sha256=5898f478ede9b415f0804e42b8f3fd53f814bd85eebffceebdbc34e1107aaf68
@@ -1379,6 +1391,7 @@ CHECKSUMS
   mustermann (3.0.4) sha256=85fadcb6b3c6493a8b511b42426f904b7f27b282835502233dd154daab13aa22
   mustermann-grape (1.1.0) sha256=8d258a986004c8f01ce4c023c0b037c168a9ed889cf5778068ad54398fa458c5
   mysql2 (0.5.7) sha256=ba09ede515a0ae8a7192040a1b778c0fb0f025fa5877e9be895cd325fa5e9d7b
+  n_plus_one_control (0.8.0) sha256=09da5475051afbc9ec3046ed41bfa7327ffad09b34e5d15d46120cb93ab7d266
   nanoid (2.0.0) sha256=78a5c93c1595981fb37712a166d7ea1ef15a679553e5d3c72337f231febd8bfc
   nenv (0.3.0) sha256=d9de6d8fb7072228463bf61843159419c969edb34b3cef51832b516ae7972765
   net-imap (0.6.3) sha256=9bab75f876596d09ee7bf911a291da478e0cd6badc54dfb82874855ccc82f2ad
@@ -1457,6 +1470,7 @@ CHECKSUMS
   reline (0.6.3) sha256=1198b04973565b36ec0f11542ab3f5cfeeec34823f4e54cebde90968092b1835
   request_store (1.7.0) sha256=e1b75d5346a315f452242a68c937ef8e48b215b9453a77a6c0acdca2934c88cb
   requestjs-rails (0.0.14) sha256=bb494198993b9bf136adeeffa3594c0143c7d16c7de4485c5e20d9c126e69a2d
+  require-hooks (0.3.0) sha256=af049b153a4d32ad7beadf085b8fe8943662e88c7bbabc589214fccda2f2e629
   responders (3.2.0) sha256=89c2d6ac0ae16f6458a11524cae4a8efdceba1a3baea164d28ee9046bd3df55a
   reverse_markdown (3.0.2) sha256=818ebb92ce39dbb1a291690dd1ec9a6d62530d4725296b17e9c8f668f9a5b8af
   rexml (3.4.4) sha256=19e0a2c3425dfbf2d4fc1189747bdb2f849b6c5e74180401b15734bc97b5d142
@@ -1464,6 +1478,7 @@ CHECKSUMS
   rspec (3.13.2) sha256=206284a08ad798e61f86d7ca3e376718d52c0bc944626b2349266f239f820587
   rspec-core (3.13.6) sha256=a8823c6411667b60a8bca135364351dda34cd55e44ff94c4be4633b37d828b2d
   rspec-expectations (3.13.5) sha256=33a4d3a1d95060aea4c94e9f237030a8f9eae5615e9bd85718fe3a09e4b58836
+  rspec-instafail (1.0.0) sha256=591f8fa73a081ef902daa6ed31bf6ca29aa754d0f5d755a659b0c786473eb05f
   rspec-mocks (3.13.7) sha256=0979034e64b1d7a838aaaddf12bf065ea4dc40ef3d4c39f01f93ae2c66c62b1c
   rspec-rails (8.0.2) sha256=113139a53f5d068d4f48d1c29ad5f982013ed9b0daa69d7f7b266eda5d433ace
   rspec-support (3.13.7) sha256=0640e5570872aafefd79867901deeeeb40b0c9875a36b983d85f54fb7381c47c
@@ -1567,6 +1582,7 @@ CHECKSUMS
   yard-activesupport-concern (0.0.1) sha256=be790cb0efc23e2e87677063598ac8b743586154657bbd9655a7f03ce78390ef
   yard-solargraph (0.1.0) sha256=a19a4619c942181a618fb9458970a9d2534cf7fda69fc43949629a7948a5930e
   zeitwerk (2.7.5) sha256=d8da92128c09ea6ec62c949011b00ed4a20242b255293dd66bf41545398f73dd
+  zonebie (0.6.1) sha256=2762da3b5392a6a81d58ab13ae497c93e1dbdbd0c70bd8b4a9397f827be35e69
 
 RUBY VERSION
    ruby 3.4.5p51

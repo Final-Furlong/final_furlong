@@ -9,6 +9,8 @@ require "capybara/rspec"
 require "faker"
 require "pundit/matchers"
 require "support/rspec_show_expectations"
+require "n_plus_one_control/rspec"
+require "zonebie/rspec"
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -40,4 +42,3 @@ RSpec.configure do |config|
 
   Kernel.srand config.seed
 end
-

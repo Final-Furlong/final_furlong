@@ -10,7 +10,6 @@ gem "solid_cache" # A database-backed ActiveSupport::Cache::Store [https://githu
 gem "solid_queue" # A database-backed ActiveJob backend [https://github.com/rails/solid_queue]
 
 # Backend
-gem "bootsnap", require: false # Reduces boot times through caching; required in config/boot.rb
 gem "puma" # Use the Puma web server [https://github.com/puma/puma]
 
 # Asset management
@@ -106,6 +105,7 @@ group :development do
   gem "bcrypt_pbkdf" # required for capistran
   gem "benchmark"
   gem "better_errors"
+  gem "bootsnap", require: false # Reduces boot times through caching; required in config/boot.rb
   gem "byebug"
   gem "capistrano", "~> 3.17", require: false
   gem "capistrano-bundler", "~> 2.0", require: false
@@ -115,6 +115,7 @@ group :development do
   gem "capistrano-rails", "~> 1.3", require: false
   gem "capistrano-rbenv", "~> 2.2", require: false
   gem "ed25519", require: false # required for capistrano
+  gem "freezolite"
   gem "good_migrations"
   gem "guard", require: false
   gem "guard-bundler", require: false
@@ -171,8 +172,10 @@ group :test do
   gem "cuprite"
   gem "flatware-rspec", require: false
   gem "i18n-spec"
+  gem "n_plus_one_control"
   gem "pundit-matchers"
   gem "rspec"
+  gem "rspec-instafail"
   gem "rspec_junit_formatter"
   gem "rspec-rails"
   gem "selenium-webdriver"
@@ -184,8 +187,10 @@ group :test do
   gem "test-prof"
   gem "undercover", require: false
   gem "whenever-test"
+  gem "zonebie"
 end
 
 group :tools do
   gem "colorize", require: false
 end
+
