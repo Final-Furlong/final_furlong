@@ -119,21 +119,27 @@ module Racing
     end
 
     def calculate_earnings(purse, finish_position)
+      return 0 if finish_position > Config::Racing.purses.size
       return 0 unless Config::Racing.purses[finish_position - 1]
 
       (purse * Config::Racing.purses[finish_position - 1]).to_i
     end
 
     def calculate_points(finish, race_result)
-      if race_result.stakes?
-        Config::Racing.points[:stakes][finish - 1]
+      points_array = if race_result.stakes?
+        Config::Racing.points[:stakes]
       elsif race_result.allowance?
-        Config::Racing.points[:allowance][finish - 1]
+        Config::Racing.points[:allowance]
       elsif race_result.claiming?
-        Config::Racing.points[:claiming][finish - 1]
+        Config::Racing.points[:claiming]
       elsif race_result.maiden?
-        Config::Racing.points[:maiden][finish - 1]
+        Config::Racing.points[:maiden]
+      else
+        []
       end
+      return 0 if finish > points_array.size
+
+      points_array[finish - 1]
     end
 
     def process_race_horses(race_result:, horses:)

@@ -1,5 +1,8 @@
 RSpec.describe Racing::RaceRecordUpdater do
   it "triggers view updates" do
+    Racing::RaceRecord.refresh
+    Racing::AnnualRaceRecord.refresh
+    Racing::LifetimeRaceRecord.refresh
     allow(Racing::RaceRecord).to receive(:refresh)
     allow(Racing::AnnualRaceRecord).to receive(:refresh)
     allow(Racing::LifetimeRaceRecord).to receive(:refresh)
