@@ -28,6 +28,7 @@ module Racing
     scope :by_day, ->(day) { where("DATE_PART('Day', date) = ?", day) }
     scope :by_month, ->(month) { where("DATE_PART('Month', date) = ?", month) }
     scope :by_year, ->(year) { where("DATE_PART('Year', date) = ?", year) }
+    scope :current_year, -> { by_year(Date.current.year) }
     scope :by_track, ->(track) { joins(:track_surface).merge(TrackSurface.send(track.to_sym)) }
     scope :by_type, ->(type) { where(race_type: type) }
     scope :not_types, ->(types) {

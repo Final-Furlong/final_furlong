@@ -63,6 +63,7 @@ module Horses
         breeding.status = "bred"
         breeding.due_date = breeding.pick_due_date
         if breeding.save!
+          stud.stud_options.increment!(:outside_mares_count) if stud.manager != mare.manager
           result.updated = true
           result.breeding = breeding
         else
@@ -95,4 +96,3 @@ module Horses
     end
   end
 end
-
