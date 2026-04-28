@@ -119,10 +119,12 @@ end
 #  age                                                                                                                :integer          default(0), not null, indexed, indexed => [status]
 #  date_of_birth                                                                                                      :date             not null, indexed, indexed => [leaser_id], indexed => [owner_id]
 #  date_of_death                                                                                                      :date             indexed
+#  dosage_abbr                                                                                                        :string
 #  gender(colt, filly, mare, stallion, gelding)                                                                       :enum             not null, indexed, indexed => [status]
 #  name                                                                                                               :string(18)       indexed, indexed => [status]
 #  slug                                                                                                               :string           indexed
 #  status(unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased) :enum             default("unborn"), not null, indexed => [owner_id], indexed => [age], indexed => [breeder_id], indexed => [dam_id], indexed => [gender], indexed => [leaser_id], indexed => [name], indexed => [owner_id], indexed => [sire_id]
+#  title_abbr                                                                                                         :string
 #  created_at                                                                                                         :datetime         not null
 #  updated_at                                                                                                         :datetime         not null
 #  breeder_id                                                                                                         :bigint           not null, indexed, indexed => [status]

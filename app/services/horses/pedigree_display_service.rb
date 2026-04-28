@@ -24,7 +24,7 @@ module Horses
       return I18n.t("horse.created") if horse&.name.blank?
 
       name_elements = []
-      name_elements << horse.title_abbreviation if include_title
+      name_elements << horse.title_abbr if include_title
       name_elements << horse.name
       name_elements.compact_blank.join(" ")
     end

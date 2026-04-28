@@ -161,6 +161,8 @@ ActiveRecordDoctor.configure do
       "Horses::Horse.unborn_foals_count",
       "Horses::Stallion.foals_count",
       "Horses::Stallion.unborn_foals_count",
+      "Horses::Stallion.outside_mares_count",
+      "Horses::Stallion.total_booked_count",
       "Racing::TrainingSchedule.horses_count",
       "Racing::TrainingSchedule.sunday_activities",
       "Racing::TrainingSchedule.monday_activities",
