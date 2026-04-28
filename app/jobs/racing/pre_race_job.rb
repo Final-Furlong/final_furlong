@@ -34,7 +34,7 @@ class Racing::PreRaceJob < ApplicationJob
     attrs[:jockey] = pick_jockey(entry, race, taken_jockey_ids) if entry.jockey.blank?
     attrs[:odd] = pick_odd(entry, race) if entry.odd.blank?
     entry.update(attrs)
-    attrs[:weight] = pick_weight(entry, race) unless entry.weight.to_i.zero?
+    attrs[:weight] = pick_weight(entry, race) if entry.weight.to_i.zero?
     entry.update!(attrs)
     entry.jockey_id
   end
