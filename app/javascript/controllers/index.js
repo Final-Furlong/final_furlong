@@ -7,6 +7,7 @@ import { application } from "./application"
 import CountdownController from "./countdown_controller"
 import DependentFieldsController from "./dependent_fields_controller"
 import DynamicSelectController from "./dynamic_select_controller"
+import MareBookingController from "./mare_booking_controller"
 import NotificationController from "./notification_controller"
 import Pwa__WebPushDemoController from "./pwa/web_push_demo_controller"
 import Pwa__WebPushSubscriptionController from "./pwa/web_push_subscription_controller"
@@ -17,6 +18,7 @@ application.register("clipboard", Clipboard)
 application.register("countdown", CountdownController)
 application.register("dependent-fields", DependentFieldsController)
 application.register("dynamic-select", DynamicSelectController)
+application.register("mare-booking", MareBookingController)
 application.register("notification", NotificationController)
 application.register("pwa--web-push-demo", Pwa__WebPushDemoController)
 application.register("pwa--web-push-subscription", Pwa__WebPushSubscriptionController)

@@ -8,7 +8,13 @@ resources :horses, except: %i[new create destroy] do
     resources :boardings, only: %i[index new create destroy]
     resources :future_races, except: :new
     get "future_races/:race_id/new", to: "future_races#new", as: :new_future_race
-    resources :mare_bookings
+    resources :mare_bookings, except: :show do
+      collection do
+        get "/month_dependent_fields/:stud_id", to: "mare_bookings#month_dependent_fields", as: :month_dependent_fields
+      end
+    end
+    get "mare_bookings/pick_date", to: "mare_bookings#pick_date", as: :mare_bookings_pick_date
+    get "mare_bookings/request_booking", to: "mare_bookings#request_booking", as: :mare_bookings_request_booking
     resources :stud_bookings do
       collection do
         get "/stable_dependent_fields/:stable_id/:slot_id", to: "stud_bookings#stable_dependent_fields", as: :stable_dependent_fields
