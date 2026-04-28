@@ -1,0 +1,26 @@
+/# locals: (booking:)
+- stud = booking.stud
+- slot = booking.slot
+tr
+  td= "#{slot.formatted_start_day} - #{slot}"
+  td= link_to stud.name_with_title, horse_path(stud), data: { turbo_frame: "_top" }
+  td= Game::MoneyFormatter.new(booking.fee)
+  td= t(".#{booking.status}")
+  td
+    - if booking.pending?
+      span.badge.badge-warning.badge-outline= t(".pending")
+    - elsif booking.denied?
+      span.badge.badge-warning.badge-error= t(".denied")
+    - elsif booking.bred?
+      span.badge.badge-success.badge-error= t(".bred")
+    - elsif slot.date >= Date.current && CurrentStable::FoalPolicy.new(Current.user, @horse).create?
+      - if @horse.broodmare.current_location == booking.stud.manager && !@horse.broodmare.in_transit?
+        = render Ui::ButtonizedLink::Component.new(url: new_foal_horse_path(@horse, booking), style: :outline, size: :small, data: { turbo_frame: "modal" }) do
+          = t(".breed")
+      - elsif @horse.broodmare.in_transit?
+        span.badge.badge-info.badge-outline= t(".in_transit")
+      - else
+        = render Ui::ButtonizedLink::Component.new(url: new_horse_shipment_path(@horse, end_farm_id: booking.stud.manager_id), color: :warning, style: :outline, size: :small, data: { turbo_frame: "modal" }) do
+          = t(".ship", stable: booking.stud.manager.name)
+    - else
+      span.badge.badge-error.badge-outline= t(".missed")

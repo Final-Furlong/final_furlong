@@ -30,6 +30,8 @@ module Horses
     scope :missed, -> { joins(:slot).merge(::Breeding::Slot.missed) }
     scope :ordered_by_status, -> { in_order_of(:status, %w[bred approved pending denied]) }
     scope :available_for_mare, ->(mare) { where("(mare_id = ? OR (mare_id IS NULL AND open_booking = TRUE AND stable_id = ?))", mare.id, mare.manager_id) }
+    scope :bookings_available, ->(slot) { current_year.not_denied.where(slot:).group(:stud_id, :slot_id).having("count(*) < 2") }
+    scope :no_bookings, ->(slot) { current_year.not_denied.where(slot:).distinct(:stud_id) }
 
     def self.ransackable_attributes(_auth_object = nil)
       %w[date due_date fee mare_id status stud_id year]

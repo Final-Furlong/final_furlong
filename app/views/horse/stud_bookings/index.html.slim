@@ -31,7 +31,7 @@
     tbody
       - Breeding::Slot.ordered.each do |slot|
         - next if raced_this_year && slot.month < min_breed_date.month
-        - next if raced_this_year && slot.end_day < min_breed_date.day
+        - next if raced_this_year && slot.month == min_breed_date.month && slot.end_day < min_breed_date.day
         - bred_count = 0
         - mares_count = 0
         - Horses::Breeding.current_year.bred.where(slot:, stud: @horse).includes(mare: :lifetime_race_record).each do |breeding|

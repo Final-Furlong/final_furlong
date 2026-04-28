@@ -232,6 +232,12 @@ module Horses
       "#{name} (#{[location, boarding_available_days].join(" - ")})"
     end
 
+    def name_with_owner_fee
+      return name_with_title unless stud?
+
+      [name_with_title, manager.name, Game::MoneyFormatter.new(stud_options.stud_fee)].join(" - ")
+    end
+
     def boarding_available_days
       data = race_metadata
       return 0 if data.blank?
