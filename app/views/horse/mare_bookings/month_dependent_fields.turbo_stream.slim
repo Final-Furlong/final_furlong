@@ -1,0 +1,2 @@
+= capture_for_dynamic_fields(@breeding) do |form|
+  = turbo_stream.replace 'month_dependent_fields', partial: "day_select", locals: { f: form, horse: @breeding.horse, booking: @breeding }

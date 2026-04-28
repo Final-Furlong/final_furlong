@@ -1,0 +1,20 @@
+/# locals: (mare:, stud:, error: nil)
+- booking = Horses::Breeding.new(mare:, stud:)
+= form_with model: booking, url: horse_mare_bookings_path(mare), id: "mare-booking-form", html: { class: "form", novalidate: true },
+  data: { turbo_frame: "_top", controller: 'mare-booking dependent-fields', 'mare-booking-slots-url-value' => month_dependent_fields_horse_mare_bookings_url(mare.id, stud.id, ':month'),
+          'mare-booking-selected-slot-id-value' => booking.slot_id, 'mare-booking-month-placeholder-value' => t("horse.mare_bookings.new.month_select"),
+          'mare-booking-day-placeholder-value' => t("horse.mare_bookings.new.day_select") } do |f|
+  p.text-lg= t("horse.mare_bookings.new.stud", name: stud.name)
+  - unless error.blank?
+    p.alert.alert-error.alert-outline= error
+
+  div
+    fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+      legend.fieldset-legend= t("horse.mare_bookings.new.month_select")
+      label.label
+        = f.select :month, options_for_select(booking.options_for_month_select, booking.slot&.month), { prompt: t("horse.mare_bookings.new.month_select") }, { class: 'select',
+          data: { mare_booking_target: "month", action: "change->mare-booking#monthChanged", dependent_fields_target: "hasDependents", dependant_turbo_frame_selector: '#month_dependent_fields' } }
+        - if booking.errors[:slot]
+          p.text-error= booking.errors.where(:slot).map(&:full_message).join(', ')
+
+  = render "day_select", booking:, f:, horse: mare, stud:
