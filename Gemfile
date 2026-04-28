@@ -46,11 +46,11 @@ gem "net-ssh"
 gem "rack-cors"
 gem "rails-i18n"
 gem "ransack", github: "activerecord-hackery/ransack", branch: "v5.0.0"
-# gem "ransack"
 gem "requestjs-rails"
 gem "responders"
 gem "sentry-rails"
 gem "sentry-ruby"
+gem "silencer", require: ["silencer/rails/logger"]
 gem "turnout"
 gem "web-push"
 gem "whenever", require: false
@@ -189,4 +189,3 @@ end
 group :tools do
   gem "colorize", require: false
 end
-
