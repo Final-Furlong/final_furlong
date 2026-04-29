@@ -329,6 +329,19 @@ en:
         missed: Booking Date Missed
         pending: Pending
         ship: Ship to %{stable}
+      create:
+        failure: Could not create booking to %{name}
+        success: Booking to %{name} was successfully created
+      errors:
+        approval_required: This stud requires approval to breed
+        bookings_full: This stud has no free bookings
+        cannot_afford_fee: You cannot afford the stud fee
+        date_in_past: Cannot breed on a date in the past!
+        mare_not_old_enough: Mare is not old enough to breed
+        outside_mare_limit_met: This stud has no free bookings for outside mares
+        outside_mare_limit_met_current_stable: You must request approval to breed as you have already bred the max mares to this stud
+        slot_missing: Cannot breed without a date!
+        stud_not_old_enough: Stud is not old enough to breed
       index:
         date: Date
         fee: Fee
