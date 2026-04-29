@@ -3,13 +3,13 @@ module Workouts
     attr_reader :horse, :workout
 
     def create_workout(horse:, jockey:, surface:, params: {}, date: Date.current, auto: false)
-      params = params.to_h.deep_symbolize_keys
-      activity1 = params.dig(:activities_attributes, :"0", :activity)
-      distance1 = params.dig(:activities_attributes, :"0", :distance)
-      activity2 = params.dig(:activities_attributes, :"1", :activity)
-      distance2 = params.dig(:activities_attributes, :"1", :distance)
-      activity3 = params.dig(:activities_attributes, :"2", :activity)
-      distance3 = params.dig(:activities_attributes, :"2", :distance)
+      params = params.to_h.deep_symbolize_keys if params.key?("activities_attributes")
+      activity1 = params[:activities_attributes].first[:activity]
+      distance1 = params[:activities_attributes].first[:distance]
+      activity2 = (params[:activities_attributes].size > 1) ? params[:activities_attributes].second[:activity] : nil
+      distance2 = (params[:activities_attributes].size > 1) ? params[:activities_attributes].second[:distance] : nil
+      activity3 = (params[:activities_attributes].size > 2) ? params[:activities_attributes].third[:activity] : nil
+      distance3 = (params[:activities_attributes].size > 2) ? params[:activities_attributes].third[:distance] : nil
       effort = params[:effort]
 
       @horse = horse

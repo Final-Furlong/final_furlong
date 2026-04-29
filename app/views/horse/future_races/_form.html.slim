@@ -11,6 +11,11 @@
     p.px-4.text-warning
       i.ph.ph-fill.ph-warning.mr-2
       = t("horse.future_races.index.min_days_not_met", days: @min_days)
+  - if (note = entry.horse.race_options&.note_for_next_race)
+    p.px-4.text-warning
+      i.ph.ph-fill.ph-warning.mr-2
+      = t("horse.entries.entries.note_for_next_race")
+      = note
   - unless error.blank?
     p.alert.alert-error= error
   = f.hidden_field :race_id, value: entry.race_id
