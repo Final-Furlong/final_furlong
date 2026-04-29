@@ -1,11 +1,12 @@
 /# locals: (booking:)
 - stud = booking.stud
 - slot = booking.slot
+- text_class = booking.approved? || booking.bred? ? "success" : (booking.pending? ? "info" : "error")
 tr
   td= "#{slot.formatted_start_day} - #{slot}"
   td= link_to stud.name_with_title, horse_path(stud), data: { turbo_frame: "_top" }
   td= Game::MoneyFormatter.new(booking.fee)
-  td= t(".#{booking.status}")
+  td class="text-#{text_class}"= t(".#{booking.status}")
   td
     - if booking.pending?
       span.badge.badge-warning.badge-outline= t(".pending")

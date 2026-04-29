@@ -2,7 +2,7 @@ module CurrentStable
   class BroodmarePolicy < ApplicationPolicy
     def breed?
       return false unless record.broodmare?
-      return false if record.next_foal
+      return false if Horses::Breeding.in_foal.exists?(mare: record)
       return false unless record.age >= Config::Breedings.min_age
 
       manager?
