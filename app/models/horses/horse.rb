@@ -173,9 +173,12 @@ module Horses
     scope :min_workouts_since_last_race, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.min_workouts(value)) }
     scope :max_workouts_since_last_race, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.max_workouts(value)) }
     scope :random_order, -> { order("RANDOM()") }
+    scope :stud_available_for_stable, ->(stable) {
+      joins(:stud_options).where(manager: stable).merge(Horses::StallionOption.bookings_available)
+        .or(joins(:stud_options).merge(Horses::StallionOption.outside_bookings_available))
+    }
 
     delegate :title, :breeding_record, :dosage_text, :track_record, to: :horse_attributes, allow_nil: true
-    delegate :title_abbreviation, to: :lifetime_race_record, allow_nil: true
 
     # broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
 
@@ -219,7 +222,7 @@ module Horses
       return I18n.t("horse.unnamed") if name.blank?
 
       list = []
-      list << title_abbreviation if title_abbreviation.present?
+      list << title_abbr if title_abbr.present?
       list << name
       list.join(" ")
     end
@@ -329,10 +332,12 @@ end
 #  age                                                                                                                :integer          default(0), not null, indexed, indexed => [status]
 #  date_of_birth                                                                                                      :date             not null, indexed, indexed => [leaser_id], indexed => [owner_id]
 #  date_of_death                                                                                                      :date             indexed
+#  dosage_abbr                                                                                                        :string
 #  gender(colt, filly, mare, stallion, gelding)                                                                       :enum             not null, indexed, indexed => [status]
 #  name                                                                                                               :string(18)       indexed, indexed => [status]
 #  slug                                                                                                               :string           indexed
 #  status(unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased) :enum             default("unborn"), not null, indexed => [owner_id], indexed => [age], indexed => [breeder_id], indexed => [dam_id], indexed => [gender], indexed => [leaser_id], indexed => [name], indexed => [owner_id], indexed => [sire_id]
+#  title_abbr                                                                                                         :string
 #  created_at                                                                                                         :datetime         not null
 #  updated_at                                                                                                         :datetime         not null
 #  breeder_id                                                                                                         :bigint           not null, indexed, indexed => [status]
