@@ -65,16 +65,10 @@ class Workouts::AutoWorkoutJob < ApplicationJob
             # go ahead
           end
           racetrack = data.racetrack
-          options = horse.race_options
           activities_list = [{ activity: activities.activity1, distance: activities.distance1 }]
           activities_list << { activity: activities.activity2, distance: activities.distance2 }
           activities_list << { activity: activities.activity3, distance: activities.distance3 }
-          params = { effort: Config::Workouts.default_effort, activities_attributes: activities_list }
-          params[:blinkers] = true if options.blinkers?
-          params[:wraps] = true if options.wraps?
-          params[:shadow_roll] = true if options.shadow_roll?
-          params[:figure_8] = true if options.figure_8?
-          params[:no_whip] = true if options.no_whip?
+          params = { effort: Config::Workouts.default_effort, activities_attributes: activities_list, equipment: horse.race_options&.equipment.to_i }
           result = Workouts::WorkoutCreator.new.create_workout(
             horse:,
             jockey: pick_jockey(horse),

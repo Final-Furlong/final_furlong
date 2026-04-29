@@ -17,11 +17,15 @@ module Workouts
 
       @workout = Workouts::Workout.new(horse:, date:, auto:)
       result = Result.new(created: false, workout: @workout)
-      workout.blinkers = params.key?(:blinkers)
-      workout.shadow_roll = params.key?(:shadow_roll)
-      workout.wraps = params.key?(:wraps)
-      workout.figure_8 = params.key?(:figure_8)
-      workout.no_whip = params.key?(:no_whip)
+      if params.key?(:equipment)
+        workout.equipment = params[:equipment]
+      else
+        workout.blinkers = params.key?(:blinkers)
+        workout.shadow_roll = params.key?(:shadow_roll)
+        workout.wraps = params.key?(:wraps)
+        workout.figure_8 = params.key?(:figure_8)
+        workout.no_whip = params.key?(:no_whip)
+      end
       workout.jockey = jockey
       workout.condition = surface&.condition
       workout.surface = surface

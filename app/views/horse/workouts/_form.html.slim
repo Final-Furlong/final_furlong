@@ -17,7 +17,7 @@
     div
       fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
         legend.fieldset-legend= t(".jockey")
-        = f.select :jockey, options_for_select(options.jockeys_list, workout.jockey), { include_blank: true }, { class: "select w-full" }
+        = f.select :jockey, options_for_select(options.jockeys_list, workout.jockey_id), { include_blank: true }, { class: "select w-full" }
         - if workout.errors[:jockey]
           p.text-error= workout.errors.where(:jockey).map(&:full_message).join(', ')
     div
