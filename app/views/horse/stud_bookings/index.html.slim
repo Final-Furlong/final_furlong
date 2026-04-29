@@ -34,7 +34,7 @@
         - next if raced_this_year && slot.month == min_breed_date.month && slot.end_day < min_breed_date.day
         - bred_count = 0
         - mares_count = 0
-        - Horses::Breeding.current_year.bred.where(slot:, stud: @horse).includes(mare: :lifetime_race_record).each do |breeding|
+        - Horses::Breeding.current_year.bred.where(slot:, stud: @horse).includes(mare: :manager).each do |breeding|
           - mare = breeding.mare
           - bred_count += 1
           - mares_count += 1
@@ -46,7 +46,7 @@
             td data-sort="bred-#{breeding.date}"
               span.badge.badge-success.badge-outline= t(".bred", date: l(breeding.due_date))
         - if bred_count < Config::Breedings.mares_per_slot
-          - Horses::Breeding.current_year.not_bred.where(slot:, stud: @horse).includes(mare: :lifetime_race_record).each do |breeding|
+          - Horses::Breeding.current_year.not_bred.where(slot:, stud: @horse).includes(:mare).each do |breeding|
             - mare = breeding.mare
             - mares_count += 1
             tr

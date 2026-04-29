@@ -25,7 +25,7 @@
               span= "#{race.entries_count} #{Horses::Horse.model_name.human.pluralize(race.entries_count)}"
             .collapse-content.text-sm.border-t-1.border-base-content/40
               div
-                - race.entries.includes(:jockey, :odd, horse: [:owner, :lifetime_race_record, :sire, :dam, current_lease: :leaser]).order(post_parade: :asc).merge(Racing::RaceEntry.ordered_by_name).each do |entry|
+                - race.entries.includes(:jockey, :odd, horse: [:manager, :lifetime_race_record, :sire, :dam]).order(post_parade: :asc).merge(Racing::RaceEntry.ordered_by_name).each do |entry|
                   - horse = entry.horse
                   - pedigree = Horses::PedigreeDisplayService.new(horse)
                   .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
@@ -109,7 +109,7 @@
             - if race.claiming?
               th= t("racing.race.claim")
         tbody
-          - race.entries.includes(:jockey, :odd, horse: [:owner, :lifetime_race_record, :sire, :dam, current_lease: :leaser]).order(post_parade: :asc).merge(Racing::RaceEntry.ordered_by_name).each do |entry|
+          - race.entries.includes(:jockey, :odd, horse: [:manager, :lifetime_race_record, :sire, :dam]).order(post_parade: :asc).merge(Racing::RaceEntry.ordered_by_name).each do |entry|
             - horse = entry.horse
             - pedigree = Horses::PedigreeDisplayService.new(horse)
             tr

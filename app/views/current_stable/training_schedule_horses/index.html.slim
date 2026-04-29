@@ -8,7 +8,7 @@ hr.my-2
 
 .mx-auto.overflow-x-auto.w-full.sm:hidden
   p.text-center= t(".horse")
-  - horses.includes(:training_schedule, :lifetime_race_record).each do |horse|
+  - horses.includes(:training_schedule).each do |horse|
     .card.bg-base-100.w-full.px-2.rounded-none
       .card-body.p-0.rounded-none
         .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
@@ -39,7 +39,7 @@ hr.my-2
           td= t(".age_gender")
           td= t("common.actions.title")
       tbody
-        - horses.includes(:training_schedule, :lifetime_race_record).each do |horse|
+        - horses.includes(:training_schedule).each do |horse|
           - horse_schedule = horse.training_schedule
           tr
             td class="text-#{horse.gender.downcase}"

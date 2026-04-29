@@ -7,7 +7,7 @@ module Dashboard
       def initialize(horse:)
         @horse = horse
         if horse.female?
-          @born_foals = horse.foals.born.includes(:horse_attributes, :lifetime_race_record, sire: :lifetime_race_record).order(date_of_birth: :asc)
+          @born_foals = horse.foals.born.includes(:horse_attributes, :sire).order(date_of_birth: :asc)
           @unborn_foal = horse.next_foal
           @breeding_record = horse.broodmare_foal_record || horse.build_broodmare_foal_record
         else

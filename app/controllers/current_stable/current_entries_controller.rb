@@ -6,7 +6,7 @@ module CurrentStable
         @date = Date.parse(params[:date]) if params[:date]
         @query = @query.where(race: { date: @date })
       end
-      @query = @query.includes(race: { track_surface: :racetrack }, horse: :lifetime_race_record)
+      @query = @query.includes(horse: [:race_metadata, :manager], race: { track_surface: :racetrack })
       @query = @query.order(race: { date: :asc, number: :asc }, horse: { name: :asc })
 
       @pagy, @results = pagy(:offset, @query)

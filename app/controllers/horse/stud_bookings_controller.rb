@@ -1,7 +1,7 @@
 module Horse
   class StudBookingsController < ApplicationController
     def index
-      @horse = Horses::Horse.find(params[:horse_id])
+      @horse = Horses::Horse.includes(:manager).find(params[:horse_id])
       @bookings = policy_scope(Horses::Breeding.where(stud: @horse))
     end
 
