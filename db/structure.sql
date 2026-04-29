@@ -1364,7 +1364,9 @@ CREATE TABLE public.horses (
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
     leaser_id bigint,
-    manager_id bigint
+    manager_id bigint,
+    title_abbr character varying,
+    dosage_abbr character varying
 );
 
 
@@ -4708,7 +4710,9 @@ CREATE TABLE public.stallion_options (
     approval_required boolean DEFAULT false NOT NULL,
     breed_to_game_mares boolean DEFAULT false NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    outside_mares_count integer DEFAULT 0 NOT NULL,
+    total_booked_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -8803,6 +8807,13 @@ CREATE INDEX index_stallion_options_on_outside_mares_allowed ON public.stallion_
 
 
 --
+-- Name: index_stallion_options_on_outside_mares_count; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_stallion_options_on_outside_mares_count ON public.stallion_options USING btree (outside_mares_count);
+
+
+--
 -- Name: index_stallion_options_on_outside_mares_per_stable; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8821,6 +8832,13 @@ CREATE INDEX index_stallion_options_on_stud_fee ON public.stallion_options USING
 --
 
 CREATE UNIQUE INDEX index_stallion_options_on_stud_id ON public.stallion_options USING btree (stud_id);
+
+
+--
+-- Name: index_stallion_options_on_total_booked_count; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_stallion_options_on_total_booked_count ON public.stallion_options USING btree (total_booked_count);
 
 
 --
@@ -10292,6 +10310,9 @@ ALTER TABLE ONLY public.famous_studs
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260428165655'),
+('20260428134126'),
+('20260428123259'),
 ('20260426114022'),
 ('20260426105032'),
 ('20260424194935'),

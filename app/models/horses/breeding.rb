@@ -2,6 +2,8 @@ module Horses
   class Breeding < ApplicationRecord
     self.ignored_columns += [:legacy_id]
 
+    attr_accessor :message
+
     belongs_to :slot, class_name: "Breeding::Slot", inverse_of: :breedings, optional: true
     belongs_to :mare, class_name: "Horses::Horse", inverse_of: :next_foal, optional: true
     belongs_to :stud, class_name: "Horses::Horse", inverse_of: :breedings
@@ -24,6 +26,7 @@ module Horses
 
     scope :current_year, -> { by_year(Date.current.year) }
     scope :by_year, ->(year) { where(year:) }
+    scope :by_slot, ->(slot) { where(slot:) }
     scope :not_denied, -> { where.not(status: "denied") }
     scope :taken, -> { where(status: %w[approved bred]) }
     scope :not_missed, -> { joins(:slot).merge(::Breeding::Slot.not_missed) }
@@ -31,6 +34,7 @@ module Horses
     scope :ordered_by_status, -> { in_order_of(:status, %w[bred approved pending denied]) }
     scope :available_for_mare, ->(mare) { where("(mare_id = ? OR (mare_id IS NULL AND open_booking = TRUE AND stable_id = ?))", mare.id, mare.manager_id) }
     scope :bookings_available, ->(slot) { current_year.not_denied.where(slot:).group(:stud_id, :slot_id).having("count(*) < 2") }
+    scope :yearly_bookings_available, -> { current_year.not_denied.group(:stud_id).having("count(*) < 30") }
     scope :no_bookings, ->(slot) { current_year.not_denied.where(slot:).distinct(:stud_id) }
 
     def self.ransackable_attributes(_auth_object = nil)
@@ -61,6 +65,50 @@ module Horses
       date.day < slot.end_day
     end
 
+    def options_for_slot_select(stud)
+      self.stud = stud
+      slots = ::Breeding::Slot.where(month: min_date.month..).select do |slot|
+        (stud_last_raced_date.blank? || (stud_last_raced_date && (slot.month > stud_last_raced_date.month || slot.month == stud_last_raced_date.month && slot.end_day > stud_last_raced_date.day + 1.day))) &&
+          Horses::Breeding.current_year.by_slot(slot).where(stud:).taken.count < Config::Breedings.mares_per_slot
+      end
+      slots.map { |slot| ["#{slot.formatted_start_day} - #{slot}", slot.id] }
+    end
+
+    def options_for_month_select
+      min_date = [mare_last_raced_date, stud_last_raced_date].compact_blank.min
+      min_date ||= Date.current
+      min_date = Date.current if Date.current < min_date
+      months = ::Breeding::Slot.where(month: min_date.month..).select do |slot|
+        (stud_last_raced_date.blank? || (stud_last_raced_date && (slot.month > stud_last_raced_date.month || slot.month == stud_last_raced_date.month && slot.end_day > stud_last_raced_date.day + 1.day))) &&
+          Horses::Breeding.current_year.by_slot(slot).where(stud:).taken.count < Config::Breedings.mares_per_slot
+      end.map { |slot| [slot.month] }.flatten.uniq
+      months.map { |month| [I18n.t("date.month_names")[month], month] }
+    end
+
+    def options_for_day_select_based_on_month(month)
+      return [] if month.blank?
+
+      start_day = if min_date.month == month.to_i
+        Date.current.day
+      else
+        1
+      end
+      available_slots = ::Breeding::Slot.where(month:).order(start_day: :asc).select do |slot|
+        (stud_last_raced_date.blank? || (stud_last_raced_date && (slot.month > stud_last_raced_date.month || slot.month == stud_last_raced_date.month && slot.end_day > stud_last_raced_date.day + 1.day))) &&
+          Horses::Breeding.current_year.taken.where(slot:, stud:).count < Config::Breedings.mares_per_slot
+      end
+      if available_slots.all? { |slot| slot.start_day > start_day }
+        start_day = available_slots.first.start_day
+      end
+      end_day = Time.days_in_month(month.to_i, Date.current.year)
+      if available_slots.all? { |slot| slot.end_day < start_day }
+        end_day = available_slots.last.end_day
+      end
+      (start_day..end_day).map do |day|
+        [day, day]
+      end
+    end
+
     def options_for_day_select(min_date, max_date)
       (min_date.day..max_date.day).map do |day|
         [day, day]
@@ -84,6 +132,33 @@ module Horses
 
       # max_slot = Config::Breedings.slots[this_slot + 5]
       # Date.new(Date.current.year, max_slot[:month], max_slot[:end])
+    end
+
+    private
+
+    def min_date
+      min_date = [mare_last_raced_date, stud_last_raced_date].compact_blank.min
+      min_date ||= Date.current
+      min_date = Date.current if Date.current < min_date
+      min_date
+    end
+
+    def mare_last_raced_date
+      mare_last_race_date = nil
+      if mare
+        last_race_date = mare.race_result_finishes.joins(:race).merge(::Racing::RaceResult.current_year.ordered_by_date(:desc)).first&.race&.date
+        mare_last_race_date = last_race_date + 1.day if last_race_date
+      end
+      mare_last_race_date
+    end
+
+    def stud_last_raced_date
+      stud_last_race_date = nil
+      if stud
+        last_race_date = stud.race_result_finishes.joins(:race).merge(::Racing::RaceResult.current_year.ordered_by_date(:desc)).first&.race&.date
+        stud_last_race_date = last_race_date + 1.day if last_race_date
+      end
+      stud_last_race_date
     end
   end
 end

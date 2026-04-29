@@ -4,6 +4,7 @@ ruby:
   raced_this_year = last_race_date.year == Date.current.year
   min_breed_date = last_race_date + 1.day if raced_this_year
   new_booking = Horses::Breeding.new(mare:)
+
 p.text-center.font-bold= t(".available_studs")
 .card.card-border.bg-base-100.w-full.px-2
   .card-body.p-0.gap-0
@@ -12,41 +13,46 @@ p.text-center.font-bold= t(".available_studs")
       .collapse-title.font-semibold.font-medium
         p.text-center= t(".by_approval_status")
       .collapse-content.text-sm.border-t-1.border-base-content/40
-        table.table-responsive.w-full.mt-2
-          tbody
-            tr
-              = form_with model: new_booking, url: new_horse_mare_booking_path(mare) do |f|
-                td= t("common.text.no")
-                td
-                  - query = Horses::Horse.stud.joins(:stud_options).merge(Horses::StallionOption.no_approval).order(name: :asc)
-                  = f.collection_select :stud_id, query, :id, :name_with_owner_fee, { }, { class: "select w-full" }
-                td= f.submit t(".pick_date"), class: 'btn btn-primary btn-outline ml-4'
-            tr
-              = form_with model: new_booking, url: new_horse_mare_booking_path(mare) do |f|
-                td= t("common.text.yes")
-                td.pt-4
-                  - query = Horses::Horse.stud.joins(:stud_options).merge(Horses::StallionOption.approval).order(name: :asc)
-                  = f.collection_select :stud_id, query, :id, :name_with_owner_fee, { }, { class: "select w-full" }
-                td= f.submit t(".request_slot"), class: 'btn btn-primary btn-outline ml-4'
+        div data={ controller: 'mare-booking', 'mare-booking-booking-url-value' => horse_mare_bookings_pick_date_path(mare, stud_id: 'x') }
+          = form_with model: new_booking, url: '#', data: { 'mare-booking-target': 'form' } do |f|
+            table.table-responsive.w-full.mt-2
+              tbody
+                tr
+                  td= t("common.text.no")
+                  td
+                    - query = Horses::Horse.stud.joins(:stud_options).includes(:stud_options, :manager).stud_available_for_stable(Current.stable).merge(Horses::StallionOption.no_approval).order(name: :asc)
+                    = f.collection_select :stud_id, query, :id, :name_with_owner_fee, { prompt: "Select Stud" }, { class: "select w-full", disabled: (true || query.size.zero?), data: { action: 'change->mare-booking#loadPickDateButton', 'mare-booking-target' => 'stud' } }
+                  td
+                    = turbo_frame_tag "pick-date-button" do
+                      = f.button t(".pick_date"), class: 'btn btn-disabled btn-outline ml-4'
+                tr
+                  td= t("common.text.yes")
+                  td.pt-4
+                    - query = Horses::Horse.stud.joins(:stud_options).includes(:stud_options, :manager).stud_available_for_stable(Current.stable).merge(Horses::StallionOption.approval).order(name: :asc)
+                    = f.collection_select :stud_id, query, :id, :name_with_owner_fee, { prompt: "Select Stud" }, { class: "select w-full", disabled: (true || query.size.zero?), data: { action: 'change->mare-booking#loadRequestBookingButton', 'mare-booking-target' => 'requestStud' } }
+                  td
+                    = turbo_frame_tag "request-booking-button" do
+                      = f.button t(".request_slot"), class: 'btn btn-disabled btn-outline ml-4'
     .collapse.collapse-arrow.collapse-open.bg-base-100.border-base-content/50.border.border-1.rounded-md
       input type="checkbox"
       .collapse-title.font-semibold.font-medium
         span= t(".by_breed_date")
       .collapse-content.text-sm.border-t-1.border-base-content/40
-        table.table-responsive.w-full.mt-2
-          tbody
-            - Breeding::Slot.ordered.each do |slot|
-              - next if slot.month < Date.current.month
-              - next if slot.month == Date.current.month && slot.end_day < Date.current.day
-              - next if raced_this_year && slot.month < min_breed_date.month
-              - next if raced_this_year && slot.month == min_breed_date.month && slot.end_day < min_breed_date.day
-              tr
-                = form_with model: new_booking, url: new_horse_mare_booking_path(mare) do |f|
-                  = f.hidden_field :slot_id, value: slot.id
-                  td= "#{slot.formatted_start_day} - #{slot}"
-                  td.pt-4
-                    - used_studs = Horses::Horse.stud.where(id: Horses::Breeding.bookings_available(slot).select(:stud_id)).pluck(:id)
-                    - unused_studs = Horses::Horse.stud.where.not(id: Horses::Breeding.no_bookings(slot).select(:stud_id)).pluck(:id)
-                    - query = Horses::Horse.stud.where(id: (used_studs + unused_studs).uniq).order(name: :asc)
-                    = f.collection_select :stud_id, query, :id, :name_with_owner_fee, { }, { class: "select w-full" }
-                  td= f.submit t(".pick_date"), class: 'btn btn-primary btn-outline ml-4'
+        div data={ controller: 'mare-booking', 'mare-booking-booking-url-value' => new_horse_mare_booking_path(mare, stud_id: 'x', slot_id: 'y') }
+          table.table-responsive.w-full.mt-2
+            tbody
+              - Breeding::Slot.ordered.each do |slot|
+                - next if slot.month < Date.current.month
+                - next if slot.month == Date.current.month && slot.end_day < Date.current.day
+                - next if raced_this_year && slot.month < min_breed_date.month
+                - next if raced_this_year && slot.month == min_breed_date.month && slot.end_day < min_breed_date.day
+                tr
+                  = form_with model: new_booking, url: '#' do |f|
+                    = f.hidden_field :slot_id, value: slot.id, data: { 'mare-booking-target': 'slot' }
+                    td= "#{slot.formatted_start_day} - #{slot}"
+                    td.pt-4
+                      - used_studs = Horses::Horse.stud.where(id: Horses::Breeding.bookings_available(slot).select(:stud_id)).pluck(:id)
+                      - unused_studs = Horses::Horse.stud.where.not(id: Horses::Breeding.no_bookings(slot).select(:stud_id)).pluck(:id)
+                      - query = Horses::Horse.stud.includes(:stud_options, :manager).where(id: (used_studs + unused_studs).uniq).order(name: :asc)
+                      = f.collection_select :stud_id, query, :id, :name_with_owner_fee, { }, { disabled: true, class: "select w-full", data: { 'mare-booking-target': 'stud'} }
+                    td= f.button t(".pick_date"), class: 'btn btn-primary btn-outline ml-4', data: { action: "click->mare-booking#loadFormWithSlot" }
