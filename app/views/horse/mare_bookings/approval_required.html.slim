@@ -1,0 +1,26 @@
+/# locals: (mare:, stud:, error: nil)
+- booking = Horses::Breeding.new(mare:, stud:)
+= form_with model: booking, url: horse_mare_bookings_path(mare), id: "mare-booking-form", html: { class: "form", novalidate: true },
+  data: { turbo_frame: "_top", 'mare-booking-selected-slot-id-value' => booking.slot_id } do |f|
+  p.text-lg= t("horse.mare_bookings.new.stud", name: stud.name)
+  p.text-info= t("horse.mare_bookings.new.stud_approval", name: stud.name)
+  - unless error.blank?
+    p.alert.alert-error.alert-outline= error
+
+  div
+    fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+      legend.fieldset-legend= t("horse.mare_bookings.new.slot_select")
+      label.label
+        = f.select :slot, options_for_select(booking.options_for_slot_select(stud), booking.slot&.id), { prompt: t("horse.mare_bookings.new.slot_select") }, { class: 'select' }
+        - if booking.errors[:slot]
+          p.text-error= booking.errors.where(:slot).map(&:full_message).join(', ')
+
+  div
+    fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+      legend.fieldset-legend= t("horse.mare_bookings.new.note_to_stud_owner")
+      textarea.textarea.h-24[ value=booking.message id="horses_breeding_message" name="horses_breeding[message]"]
+      .label= t("horse.mare_bookings.new.message_hint")
+
+  .float-right
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t("horse.mare_bookings.new.request"))
