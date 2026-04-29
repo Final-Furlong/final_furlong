@@ -1,14 +1,14 @@
 :root,
 :root.light {
-  --female-horse-color: #d35353;
-  --male-horse-color: #5d5de8;
-  --gelded-horse-color: #73d173;
+  --female-horse-color: #f5aeae;
+  --male-horse-color: #aeaef5;
+  --gelded-horse-color: #aef5ae;
 }
 
 :root.dark {
   --female-horse-color: #fcc;
-  --male-horse-color: #ccf;
-  --gelded-horse-color: #b3ebb3;
+  --male-horse-color: #ccccff;
+  --gelded-horse-color: #ccffcc;
 }
 
 .text-filly,
