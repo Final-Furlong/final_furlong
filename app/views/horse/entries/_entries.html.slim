@@ -21,6 +21,12 @@
         i.ph-fill.ph-barn
   button.btn.btn-outline.btn-sm.btn-info
     = t(".qualification", qualification: horse.race_qualification.to_s)
+- if (note = horse.race_options&.note_for_next_race)
+  .w-full.text-center.mb-4
+    span.text-warning
+      i.ph.ph-warning.mr-2
+      = t(".note_for_next_race")
+      = note
 .card.card-border.bg-base-100.w-full.px-2
   .card-body.p-0.rounded-none
     .collapse.collapse-open.bg-base-100.border-base-content/50.border.border-1
