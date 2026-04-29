@@ -6,6 +6,7 @@ en:
         success: Bid was successful
       form:
         current_bid: Current Bid
+        place_bid: Place New Bid
         maximum_bid: Maximum Bid
         maximum_bid_hint: "(Optional) Must be %{amount} higher than your current bid."
         notify_if_outbid: Notify if outbid?
@@ -37,7 +38,7 @@ en:
         bid_at: Time
         bid_history: Bid History
         bidder: Bidder
-        comment: 'Comment:'
+        comment: "Comment:"
         current_bid: Bid Amount
         no_bids: No Bids
         sells_in: Sells %{time}
