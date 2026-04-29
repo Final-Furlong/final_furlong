@@ -1,0 +1,2 @@
+= form_with(model: @breeding, scope: :shipment, url: month_dependent_fields_horse_mare_bookings_url(@breeding.mare, @breeding.stud)) do |form|
+  = render partial: "day_select", locals: { f: form, booking: @breeding, horse: @breeding.mare, stud: @breeding.stud, month: @month }

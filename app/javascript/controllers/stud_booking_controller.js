@@ -12,14 +12,12 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log(this.stableTarget.value)
     if (this.stableTarget.value) {
       this.loadMares()
     }
   }
 
   stableChanged() {
-    console.log("stable changed")
     this.clearMare()
 
     if (this.stableTarget.value) {
@@ -28,7 +26,6 @@ export default class extends Controller {
   }
 
   async loadMares() {
-    console.log("load mares")
     const stableId = this.stableTarget.value
     if (!stableId) return
 
@@ -49,7 +46,6 @@ export default class extends Controller {
   }
 
   populateSelect(selectElement, options) {
-    console.log("popuplate select")
     // Clear existing options except the first placeholder
     selectElement.innerHTML = `<option value="">${this.placeholderValue}</option>`
 
@@ -63,7 +59,6 @@ export default class extends Controller {
   }
 
   clearMare() {
-    console.log("clear mare")
     this.maresTarget.innerHTML = '<option value="">${this.placeholderValue}</option>'
     this.maresTarget.disabled = true
   }

@@ -1,0 +1,8 @@
+/# locals: (booking:, f:, horse:, stud:, month: nil)
+= turbo_frame_tag 'month_dependent_fields', data: { update_url: month_dependent_fields_horse_mare_bookings_url(horse, stud), request_param_name: 'month' } do
+  div
+    fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+      legend.fieldset-legend= t("horse.mare_bookings.new.day_select")
+      = f.select :day, options_for_select(booking.options_for_day_select_based_on_month(month), booking.slot&.day), {  }, { class: "select w-full" }
+      - if booking.errors[:day]
+        p.text-error= booking.errors.where(:day).map(&:full_message).join(', ')

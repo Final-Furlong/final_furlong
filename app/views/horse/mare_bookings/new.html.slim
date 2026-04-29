@@ -1,0 +1,6 @@
+- title = t(".title", name: @horse.name)
+- content_for(:title, title)
+
+p.font-bold.text-lg= title
+
+= render "no_approval_form", mare: @horse, stud: @stud
