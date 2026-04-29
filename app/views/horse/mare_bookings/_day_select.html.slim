@@ -6,3 +6,7 @@
       = f.select :day, options_for_select(booking.options_for_day_select_based_on_month(month), booking.slot&.day), {  }, { class: "select w-full" }
       - if booking.errors[:day]
         p.text-error= booking.errors.where(:day).map(&:full_message).join(', ')
+
+  .float-right
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.create"))

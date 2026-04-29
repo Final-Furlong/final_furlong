@@ -8,6 +8,7 @@
   - unless error.blank?
     p.alert.alert-error.alert-outline= error
 
+  = f.hidden_field :stud_id, value: stud.id
   div
     fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
       legend.fieldset-legend= t("horse.mare_bookings.new.month_select")

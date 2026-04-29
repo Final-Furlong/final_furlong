@@ -6,7 +6,7 @@ ruby:
   new_booking = Horses::Breeding.new(mare:)
 
 p.text-center.font-bold= t(".available_studs")
-.card.card-border.bg-base-100.w-full.px-2
+.card.card-border.bg-base-100.w-full.px-2.mt-4
   .card-body.p-0.gap-0
     .collapse.collapse-arrow.collapse-open.bg-base-100.border-base-content/50.border.border-1.rounded-md
       input type="checkbox"
@@ -21,7 +21,7 @@ p.text-center.font-bold= t(".available_studs")
                   td= t("common.text.no")
                   td
                     - query = Horses::Horse.stud.joins(:stud_options).includes(:stud_options, :manager).stud_available_for_stable(Current.stable).merge(Horses::StallionOption.no_approval).order(name: :asc)
-                    = f.collection_select :stud_id, query, :id, :name_with_owner_fee, { prompt: "Select Stud" }, { class: "select w-full", disabled: (true || query.size.zero?), data: { action: 'change->mare-booking#loadPickDateButton', 'mare-booking-target' => 'stud' } }
+                    = f.collection_select :stud_id, query, :id, :name_with_owner_fee, { prompt: "Select Stud" }, { class: "select w-full", disabled: query.size.zero?, data: { action: 'change->mare-booking#loadPickDateButton', 'mare-booking-target' => 'stud' } }
                   td
                     = turbo_frame_tag "pick-date-button" do
                       = f.button t(".pick_date"), class: 'btn btn-disabled btn-outline ml-4'

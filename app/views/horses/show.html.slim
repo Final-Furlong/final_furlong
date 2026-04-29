@@ -7,9 +7,7 @@
     = turbo_frame_tag "#{@horse.slug}-info" do
       = render "horses/info", horse: @horse
 
-  input.tab[ type="radio" name="horse" aria-label=t(".pedigree") id="pedigree"
-    disabled=@horse.created?
-  ]
+  input.tab[ type="radio" name="horse" aria-label=t(".pedigree") id="pedigree" disabled=@horse.created? ]
   .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
     = turbo_frame_tag "#{@horse.slug}-pedigree", src: horse_pedigree_path(@horse), loading: "lazy" do
       .w-full.text-center
@@ -84,9 +82,7 @@
           p.mx-auto= t(".loading_race_stats")
           .mt-2.mx-auto.skeleton.w-full
 
-  input.tab[ type="radio" name="horse" aria-label=t(".photos") id="photos"
-    disabled=!horse.appearance.image.present?
-  ]
+  input.tab[ type="radio" name="horse" aria-label=t(".photos") id="photos" ]
   .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
     = turbo_frame_tag "#{@horse.slug}-images", src: horse_images_path(@horse), loading: "lazy" do
       .w-full.text-center
