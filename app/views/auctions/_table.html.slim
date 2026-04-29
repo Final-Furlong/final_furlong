@@ -6,7 +6,7 @@ ruby:
   else
     horses = auction.horses.send(type.to_sym)
   end
-  horses = horses.includes(horse: [:owner, :sire, :dam, :horse_attributes,
+  horses = horses.includes(winning_bid: :bidder, horse: [:owner, :sire, :dam, :horse_attributes,
                                    :lifetime_race_record,
                                    :broodmare_foal_record, :stud_foal_record]).order("horses.name asc")
   include_reserve = auction.horses.with_reserve.count.positive?
@@ -14,7 +14,7 @@ ruby:
   - horses.each do |auction_horse|
     - horse = auction_horse.horse
     - pedigree = Horses::PedigreeDisplayService.new(horse)
-    - bid = auction_horse.bids.current_high_bid.first
+    - bid = auction_horse.winning_bid
     .card.bg-base-100.w-full.px-2.rounded-none
       .card-body.p-0.rounded-none
         .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
@@ -101,7 +101,7 @@ ruby:
         tbody
           - horses.each do |auction_horse|
             - horse = auction_horse.horse
-            - bid = auction_horse.bids.current_high_bid.first
+            - bid = auction_horse.winning_bid
             tr
               td.wb-break-all class="text-#{horse.gender.downcase}" data-sort=horse.name
                 = render Ui::Link::Component.new(url: horse_path(horse), data: { turbo_frame: "_top" }) do

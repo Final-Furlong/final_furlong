@@ -83,7 +83,7 @@
     div
       fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
         legend.fieldset-legend= t(".note_for_next_race")
-        textarea.textarea.h-24[ placeholder=t(".sample_note") id="racing_race_option_note_for_next_race" name="racing_race_option[note_for_next_race]"]
+        textarea.textarea.h-24[ placeholder=t(".sample_note") value=options.note_for_next_race id="racing_race_option_note_for_next_race" name="racing_race_option[note_for_next_race]"]
         .label= t(".note_hint")
         - if options.errors[:note_for_next_race]
           p.text-error= options.errors.where(:note_for_next_race).map(&:full_message).join(', ')

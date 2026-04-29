@@ -330,8 +330,6 @@ en:
         pending: Pending
         ship: Ship to %{stable}
       index:
-        confirm_breeding: Are you sure you want to do this breeding?
-        confirm_breeding_title: Breed to %{name}
         date: Date
         fee: Fee
         in_foal: "%{mare} is in foal to %{stud}, due on %{due}"
@@ -340,6 +338,16 @@ en:
         status: Status
         stud: Stud
         title: Breed %{name}
+      new:
+        day_select: Select Day
+        message_hint: You may post a message to the stallion's owner if you wish. Once the stallion owner approves or denies your approval request you will be notified.
+        month_select: Select Month
+        note_to_stud_owner: Note to Owner
+        request: Request
+        slot_select: Select Slot
+        stud: 'Stud: %{name}'
+        stud_approval: "%{name} requires approval. Please select a date to request."
+        title: New Booking for %{name}
       studs:
         available_studs: Available Studs
         by_approval_status: By Approval Required
