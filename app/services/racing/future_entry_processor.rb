@@ -180,9 +180,7 @@ module Racing
           result[:message] = "not_qualified"
         end
         if result[:message].nil? && data.location != race.racetrack.location
-          if !entry.auto_ship
-            result[:message] = "not_at_track"
-          elsif data.in_transit
+          if data.in_transit
             shipment = Shipping::RacehorseShipment.where(horse:).order(departure_date: :desc).first
             if shipment.ending_location != race.racetrack.location || shipment.arrival_date > race.travel_deadline
               result[:message] = "cannot_ship_in_time"
