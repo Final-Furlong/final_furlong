@@ -64,6 +64,7 @@ en:
         location: 'Located At: %{location}'
         max_future_entries: You cannot schedule more entries for this horse
         no_current_entries: There are no current or scheduled entries.
+        note_for_next_race: 'Note for next race: '
         qualification: 'Qualification: %{qualification}'
     entry_state:
       current: Currently Entered

@@ -31,7 +31,7 @@ module Horse
       surface_name = workout_params.delete(:surface)
       surface = racetrack.surfaces.find_by(surface: surface_name) if surface_name.present?
 
-      result = Workouts::WorkoutCreator.new.create_workout(horse: @horse, jockey:, surface:, params: workout_params)
+      result = Workouts::WorkoutCreator.new.create_workout(horse: @horse, jockey:, surface:, params: formatted_workout_params)
       if result.created?
         flash[:success] = t(".success")
         redirect_to horse_path(@horse)
@@ -49,6 +49,17 @@ module Horse
     end
 
     private
+
+    def formatted_workout_params
+      formatted_params = workout_params.dup
+      activities = formatted_params.delete(:activities_attributes)
+      formatted_params[:activities_attributes] = [
+        { activity: activities["0"]["activity"], distance: activities["0"]["distance"] },
+        { activity: activities["1"]["activity"], distance: activities["1"]["distance"] },
+        { activity: activities["2"]["activity"], distance: activities["2"]["distance"] }
+      ]
+      formatted_params
+    end
 
     def workout_params
       params.expect(workouts_workout: [:jockey, :effort, :surface, :blinkers, :wraps, :shadow_roll, :figure_8, :no_whip,
