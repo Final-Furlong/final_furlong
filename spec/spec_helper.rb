@@ -10,6 +10,8 @@ require "faker"
 require "pundit/matchers"
 require "support/rspec_show_expectations"
 require "n_plus_one_control/rspec"
+
+Zonebie.quiet = true if defined?(Zonebie)
 require "zonebie/rspec"
 
 RSpec.configure do |config|

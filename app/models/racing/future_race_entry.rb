@@ -52,7 +52,7 @@ module Racing
       list = Config::Shipping.future_entry_shipments.map do |method|
         [I18n.t("racing.shipping.future_races.#{method}"), method]
       end
-      (Date.current..date - Config::Racing.entry_deadline_days.days).each do |date|
+      (Date.current + 1.day..date - Config::Racing.entry_deadline_days.days).each do |date|
         list << [date, I18n.l(date)]
       end
       list
