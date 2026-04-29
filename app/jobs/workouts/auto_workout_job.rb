@@ -4,9 +4,9 @@ class Workouts::AutoWorkoutJob < ApplicationJob
   queue_as :low_priority
 
   def perform(date: Date.current)
-    return if run_today?(date:)
-    return unless run_today?(name: "Racing::EnergyFitnessUpdaterJob", date:)
-    return unless run_today?(name: "UpdateRacehorseStatsJob", date:)
+    # return if run_today?(date:)
+    # return unless run_today?(name: "Racing::EnergyFitnessUpdaterJob", date:)
+    # return unless run_today?(name: "UpdateRacehorseStatsJob", date:)
 
     yesterday = date - 1.day
     skipped = 0
@@ -66,9 +66,9 @@ class Workouts::AutoWorkoutJob < ApplicationJob
           end
           racetrack = data.racetrack
           options = horse.race_options
-          activities_list = ["0" => { activity: activities.activity1, distance: activities.distance1 }]
-          activities_list["1"] = { activity: activities.activity2, distance: activities.distance2 }
-          activities_list["2"] = { activity: activities.activity3, distance: activities.distance3 }
+          activities_list = [{ activity: activities.activity1, distance: activities.distance1 }]
+          activities_list << { activity: activities.activity2, distance: activities.distance2 }
+          activities_list << { activity: activities.activity3, distance: activities.distance3 }
           params = { effort: Config::Workouts.default_effort, activities_attributes: activities_list }
           params[:blinkers] = true if options.blinkers?
           params[:wraps] = true if options.wraps?
@@ -79,7 +79,7 @@ class Workouts::AutoWorkoutJob < ApplicationJob
             horse:,
             jockey: pick_jockey(horse),
             surface: pick_surface(horse, racetrack),
-            params: params.deep_stringify_keys!,
+            params:,
             date: yesterday,
             auto: true
           )
