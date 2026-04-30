@@ -1,7 +1,7 @@
 class UpdateStillwaterHorsesJob < ApplicationJob
   include ActiveJob::Continuable
 
-  queue_as :low_priority
+  queue_as :latency_5m
 
   def perform
     step :process do |step|
