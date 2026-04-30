@@ -1,5 +1,5 @@
 class Racing::RaceSeriesWinnerCheckJob < ApplicationJob
-  queue_as :low_priority
+  queue_as :latency_30s
 
   def perform(race:)
     series = Racing::RaceSeries.find_by(third_race: race)
@@ -25,4 +25,3 @@ class Racing::RaceSeriesWinnerCheckJob < ApplicationJob
     )
   end
 end
-

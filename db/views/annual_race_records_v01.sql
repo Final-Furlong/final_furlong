@@ -1,4 +1,4 @@
-SELECT horse_id, year,
+SELECT horse_id, year::int,
                SUM(starts)::int         AS starts,
                SUM(stakes_starts)::int  AS stakes_starts,
                SUM(wins)::int           AS wins,

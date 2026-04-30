@@ -1,5 +1,5 @@
 class Auctions::CreateTwoYearOldAuctionJob < ApplicationJob
-  queue_as :low_priority
+  queue_as :latency_2m
 
   class AuctionNotCreated < StandardError; end
 
