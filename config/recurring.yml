@@ -59,21 +59,21 @@ production:
     queue: low_priority
     schedule: at 11:45pm every day
   auction_sales:
-    class: Auctions::ProcessSalesJob
+    class: Auctions::TriggerSalesProcessingJob
     queue: default
     schedule: every 12 hours at minute 8
   race_entry_filler:
     class: Racing::RaceFillerJob
     queue: default
-    schedule: 14 8 * * 2,5 # Tues/Sat AM
+    schedule: 14 9 * * 2,5 # Tues/Sat AM
   race_breeders_cup_selector:
     class: Racing::BreedersCupSelectionJob
     queue: default
-    schedule: 14 9 * * 2,5 # Tues/Sat AM
+    schedule: 14 10 * * 2,5 # Tues/Sat AM
   race_entry_prerace:
     class: Racing::PreRaceJob
     queue: default
-    schedule: 14 10 * * 2,5 # Tues/Sat AM
+    schedule: 14 11 * * 2,5 # Tues/Sat AM
   race_future_entry_process:
     class: Racing::FutureEntryProcessingJob
     queue: low_priority
