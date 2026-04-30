@@ -1,92 +1,35 @@
 class Daily::ProcessFutureShipmentsJob < ApplicationJob
-  include ActiveJob::Continuable
+  queue_as :latency_2m
 
-  queue_as :low_priority
-
-  def perform
-    today = Date.current
+  def perform(date: Date.current)
+    batch = GoodJob::Batch.new
     unless run_today?
       broodmare_count = 0
-      step :broodmares do |step|
-        Shipping::BroodmareShipment.scheduled.where(departure_date: today).find_each(start: step.cursor) do |shipment|
-          Horses::Broodmare::FutureShipmentProcessor.new.ship_horse(shipment:)
-          broodmare_count += 1
-          step.advance! from: shipment.id
-        end
+      Shipping::BroodmareShipment.scheduled.where(departure_date: date).find_each do |shipment|
+        batch.add(Horses::FutureBroodmareShipmentJob.perform_later(id: shipment.id, date:))
+        broodmare_count += 1
       end
     end
 
     racehorse_count = 0
-    step :racehorses do |step|
-      Shipping::RacehorseShipment.scheduled.where(departure_date: today).find_each(start: step.cursor) do |shipment|
-        Horses::Racehorse::FutureShipmentProcessor.new.ship_horse(shipment:)
-        racehorse_count += 1
-        step.advance! from: shipment.id
-      end
+    Shipping::RacehorseShipment.scheduled.where(departure_date: date).find_each do |shipment|
+      batch.add(Horses::FutureBroodmareShipmentJob.perform_later(id: shipment.id, date:))
+      racehorse_count += 1
     end
 
-    step :racehorse_future_entries do |step|
-      today = Date.current
-      Racing::FutureRaceEntry.where(ship_date: today, ship_only_if_horse_is_entered: false).find_each(start: step.cursor) do |entry|
-        race = entry.race
-        horse = entry.horse
-        race_location = race.racetrack.location
-        horse_location = horse.race_metadata.location
-        next if race_location == horse_location
-
-        route = Shipping::Route.with_locations(race_location, horse_location).first
-        shipment = Shipping::RacehorseShipment.new(
-          horse: entry.horse, departure_date: today, scheduled: true, starting_location: horse_location, ending_location: race_location
-        )
-        max_travel_days = (race.travel_deadline - today).to_i
-        if (entry.ship_mode.blank? || entry.ship_mode.road?) && route.road_days && route.road_days < max_travel_days
-          shipment.mode = "road"
-          days = route.road_days
-        end
-        if (entry.ship_mode.blank? || entry.ship_mode.air?) && route.air_days && route.air_days < max_travel_days
-          shipment.mode = "air" if shipment.mode.blank?
-          days = route.air_days
-        end
-        shipment.arrival_date = today + days.days
-        shipment.shipping_type = horse.race_metadata.at_home? ? "farm_to_track" : "track_to_track"
-        Horses::Racehorse::FutureShipmentProcessor.new.ship_horse(shipment:)
-        racehorse_count += 1
-        step.advance! from: entry.id
-      end
+    Racing::FutureRaceEntry.where(ship_date: date, ship_only_if_horse_is_entered: false).find_each do |entry|
+      batch.add(Horses::FutureRaceEntryShipmentJob.perform_later(id: shipment.id, date:))
+      racehorse_count += 1
     end
 
-    step :racehorse_future_entries_opening_day do |step|
-      today = Date.current
-      weekday = today.strftime("%A").downcase
-      return unless %w[tuesday friday].include?(weekday)
-
-      Racing::FutureRaceEntry.where(ship_when_entries_open: true, ship_only_if_horse_is_entered: false).find_each(start: step.cursor) do |entry|
-        race = entry.race
-        horse = entry.horse
-        race_location = race.racetrack.location
-        horse_location = horse.race_metadata.location
-        next if race_location == horse_location
-
-        route = Shipping::Route.with_locations(race_location, horse_location).first
-        shipment = Shipping::RacehorseShipment.new(
-          horse: entry.horse, departure_date: today, scheduled: true, starting_location: horse_location, ending_location: race_location
-        )
-        max_travel_days = (race.travel_deadline - today).to_i
-        if (entry.ship_mode.blank? || entry.ship_mode.road?) && route.road_days && route.road_days < max_travel_days
-          shipment.mode = "road"
-          days = route.road_days
-        end
-        if (entry.ship_mode.blank? || entry.ship_mode.air?) && route.air_days && route.air_days < max_travel_days
-          shipment.mode = "air" if shipment.mode.blank?
-          days = route.air_days
-        end
-        shipment.arrival_date = today + days.days
-        shipment.shipping_type = horse.race_metadata.at_home? ? "farm_to_track" : "track_to_track"
-        Horses::Racehorse::FutureShipmentProcessor.new.ship_horse(shipment:)
+    weekday = date.strftime("%A").downcase
+    if %w[tuesday friday].include?(weekday)
+      Racing::FutureRaceEntry.where(ship_when_entries_open: true, ship_only_if_horse_is_entered: false).find_each do |entry|
+        batch.add(Horses::FutureRaceEntryShipmentJob.perform_later(id: shipment.id, date:))
         racehorse_count += 1
-        step.advance! from: entry.id
       end
     end
+    batch.enqueue
     outcome = { scheduled: true, broodmare_count:, racehorse_count: }
     store_job_info(outcome:)
   end
