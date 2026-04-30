@@ -547,6 +547,8 @@ en:
       destroy:
         failure: Could not delete booking for %{name}
         success: Booking for %{name} was successfully deleted
+      edit:
+        title: Edit Booking for %{name}
       form:
         date_range: Booking for %{start} to %{end}
         fee: Fee
@@ -583,6 +585,9 @@ en:
         mare: Pick A Mare
       new:
         title: New Booking for %{name}
+      update:
+        failure: Could not update booking
+        success: Booking was successfully updated
     stud_nominations:
       index:
         foals: Foals
