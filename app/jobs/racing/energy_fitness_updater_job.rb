@@ -1,7 +1,7 @@
 class Racing::EnergyFitnessUpdaterJob < ApplicationJob
   include ActiveJob::Continuable
 
-  queue_as :default
+  queue_as :latency_5m
 
   def perform
     return if run_today?
