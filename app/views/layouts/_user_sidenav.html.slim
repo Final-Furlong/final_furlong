@@ -19,7 +19,7 @@ li
     a.transition.duration-75 href=stable_shipments_path
       i.ph.ph-fill.ph-truck
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.shipping")
-- if Auctions::Bid.where(bidder: Current.stable).exists?
+- if Auctions::Bid.where(bidder: Current.stable).exists? || Auctions::Horse.joins(:auction).where(seller: Current.stable).merge(Auction.current).exists?
   li
     button data-tip=t("layouts.sidenav.stable.auctions") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
       a.transition.duration-75 href=stable_auctions_path

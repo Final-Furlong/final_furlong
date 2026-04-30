@@ -11,6 +11,74 @@ module Dashboard
         @pagy = pagy
       end
 
+      def total_horses_selling(auction)
+        horse_counts(auction)[:selling].count
+      end
+
+      def total_horses_sold(auction)
+        horse_counts(auction)[:selling].count { |key, horse| horse[:state] == :sold }
+      end
+
+      def total_sales_pending(auction)
+        horse_counts(auction)[:selling].count { |key, horse| horse[:state] == :pending }
+      end
+
+      def total_horses_unsold(auction)
+        horse_counts(auction)[:selling].count { |key, horse| horse[:state] == :unsold }
+      end
+
+      def total_money_in(auction)
+        total_money = 0
+        horse_counts(auction)[:selling].select { |key, horse| horse[:state] == :sold }
+          .each { |key, horse| total_money += horse[:current_bid] }
+        total_money
+      end
+
+      def total_money_pending(auction)
+        total_money = 0
+        horse_counts(auction)[:selling].select { |key, horse| horse[:state] == :pending }
+          .each { |key, horse| total_money += horse[:current_bid] }
+        total_money
+      end
+
+      def average_income_per_horse(auction)
+        (total_money_in(auction) + total_money_pending(auction)) / (total_horses_sold(auction) + total_sales_pending(auction))
+      end
+
+      def total_horses_bid(auction)
+        horse_counts(auction)[:buying].count
+      end
+
+      def total_horses_won(auction)
+        horse_counts(auction)[:buying].count { |key, horse| horse[:state] == :sold }
+      end
+
+      def total_horses_pending(auction)
+        horse_counts(auction)[:buying].count { |key, horse| horse[:state] == :pending }
+      end
+
+      def total_horses_lost(auction)
+        horse_counts(auction)[:buying].count { |key, horse| horse[:state] == :lost }
+      end
+
+      def total_money_spent(auction)
+        total_spent = 0
+        horse_counts(auction)[:buying].select { |key, horse| horse[:state] == :sold }
+          .each { |key, horse| total_spent += horse[:current_bid] }
+        total_spent
+      end
+
+      def total_max_bids(auction)
+        total_spent = 0
+        horse_counts(auction)[:buying].select { |key, horse| horse[:state] != :lost }
+          .each { |key, horse| total_spent += horse[:maximum_bid] }
+        total_spent
+      end
+
+      def average_spend_per_horse(auction)
+        total_money_spent(auction) / total_horses_won(auction)
+      end
+
       def horse_counts(auction)
         hash = { selling: {}, buying: {} }
         auction.bids.includes(horse: :horse).where(bidder: Current.stable).find_each do |bid|

@@ -1,0 +1,34 @@
+/# locals: (dashboard:, auction:)
+.grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+  div
+    .stats.border.border-neutral-content/50.shadow.stats-vertical.md:stats-horizontal
+      .stat.border-r-1.border-r-base-content/50
+        .stat-value.text-sm.md:text-xl.lg:text-3xl
+          = @dashboard.total_horses_bid(auction)
+        .stat-desc= t(".total_horses")
+      .stat
+        .stat-value.text-success.text-sm.md:text-xl.lg:text-3xl
+          = @dashboard.total_horses_won(auction)
+        .stat-desc= t(".total_horses_won")
+      .stat
+        .stat-value.text-secondary.text-sm.md:text-xl.lg:text-3xl
+          = @dashboard.total_horses_pending(auction)
+        .stat-desc= t(".total_horses_pending")
+      .stat
+        .stat-value.text-error.text-sm.md:text-xl.lg:text-3xl
+          = @dashboard.total_horses_lost(auction)
+        .stat-desc= t(".total_horses_lost")
+  div
+    .stats.border.border-neutral-content/50.shadow.stats-vertical.md:stats-horizontal
+      .stat
+        .stat-value.text-success.text-sm.md:text-xl.lg:text-3xl
+          = Game::MoneyFormatter.new(@dashboard.total_money_spent(auction))
+        .stat-desc= t(".total_spent")
+      .stat
+        .stat-value.text-sm.md:text-xl.lg:text-3xl
+          = Game::MoneyFormatter.new(@dashboard.total_max_bids(auction))
+        .stat-desc= t(".total_max_bids")
+      .stat
+        .stat-value.text-sm.md:text-xl.lg:text-3xl
+          = Game::MoneyFormatter.new(@dashboard.average_spend_per_horse(auction))
+        .stat-desc= t(".average_per_horse")

@@ -9,6 +9,14 @@ en:
     actions:
       view_recent_results: View Recent Results
     auctions:
+      buying_stats:
+        average_per_horse: Average Spend / Horse
+        total_horses: Horses
+        total_horses_lost: Horses Lost
+        total_horses_pending: Horses Pending
+        total_horses_won: Horses Won
+        total_max_bids: Total Max Bids
+        total_spent: Total Spent
       index:
         bidder: Bidder
         buying: Buying (%{count})
@@ -21,6 +29,14 @@ en:
         title: Auctions
         view_auction: View Auction
         view_bidding: View Bids
+      selling_stats:
+        average_per_horse: Average Price / Horse
+        total_horses_pending: Horses Pending
+        total_horses_selling: Horses
+        total_horses_sold: Horses Sold
+        total_horses_unsold: Horses With No Bids
+        total_income: Horse Sales
+        total_income_pending: Pending Sales
     boardings:
       create:
         success: Boarding was successfully started

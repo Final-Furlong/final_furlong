@@ -20,6 +20,7 @@
         - label = t(".selling", count: data[:selling].count)
         input.tab type="radio" name="auction-selling" aria-label=label id="#{auction.slug}-selling"
         .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+          = render "selling_stats", dashboard: @dashboard, auction:
           .overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100
             table.table-zebra.sortable.n-last.w-4/5
               thead
@@ -63,6 +64,7 @@
         - label = t(".buying", count: data[:buying].count)
         input.tab type="radio" name="auction-buying" aria-label=label id="#{auction.slug}-buying"
         .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+          = render "buying_stats", dashboard: @dashboard, auction:
           .overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100
             table.table-zebra.sortable.n-last.w-4/5
               thead
