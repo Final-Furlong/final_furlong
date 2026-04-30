@@ -39,7 +39,16 @@ module Racing
     def surface_icons
       return [] if unraced?
 
-      horse.surface_race_record.surface_list.map { |surface| { letter: surface_letters(surface), style: surface_style(surface) } }
+      horse.surface_race_record.surface_list.map { |surface| { letter: surface_letters(surface), style: surface_style(surface), surface: surface_name(surface) } }
+    end
+
+    def surface_name(surface)
+      case surface.to_s.downcase
+      when "dirt", "turf"
+        surface.to_s.titleize
+      else
+        "Steeplechase"
+      end
     end
 
     def surface_letters(surface)

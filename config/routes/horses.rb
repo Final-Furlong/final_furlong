@@ -64,7 +64,7 @@ end
 
 resources :auctions do
   scope module: "auctions" do
-    resources :horses do
+    resources :horses, except: :index do
       resources :bids, only: %i[new create]
     end
   end
