@@ -36,6 +36,19 @@
   color: var(--gelded-horse-color);
 }
 
+.text-bronze {
+  color: #cd7f32;
+}
+.text-silver {
+  color: #c0c0c0;
+}
+.text-gold {
+  color: #ccac00;
+}
+.text-platinum {
+  color: #e5e4e2;
+}
+
 td.mare,
 td.filly {
   background-color: var(--table-female-horse-color);

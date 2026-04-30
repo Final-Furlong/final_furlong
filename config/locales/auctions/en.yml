@@ -38,7 +38,7 @@ en:
         bid_at: Time
         bid_history: Bid History
         bidder: Bidder
-        comment: 'Comment:'
+        comment: "Comment:"
         current_bid: Bid Amount
         no_bids: No Bids
         sells_in: Sells %{time}
@@ -49,6 +49,9 @@ en:
       destroy:
         failure: Could not remove %{horse} from %{auction}
         success: Successfully removed %{horse} from %{auction}
+      horse:
+        breed_ranking: Breed Ranking
+        ran_on_surface: Raced on %{surface}
       info:
         view_full_page: Full Details
       show:
@@ -69,6 +72,7 @@ en:
       ends_in: This auction will end in
       hours: Hrs
       hours_until_sold: Horses will sell %{hours} hours after the last bid is placed, or at the close of the auction.
+      loading_horses: Loading horses...
       minutes: Mins
       no_pending: Sale Pending
       no_purchase_limit: There is no limit on how many horses you may purchase.
