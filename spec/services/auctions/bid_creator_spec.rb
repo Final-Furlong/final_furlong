@@ -277,7 +277,7 @@ RSpec.describe Auctions::BidCreator do
     end
 
     context "when there is already a process sales job queued" do
-      before { ActiveJob::Base.queue_adapter = :solid_queue }
+      before { ActiveJob::Base.queue_adapter = :good_job }
 
       after { ActiveJob::Base.queue_adapter = :test }
 
@@ -287,7 +287,7 @@ RSpec.describe Auctions::BidCreator do
         Auctions::ProcessSalesJob.set(wait: 1.hour).perform_later(auction:)
         expect do
           described_class.new.create_bid(bid_params.merge(current_bid: 10_500, maximum_bid: 20_000))
-        end.not_to change(SolidQueue::Job, :count)
+        end.not_to change(GoodJob::Job, :count)
       end
     end
   end

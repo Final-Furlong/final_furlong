@@ -1,7 +1,7 @@
 class Racing::PreRaceJob < ApplicationJob
   include ActiveJob::Continuable
 
-  queue_as :default
+  queue_as :latency_5m
 
   def perform(tomorrow: Date.tomorrow)
     horses = 0
