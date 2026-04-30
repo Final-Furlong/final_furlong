@@ -25,7 +25,7 @@ module Racing
 
         if claimer.available_balance.to_i > claim_price
           ActiveRecord::Base.transaction do
-            horse.update(owner: claimer)
+            horse.update(owner: claimer, manager: claimer)
             if (auction_horse = horse.auction_horse)
               auction_horse.destroy if auction_horse.auction.future?
             end
