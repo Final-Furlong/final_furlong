@@ -1,5 +1,5 @@
 class Pwa::WebPushJob < ApplicationJob
-  queue_as :default
+  queue_as :latency_30s
 
   class InvalidSubscriptionError < StandardError; end
 

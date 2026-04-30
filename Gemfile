@@ -7,7 +7,6 @@ gem "rails", "~> 8.1"
 
 gem "solid_cable" # A database-backed ActionCable backend [https://github.com/rails/solid_cable]
 gem "solid_cache" # A database-backed ActiveSupport::Cache::Store [https://github.com/rails/solid_cache]
-gem "solid_queue" # A database-backed ActiveJob backend [https://github.com/rails/solid_queue]
 
 # Backend
 gem "bootsnap", require: false # Reduces boot times through caching; required in config/boot.rb
@@ -39,6 +38,7 @@ gem "base64", "0.1.1"
 gem "browser"
 gem "dotenv-rails"
 gem "dotenv_validator"
+gem "good_job"
 gem "httparty"
 gem "lograge"
 gem "mailtrap"
@@ -193,4 +193,3 @@ end
 group :tools do
   gem "colorize", require: false
 end
-
