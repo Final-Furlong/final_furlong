@@ -10,7 +10,6 @@ class Auction < ApplicationRecord
   has_many :consignment_configs, class_name: "Auctions::ConsignmentConfig", dependent: :delete_all
 
   after_commit :schedule_deletion, on: %i[create update]
-  after_commit :unschedule_deletion, on: :destroy
 
   validates :start_time, :end_time, :hours_until_sold, :title, :horses_count,
     :sold_horses_count, :pending_sales_count, presence: true
@@ -120,20 +119,7 @@ class Auction < ApplicationRecord
   private
 
   def schedule_deletion
-    unschedule_deletion
-    schedule_job
-  end
-
-  def unschedule_deletion
-    deletion_job.destroy_all if deletion_job.exists?
-  end
-
-  def deletion_job
-    SolidQueue::Job.scheduled.where(class_name: "Daily::DeleteCompletedAuctionsJob").where("arguments LIKE ?", "%#{global_id_string}%")
-  end
-
-  def schedule_job
-    Daily::DeleteCompletedAuctionsJob.set(wait_until: end_time + 1.minute).perform_later(auction: self)
+    Daily::DeleteCompletedAuctionsJob.set(good_job_labels: [id], wait_until: end_time + 1.minute).perform_later(auction: self)
   end
 
   def start_time_plus_min_duration
