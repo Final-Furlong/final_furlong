@@ -325,6 +325,8 @@ en:
         approved: Approved
         bred: Bred
         breed: Breed
+        delete_confirm: Are you sure you want to delete this booking to %{name}?
+        delete_confirm_title: Delete Booking
         denied: Denied
         in_transit: In Transit
         missed: Booking Date Missed
@@ -333,6 +335,9 @@ en:
       create:
         failure: Could not create booking to %{name}
         success: Booking to %{name} was successfully created
+      destroy:
+        failure: Could not delete booking to %{name}
+        success: Booking to %{name} was successfully deleted
       errors:
         approval_required: This stud requires approval to breed
         bookings_full: This stud has no free bookings
@@ -536,6 +541,9 @@ en:
       create:
         failure: Could not create booking
         success: Booking was successfully created
+      destroy:
+        failure: Could not delete booking for %{name}
+        success: Booking for %{name} was successfully deleted
       form:
         date_range: Booking for %{start} to %{end}
         fee: Fee
@@ -552,6 +560,8 @@ en:
           one: 1 Bred
           other: "%{count} Bred"
         create_booking: Create Booking
+        delete_confirm: Are you sure you want to delete this booking for %{name}?
+        delete_confirm_title: Delete Booking
         fee: Fee
         mare: Mare
         min_date: "%{name} last raced on %{date}, so can be bred anytime after %{min_date}"

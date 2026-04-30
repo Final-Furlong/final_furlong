@@ -12,6 +12,10 @@ module Horses
       process_breeding_result.success?
     end
 
+    def destroy?
+      !record.bred?
+    end
+
     def request_booking?
       request_booking_result.success?
     end
