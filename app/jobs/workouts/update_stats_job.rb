@@ -1,5 +1,5 @@
 class Workouts::UpdateStatsJob < ApplicationJob
-  queue_as :low_priority
+  queue_as :latency_5m
 
   def perform
     activities = %w[walk jog canter gallop breeze]
