@@ -1,9 +1,9 @@
 RSpec.describe Daily::MorningUpdatesJob, :perform_enqueued_jobs do
   describe "#perform" do
-    it "uses low_priority queue", perform_enqueueed_jobs: false do
+    it "uses fast queue", perform_enqueueed_jobs: false do
       expect do
         described_class.perform_later
-      end.to have_enqueued_job.on_queue("default")
+      end.to have_enqueued_job.on_queue("latency_30s")
     end
 
     it "triggers boarding job" do
