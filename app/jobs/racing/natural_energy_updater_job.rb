@@ -1,67 +1,63 @@
 class Racing::NaturalEnergyUpdaterJob < ApplicationJob
-  include ActiveJob::Continuable
-
-  queue_as :default
+  queue_as :latency_5m
 
   def perform
     return if run_today?
 
     horses = 0
 
-    step :initialize do
-      date_last_run = last_run || Date.yesterday
-      days_since = (Date.current - date_last_run.to_date).to_i
+    date_last_run = last_run || Date.yesterday
+    days_since = (Date.current - date_last_run.to_date).to_i
 
-      total_loss = 0.1 * days_since
-      total_loss = 1 if total_loss > 1
+    total_loss = 0.1 * days_since
+    total_loss = 1 if total_loss > 1
 
-      ActiveRecord::Base.transaction do
-        # rubocop:disable Rails/SkipsModelValidations
-        Racing::RacingStats
-          .where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.missing(:current_boarding).where(race_metadata: { at_home: false }))
-          .update_all(Arel.sql("natural_energy_current = (natural_energy_current - #{total_loss})"))
+    ActiveRecord::Base.transaction do
+      # rubocop:disable Rails/SkipsModelValidations
+      Racing::RacingStats
+        .where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.missing(:current_boarding).where(race_metadata: { at_home: false }))
+        .update_all(Arel.sql("natural_energy_current = (natural_energy_current - #{total_loss})"))
 
-        Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where(race_metadata: { at_home: true }))
-          .where(natural_energy_current: ..0)
-          .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 10 * #{total_loss}))"))
-        Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where(race_metadata: { at_home: true }))
-          .where("natural_energy_current BETWEEN ? AND ?", 1, 20)
-          .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 5 * #{total_loss}))"))
-        Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where(race_metadata: { at_home: true }))
-          .where("natural_energy_current BETWEEN ? AND ?", 21, 40)
-          .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 4 * #{total_loss}))"))
-        Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where(race_metadata: { at_home: true }))
-          .where("natural_energy_current BETWEEN ? AND ?", 41, 60)
-          .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 3 * #{total_loss}))"))
-        Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where(race_metadata: { at_home: true }))
-          .where("natural_energy_current BETWEEN ? AND ?", 61, 80)
-          .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 2 * #{total_loss}))"))
-        Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where(race_metadata: { at_home: true }))
-          .where("natural_energy_current > ?", 80)
-          .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * #{total_loss}))"))
+      Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where(race_metadata: { at_home: true }))
+        .where(natural_energy_current: ..0)
+        .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 10 * #{total_loss}))"))
+      Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where(race_metadata: { at_home: true }))
+        .where("natural_energy_current BETWEEN ? AND ?", 1, 20)
+        .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 5 * #{total_loss}))"))
+      Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where(race_metadata: { at_home: true }))
+        .where("natural_energy_current BETWEEN ? AND ?", 21, 40)
+        .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 4 * #{total_loss}))"))
+      Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where(race_metadata: { at_home: true }))
+        .where("natural_energy_current BETWEEN ? AND ?", 41, 60)
+        .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 3 * #{total_loss}))"))
+      Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where(race_metadata: { at_home: true }))
+        .where("natural_energy_current BETWEEN ? AND ?", 61, 80)
+        .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 2 * #{total_loss}))"))
+      Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where(race_metadata: { at_home: true }))
+        .where("natural_energy_current > ?", 80)
+        .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * #{total_loss}))"))
 
-        Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.associated(:current_boarding))
-          .where(natural_energy_current: ..0)
-          .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 5 * #{total_loss}))"))
-        Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.associated(:current_boarding))
-          .where("natural_energy_current BETWEEN ? AND ?", 1, 20)
-          .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 2.5 * #{total_loss}))"))
-        Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.associated(:current_boarding))
-          .where("natural_energy_current BETWEEN ? AND ?", 21, 40)
-          .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 2 * #{total_loss}))"))
-        Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.associated(:current_boarding))
-          .where("natural_energy_current BETWEEN ? AND ?", 41, 60)
-          .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 1.5 * #{total_loss}))"))
-        Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.associated(:current_boarding))
-          .where("natural_energy_current BETWEEN ? AND ?", 61, 80)
-          .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * #{total_loss}))"))
-        Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.associated(:current_boarding))
-          .where("natural_energy_current > ?", 80)
-          .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 0.5 *  #{total_loss}))"))
+      Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.associated(:current_boarding))
+        .where(natural_energy_current: ..0)
+        .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 5 * #{total_loss}))"))
+      Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.associated(:current_boarding))
+        .where("natural_energy_current BETWEEN ? AND ?", 1, 20)
+        .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 2.5 * #{total_loss}))"))
+      Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.associated(:current_boarding))
+        .where("natural_energy_current BETWEEN ? AND ?", 21, 40)
+        .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 2 * #{total_loss}))"))
+      Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.associated(:current_boarding))
+        .where("natural_energy_current BETWEEN ? AND ?", 41, 60)
+        .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 1.5 * #{total_loss}))"))
+      Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.associated(:current_boarding))
+        .where("natural_energy_current BETWEEN ? AND ?", 61, 80)
+        .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * #{total_loss}))"))
+      Racing::RacingStats.where(horse: Horses::Horse.racehorse.joins(:race_metadata).where.associated(:current_boarding))
+        .where("natural_energy_current > ?", 80)
+        .update_all(Arel.sql("natural_energy_current = (natural_energy_current + (natural_energy_gain * 0.5 *  #{total_loss}))"))
 
-        Racing::RacingStats.where("natural_energy_current > 100").update_all(natural_energy_current: 100)
-        # rubocop:enable Rails/SkipsModelValidations
-      end
+      Racing::RacingStats.where("natural_energy_current > 100").update_all(natural_energy_current: 100)
+      # rubocop:enable Rails/SkipsModelValidations
     end
     store_job_info(outcome: { horses: })
   end

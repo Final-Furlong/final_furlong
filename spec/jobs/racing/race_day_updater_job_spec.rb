@@ -1,8 +1,8 @@
 RSpec.describe Racing::RaceDayUpdaterJob, :perform_enqueueed_jobs do
-  it "uses default queue", perform_enqueueed_jobs: false do
+  it "uses slow queue", perform_enqueueed_jobs: false do
     expect do
       described_class.perform_later(date:)
-    end.to have_enqueued_job.on_queue("default")
+    end.to have_enqueued_job.on_queue("latency_5m")
   end
 
   it "triggers race record updater service" do

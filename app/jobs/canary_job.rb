@@ -1,5 +1,5 @@
 class CanaryJob < ApplicationJob
-  queue_as :default
+  queue_as :latency_30s
 
   def perform
     # Record successful execution
