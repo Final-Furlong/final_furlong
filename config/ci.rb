@@ -30,7 +30,10 @@ CI.run do
   if ci_type == "tests" || ci_type == "all"
     step "Tests: Setup", "pnpm playwright install --with-deps chromium" if external_ci
     step "Tests: Rails", external_ci ? "bin/rspec --format RspecJunitFormatter --out report.xml --format progress" : "bin/rspec"
-    step "Tests: Seeds", "env RAILS_ENV=test bin/rails db:seed:replant" unless external_ci
+    unless external_ci
+      step "Tests: Migrations", "RAILS_ENV=test bin/rails db:drop && bin/rails db:create && bin/rails db:migrate"
+      step "Tests: Seeds", "RAILS_ENV=test bin/rails db:seed:replant"
+    end
   end
 
   # Optional: set a green GitHub commit status to unblock PR merge.
