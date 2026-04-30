@@ -64,6 +64,11 @@
               - else
                 td data-sort="pending-#{breeding.date}"
                   span.badge.badge-warning.badge-outline= t(".not_yet_bred", date: l(breeding.date))
+              td
+                - if policy(breeding).destroy?
+                  = render Ui::Button::Component.new(url: horse_stud_booking_path(@horse, breeding), color: :error, style: :outline, size: :small, form_class: 'inline',
+                    http_method: :delete, data: { turbo_confirm: t(".delete_confirm", name: mare&.name || stable.name), turbo_confirm_title: t(".delete_confirm_title"), turbo_frame: "_top" }) do
+                    = t("common.actions.delete")
         - (Config::Breedings.mares_per_slot - mares_count).times do |n|
           tr
             td data-sort=Date.new(Date.current.year, slot.month, slot.end_day).to_s = slot.to_s

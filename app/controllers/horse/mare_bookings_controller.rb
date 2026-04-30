@@ -37,6 +37,21 @@ module Horse
       redirect_to horse_path(@horse)
     end
 
+    def destroy
+      @horse = Horses::Horse.broodmare.includes(:manager).find(params[:horse_id])
+      authorize @horse, :breed?, policy_class: CurrentStable::BroodmarePolicy
+      @breeding = Horses::Breeding.where(mare: @horse).includes(:stud).find(params[:id])
+      authorize @breeding
+
+      name = @breeding.stud.name
+      if @breeding.destroy!
+        flash[:success] = t(".success", name:)
+      else
+        flash[:error] = t(".failure", name:)
+      end
+      redirect_to horse_path(@horse)
+    end
+
     def pick_date
       @horse = Horses::Horse.broodmare.includes(:next_foal, :manager).find(params[:horse_id])
       authorize @horse, :breed?, policy_class: CurrentStable::BroodmarePolicy

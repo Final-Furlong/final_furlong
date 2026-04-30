@@ -6,6 +6,8 @@ module Account
 
     friendly_id :username, use: [:slugged, :finders]
 
+    self.strict_loading_by_default = false
+
     attr_accessor :login
 
     has_one :stable, dependent: :destroy

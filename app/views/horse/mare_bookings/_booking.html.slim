@@ -25,3 +25,7 @@ tr
           = t(".ship", stable: booking.stud.manager.name)
     - else
       span.badge.badge-error.badge-outline= t(".missed")
+    - if policy(booking).destroy?
+      = render Ui::Button::Component.new(url: horse_mare_booking_path(@horse, booking), color: :error, style: :outline, size: :small, form_class: 'inline',
+        http_method: :delete, data: { turbo_confirm: t(".delete_confirm", name: stud.name), turbo_confirm_title: t(".delete_confirm_title"), turbo_frame: "_top" }) do
+        = t("common.actions.delete")

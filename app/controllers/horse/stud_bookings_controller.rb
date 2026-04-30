@@ -37,6 +37,21 @@ module Horse
       end
     end
 
+    def destroy
+      @horse = Horses::Horse.stud.includes(:manager).find(params[:horse_id])
+      authorize @horse, :manage_bookings?, policy_class: CurrentStable::StallionPolicy
+      @breeding = Horses::Breeding.where(stud: @horse).includes(:mare, :stable).find(params[:id])
+      authorize @breeding
+
+      name = @breeding.mare ? @breeding.mare.name : @breeding.stable.name
+      if @breeding.destroy!
+        flash[:success] = t(".success", name:)
+      else
+        flash[:error] = t(".failure", name:)
+      end
+      redirect_to horse_path(@horse)
+    end
+
     def stable_dependent_fields
       @horse = Horses::Horse.find(params[:horse_id])
       authorize @horse, :manage_bookings?, policy_class: CurrentStable::StallionPolicy
