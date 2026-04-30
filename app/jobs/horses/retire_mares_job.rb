@@ -11,6 +11,11 @@ class Horses::RetireMaresJob < ApplicationJob
       ActiveRecord::Base.transaction do
         mare.update(status: "retired_broodmare")
         Horses::Breeding.where(mare:).where.not(status: "bred").delete_all
+        Horses::Breeding.where(mare:, status: "bred").where("date > ?", Date.current).find_each do |future_breeding|
+          future_breeding.first_foal&.destroy!
+          future_breeding.second_foal&.destroy!
+          future_breeding.destroy!
+        end
         Legacy::Horse.where(ID: mare.legacy_id).update(Status: 5)
         notify_retirement(horse: mare)
       end
