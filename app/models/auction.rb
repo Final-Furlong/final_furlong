@@ -101,6 +101,23 @@ class Auction < ApplicationRecord
     (Date.current + Config::Auctions.minimum_start_date_days_delay.days).beginning_of_day
   end
 
+  def paginated_horses(type: nil, pending: nil, unsold: nil)
+    if type.blank?
+      pending ||= auction.pending_sales_count
+      unsold ||= auction.horses_count - pending
+      type = unsold.positive? ? :unsold : :sold
+    end
+    if type == :unsold
+      pending_ids = horses.pending.select(:id)
+      paginated_horses = horses.unsold.where.not(id: pending_ids)
+    else
+      paginated_horses = horses.send(type.to_sym)
+    end
+    paginated_horses.includes(winning_bid: :bidder, horse: [:owner, :sire, :dam, :horse_attributes,
+      :lifetime_race_record, :surface_race_record,
+      :broodmare_foal_record, :stud_foal_record]).order("horses.name": :asc, "horses.id": :asc)
+  end
+
   private
 
   def schedule_deletion

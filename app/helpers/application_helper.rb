@@ -1,4 +1,8 @@
 module ApplicationHelper
+  def render_load_more(pagy)
+    render "shared/load_more", pagy:
+  end
+
   def render_turbo_stream_flash_messages
     turbo_stream.replace("messages", partial: "layouts/flash")
   end
