@@ -49,9 +49,12 @@ en:
       destroy:
         failure: Could not remove %{horse} from %{auction}
         success: Successfully removed %{horse} from %{auction}
+      info:
+        view_full_page: Full Details
       show:
-        bidding: Bidding
+        bidding: Bidding (%{count})
         details: Details
+        no_bids: Bidding
     index:
       auction_title: Title
       auctioneer: Auctioneer

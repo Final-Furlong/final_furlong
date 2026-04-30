@@ -27,7 +27,41 @@ module Racing
     end
 
     def to_s
+      return I18n.t("horse.unraced") if unraced?
+
       "#{race_record_races_only} - #{number_with_delimiter(points)}#{"pt".pluralize(points)} - #{Game::MoneyFormatter.new(earnings)}"
+    end
+
+    def unraced?
+      starts.to_i.zero?
+    end
+
+    def surface_icons
+      return [] if unraced?
+
+      horse.surface_race_record.surface_list.map { |surface| { letter: surface_letters(surface), style: surface_style(surface) } }
+    end
+
+    def surface_letters(surface)
+      case surface.to_s.downcase
+      when "dirt"
+        "D"
+      when "turf"
+        "T"
+      when "jump", "steeplechase"
+        "SC"
+      end
+    end
+
+    def surface_style(surface)
+      case surface.to_s.downcase
+      when "dirt"
+        "warning"
+      when "turf"
+        "success"
+      when "jump", "steeplechase"
+        "secondary"
+      end
     end
 
     def race_record_races_only

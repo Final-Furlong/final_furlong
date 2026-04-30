@@ -12,6 +12,11 @@
         = render "horse/pedigrees/table", horse:
       .mt-2
         = render "info", horse:
-    input.tab type="radio" name="horses" aria-label=t(".bidding") checked=(current_tab.to_sym == :bidding)
+    - bid_count = @auction_horse.bids.size
+    - pd bid_count
+    - pd bid_count.zero?
+    - label = bid_count.zero? ? t(".no_bids") : t(".bidding", count: bid_count)
+    - pd label
+    input.tab type="radio" name="horses" aria-label=label checked=(current_tab.to_sym == :bidding)
     .tab-content.bg-base-100.py-2
       = render "bidding", auction_horse: @auction_horse

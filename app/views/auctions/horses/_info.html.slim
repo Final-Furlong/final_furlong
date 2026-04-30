@@ -3,6 +3,12 @@
   table.table
     tbody
       tr
+        th= t(".view_full_page")
+        td
+          = link_to horse_path(horse), data: { turbo_frame: "_top" }, target: "_blank" do
+            = horse.name_with_title
+            i.ph.ph-arrow-square-up-right.ml-2
+      tr
         th= t("horses.info.date_of_birth")
         td
           = l(horse.date_of_birth)
@@ -29,19 +35,32 @@
         td= horse.appearance.height_display
       tr
         th= t("horses.info.track_record")
-        td= horse.track_record || t("horse.unraced")
+        td= horse.lifetime_race_record || t("horse.unraced")
       - if Horses::Status::BREEDING_STATUSES.include?(horse.status)
         tr
           th= t("horses.info.breeding_record")
           td
             - if horse.female?
-              = horse.broodmare.breed_ranking_string
+              = horse.broodmare.breed_ranking_string || t("common.none")
             - else
               = horse.stud.breed_ranking_string
       - if Horses::Status::FEMALE_BREEDING_STATUSES.include?(horse.status)
-        tr
-          th= t("horses.info.last_foal")
-          td Not Yet Added
-        tr
-          th= t("horses.info.next_foal")
-          td Not Yet Added
+        - if horse.foals.born.present?
+          tr
+            th= t("horses.info.last_foal")
+            td
+              - if horse.foals.born.present?
+                - last_dob = horse.foals.born.order(date_of_birth: :desc).pluck(:date_of_birth).first
+                - horse.foals.born.where(date_of_birth: last_dob).find_each do |foal|
+                  - pedigree = Horses::PedigreeDisplayService.new(foal)
+                  span class="text-#{foal.gender}" = link_to foal.budget_name, horse_path(foal), data: { turbo_frame: "_top" }
+                  = " - "
+                  = t("horses.info.foal_info", year: l(foal.date_of_birth, format: :year_abbr), gender: foal.gender, sire: pedigree.sire_display(target: "_top")).html_safe
+        - if horse.next_foal.present?
+          - stud = horse.next_foal.stud
+          tr
+            th= t("horses.info.next_foal")
+            td
+              span
+                = t("horses.info.in_foal", stud: link_to(stud.name, horse_path(stud), data: { turbo_frame: "_top" })).html_safe
+                = t("horses.info.due_date", date: l(horse.next_foal.due_date, format: :slashes))

@@ -13,6 +13,10 @@ module Racing
       true
     end
 
+    def surface_list
+      %w[dirt turf jump].select { |surface| send("#{surface}_starts").to_i.positive? }
+    end
+
     def starts_string(prefix: "")
       stakes_string(send("#{prefix}_starts"), send("#{prefix}_stakes_starts"))
     end
