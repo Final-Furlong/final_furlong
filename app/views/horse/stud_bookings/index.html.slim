@@ -65,9 +65,12 @@
                 td data-sort="pending-#{breeding.date}"
                   span.badge.badge-warning.badge-outline= t(".not_yet_bred", date: l(breeding.date))
               td
+                - if policy(breeding).update?
+                  = render Ui::ButtonizedLink::Component.new(url: edit_horse_stud_booking_path(@horse, breeding), color: :warning, style: :outline, size: :small, data: { turbo_frame: "modal" }) do
+                    = t("common.actions.update")
                 - if policy(breeding).destroy?
                   = render Ui::Button::Component.new(url: horse_stud_booking_path(@horse, breeding), color: :error, style: :outline, size: :small, form_class: 'inline',
-                    http_method: :delete, data: { turbo_confirm: t(".delete_confirm", name: mare&.name || stable.name), turbo_confirm_title: t(".delete_confirm_title"), turbo_frame: "_top" }) do
+                    http_method: :delete, data: { turbo_confirm: t(".delete_confirm", name: mare&.name || breeding.stable.name), turbo_confirm_title: t(".delete_confirm_title"), turbo_frame: "_top" }) do
                     = t("common.actions.delete")
         - (Config::Breedings.mares_per_slot - mares_count).times do |n|
           tr

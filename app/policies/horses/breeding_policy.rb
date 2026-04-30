@@ -9,7 +9,15 @@ module Horses
     end
 
     def create?
+      pd process_breeding_result.inspect
       process_breeding_result.success?
+    end
+
+    def update?
+      return false if record.bred?
+      return false if record.slot&.past?
+
+      true
     end
 
     def destroy?
@@ -25,7 +33,7 @@ module Horses
       return Failure(:stud_not_old_enough) if record.stud.age < Config::Breedings.min_age
       return Failure(:date_in_past) if record.slot&.past?
       stud_options = record.stud.stud_options
-      return Failure(:approval_required) if stud_options.approval_required? && !record.approved?
+      return Failure(:approval_required) if stud_options.approval_required? && !record.approved? && record.stud.manager != stable
       return Failure(:bookings_full) if stud_options.total_booked_count >= Config::Breedings.max_mares_per_year
       unless record.mare.manager == record.stud.manager
         return Failure(:cannot_afford_fee) if record.mare.manager.available_balance < stud_options.stud_fee
@@ -38,15 +46,17 @@ module Horses
     end
 
     def process_breeding_result
-      return Failure(:mare_not_old_enough) if record.mare.age < Config::Breedings.min_age
       return Failure(:stud_not_old_enough) if record.stud.age < Config::Breedings.min_age
       return Failure(:slot_missing) unless record.slot
       return Failure(:date_in_past) if record.slot.past?
       stud_options = record.stud.stud_options
-      return Failure(:approval_required) if stud_options.approval_required? && !record.approved?
+      return Failure(:approval_required) if stud_options.approval_required? && !record.approved? && record.stud.manager != stable
       return Failure(:bookings_full) if record.stud.breedings.current_year.bred.count >= Config::Breedings.max_mares_per_year
-      unless record.mare.manager == record.stud.manager
-        return Failure(:cannot_afford_fee) if record.mare.manager.available_balance < stud_options.stud_fee
+      if record.mare
+        return Failure(:mare_not_old_enough) if record.mare.age < Config::Breedings.min_age
+        unless record.mare.manager == record.stud.manager
+          return Failure(:cannot_afford_fee) if record.mare.manager.available_balance < stud_options.stud_fee
+        end
       end
 
       Success()

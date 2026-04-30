@@ -2,10 +2,12 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="dependent-dropdown"
 export default class extends Controller {
-  static targets = ["stable", "mares"]
+  static targets = ["stable", "mares", "fee"]
   static values = {
     maresUrl: String,
     placeholder: String,
+    studStableId: Number,
+    studFee: Number,
     selectedStableId: Number,
     selectedMareId: Number,
     selectedSlotId: Number
@@ -14,14 +16,17 @@ export default class extends Controller {
   connect() {
     if (this.stableTarget.value) {
       this.loadMares()
+      this.loadFee()
     }
   }
 
   stableChanged() {
     this.clearMare()
+    this.clearFee()
 
     if (this.stableTarget.value) {
       this.loadMares()
+      this.loadFee()
     }
   }
 
@@ -45,6 +50,14 @@ export default class extends Controller {
     }
   }
 
+  loadFee() {
+    if (this.studStableIdValue == this.stableTarget.value) {
+      this.feeTarget.value = 0
+    } else {
+      this.feeTarget.value = this.studFeeValue
+    }
+  }
+
   populateSelect(selectElement, options) {
     // Clear existing options except the first placeholder
     selectElement.innerHTML = `<option value="">${this.placeholderValue}</option>`
@@ -61,5 +74,10 @@ export default class extends Controller {
   clearMare() {
     this.maresTarget.innerHTML = '<option value="">${this.placeholderValue}</option>'
     this.maresTarget.disabled = true
+  }
+
+  clearFee() {
+    console.log("clear fee")
+    this.feeTarget.innerHtml = this.studFeeValue
   }
 }

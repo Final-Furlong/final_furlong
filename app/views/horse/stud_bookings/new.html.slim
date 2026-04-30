@@ -4,4 +4,4 @@
 .text-center
   h1.text-xl.font-bold= title
 
-= render "form", stud: @horse, booking: @booking
+= render "form", stud: @horse, booking: @booking, submit_text: t("common.actions.create"), url: horse_stud_bookings_path(@horse), http_method: :post
