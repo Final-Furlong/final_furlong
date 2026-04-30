@@ -1,9 +1,10 @@
-/# locals: (stud:, booking:, error: nil)
+/# locals: (stud:, booking:, url:, submit_text:, http_method: :post, error: nil)
 - options = stud.stud_options
-= form_with model: booking, url: horse_stud_bookings_path(stud), id: "booking-form", html: { class: "form", novalidate: true },
+= form_with model: booking, url:,  id: "booking-form", method: http_method, html: { class: "form", novalidate: true },
   data: { turbo_frame: "_top", controller: 'stud-booking',
           'stud-booking-mares-url-value' => stable_dependent_fields_horse_stud_bookings_url(stud.id, ':stable_id', ':slot_id'),
-          'stud-booking-selected-slot-id-value' => booking.slot_id, 'stud-booking-placeholder-value' => t("horse.stud_bookings.mare_select.any_mare") } do |f|
+          'stud-booking-selected-slot-id-value' => booking.slot_id, 'stud-booking-placeholder-value' => t("horse.stud_bookings.mare_select.any_mare"),
+          'stud-booking-stud-stable-id-value' => stud.manager_id, 'stud-booking-stud-fee-value' => options.stud_fee.to_i } do |f|
   - unless error.blank?
     p.alert.alert-error.alert-outline= error
   p.mt-4= t(".date_range", start: l(booking.slot.start_date), end: l(booking.slot.date))
@@ -13,6 +14,8 @@
         i.ph.ph-warning.mr-2
         = t(".mare_max_due_date", date: l(booking.max_due_date))
 
+  - if http_method == :put
+    = f.hidden_field :booking_id, value: booking.id
   = f.hidden_field :slot_id, value: booking.slot_id
   div
     fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
@@ -30,10 +33,11 @@
       label.input
         i.ph.ph-currency-dollar
         - stud_fee = booking.persisted? ? booking.fee : (booking.stable == stud.manager ? 0 : options.stud_fee)
-        = f.text_field :fee, value: stud_fee, class: "text-md grow", placeholder: t(".max_amount", amount: Game::MoneyFormatter.new(Config::Breedings.max_stud_fee).to_s)
+        = f.text_field :fee, value: stud_fee, class: "text-md grow", placeholder: t(".max_amount", amount: Game::MoneyFormatter.new(Config::Breedings.max_stud_fee).to_s),
+          data: { stud_booking_target: "fee" }
       - if booking.errors[:fee]
         p.text-error= booking.errors.where(:fee).map(&:full_message).join(', ')
 
   .float-right
     = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
-    = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.create"))
+    = render Ui::SubmitButton::Component.new(form: f, text: submit_text)

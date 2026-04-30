@@ -1,6 +1,5 @@
 = turbo_frame_tag "#{@horse.slug}-jump-trial-history" do
   - if CurrentStable::RacehorsePolicy.new(Current.user, @horse).run_jump_trial?
-    p= "do the jump trial thing"
   - if @trials.blank?
     p= t(".no_trials")
   - else
