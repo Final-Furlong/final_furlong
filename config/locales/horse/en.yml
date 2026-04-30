@@ -232,6 +232,8 @@ en:
         min_days_not_met: This race is less than %{days} day(s) from an existing/scheduled entry.
         no_future_races: This horse does not qualify for any future races.
         schedule: Schedule
+        view_entries: "%{count} Entered"
+        view_scheduled_entries: "%{count} Scheduled"
       new:
         title: Schedule Race for %{name}
       update:

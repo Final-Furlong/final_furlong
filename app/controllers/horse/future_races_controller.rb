@@ -3,7 +3,7 @@ module Horse
     skip_after_action :verify_pundit_authorization, only: :index
 
     def index
-      @horse = Horses::Horse.find(params[:horse_id])
+      @horse = Horses::Horse.includes(:manager, :race_options, :race_qualification).find(params[:horse_id])
       authorize @horse, :schedule_race?, policy_class: CurrentStable::RacehorsePolicy
 
       entry_ids = Racing::RaceEntry.where(horse: @horse).pluck(:race_id)
