@@ -6,6 +6,7 @@ namespace :racing do
   resources :races, only: :index do
     get :post_parade, on: :collection
     get :racing_form, on: :member
+    resources :scheduled_entries, only: :index
     resources :entries, only: %i[new destroy]
     resources :entry_options, only: %i[new create edit update]
   end

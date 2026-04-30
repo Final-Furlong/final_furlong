@@ -180,6 +180,9 @@ en:
       race_number: 'Race #%{number}'
       speed_factor: Speed Factor
       weight: Lbs.
+    scheduled_entries:
+      index:
+        title: Scheduled Entries for %{race} (%{track})
     shipping:
       future_races:
         entries_open: When entries open
