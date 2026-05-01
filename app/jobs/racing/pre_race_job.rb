@@ -32,9 +32,10 @@ class Racing::PreRaceJob < ApplicationJob
   def process_entry(entry, race, index, taken_jockey_ids)
     attrs = { post_parade: index, first_jockey: nil, second_jockey: nil, third_jockey: nil }
     entry.jockey = pick_jockey(entry, race, taken_jockey_ids) if entry.jockey.blank?
-    attrs[:odd] = pick_odd(entry, race) if entry.odd.blank?
-    attrs[:weight] = pick_weight(entry, race) if entry.weight.to_i.zero?
-    entry.update!(attrs)
+    entry.odd = pick_odd(entry, race) if entry.odd.blank?
+    entry.weight = pick_weight(entry, race) if entry.weight.to_i.zero?
+    entry.assign_attributes(attrs)
+    entry.save!
     entry.jockey_id
   end
 
