@@ -71,7 +71,7 @@ module Dashboard
       def total_max_bids(auction)
         total_spent = 0
         horse_counts(auction)[:buying].select { |key, horse| horse[:state] != :lost }
-          .each { |key, horse| total_spent += horse[:maximum_bid] }
+          .each { |key, horse| total_spent += horse[:maximum_bid].to_i }
         total_spent
       end
 
