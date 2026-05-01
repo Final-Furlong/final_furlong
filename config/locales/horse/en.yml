@@ -386,6 +386,7 @@ en:
       star_stripe_snip: star, stripe, snip
       stripe: stripe
       stripe_snip: stripe, snip
+    no_breed_ranking: No Breed Ranking
     owners:
       update:
         failure: Could not transfer to Final Furlong

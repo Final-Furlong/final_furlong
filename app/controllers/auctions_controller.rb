@@ -11,6 +11,16 @@ class AuctionsController < ApplicationController
   def show
     @auction = Auction.find(params[:id])
     authorize @auction
+    @pending = @auction.pending_sales_count
+    @unsold = @auction.horses_count - @pending
+    @sold = @auction.sold_horses_count
+    @include_reserve = @auction.horses.with_reserve.count.positive?
+    @active_tab = if params[:tab]
+      params[:tab].to_sym
+    else
+      (@unsold.positive? ? :unsold : :sold)
+    end
+    @pagy, @horses, = pagy(:countless, @auction.paginated_horses(type: @active_tab, pending: @pending, unsold: @unsold))
   end
 
   def new

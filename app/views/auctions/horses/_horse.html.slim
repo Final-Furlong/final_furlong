@@ -1,0 +1,56 @@
+/# locals: (auction_horse:)
+- horse = auction_horse.horse
+- bid = auction_horse.winning_bid
+tr
+  td.wb-break-all class="text-#{horse.gender.downcase}" data-sort=horse.name
+    = render Ui::Link::Component.new(url: horse_path(horse), data: { turbo_frame: "_top" }) do
+      = horse.name_with_title
+  td= horse.age
+  td= horse.status.titleize
+  - pedigree = Horses::PedigreeDisplayService.new(horse)
+  td.wb-break-all data-sort=pedigree.name(horse: horse.sire) = pedigree.sire_display(tag: true, include_title: true, target: '_top')
+  td.wb-break-all data-sort=pedigree.name(horse: horse.dam) = pedigree.dam_display(tag: true, include_title: true, target: '_top')
+  td.wb-break-all
+    = horse.lifetime_race_record&.race_record_races_only || t("horse.unraced")
+    - horse.lifetime_race_record&.surface_icons&.map do |icon|
+      .tooltip.ml-2.text-lg data-tip=t(".ran_on_surface", surface: icon[:surface])
+        span.badge.badge-outline.badge-sm.ml-1 class="badge-#{icon[:style]}" = icon[:letter]
+    - if horse.broodmare? || horse.stud?
+      .tooltip.ml-2.text-lg data-tip=t(".breed_ranking")
+        - if horse.broodmare?
+          - if horse.broodmare_foal_record && horse.broodmare.breed_ranking_string != I18n.t("common.none")
+            span.badge.badge-outline.badge-sm class="text-#{horse.broodmare_foal_record.breed_ranking}" = horse.broodmare.breed_ranking_string
+          - else
+            span.badge.badge-outline.badge-sm.text-neutral-content/50= t("horse.no_breed_ranking")
+        - elsif horse.stud?
+          - if horse.stud_foal_record && horse.stud.breed_ranking_string != I18n.t("common.none")
+            span.badge.badge-outline.badge-sm class="text-#{horse.stud_foal_record.breed_ranking}" = horse.stud.breed_ranking_string
+          - else
+            span.badge.badge-outline.badge-sm.text-neutral-content/50= t("horse.no_breed_ranking")
+  - if @include_reserve
+    td
+      - if auction_horse.reserve_price && bid && bid.current_bid >= auction_horse.reserve_price
+        = Game::MoneyFormatter.new(auction_horse.reserve_price).to_s
+      - elsif auction_horse.reserve_price.to_i.positive?
+        span.ml-2.badge.badge-xs.badge-outline.badge-warning
+          = t ("auctions.show.reserve_not_met")
+      - else
+        = t("common.dash")
+  td data-sort=(bid&.current_bid.to_i)
+    - if bid
+      = Game::MoneyFormatter.new(bid.current_bid).to_s if bid
+    - else
+      = t("common.dash")
+  td
+    = bid.bidder.name if bid
+  - if @active_tab == :unsold
+    - if bid && bid.current_bid >= auction_horse.reserve_price.to_i
+      - sell_time = [bid.bid_at + @auction.hours_until_sold.hours, @auction.end_time].min
+    - else
+      - sell_time = @auction.end_time
+    td data-sort=sell_time
+      = relative_time_in_words(sell_time)
+  td
+    = render Ui::ButtonizedLink::Component.new(color: :neutral, url: auction_horse_path(@auction, auction_horse), data: { turbo_frame: "_top" }) do
+      i.ph-fill.ph-eye
+      = t("common.actions.view")

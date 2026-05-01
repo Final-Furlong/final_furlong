@@ -1,0 +1,22 @@
+.mx-auto.overflow-x-auto.rounded-md.w-full
+  .table-responsive-md
+    table.table.table-responsive.table-zebra.table-sm.sortable.asc.n-last
+      thead
+        tr
+          th= Horses::Horse.human_attribute_name("name")
+          th= Horses::Horse.human_attribute_name("age")
+          th= Horses::Horse.human_attribute_name("status")
+          th= Horses::Horse.human_attribute_name("sire")
+          th= Horses::Horse.human_attribute_name("dam")
+          th= Horses::Horse.human_attribute_name("record")
+          - if @include_reserve
+            th= Auctions::Horse.human_attribute_name("reserve_price")
+          th= Auctions::Bid.human_attribute_name("current_bid")
+          th= Auctions::Bid.human_attribute_name("bidder_id")
+          - if @active_tab == :unsold
+            th= Auctions::Bid.human_attribute_name("time_left")
+          th.no-sort
+            span.sr-only= t("common.actions.title")
+      tbody id="#{@auction.slug}-#{@active_tab}"
+        = render partial: "horse", collection: @horses, as: :auction_horse
+= render_load_more(@pagy)
