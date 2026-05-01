@@ -10,6 +10,7 @@ en:
       edit: Edit
       save: Save
       title: Actions
+      update: Update
       view: View
     confirm:
       default_message: Are you sure you want to do this?
