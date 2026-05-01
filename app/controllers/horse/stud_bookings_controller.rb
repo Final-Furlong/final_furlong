@@ -14,6 +14,14 @@ module Horse
       authorize @booking, :create?
     end
 
+    def edit
+      @horse = Horses::Horse.find(params[:horse_id])
+      authorize @horse, :manage_bookings?, policy_class: CurrentStable::StallionPolicy
+
+      @booking = Horses::Breeding.where(stud: @horse).find(params[:id])
+      authorize @booking, :update?
+    end
+
     def create
       @horse = Horses::Horse.find(params[:horse_id])
       authorize @horse, :manage_bookings?, policy_class: CurrentStable::StallionPolicy
@@ -30,6 +38,27 @@ module Horse
         respond_to do |format|
           format.html { render :new, status: :unprocessable_entity }
 
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.replace("booking-form", partial: "horse/stud_bookings/form", locals: { booking: result.booking, stud: @horse, error: result.error })
+          end
+        end
+      end
+    end
+
+    def update
+      @horse = Horses::Horse.find(params[:horse_id])
+      authorize @horse, :manage_bookings?, policy_class: CurrentStable::StallionPolicy
+
+      @booking = Horses::Breeding.find(booking_params[:booking_id])
+      authorize @booking, :update?
+      result = Horses::Stud::BookingUpdater.new.update_booking(booking: @booking, stud: @horse, params: booking_params)
+      if result.saved?
+        flash[:success] = t(".success")
+        redirect_to horse_path(@horse)
+      else
+        flash[:error] = t(".failure")
+        respond_to do |format|
+          format.html { render :new, status: :unprocessable_entity }
           format.turbo_stream do
             render turbo_stream: turbo_stream.replace("booking-form", partial: "horse/stud_bookings/form", locals: { booking: result.booking, stud: @horse, error: result.error })
           end
@@ -69,7 +98,7 @@ module Horse
     private
 
     def booking_params
-      params.expect(horses_breeding: [:slot_id, :stable_id, :mare_id, :fee])
+      params.expect(horses_breeding: [:booking_id, :slot_id, :stable_id, :mare_id, :fee])
     end
   end
 end

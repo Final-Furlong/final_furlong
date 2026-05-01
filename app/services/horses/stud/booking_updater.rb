@@ -20,7 +20,7 @@ module Horses
           result.error = error("horse_was_racing")
           return result
         end
-        if stud.breedings.current_year.taken.where(slot:).count >= Config::Breedings.mares_per_slot
+        if stud.breedings.current_year.taken.where.not(id: booking.id).where(slot:).count >= Config::Breedings.mares_per_slot
           result.error = error("slot_taken")
           return result
         end
@@ -34,6 +34,7 @@ module Horses
         end
         if params[:mare_id].blank?
           booking.open_booking = true
+          booking.mare = nil
         else
           booking.mare = Horses::Horse.broodmare.find(params[:mare_id])
           booking.open_booking = false
