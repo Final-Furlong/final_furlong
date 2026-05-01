@@ -1,0 +1,5 @@
+= turbo_stream.append "#{@auction.slug}-#{@active_tab}" do
+  = render partial: "auctions/horses/horse", collection: @horses, as: :auction_horse
+
+= turbo_stream.replace "load_more" do
+  = render_load_more(@pagy)

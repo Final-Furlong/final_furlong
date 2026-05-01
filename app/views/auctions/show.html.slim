@@ -41,22 +41,32 @@
         - else
           = t(".no_spending_limit")
 
-ruby:
-  pending = @auction.pending_sales_count
-  unsold = @auction.horses_count - pending
-  sold = @auction.sold_horses_count
-  active_tab = unsold.positive? ? :unsold : :sold
 .card.card-border.mt-2.shadow-md.dark:border-1.dark:border-neutral-100
   .tabs.tabs-border.dark:border-neutral-400 role="tablist"
-    - label = unsold.positive? ? t(".unsold_horses", count: unsold) : t(".no_unsold")
-    input.tab type="radio" name="horses" aria-label=label checked=(active_tab == :unsold) disabled=unsold.zero?
+    - label = @unsold.positive? ? t(".unsold_horses", count: @unsold) : t(".no_unsold")
+    - if @active_tab == :unsold
+      a.tab.tab-active = label
+    - else
+      = link_to label, auction_path(@auction, tab: :unsold), class: "tab", data: { turbo_frame: "_top" }
     .tab-content.bg-base-100.py-2
-      = render "table", type: :unsold, auction: @auction
-    - label = pending.positive? ? t(".pending_horses", count: pending) : t(".no_pending")
-    input.tab type="radio" name="horses" aria-label=label disabled=pending.zero?
+      - if @active_tab == :unsold
+        = render "auctions/horses/index", auction: @auction, active_tab: @active_tab, include_reserve: @include_reserve, horses: @horses, pagy: @pagy
+
+    - label = @pending.positive? ? t(".pending_horses", count: @pending) : t(".no_pending")
+    - if @active_tab == :pending
+      a.tab.tab-active = label
+    - else
+      = link_to label, auction_path(@auction, tab: :pending), class: "tab", data: { turbo_frame: "_top" }
     .tab-content.bg-base-100.py-2
-      = render "table", type: :pending, auction: @auction
-    - label = sold.positive? ? t(".sold_horses", count: sold) : t(".no_sold")
-    input.tab type="radio" name="horses" aria-label=label checked=(active_tab == :sold) disabled=sold.zero?
+      - if @active_tab == :pending
+        = render "auctions/horses/index", auction: @auction, active_tab: @active_tab, include_reserve: @include_reserve, horses: @horses, pagy: @pagy
+
+    - label = @sold.positive? ? t(".sold_horses", count: @sold) : t(".no_sold")
+    - if @active_tab == :sold
+      a.tab.tab-active = label
+    - else
+      = link_to label, auction_path(@auction, tab: :sold), class: "tab", data: { turbo_frame: "_top" }
+
     .tab-content.bg-base-100.py-2
-      = render "table", type: :sold, auction: @auction
+      - if @active_tab == :sold
+        = render "auctions/horses/index", auction: @auction, active_tab: @active_tab, include_reserve: @include_reserve, horses: @horses, pagy: @pagy
