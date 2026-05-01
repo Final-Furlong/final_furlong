@@ -30,7 +30,6 @@ class Auctions::ProcessSalesJob < ApplicationJob
           sold_horses += 1
         else
           error = result.error
-          raise result.inspect
         end
         succeeded = result.sold?
       end
