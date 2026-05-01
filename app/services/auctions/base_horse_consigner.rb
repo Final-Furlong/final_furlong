@@ -7,7 +7,7 @@ module Auctions
     private
 
     def base_query
-      Horses::Horse.game_owned.where.missing(:auction_horse)
+      Horses::Horse.game_owned.born.not_deceased.not_retired.where.missing(:auction_horse)
     end
 
     def consigned_to_auction

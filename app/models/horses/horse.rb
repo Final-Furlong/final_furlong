@@ -92,6 +92,9 @@ module Horses
     scope :game_owned, -> { joins(:owner).where(owner: { name: Config::Game.stable }) }
     scope :alive, -> { where(status: Status::LIVING_STATUSES) }
     scope :retired, -> { where(status: Status::RETIRED_STATUSES) }
+    scope :not_retired, -> { where.not(status: Status::RETIRED_STATUSES) }
+    scope :not_deceased, -> { where.not(status: "deceased") }
+    scope :not_famous_stud, -> { where.missing(:famous_stud) }
     scope :born, -> { where(date_of_birth: ..Date.current) }
     scope :unborn, -> { where(date_of_birth: Date.current + 1.day..) }
     scope :stillborn, -> { where("date_of_birth = date_of_death") }
