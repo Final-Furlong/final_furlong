@@ -63,7 +63,7 @@ module Horses
     def missed?
       return true if slot.month < date.month
 
-      date.day < slot.end_day
+      slot.end_day < date.day
     end
 
     def options_for_slot_select(stud)
