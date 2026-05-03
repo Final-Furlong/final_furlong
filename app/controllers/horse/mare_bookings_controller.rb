@@ -26,7 +26,8 @@ module Horse
       @stud = Horses::Horse.stud.includes(:stud_options).find(breeding_params[:stud_id])
       slot = ::Breeding::Slot.where(start_day: ..(breeding_params[:day])).order(start_day: :desc).find_by(month: breeding_params[:month])
       date = Date.new(Date.current.year, breeding_params[:month].to_i, breeding_params[:day].to_i)
-      @breeding = Horses::Breeding.new(mare: @horse, stud: @stud, slot:, stable: @horse.manager, status: "approved", date:, year: date.year)
+      fee = (@horse.manager == @stud.manager) ? 0 : @stud.stud_options.stud_fee
+      @breeding = Horses::Breeding.new(mare: @horse, stud: @stud, slot:, stable: @horse.manager, status: "approved", date:, year: date.year, fee:)
       if (failure = policy(@breeding).request_booking_result.failure)
         flash[:error] = t(".#{failure}")
       elsif @breeding.save!
