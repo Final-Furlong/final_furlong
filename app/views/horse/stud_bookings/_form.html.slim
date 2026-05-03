@@ -3,7 +3,8 @@
 = form_with model: booking, url:,  id: "booking-form", method: http_method, html: { class: "form", novalidate: true },
   data: { turbo_frame: "_top", controller: 'stud-booking',
           'stud-booking-mares-url-value' => stable_dependent_fields_horse_stud_bookings_url(stud.id, ':stable_id', ':slot_id'),
-          'stud-booking-selected-slot-id-value' => booking.slot_id, 'stud-booking-placeholder-value' => t("horse.stud_bookings.mare_select.any_mare"),
+          'stud-booking-selected-slot-id-value' => booking.slot_id, 'stud-booking-selected-mare-id-value' => booking.mare_id,
+          'stud-booking-placeholder-value' => t("horse.stud_bookings.mare_select.any_mare"),
           'stud-booking-stud-stable-id-value' => stud.manager_id, 'stud-booking-stud-fee-value' => options.stud_fee.to_i } do |f|
   - unless error.blank?
     p.alert.alert-error.alert-outline= error
