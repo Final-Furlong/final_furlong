@@ -94,6 +94,7 @@ end
 # Table name: lifetime_race_records
 # Database name: primary
 #
+#  description        :text
 #  earnings           :bigint
 #  fourths            :integer
 #  points             :bigint

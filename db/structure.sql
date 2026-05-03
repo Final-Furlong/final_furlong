@@ -3070,7 +3070,36 @@ CREATE MATERIALIZED VIEW public.lifetime_race_records AS
             WHEN (sum(points) >= 300) THEN 'GCh.'::text
             WHEN (sum(points) >= 100) THEN 'Ch.'::text
             ELSE ''::text
-        END AS title_abbreviation
+        END AS title_abbreviation,
+    concat(
+        CASE
+            WHEN ((sum(starts))::integer = 0) THEN 'Unraced'::text
+            ELSE
+            CASE
+                WHEN ((sum(stakes_wins) > 1) AND ((sum(stakes_seconds) + sum(stakes_thirds)) > 1)) THEN 'Mult. Stakes Winner, Mult. Stakes Placed'::text
+                WHEN ((sum(stakes_wins) > 1) AND ((sum(stakes_seconds) + sum(stakes_thirds)) = 1)) THEN 'Mult. Stakes Winner, Stakes Placed'::text
+                WHEN ((sum(stakes_wins) = 1) AND ((sum(stakes_seconds) + sum(stakes_thirds)) > 1)) THEN 'Stakes Winner, Mult. Stakes Placed'::text
+                WHEN ((sum(stakes_wins) = 1) AND ((sum(stakes_seconds) + sum(stakes_thirds)) = 1)) THEN 'Stakes Winner, Stakes Placed'::text
+                WHEN ((sum(stakes_wins) > 1) AND ((sum(stakes_seconds) + sum(stakes_thirds)) = 0)) THEN 'Mult. Stakes Winner'::text
+                WHEN ((sum(stakes_wins) = 1) AND ((sum(stakes_seconds) + sum(stakes_thirds)) = 0)) THEN 'Stakes Winner'::text
+                WHEN ((sum(stakes_wins) = 0) AND ((sum(stakes_seconds) + sum(stakes_thirds)) > 1)) THEN 'Mult. Stakes Placed'::text
+                WHEN ((sum(stakes_wins) = 0) AND ((sum(stakes_seconds) + sum(stakes_thirds)) = 1)) THEN 'Stakes Placed'::text
+                WHEN ((sum(wins) > 1) AND ((sum(seconds) + sum(thirds)) > 1)) THEN 'Mult. Winner, Mult. Placed'::text
+                WHEN ((sum(wins) > 1) AND ((sum(seconds) + sum(thirds)) = 1)) THEN 'Mult. Winner, Placed'::text
+                WHEN ((sum(wins) = 1) AND ((sum(seconds) + sum(thirds)) > 1)) THEN 'Winner, Mult. Placed'::text
+                WHEN ((sum(wins) = 1) AND ((sum(seconds) + sum(thirds)) = 1)) THEN 'Winner, Placed'::text
+                WHEN ((sum(wins) > 1) AND ((sum(seconds) + sum(thirds)) = 1)) THEN 'Mult. Winner'::text
+                WHEN ((sum(wins) = 1) AND ((sum(seconds) + sum(thirds)) = 0)) THEN 'Winner'::text
+                WHEN ((sum(wins) = 0) AND ((sum(seconds) + sum(thirds)) > 1)) THEN 'Mult. Placed'::text
+                WHEN ((sum(wins) = 0) AND ((sum(seconds) + sum(thirds)) = 1)) THEN 'Placed'::text
+                ELSE 'Unplaced'::text
+            END
+        END,
+        CASE
+            WHEN (sum(earnings) > (2000000)::numeric) THEN ', Multi-Millionaire'::text
+            WHEN (sum(earnings) >= (1000000)::numeric) THEN ', Millionaire'::text
+            ELSE ''::text
+        END) AS description
    FROM public.race_records
   GROUP BY horse_id
   WITH NO DATA;
@@ -8093,62 +8122,6 @@ CREATE INDEX index_race_options_on_third_jockey_id ON public.race_options USING 
 
 
 --
--- Name: index_race_qualifications_on_allowance_placed; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_qualifications_on_allowance_placed ON public.race_qualifications USING btree (allowance_placed);
-
-
---
--- Name: index_race_qualifications_on_claiming_qualified; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_qualifications_on_claiming_qualified ON public.race_qualifications USING btree (claiming_qualified);
-
-
---
--- Name: index_race_qualifications_on_maiden_qualified; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_qualifications_on_maiden_qualified ON public.race_qualifications USING btree (maiden_qualified);
-
-
---
--- Name: index_race_qualifications_on_nw1_allowance_qualified; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_qualifications_on_nw1_allowance_qualified ON public.race_qualifications USING btree (nw1_allowance_qualified);
-
-
---
--- Name: index_race_qualifications_on_nw2_allowance_qualified; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_qualifications_on_nw2_allowance_qualified ON public.race_qualifications USING btree (nw2_allowance_qualified);
-
-
---
--- Name: index_race_qualifications_on_nw3_allowance_qualified; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_qualifications_on_nw3_allowance_qualified ON public.race_qualifications USING btree (nw3_allowance_qualified);
-
-
---
--- Name: index_race_qualifications_on_stakes_placed; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_qualifications_on_stakes_placed ON public.race_qualifications USING btree (stakes_placed);
-
-
---
--- Name: index_race_qualifications_on_starter_allowance_qualified; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_race_qualifications_on_starter_allowance_qualified ON public.race_qualifications USING btree (starter_allowance_qualified);
-
-
---
 -- Name: index_race_records_on_horse_id_and_year_and_surface; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -10310,6 +10283,7 @@ ALTER TABLE ONLY public.famous_studs
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260503121327'),
 ('20260428165655'),
 ('20260428134126'),
 ('20260428123259'),
