@@ -41,6 +41,7 @@ module Horses
           Accounts::BudgetTransactionCreator.new.create_transaction(stable: horse.owner, description:, amount: lease.fee.abs)
 
           horse.update(manager: stable)
+          horse.training_schedules_horse&.destroy
           ::LeaseAcceptanceNotification.create!(
             user: horse.owner.user,
             params: {

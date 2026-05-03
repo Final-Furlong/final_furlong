@@ -21,8 +21,8 @@ module Horses
               horse_name: horse.name
             }
           )
-          legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
-          legacy_horse&.update(Leased: 0, Leaser: 0)
+          horse.update(manager: horse.owner)
+          horse.training_schedules_horse&.destroy
           lease.destroy!
         end
         expired_leases += 1

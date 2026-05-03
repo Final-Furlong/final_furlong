@@ -97,13 +97,6 @@ module Auctions
           price: bid.current_bid,
           private: false
         )
-        Legacy::Horse.where(ID: horse.legacy_id).update(
-          Owner: buyer.legacy_id,
-          consigned_auction_id: nil
-        )
-        if Legacy::Horse.where("DOB > ?", Date.current + 4.years).exists?(Dam: horse.legacy_id)
-          Legacy::Horse.where("DOB > ?", Date.current + 4.years).where(Dam: horse.legacy_id).update(Owner: buyer.legacy_id)
-        end
         if Horses::Horse.unborn.exists?(dam: horse)
           Horses::Horse.unborn.where(dam: horse).find_each do |foal|
             foal.update(owner: buyer, manager: buyer)
@@ -111,11 +104,21 @@ module Auctions
         end
         auction_horse.update(sold_at: Time.current)
         horse.update(owner: buyer, manager: buyer)
+        horse.training_schedules_horse&.destroy
         Auctions::Horse.counter_culture_fix_counts
 
         result.sold = true
       rescue ActiveRecord::ActiveRecordError
         result.sold = false
+      end
+      if result.sold?
+        Legacy::Horse.where(ID: horse.legacy_id).update(
+          Owner: buyer.legacy_id,
+          consigned_auction_id: nil
+        )
+        if Legacy::Horse.where("DOB > ?", Date.current + 4.years).exists?(Dam: horse.legacy_id)
+          Legacy::Horse.where("DOB > ?", Date.current + 4.years).where(Dam: horse.legacy_id).update(Owner: buyer.legacy_id)
+        end
       end
 
       result

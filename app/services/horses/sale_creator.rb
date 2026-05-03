@@ -34,6 +34,7 @@ module Horses
           Accounts::BudgetTransactionCreator.new.create_transaction(stable: original_owner, description:, amount: sale.price.abs)
 
           horse.update(owner: stable, manager: stable)
+          horse.training_schedules_horse&.destroy
           Horses::Horse.unborn.where(dam: horse).find_each do |foal|
             foal.update(owner: stable, manager: stable)
           end
