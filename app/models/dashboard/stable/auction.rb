@@ -3,11 +3,11 @@ module Dashboard
     class Auction
       attr_reader :query, :auctions, :pagy
 
-      def initialize(query:, bids:, pagy:, query_result:)
+      def initialize(query:, auctions:, bids:, pagy:, query_result:)
         @query = query
         @query_result = query_result
         @bids = bids
-        @auctions = ::Auction.joins(:bids).where(bids:).uniq + ::Auction.where(auctioneer: Current.stable)
+        @auctions = auctions + ::Auction.where(auctioneer: Current.stable)
         @pagy = pagy
       end
 
@@ -42,6 +42,8 @@ module Dashboard
       end
 
       def average_income_per_horse(auction)
+        return 0 if (total_horses_sold(auction) + total_sales_pending(auction)).zero?
+
         (total_money_in(auction) + total_money_pending(auction)) / (total_horses_sold(auction) + total_sales_pending(auction))
       end
 
@@ -76,6 +78,8 @@ module Dashboard
       end
 
       def average_spend_per_horse(auction)
+        return 0 if total_horses_won(auction).zero?
+
         total_money_spent(auction) / total_horses_won(auction)
       end
 
