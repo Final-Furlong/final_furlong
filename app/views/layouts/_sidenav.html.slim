@@ -18,6 +18,11 @@ nav class="drawer-side is-drawer-close:overflow-visible"
           a.transition.duration-75 href=horses_path
             i.ph.ph-fill.ph-horse
             span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.all_horses")
+      li
+        button data-tip=t(".forum") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+          = render Ui::Link::Component.new(url: Rails.application.credentials.dig(:forum_url)) do
+            i.ph.ph-fill.ph-chat-text
+            span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t(".forum")
       .divider.my-0
       = render "layouts/admin_sidenav" if signed_in? && Current.user.admin?
       - unless Rails.env.development?
