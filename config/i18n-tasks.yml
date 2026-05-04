@@ -143,6 +143,7 @@ ignore_unused:
   - pagy.*
   - helpers.*
   - pundit.*
+  - ssos.*
   - current_stable.recent_foals.foal_forum.*
   - current_stable.training_schedules.{create,update}.success
   - horse.actions.*
