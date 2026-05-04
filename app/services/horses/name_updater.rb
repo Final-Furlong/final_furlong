@@ -8,7 +8,7 @@ module Horses
       result = Result.new(horse:)
       ActiveRecord::Base.transaction do
         if horse.update(name: new_name)
-          result.updated = Legacy::Horse.find_by(ID: horse.legacy_id).update(Name: new_name, slug: horse.reload.slug)
+          result.updated = true
         else
           result.updated = false
           result.error = horse.errors.full_messages.to_sentence

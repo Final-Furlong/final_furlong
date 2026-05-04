@@ -36,11 +36,6 @@ module Racing
             Accounts::BudgetTransactionCreator.new.create_transaction(stable: claimer, description:, amount: claim_price * -1)
             Horses::Sale.create!(date: race.date, price: claim_price, private: false, buyer: claimer, seller: owner, horse:)
             entry.claims.map(&:destroy)
-          end
-          if horse.reload.owner == claimer
-            Legacy::Horse.transaction do
-              Legacy::Horse.where(ID: horse.legacy_id).update(Owner: claimer.legacy_id)
-            end
             claimed = true
           end
         else

@@ -17,7 +17,6 @@ module Horses
     has_object :broodmare
     has_object :stud
 
-    has_one :horse_attributes, class_name: "Attributes", dependent: :delete
     has_one :appearance, class_name: "Appearance", dependent: :delete
     has_one :genetics, class_name: "Genetics", dependent: :delete
 
@@ -181,7 +180,7 @@ module Horses
         .or(joins(:stud_options).merge(Horses::StallionOption.outside_bookings_available))
     }
 
-    delegate :title, :breeding_record, :dosage_text, :track_record, to: :horse_attributes, allow_nil: true
+    delegate :track_record, to: :lifetime_race_record, allow_nil: true
 
     # broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
 

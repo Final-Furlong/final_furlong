@@ -15,8 +15,3 @@ ruby:
         label.label = t(".select_auction")
         = select_tag "auction_id", options_from_collection_for_select(@auctions, :id, :title), include_blank: true, class: "select",
           data: { action: 'change->dynamic-select#change', 'dynamic-select-target': 'select' }
-
-    = turbo_frame_tag "auction_form", class:"w-1/2", data: { 'dynamic-select-target': "frame" } do
-      - if false
-        label.label = t(".select_auction")
-        = select_tag "auction_id", options_from_collection_for_select(@auctions, :id, :title), {}, class: "select"

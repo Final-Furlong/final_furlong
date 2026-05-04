@@ -32,6 +32,10 @@ module Racing
       "#{race_record_races_only} - #{number_with_delimiter(points)}#{"pt".pluralize(points)} - #{Game::MoneyFormatter.new(earnings)}"
     end
 
+    def track_record
+      description
+    end
+
     def unraced?
       starts.to_i.zero?
     end

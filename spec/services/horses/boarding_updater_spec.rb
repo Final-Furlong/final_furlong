@@ -17,7 +17,7 @@ RSpec.describe Horses::BoardingUpdater do
 
     context "when horse is leased" do
       before do
-        legacy_horse.update(Leased: 1, leaser: leaser.legacy_id)
+        horse.update(manager: leaser)
       end
 
       it "creates budget entry for leasing stable" do

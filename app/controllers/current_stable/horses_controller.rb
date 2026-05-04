@@ -11,7 +11,7 @@ module CurrentStable
       @query = policy_scope(Horses::Horse, policy_scope_class: CurrentStable::HorsePolicy::Scope)
       case @active_status
       when :racehorse
-        @query = @query.includes(:horse_attributes)
+        @query = @query.includes(:lifetime_race_record)
       when :broodmare
         @query = @query.includes(:broodmare_foal_record)
       when :yearling, :weanling

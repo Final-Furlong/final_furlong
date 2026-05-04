@@ -45,15 +45,6 @@ RSpec.describe Stables::UpdateDescription do
           expect(outcome).to be_valid
         end.to change(stable.reload, :description).to("hi, <em>cool stable</em>")
       end
-
-      it "updates legacy stable description" do
-        legacy_user = create(:legacy_user)
-        stable = create(:stable, description: "", legacy_id: legacy_user.id)
-        expect do
-          outcome = described_class.run(stable:, description: "hi, <em>cool stable</em>")
-          expect(outcome).to be_valid
-        end.to change { legacy_user.reload.description }.to("hi, cool stable")
-      end
     end
   end
 end

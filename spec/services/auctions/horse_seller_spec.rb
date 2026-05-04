@@ -64,23 +64,6 @@ RSpec.describe Auctions::HorseSeller do
       expect { described_class.new.process_sale(bid:) }.to change(Horses::Sale, :count).by(1)
     end
 
-    it "modifies legacy horse" do
-      described_class.new.process_sale(bid:)
-      expect(legacy_horse.reload).to have_attributes(
-        Owner: buyer.legacy_id,
-        SalePrice: -1,
-        SellTo: 0,
-        can_be_sold: false,
-        consigned_auction_id: nil
-      )
-    end
-
-    it "updates legacy unborn foals" do
-      described_class.new.process_sale(bid:)
-      expect(legacy_foal_1.reload).to have_attributes(Owner: legacy_stable_buyer.ID)
-      expect(legacy_foal_2.reload).to have_attributes(Owner: legacy_stable_buyer.ID)
-    end
-
     it "updates unborn foals" do
       described_class.new.process_sale(bid:)
       expect(foal_1.reload).to have_attributes(owner: bid.bidder)

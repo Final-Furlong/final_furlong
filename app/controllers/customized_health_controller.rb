@@ -2,7 +2,7 @@ class CustomizedHealthController < Rails::HealthController
   def upstream
     status = UpstreamStatus.new
     status.primary_db = check_primary_db
-    status.legacy_db = check_legacy_db
+    status.legacy_db = UpstreamStatus::STATUS_OK # check_legacy_db
     status.canary = check_canary
 
     render_upstream(status:, ok: status.is_ok)

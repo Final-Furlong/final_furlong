@@ -12,18 +12,15 @@ class Horses::KillMaresJob < ApplicationJob
       ActiveRecord::Base.transaction do
         mare.update(status: "deceased", date_of_death: death.date)
         notify_death(horse: mare)
-        Legacy::Horse.where(ID: mare.legacy_id).update(Status: 2, DOD: death.date + 4.years)
         Horses::Horse.where(dam: mare, status: "unborn").find_each do |foal|
           if (foal.date_of_birth - death.date).to_i > Config::Horses.max_premature_days
             foal.update(status: "deceased", date_of_birth: death.date, date_of_death: death.date)
-            Legacy::Horse.where(ID: foal.legacy_id).update(Status: 2, DOB: death.date + 4.years, DOD: death.date + 4.years)
             notify_stillborn(foal:, mare:)
             stillborn += 1
           else
             foal.update(status: "weanling", date_of_birth: death.date)
             appearance = foal.appearance
             appearance.update(birth_height: appearance.birth_height - rand(1..2))
-            Legacy::Horse.where(ID: foal.legacy_id).update(Status: 9, DOB: death.date + 4.years, CurrentHeight: appearance.birth_height)
             notify_premature(foal:, mare:)
             premature += 1
           end

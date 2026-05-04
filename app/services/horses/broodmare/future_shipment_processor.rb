@@ -26,19 +26,10 @@ module Horses
           return
         end
 
-        saved = false
         ActiveRecord::Base.transaction do
           shipment.update(scheduled: false)
           description = I18n.t("services.shipment_creator.description", horse: horse.name, start: current_location_name, end: end_location_name)
           Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: cost.abs * -1)
-          saved = true
-        end
-        if saved
-          Legacy::Horse.transaction do
-            location_id = Legacy::User.where(StableName: shipment.ending_farm.name).pick(:ID)
-            legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
-            legacy_horse&.update(InTransit: 1, Location: location_id)
-          end
         end
       end
 

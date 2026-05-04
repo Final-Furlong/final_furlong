@@ -59,10 +59,6 @@ module Horses
           result.error = lease.errors.full_messages.to_sentence
         end
       end
-      if result.created?
-        legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
-        legacy_horse&.update(Leased: 1, Leaser: stable.legacy_id)
-      end
       result.lease = lease
       result
     end

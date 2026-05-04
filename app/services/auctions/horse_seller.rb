@@ -111,15 +111,6 @@ module Auctions
       rescue ActiveRecord::ActiveRecordError
         result.sold = false
       end
-      if result.sold?
-        Legacy::Horse.where(ID: horse.legacy_id).update(
-          Owner: buyer.legacy_id,
-          consigned_auction_id: nil
-        )
-        if Legacy::Horse.where("DOB > ?", Date.current + 4.years).exists?(Dam: horse.legacy_id)
-          Legacy::Horse.where("DOB > ?", Date.current + 4.years).where(Dam: horse.legacy_id).update(Owner: buyer.legacy_id)
-        end
-      end
 
       result
     end

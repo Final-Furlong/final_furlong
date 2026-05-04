@@ -7,26 +7,21 @@ module Horses
         return result
       end
 
-      legacy_horse = Legacy::Horse.find_by(ID: boarding.horse.legacy_id)
-      stable = if legacy_horse&.Leased
-        Account::Stable.find_by(legacy_id: legacy_horse.leaser)
-      else
-        boarding.horse.owner
-      end
+      horse = boarding.horse
+      stable = horse.manager
 
       ActiveRecord::Base.transaction do
         boarding.update(end_date: Date.current, days: (Date.current - boarding.start_date).to_i)
         if boarding.days > 0
           days_string = "#{boarding.days} "
           days_string += "day".pluralize(boarding.days)
-          description = I18n.t("services.boarding.updater.budget_description", name: boarding.horse.name, days: days_string)
+          description = I18n.t("services.boarding.updater.budget_description", name: horse.name, days: days_string)
           amount = boarding.days * Config::Boarding.daily_fee * -1
           Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount:)
           result.boarding = boarding
         else
           boarding.destroy!
         end
-        legacy_horse&.update(boarding_id: nil)
         result.updated = true
       rescue ActiveRecord::ActiveRecordError => e
         result.updated = false

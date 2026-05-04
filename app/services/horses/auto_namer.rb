@@ -20,11 +20,7 @@ module Horses
       while Horses::Horse.where.not(id: horse.id).exists?(["name LIKE ?", "#{adjective}%#{noun}%"])
         adjective, noun, name = generate_name
       end
-      ActiveRecord::Base.transaction do
-        horse.update(name:)
-        id = horse.legacy_id
-        Legacy::Horse.where(ID: id).update(Name: name)
-      end
+      horse.update(name:)
     end
 
     def generate_name

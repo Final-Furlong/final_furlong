@@ -16,7 +16,6 @@ class Horses::RetireMaresJob < ApplicationJob
           future_breeding.second_foal&.destroy!
           future_breeding.destroy!
         end
-        Legacy::Horse.where(ID: mare.legacy_id).update(Status: 5)
         notify_retirement(horse: mare)
       end
       retired += 1

@@ -20,13 +20,6 @@ class Shipping::ProcessArrivalsJob < ApplicationJob
         racetrack:,
         at_home: shipment.shipping_type == "track_to_farm"
       )
-      Legacy::Horse.where(ID: horse.legacy_id).update(InTransit: 0)
-      horses += 1
-    end
-    Shipping::BroodmareShipment.where("arrival_date > ? AND arrival_date <= ?", min_date, Date.current).find_each do |shipment|
-      horse = shipment.horse
-
-      Legacy::Horse.where(ID: horse.legacy_id).update(InTransit: 0)
       horses += 1
     end
     store_job_info(outcome: { horses:, date: min_date })

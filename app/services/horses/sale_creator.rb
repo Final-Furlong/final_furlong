@@ -38,8 +38,6 @@ module Horses
           Horses::Horse.unborn.where(dam: horse).find_each do |foal|
             foal.update(owner: stable, manager: stable)
           end
-          legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
-          legacy_horse&.update(Owner: stable.legacy_id)
 
           ::SaleAcceptanceNotification.create!(
             user: original_owner.user,

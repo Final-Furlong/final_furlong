@@ -63,19 +63,6 @@ class Racing::NaturalEnergyUpdaterJob < ApplicationJob
         # rubocop:enable Rails/SkipsModelValidations
       end
     end
-
-    step :process do |step|
-      Legacy::Horse.where(Status: 3).find_each(start: step.cursor) do |legacy_horse|
-        horse_id = Horses::Horse.where(legacy_id: legacy_horse.ID).pick(:id)
-        stats = Racing::RacingStats.find_by(horse_id:)
-        if stats
-          legacy_horse.NaturalEnergy = stats.natural_energy_current
-        end
-        legacy_horse.save
-        horses += 1
-        step.advance! from: legacy_horse.id
-      end
-    end
     store_job_info(outcome: { horses: })
   end
 end

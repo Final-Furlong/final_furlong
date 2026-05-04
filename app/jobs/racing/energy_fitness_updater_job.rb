@@ -61,25 +61,6 @@ class Racing::EnergyFitnessUpdaterJob < ApplicationJob
         .update_all(fitness_grade: "A")
       # rubocop:enable Rails/SkipsModelValidations
     end
-
-    step :process do |step|
-      Legacy::Horse.where(Status: 3).find_each(start: step.cursor) do |legacy_horse|
-        horse_id = Horses::Horse.where(legacy_id: legacy_horse.ID).pick(:id)
-        data = Racing::RacehorseMetadata.find_by(horse_id:)
-        stats = Racing::RacingStats.find_by(horse_id:)
-        if data
-          legacy_horse.DisplayEnergy = data.energy_grade
-          legacy_horse.DisplayFitness = data.fitness_grade
-        end
-        if stats
-          legacy_horse.EnergyCurrent = stats.energy
-          legacy_horse.Fitness = stats.fitness
-        end
-        legacy_horse.save
-        horses += 1
-        step.advance! from: legacy_horse.id
-      end
-    end
     store_job_info(outcome: { horses: })
   end
 end

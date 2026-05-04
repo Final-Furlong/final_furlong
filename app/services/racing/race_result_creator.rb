@@ -38,7 +38,6 @@ module Racing
             raise ActiveRecord::Rollback, race_horse.errors.full_messages.to_sentence
           end
         end
-        trigger_horse_attribute_updates(horses:)
         if max_race?(date:, number: race.number)
           Racing::RaceResultHorse.counter_culture_fix_counts
           Racing::RaceRecord.refresh
@@ -75,16 +74,6 @@ module Racing
 
     def max_race?(date:, number:)
       number == Racing::RaceSchedule.where(date:).maximum(:number)
-    end
-
-    def trigger_horse_attribute_updates(horses:)
-      horses.each do |horse_hash|
-        horse = Horses::Horse.find_by(legacy_id: horse_hash[:legacy_id])
-        next unless horse
-        next if horse_hash[:finish_position] > 5 && !horse.horse_attributes
-
-        Horses::UpdateHorseAttributesJob.perform_later(horse)
-      end
     end
 
     def update_options(horse:, surface:)

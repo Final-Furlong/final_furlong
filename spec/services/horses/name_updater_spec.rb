@@ -15,12 +15,6 @@ RSpec.describe Horses::NameUpdater do
         described_class.new.change_name(horse:, params:)
       end.to change(horse, :name).to(params[:name])
     end
-
-    it "updates legacy horse" do
-      described_class.new.change_name(horse:, params:)
-      expect(legacy_horse.reload.Name).to eq params[:name]
-      expect(legacy_horse.slug).to eq horse.reload.slug
-    end
   end
 
   context "when name is invalid" do

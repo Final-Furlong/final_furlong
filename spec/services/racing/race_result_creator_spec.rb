@@ -23,14 +23,6 @@ RSpec.describe Racing::RaceResultCreator do
           described_class.new.create_result(**new_params)
         end.to change(Racing::RaceResultHorse, :count).by(1)
       end
-
-      it "triggers horse attribute job" do
-        new_params = params.dup
-        new_params[:horses] = horses.slice(0, 1)
-        described_class.new.create_result(**new_params)
-
-        expect(Horses::UpdateHorseAttributesJob).to have_been_enqueued.with(horse1)
-      end
     end
 
     context "with multiple horses" do
@@ -49,13 +41,6 @@ RSpec.describe Racing::RaceResultCreator do
         expect do
           described_class.new.create_result(**params)
         end.to change(Racing::RaceResultHorse, :count).by(2)
-      end
-
-      it "triggers horse attributes job for each horse" do
-        described_class.new.create_result(**params)
-
-        expect(Horses::UpdateHorseAttributesJob).to have_been_enqueued.with(horse1)
-        expect(Horses::UpdateHorseAttributesJob).to have_been_enqueued.with(horse2)
       end
     end
 

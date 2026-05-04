@@ -80,15 +80,9 @@ module Workouts
           stats.fitness = stats.fitness.clamp(-50, 100)
           stats.save
           if (data = horse.race_metadata)
-            energy_grade, fitness_grade = data.update_grades(energy: stats.energy, fitness: stats.fitness)
-            data.update(workouts_since_last_race: data.workouts_since_last_race.to_i + 1)
+            data.assign_attributes(workouts_since_last_race: data.workouts_since_last_race.to_i + 1)
+            data.update_grades(energy: stats.energy, fitness: stats.fitness)
           end
-          Legacy::Horse.where(ID: horse.legacy_id).update(
-            EnergyCurrent: stats.energy,
-            Fitness: stats.fitness,
-            DisplayEnergy: energy_grade,
-            DisplayFitness: fitness_grade
-          )
           pick_and_save_injury
           workout.valid?(context: :complete_workout)
           result.created = workout.save!

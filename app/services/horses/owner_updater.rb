@@ -21,11 +21,16 @@ module Horses
           Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: 0)
 
           horse.update(owner: game_stable, manager: game_stable)
+          horse.training_schedules_horse&.destroy
+          horse.race_entries.each do |entry|
+            entry.claims.each do |claim|
+              claim.destroy
+            end
+            entry.destroy
+          end
           Horses::Horse.unborn.where(dam: horse).find_each do |foal|
             foal.update(owner: game_stable, manager: game_stable)
           end
-          legacy_horse = Legacy::Horse.find_by(ID: horse.legacy_id)
-          legacy_horse&.update(Owner: game_stable.legacy_id)
 
           result.saved = true
         else

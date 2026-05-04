@@ -100,7 +100,7 @@
                 = t(".not_for_sale")
       tr
         th= t(".track_record")
-        td= horse.track_record || t("horse.unraced")
+        td= horse.lifetime_race_record&.description || t("horse.unraced")
       - if horse.racehorse?
         - if horse.race_qualification
           tr

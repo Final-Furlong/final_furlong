@@ -106,7 +106,6 @@ module Auctions
           description = "Consigning #{horse.name} to #{auction.title}"
           Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: reserve_fee)
         end
-        Legacy::Horse.where(ID: horse.legacy_id).update(consigned_auction_id: auction.id)
         if auction_horse.save!
           result.auction_horse = auction_horse
           result.error = nil

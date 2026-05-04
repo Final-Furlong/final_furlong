@@ -11,7 +11,6 @@ class Auction < ApplicationRecord
 
   after_commit :schedule_deletion, on: %i[create update]
   after_commit :unschedule_deletion, on: :destroy
-  after_commit :unconsign_legacy_horses, on: :destroy
 
   validates :start_time, :end_time, :hours_until_sold, :title, :horses_count,
     :sold_horses_count, :pending_sales_count, presence: true
@@ -113,7 +112,7 @@ class Auction < ApplicationRecord
     else
       paginated_horses = horses.send(type.to_sym)
     end
-    paginated_horses.includes(winning_bid: :bidder, horse: [:owner, :sire, :dam, :horse_attributes,
+    paginated_horses.includes(winning_bid: :bidder, horse: [:owner, :sire, :dam,
       :lifetime_race_record, :surface_race_record,
       :broodmare_foal_record, :stud_foal_record]).order("horses.name": :asc, "horses.id": :asc)
   end
@@ -127,13 +126,6 @@ class Auction < ApplicationRecord
 
   def unschedule_deletion
     deletion_job.destroy_all if deletion_job.exists?
-  end
-
-  def unconsign_legacy_horses
-    Legacy::Horse.where(consigned_auction_id: id).find_each do |horse|
-      horse.consigned_auction_id = nil
-      horse.save(validate: false)
-    end
   end
 
   def deletion_job

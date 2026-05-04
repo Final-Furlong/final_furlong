@@ -82,7 +82,7 @@ class HorsesController < ApplicationController
 
   def set_horse
     @horse = Horses::Horse.includes(
-      :horse_attributes, :current_lease, :owner, :manager, :lease_offer, :sale_offer, :auction_horse, :location_bred, :appearance, :breeder,
+      :current_lease, :owner, :manager, :lease_offer, :sale_offer, :auction_horse, :location_bred, :appearance, :breeder,
       :lifetime_race_record, :sire, :broodmare_foal_record, next_foal: :stud
     ).find(params[:id])
   end

@@ -10,12 +10,10 @@ class Horses::UpdateBabiesJob < ApplicationJob
       ActiveRecord::Base.transaction do
         if horse.date_of_birth == horse.date_of_death
           horse.update(status: "deceased")
-          Legacy::Horse.where(ID: horse.legacy_id).update(Status: 2, DOD: horse.date_of_death - 4.years)
           notify_stillborn(foal:)
           stillborn += 1
         else
           horse.update(status: "weanling")
-          Legacy::Horse.where(ID: horse.legacy_id).update(Status: 9)
           born += 1
         end
         if horse.dam
