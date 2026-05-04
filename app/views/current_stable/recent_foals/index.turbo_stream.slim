@@ -1,0 +1,8 @@
+= turbo_stream.append "#{Current.stable.slug}-foals" do
+  = render partial: "current_stable/recent_foals/foal", collection: @foals
+
+= turbo_stream.append "forum-foal-list" do
+  = render partial: "current_stable/recent_foals/foal_forum", collection: @foals, as: :foal
+
+= turbo_stream.replace "load_more" do
+  = render_load_more(@pagy)

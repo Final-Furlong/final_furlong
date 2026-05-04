@@ -34,5 +34,16 @@ module ApplicationHelper
     value += "(#{number_to_delimited(stakes)})" if stakes.positive?
     value
   end
+
+  def forum_gender_color_hex(gender)
+    case gender.to_s.downcase
+    when "colt", "stallion"
+      "#0892d0"
+    when "filly", "mare"
+      "#a40000"
+    else
+      "#138808"
+    end
+  end
 end
 

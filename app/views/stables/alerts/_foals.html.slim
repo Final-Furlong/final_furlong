@@ -1,0 +1,12 @@
+ruby:
+  date = [[Current.user.last_sign_in_at&.to_date, Date.current - 1.day].compact_blank.min, Date.new(Date.current.year, 1, 1)].compact_blank.max
+  foals_count = Horses::Horse.managed_by(Current.stable).where('date_of_birth BETWEEN ? AND ?', date, Date.current).count
+- if foals_count.positive?
+  .card.bg-base-100.w-full
+    .card-body.p-0.rounded-none
+      details.collapse.collapse-arrow.bg-base-100 open=true
+        summary.text-center.collapse-title.font-semibold
+          = t(".foals").capitalize.pluralize(foals_count)
+          = " (#{foals_count})"
+        .collapse-content.text-sm
+          = link_to t(".foals_count", count: foals_count), stable_recent_foals_path(date: date), data: { turbo_frame: "_top" }

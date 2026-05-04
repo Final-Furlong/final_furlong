@@ -1,0 +1,23 @@
+/# locals: (foal:)
+tr
+  td class="#{!foal.deceased? ? "text-#{foal.gender}" : ""}"
+    = link_to foal.name || t("horse.unnamed"), horse_path(foal), data: { turbo_frame: "modal" }
+  td= foal.gender.titleize
+  td
+    - if foal.weanling?
+      = foal.status.titleize
+    - else
+      span.italic = t(".stillborn")
+  td
+    - if foal.sire
+      = link_to foal.sire.name_with_title, horse_path(foal.sire), data: { turbo_frame: "_top" }
+    - else
+      span.italic= t("horse.created")
+  td
+    - if foal.dam
+      = link_to foal.dam.name_with_title, horse_path(foal.dam), data: { turbo_frame: "_top" }
+    - else
+      span.italic= t("horse.created")
+  td
+    - if !foal.deceased?
+      = link_to t(".rename"), horse_path(foal), class: "btn btn-outline btn-sm #{foal.name.blank? ? "btn-primary" : ""}", target: "_blank"

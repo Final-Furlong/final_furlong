@@ -1,5 +1,5 @@
 #impersonation-alert
-  .alert.alert-error.alert-soft
+  .alert.alert-error.alert-soft.mb-4
     span.fs-5= t(".title", username: Current.user.username, stable: Current.stable.name)
     span.fs-6
       = render Ui::Button::Component.new(style: :link, url: admin_impersonate_path, http_method: :delete, data: { turbo_frame: "_top" }) do

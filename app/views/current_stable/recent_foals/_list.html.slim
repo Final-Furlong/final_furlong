@@ -1,0 +1,22 @@
+/# locals: (foals:, pagy:)
+.w-full
+  .float-right
+    div data-controller="clipboard" data-clipboard-success-content-value=t(".copied_forum_format")
+      .hidden data-clipboard-target="source" id="forum-foal-list"
+        = render partial: "current_stable/recent_foals/foal_forum", collection: foals, as: :foal
+      button.btn.btn-success.btn-outline type="button" data-action="clipboard#copy" data-clipboard-target="button" = t(".copy_forum_format")
+  .clear-both
+.mx-auto.overflow-x-auto.rounded-md.w-full
+  .table-responsive-md
+    table.table.table-responsive.table-zebra.table-sm.sortable.asc.n-last
+      thead
+        tr
+          th= Horses::Horse.human_attribute_name("name")
+          th= Horses::Horse.human_attribute_name("gender")
+          th= Horses::Horse.human_attribute_name("status")
+          th= Horses::Horse.human_attribute_name("sire")
+          th= Horses::Horse.human_attribute_name("dam")
+          th= t("common.actions.title")
+      tbody id="#{Current.stable.slug}-foals"
+        = render partial: "current_stable/recent_foals/foal", collection: foals
+= render_load_more(pagy)

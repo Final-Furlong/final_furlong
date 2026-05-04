@@ -1,0 +1,55 @@
+/# locals: (foal:)
+ruby:
+  name = foal.name.blank? ? t("horse.unnamed") : foal.name
+  full_sibs = []
+  Horses::Horse.full_sibs(foal).joins(:lifetime_race_record).merge(Racing::LifetimeRaceRecord.stakes_level).each do |sib|
+    sib_string = "[url=#{horse_url(sib)}][color=#{forum_gender_color_hex(sib.gender)}]#{sib.name_with_title} (#{sib.date_of_birth.year})[/color][/url]"
+    full_sibs << sib_string
+  end
+  half_sibs = []
+  Horses::Horse.half_sibs(foal).joins(:lifetime_race_record).merge(Racing::LifetimeRaceRecord.stakes_level).each do |sib|
+    sib_string = "[url=#{horse_url(sib)}][color=#{forum_gender_color_hex(sib.gender)}]#{sib.name_with_title} (#{sib.date_of_birth.year})[/color][/url]"
+    half_sibs << sib_string
+  end
+- if foal.deceased?
+  = "[color=#{forum_gender_color_hex(foal.gender)}]**#{t(".stillborn", gender: foal.gender.titleize)}**[/color][/url]\n"
+- else
+  = "[url=#{horse_url(foal)}][color=#{forum_gender_color_hex(foal.gender)}]**#{name.upcase}**[/color][/url]\n"
+
+- if foal.sire.blank?
+  = t("horse.created")
+- else
+  = foal.sire.name_with_title
+  = foal.sire.stud_foal_record&.breed_ranking_abbr
+= " x "
+- if foal.dam.blank?
+  = t("horse.created")
+- else
+  = foal.dam.name_with_title
+  = foal.dam.broodmare_foal_record&.breed_ranking_abbr
+  - if foal.dam.sire.blank?
+    = " - #{t("horse.created")}"
+  - else
+    = " - #{foal.dam.sire.name_with_title}"
+= "\n"
+
+- if foal.breeder_id != foal.manager_id
+  = t(".bred_by", name: foal.breeder.name)
+  = "\n"
+
+- unless foal.deceased?
+  = t(".height", height: foal.appearance.current_height)
+  = " #{foal.gender.downcase}"
+  = "\n"
+
+  - if full_sibs.present?
+    = t(".sibling_#{foal.female? ? "female" : "male"}", type: t(".full_sib"))
+    = full_sibs.join(', ')
+    = "\n"
+
+  - if half_sibs.present?
+    = t(".sibling_#{foal.female? ? "female" : "male"}", type: t(".half_sib"))
+    = half_sibs.join(', ')
+    = "\n"
+
+= "\n"

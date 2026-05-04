@@ -1,0 +1,11 @@
+/# locals: (prev_date:, next_date:, prev_foals: 0, next_foals: 0)
+
+.w-full.flex.mb-2
+  - if prev_date
+    .flex-1
+      = render Ui::ButtonizedLink::Component.new(color: :none, style: :outline, size: :small, url: stable_recent_foals_path(date: prev_date, this_date: true), http_method: :get, data: { turbo_frame: "_top" }) do
+        = t(".prev_foals_count", count: prev_foals, date: l(prev_date))
+  - if next_date
+    .flex-none
+      = render Ui::ButtonizedLink::Component.new(color: :none, style: :outline, size: :small, url: stable_recent_foals_path(date: next_date, this_date: true), http_method: :get, data: { turbo_frame: "_top" }) do
+        = t(".next_foals_count", count: next_foals, date: l(next_date))

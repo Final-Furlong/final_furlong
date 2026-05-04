@@ -1,0 +1,12 @@
+ruby:
+  title = t(".title", date: l(@date, format: :long))
+  prev_date = Horses::Horse.managed_by(Current.stable).where('date_of_birth < ?', @date).maximum(:date_of_birth)
+  prev_foals = prev_date ? Horses::Horse.managed_by(Current.stable).where(date_of_birth: prev_date).count : 0
+  next_date = Horses::Horse.managed_by(Current.stable).where('date_of_birth > ?', @date).where('date_of_birth <= ?', Date.current).minimum(:date_of_birth)
+  next_foals = next_date ? Horses::Horse.managed_by(Current.stable).where(date_of_birth: next_date).count : 0
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new( links: [{ name: Current.stable.name, href: current_stable_path },
+          { name: title, href: "#", title: true }])
+
+= render "prev_next_dates", prev_date:, next_date:, prev_foals:, next_foals:
+= render "current_stable/recent_foals/list", foals: @foals, pagy: @pagy

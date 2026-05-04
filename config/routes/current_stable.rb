@@ -16,6 +16,7 @@ namespace :stable, module: "current_stable" do
     get :summary, on: :collection
     get :list, on: :collection
   end
+  resources :recent_foals, only: :index
   get "/recent_results/:date", to: "recent_results#show", as: :recent_results
   resources :sale_offers, only: :index
   resources :settings, only: %i[new]

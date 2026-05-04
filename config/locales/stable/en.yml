@@ -160,6 +160,30 @@ en:
         title: Stable Race Results
         total: Totals
         year: Year
+    recent_foals:
+      foal:
+        rename: Rename
+        stillborn: Stillborn
+      foal_forum:
+        bred_by: Bred by %{name}
+        full_sib: Full
+        half_sib: Half
+        height: "%{height}h"
+        sibling_female: "%{type} sister to "
+        sibling_male: "%{type} brother to "
+        stillborn: Stillborn %{gender}
+      index:
+        title: Foals Born since %{date}
+      list:
+        copied_forum_format: Copied!
+        copy_forum_format: Copy List for Forum
+      prev_next_dates:
+        next_foals_count:
+          one: 1 Foal Born on %{date}
+          other: "%{count} Foals Born on %{date}"
+        prev_foals_count:
+          one: 1 Foal Born on %{date}
+          other: "%{count} Foals Born on %{date}"
     recent_results:
       show:
         copied_forum_format: Copied!
@@ -295,6 +319,12 @@ en:
         future_auction_count:
           one: There is %{count} auction coming up in the next two weeks.
           other: There are %{count} auctions coming up in the next two weeks.
+      foals:
+        foals: Foals
+        foals_count:
+          one: Your stable has 1 new foal.
+          other: Your stable has %{count} new foals.
+          zero: Your stable has no new foals.
       races:
         claiming_alert_count:
           one: '1 horse is available to claim on '

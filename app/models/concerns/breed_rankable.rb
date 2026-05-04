@@ -13,6 +13,12 @@ module BreedRankable
 
       "#{breed_ranking.titleize} (#{total_foal_points.fdiv(total_foal_races).round(1)})"
     end
+
+    def breed_ranking_abbr
+      return "" if breed_ranking.blank?
+
+      " (#{breed_ranking[0].titleize})"
+    end
   end
 end
 

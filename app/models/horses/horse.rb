@@ -97,7 +97,7 @@ module Horses
     scope :born, -> { where(date_of_birth: ..Date.current) }
     scope :unborn, -> { where(date_of_birth: Date.current + 1.day..) }
     scope :stillborn, -> { where("date_of_birth = date_of_death") }
-    scope :not_stillborn, -> { where(date_of_death: nil).or(where("date_of_death > date_of_birth")) }
+    scope :not_stillborn, -> { where(date_of_death: nil).or(where("#{table_name}.date_of_death > #{table_name}.date_of_birth")) }
     scope :created, -> { where(sire_id: nil, dam_id: nil) }
     scope :not_created, -> { where("sire_id IS NULL AND dam_id IS NULL") }
     scope :female, -> { where(gender: Gender::FEMALE_GENDERS) }
@@ -179,6 +179,8 @@ module Horses
       joins(:stud_options).where(manager: stable).merge(Horses::StallionOption.bookings_available)
         .or(joins(:stud_options).merge(Horses::StallionOption.outside_bookings_available))
     }
+    scope :full_sibs, ->(horse) { born.not_stillborn.with_sire.with_dam.where(sire: horse.sire, dam: horse.dam).where.not(id: horse.id) }
+    scope :half_sibs, ->(horse) { born.not_stillborn.with_sire.with_dam.where.not(sire: horse.sire).where(dam: horse.dam).where.not(id: horse.id) }
 
     delegate :track_record, to: :lifetime_race_record, allow_nil: true
 

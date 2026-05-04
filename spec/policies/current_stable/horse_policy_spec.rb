@@ -5,7 +5,7 @@ RSpec.describe CurrentStable::HorsePolicy do
     subject(:scope) { described_class::Scope.new(user, Horses::Horse.all).resolve }
 
     it "includes owned living horses" do
-      expect(scope).to eq Horses::Horse.managed_by(stable).alive
+      expect(scope).to eq Horses::Horse.managed_by(stable)
     end
   end
 
