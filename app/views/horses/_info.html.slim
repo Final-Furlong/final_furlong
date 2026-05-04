@@ -165,8 +165,8 @@
             - if horse.female?
               = horse.broodmare.breed_ranking_string || t("common.none")
             - else
-              = horse.stud.breed_ranking_string
-      - if Horses::Status::FEMALE_BREEDING_STATUSES.include?(horse.status)
+              = horse.stud.breed_ranking_string || t("common.none")
+      - if Horses::Status::FEMALE_BREEDING_STATUSES.include?(horse.status) || (horse.female? && horse.deceased?)
         - if horse.foals.born.present?
           tr
             th= t(".last_foal")
@@ -175,7 +175,7 @@
                 - last_dob = horse.foals.born.order(date_of_birth: :desc).pluck(:date_of_birth).first
                 - horse.foals.born.where(date_of_birth: last_dob).find_each do |foal|
                   - pedigree = Horses::PedigreeDisplayService.new(foal)
-                  span class="text-#{foal.gender}" = link_to foal.budget_name, horse_path(foal), data: { turbo_frame: "_top" }
+                  span class="text-#{foal.gender}" = link_to foal.name || t("horse.unnamed"), horse_path(foal), data: { turbo_frame: "_top" }
                   = " - "
                   = t(".foal_info", year: l(foal.date_of_birth, format: :year_abbr), gender: foal.gender, sire: pedigree.sire_display(target: "_top")).html_safe
         - if horse.next_foal.present?

@@ -5,7 +5,8 @@
           'stud-booking-mares-url-value' => stable_dependent_fields_horse_stud_bookings_url(stud.id, ':stable_id', ':slot_id'),
           'stud-booking-selected-slot-id-value' => booking.slot_id, 'stud-booking-selected-mare-id-value' => booking.mare_id,
           'stud-booking-placeholder-value' => t("horse.stud_bookings.mare_select.any_mare"),
-          'stud-booking-stud-stable-id-value' => stud.manager_id, 'stud-booking-stud-fee-value' => options.stud_fee.to_i } do |f|
+          'stud-booking-stud-stable-id-value' => stud.manager_id, 'stud-booking-stud-fee-value' => options.stud_fee.to_i,
+          'stud-booking-selected-stud-fee-value' => booking.fee } do |f|
   - unless error.blank?
     p.alert.alert-error.alert-outline= error
   p.mt-4= t(".date_range", start: l(booking.slot.start_date), end: l(booking.slot.date))
@@ -33,6 +34,8 @@
       legend.fieldset-legend= t(".fee")
       label.input
         i.ph.ph-currency-dollar
+        - pd booking.persisted?.inspect
+        - pd booking.fee
         - stud_fee = booking.persisted? ? booking.fee : (booking.stable == stud.manager ? 0 : options.stud_fee)
         = f.text_field :fee, value: stud_fee, class: "text-md grow", placeholder: t(".max_amount", amount: Game::MoneyFormatter.new(Config::Breedings.max_stud_fee).to_s),
           data: { stud_booking_target: "fee" }

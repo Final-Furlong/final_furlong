@@ -9,6 +9,7 @@ module CurrentStable
       set_active_status
       set_gender_select
       @query = policy_scope(Horses::Horse, policy_scope_class: CurrentStable::HorsePolicy::Scope)
+      @query = @query.alive unless @active_status == :deceased
       case @active_status
       when :racehorse
         @query = @query.includes(:lifetime_race_record)

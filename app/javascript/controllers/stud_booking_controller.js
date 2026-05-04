@@ -10,13 +10,14 @@ export default class extends Controller {
     studFee: Number,
     selectedStableId: Number,
     selectedMareId: Number,
-    selectedSlotId: Number
+    selectedSlotId: Number,
+    selectedStudFee: Number
   }
 
   connect() {
     if (this.stableTarget.value) {
       this.loadMares()
-      this.loadFee()
+      this.loadFee(true)
     }
   }
 
@@ -50,9 +51,11 @@ export default class extends Controller {
     }
   }
 
-  loadFee() {
+  loadFee(useSelected = false) {
     if (this.studStableIdValue == this.stableTarget.value) {
       this.feeTarget.value = 0
+    } else if (useSelected && this.selectedStudFeeValue) {
+      this.feeTarget.value = this.selectedStudFeeValue
     } else {
       this.feeTarget.value = this.studFeeValue
     }
@@ -77,7 +80,6 @@ export default class extends Controller {
   }
 
   clearFee() {
-    console.log("clear fee")
     this.feeTarget.innerHtml = this.studFeeValue
   }
 }

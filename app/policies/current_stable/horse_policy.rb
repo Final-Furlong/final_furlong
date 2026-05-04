@@ -4,7 +4,7 @@ module CurrentStable
 
     class Scope < ApplicationPolicy::Scope
       def resolve
-        scope.managed_by(stable).alive
+        scope.managed_by(stable)
       end
     end
 
