@@ -115,6 +115,11 @@ en:
         login: Username or e-mail
         name: Your name
         username: Username
+  ssos:
+    hmac_mismatch: HMAC mismatch. The message may have been tampered with.
+    nonce_mismatch: SSO verification failed. Nonce mismatch.
+    not_base64: The sso string is supposed to be encoded in Base64.
+    success: Signed in successfully
   users:
     create:
       failure: User could not be created.
