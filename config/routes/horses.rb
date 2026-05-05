@@ -15,7 +15,12 @@ resources :horses, except: %i[new create destroy] do
     end
     get "mare_bookings/pick_date", to: "mare_bookings#pick_date", as: :mare_bookings_pick_date
     get "mare_bookings/request_booking", to: "mare_bookings#request_booking", as: :mare_bookings_request_booking
+    resources :pending_mare_bookings, except: :index
     resources :stud_bookings do
+      member do
+        post :approve
+        delete :deny
+      end
       collection do
         get "/stable_dependent_fields/:stable_id/:slot_id", to: "stud_bookings#stable_dependent_fields", as: :stable_dependent_fields
       end

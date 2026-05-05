@@ -21,7 +21,9 @@ p.text-center.font-bold= t(".available_studs")
                   td= t("common.text.no")
                   td
                     - query = Horses::Horse.stud.joins(:stud_options).includes(:stud_options, :manager).stud_available_for_stable(Current.stable).merge(Horses::StallionOption.no_approval).order(name: :asc)
-                    = f.collection_select :stud_id, query, :id, :name_with_owner_fee, { prompt: "Select Stud" }, { class: "select w-full", disabled: query.size.zero?, data: { action: 'change->mare-booking#loadPickDateButton', 'mare-booking-target' => 'stud' } }
+                    - query2 = Horses::Horse.stud.joins(:stud_options).includes(:stud_options, :manager).merge(Horses::StallionOption.bookings_available).managed_by(Current.stable).order(name: :asc)
+                    - no_approval_studs = (query.to_a + query2.to_a).uniq.sort_by { |stud| stud.name }
+                    = f.collection_select :stud_id, no_approval_studs, :id, :name_with_owner_fee, { prompt: "Select Stud" }, { class: "select w-full", disabled: query.size.zero?, data: { action: 'change->mare-booking#loadPickDateButton', 'mare-booking-target' => 'stud' } }
                   td
                     = turbo_frame_tag "pick-date-button" do
                       = f.button t(".pick_date"), class: 'btn btn-disabled btn-outline ml-4'
@@ -29,7 +31,8 @@ p.text-center.font-bold= t(".available_studs")
                   td= t("common.text.yes")
                   td.pt-4
                     - query = Horses::Horse.stud.joins(:stud_options).includes(:stud_options, :manager).stud_available_for_stable(Current.stable).merge(Horses::StallionOption.approval).order(name: :asc)
-                    = f.collection_select :stud_id, query, :id, :name_with_owner_fee, { prompt: "Select Stud" }, { class: "select w-full", disabled: (true || query.size.zero?), data: { action: 'change->mare-booking#loadRequestBookingButton', 'mare-booking-target' => 'requestStud' } }
+                    - approval_studs = query.to_a.reject { |stud| no_approval_studs.include?(stud) }
+                    = f.collection_select :stud_id, approval_studs, :id, :name_with_owner_fee, { prompt: "Select Stud" }, { class: "select w-full", disabled: query.size.zero?, data: { action: 'change->mare-booking#loadRequestBookingButton', 'mare-booking-target' => 'requestStud' } }
                   td
                     = turbo_frame_tag "request-booking-button" do
                       = f.button t(".request_slot"), class: 'btn btn-disabled btn-outline ml-4'

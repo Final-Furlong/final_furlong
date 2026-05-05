@@ -9,19 +9,31 @@ module Horses
     end
 
     def create?
-      pd process_breeding_result.inspect
       process_breeding_result.success?
     end
 
     def update?
       return false if record.bred?
+      return false if record.pending?
       return false if record.slot&.past?
 
       true
     end
 
     def destroy?
-      !record.bred?
+      !record.bred? && !record.pending?
+    end
+
+    def approve?
+      return false if record.slot&.past?
+
+      record.pending?
+    end
+
+    def deny?
+      return false if record.slot&.past?
+
+      record.pending?
     end
 
     def request_booking?

@@ -61,6 +61,9 @@ en:
       updater:
         already_ended: This boarding has already ended
         budget_description: Board for %{name} for %{days}
+    booking_requested:
+      horse_was_racing: Breeding cannot happen on this date as the horse was racing
+      slot_taken: This booking slot is no longer available
     breedings:
       processor:
         cannot_afford_fee: You cannot afford this breeding

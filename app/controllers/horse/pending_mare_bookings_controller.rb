@@ -1,18 +1,18 @@
 module Horse
-  class MareBookingsController < ApplicationController
+  class PendingMareBookingsController < ApplicationController
     def index
       @horse = Horses::Horse.includes(:manager, next_foal: :stud).find(params[:horse_id])
       @bookings = policy_scope(Horses::Breeding.available_for_mare(@horse).ordered_by_status).includes(:slot, stud: :manager)
     end
 
     def new
-      @horse = Horses::Horse.broodmare.includes(:next_foal).find(params[:horse_id])
+      @horse = Horses::Horse.broodmare.includes(:next_foal, :manager).find(params[:horse_id])
       authorize @horse, :breed?, policy_class: CurrentStable::BroodmarePolicy
       @stud = Horses::Horse.stud.includes(:stud_options).find(params[:stud_id])
       @breeding = Horses::Breeding.new(mare: @horse, stud: @stud)
       if (failure = policy(@breeding).request_booking_result.failure)
         if %i[approval_required outside_mare_limit_met_current_stable].include?(failure)
-          render "horse/mare_bookings/#{failure}", locals: { mare: @horse, stud: @stud }
+          render "horse/pending_mare_bookings/#{failure}", locals: { mare: @horse, stud: @stud }
         else
           flash[:error] = t(".#{failure}")
           authorize @breeding, :request_booking?
@@ -24,18 +24,20 @@ module Horse
       @horse = Horses::Horse.broodmare.includes(:manager).find(params[:horse_id])
       authorize @horse, :breed?, policy_class: CurrentStable::BroodmarePolicy
       @stud = Horses::Horse.stud.includes(:stud_options).find(breeding_params[:stud_id])
-      slot = ::Breeding::Slot.where(start_day: ..(breeding_params[:day])).order(start_day: :desc).find_by(month: breeding_params[:month])
-      date = Date.new(Date.current.year, breeding_params[:month].to_i, breeding_params[:day].to_i)
-      fee = (@horse.manager == @stud.manager) ? 0 : @stud.stud_options.stud_fee
-      @breeding = Horses::Breeding.new(mare: @horse, stud: @stud, slot:, stable: @horse.manager, status: "approved", date:, year: date.year, fee:)
-      if (failure = policy(@breeding).request_booking_result.failure)
-        flash[:error] = t(".#{failure}")
-      elsif @breeding.save!
+      slot = ::Breeding::Slot.find(breeding_params[:slot_id])
+      result = Horses::Broodmare::BookingRequester.new.request_booking(mare: @horse, stud: @stud, slot:, message: breeding_params[:message])
+      if result.created?
         flash[:success] = t(".success", name: @stud.name)
+        redirect_to horse_path(@horse)
       else
-        flash[:error] = t(".failure", name: @stud.name)
+        respond_to do |format|
+          format.html { render :new, status: :unprocessable_entity }
+
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.replace("mare-booking-form", partial: "horse/pending_mare_bookings/approval_required", locals: { booking: result.booking, mare: @horse, stud: @stud })
+          end
+        end
       end
-      redirect_to horse_path(@horse)
     end
 
     def destroy
@@ -87,7 +89,7 @@ module Horse
     private
 
     def breeding_params
-      params.expect(horses_breeding: [:stud_id, :month, :day])
+      params.expect(horses_breeding: [:slot_id, :stud_id, :message])
     end
   end
 end

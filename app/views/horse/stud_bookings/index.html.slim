@@ -2,6 +2,7 @@
   ruby:
     bred_count = Horses::Breeding.current_year.bred.where(stud: @horse).count
     approved_count = Horses::Breeding.current_year.approved.not_missed.where(stud: @horse).count
+    pending_count = Horses::Breeding.current_year.pending.not_missed.where(stud: @horse).count
     missed_count = Horses::Breeding.current_year.approved.missed.where(stud: @horse).count
     last_race_date = @horse.race_result_finishes.joins(:race).merge(Racing::RaceResult.ordered_by_date(:desc)).first.race.date
     raced_this_year = last_race_date.year == Date.current.year
@@ -12,6 +13,8 @@
       span.ml-2.badge.badge-success = t(".bred_count", count: bred_count)
     - if approved_count.positive?
       span.ml-2.badge.badge-info = t(".approved_count", count: approved_count)
+    - if pending_count.positive?
+      span.ml-2.badge.badge-warning = t(".pending_count", count: pending_count)
     - if missed_count.positive?
       span.ml-2.badge.badge-error = t(".missed_count", count: missed_count)
   - if raced_this_year
@@ -61,10 +64,21 @@
               - if breeding.missed?
                 td data-sort="missed-#{breeding.date}"
                   span.badge.badge-error.badge-outline= t(".missed", date: l(breeding.date))
+              - elsif breeding.pending?
+                td data-sort="pending-#{breeding.date}"
+                  span.badge.badge-warning.badge-outline= t(".pending_approval")
               - else
                 td data-sort="pending-#{breeding.date}"
                   span.badge.badge-warning.badge-outline= t(".not_yet_bred", date: l(breeding.date))
               td
+                - if policy(breeding).approve?
+                  = render Ui::Button::Component.new(url: approve_horse_stud_booking_path(@horse, breeding), disabled: true, color: :success, style: :outline, size: :small, form_class: 'inline',
+                    http_method: :post, data: { turbo_confirm: t(".approve_confirm", name: mare&.name || breeding.stable.name), turbo_confirm_title: t(".approve_confirm_title"), turbo_frame: "_top" }) do
+                    = t(".approve")
+                - if policy(breeding).deny?
+                  = render Ui::Button::Component.new(url: deny_horse_stud_booking_path(@horse, breeding), disabled: true, color: :error, style: :outline, size: :small, form_class: 'inline',
+                    http_method: :delete, data: { turbo_confirm: t(".deny_confirm", name: mare&.name || breeding.stable.name), turbo_confirm_title: t(".deny_confirm_title"), turbo_frame: "_top" }) do
+                    = t(".deny")
                 - if policy(breeding).update?
                   = render Ui::ButtonizedLink::Component.new(url: edit_horse_stud_booking_path(@horse, breeding), color: :warning, style: :outline, size: :small, data: { turbo_frame: "modal" }) do
                     = t("common.actions.update")

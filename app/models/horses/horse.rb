@@ -177,8 +177,7 @@ module Horses
     scope :max_workouts_since_last_race, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.max_workouts(value)) }
     scope :random_order, -> { order("RANDOM()") }
     scope :stud_available_for_stable, ->(stable) {
-      joins(:stud_options).where(manager: stable).merge(Horses::StallionOption.bookings_available)
-        .or(joins(:stud_options).merge(Horses::StallionOption.outside_bookings_available))
+      joins(:stud_options).where("(manager_id = ? AND stallion_options.total_booked_count < ?) OR (outside_mares_allowed > outside_mares_count)", stable.id, Config::Breedings.max_mares_per_year)
     }
     scope :full_sibs, ->(horse) { born.not_stillborn.with_sire.with_dam.where(sire: horse.sire, dam: horse.dam).where.not(id: horse.id) }
     scope :half_sibs, ->(horse) { born.not_stillborn.with_sire.with_dam.where.not(sire: horse.sire).where(dam: horse.dam).where.not(id: horse.id) }

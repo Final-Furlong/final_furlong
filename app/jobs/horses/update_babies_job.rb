@@ -18,7 +18,7 @@ class Horses::UpdateBabiesJob < ApplicationJob
           born += 1
         end
         if foal.dam
-          foal.dam.due_dates.where(status: "bred").where(date: ...foal.date_of_birth).delete_all
+          foal.dam.due_dates.where(status: "bred").where(year: (Date.current.month == 12) ? Date.current.year : Date.current.year - 1).delete_all
         end
       end
     end

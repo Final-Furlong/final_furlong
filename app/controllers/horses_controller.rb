@@ -89,7 +89,7 @@ class HorsesController < ApplicationController
     # If an old id or a numeric id was used to find the record, then
     # the request path will not match the post_path, and we should do
     # a 301 redirect that uses the current friendly id.
-    if request.path != horse_path(@horse)
+    if turbo_frame_request_id.blank? && request.path != horse_path(@horse)
       return redirect_to @horse, status: :moved_permanently
     end
     @horse

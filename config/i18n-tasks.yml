@@ -151,9 +151,11 @@ ignore_unused:
   - horse.statuses.form.*
   - horse.type.*
   - horse.lease_terminations.form.*
+  - notifications.stud_booking_request_notification.*
   - racing.entries.claim.*
   - racing.entry_options.*
   - racing.workout_comments.*
+  - services.booking_requested.*
   - users.{create,update}.success
   - horses.index.auctions*
 
