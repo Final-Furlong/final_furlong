@@ -4,7 +4,7 @@ module Horses
     include FinalFurlong::Horses::Validation
     include FriendlyId
 
-    friendly_id :name_and_foal_status, use: [:slugged, :finders]
+    friendly_id :name_and_foal_status, use: [:slugged, :finders, :history]
 
     belongs_to :breeder, class_name: "Account::Stable"
     belongs_to :owner, class_name: "Account::Stable"
