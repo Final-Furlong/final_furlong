@@ -27,7 +27,7 @@ module Horses
     has_many :past_leases, -> { where.not(active: true) }, class_name: "Horses::Lease", inverse_of: :horse, dependent: :destroy
     has_one :sale_offer, class_name: "Horses::SaleOffer", inverse_of: :horse, dependent: :delete
     has_many :sales, class_name: "Horses::Sale", inverse_of: :horse, dependent: :delete_all
-    has_many :slugs, class_name: "FriendlyId::Slug", dependent: :delete_all
+    has_many :slugs, class_name: "FriendlyId::Slug", inverse_of: :sluggable, dependent: :delete_all
 
     has_many :race_result_finishes, class_name: "Racing::RaceResultHorse", inverse_of: :horse, dependent: :destroy
     has_many :race_results, class_name: "Racing::RaceResult", source: :race, through: :race_result_finishes
