@@ -1,0 +1,5 @@
+/# locals: (mares:, pagy:)
+.mx-auto.overflow-x-auto.rounded-md.w-full
+  ul
+    = render partial: "current_stable/unbred_mares/mare", collection: mares
+= render_load_more(pagy)

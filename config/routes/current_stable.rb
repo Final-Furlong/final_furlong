@@ -26,6 +26,7 @@ namespace :stable, module: "current_stable" do
     resources :horses, controller: "training_schedule_horses", only: %i[index create destroy]
   end
   resource :training_summary, only: :show
+  resources :unbred_mares, only: :index
   resources :workouts, only: %i[index create]
 end
 

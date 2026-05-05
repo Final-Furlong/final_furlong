@@ -325,6 +325,9 @@ en:
           one: Your stable has 1 new foal.
           other: Your stable has %{count} new foals.
           zero: Your stable has no new foals.
+      mares:
+        loading_mares: Loading mares...
+        mares: Unbred Mares
       races:
         claiming_alert_count:
           one: '1 horse is available to claim on '

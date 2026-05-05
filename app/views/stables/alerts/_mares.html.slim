@@ -1,0 +1,14 @@
+ruby:
+  mares_count = Horses::Horse.managed_by(Current.stable).broodmare.where.missing(:next_foal).count
+- if mares_count.positive?
+  .card.bg-base-100.w-full
+    .card-body.p-0.rounded-none
+      details.collapse.collapse-arrow.bg-base-100
+        summary.text-center.collapse-title.font-semibold
+          = t(".mares").capitalize.pluralize(mares_count)
+          = " (#{mares_count})"
+        .collapse-content.text-sm
+          = turbo_frame_tag "#{Current.stable.slug}-unbred-mares", src: stable_unbred_mares_path, loading: "lazy" do
+            .w-full.text-center
+              p.mx-auto= t(".loading_mares")
+              .mt-2.mx-auto.skeleton.w-full
