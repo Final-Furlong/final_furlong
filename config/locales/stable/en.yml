@@ -342,8 +342,12 @@ en:
     show:
       joined: Joined on %{date}
     stable:
+      foals_due_count:
+        one: 1 Foal Due This Year
+        other: "%{count} Foals Due This Year"
       general_statistics: General Statistics
       location: Located %{miles} miles from %{track} (%{location})
+      next_due_date: " (Next Due On %{date})"
       owner: Owned by %{name}
     update:
       success: Stable successfully updated

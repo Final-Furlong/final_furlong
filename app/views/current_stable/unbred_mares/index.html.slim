@@ -1,4 +1,3 @@
 = turbo_frame_tag "#{Current.stable.slug}-unbred-mares" do
-  = render "current_stable/unbred_mares/list", mares: @mares, pagy: @pagy
-
-= render_load_more(@pagy)
+  ul
+    = render "current_stable/unbred_mares/list", mares: @mares

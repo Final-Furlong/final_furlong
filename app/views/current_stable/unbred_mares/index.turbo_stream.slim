@@ -1,0 +1,5 @@
+= turbo_stream.append "#{Current.stable.slug}-unbred-mares" do
+  = render partial: "current_stable/unbred_mares/mare", collection: @foals
+
+= turbo_stream.replace "load_more" do
+  = render_load_more(@pagy)
