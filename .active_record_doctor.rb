@@ -20,6 +20,7 @@ ActiveRecordDoctor.configure do
     "solid_queue_recurring_tasks",
     "solid_queue_scheduled_executions",
     "solid_queue_semaphores",
+    "friendly_id_slugs",
 
     # Add project-specific tables here.
     /\Aff_/,
@@ -55,6 +56,7 @@ ActiveRecordDoctor.configure do
     "SolidQueue::ScheduledExecution",
     "SolidQueue::Semaphore",
     "Audited::Audit",
+    "FriendlyId::Slug",
     "Legacy::AdminSetting",
     "Legacy::Alert",
     "Legacy::AutoEntryStatus",
