@@ -36,7 +36,7 @@
         td= stable.horses.yearling.count.to_s + ' ' + 'yearling'.pluralize(stable.horses.yearling.count).titleize
         td= stable.horses.weanling.count.to_s + ' ' + 'weanling'.pluralize(stable.horses.weanling.count).titleize
         td= stable.horses.retired.count.to_s + ' ' + 'retired'.pluralize(stable.horses.retired.count).titleize
-      - foals_count = Horses::Horse.managed_by(stable).joins(:next_foal).merge(Horses::Breeding.by_year(Date.current.year - 1)).count
+      - foals_count = Horses::Horse.managed_by(stable).joins(:next_foal).merge(Horses::Breeding.last_year).count
       - if foals_count.positive?
         - due_date = Horses::Breeding.in_foal.where(mare: Horses::Horse.managed_by(stable)).minimum(:due_date)
         tr

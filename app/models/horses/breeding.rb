@@ -24,6 +24,7 @@ module Horses
 
     enum :status, Config::Breedings.statuses.reduce({}) { |hash, value| hash.merge({ value.to_sym => value }) }
 
+    scope :last_year, -> { by_year(Date.current.year - 1) }
     scope :current_year, -> { by_year(Date.current.year) }
     scope :in_foal, -> { where("due_date > ?", Date.current) }
     scope :by_year, ->(year) { where(year:) }
