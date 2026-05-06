@@ -48,12 +48,18 @@
             td data-sort=breeding.fee = Game::MoneyFormatter.new(breeding.fee)
             td data-sort="bred-#{breeding.date}"
               span.badge.badge-success.badge-outline= t(".bred", date: l(breeding.due_date))
+            td
         - if bred_count < Config::Breedings.mares_per_slot
-          - Horses::Breeding.current_year.not_bred.where(slot:, stud: @horse).includes(:mare).each do |breeding|
+          - pending_count = bred_count + Horses::Breeding.current_year.not_denied.not_bred.where(slot:, stud: @horse).count
+          - Horses::Breeding.current_year.not_bred.not_denied.where(slot:, stud: @horse).ordered_by_status.includes(:mare).each do |breeding|
             - mare = breeding.mare
             - mares_count += 1
             tr
-              td data-sort=Date.new(Date.current.year, slot.month, slot.end_day).to_s = slot.to_s
+              td data-sort=Date.new(Date.current.year, slot.month, slot.end_day).to_s
+                - if pending_count > Config::Breedings.mares_per_slot
+                  span.badge.badge-outline.badge-error = slot.to_s
+                - else
+                  = slot.to_s
               td data-sort=mare&.name
                 - if mare
                   = link_to mare.name_with_title, horse_path(mare), data: { turbo_frame: "_top" }
@@ -61,22 +67,21 @@
                   span.text-base-content/50 = t(".any_mare")
               td= link_to breeding.stable.name, stable_path(breeding.stable), data: { turbo_frame: "_top" }
               td data-sort=breeding.fee = Game::MoneyFormatter.new(breeding.fee)
-              - if breeding.missed?
-                td data-sort="missed-#{breeding.date}"
+              td
+                - if breeding.missed?
                   span.badge.badge-error.badge-outline= t(".missed", date: l(breeding.date))
-              - elsif breeding.pending?
-                td data-sort="pending-#{breeding.date}"
+                - elsif breeding.pending?
                   span.badge.badge-warning.badge-outline= t(".pending_approval")
-              - else
-                td data-sort="pending-#{breeding.date}"
-                  span.badge.badge-warning.badge-outline= t(".not_yet_bred", date: l(breeding.date))
+                - else
+                  - badge_class = (breeding.date - Date.current).to_i <= Config::Breedings.upcoming_breeding_warning_days ? "warning badge-outline" : "neutral"
+                  span.badge class="badge-#{badge_class}" = t(".not_yet_bred", date: l(breeding.date))
               td
                 - if policy(breeding).approve?
-                  = render Ui::Button::Component.new(url: approve_horse_stud_booking_path(@horse, breeding), disabled: true, color: :success, style: :outline, size: :small, form_class: 'inline',
+                  = render Ui::Button::Component.new(url: approve_horse_stud_booking_path(@horse, breeding), color: :success, style: :outline, size: :small, form_class: 'inline',
                     http_method: :post, data: { turbo_confirm: t(".approve_confirm", name: mare&.name || breeding.stable.name), turbo_confirm_title: t(".approve_confirm_title"), turbo_frame: "_top" }) do
                     = t(".approve")
                 - if policy(breeding).deny?
-                  = render Ui::Button::Component.new(url: deny_horse_stud_booking_path(@horse, breeding), disabled: true, color: :error, style: :outline, size: :small, form_class: 'inline',
+                  = render Ui::Button::Component.new(url: deny_horse_stud_booking_path(@horse, breeding), color: :error, style: :outline, size: :small, form_class: 'inline',
                     http_method: :delete, data: { turbo_confirm: t(".deny_confirm", name: mare&.name || breeding.stable.name), turbo_confirm_title: t(".deny_confirm_title"), turbo_frame: "_top" }) do
                     = t(".deny")
                 - if policy(breeding).update?

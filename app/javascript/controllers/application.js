@@ -10,3 +10,11 @@ window.Stimulus = application
 application.register("auto-submit", AutoSubmit)
 
 export { application }
+
+document.addEventListener("turbo:frame-missing", event => {
+  const {
+    detail: { response, visit }
+  } = event
+  event.preventDefault()
+  visit(response) // you have to render your "application" layout for this
+})

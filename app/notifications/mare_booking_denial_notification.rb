@@ -1,20 +1,16 @@
-class StudBookingRequestNotification < Notification
+class MareBookingDenialNotification < Notification
   def message
-    key = "notifications.stud_booking_request_notification.message"
+    key = "notifications.mare_booking_denial_notification.message"
     i18n_params = { stable: params["stable_name"], stud: params["stud_name"], mare: params["mare_name"], start: params["slot_start_date"], end: params["slot_end_date"] }
-    if params["message"]
-      key += "_with_comment"
-      i18n_params[:comment] = params["message"]
-    end
     I18n.t(key, **i18n_params)
   end
 
   def title
-    I18n.t("notifications.stud_booking_request_notification.title")
+    I18n.t("notifications.mare_booking_denial_notification.title")
   end
 
   def type
-    :info
+    :error
   end
 
   def actions

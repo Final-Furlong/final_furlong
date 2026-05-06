@@ -2,7 +2,7 @@ module Account
   class StablePolicy < ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
       def resolve
-        scope.joins(:user).merge(Account::User.active).not_color_war
+        scope.joins(:user).merge(Account::User.active).not_color_war.not_game
       end
     end
 

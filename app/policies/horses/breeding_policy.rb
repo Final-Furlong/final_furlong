@@ -26,6 +26,7 @@ module Horses
 
     def approve?
       return false if record.slot&.past?
+      return false if record.stud.breedings.current_year.taken.where.not(id: record.id).where(slot: record.slot).count >= Config::Breedings.mares_per_slot
 
       record.pending?
     end

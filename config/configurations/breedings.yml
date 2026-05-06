@@ -16,6 +16,7 @@ shared:
   mares_per_slot: 2
   max_mares_per_year: 30
   max_stud_fee: 1000000
+  upcoming_breeding_warning_days: 7
   slots:
     [
       { month: 2, start: 15, end: 22 },

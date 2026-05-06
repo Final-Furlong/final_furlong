@@ -2,6 +2,8 @@ module Horses
   class Breeding < ApplicationRecord
     self.ignored_columns += [:legacy_id]
 
+    attribute :year, default: -> { Date.current.year }
+
     attr_accessor :message
 
     belongs_to :slot, class_name: "Breeding::Slot", inverse_of: :breedings, optional: true
@@ -21,6 +23,7 @@ module Horses
     validates :mare_id, comparison: { other_than: :stud_id }, allow_nil: true
     validates :first_foal, presence: true, if: :second_foal
     validates :open_booking, inclusion: { in: [true, false] }
+    validates :mare_id, uniqueness: { scope: %i[stud_id year] }, unless: :denied?
 
     enum :status, Config::Breedings.statuses.reduce({}) { |hash, value| hash.merge({ value.to_sym => value }) }
 
@@ -177,18 +180,19 @@ end
 #  fee                                                      :integer          default(0), not null
 #  open_booking                                             :boolean          default(FALSE), not null, indexed
 #  status(pending, approved, bred, denied)                  :enum             not null, indexed
-#  year                                                     :integer          default(0), not null, uniquely indexed => [mare_id, stud_id], indexed
+#  year                                                     :integer          default(2026), not null, indexed => [stud_id, mare_id], uniquely indexed => [mare_id, stud_id], uniquely indexed => [stud_id, mare_id], indexed
 #  created_at                                               :datetime         not null
 #  updated_at                                               :datetime         not null
 #  first_foal_id                                            :bigint           uniquely indexed
-#  mare_id                                                  :bigint           uniquely indexed => [stud_id, year]
+#  mare_id                                                  :bigint           indexed => [stud_id, year], uniquely indexed => [stud_id, year], uniquely indexed => [stud_id, year]
 #  second_foal_id                                           :bigint           uniquely indexed
 #  slot_id                                                  :bigint           indexed
 #  stable_id                                                :bigint           not null, indexed
-#  stud_id                                                  :bigint           not null, uniquely indexed => [mare_id, year], indexed
+#  stud_id                                                  :bigint           not null, indexed => [year, mare_id], uniquely indexed => [mare_id, year], indexed, uniquely indexed => [year, mare_id]
 #
 # Indexes
 #
+#  idx_breedings_denied_stud_mare_year              (stud_id,year,mare_id) WHERE (status = 'denied'::breeding_statuses)
 #  index_breedings_on_date                          (date)
 #  index_breedings_on_due_date                      (due_date)
 #  index_breedings_on_event                         (event)
@@ -200,6 +204,7 @@ end
 #  index_breedings_on_stable_id                     (stable_id)
 #  index_breedings_on_status                        (status)
 #  index_breedings_on_stud_id                       (stud_id)
+#  index_breedings_on_stud_id_and_year_and_mare_id  (stud_id,year,mare_id) UNIQUE WHERE (status <> 'denied'::breeding_statuses)
 #  index_breedings_on_year                          (year)
 #
 # Foreign Keys

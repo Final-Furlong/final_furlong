@@ -73,10 +73,41 @@ module Horse
       authorize @breeding
 
       name = @breeding.mare ? @breeding.mare.name : @breeding.stable.name
-      if @breeding.destroy!
+      result = Horses::Stud::BookingDeleter.new.delete_booking(booking: @breeding)
+      if result.destroyed?
         flash[:success] = t(".success", name:)
       else
         flash[:error] = t(".failure", name:)
+      end
+      redirect_to horse_path(@horse)
+    end
+
+    def approve
+      @horse = Horses::Horse.find(params[:horse_id])
+      authorize @horse, :manage_bookings?, policy_class: CurrentStable::StallionPolicy
+
+      @booking = Horses::Breeding.find(params[:id])
+      authorize @booking, :approve?
+      result = Horses::Stud::BookingApprover.new.approve_booking(booking: @booking, stud: @horse)
+      if result.saved?
+        flash[:success] = t(".success", name: @booking.mare.name)
+      else
+        flash[:error] = result.error
+      end
+      redirect_to horse_path(@horse)
+    end
+
+    def deny
+      @horse = Horses::Horse.find(params[:horse_id])
+      authorize @horse, :manage_bookings?, policy_class: CurrentStable::StallionPolicy
+
+      @booking = Horses::Breeding.find(params[:id])
+      authorize @booking, :deny?
+      result = Horses::Stud::BookingDenier.new.decline_booking(booking: @booking, stud: @horse)
+      if result.saved?
+        flash[:success] = t(".success", name: @booking.mare.name)
+      else
+        flash[:error] = result.error
       end
       redirect_to horse_path(@horse)
     end

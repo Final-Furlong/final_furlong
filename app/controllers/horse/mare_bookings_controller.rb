@@ -32,10 +32,13 @@ module Horse
         flash[:error] = t(".#{failure}")
       elsif @breeding.save!
         flash[:success] = t(".success", name: @stud.name)
+        respond_to do |format|
+          format.html { redirect_to horse_path(@horse) }
+          format.turbo_stream { turbo_stream.action(:redirect, horse_path(@horse)) }
+        end
       else
         flash[:error] = t(".failure", name: @stud.name)
       end
-      redirect_to horse_path(@horse)
     end
 
     def destroy
@@ -72,6 +75,24 @@ module Horse
 
       respond_to do |format|
         format.turbo_stream { render :pick_date }
+      end
+    end
+
+    def load_slot_row
+      @horse = Horses::Horse.broodmare.includes(:next_foal, :manager).find(params[:horse_id])
+      authorize @horse, :breed?, policy_class: CurrentStable::BroodmarePolicy
+      @stud = Horses::Horse.stud.includes(:stud_options, :manager).find(params[:stud_id])
+      @slot = ::Breeding::Slot.find(params[:slot_id])
+      @breeding = Horses::Breeding.new(mare: @horse, stud: @stud, slot: @slot)
+      if (failure = policy(@breeding).request_booking_result.failure)
+        if %i[approval_required outside_mare_limit_met_current_stable].include?(failure)
+          @template = "horse/mare_bookings/request_booking_button"
+        else
+          flash[:error] = t(".#{failure}")
+          @template = "error"
+        end
+      else
+        @template = "horse/mare_bookings/pick_date_button"
       end
     end
 
