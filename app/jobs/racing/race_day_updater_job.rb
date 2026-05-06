@@ -10,6 +10,8 @@ class Racing::RaceDayUpdaterJob < ApplicationJob
     Racing::FutureRaceEntry.joins(:race).where(race: { date: }).delete_all
     Racing::RaceEntry.joins(:race).where(race: { date: }).delete_all
     Racing::RaceScheduleUpdater.new.update_schedule
+    Racing::StableRaceRecord.refresh
+    Racing::StableAnnualRaceRecord.refresh
     store_job_info(outcome: result)
   end
 end
