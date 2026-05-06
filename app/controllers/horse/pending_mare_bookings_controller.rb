@@ -28,7 +28,10 @@ module Horse
       result = Horses::Broodmare::BookingRequester.new.request_booking(mare: @horse, stud: @stud, slot:, message: breeding_params[:message])
       if result.created?
         flash[:success] = t(".success", name: @stud.name)
-        redirect_to horse_path(@horse)
+        respond_to do |format|
+          format.html { redirect_to horse_path(@horse) }
+          format.turbo_stream { turbo_stream.action(:redirect, horse_path(@horse)) }
+        end
       else
         respond_to do |format|
           format.html { render :new, status: :unprocessable_entity }

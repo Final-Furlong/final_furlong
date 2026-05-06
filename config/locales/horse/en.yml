@@ -369,12 +369,16 @@ en:
         stud: 'Stud: %{name}'
         stud_approval: "%{name} requires approval. Please select a date to request."
         title: New Booking for %{name}
+      stud_slot_table_row:
+        pick_date: Pick Date
+        select_stud: Select Stud
       studs:
         available_studs: Available Studs
         by_approval_status: By Approval Required
         by_breed_date: By Breeding Date
         pick_date: Pick Date
         request_slot: Request Booking
+        select_stud: Select Stud
     markings:
       bald_face: bald face
       blaze: blaze
@@ -544,9 +548,13 @@ en:
         failure: "%{name} could not be changed to %{status}"
         success: "%{name} status has been updated to %{status}"
     stud_bookings:
+      approve:
+        success: Booking was successfully approved for %{name}
       create:
         failure: Could not create booking
         success: Booking was successfully created
+      deny:
+        success: Booking was successfully declined for %{name}
       destroy:
         failure: Could not delete booking for %{name}
         success: Booking for %{name} was successfully deleted
