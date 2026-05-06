@@ -67,7 +67,7 @@ module Horses
     has_many :foals, class_name: "Horses::Horse", inverse_of: :dam, dependent: :nullify
     has_many :broodmare_shipments, class_name: "Shipping::BroodmareShipment", dependent: :delete_all
     has_many :due_dates, -> { where.not(status: "denied") }, class_name: "Horses::Breeding", dependent: :delete_all, inverse_of: :mare
-    has_one :next_foal, -> { where(status: "bred").where('year >= ?', Date.current.year - 1).order(year: :asc) }, class_name: "Horses::Breeding", dependent: :delete, inverse_of: :mare
+    has_one :next_foal, -> { where(status: "bred").where(year: (Date.current.year - 1)..).order(year: :asc) }, class_name: "Horses::Breeding", dependent: :delete, inverse_of: :mare
     has_one :parent_breeding_record, class_name: "Horses::Breeding", dependent: :delete, inverse_of: :first_foal
     has_one :twin_parent_breeding_record, class_name: "Horses::Breeding", dependent: :delete, inverse_of: :second_foal
 
@@ -392,3 +392,4 @@ end
 #  fk_rails_...  (owner_id => stables.id) ON DELETE => restrict ON UPDATE => cascade
 #  fk_rails_...  (sire_id => horses.id) ON DELETE => nullify ON UPDATE => cascade
 #
+

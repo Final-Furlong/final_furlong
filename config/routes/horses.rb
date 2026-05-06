@@ -10,6 +10,7 @@ resources :horses, except: %i[new create destroy] do
     get "future_races/:race_id/new", to: "future_races#new", as: :new_future_race
     resources :mare_bookings, except: :show do
       collection do
+        get "/slot_table_row/:stud_id/:slot_id", to: "mare_bookings#load_slot_row", as: :slot_row
         get "/month_dependent_fields/:stud_id", to: "mare_bookings#month_dependent_fields", as: :month_dependent_fields
       end
     end

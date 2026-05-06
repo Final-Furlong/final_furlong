@@ -6602,6 +6602,13 @@ ALTER TABLE ONLY public.workouts
 
 
 --
+-- Name: idx_breedings_denied_stud_mare_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_breedings_denied_stud_mare_year ON public.breedings USING btree (stud_id, year, mare_id) WHERE (status = 'denied'::public.breeding_statuses);
+
+
+--
 -- Name: idx_on_horse_id_first_jockey_id_second_jockey_id_th_4d3e2bb186; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6956,6 +6963,13 @@ CREATE INDEX index_breedings_on_status ON public.breedings USING btree (status);
 --
 
 CREATE INDEX index_breedings_on_stud_id ON public.breedings USING btree (stud_id);
+
+
+--
+-- Name: index_breedings_on_stud_id_and_year_and_mare_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breedings_on_stud_id_and_year_and_mare_id ON public.breedings USING btree (stud_id, year, mare_id) WHERE (status <> 'denied'::public.breeding_statuses);
 
 
 --
@@ -10352,6 +10366,7 @@ ALTER TABLE ONLY public.famous_studs
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260506113524'),
 ('20260505094849'),
 ('20260503121327'),
 ('20260428165655'),

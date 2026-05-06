@@ -65,6 +65,27 @@ en:
     lease_rejection_notification:
       message: "%{stable} has rejected the lease offer on %{horse} for %{fee}"
       title: Lease Declined
+    mare_booking_approval_notification:
+      message: "%{stable} has approved a booking to %{stud} for %{mare} (Slot %{start} - %{end})"
+      title: Mare Booking Approved
+      view_mare:
+        link: View %{name}
+      view_stud:
+        link: View %{name}
+    mare_booking_deletion_notification:
+      message: "%{stable} has cancelled a booking to %{stud} for %{mare} (Slot %{start} - %{end})"
+      title: Mare Booking Cancelled
+      view_mare:
+        link: View %{name}
+      view_stud:
+        link: View %{name}
+    mare_booking_denial_notification:
+      message: "%{stable} has declined a booking to %{stud} for %{mare} (Slot %{start} - %{end})"
+      title: Mare Booking Declined
+      view_mare:
+        link: View %{name}
+      view_stud:
+        link: View %{name}
     notification:
       default_message: We do not know how to describe what happened.
       status:

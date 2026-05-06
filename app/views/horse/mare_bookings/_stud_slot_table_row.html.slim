@@ -1,0 +1,17 @@
+/# locals: (mare:, slot:, new_booking:, exclude_studs: [], button_template: nil)
+tr id="#{mare.slug}-slot-#{slot.id}"
+  = form_with model: new_booking, url: '#', data: { 'mare-booking-target': 'form' } do |f|
+    = f.hidden_field :slot_id, value: slot.id, data: { 'mare-booking-target': 'slot' }
+    td= "#{slot.formatted_start_day} - #{slot}"
+    td.pt-4
+      - used_studs = Horses::Horse.stud.where(id: Horses::Breeding.bookings_available(slot).select(:stud_id)).pluck(:id)
+      - unused_studs = Horses::Horse.stud.where.not(id: Horses::Breeding.no_bookings(slot).select(:stud_id)).pluck(:id)
+      - query = Horses::Horse.stud.includes(:stud_options, :manager).where(id: (used_studs + unused_studs).uniq).order(name: :asc)
+      - available_studs = query.to_a.reject { |stud| exclude_studs.include?(stud) }
+      = f.collection_select :stud_id, available_studs, :id, :name_with_owner_fee, { prompt: t(".select_stud") }, { class: "select w-full", disabled: query.size.zero?, data: { action: 'change->mare-booking#loadRowForSlot', 'mare-booking-target' => "studSlot#{slot.id}" } }
+    td
+      - if button_template.blank?
+        = turbo_frame_tag "request-slot-button-#{slot.id}" do
+          = f.button t(".pick_date"), disabled: true, class: 'btn btn-primary btn-outline ml-4'
+      - else
+        = render button_template, mare:, stud: new_booking.stud

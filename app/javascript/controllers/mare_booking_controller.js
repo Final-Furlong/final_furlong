@@ -21,6 +21,14 @@ export default class extends Controller {
     this.fetchAndUpdate(url)
   }
 
+  loadRowForSlot(event) {
+    const tableRow = event.target.parentNode.parentNode
+    const slotId = tableRow.querySelector("#horses_breeding_slot_id").value
+    const studId = event.target.value
+    let url = this.bookingUrlValue.replace(":stud_id", studId).replace(":slot_id", slotId)
+    this.fetchAndUpdate(url)
+  }
+
   fetchAndUpdate(url) {
     let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content")
     fetch(url, {
