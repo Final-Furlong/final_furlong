@@ -21,7 +21,7 @@ module Horses
     end
 
     def destroy?
-      !record.bred? && !record.pending?
+      !record.bred?
     end
 
     def approve?
