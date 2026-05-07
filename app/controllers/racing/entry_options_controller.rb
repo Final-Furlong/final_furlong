@@ -1,8 +1,8 @@
 module Racing
   class EntryOptionsController < AuthenticatedController
     def new
-      race = Racing::RaceSchedule.find(params[:race_id])
-      @horse = Horses::Horse.racehorse.find(params[:horse])
+      race = Racing::RaceSchedule.includes(track_surface: :racetrack).find(params[:race_id])
+      @horse = Horses::Horse.racehorse.includes(:race_metadata, race_options: [:first_jockey, :second_jockey, :third_jockey]).find(params[:horse])
       @entry = Racing::RaceEntry.new(date: race.date, race:, horse: @horse)
       @entry.store_initial_options
       authorize @entry

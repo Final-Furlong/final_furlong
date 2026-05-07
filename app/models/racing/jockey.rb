@@ -41,6 +41,10 @@ module Racing
     def full_name
       [first_name, last_name].join(" ")
     end
+
+    def jump?
+      jockey_type == "jump"
+    end
   end
 end
 

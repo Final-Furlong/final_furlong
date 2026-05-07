@@ -42,9 +42,15 @@ module Racing
       return unless horse
 
       options = horse.race_options
-      self.first_jockey = options&.first_jockey
-      self.second_jockey = options&.second_jockey
-      self.third_jockey = options&.third_jockey
+      if race.jump?
+        self.first_jockey = options.first_jockey && options.first_jockey.jump?
+        self.second_jockey = options.second_jockey && options.second_jockey.jump?
+        self.third_jockey = options.third_jockey && options.third_jockey.jump?
+      else
+        self.first_jockey = options&.first_jockey
+        self.second_jockey = options&.second_jockey
+        self.third_jockey = options&.third_jockey
+      end
       self.equipment = options&.equipment
       self.racing_style = options&.racing_style
     end
