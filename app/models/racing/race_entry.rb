@@ -43,9 +43,9 @@ module Racing
 
       options = horse.race_options
       if race.jump?
-        self.first_jockey = options.first_jockey && options.first_jockey.jump?
-        self.second_jockey = options.second_jockey && options.second_jockey.jump?
-        self.third_jockey = options.third_jockey && options.third_jockey.jump?
+        self.first_jockey = options.first_jockey if options.first_jockey&.jump?
+        self.second_jockey = options.second_jockey if options.second_jockey&.jump?
+        self.third_jockey = options.third_jockey if options.third_jockey&.jump?
       else
         self.first_jockey = options&.first_jockey
         self.second_jockey = options&.second_jockey
