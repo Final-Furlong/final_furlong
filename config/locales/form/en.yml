@@ -1,6 +1,7 @@
 ---
 en:
   form:
+    optional: Optional
     setting:
       racing:
         apply_minimums_for_future_races_hint: If yes, scheduled entries + upcoming races will apply these filters
