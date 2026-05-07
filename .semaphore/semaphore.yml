@@ -35,7 +35,7 @@ global_job_config:
       value: postgresql://postgres:@0.0.0.0:5432/final_furlong_test_queue
 blocks:
   - name: CI
-    dependencies: [ ]
+    dependencies: []
     task:
       prologue:
         commands:
