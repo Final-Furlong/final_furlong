@@ -1,5 +1,5 @@
 /# locals: (auction:, url:)
-= form_with model: auction, url:, id: "auction-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+= form_with model: auction, url:, id: "auction_form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
   - if auction.errors[:base]
     p.text-error= auction.errors.where(:base).map(&:full_message).join(', ')
   .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4

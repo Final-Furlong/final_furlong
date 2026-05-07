@@ -56,8 +56,8 @@ class Auction < ApplicationRecord
       where(weanling_allowed: true)
     end
 
-    query.by_auctioneer(horse.owner)
-      .or(query.where(outside_horses_allowed: true))
+    query.upcoming.by_auctioneer(horse.owner)
+      .or(query.upcoming.where(outside_horses_allowed: true))
   }
 
   def to_key = [slug]
