@@ -6,12 +6,13 @@ ruby:
 - if @auctions.empty?
   p.text-error= t(".no_auctions")
 - else
-  div[ data-controller="dynamic-select" data-dynamic-select-turbo-frame-value="auction_form"
-    data-dynamic-select-placeholder-value=":id"
-    data-dynamic-select-url-value=new_auction_horse_path(':id', horse: @horse.slug)
-  ]
-    .flex.mb-2
-      .w-1/2
-        label.label = t(".select_auction")
-        = select_tag "auction_id", options_from_collection_for_select(@auctions, :id, :title), include_blank: true, class: "select",
-          data: { action: 'change->dynamic-select#change', 'dynamic-select-target': 'select' }
+  = turbo_frame_tag "auction-form" do
+    div[ data-controller="dynamic-select" data-dynamic-select-turbo-frame-value="auction-form"
+      data-dynamic-select-placeholder-value=":id"
+      data-dynamic-select-url-value=new_auction_horse_path(':id', horse: @horse.slug)
+    ]
+      .flex.mb-2
+        .w-1/2
+          label.label = t(".select_auction")
+          = select_tag "auction_id", options_from_collection_for_select(@auctions, :id, :title), include_blank: true, class: "select",
+            data: { action: 'change->dynamic-select#change', 'dynamic-select-target': 'select' }
