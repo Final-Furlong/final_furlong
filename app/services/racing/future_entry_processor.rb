@@ -190,12 +190,12 @@ module Racing
             route = Shipping::Route.with_locations(race.racetrack.location, horse.race_metadata.location).first
             costs = []
             days = []
-            if (entry.ship_mode.blank? || entry.ship_mode.road?) && route.road_days && route.road_days < max_travel_days
+            if (entry.ship_mode.blank? || entry.ship_mode.road?) && route.road_days && route.road_days <= max_travel_days
               result[:ship_mode] = "road"
               costs << route.road_cost
               days << route.road_days
             end
-            if (entry.ship_mode.blank? || entry.ship_mode.air?) && route.air_days && route.air_days < max_travel_days
+            if (entry.ship_mode.blank? || entry.ship_mode.air?) && route.air_days && route.air_days <= max_travel_days
               result[:ship_mode] = "air" if result[:ship_mode].blank?
               costs << route.air_cost
               days << route.air_days
