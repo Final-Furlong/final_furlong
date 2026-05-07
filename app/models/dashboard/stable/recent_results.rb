@@ -127,7 +127,7 @@ module Dashboard
         end
         bbcode_name = I18n.t("horse.bbcode_colored_name", color: "##{hex_color}", name: horse.name)
         string += I18n.t("horse.bbcode_url", url: horse_url(horse), name: bbcode_name)
-        string += I18n.t("horse.bbcode_age_sire", age: horse.age, sire: horse.sire&.name || t("horse.created"))
+        string += I18n.t("horse.bbcode_age_sire", age: horse.age, sire: horse.sire&.name || I18n.t("horse.created"))
         string += " " + [I18n.t("racing.race.forum.in"), race_type_string(result.race)].join(" ")
         string + "\n"
       end
