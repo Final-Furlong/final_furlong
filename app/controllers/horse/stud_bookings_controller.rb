@@ -15,10 +15,10 @@ module Horse
     end
 
     def edit
-      @horse = Horses::Horse.find(params[:horse_id])
+      @horse = Horses::Horse.includes(:manager, :stud_options).find(params[:horse_id])
       authorize @horse, :manage_bookings?, policy_class: CurrentStable::StallionPolicy
 
-      @booking = Horses::Breeding.where(stud: @horse).find(params[:id])
+      @booking = Horses::Breeding.includes(:slot, :mare, stud: :manager).where(stud: @horse).find(params[:id])
       authorize @booking, :update?
     end
 
@@ -113,13 +113,20 @@ module Horse
     end
 
     def stable_dependent_fields
-      @horse = Horses::Horse.find(params[:horse_id])
+      @horse = Horses::Horse.includes(:manager).find(params[:horse_id])
       authorize @horse, :manage_bookings?, policy_class: CurrentStable::StallionPolicy
       slot = ::Breeding::Slot.find(params[:slot_id])
       mare_stable = Account::Stable.find(params[:stable_id])
 
       @booking = Horses::Breeding.new(stud: @horse, slot:, stable: mare_stable)
-      broodmares = Horses::Horse.broodmare.where(manager: mare_stable).order(name: :asc)
+      broodmares = Horses::Horse.broodmare.left_outer_joins(:next_foal).where(manager: mare_stable)
+        .where("(breedings.year != ? OR breedings.id IS NULL)", Date.current.year).order(name: :asc)
+      stud_slots = @booking.options_for_stud_slot_select(@horse)
+      broodmares = broodmares.select do |mare|
+        mare_slots = @booking.options_for_mare_slot_select(mare, stud_slots)
+        mare_slots.any? { |mare_slot| mare_slot.last == slot.id }
+      end
+      @booking.mare = nil
 
       render json: broodmares.map { |mare| { id: mare.id, name: mare.name } }
     rescue ActiveRecord::RecordNotFound

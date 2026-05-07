@@ -566,6 +566,8 @@ en:
         mare_max_due_date: 'Note: Mares who are in foal and are not due before %{date} will not be shown, as they will not be able to use this booking slot.'
         max_amount: Maximum %{amount}
         select_stable: Select Stable
+        slot: Booking Slot
+        stable: Stable
       index:
         any_mare: Any Mare
         approve: Approve
