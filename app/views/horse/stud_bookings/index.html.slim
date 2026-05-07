@@ -51,7 +51,7 @@
             td
         - if bred_count < Config::Breedings.mares_per_slot
           - pending_count = bred_count + Horses::Breeding.current_year.not_denied.not_bred.where(slot:, stud: @horse).count
-          - Horses::Breeding.current_year.not_bred.not_denied.where(slot:, stud: @horse).ordered_by_status.includes(:mare).each do |breeding|
+          - Horses::Breeding.current_year.not_bred.not_denied.where(slot:, stud: @horse).ordered_by_status.includes(:mare, :stable, :slot, :stud).each do |breeding|
             - mare = breeding.mare
             - mares_count += 1
             tr

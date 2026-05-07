@@ -23,13 +23,13 @@ module Horses
     validates :mare_id, comparison: { other_than: :stud_id }, allow_nil: true
     validates :first_foal, presence: true, if: :second_foal
     validates :open_booking, inclusion: { in: [true, false] }
-    validates :mare_id, uniqueness: { scope: %i[stud_id year] }, unless: :denied?
+    validates :mare_id, uniqueness: { scope: %i[stud_id year], conditions: -> { where.not(status: "denied").where.not(mare_id: nil) } }
 
     enum :status, Config::Breedings.statuses.reduce({}) { |hash, value| hash.merge({ value.to_sym => value }) }
 
     scope :last_year, -> { by_year(Date.current.year - 1) }
     scope :current_year, -> { by_year(Date.current.year) }
-    scope :in_foal, -> { where("due_date > ?", Date.current) }
+    scope :in_foal, -> { bred.where(year: [Date.current.year - 1, Date.current.year]) }
     scope :by_year, ->(year) { where(year:) }
     scope :by_slot, ->(slot) { where(slot:) }
     scope :not_denied, -> { where.not(status: "denied") }
@@ -70,12 +70,34 @@ module Horses
       slot.end_day < date.day
     end
 
-    def options_for_slot_select(stud)
+    def options_for_stud_slot_select(stud)
       self.stud = stud
       slots = ::Breeding::Slot.where(month: min_date.month..).select do |slot|
         (stud_last_raced_date.blank? || (stud_last_raced_date && (slot.month > stud_last_raced_date.month || slot.month == stud_last_raced_date.month && slot.end_day > stud_last_raced_date.day + 1.day))) &&
           Horses::Breeding.current_year.by_slot(slot).where(stud:).taken.count < Config::Breedings.mares_per_slot
       end
+      slots.map { |slot| ["#{slot.formatted_start_day} - #{slot}", slot.id] }
+    end
+
+    def options_for_mare_slot_select(mare, stud_slots = [])
+      next_foal = Horses::Breeding.bred.find_by(mare:)
+      min_mare_date = if next_foal
+        next_foal.due_date - Config::Breedings.max_days_offset_from_due_date.days
+      elsif mare_last_raced_date
+        mare_last_raced_date + 1.day
+      else
+        Date.current
+      end
+      if next_foal&.year == Date.current
+        return []
+      end
+
+      slots = ::Breeding::Slot.where(month: min_mare_date.month..).ordered.select do |slot|
+        slot.month > min_mare_date.month || (slot.month == min_mare_date.month && slot.end_day > min_mare_date.day)
+      end
+      stud_slots ||= options_for_stud_slot_select(stud)
+      stud_slot_ids = stud_slots.map { |slot| slot.last }
+      slots = slots.select { |slot| stud_slot_ids.include?(slot.id) }
       slots.map { |slot| ["#{slot.formatted_start_day} - #{slot}", slot.id] }
     end
 
@@ -129,14 +151,7 @@ module Horses
     end
 
     def max_due_date
-      nil
-
-      # TODO: implement this query for broodmares
-      # this_slot = Config::Breedings.slots.find_index { |s| s[:month] == slot.month && s[:end] == slot.end_day }
-      # return unless (Config::Breedings.slots.count - this_slot) > 5
-
-      # max_slot = Config::Breedings.slots[this_slot + 5]
-      # Date.new(Date.current.year, max_slot[:month], max_slot[:end])
+      Date.current + Config::Breedings.max_days_offset_from_due_date.days
     end
 
     private
@@ -204,7 +219,7 @@ end
 #  index_breedings_on_stable_id                     (stable_id)
 #  index_breedings_on_status                        (status)
 #  index_breedings_on_stud_id                       (stud_id)
-#  index_breedings_on_stud_id_and_year_and_mare_id  (stud_id,year,mare_id) UNIQUE WHERE (status <> 'denied'::breeding_statuses)
+#  index_breedings_on_stud_id_and_year_and_mare_id  (stud_id,year,mare_id) UNIQUE WHERE ((status <> 'denied'::breeding_statuses) AND (mare_id IS NOT NULL))
 #  index_breedings_on_year                          (year)
 #
 # Foreign Keys
