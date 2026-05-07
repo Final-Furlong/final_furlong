@@ -216,3 +216,4 @@ end
 #  fk_rails_...  (stable_id => stables.id)
 #  fk_rails_...  (stud_id => horses.id)
 #
+
