@@ -144,7 +144,7 @@ module Horses
     def min_date
       min_date = [mare_last_raced_date, stud_last_raced_date].compact_blank.min
       min_date ||= Date.current
-      min_date = Date.current if Date.current < min_date
+      min_date = Date.current if Date.current > min_date
       min_date
     end
 
@@ -216,4 +216,3 @@ end
 #  fk_rails_...  (stable_id => stables.id)
 #  fk_rails_...  (stud_id => horses.id)
 #
-

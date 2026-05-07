@@ -1,0 +1,38 @@
+ruby:
+  date = [[Current.user.last_sign_in_at&.to_date, Date.current - 1.day].compact_blank.min, Date.new(Date.current.year, 1, 1)].compact_blank.max
+  studs = Horses::Horse.stud.managed_by(Current.stable)
+  bred_mares = Horses::Breeding.current_year.bred.where(stud: studs).where('updated_at BETWEEN ? AND ?', date.beginning_of_day, Date.current.end_of_day).exists?
+  bred_studs = if bred_mares
+    Horses::Breeding.current_year.bred.where(stud: studs).where('updated_at BETWEEN ? AND ?', date.beginning_of_day, Date.current.end_of_day).group(:stud_id).count
+  else
+    []
+  end
+  pending_studs = Horses::Breeding.current_year.pending.not_missed.where(stud: studs).group(:stud_id).count
+  studs_count = bred_studs.count + pending_studs.count
+- if studs_count.positive?
+  .card.bg-base-100.w-full
+    .card-body.p-0.rounded-none
+      details.collapse.collapse-arrow.bg-base-100
+        summary.text-center.collapse-title.font-semibold
+          = t(".studs").titleize.pluralize(studs_count)
+          = " (#{studs_count})"
+        .collapse-content.text-sm
+          ul
+            - pending_studs.each do |info|
+              li
+                - stud = Horses::Horse.find(info.first)
+                = link_to horse_path(stud), data: { turbo_frame: "_top" } do
+                  = t(".pending_booking_count", name: stud.name_with_title, count: info.last)
+            - bred_studs.each do |info|
+              - stud = Horses::Horse.find(info.first)
+              li
+                = link_to horse_path(stud), data: { turbo_frame: "_top" } do
+                  = t(".bred_mare_count", name: stud.name_with_title, count: info.last)
+                - links = []
+                - Horses::Breeding.includes(:mare).current_year.bred.where(stud:).where('updated_at BETWEEN ? AND ?', date.beginning_of_day, Date.current.end_of_day).find_each do |breeding|
+                  - mare = breeding.mare
+                  - links << mare
+                - links.each do |mare|
+                  = link_to mare.name_with_title, horse_path(mare), data: { turbo_frame: "_top" }
+                  - if mare != links.last
+                    = ", "
