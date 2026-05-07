@@ -12,7 +12,7 @@
     fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
       legend.fieldset-legend= t("horse.mare_bookings.new.slot_select")
       label.label
-        = f.select :slot_id, options_for_select(booking.options_for_slot_select(stud), booking.slot&.id), { prompt: t("horse.mare_bookings.new.slot_select") }, { class: 'select' }
+        = f.select :slot_id, options_for_select(booking.options_for_stud_slot_select(stud), booking.slot&.id), { prompt: t("horse.mare_bookings.new.slot_select") }, { class: 'select' }
         - if booking.errors[:slot_id]
           p.text-error= booking.errors.where(:slot_id).map(&:full_message).join(', ')
 

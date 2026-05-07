@@ -5,9 +5,11 @@ export default class extends Controller {
   static targets = ["stable", "mares", "fee"]
   static values = {
     maresUrl: String,
+    mareSlotsUrl: String,
     placeholder: String,
     studStableId: Number,
     studFee: Number,
+    selectedStudId: Number,
     selectedStableId: Number,
     selectedMareId: Number,
     selectedSlotId: Number,
@@ -17,16 +19,18 @@ export default class extends Controller {
   connect() {
     if (this.stableTarget.value) {
       this.loadMares()
+      this.loadSlots()
       this.loadFee(true)
     }
   }
 
-  stableChanged() {
+  async stableChanged() {
     this.clearMare()
     this.clearFee()
 
     if (this.stableTarget.value) {
-      this.loadMares()
+      await this.loadMares()
+      this.loadSlots()
       this.loadFee()
     }
   }
@@ -39,13 +43,52 @@ export default class extends Controller {
       const url = this.maresUrlValue.replace(":stable_id", stableId).replace(":slot_id", this.selectedSlotIdValue)
       const response = await fetch(url)
       const mares = await response.json()
+      console.log(url)
 
       this.populateSelect(this.maresTarget, mares)
       this.maresTarget.disabled = false
 
       if (this.hasSelectedMareIdValue) {
-        this.maresTarget.value = this.selectedMareIdValue
+        console.log("has value")
+        if (this.mareExists(mares, this.selectedMareIdValue)) {
+          console.log("mare exists")
+          this.maresTarget.value = this.selectedMareIdValue
+        } else {
+          console.log("no mare")
+          this.maresTarget.value = ""
+        }
       }
+    } catch (error) {
+      console.error("Error loading mares:", error)
+    }
+  }
+
+  mareExists(list, value) {
+    let matching = list.filter(x => x.id == value)
+    return matching.length > 0
+  }
+
+  async loadSlots() {
+    const mareId = this.selectedMareIdValue || this.maresTarget.value
+    if (!mareId || mareId == "") return
+
+    try {
+      const url = this.mareSlotsUrlValue.replace(":mare_id", mareId).replace(":stud_id", this.selectedStudIdValue)
+      const response = await fetch(url)
+      const slots = await response.json()
+
+      this.populateSelect(this.slotsTarget, slots)
+      this.slotsTarget.disabled = false
+
+      // if (this.hasSelectedMareIdValue) {
+      // if (this.mareExists(mares, this.selectedMareIdValue)) {
+      // console.log("mare exists")
+      // this.maresTarget.value = this.selectedMareIdValue
+      // } else {
+      // console.log("no mare")
+      // this.maresTarget.value = ""
+      // }
+      // }
     } catch (error) {
       console.error("Error loading mares:", error)
     }
