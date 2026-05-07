@@ -111,6 +111,13 @@ en:
     shared:
       view_horse:
         link: View horse
+    stud_booking_request_cancellation_notification:
+      message: "%{stable} has cancelled a requested booking to %{stud} for %{mare} (Slot %{start} - %{end})"
+      title: Stud Booking Request Cancelled
+      view_mare:
+        link: View %{name}
+      view_stud:
+        link: View %{name}
     stud_booking_request_notification:
       message: "%{stable} has requested a booking to %{stud} for %{mare} (Slot %{start} - %{end})"
       message_with_comment: "%{stable} has requested a booking to %{stud} for %{mare} (Slot %{start} - %{end}). Their comment: %{comment}"

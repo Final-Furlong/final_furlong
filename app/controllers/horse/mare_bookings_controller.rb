@@ -48,7 +48,8 @@ module Horse
       authorize @breeding
 
       name = @breeding.stud.name
-      if @breeding.destroy!
+      result = Horses::Broodmare::BookingDeleter.new.delete_booking(booking: @breeding)
+      if result.destroyed?
         flash[:success] = t(".success", name:)
       else
         flash[:error] = t(".failure", name:)
