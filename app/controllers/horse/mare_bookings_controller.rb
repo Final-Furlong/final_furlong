@@ -79,6 +79,17 @@ module Horse
       end
     end
 
+    def available_slots
+      @horse = Horses::Horse.broodmare.includes(:next_foal, :manager).find(params[:horse_id])
+      authorize @horse, :create_booking?, policy_class: CurrentStable::BroodmarePolicy
+      @stud = Horses::Horse.stud.includes(:stud_options, :manager).find(params[:stud_id]) if params[:stud_id]
+      slots = Horses::Breeding.new(mare: @horse, stud: @stud).options_for_mare_slot_select(@horse)
+
+      render json: slots.map { |slot| { id: slot.last, display: slot.first } }
+    rescue ActiveRecord::RecordNotFound
+      render json: []
+    end
+
     def load_slot_row
       @horse = Horses::Horse.broodmare.includes(:next_foal, :manager).find(params[:horse_id])
       authorize @horse, :breed?, policy_class: CurrentStable::BroodmarePolicy

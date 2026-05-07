@@ -42,6 +42,7 @@ module Horses
         booking.status = "approved"
 
         result.saved = booking.valid? && booking.save
+        pd booking.errors.inspect
         result.booking = booking
         result
       end
