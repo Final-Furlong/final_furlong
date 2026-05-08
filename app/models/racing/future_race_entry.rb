@@ -40,9 +40,15 @@ module Racing
       return unless horse
 
       options = horse.race_options
-      self.first_jockey = options&.first_jockey
-      self.second_jockey = options&.second_jockey
-      self.third_jockey = options&.third_jockey
+      if race.jump?
+        self.first_jockey = options.first_jockey if options.first_jockey&.jump?
+        self.second_jockey = options.second_jockey if options.second_jockey&.jump?
+        self.third_jockey = options.third_jockey if options.third_jockey&.jump?
+      else
+        self.first_jockey = options&.first_jockey
+        self.second_jockey = options&.second_jockey
+        self.third_jockey = options&.third_jockey
+      end
       self.equipment = options&.equipment
       self.racing_style = options&.racing_style
       self.entry_ship_date = "horse_entered"
@@ -123,4 +129,3 @@ end
 #  fk_rails_...  (stable_id => stables.id)
 #  fk_rails_...  (third_jockey_id => jockeys.id)
 #
-
