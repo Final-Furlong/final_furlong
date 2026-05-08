@@ -23,7 +23,7 @@ module CurrentStable
       end
 
       def game_settings
-        return {} unless user.setting.racing
+        return {} unless user.setting&.racing
         {
           minimum_energy: user.setting.racing.min_energy_for_race_entry,
           minimum_days_since_last_race: user.setting.racing.min_days_delay_from_last_race,
