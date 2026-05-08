@@ -7,14 +7,17 @@ module CurrentStable
         if params[:this_date]
           @query.where(date_of_birth: @date)
         else
-          @query.where("date_of_birth BETWEEN ? AND ?", @date, Date.current)
+          @query.where("horses.date_of_birth BETWEEN ? AND ?", @date, Date.current)
         end
       else
         @query.where(date_of_birth: ..Date.current)
       end
       @query = @query.includes(:breeder, :appearance, sire: :stud_foal_record, dam: [:broodmare_foal_record, :sire])
+      @query = @query.ransack(params[:q])
 
-      @pagy, @foals = pagy(:countless, @query)
+      @count = @query.result.count
+
+      @pagy, @foals = pagy(:countless, @query.result)
     end
   end
 end

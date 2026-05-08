@@ -6,3 +6,7 @@
 
 = turbo_stream.replace "load_more" do
   = render_load_more(@pagy)
+
+- unless @pagy.next
+  = turbo_stream.replace "forum-copy-button" do
+    = render "copy_button"

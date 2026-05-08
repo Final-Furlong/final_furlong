@@ -1,0 +1,21 @@
+/# locals: (entry:)
+- race = entry.race
+- horse = entry.horse
+- data = horse.race_metadata
+tr
+  td= l(race.date)
+  td class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), target: "_top"
+  td= race.racetrack.name
+  td= link_to race.race_description_string, new_racing_race_entry_path(race), target: "_top"
+  td= entry.equipment_string(blank: "")
+  td= data.energy_grade
+  td= data.fitness_grade
+  td
+    - if policy(entry).edit?
+      = render Ui::ButtonizedLink::Component.new(url: edit_racing_race_entry_option_path(race, entry), size: :small, style: :outline, extra_classes: 'inline', data: { turbo_frame: "modal" }) do
+        i.ph-fill.ph-pencil
+        = t("racing.entries.entries.edit")
+    - if policy(entry).scratch?
+      = render Ui::Button::Component.new(url: racing_race_entry_path(race, entry), color: :error, style: :outline, size: :small, form_class: 'inline',
+        http_method: :delete, data: { turbo_confirm: t("racing.entries.entries.scratch_confirm"), turbo_confirm_title: t("racing.entries.entries.scratch_confirm_title", name: horse.name) }) do
+        = t("racing.entries.entries.scratch")

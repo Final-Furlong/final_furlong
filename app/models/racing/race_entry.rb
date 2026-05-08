@@ -55,6 +55,14 @@ module Racing
       self.racing_style = options&.racing_style
     end
 
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[date equipment first_jockey_id horse_id jockey_id race_id racing_style second_jockey_id third_jockey_id weight]
+    end
+
+    def self.ransackable_associations(_auth_object = nil)
+      %w[first_jockey horse jockey odd race second_jockey third_jockey]
+    end
+
     private
 
     def horse_needs_shipping

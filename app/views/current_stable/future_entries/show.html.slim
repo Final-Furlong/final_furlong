@@ -13,19 +13,22 @@ table.table.table-responsive.table-zebra.sortable.n-last
       th= t("racing.race.horse")
       th= t("racing.race.track")
       th= t("racing.race.race")
-      th= t("racing.race.surface")
+      th= t("horses.info.energy")
+      th= t("horses.info.fitness")
       th= t(".result")
   tbody
     - @results.each do |result|
       - race = result.race
       - horse = result.horse
+      - data = horse.race_metadata
       tr
         td= l(race.date)
         td class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), target: "_top"
         td= race.racetrack.name
         td class="#{'link' if (Date.current > race.entry_open_date)}"
           = link_to_if (Date.current > race.entry_open_date), race.race_description_string, new_racing_race_entry_path(race)
-        td= race.track_surface.surface_short
+        td= data.energy_grade
+        td= data.fitness_grade
         td
           - if result.entry_status == "entered"
             span.badge.badge-success.badge-outline= t(".entered")

@@ -12,7 +12,7 @@ ruby:
     half_sibs << sib_string
   end
 - if foal.deceased?
-  = "[color=#{forum_gender_color_hex(foal.gender)}]**#{t(".stillborn", gender: foal.gender.titleize)}**[/color][/url]\n"
+  = "[color=#{forum_gender_color_hex(foal.gender)}]**#{t(".stillborn", gender: foal.gender.titleize)}**[/color]\n"
 - else
   = "[url=#{horse_url(foal)}][color=#{forum_gender_color_hex(foal.gender)}]**#{name.upcase}**[/color][/url]\n"
 

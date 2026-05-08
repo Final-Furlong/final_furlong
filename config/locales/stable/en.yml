@@ -161,6 +161,9 @@ en:
         total: Totals
         year: Year
     recent_foals:
+      copy_button:
+        copied_forum_format: Copied!
+        copy_forum_format: Copy List for Forum
       foal:
         rename: Rename
         stillborn: Stillborn
@@ -177,6 +180,10 @@ en:
       list:
         copied_forum_format: Copied!
         copy_forum_format: Copy List for Forum
+        foals_count:
+          one: 1 Foal
+          other: "%{count} Foals"
+          zero: 0 Foals
       prev_next_dates:
         next_foals_count:
           one: 1 Foal Born on %{date}

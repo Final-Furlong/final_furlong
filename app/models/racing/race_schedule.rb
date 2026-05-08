@@ -207,6 +207,10 @@ class Racing::RaceSchedule < ApplicationRecord
   def self.ransackable_attributes(_auth_object = nil)
     %w[age date distance female_only grade male_only name number qualification_required race_type surface_id]
   end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[entries future_entries track_surface]
+  end
 end
 
 # == Schema Information

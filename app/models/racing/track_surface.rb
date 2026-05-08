@@ -49,6 +49,14 @@ module Racing
     def flat?
       !surface.steeplechase?
     end
+
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[condition jumps surface]
+    end
+
+    def self.ransackable_associations(_auth_object = nil)
+      %w[racetrack scheduled_races weather_forecasts]
+    end
   end
 end
 

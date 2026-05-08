@@ -41,6 +41,7 @@ en:
       parents: Sire x Dam
       record: Record
       stable: Stable
+    entry: Entry
     entry_options:
       budget_description: 'Entry Fee: %{date}, Race %{number} - %{name}'
       create:
