@@ -1,0 +1,24 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t(".title"), href: "#" }])
+
+= render "filters", query: @query
+
+.overflow-x-auto.rounded-box.border.bg-base-100
+  p.my-2.text-center= t(".races_count", count: @count > 999 ? number_with_delimiter(@count) : @count)
+  table.table.table-responsive.table-zebra.table-xs.md:table-sm
+    thead
+      tr
+        th= sort_link @query, :date, ['date', 'number'], t("racing.race.date")
+        th= t("racing.race.number")
+        th= sort_link @query, :track_surface_racetrack_name, t("racing.race.track")
+        th= sort_link @query, :race_type, t("racing.race.type")
+        th= sort_link @query, :distance, t("racing.race.distance")
+        th= sort_link @query, :track_surface_surface, t("racing.race.surface")
+        th= sort_link @query, :age, t("racing.race.age")
+        th= t("racing.race.gender")
+        th= sort_link @query, :name, t("racing.race.name")
+        th= t("racing.race.purse")
+    tbody id="race-schedule-list"
+      = render partial: "race_schedule", collection: @races, as: :race
+
+  = render_load_more(@pagy)
