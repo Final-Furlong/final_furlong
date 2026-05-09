@@ -2,6 +2,8 @@
 
 import "@hotwired/turbo-rails"
 
+import "cally"
+
 // invokers polyfill for commandfor / command
 import "invokers-polyfill"
 
