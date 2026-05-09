@@ -53,7 +53,7 @@ class ApplicationController < ActionController::Base
   def verify_pundit_authorization
     return if devise_controller? || mission_control_controller?
 
-    if action_name == "index"
+    if %w[index all].include?(action_name)
       verify_policy_scoped
     else
       verify_authorized
