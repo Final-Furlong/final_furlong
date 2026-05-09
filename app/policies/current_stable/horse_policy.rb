@@ -12,10 +12,6 @@ module CurrentStable
       owner? || leaser?
     end
 
-    def view_in_old_app?
-      true
-    end
-
     def give_to_game?
       return false if record.deceased?
       return false if record.stillborn?
@@ -133,6 +129,7 @@ module CurrentStable
     end
 
     def view_events?
+      return false if record.stillborn?
       return true if owner?
 
       view_sales?
