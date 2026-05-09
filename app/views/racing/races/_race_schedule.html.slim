@@ -1,0 +1,24 @@
+/# locals: (race:)
+tr
+  td= l(race.date)
+  td= race.number
+  td= race.racetrack.name
+  td
+    span.hidden.lg:inline
+      = race.race_type_string(false)
+    span.inline.lg:hidden
+      = race.race_type_string(true)
+  td
+    span.hidden.lg:inline = t("racing.race.furlongs", number: race.distance)
+    span.inline.lg:hidden = t("racing.race.mobile.furlongs", number: race.distance)
+  td= t("racing.race.surface_#{race.track_surface.surface}")
+  td= race.race_age_string
+  td
+    - if race.female_only?
+      span.hidden.lg:inline = t("racing.race.female_only")
+      span.inline.lg:hidden = t("racing.race.mobile.female_only")
+    - elsif race.male_only?
+      span.hidden.lg:inline = t("racing.race.male_only")
+      span.inline.lg:hidden = t("racing.race.mobile.male_only")
+  td= race.name
+  td= Game::MoneyFormatter.new(race.purse).to_s
