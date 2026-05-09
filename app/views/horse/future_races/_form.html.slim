@@ -4,9 +4,12 @@
     = [l(entry.race.date), entry.race.race_description_string].join(" - ")
     = " (#{entry.race.racetrack.name})"
   - if entry.racehorse_type.flat? && entry.race.jump?
+    - jockey_type = "jump"
     p.px-4.text-error
       i.ph.ph-fill.ph-warning.mr-2
       = t("racing.racehorses.status.not_a_jumper")
+  - else
+    - jockey_type = entry.racehorse_type
   - if @min_days.positive? && @existing_schedules.any? { |es| (entry.race.date - es).to_i.abs < @min_days }
     p.px-4.text-warning
       i.ph.ph-fill.ph-warning.mr-2
@@ -29,20 +32,20 @@
     div
       fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
         legend.fieldset-legend= t("racing.entry_options.form.first_jockey")
-        = f.select :first_jockey, options_for_select(entry.options_for_jockey_select(entry.racehorse_type), entry.first_jockey_id), { include_blank: true }, { class: 'select' }
+        = f.select :first_jockey, options_for_select(entry.options_for_jockey_select(jockey_type), entry.first_jockey_id), { include_blank: true }, { class: 'select' }
         - if entry.errors[:first_jockey]
           p.text-error= entry.errors.where(:first_jockey).map(&:full_message).join(', ')
   .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
     div
       fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
         legend.fieldset-legend= t("racing.entry_options.form.second_jockey")
-        = f.select :second_jockey, options_for_select(entry.options_for_jockey_select(entry.racehorse_type), entry.second_jockey_id), { include_blank: true }, { class: 'select' }
+        = f.select :second_jockey, options_for_select(entry.options_for_jockey_select(jockey_type), entry.second_jockey_id), { include_blank: true }, { class: 'select' }
         - if entry.errors[:second_jockey]
           p.text-error= entry.errors.where(:second_jockey).map(&:full_message).join(', ')
     div
       fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
         legend.fieldset-legend= t("racing.entry_options.form.third_jockey")
-        = f.select :third_jockey, options_for_select(entry.options_for_jockey_select(entry.racehorse_type), entry.third_jockey_id), { include_blank: true }, { class: 'select' }
+        = f.select :third_jockey, options_for_select(entry.options_for_jockey_select(jockey_type), entry.third_jockey_id), { include_blank: true }, { class: 'select' }
         - if entry.errors[:third_jockey]
           p.text-error= entry.errors.where(:third_jockey).map(&:full_message).join(', ')
   .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
