@@ -38,6 +38,7 @@ en:
       last_foal: Last Foal
       last_race: Last Race
       last_race_info: "%{date} %{track} #%{number}: %{distance} %{type} for %{age_gender} (%{surface}) - %{position}/%{horses}"
+      last_race_info_equipment: "%{date} %{track} #%{number}: %{distance} %{type} for %{age_gender} (%{surface}) - %{position}/%{horses} - %{equipment}"
       lease_status: Lease Status
       lease_termination_requested: Termination Requested
       legacy_id: " (Legacy: %{id})"

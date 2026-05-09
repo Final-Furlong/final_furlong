@@ -8,7 +8,7 @@ module Dashboard
         @annual_race_records = horse.annual_race_records.sort_by(&:year)
         if year
           @annual_race_record = horse.annual_race_records.find_by(year:)
-          @races = horse.race_result_finishes.by_year(year)
+          @races = horse.race_result_finishes.by_year(year).joins(:race).order(race: { date: :asc })
         else
           @lifetime_race_record = horse.lifetime_race_record
         end

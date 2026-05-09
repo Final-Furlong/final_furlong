@@ -123,8 +123,13 @@
               - surface = last_race.race_surface_string
               - position = last_finish.finish_position.ordinalize
               - horses = last_race.horses.count
+              - equipment = last_finish.equipment_string
+              - pd equipment
               = render Ui::Link::Component.new(url: racing_result_path(last_race.date, last_race.number), extra_classes: "mt-2", data: { turbo_frame: "modal" }) do
-                = t(".last_race_info", date:, track:, number:, distance:, type:, age_gender:, surface: , position: , horses:)
+                - if equipment.blank?
+                  = t(".last_race_info", date:, track:, number:, distance:, type:, age_gender:, surface: , position: , horses:)
+                - else
+                  = t(".last_race_info_equipment", date:, track:, number:, distance:, type:, age_gender:, surface: , position: , horses:, equipment:)
         - if horse.race_entries.any?
           tr
             th= t(".next_race")
