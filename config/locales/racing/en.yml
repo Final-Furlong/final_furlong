@@ -161,6 +161,24 @@ en:
         scheduled: Scheduled
         workouts_hint: Since Last Race
     races:
+      all:
+        races_count:
+          one: 1 Race
+          other: "%{count} Races"
+          zero: No races found
+        title: Upcoming Races
+      filters:
+        age: Age(s)
+        distance_from: Start Distance
+        distance_to: End Distance
+        end_date: Date To
+        furlongs: Furlongs
+        gender: Gender
+        name: Name
+        racetrack: Track
+        start_date: Date From
+        surface: Surface
+        type: Type
       index:
         title: Race Schedule
       post_parade:
@@ -169,6 +187,8 @@ en:
         claim_success: If successful, your claim will be processed after races have been run. You will be charged the claiming fee for the horse.
         no_races: No races scheduled on this day.
         title: Post Parade
+      prev_next_dates:
+        all_races: View All Races
     racing: Racing
     results:
       fractions: Fractional Times

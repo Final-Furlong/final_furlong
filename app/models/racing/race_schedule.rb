@@ -88,6 +88,7 @@ class Racing::RaceSchedule < ApplicationRecord
     query
   }
   scope :ordered_by_race_type, -> { in_order_of(:race_type, Config::Racing.all_types) }
+  scope :sort_by_race_type, -> { ordered_by_race_type }
   scope :ordered_by_date, ->(dir = :asc) { order(date: dir.to_sym) }
 
   def race_type = super.to_s.inquiry
