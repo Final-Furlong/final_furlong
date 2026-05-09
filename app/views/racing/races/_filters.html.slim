@@ -1,0 +1,76 @@
+/# locals: (query:)
+.collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.mb-4
+  input type="checkbox"
+  .collapse-title.font-semibold.font-medium= t("common.filters")
+  .collapse-content.text-sm.border-t-1.border-base-content/40
+    .mt-2#race-schedule-search data-turbo-permanent=""
+      = turbo_search_form_for query, url: all_racing_races_path, method: :get, html: { class: "d-flex flex-column", autocomplete: "off" }, data: { turbo_method: :get } do |f|
+        .grid.grid-cols-1.sm:grid-cols-4.mb-2.gap-4
+          div
+            fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+              legend.fieldset-legend= t(".start_date")
+              = f.search_field :date_gteq, class: "input", placeholder: t(".start_date")
+          div
+            fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+              legend.fieldset-legend= t(".end_date")
+              = f.search_field :date_lteq, class: "input", placeholder: t(".end_date")
+          div
+            fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+              legend.fieldset-legend= t(".racetrack")
+              = f.select :track_surface_racetrack_name_eq, options_from_collection_for_select(Racing::Racetrack.all, :name, :name, @query.track_surface_racetrack_name), { include_blank: true }, class: "select"
+          div
+            fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+              legend.fieldset-legend= t(".surface")
+              - surfaces = Config::Racing.surfaces.map { |surface| [surface, I18n.t("racing.race.surface_#{surface.downcase}")]}
+              = f.select :track_surface_surface_eq, options_from_collection_for_select(surfaces, :first, :last, @query.track_surface_surface), { include_blank: true }, class: "select"
+        .flex
+          .flex-none class="max-w-[130px]"
+            fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+              legend.fieldset-legend= t(".distance_from")
+              = f.search_field :distance_gteq, class: "input", placeholder: t(".furlongs")
+          .flex-none class="max-w-[130px]"
+            fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+              legend.fieldset-legend= t(".distance_to")
+              = f.search_field :distance_lteq, class: "input", placeholder: t(".furlongs")
+          .flex-1
+            fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+              legend.fieldset-legend= t(".type")
+              - types = Config::Racing.all_types.map { |type| [type, I18n.t("racing.race.#{type.downcase}")]}
+              = f.select :race_type_eq, options_from_collection_for_select(types, :first, :last, @query.race_type), { include_blank: true }, class: "select"
+          .flex-1
+            fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+              legend.fieldset-legend= t(".age")
+              .join
+                - Config::Racing.ages.each do |age|
+                  - next if age == "2+"
+                  label.label.join-item class="#{"ml-2" unless age == Config::Racing.ages.first}"
+                    - plain_age = age.gsub('yo', '')
+                    = checkbox_tag 'q[age_in][]', plain_age, checked: params.dig(:q, :age_in).to_a.include?(plain_age), class: "checkbox"
+                    = age
+          .flex-1
+            fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+              legend.fieldset-legend= t(".gender")
+              .join
+                - Config::Racing.filter_genders.each do |gender|
+                  label.label.join-item class="#{"ml-2" unless gender == Config::Racing.filter_genders.first}"
+                    - if gender == 'Open'
+                      = radio_button_tag 'q[gender]', gender.downcase, checked: ActiveModel::Type::Boolean.new.cast(params.dig(:q, :male_only)) == false && ActiveModel::Type::Boolean.new.cast(params.dig(:q, :female_only)) == false, class: "radio"
+                    - else
+                      = radio_button_tag 'q[gender]', gender.downcase, checked: ActiveModel::Type::Boolean.new.cast(params.dig(:q, "#{gender.downcase}_only")), class: "radio"
+                    = gender
+          .flex-1
+            fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+              legend.fieldset-legend= t(".name")
+              = f.search_field :name_i_cont_all, class: "input", placeholder: t(".name")
+          / div
+          / button.input.input-border#start-date-button popovertarget="cally-start-date" style="anchor-name:--start-date-button"
+          / = t(".start_date")
+          / .dropdown.bg-base-100.rounded-box.shadow-lg#cally-start-date style="position-anchor:--start-date-button" popover=true
+          / calendar-date.cally onchange="document.getElementById('cally-start-date').innerText = this.value"
+          / i.ph.ph-caret-left aria-label=t("common.previous")
+          / i.ph.ph-caret-right aria-label=t("common.next")
+          / calendar-month
+        .float-right.flex.mt-2.justify-content-end
+          = render Ui::ButtonizedLink::Component.new(url: all_racing_races_path, color: :error, style: :outline, size: :small, extra_classes: "me-2", http_method: :get, data: { action: "search#reset" }) do
+            = t("common.search_form.reset_filters")
+          = render Ui::SubmitButton::Component.new(form: f, size: :small, extra_classes: "d-lg-none", text: t("common.search_form.action"))
