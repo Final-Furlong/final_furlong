@@ -41,8 +41,10 @@ en:
     error: Something went wrong
     filters: Filters
     month: Month
+    next: Next
     none: None
     or: Or
+    previous: Previous
     search_form:
       action: Search
       reset_filters: Reset filters

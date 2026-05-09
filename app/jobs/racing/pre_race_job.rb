@@ -3,11 +3,9 @@ class Racing::PreRaceJob < ApplicationJob
 
   queue_as :default
 
-  def perform
+  def perform(tomorrow: Date.tomorrow)
     horses = 0
     races = 0
-
-    tomorrow = Date.tomorrow
 
     step :process do |step|
       entries = Racing::RaceEntry.where(date: tomorrow).needs_pre_race
