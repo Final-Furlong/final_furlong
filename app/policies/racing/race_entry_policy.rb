@@ -61,6 +61,7 @@ module Racing
     def scratch?
       return false unless logged_in?
       return false if Racing::RaceResult.exists?(date: record.race.date, number: record.race.number)
+      return false if record.race.date == Date.current
 
       record.horse.manager == stable
     end
