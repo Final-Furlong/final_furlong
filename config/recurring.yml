@@ -65,11 +65,11 @@ production:
   race_entry_filler:
     class: Racing::RaceFillerJob
     queue: default
-    schedule: 14 1 * * 2,5 # Tues/Sat AM
+    schedule: 14 8 * * 2,5 # Tues/Sat AM
   race_entry_prerace:
     class: Racing::PreRaceJob
     queue: default
-    schedule: 14 2 * * 2,5 # Tues/Sat AM
+    schedule: 14 9 * * 2,5 # Tues/Sat AM
   race_future_entry_process:
     class: Racing::FutureEntryProcessingJob
     queue: low_priority
