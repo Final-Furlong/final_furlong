@@ -92,6 +92,10 @@ shared:
     - "2yo"
     - "3yo"
     - "4yo+"
+  filter_genders:
+    - Open
+    - Female
+    - Male
   filter_injuries:
     - past
     - present
