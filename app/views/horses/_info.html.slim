@@ -45,9 +45,10 @@
       tr
         th= t(".markings")
         td= horse.appearance.markings_description
-      tr
-        th= t(".height")
-        td= horse.appearance.height_display
+      - unless horse.stillborn?
+        tr
+          th= t(".height")
+          td= horse.appearance.height_display
       tr
         th= t(".breeder")
         td= link_to horse.breeder.name, stable_path(horse.breeder), target: "_top"
@@ -98,9 +99,10 @@
                 = link_to auction.title, auction_path(auction), target: "_top"
               - else
                 = t(".not_for_sale")
-      tr
-        th= t(".track_record")
-        td= horse.lifetime_race_record&.description || t("horse.unraced")
+      - unless horse.stillborn?
+        tr
+          th= t(".track_record")
+          td= horse.lifetime_race_record&.description || t("horse.unraced")
       - if horse.racehorse?
         - if horse.race_qualification
           tr
