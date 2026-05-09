@@ -9,6 +9,26 @@ module Racing
       @races = query.to_a
     end
 
+    def all
+      @query = policy_scope(Racing::RaceSchedule.future_including_today).includes(track_surface: :racetrack)
+      gender = params[:q].delete(:gender) if params[:q]
+      @query = case gender
+      when "open"
+        @query.where(female_only: false, male_only: false)
+      when "male"
+        @query.where(male_only: true)
+      when "female"
+        @query.where(female_only: true)
+      else
+        @query
+      end
+      @query = @query.ransack(params[:q])
+      @query.sorts = ["date asc", "number asc"] if @query.sorts.blank?
+      @count = @query.result.count
+
+      @pagy, @races = pagy(:countless, @query.result)
+    end
+
     def show
     end
 

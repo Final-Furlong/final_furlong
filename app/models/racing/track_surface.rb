@@ -19,6 +19,7 @@ module Racing
     scope :steeplechase, -> { where(surface: "steeplechase") }
     scope :flat, -> { where(surface: ["dirt", "turf"]) }
     scope :ordered_by_surface, -> { in_order_of(:surface, %w[dirt turf steeplechase]) }
+    scope :sort_by_surface, -> { ordered_by_surface }
 
     def surface = super.to_s.inquiry
 
