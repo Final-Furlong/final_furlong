@@ -22,3 +22,9 @@ tr
       span.inline.lg:hidden = t("racing.race.mobile.male_only")
   td= race.name
   td= Game::MoneyFormatter.new(race.purse).to_s
+  td
+    - entry_policy = policy(Racing::RaceEntry.new(race:, date: race.date))
+    - if entry_policy.new? && entry_policy.create?
+      .tooltip.ml-2.text-lg data-tip=t(".enter_race")
+        = link_to new_racing_race_entry_path(race), class: "ml-2", data: { turbo_frame: "_top" } do
+          i.ph.ph-fill.ph-arrow-fat-right

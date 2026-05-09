@@ -18,6 +18,7 @@
         th= t("racing.race.gender")
         th= sort_link @query, :name, t("racing.race.name")
         th= t("racing.race.purse")
+        th
     tbody id="race-schedule-list"
       = render partial: "race_schedule", collection: @races, as: :race
 

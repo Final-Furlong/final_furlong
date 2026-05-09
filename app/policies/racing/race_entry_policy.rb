@@ -23,6 +23,7 @@ module Racing
       return false if record.date < Date.current
       race = record.race
       return false if Date.current > race.entry_deadline
+      return false if Date.current < race.entry_open_date
 
       Racing::RaceQualificationQuery.new(race:).qualified.exists?
     end
@@ -32,6 +33,7 @@ module Racing
       return false if record.date < Date.current
       race = record.race
       return false if Date.current > race.entry_deadline
+      return false if Date.current < race.entry_open_date
       return false if race.entries.where(horse: Horses::Horse.racehorse.managed_by(stable)).count >= race.entry_limit
 
       horse = record.horse

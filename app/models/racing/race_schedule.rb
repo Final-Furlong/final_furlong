@@ -90,6 +90,10 @@ class Racing::RaceSchedule < ApplicationRecord
   scope :ordered_by_race_type, -> { in_order_of(:race_type, Config::Racing.all_types) }
   scope :sort_by_race_type, -> { ordered_by_race_type }
   scope :ordered_by_date, ->(dir = :asc) { order(date: dir.to_sym) }
+  scope :date_range, ->(value) {
+    start_date, end_date = value.split("/")
+    where(date: start_date..end_date)
+  }
 
   def race_type = super.to_s.inquiry
 
@@ -211,6 +215,10 @@ class Racing::RaceSchedule < ApplicationRecord
 
   def self.ransackable_associations(_auth_object = nil)
     %w[entries future_entries track_surface]
+  end
+
+  def self.ransackable_scopes(_auth_object = nil)
+    %w[date_range]
   end
 end
 

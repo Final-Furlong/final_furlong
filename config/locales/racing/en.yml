@@ -33,9 +33,9 @@ en:
       gender: Gender
       name: Horse
       new:
-        entry_fee: 'Entry Fee: %{fee}'
+        entry_fee: "Entry Fee: %{fee}"
         entry_limit: You may enter %{horses} in this race.
-        horses: 'Horses Entered: %{count}'
+        horses: "Horses Entered: %{count}"
         title: Enter Race
       owner: Owner
       parents: Sire x Dam
@@ -43,7 +43,7 @@ en:
       stable: Stable
     entry: Entry
     entry_options:
-      budget_description: 'Entry Fee: %{date}, Race %{number} - %{name}'
+      budget_description: "Entry Fee: %{date}, Race %{number} - %{name}"
       create:
         failure: "%{name} could not be entered"
         success: "%{name} was successfully entered"
@@ -52,7 +52,7 @@ en:
       form:
         first_jockey: First Choice Jockey
         jockey_decide: Let the jockey decide
-        next_race_note: 'Note on the next race entry: %{content}'
+        next_race_note: "Note on the next race entry: %{content}"
         racing_style: Running Style
         second_jockey: Second Choice Jockey
         third_jockey: Third Choice Jockey
@@ -168,15 +168,17 @@ en:
           zero: No races found
         title: Upcoming Races
       filters:
+        active: Active
         age: Age(s)
+        date_range: Date Range
         distance_from: Start Distance
         distance_to: End Distance
-        end_date: Date To
         furlongs: Furlongs
         gender: Gender
+        max_furlongs: Maximum %{max}
+        min_furlongs: Minimum %{min}
         name: Name
         racetrack: Track
-        start_date: Date From
         surface: Surface
         type: Type
       index:
@@ -189,6 +191,8 @@ en:
         title: Post Parade
       prev_next_dates:
         all_races: View All Races
+      race_schedule:
+        enter_race: Enter Race
     racing: Racing
     results:
       fractions: Fractional Times
@@ -198,7 +202,7 @@ en:
         title: Race Results
       injuries: Injuries
       no_injuries: No Injuries
-      race_number: 'Race #%{number}'
+      race_number: "Race #%{number}"
       speed_factor: Speed Factor
       weight: Lbs.
     scheduled_entries:

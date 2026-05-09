@@ -11,6 +11,7 @@ module Racing
 
     def all
       @query = policy_scope(Racing::RaceSchedule.future_including_today).includes(track_surface: :racetrack)
+      pd params
       gender = params[:q].delete(:gender) if params[:q]
       @query = case gender
       when "open"
