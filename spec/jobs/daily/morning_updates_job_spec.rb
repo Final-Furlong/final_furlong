@@ -24,12 +24,6 @@ RSpec.describe Daily::MorningUpdatesJob, :perform_enqueued_jobs do
       expect(Horses::UpdateSalesJob).to have_received(:perform_later)
     end
 
-    it "triggers activations job" do
-      allow(Daily::CreateActivationsJob).to receive(:perform_later)
-      described_class.perform_later
-      expect(Daily::CreateActivationsJob).to have_received(:perform_later)
-    end
-
     it "triggers naming job" do
       allow(Horses::NameHorsesJob).to receive(:perform_later)
       described_class.perform_later

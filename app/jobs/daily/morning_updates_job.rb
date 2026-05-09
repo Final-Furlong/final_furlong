@@ -14,13 +14,11 @@ class Daily::MorningUpdatesJob < ApplicationJob
   end
 
   def class_list
-    [Daily::CreateActivationsJob, Horses::UpdateBoardingJob,
-      Horses::UpdateLeasesJob, Horses::UpdateSalesJob,
+    [Horses::UpdateBoardingJob, Horses::UpdateLeasesJob, Horses::UpdateSalesJob,
       Horses::NameHorsesJob, Horses::UpdateBabiesJob,
       Horses::RetireMaresJob, Horses::KillMaresJob,
-      Daily::DeleteReadNotificationsJob,
-      Racing::RestDayUpdaterJob, Racing::WeatherForecastJob,
-      Daily::ProcessFutureShipmentsJob]
+      Daily::DeleteReadNotificationsJob, Daily::ProcessFutureShipmentsJob,
+      Racing::RestDayUpdaterJob, Racing::WeatherForecastJob]
   end
 end
 
