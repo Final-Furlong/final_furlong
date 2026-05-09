@@ -1,0 +1,5 @@
+= turbo_stream.append "race-schedule-list" do
+  = render partial: "race_schedule", collection: @races, as: :race
+
+= turbo_stream.replace "load_more" do
+  = render_load_more(@pagy)

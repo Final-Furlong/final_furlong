@@ -4,6 +4,7 @@ namespace :racing do
     resources :claims, only: %i[new create destroy]
   end
   resources :races, only: :index do
+    get :all, on: :collection
     get :post_parade, on: :collection
     get :racing_form, on: :member
     resources :scheduled_entries, only: :index
