@@ -1,4 +1,9 @@
 RSpec.describe "Login Spec" do
+  before do
+    Racing::StableRaceRecord.refresh
+    Racing::StableAnnualRaceRecord.refresh
+  end
+
   it "allows login with email" do
     admin = create(:admin)
 
