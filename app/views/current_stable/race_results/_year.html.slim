@@ -28,14 +28,15 @@
             tbody
               ruby:
                 starts = wins = seconds = thirds = fourths = earnings = points = 0
-              - records.each do |record|
-                - starts += record.starts
-                - wins += record.wins
-                - seconds += record.seconds
-                - thirds += record.thirds
-                - fourths += record.fourths
-                - earnings += record.earnings
-                - points += record.points
+                records.each do |record|
+                  starts += record.starts
+                  wins += record.wins
+                  seconds += record.seconds
+                  thirds += record.thirds
+                  fourths += record.fourths
+                  earnings += record.earnings
+                  points += record.points
+                end
               - records.each do |record|
                 tr
                   td= record.year

@@ -1,0 +1,115 @@
+/# locals: (stable:)
+ruby:
+  records = stable.annual_race_records.order(year: :desc)
+  this_year = stable.annual_race_records.find_by(year: Date.current.year)
+  starts = wins = seconds = thirds = fourths = earnings = points = 0
+  records.each do |record|
+    starts += record.starts
+    wins += record.wins
+    seconds += record.seconds
+    thirds += record.thirds
+    fourths += record.fourths
+    earnings += record.earnings
+    points += record.points
+  end
+.mt-4.w-full.overflow-x-auto.rounded-md.mx-auto.border.border-primary[
+  class="border-base-content/5 bg-base-100 dark:border-neutral-200"
+]
+  table.table.table-bordered.table-zebra.table-sm
+    thead
+      tr
+        th.text-center.border-b-1 colspan=3
+          = t(".title")
+      tr
+        td
+        th= Date.current.year
+        th= t(".overall")
+    tbody
+      tr
+        th= t(".races")
+        td
+          = number_with_delimiter(this_year&.starts.to_i)
+          - if this_year&.starts.to_i.positive?
+            = " (#{((this_year.starts.fdiv(starts)) * 100).round}%)"
+        td= number_with_delimiter(starts)
+      tr
+        th= t(".wins")
+        td
+          - win_pct = this_year&.starts.to_i.positive? ? ((this_year.wins.fdiv(this_year.starts)) * 100).round : 0
+          - overall_win_pct = starts.positive? ? ((wins.fdiv(starts)) * 100).round : 0
+          = number_with_delimiter(this_year&.wins.to_i)
+          = " (#{win_pct}%)"
+          - if this_year&.starts.to_i.positive?
+            span.ml-2 class="text-#{win_pct > overall_win_pct ? "success" : "error"}"
+              i.ph.ph-fill class="#{win_pct > overall_win_pct ? "ph-arrow-fat-up" : "ph-arrow-fat-down"}"
+        td
+          = number_with_delimiter(wins)
+          = " (#{overall_win_pct}%)"
+      tr
+        th= t(".places")
+        td
+          - second_pct = this_year&.starts.to_i.positive? ? ((this_year.seconds.fdiv(this_year.starts)) * 100).round : 0
+          - overall_second_pct = starts.to_i.positive? ? ((seconds.fdiv(starts)) * 100).round : 0
+          = number_with_delimiter(this_year&.seconds.to_i)
+          = " (#{second_pct}%)"
+          - if this_year&.starts.to_i.positive?
+            span.ml-2 class="text-#{second_pct > overall_second_pct ? "success" : "error"}"
+              i.ph.ph-fill class="#{second_pct > overall_second_pct ? "ph-arrow-fat-up" : "ph-arrow-fat-down"}"
+        td
+          = number_with_delimiter(seconds)
+          = " (#{overall_second_pct}%)"
+      tr
+        th= t(".shows")
+        td
+          - third_pct = this_year&.starts.to_i.positive? ? ((this_year.thirds.fdiv(this_year.starts)) * 100).round : 0
+          - overall_third_pct = starts.to_i.positive? ? ((thirds.fdiv(starts)) * 100).round : 0
+          = number_with_delimiter(this_year&.thirds.to_i)
+          = " (#{third_pct}%)"
+          - if this_year&.starts.to_i.positive?
+            span.ml-2 class="text-#{third_pct > overall_third_pct ? "success" : "error"}"
+              i.ph.ph-fill class="#{third_pct > overall_third_pct ? "ph-arrow-fat-up" : "ph-arrow-fat-down"}"
+        td
+          = number_with_delimiter(thirds)
+          = " (#{overall_third_pct}%)"
+      tr
+        th= t(".fourths")
+        td
+          - fourth_pct = this_year&.starts.to_i.positive? ? ((this_year.fourths.fdiv(this_year.starts)) * 100).round : 0
+          - overall_fourth_pct = starts.to_i.positive? ? ((fourths.fdiv(starts)) * 100).round : 0
+          = number_with_delimiter(this_year&.fourths.to_i)
+          = " (#{fourth_pct}%)"
+          - if this_year&.starts.to_i.positive?
+            span.ml-2 class="text-#{fourth_pct > overall_fourth_pct ? "success" : "error"}"
+              i.ph.ph-fill class="#{fourth_pct > overall_fourth_pct ? "ph-arrow-fat-up" : "ph-arrow-fat-down"}"
+        td
+          = number_with_delimiter(fourths)
+          = " (#{overall_fourth_pct}%)"
+      tr
+        th= t(".on_the_board")
+        td
+          - otb = this_year&.wins.to_i + this_year&.seconds.to_i + this_year&.thirds.to_i
+          - otb_pct = this_year&.starts.to_i.positive? ? ((otb.fdiv(this_year.starts)) * 100).round : 0
+          - overall_otb = wins.to_i + seconds.to_i + thirds.to_i
+          - overall_otb_pct = starts.to_i.positive? ? ((overall_otb.fdiv(starts)) * 100).round : 0
+          = "#{number_with_delimiter(otb)} (#{otb_pct}%)"
+          - if this_year&.starts.to_i.positive?
+            span.ml-2 class="text-#{otb_pct > overall_otb_pct ? "success" : "error"}"
+              i.ph.ph-fill class="#{otb_pct > overall_otb_pct ? "ph-arrow-fat-up" : "ph-arrow-fat-down"}"
+        td
+          - otb_percent = starts.to_i.positive? ? ((otb.fdiv(starts)) * 100).round : 0
+          = number_with_delimiter(otb)
+          = " (#{overall_otb_pct}%)"
+      tr
+        th= t(".earnings")
+        td= Game::MoneyFormatter.new(this_year&.earnings.to_i)
+        td= Game::MoneyFormatter.new(earnings.to_i)
+      tr
+        th= t(".points")
+        td
+          = number_with_delimiter(this_year&.points.to_i)
+          - if this_year&.points.to_i.positive?
+            = " (#{((this_year.points.fdiv(points)) * 100).round}%)"
+          - else
+            = " (0%)"
+        td
+          = number_with_delimiter(points)

@@ -1,0 +1,107 @@
+/# locals: (stable:)
+ruby:
+  twoyo_foals = Horses::Horse.where(breeder: stable).born.with_yob(Date.current.year - 2)
+  all_foals = Horses::Horse.where(breeder: stable).born.min_age(2)
+  all_foals_count = all_foals.count
+  twoyo_foals_count = all_foals_count.positive? ? twoyo_foals.count : 0
+.mt-4.w-full.overflow-x-auto.rounded-md.mx-auto.border.border-primary[
+  class="border-base-content/5 bg-base-100 dark:border-neutral-200"
+]
+  table.table.table-sm
+    thead
+      tr
+        th.text-center colspan=3
+          = t(".title")
+      tr
+        td
+        th= t(".this_year_crop", year: Date.current.year - 2)
+        th
+          = t(".overall")
+          .tooltip.ml-2.text-lg data-tip=t(".min_year", year: Date.current.year - 2)
+            i.ph.ph-info
+    tbody
+      tr
+        th= t(".foals")
+        td
+          = number_with_delimiter(twoyo_foals_count)
+          - if twoyo_foals_count.positive?
+            - foal_pct = all_foals_count.positive? ? ((twoyo_foals_count.fdiv(all_foals_count)) * 100).round : 0
+            = " (#{foal_pct}%)"
+        td= number_with_delimiter(all_foals_count)
+      tr
+        th= t(".racers")
+        - raced_count = twoyo_foals_count.positive? ? twoyo_foals.joins(:lifetime_race_record).merge(Racing::LifetimeRaceRecord.raced).count : 0
+        - all_raced_count = all_foals_count.positive? ? all_foals.joins(:lifetime_race_record).merge(Racing::LifetimeRaceRecord.raced).count : 0
+        - foal_pct = twoyo_foals_count.positive? ? ((raced_count.fdiv(twoyo_foals_count)) * 100).round : 0
+        td
+          = number_with_delimiter(raced_count)
+          - if twoyo_foals_count.positive?
+            = " (#{foal_pct}%)"
+        td
+          = number_with_delimiter(all_raced_count)
+          - foal_pct = all_foals_count.positive? ? ((all_raced_count.fdiv(all_foals_count)) * 100).round : 0
+          = " (#{foal_pct}%)"
+      tr
+        th= t(".winners")
+        - winner_count = twoyo_foals_count.positive? ? twoyo_foals.joins(:lifetime_race_record).merge(Racing::LifetimeRaceRecord.winner).count : 0
+        - all_winner_count = all_foals_count.positive? ? all_foals.joins(:lifetime_race_record).merge(Racing::LifetimeRaceRecord.winner).count : 0
+        - foal_pct = raced_count.positive? ? ((winner_count.fdiv(raced_count)) * 100).round : 0
+        td
+          = number_with_delimiter(winner_count)
+          - if twoyo_foals_count.positive?
+            = " (#{foal_pct}%)"
+        td
+          = number_with_delimiter(all_winner_count)
+          - foal_pct = all_raced_count.positive? ? ((all_winner_count.fdiv(all_raced_count)) * 100).round : 0
+          = " (#{foal_pct}%)"
+      tr
+        th= t(".stakes_winners")
+        - stakes_winner_count = winner_count.positive? ? twoyo_foals.joins(:lifetime_race_record).merge(Racing::LifetimeRaceRecord.stakes_winner).count : 0
+        - all_stakes_winner_count = all_winner_count.positive? ? all_foals.joins(:lifetime_race_record).merge(Racing::LifetimeRaceRecord.stakes_winner).count : 0
+        - foal_pct = raced_count.positive? ? ((stakes_winner_count.fdiv(raced_count)) * 100).round : 0
+        td
+          = number_with_delimiter(stakes_winner_count)
+          - if twoyo_foals_count.positive?
+            = " (#{foal_pct}%)"
+        td
+          = number_with_delimiter(all_stakes_winner_count)
+          - foal_pct = all_raced_count.positive? ? ((all_stakes_winner_count.fdiv(all_raced_count)) * 100).round : 0
+          = " (#{foal_pct}%)"
+      tr
+        th= t(".average_earnings")
+        - two_earnings = raced_count.positive? ? Racing::LifetimeRaceRecord.where(horse: twoyo_foals).average(:earnings) : 0
+        - all_earnings = all_raced_count.positive? ? Racing::LifetimeRaceRecord.where(horse: all_foals).average(:earnings) : 0
+        td
+          = Game::MoneyFormatter.new(two_earnings)
+          - if twoyo_foals_count.positive?
+            - foal_pct = all_earnings.positive? ? ((two_earnings.fdiv(all_earnings)) * 100).round : 0
+            = " (#{foal_pct}%)"
+        td= Game::MoneyFormatter.new(all_earnings)
+      tr
+        th= t(".total_earnings")
+        - two_earnings = raced_count.positive? ? Racing::LifetimeRaceRecord.where(horse: twoyo_foals).sum(:earnings) : 0
+        - all_earnings = all_raced_count.positive? ? Racing::LifetimeRaceRecord.where(horse: all_foals).sum(:earnings) : 0
+        td= Game::MoneyFormatter.new(two_earnings)
+        td= Game::MoneyFormatter.new(all_earnings)
+      tr
+        th= t(".sold")
+        td
+          - two_sold = twoyo_foals_count.positive? ? twoyo_foals.where.associated(:sales).count : 0
+          - all_sold = all_foals_count.positive? ? all_foals.where.associated(:sales).count : 0
+          = two_sold
+          - if twoyo_foals_count.positive?
+            - foal_pct = twoyo_foals_count.positive? ? ((two_sold.fdiv(twoyo_foals_count)) * 100).round : 0
+            = " (#{foal_pct}%)"
+        td
+          = all_sold
+          - foal_pct = all_foals_count.positive? ? ((all_sold.fdiv(all_foals_count)) * 100).round : 0
+          = " (#{foal_pct}%)"
+      tr
+        th
+          = t(".top_horse")
+          .tooltip.ml-2.text-md data-tip=t(".top_performer_hint")
+            i.ph.ph-info.text-lg
+        - two_top = raced_count.positive? ? Racing::LifetimeRaceRecord.includes(:horse).where(horse: twoyo_foals).ordered_by_performance.first&.horse : nil
+        - all_top = all_raced_count.positive? ? Racing::LifetimeRaceRecord.includes(:horse).where(horse: all_foals).ordered_by_performance.first&.horse : nil
+        td= two_top ? link_to(two_top.name_with_title, horse_path(two_top), class: "text-#{two_top.gender}", data: { turbo_frame: "_top" }) : t("common.dash")
+        td= all_top ? link_to(all_top.name_with_title, horse_path(all_top), class: "text-#{all_top.gender}", data: { turbo_frame: "_top" }) : t("common.dash")
