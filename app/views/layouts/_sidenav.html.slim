@@ -9,28 +9,28 @@ nav class="drawer-side is-drawer-close:overflow-visible"
       = render "layouts/user_sidenav" if signed_in?
       .divider.my-0
       li
-        button data-tip=t("layouts.sidenav.stables") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-          a.transition.duration-75 href=stables_path
+        button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
+          data-tip=t("layouts.sidenav.stables") aria-label=t("layouts.sidenav.stables")
+        ]
+          a.transition.duration-75 href=stables_path aria-label=t("layouts.sidenav.stables")
             i.ph.ph-fill.ph-barn
             span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stables")
       li
-        button data-tip=t("layouts.sidenav.all_horses") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-          a.transition.duration-75 href=horses_path
+        button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
+          data-tip=t("layouts.sidenav.all_horses") aria-label=t("layouts.sidenav.all_horses")
+        ]
+          a.transition.duration-75 href=horses_path aria-label=t("layouts.sidenav.all_horses")
             i.ph.ph-fill.ph-horse
             span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.all_horses")
       li
-        button data-tip=t(".forum") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-          = render Ui::Link::Component.new(url: Rails.application.credentials.dig(:forum_url)) do
+        button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
+          data-tip=t(".forum") aria-label=t(".forum")
+        ]
+          = render Ui::Link::Component.new(url: Rails.application.credentials.dig(:forum_url), data: { aria_label: t(".forum") }) do
             i.ph.ph-fill.ph-chat-text
             span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t(".forum")
       .divider.my-0
       = render "layouts/admin_sidenav" if signed_in? && Current.user.admin?
-      - unless Rails.env.development?
-        li
-          button data-tip=t(".main_app") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-            = render Ui::Link::Component.new(url: Rails.application.credentials.dig(:old_app, :url)) do
-              i.ph.ph-fill.ph-backspace
-              span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t(".main_app")
 
       - unless signed_in?
         = render Nav::I18n::Component.new(locale: I18n.locale, version: :tablet, variants: request.variant)
