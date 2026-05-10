@@ -1,4 +1,9 @@
 RSpec.describe "Update Stable Description" do
+  before do
+    Racing::StableRaceRecord.refresh
+    Racing::StableAnnualRaceRecord.refresh
+  end
+
   it "cannot update as visitor" do
     visit edit_current_stable_path
 

@@ -1,10 +1,14 @@
 / Admin Sidebar
 li
-  button data-tip=t("layouts.sidenav.jobs") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-    a.transition.duration-75 href=mission_control_jobs_path
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
+    data-tip=t("layouts.sidenav.jobs") aria-label=t("layouts.sidenav.jobs")
+  ]
+    a.transition.duration-75 href=mission_control_jobs_path aria-label=t("layouts.sidenav.jobs")
       i.ph.ph-fill.ph-robot
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.jobs")
-  button data-tip=t("layouts.sidenav.job_stats") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-    a.transition.duration-75 href=admin_job_stats_path
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
+    data-tip=t("layouts.sidenav.job_stats") aria-label=t("layouts.sidenav.job_stats")
+  ]
+    a.transition.duration-75 href=admin_job_stats_path aria-label=t("layouts.sidenav.job_stats")
       i.ph.ph-fill.ph-chart-bar-horizontal
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.job_stats")
