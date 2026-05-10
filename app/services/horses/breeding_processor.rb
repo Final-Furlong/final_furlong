@@ -56,9 +56,11 @@ module Horses
       ActiveRecord::Base.transaction do
         description = "Breeding: #{mare.name} to #{stud.name}"
         Accounts::BudgetTransactionCreator.new.create_transaction(stable: mare.manager, description:, amount: breeding.fee.abs * -1, activity_type: "breeding")
+        update_activity(mare.manager.user, :bred_mare)
 
         description = "Stud Booking: #{stud.name} & #{mare.name}"
         Accounts::BudgetTransactionCreator.new.create_transaction(stable: stud.manager, description:, amount: breeding.fee.abs, activity_type: "breeding")
+        update_activity(stud.manager.user, :bred_stud)
         breeding.event = breeding.pick_event
         breeding.status = "bred"
         breeding.due_date = breeding.pick_due_date
@@ -90,6 +92,13 @@ module Horses
     end
 
     private
+
+    def update_activity(user, type)
+      activity = user.activity || user.build_activity
+      activities = activity.activities
+      activities[type] = Time.current
+      activity.update(activities)
+    end
 
     def error(key)
       I18n.t("services.breedings.processor.#{key}")

@@ -1,5 +1,9 @@
 ruby:
-  date = [Current.user.last_sign_in_at&.to_date, Date.current - Config::Stables.max_race_result_alert_days.days].compact_blank.min
+  if Current.user.activity && Current.user.activity.activities["view_race_results"]
+    date = Current.user.activity.activities["view_race_results"]
+  else
+    date = [Current.user.last_sign_in_at&.to_date, Date.current - Config::Stables.max_race_result_alert_days.days].compact_blank.min
+  end
   recent_races = Racing::RaceResultHorse.joins(:race).where(stable: Current.stable).merge(Racing::RaceResult.since_date(date).ordered_by_date(:desc)).group(:date).count
   claiming_races = Racing::RaceEntry.joins(:race, :horse).where(race: Racing::RaceSchedule.future.by_type("claiming").select(:id)).where.not(horse: { owner: Current.stable }).group(:date).count
   stable_entries = Racing::RaceEntry.joins(:race).where(stable: Current.stable).where(race: Racing::RaceSchedule.future.ordered_by_date.select(:id)).group(:date).count
