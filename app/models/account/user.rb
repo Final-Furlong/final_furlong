@@ -11,6 +11,7 @@ module Account
     attr_accessor :login
 
     has_one :stable, dependent: :destroy
+    has_one :activity, class_name: "Account::UserActivity", dependent: :delete
     has_one :activation, class_name: "Account::Activation", dependent: :delete
     has_one :setting, dependent: :delete
 
