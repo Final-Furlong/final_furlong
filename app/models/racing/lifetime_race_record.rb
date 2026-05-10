@@ -9,6 +9,7 @@ module Racing
     belongs_to :horse, class_name: "Horses::Horse", inverse_of: :lifetime_race_record
 
     scope :by_horse, ->(id) { where(horse_id: id) }
+    scope :raced, -> { where(starts: 1..) }
     scope :winner, -> { where(wins: 1..) }
     scope :not_stakes_level, -> { where("stakes_wins + stakes_seconds + stakes_thirds = ?", 0) }
     scope :stakes_level, -> { where("stakes_wins + stakes_seconds + stakes_thirds >= ?", 1) }
@@ -17,6 +18,7 @@ module Racing
     scope :multi_stakes_winner, -> { where("stakes_wins > ?", 1) }
     scope :millionaire, -> { where(earnings: 1_000_000..1_999_999) }
     scope :multi_millionaire, -> { where(earnings: 2_000_000) }
+    scope :ordered_by_performance, -> { order(Arel.sql("stakes_wins DESC, stakes_seconds DESC, stakes_thirds DESC, stakes_fourths DESC, wins DESC, seconds DESC, thirds DESC, fourths DESC, (points / starts) DESC")) }
 
     def self.refresh
       Scenic.database.refresh_materialized_view(table_name, concurrently: false, cascade: false)
