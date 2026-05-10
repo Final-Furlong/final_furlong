@@ -5097,6 +5097,38 @@ ALTER SEQUENCE public.training_schedules_id_seq OWNED BY public.training_schedul
 
 
 --
+-- Name: user_activities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_activities (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    activities jsonb DEFAULT '{}'::jsonb,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: user_activities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.user_activities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: user_activities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.user_activities_id_seq OWNED BY public.user_activities.id;
+
+
+--
 -- Name: user_push_subscriptions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -5889,6 +5921,13 @@ ALTER TABLE ONLY public.training_schedules_horses ALTER COLUMN id SET DEFAULT ne
 
 
 --
+-- Name: user_activities id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_activities ALTER COLUMN id SET DEFAULT nextval('public.user_activities_id_seq'::regclass);
+
+
+--
 -- Name: user_push_subscriptions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -6543,6 +6582,14 @@ ALTER TABLE ONLY public.training_schedules_horses
 
 ALTER TABLE ONLY public.training_schedules
     ADD CONSTRAINT training_schedules_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_activities user_activities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_activities
+    ADD CONSTRAINT user_activities_pkey PRIMARY KEY (id);
 
 
 --
@@ -9017,6 +9064,20 @@ CREATE INDEX index_training_schedules_on_wednesday_activities ON public.training
 
 
 --
+-- Name: index_user_activities_on_activities; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_activities_on_activities ON public.user_activities USING gin (activities);
+
+
+--
+-- Name: index_user_activities_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_user_activities_on_user_id ON public.user_activities USING btree (user_id);
+
+
+--
 -- Name: index_user_push_subscriptions_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -9669,6 +9730,14 @@ ALTER TABLE ONLY public.settings
 
 ALTER TABLE ONLY public.training_schedules_horses
     ADD CONSTRAINT fk_rails_5699b9eba5 FOREIGN KEY (horse_id) REFERENCES public.horses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: user_activities fk_rails_56e545161c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_activities
+    ADD CONSTRAINT fk_rails_56e545161c FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -10366,6 +10435,7 @@ ALTER TABLE ONLY public.famous_studs
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260510084502'),
 ('20260507114639'),
 ('20260506113524'),
 ('20260505094849'),

@@ -1,53 +1,73 @@
 / User Sidebar
 li
-  button data-tip=t("layouts.sidenav.my_stable") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-    a.transition.duration-75 href=current_stable_path
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
+    data-tip=t("layouts.sidenav.my_stable") aria-label=t("layouts.sidenav.my_stable")
+  ]
+    a.transition.duration-75 href=current_stable_path aria-label=t("layouts.sidenav.my_stable")
       i.ph.ph-fill.ph-house
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.my_stable")
 li
-  button data-tip=t("layouts.sidenav.stable.horses") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-    a.transition.duration-75 href=stable_horses_path
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
+    data-tip=t("layouts.sidenav.stable.horses") aria-label=t("layouts.sidenav.stable.horses")
+  ]
+    a.transition.duration-75 href=stable_horses_path aria-label=t("layouts.sidenav.stable.horses")
       i.ph.ph-fill.ph-horse
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.horses")
 li
-  button data-tip=t("layouts.sidenav.stable.budget") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-    a.transition.duration-75 href=stable_budgets_path
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
+    data-tip=t("layouts.sidenav.stable.budget") aria-label=t("layouts.sidenav.stable.budget")
+  ]
+    a.transition.duration-75 href=stable_budgets_path aria-label=t("layouts.sidenav.stable.budget")
       i.ph.ph-fill.ph-coins
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.budget")
 li
-  button data-tip=t("layouts.sidenav.stable.shipping") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-    a.transition.duration-75 href=stable_shipments_path
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
+    data-tip=t("layouts.sidenav.stable.shipping") aria-label=t("layouts.sidenav.stable.shipping")
+  ]
+    a.transition.duration-75 href=stable_shipments_path aria-label=t("layouts.sidenav.stable.shipping")
       i.ph.ph-fill.ph-truck
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.shipping")
 - if Auctions::Bid.where(bidder: Current.stable).exists? || Auctions::Horse.joins(:auction).where(seller: Current.stable).merge(Auction.current).exists?
   li
-    button data-tip=t("layouts.sidenav.stable.auctions") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-      a.transition.duration-75 href=stable_auctions_path
+    button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
+      data-tip=t("layouts.sidenav.stable.auctions") aria-label=t("layouts.sidenav.stable.auctions")
+    ]
+      a.transition.duration-75 href=stable_auctions_path aria-label=t("layouts.sidenav.stable.auctions")
         i.ph.ph-fill.ph-gavel
         span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.auctions")
 li
-  button data-tip=t("layouts.sidenav.stable.boarding") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-    a.transition.duration-75 href=stable_boardings_path
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
+    data-tip=t("layouts.sidenav.stable.boarding") aria-label=t("layouts.sidenav.stable.boarding")
+  ]
+    a.transition.duration-75 href=stable_boardings_path aria-label=t("layouts.sidenav.stable.boarding")
       i.ph.ph-fill.ph-barn
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.boarding")
 li
-  button data-tip=t("layouts.sidenav.stable.training") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-    a.transition.duration-75 href=stable_trainings_path
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
+    data-tip=t("layouts.sidenav.stable.training") aria-label=t("layouts.sidenav.stable.training")
+  ]
+    a.transition.duration-75 href=stable_trainings_path aria-label=t("layouts.sidenav.stable.training")
       i.ph.ph-fill.ph-timer
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.training")
 .divider.my-0
 li
-  button data-tip=t("layouts.sidenav.stable.race_schedule") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-    a.transition.duration-75 href=racing_races_path
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
+    data-tip=t("layouts.sidenav.stable.race_schedule") aria-label=t("layouts.sidenav.stable.race_schedule")
+  ]
+    a.transition.duration-75 href=racing_races_path aria-label=t("layouts.sidenav.stable.race_schedule")
       i.ph.ph-fill.ph-calendar-blank
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.race_schedule")
 li
-  button data-tip=t("layouts.sidenav.stable.race_results") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-    a.transition.duration-75 href=racing_results_path
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
+    data-tip=t("layouts.sidenav.stable.race_results") aria-label=t("layouts.sidenav.stable.race_results")
+  ]
+    a.transition.duration-75 href=racing_results_path aria-label=t("layouts.sidenav.stable.race_results")
       i.ph.ph-fill.ph-flag-checkered
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.race_results")
 li
-  button data-tip=t("layouts.sidenav.stable.racetracks") class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-    a.transition.duration-75 href=racing_tracks_path
+  button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
+    data-tip=t("layouts.sidenav.stable.racetracks") aria-label=t("layouts.sidenav.stable.racetracks")
+  ]
+    a.transition.duration-75 href=racing_tracks_path aria-label=t("layouts.sidenav.stable.racetracks")
       i.ph.ph-map-pin-simple-area
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.racetracks")

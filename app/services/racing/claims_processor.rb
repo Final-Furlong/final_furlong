@@ -13,6 +13,13 @@ module Racing
 
     private
 
+    def update_activity(user, type)
+      activity = user.activity || user.build_activity
+      activities = activity.activities
+      activities[type] = Time.current
+      activity.update(activities)
+    end
+
     def process_claim(entry:)
       race = entry.race
       claim_price = race.claiming_price
@@ -32,8 +39,10 @@ module Racing
             horse.training_schedules_horse&.destroy
             description = "Claimed: #{horse.name} from race #{entry.race.number}"
             Accounts::BudgetTransactionCreator.new.create_transaction(stable: owner, description:, amount: claim_price)
+            update_activity(owner.user, :sold_horse)
             description = "Claim: #{horse.name} from race #{entry.race.number}"
             Accounts::BudgetTransactionCreator.new.create_transaction(stable: claimer, description:, amount: claim_price * -1)
+            update_activity(claimer.user, :bought_horse)
             Horses::Sale.create!(date: race.date, price: claim_price, private: false, buyer: claimer, seller: owner, horse:)
             entry.claims.map(&:destroy)
             claimed = true

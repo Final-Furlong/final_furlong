@@ -1,4 +1,9 @@
 RSpec.describe "Impersonate Stable Index" do
+  before do
+    Racing::StableRaceRecord.refresh
+    Racing::StableAnnualRaceRecord.refresh
+  end
+
   it "does not allow impersonating as visitor" do
     user = create(:user, :without_stable, email: "user@example.com", username: "user123")
     stable = create(:stable, user:)
