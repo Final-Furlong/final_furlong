@@ -14,10 +14,23 @@ module CurrentStable
       end
       @query = @query.includes(:breeder, :appearance, sire: :stud_foal_record, dam: [:broodmare_foal_record, :sire])
       @query = @query.ransack(params[:q])
+      update_user_activity
 
       @count = @query.result.count
 
       @pagy, @foals = pagy(:countless, @query.result)
+    end
+
+    private
+
+    def update_user_activity
+      activity = Current.user.activity || Current.user.build_activity
+      activities = activity.activities
+      date = params[:this_date] ? params[:date] : Date.current
+      return if activities.key?(:view_recent_foals) && activities[:view_recent_foals].to_date >= date
+
+      activities[:view_recent_foals] = date.to_date.beginning_of_day
+      activity.update(activities:)
     end
   end
 end

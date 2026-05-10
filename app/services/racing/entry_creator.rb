@@ -149,6 +149,7 @@ module Racing
           Racing::FutureRaceEntry.find_by(race:, horse:)&.destroy
           description = I18n.t("racing.entry_options.budget_description", date: race.date, number: race.number, name: horse.name)
           Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: race.entry_fee.to_i * -1, activity_type: "entering")
+          update_activity(stable.user)
           result.created = entry.save
         end
       end
@@ -170,6 +171,13 @@ module Racing
     end
 
     private
+
+    def update_activity(user)
+      activity = user.activity || user.build_activity
+      activities = activity.activities
+      activities[:entered_race] = Time.current
+      activity.update(activities)
+    end
 
     def shipment_params
       { departure_date: Date.current, ending_location: race_location.id, mode: ship_mode }

@@ -356,6 +356,20 @@ en:
           one: "%{name} has 1 pending booking"
           other: "%{name} has %{count} pending bookings"
         studs: Stud Alert
+    breeding:
+      average_earnings: Average Earnings
+      foals: Foals
+      min_year: "%{year} Crops and Older"
+      overall: All Years
+      racers: Racers
+      sold: Horses Sold
+      stakes_winners: Stakes Winners
+      this_year_crop: "%{year} Crop"
+      title: Breeding Statistics
+      top_horse: Top Performer
+      top_performer_hint: Ordered by stakes performance
+      total_earnings: Total Earnings
+      winners: Winners
     edit:
       header: Edit Stable
     index:
@@ -370,5 +384,16 @@ en:
       location: Located %{miles} miles from %{track} (%{location})
       next_due_date: " (Next Due On %{date})"
       owner: Owned by %{name}
+    training:
+      earnings: Earnings
+      fourths: Fourths
+      on_the_board: On The Board %
+      overall: Overall
+      places: Places
+      points: Points
+      races: Races
+      shows: Shows
+      title: Training Statistics
+      wins: Wins
     update:
       success: Stable successfully updated

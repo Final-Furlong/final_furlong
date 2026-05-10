@@ -30,8 +30,10 @@ module Horses
           price = Game::MoneyFormatter.new(sale.price).to_s
           description = I18n.t("services.sale_creator.description_buyer", horse: horse.name, stable: horse.owner.name, price:)
           Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: sale.price.abs * -1)
+          update_activity(stable.user, :bought_horse)
           description = I18n.t("services.sale_creator.description_seller", horse: horse.name, stable: stable.name, price:)
           Accounts::BudgetTransactionCreator.new.create_transaction(stable: original_owner, description:, amount: sale.price.abs)
+          update_activity(original_owner.user, :sold_horse)
 
           horse.update(owner: stable, manager: stable)
           horse.training_schedules_horse&.destroy
@@ -73,6 +75,13 @@ module Horses
       def created?
         @created
       end
+    end
+
+    def update_activity(user, type)
+      activity = user.activity || user.build_activity
+      activities = activity.activities
+      activities[type] = Time.current
+      activity.update(activities)
     end
 
     def i18n(key)

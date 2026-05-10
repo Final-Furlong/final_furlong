@@ -1,47 +1,52 @@
 /# locals: (stable:)
-.text-center
-  h1.text-2xl= stable.name
-  - if stable.user.name.present?
-    p.mt-2= t(".owner", name: stable.user.name)
-  - if stable.racetrack.present?
+.mx-auto.w-full.sm:w-3/4
+  .text-center
+    h1.text-2xl= stable.name
+    - if stable.user.name.present?
+      p.mt-2= t(".owner", name: stable.user.name)
+    - if stable.racetrack.present?
+      p.mt-2
+        = t(".location", track: stable.racetrack.name, miles: stable.miles_from_track,
+                location: stable.racetrack.location.name)
     p.mt-2
-      = t(".location", track: stable.racetrack.name, miles: stable.miles_from_track,
-              location: stable.racetrack.location.name)
-  p.mt-2
-    span= t("stables.show.joined", date: l(stable.created_at.to_date, format: :long))
+      span= t("stables.show.joined", date: l(stable.created_at.to_date, format: :long))
 
-- if stable.description?
-  blockquote.blockquote.border.border-secondary.rounded-md.mx-auto.p-2.mt-4.w-full.sm:w-3/4
-    - # rubocop:disable Rails/OutputSafety
-    p= stable.description.html_safe
-    - # rubocop:enable Rails/OutputSafety
+  - if stable.description?
+    blockquote.blockquote.border.border-secondary.rounded-md.mx-auto.p-2.mt-4
+      - # rubocop:disable Rails/OutputSafety
+      p= stable.description.html_safe
+      - # rubocop:enable Rails/OutputSafety
 
-.mt-4.overflow-x-auto.rounded-md.mx-auto.w-full.border.border-primary[
-  class="sm:w-3/4 border-base-content/5 bg-base-100 dark:border-neutral-200"
-]
-  table.table.table-sm
-    thead
-      tr
-        th.text-center colspan=3
-          = t(".general_statistics")
-    tbody
-      tr
-        td.text-center colspan=3
-          = stable.horses.alive.count.to_s + ' ' + 'horse'.pluralize(stable.horses.alive.count).titleize
-      tr
-        td= stable.horses.racehorse.count.to_s + ' ' + 'racehorse'.pluralize(stable.horses.racehorse.count).titleize
-        td= stable.horses.stud.count.to_s + ' ' + 'stallion'.pluralize(stable.horses.stud.count).titleize
-        td= stable.horses.broodmare.count.to_s + ' ' + 'broodmare'.pluralize(stable.horses.broodmare.count).titleize
-      tr
-        td= stable.horses.yearling.count.to_s + ' ' + 'yearling'.pluralize(stable.horses.yearling.count).titleize
-        td= stable.horses.weanling.count.to_s + ' ' + 'weanling'.pluralize(stable.horses.weanling.count).titleize
-        td= stable.horses.retired.count.to_s + ' ' + 'retired'.pluralize(stable.horses.retired.count).titleize
-      - foals_count = Horses::Horse.managed_by(stable).joins(:next_foal).merge(Horses::Breeding.last_year).count
-      - if foals_count.positive?
-        - due_date = Horses::Breeding.in_foal.where(mare: Horses::Horse.managed_by(stable)).minimum(:due_date)
+  .mt-4.w-full.overflow-x-auto.rounded-md.mx-auto.border.border-primary[
+    class="border-base-content/5 bg-base-100 dark:border-neutral-200"
+  ]
+    table.table.table-sm
+      thead
+        tr
+          th.text-center colspan=3
+            = t(".general_statistics")
+      tbody
         tr
           td.text-center colspan=3
-            = t(".foals_due_count", count: foals_count)
-            = t(".next_due_date", date: l(due_date))
+            = stable.horses.alive.count.to_s + ' ' + 'horse'.pluralize(stable.horses.alive.count).titleize
+        tr
+          td= stable.horses.racehorse.count.to_s + ' ' + 'racehorse'.pluralize(stable.horses.racehorse.count).titleize
+          td= stable.horses.stud.count.to_s + ' ' + 'stallion'.pluralize(stable.horses.stud.count).titleize
+          td= stable.horses.broodmare.count.to_s + ' ' + 'broodmare'.pluralize(stable.horses.broodmare.count).titleize
+        tr
+          td= stable.horses.yearling.count.to_s + ' ' + 'yearling'.pluralize(stable.horses.yearling.count).titleize
+          td= stable.horses.weanling.count.to_s + ' ' + 'weanling'.pluralize(stable.horses.weanling.count).titleize
+          td= stable.horses.retired.count.to_s + ' ' + 'retired'.pluralize(stable.horses.retired.count).titleize
+        - foals_count = Horses::Horse.managed_by(stable).joins(:next_foal).merge(Horses::Breeding.last_year).count
+        - if foals_count.positive?
+          - due_date = Horses::Breeding.in_foal.where(mare: Horses::Horse.managed_by(stable)).minimum(:due_date)
+          tr
+            td.text-center colspan=3
+              = t(".foals_due_count", count: foals_count)
+              = t(".next_due_date", date: l(due_date))
 
-= render "alerts" if policy(stable).show_alerts?
+  = render "alerts" if policy(stable).show_alerts?
+
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    = render "training", stable:
+    = render "breeding", stable:

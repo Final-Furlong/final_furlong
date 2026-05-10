@@ -85,9 +85,11 @@ module Auctions
       ActiveRecord::Base.transaction do
         description = "#{auction.title}: Purchased #{horse.budget_name} (ID# #{horse.legacy_id}) from #{seller.name}"
         Accounts::BudgetTransactionCreator.new.create_transaction(stable: buyer, description:, amount: bid.current_bid * -1, activity_type: "buying")
+        update_activity(buyer.user, :bought_horse)
 
         description = "#{auction.title}: Sold #{horse.budget_name} (ID# #{horse.legacy_id}) to #{buyer.name}"
         Accounts::BudgetTransactionCreator.new.create_transaction(stable: seller, description:, amount: bid.current_bid, activity_type: "selling")
+        update_activity(seller.user, :sold_horse)
 
         Horses::Sale.create!(
           date: Date.current,
@@ -131,6 +133,13 @@ module Auctions
     end
 
     private
+
+    def update_activity(user, type)
+      activity = user.activity || user.build_activity
+      activities = activity.activities
+      activities[type] = Time.current
+      activity.update(activities)
+    end
 
     def money_spent(bidder_id, auction_id)
       money = 0
