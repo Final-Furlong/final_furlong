@@ -66,6 +66,7 @@ en:
         no_current_entries: There are no current or scheduled entries.
         note_for_next_race: 'Note for next race: '
         qualification: 'Qualification: %{qualification}'
+        scheduled: Scheduled
     entry_state:
       current: Currently Entered
       none: None

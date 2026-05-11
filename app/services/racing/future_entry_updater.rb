@@ -57,12 +57,12 @@ module Racing
         return result
       end
 
-      if race.future_entries.where(stable:).count >= race.entry_limit
+      if race.future_entries.where(stable:).where.not(id: entry.id).count >= race.entry_limit
         result.error = error("max_entries_stable")
         return result
       end
 
-      if race.future_entries.where(horse:).count >= Config::Racing.future_race_limit
+      if race.future_entries.where(horse:).where.not(id: entry.id).count >= Config::Racing.future_race_limit
         result.error = error("max_entries_horse")
         return result
       end
