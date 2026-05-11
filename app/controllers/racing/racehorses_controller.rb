@@ -2,13 +2,14 @@ module Racing
   class RacehorsesController < AuthenticatedController
     def index
       if params.dig(:q, :race).present?
-        @race = Racing::RaceSchedule.includes(:track_surface).find(params.dig(:q, :race)) if params.dig(:q, :race).present?
+        @race = Racing::RaceSchedule.includes(track_surface: :racetrack).find(params.dig(:q, :race)) if params.dig(:q, :race).present?
         @query = RaceQualificationQuery.new(race: @race, status:).qualified(apply_settings: false)
         @query = policy_scope(@query, policy_scope_class: CurrentStable::RacehorsePolicy::Scope)
       else
-        base_query = Horses::Horse.racehorse.includes(:manager, :race_options, race_metadata: :racetrack).where.missing(:race_entries)
+        base_query = Horses::Horse.racehorse.where.missing(:race_entries)
         @query = policy_scope(base_query, policy_scope_class: CurrentStable::RacehorsePolicy::Scope)
       end
+      @query = @query.includes(:race_options, manager: { racetrack: :location }, race_metadata: { racetrack: :location })
       @query = @query.ransack(params[:q])
       @query.sorts = ["name asc"] if @query.sorts.empty?
       @query.sorts.insert 0, Ransack::Nodes::Sort.extract(@query.context, "race_options_racehorse_type desc")

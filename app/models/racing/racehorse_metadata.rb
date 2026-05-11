@@ -84,9 +84,10 @@ module Racing
     scope :boardable, -> { where(at_home: false, in_transit: false) }
     scope :shippable_to_location, ->(id, cost, days) {
       # n.b. DISTINCT UNNEST(ARRAY[]) is postgres-specific syntax
-      where("location_id = :id OR location_id IN
+      where("#{table_name}.location_id = :id OR #{table_name}.location_id IN
         (SELECT DISTINCT UNNEST(ARRAY[starting_location_id, ending_location_id]) FROM shipment_routes
-        WHERE ((starting_location_id = location_id AND ending_location_id = :id) OR (starting_location_id = :id AND ending_location_id = location_id))
+        WHERE ((starting_location_id = #{table_name}.location_id AND ending_location_id = :id) OR
+          (starting_location_id = :id AND ending_location_id = #{table_name}.location_id))
           AND ((road_days IS NOT NULL AND road_days <= :days AND road_cost <= :cost) OR
             (air_days IS NOT NULL AND air_days <= :days AND air_cost <= :cost)))",
         { id:, cost:, days: })
