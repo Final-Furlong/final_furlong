@@ -19,7 +19,7 @@ module Horses
           amount = boarding.days * Config::Boarding.daily_fee * -1
           Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount:)
           racetrack_name = ::Racing::Racetrack.where(location: boarding.location).pick(:name)
-          horse.race_metadata.update(location_string: I18n.t("horse.location.at_racetrack", name: racetrack_name))
+          horse.race_metadata&.update(location_string: I18n.t("horse.location.at_racetrack", name: racetrack_name))
           result.boarding = boarding
         else
           boarding.destroy!
@@ -53,4 +53,3 @@ module Horses
     end
   end
 end
-

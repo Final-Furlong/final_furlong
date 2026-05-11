@@ -12,6 +12,7 @@ en:
       title: Actions
       update: Update
       view: View
+    active: Active
     confirm:
       default_message: Are you sure you want to do this?
       title: Are you sure?

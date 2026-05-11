@@ -14,7 +14,6 @@ module Auctions
       if auction.update(auction_params)
         Result.new(created: true, auction:)
       else
-        pd auction.errors.inspect
         Result.new(created: false, auction:)
       end
     end

@@ -1,0 +1,15 @@
+/# locals: (dashboard:, horse:, races:, pagy:, racehorse_type:)
+p.py-2.text-lg.text-center= t(".races_count", count: dashboard.count)
+- if dashboard.count.positive?
+  table.table.table-responsive.sortable.n-last
+    thead
+      tr
+        th= t("racing.race.date")
+        th= t("racing.race.track")
+        th= t("racing.race.race")
+        th= t("racing.race.surface")
+        th= t("common.actions.title")
+    tbody id="#{horse.slug}-future-race-list"
+      = render partial: "list", collection: races, as: :race, locals: { racehorse_type:, dashboard: dashboard }
+
+  = render_load_more(pagy)

@@ -6,24 +6,28 @@ module Horse
       @horse = Horses::Horse.includes(:manager, :race_options, :race_qualification).find(params[:horse_id])
       authorize @horse, :schedule_race?, policy_class: CurrentStable::RacehorsePolicy
 
-      entry_ids = Racing::RaceEntry.where(horse: @horse).pluck(:race_id)
-      entry_ids += Racing::FutureRaceEntry.where(horse: @horse).pluck(:race_id)
-      dates = Racing::RaceSchedule.where(id: entry_ids).select(:date).distinct
+      @dashboard = Dashboard::Horse::FutureRaces.new(horse: @horse, params:)
 
-      @query = Racing::RaceSchedule.where.not(date: dates.map(&:date)).available_for_scheduling.for_age(@horse.age)
-        .for_gender(@horse.gender)
-        .for_race_options(@horse.race_options).for_race_qualification(@horse.race_qualification)
-        .includes(track_surface: :racetrack)
-        .order(date: :asc).ordered_by_race_type
+      @pagy, @races = pagy(:countless, @dashboard.query.result)
 
-      @existing_schedules = Racing::RaceSchedule.where(id: entry_ids).pluck(:date)
-      @min_days = if Current.user.setting&.racing&.apply_minimums_for_future_races
-        Current.user.setting&.racing&.min_days_delay_from_last_race.to_i
-      else
-        0
+      respond_to do |format|
+        format.html
+        format.turbo_stream
       end
+    end
 
-      @pagy, @races = pagy(:offset, @query)
+    def search
+      @horse = Horses::Horse.includes(:manager, :race_options, :race_qualification).find(params[:horse_id])
+      authorize @horse, :schedule_race?, policy_class: CurrentStable::RacehorsePolicy
+
+      @dashboard = Dashboard::Horse::FutureRaces.new(horse: @horse, params:)
+
+      @pagy, @races = pagy(:countless, @dashboard.query.result)
+
+      respond_to do |format|
+        format.html { render :index }
+        format.turbo_stream { (@pagy.page == 1) ? render(:search) : render(:index) }
+      end
     end
 
     def new

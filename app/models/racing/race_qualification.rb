@@ -116,6 +116,11 @@ module Racing
       base_qual += " (" + I18n.t("#{base_key}.starter_allowance") + ")" if starter_allowance_qualified
       base_qual
     end
+
+    def options_for_race_type_select
+      types = Config::Racing.all_types.select { |type| Config::Racing.non_qualified_types.include?(type) || send(:"#{type}_qualified") == true }
+      types.map { |type| [type, I18n.t("racing.race.#{type.downcase}")] }
+    end
   end
 end
 
