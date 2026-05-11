@@ -1,0 +1,44 @@
+/# locals: (race:, racehorse_type:, dashboard:)
+tr
+  td= l(race.date)
+  td= race.racetrack.name
+  td= race.race_description_string(show_number: false)
+  td= race.track_surface.surface_short
+  td
+    - if @dashboard.min_days.positive? && @dashboard.existing_schedules.any? { |es| (race.date - es).to_i.abs < @dashboard.min_days }
+      span.text-warning
+        .tooltip.mr-2.text-lg data-tip=t(".min_days_not_met", days: @min_days)
+          i.ph.ph-fill.ph-warning
+    - if racehorse_type.flat? && race.jump?
+      span.text-error
+        .tooltip.mr-2.text-lg data-tip=t("racing.racehorses.status.not_a_jumper")
+          i.ph.ph-fill.ph-warning
+
+    - if policy(race).enter?
+      - if policy(race).add_entry?
+        = render Ui::ButtonizedLink::Component.new(url: new_racing_race_entry_path(race), size: :small, style: :outline, extra_classes: 'inline', data: { turbo_frame: "_top" }) do
+          i.ph-fill.ph-arrow
+          = t(".enter")
+      - else
+        = render Ui::ButtonizedLink::Component.new(url: new_racing_race_entry_path(race), disabled: true, size: :small, style: :outline, extra_classes: 'inline', data: { turbo_frame: "_top" }) do
+          i.ph-fill.ph-arrow
+          = t(".enter")
+        - if policy(race).add_entry_result.failure == :max_stable_entries
+          - entry_count = Horses::Horse.racehorse.managed_by(Current.stable).joins(:race_entries).where(race_entries: { race: }).count
+          = render Ui::ButtonizedLink::Component.new(url: new_racing_race_entry_path(race), size: :small, style: :outline, extra_classes: 'ml-2 inline', data: { turbo_frame: "modal" }) do
+            i.ph-fill.ph-eye
+            = t(".view_entries", count: entry_count)
+    - elsif policy(race).schedule?
+      - if policy(race).add_scheduled_entry?
+        = render Ui::ButtonizedLink::Component.new(url: horse_new_future_race_path(@horse, race), size: :small, style: :outline, extra_classes: 'inline', data: { turbo_frame: "modal" }) do
+          i.ph-fill.ph-calendar
+          = t(".schedule")
+      - else
+        = render Ui::ButtonizedLink::Component.new(url: horse_new_future_race_path(@horse, race), disabled: true, size: :small, style: :outline, extra_classes: 'inline', data: { turbo_frame: "modal" }) do
+          i.ph-fill.ph-calendar
+          = t(".schedule")
+        - if policy(race).add_scheduled_entry_result.failure == :max_stable_entries
+          - entry_count = Horses::Horse.racehorse.managed_by(Current.stable).joins(:future_race_entries).where(future_race_entries: { race: }).count
+          = render Ui::ButtonizedLink::Component.new(url: racing_race_scheduled_entries_path(race, horse_id: @horse.id), size: :small, style: :outline, extra_classes: 'ml-2 inline', data: { turbo_frame: "modal" }) do
+            i.ph-fill.ph-eye
+            = t(".view_scheduled_entries", count: entry_count)

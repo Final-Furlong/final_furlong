@@ -60,6 +60,26 @@ module Racing
       end
     end
 
+    def options_for_age_select
+      Config::Racing.ages.select do |age|
+        age != "2+" && ((age.include?("+") && horse.age >= age.delete("+").to_i) || age.to_i == horse.age)
+      end
+    end
+
+    def options_for_gender_select
+      Config::Racing.filter_genders.select do |gender|
+        gender.downcase == "open" || horse.send(:"#{gender.downcase}?")
+      end
+    end
+
+    def options_for_surface_select
+      options = surface_options
+      options << "steeplechase" if racehorse_type == "flat"
+      options.map do |surface|
+        [surface, I18n.t("racing.race.surface_#{surface.downcase}")]
+      end
+    end
+
     def options_for_distance_select
       Racing::RaceSchedule.select(:distance).order(distance: :asc).distinct.map do |race|
         [I18n.t("racing.distance_furlongs", value: race.distance), race.distance]

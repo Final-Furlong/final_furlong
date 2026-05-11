@@ -43,18 +43,14 @@ export default class extends Controller {
       const url = this.maresUrlValue.replace(":stable_id", stableId).replace(":slot_id", this.selectedSlotIdValue)
       const response = await fetch(url)
       const mares = await response.json()
-      console.log(url)
 
       this.populateSelect(this.maresTarget, mares)
       this.maresTarget.disabled = false
 
       if (this.hasSelectedMareIdValue) {
-        console.log("has value")
         if (this.mareExists(mares, this.selectedMareIdValue)) {
-          console.log("mare exists")
           this.maresTarget.value = this.selectedMareIdValue
         } else {
-          console.log("no mare")
           this.maresTarget.value = ""
         }
       }
@@ -79,16 +75,6 @@ export default class extends Controller {
 
       this.populateSelect(this.slotsTarget, slots)
       this.slotsTarget.disabled = false
-
-      // if (this.hasSelectedMareIdValue) {
-      // if (this.mareExists(mares, this.selectedMareIdValue)) {
-      // console.log("mare exists")
-      // this.maresTarget.value = this.selectedMareIdValue
-      // } else {
-      // console.log("no mare")
-      // this.maresTarget.value = ""
-      // }
-      // }
     } catch (error) {
       console.error("Error loading mares:", error)
     }

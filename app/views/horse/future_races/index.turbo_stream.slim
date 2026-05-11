@@ -1,0 +1,5 @@
+= turbo_stream.append "#{@horse.slug}-future-race-list" do
+  = render partial: "list", collection: @races, as: :race, locals: { racehorse_type: @horse.race_options.racehorse_type.to_s.inquiry, dashboard: @dashboard }
+
+= turbo_stream.replace "load_more" do
+  = render_load_more(@pagy)
