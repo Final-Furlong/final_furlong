@@ -1,0 +1,81 @@
+/# locals: (query:, horse:)
+- max_schedule_date = Racing::RaceSchedule.maximum(:date)
+- options = horse.race_options
+.collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.my-4
+  input type="checkbox"
+  .collapse-title.font-semibold.font-medium
+    = t("common.filters")
+  .collapse-content.text-sm.border-t-1.border-base-content/40
+    .mt-2#future-races-search data-controller="search"
+      = search_form_for query, url: search_horse_future_races_path, method: :get, id: 'future-races-search', html: { class: "d-flex flex-column", data: { 'clear-errors' => true, 'search-target' => 'form', turbo_frame: "#{horse.slug}-future-race-display" } } do |f|
+        .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+          div
+            = f.hidden_field :date_range
+            fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+              legend.fieldset-legend= t("racing.races.filters.date_range")
+              calendar-range[
+                value=query.date_range.to_s
+                min=Date.current.strftime('%Y-%m-%d')
+                max=max_schedule_date.strftime('%Y-%m-%d')
+                locale=I18n.locale
+                months="#{request.variant.phone? ? 1 : 2}"
+                onchange="document.getElementById('q_date_range').value=this.value"
+              ]
+                i.ph.ph-caret-left aria-label=t("common.previous") slot="previous"
+                i.ph.ph-caret-right aria-label=t("common.next") slot="next"
+                calendar-month
+                - unless request.variant.phone?
+                  calendar-month offset=1
+          div
+            .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+              div
+                fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+                  legend.fieldset-legend= t("racing.races.filters.racetrack")
+                  = f.select :track_surface_racetrack_name_eq, options_from_collection_for_select(Racing::Racetrack.all, :name, :name, query.track_surface_racetrack_name), { include_blank: true }, class: "select"
+              div
+                fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+                  legend.fieldset-legend= t("racing.races.filters.surface")
+                  - surfaces = options.options_for_surface_select
+                  - selected_surface = query.track_surface_surface_eq || (surfaces.size == 1 ? surfaces.first : nil)
+                  = f.select :track_surface_surface_eq, options_from_collection_for_select(surfaces, :first, :last, selected_surface), { include_blank: true }, class: "select"
+            .grid.grid-cols-2.sm:grid-cols-3.mb-2.gap-4
+              div
+                fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+                  legend.fieldset-legend= t("racing.races.filters.distance_from")
+                  = f.search_field :distance_gteq, class: "input", placeholder: t("racing.races.filters.min_furlongs", min: Config::Racing.minimum_distance)
+                  p.label= t("racing.races.filters.furlongs")
+              div
+                fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+                  legend.fieldset-legend= t("racing.races.filters.distance_to")
+                  = f.search_field :distance_lteq, class: "input", placeholder: t("racing.races.filters.max_furlongs", max: Config::Racing.maximum_distance)
+                  p.label= t("racing.races.filters.furlongs")
+              div
+                fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+                  legend.fieldset-legend= t("racing.races.filters.type")
+                  - types = horse.race_qualification.options_for_race_type_select
+                  = f.select :race_type_eq, options_from_collection_for_select(types, :first, :last, query.race_type), { include_blank: true }, class: "select"
+            .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+              div
+                fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+                  legend.fieldset-legend= t("racing.races.filters.age")
+                  .join
+                    - horse.race_options.options_for_age_select.each do |age|
+                      label.label.join-item class="#{"ml-2" unless age == Config::Racing.ages.first}"
+                        - plain_age = age.gsub('yo', '')
+                        = checkbox_tag 'q[age_in][]', plain_age, checked: params.dig(:q, :age_in).to_a.include?(plain_age), class: "checkbox"
+                        = I18n.t("racing.race.ages.#{age}")
+              div
+                fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+                  legend.fieldset-legend= t("racing.races.filters.gender")
+                  .join
+                    - horse.race_options.options_for_gender_select.each do |gender|
+                      label.label.join-item class="#{"ml-2" unless gender == horse.race_options.options_for_gender_select.first}"
+                        - if gender == 'Open'
+                          = radio_button_tag 'q[gender]', gender.downcase, checked: @gender == "open", class: "radio"
+                        - else
+                          = radio_button_tag 'q[gender]', gender.downcase, checked: @gender == gender.downcase, class: "radio"
+                        = gender
+        .float-right.flex.mt-2.justify-content-end
+          = render Ui::ButtonizedLink::Component.new(url: search_horse_future_races_path, color: :error, style: :outline, size: :small, extra_classes: "me-2", http_method: :get, data: { action: "search#reset" }) do
+            = t("common.search_form.reset_filters")
+          = render Ui::SubmitButton::Component.new(form: f, size: :small, text: t("common.search_form.action"))

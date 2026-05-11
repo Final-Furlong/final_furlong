@@ -71,6 +71,13 @@ en:
     race:
       age: Age
       age_desc: for %{age}
+      ages:
+        '2': 2yo
+        2+: 2yo+
+        '3': 3yo
+        3+: 3yo+
+        '4': 4yo
+        4+: 4yo+
       allowance: Allowance
       claim: Claim
       claiming: Claiming
