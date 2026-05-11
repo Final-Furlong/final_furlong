@@ -5,7 +5,7 @@ ruby:
     .card-body.p-0.rounded-none
       details.collapse.collapse-arrow.bg-base-100
         summary.text-center.collapse-title.font-semibold
-          = t(".mares").capitalize.pluralize(mares_count)
+          = t(".mares").titleize.pluralize(mares_count)
           = " (#{mares_count})"
         .collapse-content.text-sm
           = turbo_frame_tag "#{Current.stable.slug}-unbred-mares", src: stable_unbred_mares_path, loading: "lazy" do

@@ -13,7 +13,7 @@ ruby:
     .card-body.p-0.rounded-none
       details.collapse.collapse-arrow.bg-base-100 open=true
         summary.text-center.collapse-title.font-semibold
-          = t("racing.racing").capitalize.pluralize(total_count)
+          = t("racing.racing").capitalize
           = " (#{total_count})"
         .collapse-content.text-sm
           - recent_races.each do |recent_race|
