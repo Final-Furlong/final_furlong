@@ -1,0 +1,7 @@
+/# locals: (breeding:)
+tr
+  td= t("horse.mare_in_foal").titleize
+  td= breeding.year
+  td= t("common.dash")
+  td= link_to breeding.mare.name_with_title, horse_path(breeding.mare), data: { turbo_frame: "_top" }
+  td colspan=2 =t(".due_date_info", date: l(breeding.due_date))

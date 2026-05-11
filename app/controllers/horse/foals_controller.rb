@@ -3,10 +3,15 @@ module Horse
     skip_after_action :verify_pundit_authorization, only: :index
 
     def index
-      horse = Horses::Horse.includes(:next_foal, :broodmare_foal_record).find(params[:id])
+      horse = Horses::Horse.includes(:next_foal, :broodmare_foal_record, :stud_foal_record).find(params[:id])
       authorize horse, :show?
 
-      @dashboard = Dashboard::Horse::Foals.new(horse:)
+      foal_type = horse.female? ? :foals : :stud_foals
+      includes = horse.female? ? %i[lifetime_race_record sire] : %i[lifetime_race_record dam]
+      born_query = horse.send(foal_type).born.includes(includes).order(date_of_birth: :asc)
+      pagy, born_foals = pagy(:countless, born_query)
+
+      @dashboard = Dashboard::Horse::Foals.new(horse:, pagy:, born_foals:)
     end
 
     def new

@@ -1,4 +1,4 @@
-/# locals: (foal:, unborn:)
+/# locals: (foal:, unborn: false)
 - pedigree = Horses::PedigreeDisplayService.new(unborn ? Horses::Horse.new(dam: foal.mare) : foal)
 .card.card-border.bg-base-100.w-full.px-2.rounded-none
   .card-body.p-0.rounded-none
@@ -6,11 +6,12 @@
       input type="checkbox"
       .collapse-title.font-semibold.font-medium
         - if unborn
-          span= t("horse.in_foal").titleize
-          span.float-right= foal.year
+          span= foal.mare.name_with_title
+          span.float-right= foal.year + 1
         - else
           span class="text-#{foal.gender.downcase}"
             = foal.name_with_title
+          span.float-right= foal.date_of_birth.year
       .collapse-content.text-sm.border-t-1.border-base-content/40
         - unless unborn
           p

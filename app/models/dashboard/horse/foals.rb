@@ -2,19 +2,22 @@ module Dashboard
   module Horse
     class Foals
       attr_reader :horse, :born_foals, :unborn_foal, :unborn_foals, :breeding_record,
-        :born_foals_count, :stillborn_foals_count, :crops_count, :crops_list
+        :born_foals_count, :stillborn_foals_count, :crops_count, :crops_list, :pagy
 
-      def initialize(horse:)
+      def initialize(horse:, pagy:, born_foals: [])
         @horse = horse
+        @pagy = pagy
         if horse.female?
-          @born_foals = horse.foals.born.includes(:lifetime_race_record, :sire).order(date_of_birth: :asc)
+          @born_foals = born_foals
           @unborn_foal = horse.next_foal
           @breeding_record = horse.broodmare_foal_record || horse.build_broodmare_foal_record
         else
           @breeding_record = horse.stud_foal_record || horse.build_stud_foal_record
-          @crops_count = breeding_record.crops_count
-          @crops_list = horse.stud_foals.group("DATE_PART('Year', date_of_birth)").count.sort
-          @born_foals = horse.stud_foals.born.includes(:lifetime_race_record, dam: :lifetime_race_record).order(date_of_birth: :asc)
+          if @pagy.page == 1
+            @crops_count = breeding_record.crops_count
+            @crops_list = horse.stud_foals.group("DATE_PART('Year', date_of_birth)").count.sort
+          end
+          @born_foals = born_foals
           @unborn_foals = horse.breedings.bred.by_year(Date.current.year).includes(:mare).order(mare: { name: :asc })
         end
       end
