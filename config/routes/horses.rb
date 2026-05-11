@@ -6,7 +6,9 @@ end
 resources :horses, except: %i[new create destroy] do
   scope module: :horse do
     resources :boardings, only: %i[index new create destroy]
-    resources :future_races, except: :new
+    resources :future_races, except: :new do
+      get :search, on: :collection
+    end
     get "future_races/:race_id/new", to: "future_races#new", as: :new_future_race
     resources :mare_bookings, except: :show do
       collection do

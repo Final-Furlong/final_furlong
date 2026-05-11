@@ -1,30 +1,11 @@
 /# locals: (dashboard:)
-.mt-4.mx-auto.overflow-x-auto.w-full.sm:hidden
-  - dashboard.crops_list.each do |crop|
-    .card.card-border.bg-base-100.w-full.px-2.rounded-none
-      .card-body.p-0.rounded-none
-        .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
-          input type="checkbox"
-          .collapse-title.font-semibold.font-medium
-            span= "#{crop.first.to_i} (#{crop.last.to_i})"
-          .collapse-content.text-sm.border-t-1.border-base-content/40
-            - dashboard.born_foals.with_yob(crop.first.to_i).each do |foal|
-              = render "sire_foal_collapse", foal:, unborn: false
-  - if (unborn_foals = dashboard.unborn_foals).count.positive?
-    .card.card-border.bg-base-100.w-full.px-2.rounded-none
-      .card-body.p-0.rounded-none
-        .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
-          input type="checkbox"
-          .collapse-title.font-semibold.font-medium
-            span= "#{t(".unborn")} (#{dashboard.unborn_foals.count})"
-          .collapse-content.text-sm.border-t-1.border-base-content/40
-            - unborn_foals.each do |foal|
-              = render "sire_foal_collapse", foal:, unborn: true
-.hidden.mx-auto.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100.w-full[
-  class="sm:block sm:w-3/4 dark:border-neutral-100"
+.w-3/4.mx-auto.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100[
+  class="dark:border-neutral-100"
 ]
   table.table.table-sm
     thead
+      tr
+        th.text-center colspan=6 = t(".living_foals_count", count: dashboard.breeding_record.living_foals_count)
       tr
         th.uppercase= t(".name")
         th.uppercase= t(".year_of_birth")
@@ -32,26 +13,10 @@
         th.uppercase= t(".dam")
         th.uppercase= t(".status")
         th.uppercase= t(".record")
-    tbody
-      - dashboard.born_foals.each do |foal|
-        - pedigree = Horses::PedigreeDisplayService.new(foal)
-        tr
-          td class="text-#{foal.gender}"= link_to foal.name_with_title, horse_path(foal), data: { turbo_frame: "_top" }
-          td= foal.date_of_birth.year
-          td= foal.gender.titleize
-          td= pedigree.dam_display(tag: true, include_title: true, target: "_top")
-          td= foal.status.titleize
-          td
-            - if foal.stillborn?
-              em= t("horse.type.stillborn").titleize
-            - else
-              = foal.track_record
+    tbody id="#{dashboard.horse.slug}-foal-list"
+      = render partial: "sire_foal", collection: dashboard.born_foals, as: :foal
+      - if dashboard.born_foals.empty? && !dashboard.unborn_foals.empty?
+        = render partial: "sire_unborn_foal", collection: dashboard.unborn_foals, as: :breeding
 
-    - unless dashboard.unborn_foals.blank?
-      - dashboard.unborn_foals.each do |unborn_foal|
-        tr
-          td= t("horse.foal_due").titleize
-          td= unborn_foal.year
-          td= t("common.dash")
-          td= link_to unborn_foal.mare.name_with_title, horse_path(unborn_foal.mare), data: { turbo_frame: "_top" }
-          td colspan=2 =t(".due_date_info", date: l(unborn_foal.due_date))
+
+  = render_load_more(dashboard.pagy)

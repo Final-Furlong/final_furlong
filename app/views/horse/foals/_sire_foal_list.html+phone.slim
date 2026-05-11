@@ -1,0 +1,5 @@
+/# locals: (dashboard:)
+.mt-4.mx-auto.overflow-x-auto.w-full id="#{dashboard.horse.slug}-foal-list"
+  - dashboard.born_foals.each do |foal|
+    = render "sire_foal_collapse", foal:, unborn: false
+  = render_load_more(dashboard.pagy)
