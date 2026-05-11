@@ -29,10 +29,14 @@ module Horses
     def actions
       [
         { key: :geld },
-        { key: :change_status },
-        { key: :give_to_game },
         { key: :ship },
-        { key: :change_owner, policy: Admin::HorsePolicy },
+        { key: :update_race_options, policy: CurrentStable::RacehorsePolicy },
+        { key: :board, policy: CurrentStable::RacehorsePolicy },
+        { key: :stop_boarding, policy: CurrentStable::RacehorsePolicy },
+        { key: :run_workout, policy: CurrentStable::RacehorsePolicy },
+        { key: :run_jump_trial, policy: CurrentStable::RacehorsePolicy },
+        { key: :nominate, policy: CurrentStable::RacehorsePolicy },
+        { key: :change_status },
         { key: :create_lease_offer, policy: CurrentStable::LeaseOfferPolicy },
         { key: :accept, policy: CurrentStable::LeaseOfferPolicy, object: :lease_offer },
         { key: :reject, policy: CurrentStable::LeaseOfferPolicy, object: :lease_offer },
@@ -44,15 +48,11 @@ module Horses
         { key: :destroy, policy: CurrentStable::SaleOfferPolicy, object: :sale_offer },
         { key: :consign_to_auction },
         { key: :remove_from_auction },
-        { key: :update_race_options, policy: CurrentStable::RacehorsePolicy },
-        { key: :run_workout, policy: CurrentStable::RacehorsePolicy },
-        { key: :run_jump_trial, policy: CurrentStable::RacehorsePolicy },
-        { key: :board, policy: CurrentStable::RacehorsePolicy },
-        { key: :stop_boarding, policy: CurrentStable::RacehorsePolicy },
-        { key: :nominate, policy: CurrentStable::RacehorsePolicy },
         { key: :update_stud_options, policy: CurrentStable::StallionPolicy },
         { key: :view_comments },
-        { key: :nominate_weanling }
+        { key: :nominate_weanling },
+        { key: :change_owner, policy: Admin::HorsePolicy },
+        { key: :give_to_game }
       ]
     end
   end
