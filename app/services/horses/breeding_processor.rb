@@ -97,7 +97,7 @@ module Horses
       activity = user.activity || user.build_activity
       activities = activity.activities
       activities[type] = Time.current
-      activity.update(activities)
+      activity.update(activities:)
     end
 
     def error(key)
@@ -105,4 +105,3 @@ module Horses
     end
   end
 end
-

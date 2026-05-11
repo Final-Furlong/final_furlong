@@ -17,7 +17,7 @@ module Racing
       activity = user.activity || user.build_activity
       activities = activity.activities
       activities[type] = Time.current
-      activity.update(activities)
+      activity.update(activities:)
     end
 
     def process_claim(entry:)
