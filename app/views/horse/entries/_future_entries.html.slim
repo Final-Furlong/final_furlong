@@ -1,0 +1,16 @@
+.card.card-border.bg-base-100.w-full.px-2.pt-4
+  .card-body.p-0.rounded-none
+    .collapse.collapse-open.bg-base-100.border-base-content/50.border.border-1
+      input type="checkbox"
+      .collapse-title.font-semibold.font-medium
+        p.text-center= t(".future_races")
+      .collapse-content.pt-4.text-sm.border-t-1.border-base-content/40
+        - if CurrentStable::RacehorsePolicy.new(Current.user, @horse).schedule_race?
+          = turbo_frame_tag "#{horse.slug}-future-races", src: horse_future_races_path(horse), loading: "lazy" do
+            .w-full.text-center
+              p.mx-auto= t(".loading_future_races")
+              .mt-2.mx-auto.skeleton.w-full
+        - else
+          = turbo_frame_tag "#{horse.slug}-future-races" do
+            .w-full.text-center.text-warning
+              p= t(".max_future_entries")

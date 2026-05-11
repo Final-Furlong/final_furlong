@@ -19,7 +19,8 @@
     - label = entries_count.zero? ? t(".no_entries") : t(".entries", count: entries_count)
     input.tab[ type="radio" name="horse" aria-label=label id="entries" ]
       .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
-        = turbo_frame_tag "#{@horse.slug}-entries", src: horse_entries_path(@horse), loading: "lazy" do
+        - url = turbo_frame_request_id == "modal" ? horse_entries_path(@horse, modal: turbo_frame_request_id == "modal") : horse_entries_path(@horse)
+        = turbo_frame_tag "#{@horse.slug}-entries", src: url, loading: "lazy" do
           .w-full.text-center
             p.mx-auto= t(".loading_entries")
             .mt-2.mx-auto.skeleton.w-full
