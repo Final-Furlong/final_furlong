@@ -1,0 +1,5 @@
+= turbo_stream.replace "#{@horse.slug}-future-race-display" do
+  = render partial: "display", locals: { races: @races, racehorse_type: @horse.race_options.racehorse_type.to_s.inquiry, dashboard: @dashboard, horse: @horse, pagy: @pagy }
+
+= turbo_stream.replace "load_more" do
+  = render_load_more(@pagy)

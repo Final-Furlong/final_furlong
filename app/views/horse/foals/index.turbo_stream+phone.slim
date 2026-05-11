@@ -1,0 +1,9 @@
+= turbo_stream.append "#{@dashboard.horse.slug}-foal-list" do
+  = render partial: "sire_foal_collapse", collection: @dashboard.born_foals, as: :foal
+
+- if @dashboard.pagy.next.blank? && @dashboard.unborn_foals.exists?
+  = turbo_stream.append "#{@dashboard.horse.slug}-foal-list" do
+    = render partial: "sire_foal_collapse", collection: @dashboard.unborn_foals, as: :foal, locals: { unborn: true }
+
+= turbo_stream.replace "load_more" do
+  = render_load_more(@dashboard.pagy)

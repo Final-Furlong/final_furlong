@@ -82,7 +82,6 @@ module Horses
         if starting_location == ending_location
           Shipping::Route.new(miles: shipment.starting_farm.miles_from_track, road_days: 1, road_cost: 25)
         else
-          pd Shipping::Route.find_by(starting_location:, ending_location:)
           Shipping::Route.find_by(starting_location:, ending_location:)
         end
       end
