@@ -8,6 +8,7 @@
       foaled_this_year = last_foal_date&.year == Date.current.year
       min_breed_date = last_foal_date + Config::Breedings.min_days_delay_from_previous_foal if foaled_this_year
     end
+    pd min_breed_date
   p.font-bold.text-center.text-lg
     = t(".title", name: @horse.name)
   - if @horse.next_foal.present?
@@ -37,6 +38,6 @@
               td= t(".status")
               td= t("common.actions.title")
           tbody
-            = render partial: "booking", collection: @bookings
+            = render partial: "booking", collection: @bookings, locals: { min_breed_date: }
     .mt-4
       = render partial: "studs", locals: { mare: @horse }

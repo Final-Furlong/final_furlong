@@ -330,6 +330,7 @@ en:
         delete_confirm_title: Delete Booking
         denied: Denied
         in_transit: In Transit
+        invalid_date: Invalid Date
         missed: Booking Date Missed
         pending: Pending
         ship: Ship to %{stable}

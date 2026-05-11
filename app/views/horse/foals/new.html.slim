@@ -4,6 +4,12 @@ ruby:
   min_date = slot.start_date
   min_date = Date.current if slot.start_date < Date.current
   max_date = slot.date
+  last_foal_date = @breeding.mare.foals.born.maximum(:date_of_birth)
+  foaled_this_year = last_foal_date&.year == Date.current.year
+  if foaled_this_year
+    min_breed_date = last_foal_date + Config::Breedings.min_days_delay_from_previous_foal if foaled_this_year
+    min_date = min_breed_date if min_breed_date && slot.month == min_breed_date.month && slot.start_date < min_breed_date
+  end
 p.mb-2.text-center.font-bold.text-lg= t(".breed", stud: stud.name_with_title)
 - if min_date != max_date
   p= t(".date_range", min: l(min_date), max: l(max_date))

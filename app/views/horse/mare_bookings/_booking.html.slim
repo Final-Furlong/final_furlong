@@ -1,7 +1,9 @@
-/# locals: (booking:)
+/# locals: (booking:, min_breed_date: nil)
 - stud = booking.stud
 - slot = booking.slot
 - text_class = booking.approved? || booking.bred? ? "success" : (booking.pending? ? "warning" : "error")
+- pd min_breed_date
+
 tr
   td= "#{slot.formatted_start_day} - #{slot}"
   td= link_to stud.name_with_title, horse_path(stud), data: { turbo_frame: "_top" }
@@ -9,7 +11,9 @@ tr
   td class="text-#{text_class}"= t(".#{booking.status}")
   td
     - if %w[pending denied bred].exclude?(booking.status)
-      - if slot.date >= Date.current && CurrentStable::FoalPolicy.new(Current.user, @horse).create?
+      - if min_breed_date && slot.date < min_breed_date
+        span.badge.badge-error.badge-outline= t(".invalid_date")
+      - elsif slot.date >= Date.current && CurrentStable::FoalPolicy.new(Current.user, @horse).create?
         - if @horse.broodmare.current_location == booking.stud.manager && !@horse.broodmare.in_transit?
           = render Ui::ButtonizedLink::Component.new(url: new_foal_horse_path(@horse, booking), style: :outline, size: :small, data: { turbo_frame: "modal" }) do
             = t(".breed")
