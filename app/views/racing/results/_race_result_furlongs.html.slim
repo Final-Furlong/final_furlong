@@ -117,8 +117,6 @@ ruby:
         tbody
           - race.horses.includes(:horse, :jockey, :odd).order(finish_position: :asc).each do |finisher|
             - horse = finisher.horse
-            - pd finisher
-            - pd horse
             tr
               td data-sort=horse.name
                 span class="text-#{horse.gender}"

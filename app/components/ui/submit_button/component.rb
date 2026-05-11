@@ -2,11 +2,10 @@ module Ui
   module SubmitButton
     class Component < ApplicationComponent
       attr_reader :form, :text, :color, :size, :rounded, :style, :width, :disabled,
-        :id, :extra_classes
+        :id, :extra_classes, :data
 
       def initialize(form: nil, text: nil, color: :primary, size: :medium, rounded:
-            :medium, style: :normal, width: :normal, disabled: false, id: nil,
-        extra_classes: "")
+            :medium, style: :normal, width: :normal, disabled: false, id: nil, extra_classes: "", data: {})
         @form = form
         @text = text || I18n.t("common.actions.save")
         @color = color
@@ -17,6 +16,7 @@ module Ui
         @disabled = disabled
         @id = id
         @extra_classes = extra_classes
+        @data = data
       end
 
       def classes
