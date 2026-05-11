@@ -16,6 +16,7 @@ shared:
   mares_per_slot: 2
   max_mares_per_year: 30
   max_stud_fee: 1000000
+  min_days_delay_from_previous_foal: 30
   max_days_offset_from_due_date: 42
   upcoming_breeding_warning_days: 7
   slots:

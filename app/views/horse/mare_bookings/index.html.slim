@@ -3,6 +3,11 @@
     last_race_date = @horse.race_result_finishes.joins(:race).merge(Racing::RaceResult.ordered_by_date(:desc)).first.race.date
     raced_this_year = last_race_date.year == Date.current.year
     min_breed_date = last_race_date + 1.day if raced_this_year
+    unless min_breed_date
+      last_foal_date = @horse.foals.born.maximum(:date_of_birth)
+      foaled_this_year = last_foal_date&.year == Date.current.year
+      min_breed_date = last_foal_date + Config::Breedings.min_days_delay_from_previous_foal if foaled_this_year
+    end
   p.font-bold.text-center.text-lg
     = t(".title", name: @horse.name)
   - if @horse.next_foal.present?
@@ -12,7 +17,12 @@
       p
         span.text-warning
           i.ph.ph-warning.mr-2
-          = t(".min_date", name: @horse.name, date: l(last_race_date), min_date: l(min_breed_date))
+          = t(".min_date_race", name: @horse.name, date: l(last_race_date), min_date: l(min_breed_date))
+    - elsif foaled_this_year
+      p
+        span.text-warning
+          i.ph.ph-warning.mr-2
+          = t(".min_date_foal", name: @horse.name, date: l(last_foal_date), min_date: l(min_breed_date))
 
     .mt-2
       - if @bookings.empty?

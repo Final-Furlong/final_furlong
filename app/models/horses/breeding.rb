@@ -102,9 +102,8 @@ module Horses
     end
 
     def options_for_month_select
-      min_date = [mare_last_raced_date, stud_last_raced_date].compact_blank.min
+      min_date = [mare_last_raced_date, mare_next_foal_date, stud_last_raced_date].compact_blank.min
       min_date ||= Date.current
-      min_date = Date.current if Date.current < min_date
       months = ::Breeding::Slot.where(month: min_date.month..).select do |slot|
         (stud_last_raced_date.blank? || (stud_last_raced_date && (slot.month > stud_last_raced_date.month || slot.month == stud_last_raced_date.month && slot.end_day > stud_last_raced_date.day + 1.day))) &&
           Horses::Breeding.current_year.by_slot(slot).where(stud:).taken.count < Config::Breedings.mares_per_slot
@@ -157,10 +156,19 @@ module Horses
     private
 
     def min_date
-      min_date = [mare_last_raced_date, stud_last_raced_date].compact_blank.min
+      min_date = [mare_last_raced_date, mare_next_foal_date, stud_last_raced_date].compact_blank.min
       min_date ||= Date.current
       min_date = Date.current if Date.current > min_date
       min_date
+    end
+
+    def mare_next_foal_date
+      mare_next_foal_date = nil
+      if mare
+        last_foal_date = mare.foals.born.maximum(:date_of_birth)
+        mare_next_foal_date = last_foal_date + Config::Breedings.min_days_delay_from_previous_foal if last_foal_date&.year == Date.current.year
+      end
+      mare_next_foal_date
     end
 
     def mare_last_raced_date

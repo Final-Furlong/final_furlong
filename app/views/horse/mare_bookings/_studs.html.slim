@@ -3,6 +3,11 @@ ruby:
   last_race_date = mare.race_result_finishes.joins(:race).merge(Racing::RaceResult.ordered_by_date(:desc)).first.race.date
   raced_this_year = last_race_date.year == Date.current.year
   min_breed_date = last_race_date + 1.day if raced_this_year
+  unless min_breed_date
+    last_foal_date = @horse.foals.born.maximum(:date_of_birth)
+    foaled_this_year = last_foal_date&.year == Date.current.year
+    min_breed_date = last_foal_date + Config::Breedings.min_days_delay_from_previous_foal if last_foal_date
+  end
   new_booking = Horses::Breeding.new(mare:)
   applied_studs = Horses::Horse.stud.joins(:breedings).merge(Horses::Breeding.not_denied.current_year.where(mare:)).order(name: :asc)
 
@@ -50,4 +55,6 @@ p.text-center.font-bold= t(".available_studs")
                 - next if slot.month == Date.current.month && slot.end_day < Date.current.day
                 - next if raced_this_year && slot.month < min_breed_date.month
                 - next if raced_this_year && slot.month == min_breed_date.month && slot.end_day < min_breed_date.day
+                - next if foaled_this_year && slot.month < min_breed_date.month
+                - next if foaled_this_year && slot.month == min_breed_date.month && slot.end_day < min_breed_date.day
                 = render "horse/mare_bookings/stud_slot_table_row", mare:, slot:, new_booking:, exclude_studs: applied_studs
