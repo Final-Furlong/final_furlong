@@ -112,57 +112,65 @@
           tr
             th= t(".last_race")
             td
-              - last_finish = horse.latest_race_result_finish
-              - last_race = last_finish.race
-              - date = l(last_race.date, format: :slashes)
-              - track = last_race.racetrack.name
-              - number = last_race.number
-              - distance = last_race.distance_abbr
-              - type = t("racing.race.#{last_race.race_type}")
-              - age_gender = [last_race.race_age_string, last_race.race_gender_string].compact.join(' ')
-              - surface = last_race.race_surface_string
-              - position = last_finish.finish_position.ordinalize
-              - horses = last_race.horses.count
-              - equipment = last_finish.equipment_string
-              - pd equipment
+              ruby:
+                last_finish = horse.latest_race_result_finish
+                if last_finish
+                  last_race = last_finish.race
+                  date = l(last_race.date, format: :slashes)
+                  track = last_race.racetrack.name
+                  number = last_race.number
+                  distance = last_race.distance_abbr
+                  type = t("racing.race.#{last_race.race_type}")
+                  age_gender = [last_race.race_age_string, last_race.race_gender_string].compact.join(' ')
+                  surface = last_race.race_surface_string
+                  position = last_finish.finish_position.ordinalize
+                  horses = last_race.horses_count
+                  equipment = last_finish.equipment_string
+                end
               = render Ui::Link::Component.new(url: racing_result_path(last_race.date, last_race.number), extra_classes: "mt-2", data: { turbo_frame: "modal" }) do
-                - if equipment.blank?
-                  = t(".last_race_info", date:, track:, number:, distance:, type:, age_gender:, surface: , position: , horses:)
+                - if equipment.blank? || equipment == t("common.dash")
+                  = t(".last_race_info", date:, days: relative_time_in_words(last_race.date), track:, number:, distance:, type:, age_gender:, surface: , position: , horses:)
                 - else
-                  = t(".last_race_info_equipment", date:, track:, number:, distance:, type:, age_gender:, surface: , position: , horses:, equipment:)
+                  = t(".last_race_info_equipment", date:, days: relative_time_in_words(last_race.date), track:, number:, distance:, type:, age_gender:, surface: , position: , horses:, equipment:)
         - if horse.race_entries.any?
           tr
             th= t(".next_race")
             td
-              - next_entry = horse.race_entries.joins(:race).order(race: { date: :asc }).first
+              ruby:
+                next_entry = horse.race_entries.joins(:race).order(race: { date: :asc }).first
+                if next_entry
+                  next_race = next_entry.race
+                  date = l(next_race.date, format: :slashes)
+                  track = next_race.racetrack.name
+                  number = next_race.number
+                  distance = next_race.distance_abbr
+                  type = t("racing.race.#{next_race.race_type}")
+                  age_gender = [next_race.race_age_string, next_race.race_gender_string].compact.join(' ')
+                  surface = next_race.race_surface_string
+                end
               - if next_entry
-                - next_race = next_entry.race
-                - date = l(next_race.date, format: :slashes)
-                - track = next_race.racetrack.name
-                - number = next_race.number
-                - distance = next_race.distance_abbr
-                - type = t("racing.race.#{next_race.race_type}")
-                - age_gender = [next_race.race_age_string, next_race.race_gender_string].compact.join(' ')
-                - surface = next_race.race_surface_string
                 = render Ui::Link::Component.new(url: new_racing_race_entry_path(next_race), extra_classes: "mt-2", data: { turbo_frame: "_top" }) do
-                  = t(".next_race_info", date:, track:, number:, distance:, type:, age_gender:, surface:)
+                  = t(".next_race_info", date:, days: relative_time_in_words(next_race.date), track:, number:, distance:, type:, age_gender:, surface:)
               - else
                 = t("common.dash")
         - if horse.future_race_entries.any?
           tr
             th= t(".scheduled_race")
             td
-              - next_entry = horse.future_race_entries.joins(:race).order(race: { date: :asc }).first
+              ruby:
+                next_entry = horse.future_race_entries.joins(:race).order(race: { date: :asc }).first
+                if next_entry
+                  next_race = next_entry.race
+                  date = l(next_race.date, format: :slashes)
+                  track = next_race.racetrack.name
+                  number = next_race.number
+                  distance = next_race.distance_abbr
+                  type = t("racing.race.#{next_race.race_type}")
+                  age_gender = [next_race.race_age_string, next_race.race_gender_string].compact.join(' ')
+                  surface = next_race.race_surface_string
+                end
               - if next_entry
-                - next_race = next_entry.race
-                - date = l(next_race.date, format: :slashes)
-                - track = next_race.racetrack.name
-                - number = next_race.number
-                - distance = next_race.distance_abbr
-                - type = t("racing.race.#{next_race.race_type}")
-                - age_gender = [next_race.race_age_string, next_race.race_gender_string].compact.join(' ')
-                - surface = next_race.race_surface_string
-                = t(".next_race_info", date:, track:, number:, distance:, type:, age_gender:, surface:)
+                = t(".next_race_info", date:, days: relative_time_in_words(next_race.date), track:, number:, distance:, type:, age_gender:, surface:)
               - else
                 = t("common.dash")
       - if Horses::Status::BREEDING_STATUSES.include?(horse.status)

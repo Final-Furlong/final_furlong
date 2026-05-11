@@ -1,5 +1,25 @@
 /# locals: (horse:, current_entries:, scheduled_entries:)
-- data = horse.race_metadata
+ruby:
+  data = horse.race_metadata
+  last_finish = horse.latest_race_result_finish
+  if last_finish
+    last_race = last_finish.race
+    date = l(last_race.date, format: :slashes)
+    track = last_race.racetrack.name
+    number = last_race.number
+    distance = last_race.distance_abbr
+    type = t("racing.race.#{last_race.race_type}")
+    age_gender = [last_race.race_age_string, last_race.race_gender_string].compact.join(' ')
+    surface = last_race.race_surface_string
+    position = last_finish.finish_position.ordinalize
+    horses = last_race.horses_count
+    equipment = last_finish.equipment_string
+    last_race_info = if equipment.blank? || equipment == t("common.dash")
+                        t("horses.info.last_race_info", date:, days: relative_time_in_words(last_race.date.beginning_of_day), track:, number:, distance:, type:, age_gender:, surface: , position: , horses:)
+                    else
+                      t("horses.info.last_race_info_equipment", date:, days: relative_time_in_words(last_race.date.beginning_of_day), track:, number:, distance:, type:, age_gender:, surface: , position: , horses:, equipment:)
+                    end
+  end
 .w-full.text-center.mb-4
   - grade = data.energy_grade
   - grade_class = %w[A B].include?(grade) ? "success" : (grade == "C" ? "warning" : "error")
@@ -21,6 +41,13 @@
         i.ph-fill.ph-barn
   button.btn.btn-outline.btn-sm.btn-info
     = t(".qualification", qualification: horse.race_qualification.to_s)
+- if last_race_info
+  .w-full.text-center.mb-4
+    span.text-info
+      i.ph.ph-flag-checkered.mr-2
+      = t(".last_race")
+      = last_race_info
+
 - if (note = horse.race_options&.note_for_next_race)
   .w-full.text-center.mb-4
     span.text-warning
