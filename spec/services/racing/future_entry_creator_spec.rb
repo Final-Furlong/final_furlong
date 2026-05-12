@@ -357,6 +357,7 @@ RSpec.describe Racing::FutureEntryCreator do
         before do
           create(:future_race_entry, race:, horse: create(:horse, :racehorse, owner: stable))
           create(:future_race_entry, race:, horse: create(:horse, :racehorse, owner: stable))
+          create(:future_race_entry, race:, horse: create(:horse, :racehorse, owner: stable))
         end
       end
     end
