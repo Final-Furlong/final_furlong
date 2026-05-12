@@ -1,11 +1,11 @@
 RSpec.describe Horses::BoardingCreator do
   shared_examples "an unprocessed boarding" do
     it "does not create boarding" do
-      expect { described_class.new.start_boarding(horse:, legacy_racetrack:) }.not_to change(Horses::Boarding, :count)
+      expect { described_class.new.start_boarding(horse:) }.not_to change(Horses::Boarding, :count)
     end
 
     it "returns error" do
-      result = described_class.new.start_boarding(horse:, legacy_racetrack:)
+      result = described_class.new.start_boarding(horse:)
       expect(result.created?).to be false
       expect(result.error).to eq message
     end
@@ -13,14 +13,6 @@ RSpec.describe Horses::BoardingCreator do
 
   describe "#start_boarding" do
     before { racetrack }
-
-    context "when legacy racetrack does not map to a location" do
-      it_behaves_like "an unprocessed boarding" do
-        before { racetrack.update(name: SecureRandom.alphanumeric(20)) }
-
-        let(:message) { error("location_not_found") }
-      end
-    end
 
     context "when location is not flagged with has_farm" do
       it_behaves_like "an unprocessed boarding" do
@@ -87,7 +79,7 @@ RSpec.describe Horses::BoardingCreator do
       it "allows booking" do
         travel_to Date.new(Date.current.year, 3, 1) do
           create(:boarding, :current, horse:, start_date: Date.current - 40.days, end_date: Date.current - 10.days)
-          expect { described_class.new.start_boarding(horse:, legacy_racetrack:) }.to change(Horses::Boarding, :count).by(1)
+          expect { described_class.new.start_boarding(horse:) }.to change(Horses::Boarding, :count).by(1)
         end
       end
     end
@@ -97,7 +89,7 @@ RSpec.describe Horses::BoardingCreator do
         travel_to Date.new(Date.current.year, 3, 1) do
           start_date = Date.current - 1.year
           create(:boarding, horse:, start_date:, end_date: start_date + 30.days)
-          expect { described_class.new.start_boarding(horse:, legacy_racetrack:) }.to change(Horses::Boarding, :count).by(1)
+          expect { described_class.new.start_boarding(horse:) }.to change(Horses::Boarding, :count).by(1)
         end
       end
     end
@@ -105,7 +97,7 @@ RSpec.describe Horses::BoardingCreator do
     context "when horse no historical boarding" do
       it "allows booking" do
         expect do
-          result = described_class.new.start_boarding(horse:, legacy_racetrack:)
+          result = described_class.new.start_boarding(horse:)
           expect(result.created?).to be true
           expect(result.boarding).to be_a Horses::Boarding
           expect(result.boarding).to have_attributes(horse:, location:, start_date: Date.current, days: 0)
@@ -117,7 +109,7 @@ RSpec.describe Horses::BoardingCreator do
       it "allows booking" do
         # rubocop:disable RSpec/AnyInstance
         allow_any_instance_of(Horses::Boarding).to receive(:save!).and_return false
-        result = described_class.new.start_boarding(horse:, legacy_racetrack:)
+        result = described_class.new.start_boarding(horse:)
         expect(result.created?).to be false
         expect(result.boarding).to be_a Horses::Boarding
         # rubocop:enable RSpec/AnyInstance
@@ -128,15 +120,15 @@ RSpec.describe Horses::BoardingCreator do
   private
 
   def horse
-    @horse ||= create(:horse)
-  end
+    return @horse if defined?(@horse)
 
-  def legacy_racetrack
-    @legacy_racetrack ||= create(:legacy_racetrack)
+    @horse = create(:horse)
+    create(:racehorse_metadata, horse: @horse, location:, racetrack:)
+    @horse
   end
 
   def racetrack
-    @racetrack ||= create(:racetrack, name: legacy_racetrack.Name)
+    @racetrack ||= create(:racetrack)
   end
 
   def location
@@ -147,4 +139,3 @@ RSpec.describe Horses::BoardingCreator do
     I18n.t("services.boarding.creator.#{key}")
   end
 end
-

@@ -45,10 +45,8 @@ module Racing
       return false if horse.future_race_entries.exists?(date: record.race.date)
       return false if horse.future_race_entries.count >= Config::Racing.future_race_limit
       current_entries = Horses::Horse.racehorse.managed_by(stable).joins(:race_entries).where(race_entries: { race: }).count
-      pd current_entries
       if current_entries == race.entry_limit && race.entry_limit < race.last_day_entry_limit
         scheduled_horses_count = Horses::Horse.racehorse.managed_by(stable).joins(:future_race_entries).where(future_race_entries: { race: }).count
-        pd scheduled_horses_count
         return true if scheduled_horses_count < (race.last_day_entry_limit - race.entry_limit)
       end
 
