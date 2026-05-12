@@ -2,14 +2,16 @@ module Horses
   class BoardingCreator < ApplicationService
     attr_reader :horse, :location
 
-    def start_boarding(horse:, legacy_racetrack: nil)
-      location = if legacy_racetrack
-        Location.joins(:racetrack).find_by(racetracks: { name: legacy_racetrack.Name })
-      else
-        horse.race_metadata.location
+    def start_boarding(horse:)
+      result = Result.new(created: false, horse:)
+
+      unless horse.racehorse?
+        result.error = error("horse_not_racehorse")
+        return result
       end
 
-      result = Result.new(created: false, horse:)
+      location = horse.race_metadata&.location
+
       unless location
         result.error = error("location_not_found")
         return result
@@ -18,11 +20,6 @@ module Horses
       result.location = location
       unless location.has_farm?
         result.error = error("invalid_location")
-        return result
-      end
-
-      unless horse.racehorse?
-        result.error = error("horse_not_racehorse")
         return result
       end
 

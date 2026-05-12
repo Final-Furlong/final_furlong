@@ -413,8 +413,6 @@ RSpec.describe Auctions::HorseSeller do
       before do
         @bid2 = create(:auction_bid, auction:, horse: bid.horse, current_bid: 100_000)
         @other_winning_bidder = @bid2.bidder
-        @legacy_stable_buyer_2 = create(:legacy_user)
-        @bid2.bidder.update(legacy_id: @legacy_stable_buyer_2.ID)
       end
 
       context "when other bidder cannot afford the max price" do
@@ -501,8 +499,6 @@ RSpec.describe Auctions::HorseSeller do
   context "when horse is not the dam of unborn foals" do
     before do
       Racing::RaceRecord.refresh
-      legacy_foal_1.destroy
-      legacy_foal_2.destroy
       foal_1.destroy
       foal_2.destroy
     end
@@ -523,19 +519,11 @@ RSpec.describe Auctions::HorseSeller do
     @auction = create(:auction, :current)
     @bid = create(:auction_bid, auction:, bid_at: Time.current - auction.hours_until_sold.hours - 1.minute, current_high_bid: true)
     @auction_horse = @bid.horse
-    @legacy_stable_buyer = create(:legacy_user)
-    @bid.bidder.update(legacy_id: legacy_stable_buyer.ID)
-    @legacy_stable_seller = create(:legacy_user)
-    @legacy_horse = create(:legacy_horse, Owner: legacy_stable_seller, consignd_auction_id: auction.id)
     @horse = @auction_horse.horse
     @buyer = bid.bidder
     @seller = horse.owner
     @buyer.update(available_balance: 200_000, total_balance: 200_000)
     @seller.update(available_balance: 200_000, total_balance: 200_000)
-    horse.update(legacy_id: legacy_horse.ID)
-    horse.owner.update(legacy_id: legacy_stable_seller.ID)
-    @legacy_foal_1 = create(:legacy_horse, :unborn, Dam: legacy_horse.ID)
-    @legacy_foal_2 = create(:legacy_horse, :unborn, Dam: legacy_horse.ID)
     @foal_1 = create(:horse, :unborn, dam: horse)
     @foal_2 = create(:horse, :unborn, dam: horse)
   end
