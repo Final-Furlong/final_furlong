@@ -1,8 +1,17 @@
 class Daily::DeleteCompletedAuctionsJob < ApplicationJob
-  queue_as :low_priority
+  include GoodJob::ActiveJobExtensions::Concurrency
+
+  queue_as :latency_30s
+
+  good_job_concurrency_rule(
+    label: -> { arguments.first[:auction] },
+    enqueue_limit: 1,
+    perform_limit: 1
+  )
 
   def perform(auction:)
     return if run_today?
+    return unless auction.persisted?
 
     return if DateTime.current < auction.end_time
 

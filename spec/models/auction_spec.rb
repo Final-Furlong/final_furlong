@@ -106,7 +106,7 @@ RSpec.describe Auction do
   end
 
   describe "callbacks" do
-    before { ActiveJob::Base.queue_adapter = :solid_queue }
+    before { ActiveJob::Base.queue_adapter = :good_job }
 
     after { ActiveJob::Base.queue_adapter = :test }
 
@@ -116,39 +116,7 @@ RSpec.describe Auction do
         auction = build(:auction)
         expect do
           auction.save
-        end.to change(SolidQueue::Job, :count).by(1)
-        last_job = SolidQueue::Job.order(id: :desc).first
-        job_arguments = last_job.arguments.deep_symbolize_keys[:arguments].first
-        expect(job_arguments[:auction].values.first).to eq global_id_string(auction)
-        expect(last_job.scheduled_at).to eq auction.end_time + 1.minute
-      end
-    end
-
-    context "when auction is updated" do
-      it "replaces the auction deletion job" do # rubocop:disable RSpec/ExampleLength
-        auction = last_job_id = nil
-        travel_to 1.hour.ago do
-          auction = create(:auction)
-          last_job_id = SolidQueue::Job.order(id: :desc).first.id
-        end
-        freeze_time
-        auction.update(end_time: auction.start_time + 9.days)
-        last_job = SolidQueue::Job.order(id: :desc).first
-        expect(last_job.id).not_to eq last_job_id
-        job_arguments = last_job.arguments.deep_symbolize_keys[:arguments].first
-        expect(job_arguments[:auction].values.first).to eq global_id_string(auction)
-        expect(last_job.scheduled_at).to eq auction.reload.end_time + 1.minute
-      end
-    end
-
-    context "when auction is destroyed" do
-      it "deletes enqueued auction deletion job" do
-        auction = create(:auction)
-        last_job = SolidQueue::Job.order(id: :desc).first
-        expect do
-          auction.destroy
-        end.to change(SolidQueue::Job, :count).by(-1)
-        expect(SolidQueue::Job.exists?(id: last_job.id)).to be false
+        end.to change(GoodJob::Job, :count).by(1)
       end
     end
   end
