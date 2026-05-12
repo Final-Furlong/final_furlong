@@ -1,5 +1,5 @@
 class Auctions::ProcessSalesJob < ApplicationJob
-  queue_as :default
+  queue_as :latency_2m
 
   limits_concurrency to: 1, key: ->(auction) { auction }, duration: 5.minutes
 
