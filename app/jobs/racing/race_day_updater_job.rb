@@ -12,7 +12,13 @@ class Racing::RaceDayUpdaterJob < ApplicationJob
     Racing::RaceScheduleUpdater.new.update_schedule
     Racing::StableRaceRecord.refresh
     Racing::StableAnnualRaceRecord.refresh
+    swapped_to_sc = 0
+    Horses::Horse.racehorse.joins(:race_options).where(race_options: { racehorse_type: 'flat' }).where(id: Racing::RaceResultHorse.joins(:race).merge(Racing::RaceResult.by_track("steeplechase"))).find_each do |horse|
+      options = horse.race_options
+      options.update_columns(racehorse_type: 'jump')
+      swapped_to_sc += 1
+    end
+    result[:new_jumpers] = swapped_to_sc
     store_job_info(outcome: result)
   end
 end
-
