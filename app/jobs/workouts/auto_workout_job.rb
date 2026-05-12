@@ -1,7 +1,7 @@
 class Workouts::AutoWorkoutJob < ApplicationJob
   include ActiveJob::Continuable
 
-  queue_as :low_priority
+  queue_as :latency_5m
 
   def perform(date: Date.current)
     return if run_today?(date:)
