@@ -32,7 +32,7 @@ module Racing
             result.created = race_horse.valid?
             stats = update_stats(horse: race_horse.horse, race_horse:, horses:, date:, racetrack: surface.racetrack)
             options = update_options(horse: race_horse.horse, surface:) if surface.surface == "steeplechase"
-            next if race_horse.save! && (options.blank? || options.save!) && (stats.blank? || stats.save!)
+            next if race_horse.save! && (options.blank? || options.save) && (stats.blank? || stats.save)
 
             result.created = false
             raise ActiveRecord::Rollback, race_horse.errors.full_messages.to_sentence
