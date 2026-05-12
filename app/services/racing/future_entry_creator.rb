@@ -32,11 +32,6 @@ module Racing
       end
       result = Result.new(entry:)
 
-      if Date.current >= race.entry_open_date
-        result.error = error("race_not_future")
-        return result
-      end
-
       if !horse.racehorse?
         result.error = error("horse_not_racehorse")
         return result
@@ -63,13 +58,18 @@ module Racing
         return result
       end
 
-      if race.future_entries.where(stable:).count >= race.entry_limit
+      if race.future_entries.where(stable:).count >= race.last_day_entry_limit
         result.error = error("max_entries_stable")
         return result
       end
 
       if race.future_entries.where(horse:).count >= Config::Racing.future_race_limit
         result.error = error("max_entries_horse")
+        return result
+      end
+
+      unless Racing::FutureRaceEntryPolicy.new(stable.user, entry).create?
+        result.error = error("race_not_future")
         return result
       end
 

@@ -131,6 +131,11 @@ class Racing::RaceSchedule < ApplicationRecord
     entry_limit
   end
 
+  def last_day_entry_limit
+    entry_limit = age.start_with?("2") ? Config::Racing.entry_limit_2yo : Config::Racing.entry_limit_older
+    entry_limit + Config::Racing.entry_limit_increase_final_day
+  end
+
   def entry_fee
     purse * Config::Racing.entry_fee_percent
   end
