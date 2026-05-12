@@ -85,7 +85,7 @@ module Workouts
           end
           pick_and_save_injury
           workout.valid?(context: :complete_workout)
-          result.created = workout.save!
+          result.created = workout.save
           update_stats if result.created?
         end
       end
