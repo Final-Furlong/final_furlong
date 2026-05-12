@@ -380,9 +380,15 @@ en:
       foals_due_count:
         one: 1 Foal Due This Year
         other: "%{count} Foals Due This Year"
+        zero: No Foals Due This Year
       general_statistics: General Statistics
       location: Located %{miles} miles from %{track} (%{location})
       next_due_date: " (Next Due On %{date})"
+      next_year_due_date: " (Next Due On %{date})"
+      next_year_foals_due_count:
+        one: 1 Foal Due Next Year
+        other: "%{count} Foals Due Next Year"
+        zero: No Foals Due Next Year
       owner: Owned by %{name}
     training:
       earnings: Earnings
