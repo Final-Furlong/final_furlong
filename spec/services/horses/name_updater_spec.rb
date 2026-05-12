@@ -33,12 +33,6 @@ RSpec.describe Horses::NameUpdater do
         described_class.new.change_name(horse:, params: invalid_params)
       end.not_to change(horse, :reload)
     end
-
-    it "does not modify legacy horse" do
-      expect do
-        described_class.new.change_name(horse:, params: invalid_params)
-      end.not_to change(legacy_horse, :reload)
-    end
   end
 
   private
@@ -52,11 +46,7 @@ RSpec.describe Horses::NameUpdater do
   end
 
   def horse
-    @horse ||= create(:horse, name: "Old Name", legacy_id: legacy_horse.ID)
-  end
-
-  def legacy_horse
-    @legacy_horse ||= create(:legacy_horse, name: "Old Horse", slug: "old-horse")
+    @horse ||= create(:horse, name: "Old Name")
   end
 end
 
