@@ -1,7 +1,7 @@
 class Racing::RaceFillerJob < ApplicationJob
   include ActiveJob::Continuable
 
-  queue_as :default
+  queue_as :latency_5m
 
   def perform(stable_name = Config::Game.stable)
     horses = 0
