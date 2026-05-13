@@ -414,6 +414,56 @@ en:
     pending_mare_bookings:
       create:
         success: Booking request for %{name} was successfully created
+    race_nominations:
+      index:
+        allowance_wins_count:
+          one: 1 allowance win
+          other: "%{count} allowance wins"
+          zero: No allowance wins
+        breeders_cup: Breeders' Cup
+        breeders_cup_classic_qualification: Age 3yo+, Dirt, 8-12f
+        breeders_cup_dirt_mile_qualification: Age 3yo+, Dirt, 6-10f
+        breeders_cup_distaff_qualification: Age 3yo+, Dirt, Female Only, 5-15f
+        breeders_cup_filly_and_mare_sprint_qualification: Age 3yo+, Dirt, Female Only, 4-8f
+        breeders_cup_filly_and_mare_turf_qualification: Age 3yo+, Turf, Female Only, 10-14f
+        breeders_cup_juvenile_fillies_qualification: Age 2yo, Dirt, Fillies Only, Any Distance
+        breeders_cup_juvenile_qualification: Age 2yo, Dirt, Male Only, Any Distance
+        breeders_cup_juvenile_turf_fillies_qualification: Age 2yo, Turf, Fillies Only, Any Distance
+        breeders_cup_juvenile_turf_qualification: Age 2yo, Turf, Male Only, Any Distance
+        breeders_cup_mile_qualification: Age 3yo+, Turf, 6-10f
+        breeders_cup_nomination: Nominated
+        breeders_cup_nomination_with_year: Nominated (Effective from %{year})
+        breeders_cup_sc_classic_qualification: Age 3yo+, Steeplechase, Male Only, 9-15f
+        breeders_cup_sc_distaff_endurance_qualification: Age 3yo+, Steeplechase, Female Only, 10-24f
+        breeders_cup_sc_distaff_qualification: Age 3yo+, Steeplechase, Female Only, 7-16f
+        breeders_cup_sc_endurance_qualification: Age 3yo+, Steeplechase, Male Only, 14-24f
+        breeders_cup_sc_sprint_qualification: Age 3yo+, Steeplechase, All Genders, 5-10f
+        breeders_cup_sprint_qualification: Age 3yo+, Dirt, Male Only, 4-8f
+        breeders_cup_turf_qualification: Age 3yo+, Turf, 10-14f
+        breeders_cup_turf_sprint_qualification: Age 3yo+, Turf, 4-8f
+        breeders_series: Breeders' Series
+        not_nominated: Not Nominated
+        not_qualified: Not Qualified (Needs 1+ allowance wins, or 1+ top 3 finishes in a stakes race)
+        points_count:
+          one: 1pt
+          other: "%{count}pts"
+          zero: 0pts
+        rank: Rank %{rank}/%{total}
+        stakes_places_count:
+          one: 1 stakes places
+          other: "%{count} stakes places"
+          zero: No stakes places
+        stakes_wins_count:
+          one: 1 stakes win
+          other: "%{count} stakes wins"
+          zero: No stakes wins
+        starts_count:
+          one: 1 start
+          other: "%{count} starts"
+          zero: No starts
+        tied_count:
+          one: Tied with 1 other horse
+          other: Tied with %{count} other horses
     race_options:
       edit:
         title: Set Racing Options for %{name}
