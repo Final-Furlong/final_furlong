@@ -2,10 +2,12 @@ ruby:
   date = @races.first.date
   prev_date = Racing::RaceSchedule.where(date: ...date).maximum(:date) || Racing::RaceResult.where(date: ...date).maximum(:date)
   next_date = Racing::RaceSchedule.where('date > ?', date).minimum(:date)
+  actions = [:post_parade, :search]
+  actions << :breeders_cup_qualifiers if Racing::RaceSchedule.breeders_cup.current_year.exists?
 - content_for :breadcrumbs do
   = render Nav::Breadcrumbs::Component.new(links: [{ name: t(".title"), href: "#" },
     { name: l(date), href: "#" }]) do
-    = render Nav::Breadcrumbs::Actions::Component.new(actions: [:post_parade], path: "/racing/races/", object: date)
+    = render Nav::Breadcrumbs::Actions::Component.new(actions: actions, path: "/racing/races/", object: date)
 
 = render "prev_next_dates", prev_date:, next_date:
 .overflow-x-auto.rounded-box.border.bg-base-100

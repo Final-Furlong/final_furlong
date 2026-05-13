@@ -53,6 +53,12 @@ module CurrentStable
       racehorse_and_manager?
     end
 
+    def view_nominations?
+      return false unless %w[weanling yearling racehorse].include?(record.status)
+
+      logged_in?
+    end
+
     def nominate?
       # TODO: migrate racehorse noms + implement them
       false

@@ -63,6 +63,27 @@ module Horses
       "Horses::HistoricalInjury", inverse_of: :horse, dependent: :delete
     has_many :jockey_relationships, class_name: "Racing::HorseJockeyRelationship", dependent: :delete_all
     has_one :race_metadata, class_name: "Racing::RacehorseMetadata", dependent: :delete
+    has_one :breeders_cup_nomination, class_name: "Racing::BreedersCupNomination", inverse_of: :horse, dependent: :delete
+    # rubocop:disable Rails/HasManyOrHasOneDependent
+    has_one :breeders_cup_juvenile_qualification, class_name: "Racing::Qualifications::BreedersCupJuvenile", inverse_of: :horse
+    has_one :breeders_cup_juvenile_fillies_qualification, class_name: "Racing::Qualifications::BreedersCupJuvenileFilly", inverse_of: :horse
+    has_one :breeders_cup_juvenile_turf_qualification, class_name: "Racing::Qualifications::BreedersCupJuvenileTurf", inverse_of: :horse
+    has_one :breeders_cup_juvenile_turf_fillies_qualification, class_name: "Racing::Qualifications::BreedersCupJuvenileTurfFilly", inverse_of: :horse
+    has_one :breeders_cup_sprint_qualification, class_name: "Racing::Qualifications::BreedersCupSprint", inverse_of: :horse
+    has_one :breeders_cup_turf_sprint_qualification, class_name: "Racing::Qualifications::BreedersCupTurfSprint", inverse_of: :horse
+    has_one :breeders_cup_mile_qualification, class_name: "Racing::Qualifications::BreedersCupMile", inverse_of: :horse
+    has_one :breeders_cup_dirt_mile_qualification, class_name: "Racing::Qualifications::BreedersCupDirtMile", inverse_of: :horse
+    has_one :breeders_cup_turf_qualification, class_name: "Racing::Qualifications::BreedersCupTurf", inverse_of: :horse
+    has_one :breeders_cup_classic_qualification, class_name: "Racing::Qualifications::BreedersCupClassic", inverse_of: :horse
+    has_one :breeders_cup_filly_and_mare_sprint_qualification, class_name: "Racing::Qualifications::BreedersCupFillyAndMareSprint", inverse_of: :horse
+    has_one :breeders_cup_filly_and_mare_turf_qualification, class_name: "Racing::Qualifications::BreedersCupFillyAndMareTurf", inverse_of: :horse
+    has_one :breeders_cup_distaff_qualification, class_name: "Racing::Qualifications::BreedersCupDistaff", inverse_of: :horse
+    has_one :breeders_cup_sc_sprint_qualification, class_name: "Racing::Qualifications::BreedersCupSteeplechaseSprint", inverse_of: :horse
+    has_one :breeders_cup_sc_classic_qualification, class_name: "Racing::Qualifications::BreedersCupSteeplechaseClassic", inverse_of: :horse
+    has_one :breeders_cup_sc_endurance_qualification, class_name: "Racing::Qualifications::BreedersCupSteeplechaseEndurance", inverse_of: :horse
+    has_one :breeders_cup_sc_distaff_qualification, class_name: "Racing::Qualifications::BreedersCupSteeplechaseDistaff", inverse_of: :horse
+    has_one :breeders_cup_sc_distaff_endurance_qualification, class_name: "Racing::Qualifications::BreedersCupSteeplechaseDistaffEndurance", inverse_of: :horse
+    # rubocop:enable Rails/HasManyOrHasOneDependent
 
     has_many :foals, class_name: "Horses::Horse", inverse_of: :dam, dependent: :nullify
     has_many :broodmare_shipments, class_name: "Shipping::BroodmareShipment", dependent: :delete_all
