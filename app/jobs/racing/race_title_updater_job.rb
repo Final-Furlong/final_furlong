@@ -9,13 +9,13 @@ class Racing::RaceTitleUpdaterJob < ApplicationJob
     step :initialize do
       if update_views
         Racing::RaceRecord.refresh
-        Racing::LifetimeRaceRecord.refresh
         Racing::AnnualRaceRecord.refresh
+        Racing::LifetimeRaceRecord.refresh
       end
     end
 
     step :process do |step|
-      Horses::Horse.racehorse.where.associated(:lifetime_race_record).find_each(start: step.cursor) do |horse|
+      Horses::Horse.racehorse.joins(:lifetime_race_record).where.not(lifetime_race_record: { title_abbr: [nil, ""] }).find_each(start: step.cursor) do |horse|
         horse.update(title_abbr: horse.lifetime_race_record.title_abbreviation)
         horses += 1
         step.advance! from: horse.id
