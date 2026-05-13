@@ -16,6 +16,7 @@ module Horses
           # TODO: delete nominations
           horse.current_injuries.delete_all
           horse.training_schedules_horse&.destroy
+          horse.breeders_cup_nomination&.destroy
         elsif horse.stud?
           horse.stud_options&.destroy
         end

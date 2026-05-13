@@ -1,6 +1,28 @@
 ---
 en:
   racing:
+    breeders_cup_qualifiers:
+      index:
+        loading_qualifiers: Loading qualifiers...
+        races_already_run: Breeders' Cup races have already been run this year.
+        title: Breeders' Cup Qualifiers
+      qualifier:
+        age: "%{age}yo"
+        rank: "%{rank}"
+        tied_count:
+          one: Tied with 1 horse
+          other: Tied with %{count} horses
+      show:
+        non_nominated_count:
+          one: 1 horse you could nominated
+          other: "%{count} horses you could nominate"
+        qualified_count:
+          one: 1 Qualified
+          other: "%{count} Qualified"
+          zero: No Horses Qualified
+        rank: Rank
+        record: Record
+        title: "%{name} Qualifiers"
     claims:
       create:
         failure: Could not submit claim
@@ -79,6 +101,7 @@ en:
         '4': 4yo
         4+: 4yo+
       allowance: Allowance
+      breeders_cup_qualifiers: Breeders' Cup Qualifiers
       claim: Claim
       claiming: Claiming
       claiming_with_price: Claiming (%{price})
@@ -140,6 +163,7 @@ en:
       post_position_expanded: Post Position
       purse: Purse
       race: Race
+      search_races: Search Races
       second_quarter: 1/2
       speed_factor: Speed Factor
       stakes: Stakes

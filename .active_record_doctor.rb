@@ -191,7 +191,27 @@ ActiveRecordDoctor.configure do
       "Racing::SurfaceRaceRecord(horse_id)", # group by horse_id view
       "Racing::LifetimeRaceRecord(horse_id)", # group by horse_id view
       "Racing::RaceQualification(horse_id)", # group by horse_id view
-      "Racing::TrackSeasonInfo(location_id, season)" # enum that doesn't need lower
+      "Racing::TrackSeasonInfo(location_id, season)", # enum that doesn't need lower
+      "Racing::Qualifications::BreedersCupJuvenile(horse_id)", # view
+      "Racing::Qualifications::BreedersCupJuvenileTurf(horse_id)", # view
+      "Racing::Qualifications::BreedersCupJuvenileFilly(horse_id)", # view
+      "Racing::Qualifications::BreedersCupJuvenileTurfFilly(horse_id)", # view
+      "Racing::Qualifications::BreedersCupTurf(horse_id)", # view
+      "Racing::Qualifications::BreedersCupTurfFilly(horse_id)", # view
+      "Racing::Qualifications::BreedersCupSprint(horse_id)", # view
+      "Racing::Qualifications::BreedersCupTurfSprint(horse_id)", # view
+      "Racing::Qualifications::BreedersCupMile(horse_id)", # view
+      "Racing::Qualifications::BreedersCupDirtMile(horse_id)", # view
+      "Racing::Qualifications::BreedersCupTurf(horse_id)", # view
+      "Racing::Qualifications::BreedersCupClassic(horse_id)", # view
+      "Racing::Qualifications::BreedersCupFillyAndMareSprint(horse_id)", # view
+      "Racing::Qualifications::BreedersCupFillyAndMareTurf(horse_id)", # view
+      "Racing::Qualifications::BreedersCupDistaff(horse_id)", # view
+      "Racing::Qualifications::BreedersCupSteeplechaseSprint(horse_id)", # view
+      "Racing::Qualifications::BreedersCupSteeplechaseClassic(horse_id)", # view
+      "Racing::Qualifications::BreedersCupSteeplechaseEndurance(horse_id)", # view
+      "Racing::Qualifications::BreedersCupSteeplechaseDistaff(horse_id)", # view
+      "Racing::Qualifications::BreedersCupSteeplechaseDistaffEndurance(horse_id)" # view
     ]
 
   detector :unindexed_deleted_at,
@@ -218,7 +238,27 @@ ActiveRecordDoctor.configure do
       "Racing::RaceTypeRaceRecord.horse",
       "Racing::SurfaceRaceRecord.horse",
       "Racing::StableAnnualRaceRecord.stable",
-      "Racing::StableRaceRecord.stable"
+      "Racing::StableRaceRecord.stable",
+      "Racing::Qualifications::BreedersCupJuvenile.horse",
+      "Racing::Qualifications::BreedersCupJuvenileTurf.horse",
+      "Racing::Qualifications::BreedersCupJuvenileFilly.horse",
+      "Racing::Qualifications::BreedersCupJuvenileTurfFilly.horse",
+      "Racing::Qualifications::BreedersCupTurf.horse",
+      "Racing::Qualifications::BreedersCupTurfFilly.horse",
+      "Racing::Qualifications::BreedersCupSprint.horse",
+      "Racing::Qualifications::BreedersCupTurfSprint.horse",
+      "Racing::Qualifications::BreedersCupMile.horse",
+      "Racing::Qualifications::BreedersCupDirtMile.horse",
+      "Racing::Qualifications::BreedersCupTurf.horse",
+      "Racing::Qualifications::BreedersCupClassic.horse",
+      "Racing::Qualifications::BreedersCupFillyAndMareSprint.horse",
+      "Racing::Qualifications::BreedersCupFillyAndMareTurf.horse",
+      "Racing::Qualifications::BreedersCupDistaff.horse",
+      "Racing::Qualifications::BreedersCupSteeplechaseSprint.horse",
+      "Racing::Qualifications::BreedersCupSteeplechaseClassic.horse",
+      "Racing::Qualifications::BreedersCupSteeplechaseEndurance.horse",
+      "Racing::Qualifications::BreedersCupSteeplechaseDistaff.horse",
+      "Racing::Qualifications::BreedersCupSteeplechaseDistaffEndurance.horse"
     ]
 
   detector :unindexed_foreign_keys,
