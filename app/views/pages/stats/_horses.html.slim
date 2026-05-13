@@ -6,14 +6,24 @@
       .collapse-content.text-sm
         .border-t-1.mb-2
           - horses_count = Horses::Horse.alive.count
-          p.mt-2= t(".horses_count_with_app", number: number_with_delimiter(horses_count), horses: t("horses.horse").downcase.pluralize, app: Config::Game.title)
+          - horses_count = horses_count == 1 ? horses_count : number_with_delimiter(horses_count)
+          p.mt-2= t(".horses_count_with_app", count: horses_count, app: Config::Game.title)
           - horses_count = Horses::Horse.racehorse.count
-          p= t(".horses_count", number: number_with_delimiter(horses_count), horses: t("horses.statuses.racehorse").downcase.pluralize)
+          - horses_count = horses_count == 1 ? horses_count : number_with_delimiter(horses_count)
+          p= t(".racehorses_count", count: horses_count)
           - horses_count = Horses::Horse.stud.count
-          p= t(".horses_count", number: number_with_delimiter(horses_count), horses: t("horses.statuses.stud").downcase.pluralize)
+          - horses_count = horses_count == 1 ? horses_count : number_with_delimiter(horses_count)
+          p= t(".studs_count", count: horses_count)
           - horses_count = Horses::Horse.broodmare.count
-          p= t(".horses_count", number: number_with_delimiter(horses_count), horses: t("horses.statuses.broodmare").downcase.pluralize)
+          - horses_count = horses_count == 1 ? horses_count : number_with_delimiter(horses_count)
+          p= t(".broodmares_count", count: horses_count)
           - horses_count = Horses::Horse.yearling.count
-          p= t(".horses_count", number: number_with_delimiter(horses_count), horses: t("horses.statuses.yearling").downcase.pluralize)
+          - horses_count = horses_count == 1 ? horses_count : number_with_delimiter(horses_count)
+          p= t(".yearlings_count", count: horses_count)
           - horses_count = Horses::Horse.weanling.count
-          p= t(".horses_count", number: number_with_delimiter(horses_count), horses: t("horses.statuses.weanling").downcase.pluralize)
+          - horses_count = horses_count == 1 ? horses_count : number_with_delimiter(horses_count)
+          p= t(".weanlings_count", count: horses_count)
+          - horses_count = Horses::Breeding.current_year.bred.count
+          - if horses_count.positive?
+            - horses_count = horses_count == 1 ? horses_count : number_with_delimiter(horses_count)
+            p= t(".unborn_count", count: horses_count)

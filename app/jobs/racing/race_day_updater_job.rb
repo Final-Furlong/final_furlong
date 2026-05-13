@@ -12,17 +12,20 @@ class Racing::RaceDayUpdaterJob < ApplicationJob
     Racing::RaceScheduleUpdater.new.update_schedule
     Racing::StableRaceRecord.refresh
     Racing::StableAnnualRaceRecord.refresh
+    # rubocop:disable Rails/SkipsModelValidations
     swapped_to_sc = 0
-    Horses::Horse.racehorse.joins(:race_options).where(race_options: { racehorse_type: 'jump' }).where(id: Racing::RaceResultHorse.joins(:race).merge(Racing::RaceResult.by_track("steeplechase")).select(:horse_id)).find_each do |horse|
+    Horses::Horse.racehorse.joins(:race_options).where(race_options: { racehorse_type: "jump" }).where(id: Racing::RaceResultHorse.joins(:race).merge(Racing::RaceResult.by_track("steeplechase")).select(:horse_id)).find_each do |horse|
       options = horse.race_options
-      options.update_columns(racehorse_type: 'jump')
+      options.update_columns(racehorse_type: "jump")
       swapped_to_sc += 1
     end
-    Horses::Horse.racehorse.joins(:race_options).where(race_options: { racehorse_type: 'flat' }).where.not(id: Racing::RaceResultHorse.joins(:race).merge(Racing::RaceResult.by_track("steeplechase")).select(:horse_id)).find_each do |horse|
+    Horses::Horse.racehorse.joins(:race_options).where(race_options: { racehorse_type: "flat" }).where.not(id: Racing::RaceResultHorse.joins(:race).merge(Racing::RaceResult.by_track("steeplechase")).select(:horse_id)).find_each do |horse|
       options = horse.race_options
-      options.update_columns(racehorse_type: 'flat')
+      options.update_columns(racehorse_type: "flat")
     end
+    # rubocop:enable Rails/SkipsModelValidations
     result[:new_jumpers] = swapped_to_sc
     store_job_info(outcome: result)
   end
 end
+
