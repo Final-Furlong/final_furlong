@@ -1,0 +1,66 @@
+= turbo_frame_tag "#{@horse.slug}-nominations" do
+  .w-full.sm:w-4/5.mx-auto
+    .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+      div
+        .text-center.text-lg.font-bold= t(".breeders_cup")
+        - nomination = @horse.breeders_cup_nomination
+        - if nomination
+          p.text-center.text-success
+            - if nomination.effective_year
+              = t(".breeders_cup_nomination_with_year", year: nomination.effective_year)
+            - else
+              = t(".breeders_cup_nomination")
+            - if nomination.effective_year && nomination.effective_year <= Date.current.year
+              ruby:
+                options = @horse.race_options
+                races = []
+                Racing::RaceSchedule.breeders_cup.current_year.for_age(@horse.age).for_gender(@horse.gender).for_racehorse_type(options.racehorse_type).joins(:track_surface).merge(Racing::TrackSurface.send(options.racehorse_type.to_sym)).each do |race|
+                  key = "#{race.name.gsub("'",'').gsub(' ', '_').gsub('&', 'and').downcase}_qualification"
+                  info = { key:, name: race.name }
+                  if (@horse.respond_to?(:"#{key}"))
+                    if (qualification = @horse.send(:"#{key}"))
+                      info[:qualification] = qualification
+                      class_info = Config::Racing.qualification_classes.find { |info| info[:key] == key }
+                      klass = class_info[:class].constantize
+                      info[:better_ranked] = klass.nominated.better_ranked(qualification).count
+                      info[:rank] = info[:better_ranked] + 1
+                      info[:tied] = klass.nominated.identically_ranked(qualification).count - 1
+                      info[:total] = klass.nominated.count
+                      info[:percent] = info[:rank].fdiv(info[:total])
+                    end
+                  end
+                  races << info
+                end
+
+              - races = races.sort_by { |info| info[:rank] ? info[:rank] : 999_999 }
+              - races.each do |info|
+                p.mt-2
+                  .tooltip.text-lg data-tip=t(".#{info[:key]}")
+                    = info[:name]
+                    i.ph.ph-info.ml-2
+                  - if (info[:qualification])
+                    p.text-base-content/80
+                      span
+                        = t(".starts_count", count: info[:qualification].starts)
+                        = ", "
+                      span
+                        = t(".stakes_wins_count", count: info[:qualification].stakes_wins)
+                        = ", "
+                      span
+                        = t(".stakes_places_count", count: info[:qualification].stakes_seconds + info[:qualification].stakes_thirds)
+                        = ", "
+                      span
+                        = t(".allowance_wins_count", count: info[:qualification].allowance_wins)
+                        = " - "
+                      span= t(".points_count", count: info[:qualification].points)
+                    p.text-base-content/80
+                      = t(".rank", rank: info[:rank], total: info[:total])
+                      - if info[:tied].positive?
+                        = " (#{t(".tied_count", count: info[:tied])})"
+                  - else
+                    p.text-base-content/50= t(".not_qualified")
+        - else
+          p.text-center= t(".not_nominated")
+      div.text-center
+        .text-lg.font-bold= t(".breeders_series")
+        p= "Not added yet"
