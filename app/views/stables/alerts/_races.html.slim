@@ -6,7 +6,7 @@ ruby:
   end
   recent_races = Racing::RaceResultHorse.joins(:race).where(stable: Current.stable).merge(Racing::RaceResult.since_date(date).ordered_by_date(:desc)).group(:date).count
   claiming_races = Racing::RaceEntry.joins(:race, :horse).where(race: Racing::RaceSchedule.future.by_type("claiming").select(:id)).where.not(horse: { owner: Current.stable }).group(:date).count
-  stable_entries = Racing::RaceEntry.joins(:race).where(stable: Current.stable).where(race: Racing::RaceSchedule.future.ordered_by_date.select(:id)).group(:date).count
+  stable_entries = Racing::RaceEntry.joins(:race).where(stable: Current.stable).where(race: Racing::RaceSchedule.future_including_today.ordered_by_date.select(:id)).group(:date).count
   total_count = recent_races.size + claiming_races.size + stable_entries.size
 - if total_count.positive?
   .card.bg-base-100.w-full
