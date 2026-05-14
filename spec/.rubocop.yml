@@ -1,7 +1,7 @@
 inherit_from:
   - ../.rubocop.yml
 
-Capybara/NegationMatcher:
+Capybara/RSpec/NegationMatcher:
   EnforcedStyle: not_to
 
 Layout/LineLength:
@@ -50,4 +50,4 @@ RSpec/MultipleExpectations:
   Max: 4
 
 RSpec/NestedGroups:
-  AllowedGroups: [ describe ]
+  AllowedGroups: [describe]
