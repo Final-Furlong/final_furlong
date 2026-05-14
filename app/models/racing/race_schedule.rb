@@ -105,6 +105,16 @@ class Racing::RaceSchedule < ApplicationRecord
     date - Config::Racing.entry_open_days.days
   end
 
+  def qualification_open_date
+    return Date.current unless requires_qualification?
+
+    if name.starts_with?("Breeders' Cup ")
+      date - Config::Racing.breeders_cup_nomination_deadline_days.days
+    elsif name.ends_with?(" Breeders' Series")
+      date - Config::Racing.breeders_series_deadline_days.days
+    end
+  end
+
   def entry_deadline
     date - Config::Racing.entry_deadline_days.days
   end
