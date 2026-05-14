@@ -247,6 +247,7 @@ en:
         schedule: Schedule
         view_entries: "%{count} Entered"
         view_scheduled_entries: "%{count} Scheduled"
+        wait_for_deadline: Cannot enter until %{date}
       new:
         title: Schedule Race for %{name}
       update:
@@ -282,6 +283,14 @@ en:
         jockey_explanation: As they have no experience with jump jockeys, horses will be worked out by a random jockey. However, that jockey will act with the same knowledge of the horse as the flat jockey with the most experience (if any).
       new:
         title: Jump Trial for %{name}
+    late_breeders_cup_nominations:
+      create:
+        success: Successfully created late Breeders' Cup nomination
+      form:
+        description: Late nominations are a lifetime nomination, starting next year. The horse is ineligible to run in any Breeders' Cup races this year. If you want to enter in this year's races, use Supplemental Nominations.
+        stud_nominated_fee: Sire %{stud} was nominated for the Breeders' Cup, so the fee for late nominateion is %{fee}
+        stud_unnominated_fee: Sire %{stud} was not nominated for the Breeders' Cup, so the fee for late nominateion is %{fee}
+        title: Nominate %{name} for Breeders' Cup (%{year} Onward)
     lease_offer_acceptances:
       create:
         success: Lease was accepted
@@ -464,7 +473,7 @@ en:
           zero: No starts
         supplement: Supplement
         supplemental_nomination: You can supplementally nominate %{name} for a single Breeders' Cup race only, in the current year. For supplemental nominations, the rank listed is the rank your horse would have on the list of qualified horses if you nominate it today. There is no guarantee that the horse will be eligible to run on Breeders' Cup day.
-        supplemental_nomination_deadline: You must submit supplemental nominations by the time race entries open (%{date}).
+        supplemental_nomination_deadline: 'Deadline for supplemental nominations: 2 weeks before entries open (%{date}).'
         tied_count:
           one: Tied with 1 other horse
           other: Tied with %{count} other horses
