@@ -1,5 +1,9 @@
+ruby:
+  actions = []
+  actions << :breeders_cup_qualifiers if Racing::RaceSchedule.breeders_cup.current_year.exists?
 - content_for :breadcrumbs do
-  = render Nav::Breadcrumbs::Component.new(links: [{ name: t(".title"), href: "#" }])
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t(".title"), href: "#" }]) do
+    = render Nav::Breadcrumbs::Actions::Component.new(actions: actions, path: "/racing/races/")
 
 = render "filters", query: @query
 

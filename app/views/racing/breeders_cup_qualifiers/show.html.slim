@@ -1,0 +1,19 @@
+ruby:
+  frame_name = @race.name.gsub("'",'').gsub(' ', '_').gsub('&', 'and').downcase
+  key = "#{frame_name}_qualification"
+  class_info = Config::Racing.qualification_classes.find { |info| info[:key] == key }
+  klass = class_info[:class].constantize
+  nominated_count = klass.nominated.count
+= turbo_frame_tag frame_name do
+    p.text-center.text-lg
+      = t(".qualified_count", count: nominated_count)
+
+    table.table.table-zebra
+      thead
+        tr
+          th= t("horses.info.name")
+          th= t("racing.race.age")
+          th= t(".record")
+          th= t(".rank")
+      tbody
+        = render partial: "qualifier", collection: klass.nominated.includes(:horse).ordered, as: :qualifier, locals: { klass: }
