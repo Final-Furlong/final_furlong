@@ -44,6 +44,14 @@ module Racing
       record.entry_open_date >= Date.current
     end
 
+    def supplementally_nominate?
+      return false unless logged_in?
+      return false unless record.requires_qualification?
+      return false unless record.name.starts_with?("Breeders' Cup")
+
+      Date.current < record.entry_open_date
+    end
+
     def add_scheduled_entry?
       add_scheduled_entry_result.success?
     end

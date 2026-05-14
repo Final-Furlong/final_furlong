@@ -21,11 +21,13 @@ class Racing::RaceSchedule < ApplicationRecord
   validates :name, presence: true, if: :grade
   validates :purse, numericality: { only_integer: true, greater_than_or_equal_to: 10_000, less_than_or_equal_to: 20_000_000 }
   validates :claiming_price, numericality: { only_integer: true, greater_than_or_equal_to: 5_000, less_than_or_equal_to: 50_000 }, if: :claiming?
+  validates :requires_qualification, inclusion: { in: [true, false] }
 
   delegate :racetrack, :surface_abbr, to: :track_surface
 
   scope :future_including_today, -> { where(date: Date.current..) }
   scope :future, -> { where("date > ?", Date.current) }
+  scope :current_year, -> { where("DATE_PART('Year', date) = ?", Date.current.year) }
   scope :next_year, -> { where("date > ?", Date.current + 10.months) }
   scope :past, -> { where(date: ...Date.current) }
   scope :entries_open, -> { where("date BETWEEN ? AND ?", Date.current + Config::Racing.entry_deadline_days.days, Date.current + (Config::Racing.entry_open_days + 1).days) }
@@ -94,6 +96,8 @@ class Racing::RaceSchedule < ApplicationRecord
     start_date, end_date = value.split("/")
     where(date: start_date..end_date)
   }
+  scope :breeders_cup, -> { by_type("stakes").where("name ILIKE ?", "Breeders' Cup %") }
+  scope :breeders_series, -> { by_type("stakes").where("name ILIKE ?", "% Breeders' Series") }
 
   def race_type = super.to_s.inquiry
 
@@ -119,10 +123,6 @@ class Racing::RaceSchedule < ApplicationRecord
 
   def entries_open?
     entry_open_date <= Date.current
-  end
-
-  def requires_qualification?
-    false # TODO: add qualification for BC/BS races
   end
 
   def entry_limit
@@ -247,6 +247,7 @@ end
 #  purse                                                                                                          :bigint           default(0), not null
 #  qualification_required                                                                                         :boolean          default(FALSE), not null, indexed
 #  race_type(maiden, claiming, starter_allowance, nw1_allowance, nw2_allowance, nw3_allowance, allowance, stakes) :enum             default("maiden"), not null, indexed
+#  requires_qualification                                                                                         :boolean          default(FALSE), not null, indexed
 #  created_at                                                                                                     :datetime         not null
 #  updated_at                                                                                                     :datetime         not null
 #  surface_id                                                                                                     :bigint           not null, indexed
@@ -264,6 +265,7 @@ end
 #  index_race_schedules_on_number                  (number)
 #  index_race_schedules_on_qualification_required  (qualification_required)
 #  index_race_schedules_on_race_type               (race_type)
+#  index_race_schedules_on_requires_qualification  (requires_qualification)
 #  index_race_schedules_on_surface_id              (surface_id)
 #
 # Foreign Keys
