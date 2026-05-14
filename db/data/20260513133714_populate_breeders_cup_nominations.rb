@@ -2,6 +2,8 @@
 
 class PopulateBreedersCupNominations < ActiveRecord::Migration[8.1]
   def up
+    return if Rails.env.production?
+
     Legacy::Nomination.find_each do |nomination|
       horse = Horses::Horse.where(status: %w[racehorse weanling yearling]).find_by(legacy_id: nomination.Horse)
       if horse
