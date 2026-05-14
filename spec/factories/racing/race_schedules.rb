@@ -34,6 +34,7 @@ end
 #  purse                                                                                                          :bigint           default(0), not null
 #  qualification_required                                                                                         :boolean          default(FALSE), not null, indexed
 #  race_type(maiden, claiming, starter_allowance, nw1_allowance, nw2_allowance, nw3_allowance, allowance, stakes) :enum             default("maiden"), not null, indexed
+#  requires_qualification                                                                                         :boolean          default(FALSE), not null, indexed
 #  created_at                                                                                                     :datetime         not null
 #  updated_at                                                                                                     :datetime         not null
 #  surface_id                                                                                                     :bigint           not null, indexed
@@ -51,6 +52,7 @@ end
 #  index_race_schedules_on_number                  (number)
 #  index_race_schedules_on_qualification_required  (qualification_required)
 #  index_race_schedules_on_race_type               (race_type)
+#  index_race_schedules_on_requires_qualification  (requires_qualification)
 #  index_race_schedules_on_surface_id              (surface_id)
 #
 # Foreign Keys

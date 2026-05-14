@@ -156,3 +156,40 @@ shared:
     stakes: 134
     stakes_handicap_min: 108
     stakes_handicap_max: 150
+  qualification_classes:
+    - key: breeders_cup_juvenile_qualification
+      class: Racing::Qualifications::BreedersCupJuvenile
+    - key: breeders_cup_juvenile_turf_qualification
+      class: Racing::Qualifications::BreedersCupJuvenileTurf
+    - key: breeders_cup_juvenile_fillies_qualification
+      class: Racing::Qualifications::BreedersCupJuvenileFilly
+    - key: breeders_cup_juvenile_turf_fillies_qualification
+      class: Racing::Qualifications::BreedersCupJuvenileTurfFilly
+    - key: breeders_cup_sprint_qualification
+      class: Racing::Qualifications::BreedersCupSprint
+    - key: breeders_cup_turf_sprint_qualification
+      class: Racing::Qualifications::BreedersCupTurfSprint
+    - key: breeders_cup_filly_and_mare_sprint_qualification
+      class: Racing::Qualifications::BreedersCupFillyAndMareSprint
+    - key: breeders_cup_mile_qualification
+      class: Racing::Qualifications::BreedersCupMile
+    - key: breeders_cup_dirt_mile_qualification
+      class: Racing::Qualifications::BreedersCupDirtMile
+    - key: breeders_cup_classic_qualification
+      class: Racing::Qualifications::BreedersCupClassic
+    - key: breeders_cup_turf_qualification
+      class: Racing::Qualifications::BreedersCupTurf
+    - key: breeders_cup_distaff_qualification
+      class: Racing::Qualifications::BreedersCupDistaff
+    - key: breeders_cup_filly_and_mare_turf_qualification
+      class: Racing::Qualifications::BreedersCupFillyAndMareTurf
+    - key: breeders_cup_sc_sprint_qualification
+      class: Racing::Qualifications::BreedersCupSteeplechaseSprint
+    - key: breeders_cup_sc_classic_qualification
+      class: Racing::Qualifications::BreedersCupSteeplechaseClassic
+    - key: breeders_cup_sc_endurance_qualification
+      class: Racing::Qualifications::BreedersCupSteeplechaseEndurance
+    - key: breeders_cup_sc_distaff_qualification
+      class: Racing::Qualifications::BreedersCupSteeplechaseDistaff
+    - key: breeders_cup_sc_distaff_endurance_qualification
+      class: Racing::Qualifications::BreedersCupSteeplechaseDistaffEndurance

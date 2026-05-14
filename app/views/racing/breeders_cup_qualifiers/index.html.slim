@@ -1,0 +1,19 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t(".title"), href: "#" }])
+
+- if @races.empty?
+  p.text-center= t(".races_already_run")
+- else
+  - @races.each do |race|
+    .card.card-border.bg-base-100.w-full.px-2.rounded-none
+      .card-body.p-0.rounded-none
+        .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
+          input type="checkbox"
+          .collapse-title.font-semibold.font-medium
+            span= race.name
+          .collapse-content.text-sm.border-t-1.border-base-content/40
+            - key = race.name.gsub("'",'').gsub(' ', '_').gsub('&', 'and').downcase
+            = turbo_frame_tag key, src: racing_breeders_cup_qualifier_path(race), loading: "lazy" do
+              .w-full.text-center
+                p.mx-auto= t(".loading_qualifiers")
+                .mt-2.mx-auto.skeleton.w-full
