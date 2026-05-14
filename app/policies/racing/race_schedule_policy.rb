@@ -49,7 +49,9 @@ module Racing
       return false unless record.requires_qualification?
       return false unless record.name.starts_with?("Breeders' Cup")
 
-      Date.current < record.entry_open_date
+      deadline = record.entry_open_date - Config::Racing.breeders_cup_nomination_deadline_days.days
+
+      Date.current < deadline
     end
 
     def view_qualifiers?
@@ -68,6 +70,7 @@ module Racing
       return Failure(:cannot_schedule) unless schedule?
       horses_count = Horses::Horse.racehorse.managed_by(stable).joins(:future_race_entries).where(future_race_entries: { race: record }).count
       return Failure(:max_stable_entries) if horses_count >= record.last_day_entry_limit
+      return Failure(:requires_qualification) if record.requires_qualification?
 
       Success()
     end

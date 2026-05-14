@@ -111,6 +111,8 @@ module Horses
     validates_horse_name :name, on: :update, if: :name_changed?
 
     scope :game_owned, -> { joins(:owner).where(owner: { name: Config::Game.stable }) }
+    scope :not_game_owned, -> { game_owned.invert_where }
+
     scope :alive, -> { where(status: Status::LIVING_STATUSES) }
     scope :retired, -> { where(status: Status::RETIRED_STATUSES) }
     scope :not_retired, -> { where.not(status: Status::RETIRED_STATUSES) }
