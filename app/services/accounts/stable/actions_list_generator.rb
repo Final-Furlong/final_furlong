@@ -33,7 +33,8 @@ module Accounts
           { key: :current_entries, policy: CurrentStable::RaceEntryPolicy },
           { key: :recent_race_results, policy: CurrentStable::RaceResultPolicy },
           { key: :future_races, policy: CurrentStable::FutureRaceEntryPolicy },
-          { key: :race_results, policy: CurrentStable::RaceResultPolicy }
+          { key: :race_results, policy: CurrentStable::RaceResultPolicy },
+          { key: :nominate_breeders_cup }
         ]
       end
     end
