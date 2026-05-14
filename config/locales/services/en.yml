@@ -72,6 +72,12 @@ en:
         mare_in_transit: Mare is in transit
         mare_needs_shipping: Mare needs shipping to the stallion's stable
         mare_not_eligible: Mare is not eligible for this breeding
+    late_breeders_cup_nominator:
+      budget_description: 'Late Breeders'' Cup Nomination: %{name} (%{year} Onward)'
+      cannot_afford_fee: You cannot afford the fee for nomination
+      horse_already_nominated: This horse is already nominated for the Breeders' Cup
+      horse_not_racehorse: You cannot late nominate non-racehorses
+      stable_not_manager: You do not own or lease this horse
     lease_creator:
       cannot_afford_lease: You cannot afford the lease fee
       description_leaser: 'Lease Fee: %{horse} from %{stable} [%{start_date} to %{end_date}]'

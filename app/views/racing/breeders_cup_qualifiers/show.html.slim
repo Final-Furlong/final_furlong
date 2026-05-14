@@ -16,4 +16,4 @@ ruby:
           th= t(".record")
           th= t(".rank")
       tbody
-        = render partial: "qualifier", collection: klass.nominated.includes(:horse).ordered, as: :qualifier, locals: { klass: }
+        = render partial: "qualifier", collection: klass.nominated.joins(:horse).includes(:horse).merge(Horses::Horse.not_game_owned).ordered, as: :qualifier, locals: { klass: }

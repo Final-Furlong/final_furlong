@@ -64,6 +64,19 @@ module CurrentStable
       false
     end
 
+    def late_nominate?
+      return false if record.breeders_cup_nomination
+
+      racehorse_and_manager?
+    end
+
+    def supplemental_nominate?
+      bc_nom = record.breeders_cup_nomination
+      return false if bc_nom&.effective_year.present? && bc_nom.effective_year <= Date.current.year
+
+      racehorse_and_manager?
+    end
+
     def enter_race?
       racehorse_and_manager?
     end
