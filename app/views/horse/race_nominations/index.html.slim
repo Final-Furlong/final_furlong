@@ -2,24 +2,26 @@
   ruby:
     options = @horse.race_options
     races = []
-    Racing::RaceSchedule.breeders_cup.current_year.for_age(@horse.age).for_gender(@horse.gender).for_racehorse_type(options.racehorse_type).joins(:track_surface).merge(Racing::TrackSurface.send(options.racehorse_type.to_sym)).each do |race|
-      key = "#{race.name.gsub("'",'').gsub(' ', '_').gsub('&', 'and').downcase}_qualification"
-      info = { key:, race: }
-      if (@horse.respond_to?(:"#{key}"))
-        if (qualification = @horse.send(:"#{key}"))
-          info[:qualification] = qualification
-          class_info = Config::Racing.qualification_classes.find { |info| info[:key] == key }
-          klass = class_info[:class].constantize
-          info[:better_ranked] = klass.nominated.better_ranked(qualification).count
-          info[:rank] = info[:better_ranked] + 1
-          info[:tied] = klass.nominated.identically_ranked(qualification).count - 1
-          info[:total] = klass.nominated.count
-          info[:percent] = info[:rank].fdiv(info[:total])
+    if @horse.racehorse?
+      Racing::RaceSchedule.breeders_cup.current_year.for_age(@horse.age).for_gender(@horse.gender).for_racehorse_type(options.racehorse_type).joins(:track_surface).merge(Racing::TrackSurface.send(options.racehorse_type.to_sym)).each do |race|
+        key = "#{race.name.gsub("'",'').gsub(' ', '_').gsub('&', 'and').downcase}_qualification"
+        info = { key:, race: }
+        if (@horse.respond_to?(:"#{key}"))
+          if (qualification = @horse.send(:"#{key}"))
+            info[:qualification] = qualification
+            class_info = Config::Racing.qualification_classes.find { |info| info[:key] == key }
+            klass = class_info[:class].constantize
+            info[:better_ranked] = klass.nominated.better_ranked(qualification).count
+            info[:rank] = info[:better_ranked] + 1
+            info[:tied] = klass.nominated.identically_ranked(qualification).count - 1
+            info[:total] = klass.nominated.count
+            info[:percent] = info[:rank].fdiv(info[:total])
+          end
         end
+        races << info
       end
-      races << info
+      races = races.sort_by { |info| info[:rank] ? info[:rank] : 999_999 }
     end
-    races = races.sort_by { |info| info[:rank] ? info[:rank] : 999_999 }
     nomination = @horse.breeders_cup_nomination
     needs_supplemental_nomination = nomination.blank? || (!nomination.effective_year.blank? && nomination.effective_year > Date.current.year)
   .w-full.sm:w-4/5.mx-auto

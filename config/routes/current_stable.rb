@@ -3,6 +3,7 @@ resource :stable, only: %i[show edit update], controller: "stables", as: :curren
 namespace :stable, module: "current_stable" do
   resources :auctions, only: %i[index show]
   resources :boardings, only: %i[index new create update]
+  resources :breeders_cup_nominations, only: %i[new create]
   resources :budgets, only: %i[index]
   resources :current_boardings, only: :index
   get "/current_entries(/:date)", to: "current_entries#index", as: :current_entries

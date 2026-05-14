@@ -64,6 +64,10 @@ en:
     booking_requested:
       horse_was_racing: Breeding cannot happen on this date as the horse was racing
       slot_taken: This booking slot is no longer available
+    breeders_cup_nominator:
+      budget_description: 'Race Nomination: %{year} Breeders'' Cup - %{name}'
+      cannot_afford_nominations: You cannot afford all the nominations
+      do_not_own_all_horses: You do not own all the horses you've requested to nominate
     breedings:
       processor:
         cannot_afford_fee: You cannot afford this breeding

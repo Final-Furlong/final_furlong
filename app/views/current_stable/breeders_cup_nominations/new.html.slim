@@ -1,0 +1,50 @@
+ruby:
+  title = t(".title")
+  weanlings = Horses::Horse.weanling.managed_by(Current.stable).includes(:dam, :breeders_cup_nomination, sire: :stud_nominations).order(name: :asc)
+
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: Current.stable.name, href: current_stable_path },
+          { name: title, href: "#" }])
+
+- if weanlings.empty?
+  p.text-center.text-base-content/80= t(".no_weanlings")
+- else
+  .mx-auto.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100.w-full.sm:w-3/4
+    = form_tag stable_breeders_cup_nominations_path
+      table.table.table-zebra.sortable.n-last data-controller="checkbox-select-all"
+        thead
+          tr
+            td colspan=5
+              label.label
+                input.checkbox type="checkbox" data-checkbox-select-all-target="checkboxAll"
+                span= t("common.select_deselect_all")
+          tr
+            th.no-sort.text-center colspan=5
+              = t(".weanlings_count", count: weanlings.count)
+              = render Ui::SubmitButton::Component.new(text: t(".nominate"), size: :small, style: :outline, extra_classes: "ml-2")
+          tr
+            th= t("horses.info.name")
+            th= t("horses.info.sire")
+            th= t("horses.info.dam")
+            th.no-sort= t(".fee")
+            th= t(".status")
+        tbody
+          - weanlings.each do |horse|
+            - sire = horse.sire
+            - dam = horse.dam
+            tr
+              td class="text-#{horse.gender}"
+                - if !horse.breeders_cup_nomination && !sire.blank? && sire.stud_nominations.exists?(year: horse.date_of_birth.year)
+                  label
+                    = checkbox_tag 'horse_ids[]', horse.id, false, class: 'checkbox', data: { checkbox_select_all_target: "checkbox" }
+                    span.ml-2= horse.name
+                - else
+                  span.ml-8= horse.name
+              td data-sort=sire.name = sire.name_with_title
+              td data-sort=dam.name = dam.name_with_title
+              td= Game::MoneyFormatter.new(Config::Racing.breeders_cup_nomination_fee)
+              td
+                - if horse.breeders_cup_nomination
+                  span.text-success= t(".nominated")
+                - elsif sire.blank? || !sire.stud_nominations.exists?(year: horse.date_of_birth.year)
+                  span.text-error= t(".not_eligible")
