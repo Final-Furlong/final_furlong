@@ -8,7 +8,9 @@
           th= t(".outcome")
           th= t(".count")
       tbody
+        - run_classes = []
         - JobStat.where(name: @classes).order('MAX(last_run_at) DESC').group(:name).select("DISTINCT(job_stats.name), MAX(job_stats.last_run_at) AS last_run_at").each do |job|
+          - run_classes << job.name
           tr
             td= job.name
             td= job.last_run_at
@@ -20,15 +22,8 @@
               - else
                 = t("common.dash")
             td= JobStat.where(name: job.name).count
-        - @classes.each do |class_name|
-          - stats = JobStat.where(name: class_name).recent.first
-          - next if stats
-          tr
-            td= class_name
-            td= t("common.dash")
-            td= t("common.dash")
-            td 0
-
+        - @classes.uniq.each do |class_name|
+          - next if run_classes.include?(class_name)
           tr
             td= class_name
             td= t("common.dash")

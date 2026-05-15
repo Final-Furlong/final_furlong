@@ -1,7 +1,7 @@
 class Daily::ProcessFutureShipmentsJob < ApplicationJob
   include ActiveJob::Continuable
 
-  queue_as :low_priority
+  queue_as :latency_2m
 
   def perform
     today = Date.current
