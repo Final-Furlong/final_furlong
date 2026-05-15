@@ -1,7 +1,7 @@
 class UpdateRaceResultHorseAbbreviationsJob < ApplicationJob
   include ActiveJob::Continuable
 
-  queue_as :low_priority
+  queue_as :latency_5m
 
   def perform(date: nil)
     step :process do |step|
