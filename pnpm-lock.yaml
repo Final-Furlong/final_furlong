@@ -32,6 +32,9 @@ importers:
       '@stimulus-components/auto-submit':
         specifier: ^6.0.0
         version: 6.0.0(@hotwired/stimulus@3.2.2)
+      '@stimulus-components/checkbox-select-all':
+        specifier: ^6.1.0
+        version: 6.1.0(@hotwired/stimulus@3.2.2)
       '@stimulus-components/clipboard':
         specifier: ^5.0.0
         version: 5.0.0(@hotwired/stimulus@3.2.2)
@@ -712,6 +715,11 @@ packages:
 
   '@stimulus-components/auto-submit@6.0.0':
     resolution: {integrity: sha512-GBwjjnNuDZey9kdJinTGyrkIMCNVnPrTQvqihC0pBiwieIMfZIp+TT7Giee0Z0DS+pX6WdJweIeo8xEYD/VZJg==}
+    peerDependencies:
+      '@hotwired/stimulus': ^3
+
+  '@stimulus-components/checkbox-select-all@6.1.0':
+    resolution: {integrity: sha512-FTwLyYBrVw7WneVJy9sP/J3sCVxx8/mz7U+tDJhQsVrlfM2sCyVXRNMexzb7vt/STTqz9+crN9MeWFv52hxh5Q==}
     peerDependencies:
       '@hotwired/stimulus': ^3
 
@@ -3143,6 +3151,10 @@ snapshots:
   '@simple-libs/stream-utils@1.2.0': {}
 
   '@stimulus-components/auto-submit@6.0.0(@hotwired/stimulus@3.2.2)':
+    dependencies:
+      '@hotwired/stimulus': 3.2.2
+
+  '@stimulus-components/checkbox-select-all@6.1.0(@hotwired/stimulus@3.2.2)':
     dependencies:
       '@hotwired/stimulus': 3.2.2
 

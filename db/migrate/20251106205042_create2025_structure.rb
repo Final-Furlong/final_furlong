@@ -858,40 +858,40 @@ class Create2025Structure < ActiveRecord::Migration[8.1]
     add_foreign_key "training_schedules_horses", "training_schedules", on_update: :cascade, on_delete: :cascade, validate: false
     add_foreign_key "user_push_subscriptions", "users", on_update: :cascade, on_delete: :cascade
 
-    create_view "annual_race_records", materialized: true, sql_definition: <<-SQL.squish
-      SELECT year,
-      horse_id,
-      sum(starts) AS starts,
-      sum(stakes_starts) AS stakes_starts,
-      sum(wins) AS wins,
-      sum(stakes_wins) AS stakes_wins,
-      sum(seconds) AS seconds,
-      sum(stakes_seconds) AS stakes_seconds,
-      sum(thirds) AS thirds,
-      sum(stakes_thirds) AS stakes_thirds,
-      sum(fourths) AS fourths,
-      sum(stakes_fourths) AS stakes_fourths,
-      sum(points) AS points,
-      sum(earnings) AS earnings
-     FROM race_records
-    GROUP BY year, horse_id;
+    create_view "annual_race_records", materialized: true, sql_definition: <<~SQL.squish
+        SELECT year,
+        horse_id,
+        sum(starts) AS starts,
+        sum(stakes_starts) AS stakes_starts,
+        sum(wins) AS wins,
+        sum(stakes_wins) AS stakes_wins,
+        sum(seconds) AS seconds,
+        sum(stakes_seconds) AS stakes_seconds,
+        sum(thirds) AS thirds,
+        sum(stakes_thirds) AS stakes_thirds,
+        sum(fourths) AS fourths,
+        sum(stakes_fourths) AS stakes_fourths,
+        sum(points) AS points,
+        sum(earnings) AS earnings
+       FROM race_records
+      GROUP BY year, horse_id;
     SQL
-    create_view "lifetime_race_records", materialized: true, sql_definition: <<-SQL.squish
-      SELECT horse_id,
-      sum(starts) AS starts,
-      sum(stakes_starts) AS stakes_starts,
-      sum(wins) AS wins,
-      sum(stakes_wins) AS stakes_wins,
-      sum(seconds) AS seconds,
-      sum(stakes_seconds) AS stakes_seconds,
-      sum(thirds) AS thirds,
-      sum(stakes_thirds) AS stakes_thirds,
-      sum(fourths) AS fourths,
-      sum(stakes_fourths) AS stakes_fourths,
-      sum(points) AS points,
-      sum(earnings) AS earnings
-     FROM race_records
-    GROUP BY horse_id;
+    create_view "lifetime_race_records", materialized: true, sql_definition: <<~SQL.squish
+        SELECT horse_id,
+        sum(starts) AS starts,
+        sum(stakes_starts) AS stakes_starts,
+        sum(wins) AS wins,
+        sum(stakes_wins) AS stakes_wins,
+        sum(seconds) AS seconds,
+        sum(stakes_seconds) AS stakes_seconds,
+        sum(thirds) AS thirds,
+        sum(stakes_thirds) AS stakes_thirds,
+        sum(fourths) AS fourths,
+        sum(stakes_fourths) AS stakes_fourths,
+        sum(points) AS points,
+        sum(earnings) AS earnings
+       FROM race_records
+      GROUP BY horse_id;
     SQL
     add_index "lifetime_race_records", ["horse_id"], name: "index_lifetime_race_records_on_horse_id", unique: true
   end
