@@ -30,6 +30,9 @@ ruby:
         tr
           td.pr-0 data-sort=race.entries_count
             span= race.entries_count
+            - if race.requires_qualification?
+              .tooltip.tooltip-right.ml-2.text-lg data-tip=t(".requires_qualification")
+                i.ph.ph-warning.text-warning
             - entry_policy = policy(Racing::RaceEntry.new(race:, date: race.date))
             = link_to new_racing_race_entry_path(race), class: "ml-2", data: { turbo_frame: "_top" } do
               - if entry_policy.new? && entry_policy.create?

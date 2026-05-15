@@ -22,19 +22,24 @@ module Racing
       return false unless logged_in?
       return false if record.date < Date.current
       race = record.race
-      return false if Date.current > race.entry_deadline
-      return false if Date.current < race.entry_open_date
+      # return false if Date.current > race.entry_deadline
+      # return false if Date.current < race.entry_open_date
 
-      Racing::RaceQualificationQuery.new(race:).qualified.exists?
+      if race.requires_qualification?
+        Racing::RaceQualificationQuery.new(race:).qualified.exists?
+      else
+        true
+      end
     end
 
     def create?
       return false unless logged_in?
       return false if record.date < Date.current
       race = record.race
-      return false if Date.current > race.entry_deadline
-      return false if Date.current < race.entry_open_date
-      return false if race.entries.where(horse: Horses::Horse.racehorse.managed_by(stable)).count >= race.entry_limit
+      # return false if Date.current > race.entry_deadline
+      # return false if Date.current < race.entry_open_date
+      max_owned_horses = race.requires_qualification? ? Config::Racing.entry_limit_overall : race.entry_limit
+      return false if race.entries.where(horse: Horses::Horse.racehorse.managed_by(stable)).count >= max_owned_horses
 
       horse = record.horse
       return true unless horse

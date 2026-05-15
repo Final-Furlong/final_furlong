@@ -53,9 +53,14 @@ en:
         entry_fee: 'Entry Fee: %{fee}'
         entry_limit: You may enter %{horses} in this race.
         horses: 'Horses Entered: %{count}'
+        qualification_entry: The top 14 qualified horses can enter immediately. The remaining 6 qualified horses may enter on the last day of entries (%{date}), if the race is not full.
+        requires_qualification: This race requires qualification.
         title: Enter Race
       owner: Owner
       parents: Sire x Dam
+      qualified_list:
+        game_owned: Owned by %{stable}
+        wait_for_deadline: Cannot enter until %{date}
       record: Record
       stable: Stable
     entry: Entry
@@ -208,6 +213,7 @@ en:
         surface: Surface
         type: Type
       index:
+        requires_qualification: Race Requires Qualification
         title: Race Schedule
       post_parade:
         claim_failure: If unsuccessful, you will not be notified in any way. You will not be charged any claiming fee.

@@ -4,7 +4,8 @@ ruby:
   rank = better_ranked + 1
   tied = klass.nominated.identically_ranked(qualifier).count - 1
 tr
-  td class="text-#{qualifier.horse.gender}" = qualifier.horse.name_with_title
+  td class="text-#{qualifier.horse.gender}"
+    = link_to qualifier.horse.name_with_title, horse_path(qualifier.horse), data: { turbo_frame: "_top" }
   td= t(".age", age: qualifier.horse.age)
   td
     span
