@@ -148,11 +148,11 @@ module CurrentStable
     end
 
     def owner?
-      record.owner == user&.stable
+      record.owner_id == stable&.id
     end
 
     def manager?
-      record.manager == user&.stable
+      record.manager_id == stable&.id
     end
   end
 end

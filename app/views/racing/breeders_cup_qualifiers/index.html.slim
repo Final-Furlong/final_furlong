@@ -4,6 +4,10 @@
 - if @races.empty?
   p.text-center= t(".races_already_run")
 - else
+  p.text-warning.mb-2.ml-4
+    i.ph.ph-warning.mr-2
+    - deadline = @races.first.entry_open_date - Config::Racing.breeders_cup_nomination_deadline_days.days
+    = t("horse.race_nominations.index.supplemental_nomination_deadline", date: l(deadline))
   - @races.each do |race|
     .card.card-border.bg-base-100.w-full.px-2.rounded-none
       .card-body.p-0.rounded-none
