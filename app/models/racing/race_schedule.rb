@@ -136,6 +136,8 @@ class Racing::RaceSchedule < ApplicationRecord
   end
 
   def entry_limit
+    return Config::Racing.entry_limit_overall if requires_qualification? && name.starts_with?("Breeders' Cup ")
+
     entry_limit = age.start_with?("2") ? Config::Racing.entry_limit_2yo : Config::Racing.entry_limit_older
     entry_limit += Config::Racing.entry_limit_increase_final_day if Date.current == entry_deadline
     entry_limit

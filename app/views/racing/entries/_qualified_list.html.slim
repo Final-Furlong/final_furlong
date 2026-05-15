@@ -1,0 +1,46 @@
+/# locals: (race:)
+- last_day = Date.current == race.entry_deadline
+- max_rank = 0
+table.table.table-zebra.sortable.n-last.asc
+  thead
+    th= t("horses.info.name")
+    th= t("racing.race.age")
+    th= t("racing.breeders_cup_qualifiers.show.record")
+    th= t("racing.breeders_cup_qualifiers.show.rank")
+    th
+  tbody
+    - Racing::BreedersCupPotentialEntry.where(race:).includes(:horse).not_game_owned.ordered.limit(20).each do |entry|
+      - horse = entry.horse
+      - max_rank = entry.rank
+      - next if Racing::RaceEntry.exists?(race:, horse:)
+      tr
+        td class="text-#{horse.gender}"
+          = link_to horse.name, horse_path(horse), data: { turbo_frame: "_top" }
+        td= t("racing.breeders_cup_qualifiers.qualifier.age", age: horse.age)
+        td= entry.record
+        td= entry.rank.ordinalize
+        td
+          - entry_policy = policy(Racing::RaceEntry.new(race:, date: race.date, horse:))
+          - if entry.rank <= Config::Racing.entry_limit_overall
+            - if horse.manager == Current.stable
+              - if entry_policy.new? && entry_policy.create?
+                = render Ui::ButtonizedLink::Component.new(url: new_racing_race_entry_option_path(race, horse: horse.id), size: :small, data: { turbo_frame: "modal" }) do
+                  i.ph-fill.ph-arrow-fat-right
+                  = t("racing.racehorses.status.enter")
+              - elsif last_day
+                = render Ui::ButtonizedLink::Component.new(url: new_racing_race_entry_option_path(race, horse: horse.id), size: :small, data: { turbo_frame: "modal" }) do
+                  i.ph-fill.ph-arrow-fat-right
+                  = t("racing.racehorses.status.enter")
+          - else
+            .tooltip.mr-2.text-lg data-tip=t(".wait_for_deadline", date: race.entry_deadline)
+              i.ph.ph-clock.text-warning
+
+    - if max_rank < 20
+      - Racing::BreedersCupPotentialEntry.where(race:).includes(:horse).game_owned.ordered.limit(20 - max_rank).each do |entry|
+        tr
+          td class="text-#{horse.gender}"
+            = link_to horse.name, horse_path(horse), data: { turbo_frame: "_top" }
+          td= t("racing.breeders_cup_qualifiers.qualifier.age", age: horse.age)
+          td= entry.record
+          td= entry.rank.ordinalize
+          td= t(".game_owned", stable: Config::Game.stable)
