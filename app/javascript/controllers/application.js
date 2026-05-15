@@ -1,5 +1,6 @@
 import { Application } from "@hotwired/stimulus"
 import AutoSubmit from "@stimulus-components/auto-submit"
+import CheckboxSelectAll from "@stimulus-components/checkbox-select-all"
 
 const application = Application.start()
 
@@ -8,6 +9,7 @@ application.debug = false
 window.Stimulus = application
 
 application.register("auto-submit", AutoSubmit)
+application.register("checkbox-select-all", CheckboxSelectAll)
 
 export { application }
 

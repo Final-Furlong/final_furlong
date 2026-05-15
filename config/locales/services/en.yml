@@ -64,6 +64,10 @@ en:
     booking_requested:
       horse_was_racing: Breeding cannot happen on this date as the horse was racing
       slot_taken: This booking slot is no longer available
+    breeders_cup_nominator:
+      budget_description: "Race Nomination: %{year} Breeders' Cup - %{name}"
+      do_not_own_all_horses: You do not own all the horses you've requested to nominate
+      cannot_afford_nominations: You cannot afford all the nominations
     breedings:
       processor:
         cannot_afford_fee: You cannot afford this breeding
@@ -73,14 +77,14 @@ en:
         mare_needs_shipping: Mare needs shipping to the stallion's stable
         mare_not_eligible: Mare is not eligible for this breeding
     late_breeders_cup_nominator:
-      budget_description: 'Late Breeders'' Cup Nomination: %{name} (%{year} Onward)'
+      budget_description: "Late Breeders' Cup Nomination: %{name} (%{year} Onward)"
       cannot_afford_fee: You cannot afford the fee for nomination
       horse_already_nominated: This horse is already nominated for the Breeders' Cup
       horse_not_racehorse: You cannot late nominate non-racehorses
       stable_not_manager: You do not own or lease this horse
     lease_creator:
       cannot_afford_lease: You cannot afford the lease fee
-      description_leaser: 'Lease Fee: %{horse} from %{stable} [%{start_date} to %{end_date}]'
+      description_leaser: "Lease Fee: %{horse} from %{stable} [%{start_date} to %{end_date}]"
       description_owner: Leased %{horse} to %{stable} [%{start_date} to %{end_date}]
       not_for_lease: This horse is not for lease
     races:

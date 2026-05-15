@@ -16,7 +16,7 @@ en:
     confirm:
       default_message: Are you sure you want to do this?
       title: Are you sure?
-      'yes': Yes, go ahead
+      "yes": Yes, go ahead
     confirmation:
       delete_with_name: Are you sure you want to delete %{name}?
     create: Create
@@ -49,13 +49,14 @@ en:
     search_form:
       action: Search
       reset_filters: Reset filters
+    select_deselect_all: Select / Deselect All
     text:
       attention: Attention
-      'false': 'No'
+      "false": "No"
       info: Info
-      'no': 'No'
-      'true': 'Yes'
-      'yes': 'Yes'
+      "no": "No"
+      "true": "Yes"
+      "yes": "Yes"
     year: Year
   daisy_ui:
     abyss: Abyss
