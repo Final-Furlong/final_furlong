@@ -99,11 +99,7 @@ RSpec.describe Horses::BoardingUpdater do
   private
 
   def horse
-    @horse ||= create(:horse, legacy_id: legacy_horse.ID)
-  end
-
-  def legacy_horse
-    @legacy_horse ||= create(:legacy_horse)
+    @horse ||= create(:horse)
   end
 
   def leaser
