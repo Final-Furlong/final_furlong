@@ -29,6 +29,12 @@ module Account
     def show_alerts?
       record.user == user
     end
+
+    def nominate_breeders_cup?
+      return false unless logged_in?
+
+      Horses::Horse.weanling.managed_by(Current.stable).joins(sire: :stud_nominations).where(sire: { stud_breeders_cup_nominations: { year: Date.current.year } }).where.missing(:breeders_cup_nomination).exists?
+    end
   end
 end
 

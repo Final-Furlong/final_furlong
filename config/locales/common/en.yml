@@ -49,6 +49,7 @@ en:
     search_form:
       action: Search
       reset_filters: Reset filters
+    select_deselect_all: Select / Deselect All
     text:
       attention: Attention
       'false': 'No'
