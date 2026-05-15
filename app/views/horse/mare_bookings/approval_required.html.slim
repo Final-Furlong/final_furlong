@@ -2,7 +2,12 @@
 - booking = Horses::Breeding.new(mare:, stud:)
 = form_with model: booking, url: horse_mare_bookings_path(mare), id: "mare-booking-form", html: { class: "form", novalidate: true },
   data: { turbo_frame: "_top", 'mare-booking-selected-slot-id-value' => booking.slot_id } do |f|
-  p.text-lg= t("horse.mare_bookings.new.stud", name: stud.name)
+  p.text-lg
+    = t("horse.mare_bookings.new.stud", name: stud.name)
+    - if stud.stud_nominations.current_year.exists?
+      span.badge.badge-outline.badge-success.rounded-sm.ml-2= t("horse.mare_bookings.studs.bc_nominated")
+    - else
+      span.badge.badge-outline.badge-error.rounded-sm.ml-2= t("horse.mare_bookings.studs.not_bc_nominated")
   p.text-info= t("horse.mare_bookings.new.stud_approval", name: stud.name)
   - unless error.blank?
     p.alert.alert-error.alert-outline= error

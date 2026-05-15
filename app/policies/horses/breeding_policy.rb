@@ -48,7 +48,7 @@ module Horses
       stud_options = record.stud.stud_options
       return Failure(:approval_required) if stud_options.approval_required? && !record.approved? && record.stud.manager != stable
       return Failure(:bookings_full) if stud_options.total_booked_count >= Config::Breedings.max_mares_per_year
-      unless record.mare.manager == record.stud.manager
+      unless record.mare.manager_id == record.stud.manager_id
         return Failure(:cannot_afford_fee) if record.mare.manager.available_balance < stud_options.stud_fee
         return Failure(:outside_mare_limit_met) if stud_options.outside_mares_count >= stud_options.outside_mares_allowed
         bookings = record.stud.breedings.current_year.where.not(id: record.id).taken.where(stable: record.mare.manager).count
