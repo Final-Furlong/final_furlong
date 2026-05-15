@@ -130,3 +130,9 @@ en:
       max_mares_per_stable: The maximum number of mares from your stable have booked to this stud
       max_outside_mares: The maximum number of outside mares have booked to this stud
       slot_taken: This booking slot is no longer available
+    stud_breeders_cup_nominator:
+      budget_description: 'Breeders'' Cup Stallion Nomination: %{name} - %{year} Foal Crop'
+      cannot_afford_fee: You cannot afford to nominate
+      horse_already_nominated: This horse is already nominated
+      horse_not_stud: This horse is not a breeding stallion
+      stable_not_manager: You do not own this horse

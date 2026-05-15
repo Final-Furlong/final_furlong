@@ -18,4 +18,9 @@
             td= year_info[:racers]
             td= year_info[:winners]
             td= year_info[:stakes_winners]
-            td= t(".#{year_info[:status]}")
+            td
+              - if year_info[:year] == Date.current.year + 1 && CurrentStable::StallionPolicy.new(Current.user, @horse).nominate?
+                = render Ui::ButtonizedLink::Component.new(url: new_horse_stud_nomination_path(@horse), style: :outline, size: :small, data: { turbo_frame: "modal" }) do
+                  = t(".nominate")
+              - else
+                = t(".#{year_info[:status]}")

@@ -4,7 +4,13 @@
   data: { turbo_frame: "_top", controller: 'mare-booking dependent-fields', 'mare-booking-slots-url-value' => month_dependent_fields_horse_mare_bookings_url(mare.id, stud.id, ':month'),
           'mare-booking-selected-slot-id-value' => booking.slot_id, 'mare-booking-month-placeholder-value' => t("horse.mare_bookings.new.month_select"),
           'mare-booking-day-placeholder-value' => t("horse.mare_bookings.new.day_select") } do |f|
-  p.text-lg= t("horse.mare_bookings.new.stud", name: stud.name)
+  p.text-lg
+    = t("horse.mare_bookings.new.stud", name: stud.name)
+    - if stud.stud_nominations.current_year.exists?
+      span.badge.badge-outline.badge-success.rounded-sm.ml-2= t("horse.mare_bookings.studs.bc_nominated")
+    - else
+      span.badge.badge-outline.badge-error.rounded-sm.ml-2= t("horse.mare_bookings.studs.not_bc_nominated")
+
   - unless error.blank?
     p.alert.alert-error.alert-outline= error
 

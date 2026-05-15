@@ -1,0 +1,11 @@
+/# locals: (horse:)
+p.mt-2= t(".stud_description")
+p= t(".foal_fee_description", fee: Game::MoneyFormatter.new(Config::Racing.breeders_cup_nomination_fee))
+p= t(".stud_fee_description", fee: Game::MoneyFormatter.new(Config::Racing.breeders_cup_nomination_fee_stud))
+p.mt-4= t(".deadline")
+p= t(".deadline_raced")
+
+= form_tag horse_stud_nominations_path(horse), remote: true do |f|
+  .float-right
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t(".nominate"))
