@@ -1,5 +1,5 @@
 authenticate :user, lambda { |user| user.admin? } do
-  mount MissionControl::Jobs::Engine, at: "/jobs"
+  mount GoodJob::Engine => "/jobs"
   mount PgHero::Engine, at: "/pghero"
 
   namespace :admin do
