@@ -1,7 +1,7 @@
 class UpdateRacehorseStatsJob < ApplicationJob
   include ActiveJob::Continuable
 
-  queue_as :low_priority
+  queue_as :latency_5m
 
   def perform
     racetrack = Racing::Racetrack.find_by(name: "Churchill Downs")
