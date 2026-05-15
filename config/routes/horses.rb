@@ -50,8 +50,7 @@ resources :horses, except: %i[new create destroy] do
       resource :lease_offer_acceptance, only: :create
       resource :lease_termination, only: %i[new create]
       resource :owner, only: %i[update]
-      resource :stud_nonimation, only: %i[new create]
-      resources :stud_nominations, only: :index
+      resources :stud_nominations, only: %i[index new create]
       resource :pedigree, only: :show
       resource :race_options, only: %i[edit update]
       resources :race_stats, only: %i[index]

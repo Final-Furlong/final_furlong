@@ -22,11 +22,11 @@ module CurrentStable
     end
 
     def owner?
-      record.owner == stable
+      record.owner_id == stable&.id
     end
 
     def manager?
-      record.manager == stable
+      record.manager_id == stable&.id
     end
   end
 end

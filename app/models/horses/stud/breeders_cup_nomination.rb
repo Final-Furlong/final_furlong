@@ -5,6 +5,9 @@ module Horses::Stud
     belongs_to :stud, class_name: "Horse", inverse_of: :stud_nominations
 
     validates :year, presence: true, uniqueness: { scope: :stud_id }
+
+    scope :current_year, -> { where(year: Date.current.year + 1) }
+    scope :possible_current_year, -> { where(id: nil).or(where(year: Date.current.year + 1)) }
   end
 end
 
