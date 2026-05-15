@@ -398,8 +398,10 @@ en:
         select_stud: Select Stud
       studs:
         available_studs: Available Studs
+        bc_nominated: Breeders' Cup Nominated
         by_approval_status: By Approval Required
         by_breed_date: By Breeding Date
+        not_bc_nominated: Not Breeders' Cup Nominated
         pick_date: Pick Date
         request_slot: Request Booking
         select_stud: Select Stud
@@ -655,6 +657,7 @@ en:
         approved_count:
           one: 1 Approved
           other: "%{count} Approved"
+        bc_nominated: Breeders' Cup Nominated
         bred: Bred (Due %{date})
         bred_count:
           one: 1 Bred
@@ -673,6 +676,8 @@ en:
           one: 1 Missed
           other: "%{count} Missed"
         no_mare: No mare booked
+        nominate: Nominate for BC
+        not_bc_nominated: Not Breeders' Cup Nominated
         not_yet_bred: Not Bred Yet (Booked for %{date})
         pending_approval: Approval Required
         pending_count:
@@ -691,6 +696,15 @@ en:
         failure: Could not update booking
         success: Booking was successfully updated
     stud_nominations:
+      create:
+        success: Nomination was successful
+      form:
+        deadline: Nominations are due by February 14 each year.
+        deadline_raced: You may nominate stallions after February 14 if they have retired from racing this year.
+        foal_fee_description: Nomination fee for the foal is %{fee} for a lifetime nomination to the Breeders' Cup.
+        nominate: Nominate
+        stud_description: Nomination of a stud's crop allows the foals from that year's crop to be nominated to the Breeders' Cup.
+        stud_fee_description: Nomination for a stud is %{fee} per foal crop.
       index:
         foals: Foals
         nominate: Nominate
@@ -700,6 +714,8 @@ en:
         stakes_winners: Stakes Winners
         title: Breeders' Cup Nominations
         winners: Winners
+      new:
+        title: Nominate %{name} for Breeders' Cup
     stud_options:
       create:
         failure: Could not set stud options

@@ -1,0 +1,9 @@
+ruby:
+  title = t(".title", name: @horse.name)
+  content_for :title, title
+
+.text-center
+  h1.text-xl.font-bold= title
+
+= turbo_frame_tag "nomination-form" do
+  = render "form", horse: @horse
