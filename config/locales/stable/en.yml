@@ -56,6 +56,22 @@ en:
       update:
         failure: Boarding could not be stopped
         success: Boarding was successfully stopped
+    breeders_cup_nominations:
+      create:
+        success_count:
+          one: Successfully nominated 1 horse for the Breeders' Cup
+          other: Successfully nominated %{count} horses for the Breeders' Cup
+      new:
+        fee: Fee
+        no_weanlings: You do not have any weanlings eligible to nominate.
+        nominate: Nominate
+        nominated: Nominated
+        not_eligible: Not Eligible
+        status: Status
+        title: Nominate for Breeders' Cup
+        weanlings_count:
+          one: 1 Weanling
+          other: "%{count} Weanlings"
     budgets:
       index:
         available_balance: 'Available: %{amount}'
@@ -322,6 +338,9 @@ en:
       create:
         success: Workout for %{horse} ran successfully
   stables:
+    actions:
+      nominate_breeders_cup:
+        title: Nominate for Breeders' Cup
     alerts:
       alerts_title: Stable Alerts
       auctions:
