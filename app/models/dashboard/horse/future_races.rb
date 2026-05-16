@@ -63,7 +63,7 @@ module Dashboard
       end
 
       def existing_schedules
-        @existing_schedules = ::Racing::RaceSchedule.where(id: entry_ids).pluck(:date)
+        @existing_schedules = ::Racing::RaceSchedule.where(id: future_entry_ids).pluck(:date)
       end
 
       def min_days

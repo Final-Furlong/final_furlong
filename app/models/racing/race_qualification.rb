@@ -82,7 +82,8 @@ module Racing
         Config::Racing.qualified_types
       else
         types = Config::Racing.claiming_types.include?(qualification) ? Config::Racing.all_types : Config::Racing.qualified_types
-        types.dup.delete("claiming") if qualification == "starter_allowance"
+        types = types.dup
+        types.delete("claiming") if qualification == "starter_allowance"
         types.slice(0, types.find_index(qualification))
       end
     end
