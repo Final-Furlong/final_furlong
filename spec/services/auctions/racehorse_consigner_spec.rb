@@ -2,7 +2,6 @@ RSpec.describe Auctions::RacehorseConsigner do
   context "when number is 0" do
     it "returns 0 horses" do
       create(:horse, :racehorse, :final_furlong)
-      create_views
       expect(described_class.new.select_horses(number: 0, min_age: 2, max_age: 4).count).to eq 0
     end
   end
@@ -13,7 +12,6 @@ RSpec.describe Auctions::RacehorseConsigner do
       three_yo = create(:horse, :racehorse, :final_furlong, date_of_birth: Date.current - 3.years)
       create(:race_result_horse, horse: two_yo, finish_position: 1, race: create(:race_result, race_type: "maiden"))
       create(:race_result_horse, horse: three_yo, finish_position: 1, race: create(:race_result, race_type: "maiden"))
-      create_views
 
       result = described_class.new.select_horses(number: 10, min_age: 2, max_age: 2)
       expect(result).to include two_yo
@@ -28,7 +26,8 @@ RSpec.describe Auctions::RacehorseConsigner do
       stakes = create(:horse, :racehorse, :final_furlong, date_of_birth: Date.current - 3.years)
       create(:race_result_horse, horse: non_stakes, finish_position: 1, race: create(:race_result, race_type: "maiden"))
       create(:race_result_horse, horse: stakes, finish_position: 1, race: create(:race_result, race_type: "stakes", grade: "Ungraded", name: "Foo"))
-      create_views
+      Racing::RaceRecord.refresh
+      Racing::LifetimeRaceRecord.refresh
 
       result = described_class.new.select_horses(number: 10, min_age: 2, max_age: 6, stakes_quality: false)
       expect(result).to include non_stakes, unraced
@@ -37,6 +36,7 @@ RSpec.describe Auctions::RacehorseConsigner do
   end
 
   context "when stakes quality is true" do
+    # rubocop:disable RSpec/ExampleLength
     it "only returns stakes horses" do
       non_stakes = create(:horse, :racehorse, :final_furlong, date_of_birth: Date.current - 2.years)
       stakes = create(:horse, :racehorse, :final_furlong, date_of_birth: Date.current - 3.years)
@@ -44,12 +44,14 @@ RSpec.describe Auctions::RacehorseConsigner do
       create(:race_result_horse, horse: non_stakes, finish_position: 1, race: create(:race_result, race_type: "maiden"))
       create(:race_result_horse, horse: stakes, finish_position: 1, race: create(:race_result, race_type: "stakes", grade: "Ungraded", name: "Foo"))
       create(:race_result_horse, horse: stakes2, finish_position: 2, race: create(:race_result, race_type: "stakes", grade: "Ungraded", name: "Foo"))
-      create_views
+      Racing::RaceRecord.refresh
+      Racing::LifetimeRaceRecord.refresh
 
       result = described_class.new.select_horses(number: 10, min_age: 2, max_age: 6, stakes_quality: true)
       expect(result).to include stakes, stakes2
       expect(result).not_to include non_stakes
     end
+    # rubocop:enable RSpec/ExampleLength
   end
 
   it "only returns horses owned by FF" do
@@ -57,7 +59,6 @@ RSpec.describe Auctions::RacehorseConsigner do
     ff = create(:horse, :racehorse, :final_furlong, date_of_birth: Date.current - 3.years)
     create(:race_result_horse, horse: non_ff, finish_position: 1, race: create(:race_result, race_type: "maiden"))
     create(:race_result_horse, horse: ff, finish_position: 1, race: create(:race_result, race_type: "maiden"))
-    create_views
 
     result = described_class.new.select_horses(number: 10, min_age: 2, max_age: 6)
     expect(result).to include ff
@@ -73,7 +74,6 @@ RSpec.describe Auctions::RacehorseConsigner do
     ff2 = create(:horse, :racehorse, :final_furlong)
     create(:race_result_horse, horse: ff, finish_position: 1, race: create(:race_result, race_type: "maiden"))
     create(:race_result_horse, horse: ff2, finish_position: 1, race: create(:race_result, race_type: "maiden"))
-    create_views
 
     result = described_class.new.select_horses(number: 2, min_age: 2, max_age: 5)
     expect(result.size).to eq 2
@@ -81,11 +81,5 @@ RSpec.describe Auctions::RacehorseConsigner do
     expect(result).not_to include already_consigned
   end
   # rubocop:enable RSpec/ExampleLength
-
-  def create_views
-    Racing::RaceRecord.refresh
-    Racing::AnnualRaceRecord.refresh
-    Racing::LifetimeRaceRecord.refresh
-  end
 end
 

@@ -10,8 +10,6 @@ RSpec.describe Auctions::StallionConsigner do
     it "only returns horses of that age" do
       younger = create(:horse, :stallion, :final_furlong, date_of_birth: Date.current - 6.years)
       older = create(:horse, :stallion, :final_furlong, date_of_birth: Date.current - 7.years)
-      create(:stud_foal_record, stud: younger)
-      create(:stud_foal_record, stud: older)
 
       result = described_class.new.select_horses(number: 10, min_age: 6, max_age: 6)
       expect(result).to include younger
@@ -19,49 +17,9 @@ RSpec.describe Auctions::StallionConsigner do
     end
   end
 
-  context "when stakes quality is false" do
-    it "only returns non-silver/gold ranked horses" do # rubocop:disable RSpec/ExampleLength
-      unranked = create(:horse, :stallion, :final_furlong)
-      bronze = create(:horse, :stallion, :final_furlong)
-      silver = create(:horse, :stallion, :final_furlong)
-      gold = create(:horse, :stallion, :final_furlong)
-      platinum = create(:horse, :stallion, :final_furlong)
-      create(:stud_foal_record, stud: unranked)
-      create(:stud_foal_record, :bronze, stud: bronze)
-      create(:stud_foal_record, :silver, stud: silver)
-      create(:stud_foal_record, :gold, stud: gold)
-      create(:stud_foal_record, :platinum, stud: platinum)
-
-      result = described_class.new.select_horses(number: 10, min_age: 4, max_age: 15, stakes_quality: false)
-      expect(result).to include unranked, bronze, silver
-      expect(result).not_to include gold, platinum
-    end
-  end
-
-  context "when stakes quality is true" do
-    it "only returns silver/gold ranked horses" do # rubocop:disable RSpec/ExampleLength
-      unranked = create(:horse, :stallion, :final_furlong)
-      bronze = create(:horse, :stallion, :final_furlong)
-      silver = create(:horse, :stallion, :final_furlong)
-      gold = create(:horse, :stallion, :final_furlong)
-      platinum = create(:horse, :stallion, :final_furlong)
-      create(:stud_foal_record, stud: unranked)
-      create(:stud_foal_record, :bronze, stud: bronze)
-      create(:stud_foal_record, :silver, stud: silver)
-      create(:stud_foal_record, :gold, stud: gold)
-      create(:stud_foal_record, :platinum, stud: platinum)
-
-      result = described_class.new.select_horses(number: 10, min_age: 4, max_age: 15, stakes_quality: true)
-      expect(result).to include gold, platinum
-      expect(result).not_to include unranked, bronze, silver
-    end
-  end
-
   it "only returns horses owned by FF" do
     non_ff = create(:horse, :stallion)
     ff = create(:horse, :stallion, :final_furlong)
-    create(:stud_foal_record, stud: non_ff)
-    create(:stud_foal_record, stud: ff)
 
     result = described_class.new.select_horses(number: 10, min_age: 4, max_age: 15)
     expect(result).to include ff
@@ -73,8 +31,6 @@ RSpec.describe Auctions::StallionConsigner do
     create(:auction_horse, horse: already_consigned)
     ff = create(:horse, :stallion, :final_furlong)
     ff2 = create(:horse, :stallion, :final_furlong)
-    create(:stud_foal_record, stud: ff)
-    create(:stud_foal_record, stud: ff2)
 
     result = described_class.new.select_horses(number: 2, min_age: 4, max_age: 15)
     expect(result.size).to eq 2

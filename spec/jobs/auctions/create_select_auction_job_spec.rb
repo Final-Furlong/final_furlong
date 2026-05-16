@@ -9,7 +9,6 @@ RSpec.describe Auctions::CreateSelectAuctionJob, :perform_enqueued_jobs do
     context "when auction already exists" do
       it "does not create auction" do
         final_furlong
-        create_views
         travel_to Time.zone.local(2025, 8, 1, 0, 0, 0) do
           described_class.perform_later
 
@@ -23,7 +22,6 @@ RSpec.describe Auctions::CreateSelectAuctionJob, :perform_enqueued_jobs do
     context "when auction does not exist" do
       it "creates auction" do
         final_furlong
-        create_views
         travel_to Time.zone.local(2025, 8, 1, 0, 0, 0) do
           expect do
             described_class.perform_later
@@ -34,7 +32,6 @@ RSpec.describe Auctions::CreateSelectAuctionJob, :perform_enqueued_jobs do
       context "when current date is later than Aug 15" do
         it "does not create auction" do
           final_furlong
-          create_views
           travel_to Time.zone.local(2025, 8, 16, 0, 0, 0) do
             expect do
               described_class.perform_later
@@ -51,7 +48,6 @@ RSpec.describe Auctions::CreateSelectAuctionJob, :perform_enqueued_jobs do
           result = instance_double(Auctions::SelectAuctionCreator::Result, created?: false, auction:)
           allow_any_instance_of(Auctions::SelectAuctionCreator).to receive(:create_auction).and_return result # rubocop:disable RSpec/AnyInstance
           final_furlong
-          create_views
           travel_to Time.zone.local(2025, 8, 1, 0, 0, 0) do
             expect do
               described_class.perform_later
@@ -68,12 +64,6 @@ RSpec.describe Auctions::CreateSelectAuctionJob, :perform_enqueued_jobs do
   def final_furlong
     name = "Final Furlong"
     @final_furlong ||= Account::Stable.find_by(name:) || create(:stable, name:)
-  end
-
-  def create_views
-    Racing::RaceRecord.refresh
-    Racing::AnnualRaceRecord.refresh
-    Racing::LifetimeRaceRecord.refresh
   end
 end
 
