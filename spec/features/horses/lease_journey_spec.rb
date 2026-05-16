@@ -160,13 +160,7 @@ RSpec.describe "Leasing Journey" do
   end
 
   def horse
-    return @horse if defined?(@horse)
-
-    @horse = create(:horse, :racehorse, :with_appearance, owner: leaser)
-    Racing::RaceRecord.refresh
-    Racing::LifetimeRaceRecord.refresh
-    Racing::RaceQualification.refresh
-    @horse
+    @horse ||= create(:horse, :racehorse, :with_appearance, owner: leaser)
   end
 end
 

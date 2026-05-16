@@ -187,6 +187,7 @@ module Racing
       return true if race.race_type.allowance? || race.race_type.stakes?
 
       qualification = horse.race_qualification
+      return true if race.race_type.maiden? && qualification.blank?
       return false if race.race_type.maiden? && !qualification.maiden_qualified
       return false if race.race_type.claiming? && !qualification.claiming_qualified
       return false if race.race_type.starter_allowance? && !qualification.starter_allowance_qualified

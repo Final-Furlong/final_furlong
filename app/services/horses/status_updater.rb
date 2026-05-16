@@ -20,8 +20,6 @@ module Horses
         elsif horse.stud?
           horse.stud_options&.destroy
         end
-        Horses::BroodmareFoalRecord.find_or_create_by(mare: @horse) if status == "broodmare"
-        Horses::StudFoalRecord.find_or_create_by(stud: @horse) if status == "broodmare"
         @horse.update(status:)
       end
       result.updated = @horse.valid?

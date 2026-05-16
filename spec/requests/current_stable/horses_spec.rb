@@ -4,8 +4,6 @@ RSpec.describe "Current Stable > Horses" do
       user = create(:user)
       stable = user.stable
       horse = create(:horse, owner: stable)
-      Racing::RaceRecord.refresh
-      Racing::LifetimeRaceRecord.refresh
 
       sign_in(user)
 
