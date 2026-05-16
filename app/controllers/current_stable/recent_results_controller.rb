@@ -1,9 +1,9 @@
 module CurrentStable
   class RecentResultsController < AuthenticatedController
     def show
-      @query = policy_scope(Racing::RaceResultHorse, policy_scope_class: CurrentStable::RaceResultHorsePolicy::Scope).includes(:race)
+      @query = policy_scope(Racing::RaceResultHorse, policy_scope_class: CurrentStable::RaceResultHorsePolicy::Scope)
       @date = Date.parse(params[:date])
-      @query = @query.where(race: { date: @date }).order(race: { number: :asc })
+      @query = @query.includes(horse: :sire, race: :track_surface).where(race: { date: @date }).order(race: { number: :asc })
       authorize @query.first.race
 
       update_user_activity

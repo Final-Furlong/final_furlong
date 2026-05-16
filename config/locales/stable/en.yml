@@ -206,6 +206,7 @@ en:
           other: "%{count} Foals Born on %{date}"
     recent_results:
       show:
+        claimed: Claimed
         copied_forum_format: Copied!
         copy_forum_format: Copy Results for Forum
         title: Race Results for %{date}

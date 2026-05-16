@@ -13,7 +13,7 @@ ruby:
     small= t("current_stable.race_results.index.no_results_found")
 - else
   ruby:
-    dashboard = Dashboard::Stable::RecentResults.new(results: @results)
+    dashboard = Dashboard::Stable::RecentResults.new(results: @results, stable: Current.stable, date: @date)
   .w-full
     .float-right
       div data-controller="clipboard" data-clipboard-success-content-value=t(".copied_forum_format")
@@ -43,6 +43,27 @@ ruby:
             td data-sort=race.race_type
               = [race.race_short_furlongs_string, race.race_type_string, race.race_age_description, race.race_gender_string].compact_blank.join(" ")
               = ", #{race.race_purse_string}"
+              - if result.claimed
+                span.badge.badge-outline.badge-error.ml-2 = t(".claimed")
+            td
+              = [race.race_surface_string, race.condition.titleize].join(" - ")
+            td data-sort=horse.name class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), data: { turbo_frame: "_top" }
+            td= result.equipment_string(blank: "")
+            td data-sort= result.finish_position = result.finish_position.ordinalize
+            td= result.speed_factor
+            td
+              = render Ui::ButtonizedLink::Component.new(url: racing_result_path(race.date, race.number), color: :neutral, extra_classes: "mt-2", data: { turbo_frame: "modal" }) do
+                i.ph.ph-fill.ph-eye
+        - if dashboard.claim_result
+          - result = dashboard.claim_result
+          - race = result.race
+          - horse = result.horse
+          tr
+            td= race.number
+            td data-sort=race.race_type
+              = [race.race_short_furlongs_string, race.race_type_string, race.race_age_description, race.race_gender_string].compact_blank.join(" ")
+              = ", #{race.race_purse_string}"
+              span.badge.badge-outline.badge-success.ml-2 = t(".claimed")
             td
               = [race.race_surface_string, race.condition.titleize].join(" - ")
             td data-sort=horse.name class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), data: { turbo_frame: "_top" }

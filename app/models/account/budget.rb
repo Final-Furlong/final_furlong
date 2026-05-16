@@ -11,6 +11,8 @@ module Account
     scope :credit, -> { where(amount: 0..) }
     scope :debit, -> { where(amount: ...0) }
     scope :with_desc, ->(value) { where("description ILIKE ?", "%#{value}%") }
+    scope :by_type, ->(value) { where(activity_type: value) }
+    scope :by_date, ->(date) { where(created_at: date.all_day) }
 
     def self.budget_category(category)
       case category.to_s.downcase

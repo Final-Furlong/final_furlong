@@ -4,6 +4,8 @@ module Racing
 
     self.table_name = "race_result_horses"
 
+    attr_accessor :claimed
+
     belongs_to :race, class_name: "Racing::RaceResult", inverse_of: :horses
     belongs_to :horse, class_name: "Horses::Horse", inverse_of: :race_result_finishes
     belongs_to :jockey, class_name: "Racing::Jockey", optional: true, inverse_of: :race_result_horses

@@ -116,13 +116,15 @@ en:
       first_quarter: 1/4
       forum:
         allowance_prefix: an
+        claimed: " *(Claimed from %{stable})*"
+        claimed_by: " *(Claimed by %{stable})*"
         fifths: "**Fifths:**"
         fourths: "**Fourths:**"
         in: in
         other_prefix: a
         others: "**Also Rans:**"
         seconds: "**Places:**"
-        stakes: the %{name} (%{grade})
+        stakes: the *%{name} (%{grade})*
         thirds: "**Shows:**"
         wins: "**Wins:**"
       furlongs: "%{number} Furlongs"

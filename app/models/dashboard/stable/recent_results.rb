@@ -5,10 +5,18 @@ module Dashboard
 
       attr_reader :results, :starts, :wins, :seconds, :thirds, :fourths,
         :stakes, :stakes_wins, :stakes_seconds, :stakes_thirds,
-        :stakes_fourths, :earnings, :points
+        :stakes_fourths, :earnings, :points, :claim_result
 
-      def initialize(results:)
+      def initialize(results:, stable:, date:)
         @results = results
+        claimed = stable.budget_transactions.by_date(date).by_type("claimed_horse").debit.first
+        if claimed
+          description = claimed.description
+          horse_name = description.slice(7, description.length - 19)
+          @claim_result = Racing::RaceResultHorse.joins(:race).where(race: { date: }).joins(:horse).where(horse: { name: horse_name.strip }).first
+          sale = @claim_result.horse.sales.find_by(date:)
+          @claim_stable = sale.seller
+        end
         @starts = results.size
         @wins = win_results.size
         @seconds = second_results.size
@@ -26,6 +34,9 @@ module Dashboard
             @stakes_seconds += 1 if result.finish_position == 2
             @stakes_thirds += 1 if result.finish_position == 3
             @stakes_fourths += 1 if result.finish_position == 4
+          elsif result.race.claiming?
+            sale = result.horse.sales.find_by(date: result.race.date)
+            result.claimed = sale.present?
           end
         end
       end
@@ -72,54 +83,76 @@ module Dashboard
 
       def forum_text
         forum_text = "**" + results_string + "**\n\n"
-        if win_results.present?
+        if win_results.present? || claim_result&.finish_position == 1
           forum_text += I18n.t("racing.race.forum.wins") + "\n"
           win_results.each do |result|
             forum_text += race_string(result)
           end
+          if claim_result&.finish_position == 1
+            forum_text += race_string(claim_result, @claim_stable.name)
+          end
           forum_text += "\n"
         end
-        if second_results.present?
+        if second_results.present? || claim_result&.finish_position == 2
           forum_text += I18n.t("racing.race.forum.seconds") + "\n"
           second_results.each do |result|
             forum_text += race_string(result)
           end
+          if claim_result&.finish_position == 2
+            forum_text += race_string(claim_result, @claim_stable.name)
+          end
           forum_text += "\n"
         end
-        if third_results.present?
+        if third_results.present? || claim_result&.finish_position == 3
           forum_text += I18n.t("racing.race.forum.thirds") + "\n"
           third_results.each do |result|
             forum_text += race_string(result)
           end
+          if claim_result&.finish_position == 3
+            forum_text += race_string(claim_result, @claim_stable.name)
+          end
           forum_text += "\n"
         end
-        if fourth_results.present?
+        if fourth_results.present? || claim_result&.finish_position == 4
           forum_text += I18n.t("racing.race.forum.fourths") + "\n"
           fourth_results.each do |result|
             forum_text += race_string(result)
           end
+          if claim_result&.finish_position == 4
+            forum_text += race_string(claim_result, @claim_stable.name)
+          end
           forum_text += "\n"
         end
-        if fifth_results.present?
+        if fifth_results.present? || claim_result&.finish_position == 5
           forum_text += I18n.t("racing.race.forum.fifths") + "\n"
           fifth_results.each do |result|
             forum_text += race_string(result)
           end
+          if claim_result&.finish_position == 5
+            forum_text += race_string(claim_result, @claim_stable.name)
+          end
           forum_text += "\n"
         end
-        if other_results.present?
+        if other_results.present? || (claim_result&.finish_position&.> 5)
           forum_text += I18n.t("racing.race.forum.others") + "\n"
           other_results.each do |result|
             forum_text += race_string(result)
+          end
+          if claim_result&.finish_position&.> 5
+            forum_text += race_string(claim_result, @claim_stable.name)
           end
           forum_text += "\n"
         end
         forum_text
       end
 
-      def race_string(result)
+      def race_string(result, claim_stable_name = nil)
         string = ""
         horse = result.horse
+        claiming_stable = if claim_stable_name.blank? && result.claimed
+          sale = horse.sales.find_by(date: result.race.date)
+          sale&.buyer&.name
+        end
         hex_color = if horse.gelding?
           Config::Horses.forum_color_gelding
         else
@@ -128,7 +161,10 @@ module Dashboard
         bbcode_name = I18n.t("horse.bbcode_colored_name", color: "##{hex_color}", name: horse.name)
         string += I18n.t("horse.bbcode_url", url: horse_url(horse), name: bbcode_name)
         string += I18n.t("horse.bbcode_age_sire", age: horse.age, sire: horse.sire&.name || I18n.t("horse.created"))
+        string += " #{result.finish_position.ordinalize}" unless result.finish_position <= 5
         string += " " + [I18n.t("racing.race.forum.in"), race_type_string(result.race)].join(" ")
+        string += I18n.t("racing.race.forum.claimed", stable: claim_stable_name) if claim_stable_name
+        string += I18n.t("racing.race.forum.claimed_by", stable: claiming_stable) if claiming_stable
         string + "\n"
       end
 
@@ -138,8 +174,15 @@ module Dashboard
           I18n.t("racing.race.forum.stakes", name: race.name, grade:)
         else
           prefix_key = race.race_type.to_s.casecmp("allowance").zero? ? "allowance_prefix" : "other_prefix"
-          [I18n.t("racing.race.forum.#{prefix_key}"),
-            I18n.t("racing.race.#{race.race_type.to_s.downcase}")].join(" ")
+          [I18n.t("racing.race.forum.#{prefix_key}"), race_type(race.race_type)].join(" ")
+        end
+      end
+
+      def race_type(type)
+        if type.to_s.downcase == "claiming"
+          "Claimer"
+        else
+          I18n.t("racing.race.#{type.to_s.downcase}")
         end
       end
     end
