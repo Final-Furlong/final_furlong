@@ -31,8 +31,6 @@ global_job_config:
       value: postgresql://postgres:@0.0.0.0:5432/final_furlong_test
     - name: CACHE_DATABASE_URL
       value: postgresql://postgres:@0.0.0.0:5432/final_furlong_test_cache
-    - name: QUEUE_DATABASE_URL
-      value: postgresql://postgres:@0.0.0.0:5432/final_furlong_test_queue
 blocks:
   - name: CI
     dependencies: []
@@ -52,7 +50,6 @@ blocks:
           - cache store
           - cp config/database.yml.github_actions config/database.yml
           - bin/rails db:create:primary db:schema:load:primary
-          - bin/rails db:create:queue db:schema:load:queue
           - bin/rails db:create:cache db:schema:load:cache
       jobs:
         - name: Run Linters
