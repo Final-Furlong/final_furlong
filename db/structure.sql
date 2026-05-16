@@ -2409,47 +2409,165 @@ ALTER SEQUENCE public.breedings_id_seq OWNED BY public.breedings.id;
 
 
 --
--- Name: broodmare_foal_records; Type: TABLE; Schema: public; Owner: -
+-- Name: lifetime_race_records; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE TABLE public.broodmare_foal_records (
-    id bigint NOT NULL,
-    born_foals_count integer DEFAULT 0 NOT NULL,
-    breed_ranking character varying,
-    horse_id bigint NOT NULL,
-    millionaire_foals_count integer DEFAULT 0 NOT NULL,
-    multi_millionaire_foals_count integer DEFAULT 0 NOT NULL,
-    multi_stakes_winning_foals_count integer DEFAULT 0 CONSTRAINT broodmare_foal_records_multi_stakes_winning_foals_coun_not_null NOT NULL,
-    raced_foals_count integer DEFAULT 0 NOT NULL,
-    stakes_winning_foals_count integer DEFAULT 0 NOT NULL,
-    stillborn_foals_count integer DEFAULT 0 NOT NULL,
-    total_foal_earnings bigint DEFAULT 0 NOT NULL,
-    total_foal_points integer DEFAULT 0 NOT NULL,
-    total_foal_races integer DEFAULT 0 NOT NULL,
-    unborn_foals_count integer DEFAULT 0 NOT NULL,
-    winning_foals_count integer DEFAULT 0 NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
-);
+CREATE MATERIALIZED VIEW public.lifetime_race_records AS
+ SELECT horse_id,
+    (sum(starts))::integer AS starts,
+    (sum(stakes_starts))::integer AS stakes_starts,
+    (sum(wins))::integer AS wins,
+    (sum(stakes_wins))::integer AS stakes_wins,
+    (sum(seconds))::integer AS seconds,
+    (sum(stakes_seconds))::integer AS stakes_seconds,
+    (sum(thirds))::integer AS thirds,
+    (sum(stakes_thirds))::integer AS stakes_thirds,
+    (sum(fourths))::integer AS fourths,
+    (sum(stakes_fourths))::integer AS stakes_fourths,
+    sum(points) AS points,
+    (sum(earnings))::bigint AS earnings,
+        CASE
+            WHEN (sum(points) >= 1500) THEN 'FFCh.'::text
+            WHEN (sum(points) >= 1000) THEN 'WCh.'::text
+            WHEN (sum(points) >= 750) THEN 'ICh.'::text
+            WHEN (sum(points) >= 500) THEN 'NCh.'::text
+            WHEN (sum(points) >= 300) THEN 'GCh.'::text
+            WHEN (sum(points) >= 100) THEN 'Ch.'::text
+            ELSE ''::text
+        END AS title_abbreviation,
+    concat(
+        CASE
+            WHEN ((sum(starts))::integer = 0) THEN 'Unraced'::text
+            ELSE
+            CASE
+                WHEN ((sum(stakes_wins) > 1) AND ((sum(stakes_seconds) + sum(stakes_thirds)) > 1)) THEN 'Mult. Stakes Winner, Mult. Stakes Placed'::text
+                WHEN ((sum(stakes_wins) > 1) AND ((sum(stakes_seconds) + sum(stakes_thirds)) = 1)) THEN 'Mult. Stakes Winner, Stakes Placed'::text
+                WHEN ((sum(stakes_wins) = 1) AND ((sum(stakes_seconds) + sum(stakes_thirds)) > 1)) THEN 'Stakes Winner, Mult. Stakes Placed'::text
+                WHEN ((sum(stakes_wins) = 1) AND ((sum(stakes_seconds) + sum(stakes_thirds)) = 1)) THEN 'Stakes Winner, Stakes Placed'::text
+                WHEN ((sum(stakes_wins) > 1) AND ((sum(stakes_seconds) + sum(stakes_thirds)) = 0)) THEN 'Mult. Stakes Winner'::text
+                WHEN ((sum(stakes_wins) = 1) AND ((sum(stakes_seconds) + sum(stakes_thirds)) = 0)) THEN 'Stakes Winner'::text
+                WHEN ((sum(stakes_wins) = 0) AND ((sum(stakes_seconds) + sum(stakes_thirds)) > 1)) THEN 'Mult. Stakes Placed'::text
+                WHEN ((sum(stakes_wins) = 0) AND ((sum(stakes_seconds) + sum(stakes_thirds)) = 1)) THEN 'Stakes Placed'::text
+                WHEN ((sum(wins) > 1) AND ((sum(seconds) + sum(thirds)) > 1)) THEN 'Mult. Winner, Mult. Placed'::text
+                WHEN ((sum(wins) > 1) AND ((sum(seconds) + sum(thirds)) = 1)) THEN 'Mult. Winner, Placed'::text
+                WHEN ((sum(wins) = 1) AND ((sum(seconds) + sum(thirds)) > 1)) THEN 'Winner, Mult. Placed'::text
+                WHEN ((sum(wins) = 1) AND ((sum(seconds) + sum(thirds)) = 1)) THEN 'Winner, Placed'::text
+                WHEN ((sum(wins) > 1) AND ((sum(seconds) + sum(thirds)) = 1)) THEN 'Mult. Winner'::text
+                WHEN ((sum(wins) = 1) AND ((sum(seconds) + sum(thirds)) = 0)) THEN 'Winner'::text
+                WHEN ((sum(wins) = 0) AND ((sum(seconds) + sum(thirds)) > 1)) THEN 'Mult. Placed'::text
+                WHEN ((sum(wins) = 0) AND ((sum(seconds) + sum(thirds)) = 1)) THEN 'Placed'::text
+                ELSE 'Unplaced'::text
+            END
+        END,
+        CASE
+            WHEN (sum(earnings) > (2000000)::numeric) THEN ', Multi-Millionaire'::text
+            WHEN (sum(earnings) >= (1000000)::numeric) THEN ', Millionaire'::text
+            ELSE ''::text
+        END) AS description
+   FROM public.race_records
+  GROUP BY horse_id
+  WITH NO DATA;
 
 
 --
--- Name: broodmare_foal_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: broodmare_foal_records; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.broodmare_foal_records_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: broodmare_foal_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.broodmare_foal_records_id_seq OWNED BY public.broodmare_foal_records.id;
+CREATE MATERIALIZED VIEW public.broodmare_foal_records AS
+ SELECT h.id AS horse_id,
+    (COALESCE(sum(foals.born), (0)::bigint))::integer AS born_foals_count,
+    (COALESCE(sum(foals.unborn), (0)::bigint))::integer AS unborn_foals_count,
+        CASE
+            WHEN (COALESCE(sum(foals.born), (0)::bigint) > 0) THEN (COALESCE(sum(foals.stillborn), (0)::bigint))::integer
+            ELSE 0
+        END AS stillborn_foals_count,
+        CASE
+            WHEN (COALESCE(sum(foals.born), (0)::bigint) > 0) THEN (COALESCE(sum(foals.raced), (0)::bigint))::integer
+            ELSE 0
+        END AS raced_foals_count,
+        CASE
+            WHEN (COALESCE(sum(foals.born), (0)::bigint) > 0) THEN (COALESCE(sum(foals.winners), (0)::bigint))::integer
+            ELSE 0
+        END AS winning_foals_count,
+        CASE
+            WHEN (COALESCE(sum(foals.winners), (0)::bigint) > 0) THEN (COALESCE(sum(foals.stakes_winners), (0)::bigint))::integer
+            ELSE 0
+        END AS stakes_winning_foals_count,
+        CASE
+            WHEN (COALESCE(sum(foals.winners), (0)::bigint) > 0) THEN (COALESCE(sum(foals.multi_stakes_winners), (0)::bigint))::integer
+            ELSE 0
+        END AS multi_stakes_winning_foals_count,
+        CASE
+            WHEN (COALESCE(sum(foals.raced), (0)::bigint) > 0) THEN (COALESCE(sum(foals.millionaires), (0)::bigint))::integer
+            ELSE 0
+        END AS millionaire_foals_count,
+        CASE
+            WHEN (COALESCE(sum(foals.raced), (0)::bigint) > 0) THEN (COALESCE(sum(foals.multi_millionaires), (0)::bigint))::integer
+            ELSE 0
+        END AS multi_millionaire_foals_count,
+    (COALESCE(sum(foals.races), (0)::bigint))::integer AS total_foal_races,
+    (COALESCE(sum(foals.earnings), (0)::numeric))::bigint AS total_foal_earnings,
+    (COALESCE(sum(foals.points), (0)::numeric))::integer AS total_foal_points,
+    floor((sum(foals.earnings) / (sum(foals.raced))::numeric)) AS average_earnings,
+        CASE
+            WHEN (((sum(foals.points) / (sum(foals.races))::numeric) >= 10.1) AND (sum(foals.races) >= 50)) THEN 'platinum'::text
+            WHEN (((sum(foals.points) / (sum(foals.races))::numeric) >= 6.1) AND (sum(foals.races) >= 30)) THEN 'gold'::text
+            WHEN ((sum(foals.points) / (sum(foals.races))::numeric) >= 3.1) THEN 'silver'::text
+            WHEN ((sum(foals.points) / (sum(foals.races))::numeric) >= 0.1) THEN 'bronze'::text
+            ELSE NULL::text
+        END AS breed_ranking,
+    round((sum(foals.points) / (sum(foals.races))::numeric), 1) AS breed_ranking_points,
+    min(b.due_date) AS next_due_date,
+    min(b.stud_id) AS in_foal_stud_id
+   FROM ((public.horses h
+     LEFT JOIN ( SELECT
+                CASE
+                    WHEN (h2.date_of_birth > CURRENT_DATE) THEN 1
+                    ELSE 0
+                END AS unborn,
+                CASE
+                    WHEN (h2.date_of_birth <= CURRENT_DATE) THEN 1
+                    ELSE 0
+                END AS born,
+                CASE
+                    WHEN ((h2.date_of_birth <= CURRENT_DATE) AND (h2.date_of_birth = h2.date_of_death)) THEN 1
+                    ELSE 0
+                END AS stillborn,
+                CASE
+                    WHEN (lrr.starts > 0) THEN 1
+                    ELSE 0
+                END AS raced,
+                CASE
+                    WHEN (lrr.wins > 0) THEN 1
+                    ELSE 0
+                END AS winners,
+                CASE
+                    WHEN (lrr.stakes_wins >= 1) THEN 1
+                    ELSE 0
+                END AS stakes_winners,
+                CASE
+                    WHEN (lrr.stakes_wins > 1) THEN 1
+                    ELSE 0
+                END AS multi_stakes_winners,
+                CASE
+                    WHEN (lrr.earnings >= 1000000) THEN 1
+                    ELSE 0
+                END AS millionaires,
+                CASE
+                    WHEN (lrr.earnings >= 2000000) THEN 1
+                    ELSE 0
+                END AS multi_millionaires,
+            lrr.starts AS races,
+            lrr.earnings,
+            lrr.points,
+            h2.dam_id
+           FROM (public.horses h2
+             LEFT JOIN public.lifetime_race_records lrr ON ((h2.id = lrr.horse_id)))) foals ON ((h.id = foals.dam_id)))
+     LEFT JOIN public.breedings b ON ((b.mare_id = h.id)))
+  WHERE ((h.status = ANY (ARRAY['broodmare'::public.horse_status, 'retired_broodmare'::public.horse_status, 'deceased'::public.horse_status])) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((h.date_of_death IS NULL) OR (h.date_of_birth <> h.date_of_death)) AND ((b.id IS NULL) OR (b.status = 'bred'::public.breeding_statuses)))
+  GROUP BY h.id
+ HAVING (((COALESCE(sum(foals.born), (0)::bigint) + COALESCE(sum(foals.unborn), (0)::bigint)) > 0) OR (count(b.id) > 0))
+  WITH NO DATA;
 
 
 --
@@ -4268,67 +4386,6 @@ ALTER SEQUENCE public.leases_id_seq OWNED BY public.leases.id;
 
 
 --
--- Name: lifetime_race_records; Type: MATERIALIZED VIEW; Schema: public; Owner: -
---
-
-CREATE MATERIALIZED VIEW public.lifetime_race_records AS
- SELECT horse_id,
-    (sum(starts))::integer AS starts,
-    (sum(stakes_starts))::integer AS stakes_starts,
-    (sum(wins))::integer AS wins,
-    (sum(stakes_wins))::integer AS stakes_wins,
-    (sum(seconds))::integer AS seconds,
-    (sum(stakes_seconds))::integer AS stakes_seconds,
-    (sum(thirds))::integer AS thirds,
-    (sum(stakes_thirds))::integer AS stakes_thirds,
-    (sum(fourths))::integer AS fourths,
-    (sum(stakes_fourths))::integer AS stakes_fourths,
-    sum(points) AS points,
-    (sum(earnings))::bigint AS earnings,
-        CASE
-            WHEN (sum(points) >= 1500) THEN 'FFCh.'::text
-            WHEN (sum(points) >= 1000) THEN 'WCh.'::text
-            WHEN (sum(points) >= 750) THEN 'ICh.'::text
-            WHEN (sum(points) >= 500) THEN 'NCh.'::text
-            WHEN (sum(points) >= 300) THEN 'GCh.'::text
-            WHEN (sum(points) >= 100) THEN 'Ch.'::text
-            ELSE ''::text
-        END AS title_abbreviation,
-    concat(
-        CASE
-            WHEN ((sum(starts))::integer = 0) THEN 'Unraced'::text
-            ELSE
-            CASE
-                WHEN ((sum(stakes_wins) > 1) AND ((sum(stakes_seconds) + sum(stakes_thirds)) > 1)) THEN 'Mult. Stakes Winner, Mult. Stakes Placed'::text
-                WHEN ((sum(stakes_wins) > 1) AND ((sum(stakes_seconds) + sum(stakes_thirds)) = 1)) THEN 'Mult. Stakes Winner, Stakes Placed'::text
-                WHEN ((sum(stakes_wins) = 1) AND ((sum(stakes_seconds) + sum(stakes_thirds)) > 1)) THEN 'Stakes Winner, Mult. Stakes Placed'::text
-                WHEN ((sum(stakes_wins) = 1) AND ((sum(stakes_seconds) + sum(stakes_thirds)) = 1)) THEN 'Stakes Winner, Stakes Placed'::text
-                WHEN ((sum(stakes_wins) > 1) AND ((sum(stakes_seconds) + sum(stakes_thirds)) = 0)) THEN 'Mult. Stakes Winner'::text
-                WHEN ((sum(stakes_wins) = 1) AND ((sum(stakes_seconds) + sum(stakes_thirds)) = 0)) THEN 'Stakes Winner'::text
-                WHEN ((sum(stakes_wins) = 0) AND ((sum(stakes_seconds) + sum(stakes_thirds)) > 1)) THEN 'Mult. Stakes Placed'::text
-                WHEN ((sum(stakes_wins) = 0) AND ((sum(stakes_seconds) + sum(stakes_thirds)) = 1)) THEN 'Stakes Placed'::text
-                WHEN ((sum(wins) > 1) AND ((sum(seconds) + sum(thirds)) > 1)) THEN 'Mult. Winner, Mult. Placed'::text
-                WHEN ((sum(wins) > 1) AND ((sum(seconds) + sum(thirds)) = 1)) THEN 'Mult. Winner, Placed'::text
-                WHEN ((sum(wins) = 1) AND ((sum(seconds) + sum(thirds)) > 1)) THEN 'Winner, Mult. Placed'::text
-                WHEN ((sum(wins) = 1) AND ((sum(seconds) + sum(thirds)) = 1)) THEN 'Winner, Placed'::text
-                WHEN ((sum(wins) > 1) AND ((sum(seconds) + sum(thirds)) = 1)) THEN 'Mult. Winner'::text
-                WHEN ((sum(wins) = 1) AND ((sum(seconds) + sum(thirds)) = 0)) THEN 'Winner'::text
-                WHEN ((sum(wins) = 0) AND ((sum(seconds) + sum(thirds)) > 1)) THEN 'Mult. Placed'::text
-                WHEN ((sum(wins) = 0) AND ((sum(seconds) + sum(thirds)) = 1)) THEN 'Placed'::text
-                ELSE 'Unplaced'::text
-            END
-        END,
-        CASE
-            WHEN (sum(earnings) > (2000000)::numeric) THEN ', Multi-Millionaire'::text
-            WHEN (sum(earnings) >= (1000000)::numeric) THEN ', Millionaire'::text
-            ELSE ''::text
-        END) AS description
-   FROM public.race_records
-  GROUP BY horse_id
-  WITH NO DATA;
-
-
---
 -- Name: racetracks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -5978,48 +6035,105 @@ ALTER SEQUENCE public.stud_breeders_cup_nominations_id_seq OWNED BY public.stud_
 
 
 --
--- Name: stud_foal_records; Type: TABLE; Schema: public; Owner: -
+-- Name: stud_foal_records; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE TABLE public.stud_foal_records (
-    id bigint NOT NULL,
-    horse_id bigint NOT NULL,
-    born_foals_count integer DEFAULT 0 NOT NULL,
-    raced_foals_count integer DEFAULT 0 NOT NULL,
-    winning_foals_count integer DEFAULT 0 NOT NULL,
-    stakes_winning_foals_count integer DEFAULT 0 NOT NULL,
-    multi_stakes_winning_foals_count integer DEFAULT 0 NOT NULL,
-    millionaire_foals_count integer DEFAULT 0 NOT NULL,
-    multi_millionaire_foals_count integer DEFAULT 0 NOT NULL,
-    total_foal_earnings bigint DEFAULT 0 NOT NULL,
-    total_foal_points integer DEFAULT 0 NOT NULL,
-    total_foal_races integer DEFAULT 0 NOT NULL,
-    breed_ranking character varying,
-    unborn_foals_count integer DEFAULT 0 NOT NULL,
-    stillborn_foals_count integer DEFAULT 0 NOT NULL,
-    crops_count integer DEFAULT 0 NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
-);
-
-
---
--- Name: stud_foal_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.stud_foal_records_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: stud_foal_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.stud_foal_records_id_seq OWNED BY public.stud_foal_records.id;
+CREATE MATERIALIZED VIEW public.stud_foal_records AS
+ SELECT h.id AS horse_id,
+    ( SELECT count(DISTINCT date_part('Year'::text, horses.date_of_birth)) AS crops
+           FROM public.horses
+          WHERE ((horses.date_of_birth < CURRENT_DATE) AND (horses.sire_id = h.id))
+          GROUP BY horses.sire_id) AS crops_count,
+    (COALESCE(sum(foals.born), (0)::bigint))::integer AS born_foals_count,
+    (COALESCE(sum(foals.unborn), (0)::bigint))::integer AS unborn_foals_count,
+        CASE
+            WHEN (COALESCE(sum(foals.born), (0)::bigint) > 0) THEN (COALESCE(sum(foals.stillborn), (0)::bigint))::integer
+            ELSE 0
+        END AS stillborn_foals_count,
+        CASE
+            WHEN (COALESCE(sum(foals.born), (0)::bigint) > 0) THEN (COALESCE(sum(foals.raced), (0)::bigint))::integer
+            ELSE 0
+        END AS raced_foals_count,
+        CASE
+            WHEN (COALESCE(sum(foals.born), (0)::bigint) > 0) THEN (COALESCE(sum(foals.winners), (0)::bigint))::integer
+            ELSE 0
+        END AS winning_foals_count,
+        CASE
+            WHEN (COALESCE(sum(foals.winners), (0)::bigint) > 0) THEN (COALESCE(sum(foals.stakes_winners), (0)::bigint))::integer
+            ELSE 0
+        END AS stakes_winning_foals_count,
+        CASE
+            WHEN (COALESCE(sum(foals.winners), (0)::bigint) > 0) THEN (COALESCE(sum(foals.multi_stakes_winners), (0)::bigint))::integer
+            ELSE 0
+        END AS multi_stakes_winning_foals_count,
+        CASE
+            WHEN (COALESCE(sum(foals.raced), (0)::bigint) > 0) THEN (COALESCE(sum(foals.millionaires), (0)::bigint))::integer
+            ELSE 0
+        END AS millionaire_foals_count,
+        CASE
+            WHEN (COALESCE(sum(foals.raced), (0)::bigint) > 0) THEN (COALESCE(sum(foals.multi_millionaires), (0)::bigint))::integer
+            ELSE 0
+        END AS multi_millionaire_foals_count,
+    (COALESCE(sum(foals.races), (0)::bigint))::integer AS total_foal_races,
+    (COALESCE(sum(foals.earnings), (0)::numeric))::bigint AS total_foal_earnings,
+    (COALESCE(sum(foals.points), (0)::numeric))::integer AS total_foal_points,
+    floor((sum(foals.earnings) / (sum(foals.raced))::numeric)) AS average_earnings,
+        CASE
+            WHEN (((sum(foals.points) / (sum(foals.races))::numeric) >= 8.1) AND (sum(foals.races) >= 500)) THEN 'platinum'::text
+            WHEN (((sum(foals.points) / (sum(foals.races))::numeric) >= 5.1) AND (sum(foals.races) >= 300)) THEN 'gold'::text
+            WHEN ((sum(foals.points) / (sum(foals.races))::numeric) >= 3.1) THEN 'silver'::text
+            WHEN ((sum(foals.points) / (sum(foals.races))::numeric) >= 0.1) THEN 'bronze'::text
+            ELSE NULL::text
+        END AS breed_ranking,
+    round((sum(foals.points) / (sum(foals.races))::numeric), 1) AS breed_ranking_points
+   FROM (public.horses h
+     LEFT JOIN ( SELECT
+                CASE
+                    WHEN (h2.date_of_birth > CURRENT_DATE) THEN 1
+                    ELSE 0
+                END AS unborn,
+                CASE
+                    WHEN (h2.date_of_birth <= CURRENT_DATE) THEN 1
+                    ELSE 0
+                END AS born,
+                CASE
+                    WHEN ((h2.date_of_birth <= CURRENT_DATE) AND (h2.date_of_birth = h2.date_of_death)) THEN 1
+                    ELSE 0
+                END AS stillborn,
+                CASE
+                    WHEN (lrr.starts > 0) THEN 1
+                    ELSE 0
+                END AS raced,
+                CASE
+                    WHEN (lrr.wins > 0) THEN 1
+                    ELSE 0
+                END AS winners,
+                CASE
+                    WHEN (lrr.stakes_wins >= 1) THEN 1
+                    ELSE 0
+                END AS stakes_winners,
+                CASE
+                    WHEN (lrr.stakes_wins > 1) THEN 1
+                    ELSE 0
+                END AS multi_stakes_winners,
+                CASE
+                    WHEN (lrr.earnings >= 1000000) THEN 1
+                    ELSE 0
+                END AS millionaires,
+                CASE
+                    WHEN (lrr.earnings >= 2000000) THEN 1
+                    ELSE 0
+                END AS multi_millionaires,
+            lrr.starts AS races,
+            lrr.earnings,
+            lrr.points,
+            h2.sire_id
+           FROM (public.horses h2
+             LEFT JOIN public.lifetime_race_records lrr ON ((h2.id = lrr.horse_id)))) foals ON ((h.id = foals.sire_id)))
+  WHERE ((h.status = ANY (ARRAY['stud'::public.horse_status, 'retired_stud'::public.horse_status, 'deceased'::public.horse_status])) AND (h.gender = ANY (ARRAY['stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((h.date_of_death IS NULL) OR (h.date_of_birth <> h.date_of_death)))
+  GROUP BY h.id
+ HAVING ((COALESCE(sum(foals.born), (0)::bigint) + COALESCE(sum(foals.unborn), (0)::bigint)) > 0)
+  WITH NO DATA;
 
 
 --
@@ -6663,13 +6777,6 @@ ALTER TABLE ONLY public.breedings ALTER COLUMN id SET DEFAULT nextval('public.br
 
 
 --
--- Name: broodmare_foal_records id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.broodmare_foal_records ALTER COLUMN id SET DEFAULT nextval('public.broodmare_foal_records_id_seq'::regclass);
-
-
---
 -- Name: broodmare_shipments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -7048,13 +7155,6 @@ ALTER TABLE ONLY public.stud_breeders_cup_nominations ALTER COLUMN id SET DEFAUL
 
 
 --
--- Name: stud_foal_records id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.stud_foal_records ALTER COLUMN id SET DEFAULT nextval('public.stud_foal_records_id_seq'::regclass);
-
-
---
 -- Name: track_season_info id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -7264,14 +7364,6 @@ ALTER TABLE ONLY public.breeding_stats
 
 ALTER TABLE ONLY public.breedings
     ADD CONSTRAINT breedings_pkey PRIMARY KEY (id);
-
-
---
--- Name: broodmare_foal_records broodmare_foal_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.broodmare_foal_records
-    ADD CONSTRAINT broodmare_foal_records_pkey PRIMARY KEY (id);
 
 
 --
@@ -7723,14 +7815,6 @@ ALTER TABLE ONLY public.stud_breeders_cup_nominations
 
 
 --
--- Name: stud_foal_records stud_foal_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.stud_foal_records
-    ADD CONSTRAINT stud_foal_records_pkey PRIMARY KEY (id);
-
-
---
 -- Name: track_season_info track_season_info_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7845,13 +7929,6 @@ CREATE UNIQUE INDEX idx_on_horse_id_first_jockey_id_second_jockey_id_th_4d3e2bb1
 --
 
 CREATE UNIQUE INDEX idx_on_horse_id_first_jockey_id_second_jockey_id_th_b7c0ac41cd ON public.race_options USING btree (horse_id, first_jockey_id, second_jockey_id, third_jockey_id);
-
-
---
--- Name: idx_on_multi_stakes_winning_foals_count_d86a3500a8; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX idx_on_multi_stakes_winning_foals_count_d86a3500a8 ON public.broodmare_foal_records USING btree (multi_stakes_winning_foals_count);
 
 
 --
@@ -8247,87 +8324,10 @@ CREATE INDEX index_breedings_on_year ON public.breedings USING btree (year);
 
 
 --
--- Name: index_broodmare_foal_records_on_born_foals_count; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_broodmare_foal_records_on_born_foals_count ON public.broodmare_foal_records USING btree (born_foals_count);
-
-
---
--- Name: index_broodmare_foal_records_on_breed_ranking; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_broodmare_foal_records_on_breed_ranking ON public.broodmare_foal_records USING btree (breed_ranking);
-
-
---
 -- Name: index_broodmare_foal_records_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_broodmare_foal_records_on_horse_id ON public.broodmare_foal_records USING btree (horse_id);
-
-
---
--- Name: index_broodmare_foal_records_on_millionaire_foals_count; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_broodmare_foal_records_on_millionaire_foals_count ON public.broodmare_foal_records USING btree (millionaire_foals_count);
-
-
---
--- Name: index_broodmare_foal_records_on_multi_millionaire_foals_count; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_broodmare_foal_records_on_multi_millionaire_foals_count ON public.broodmare_foal_records USING btree (multi_millionaire_foals_count);
-
-
---
--- Name: index_broodmare_foal_records_on_raced_foals_count; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_broodmare_foal_records_on_raced_foals_count ON public.broodmare_foal_records USING btree (raced_foals_count);
-
-
---
--- Name: index_broodmare_foal_records_on_stakes_winning_foals_count; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_broodmare_foal_records_on_stakes_winning_foals_count ON public.broodmare_foal_records USING btree (stakes_winning_foals_count);
-
-
---
--- Name: index_broodmare_foal_records_on_stillborn_foals_count; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_broodmare_foal_records_on_stillborn_foals_count ON public.broodmare_foal_records USING btree (stillborn_foals_count);
-
-
---
--- Name: index_broodmare_foal_records_on_total_foal_points; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_broodmare_foal_records_on_total_foal_points ON public.broodmare_foal_records USING btree (total_foal_points);
-
-
---
--- Name: index_broodmare_foal_records_on_total_foal_races; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_broodmare_foal_records_on_total_foal_races ON public.broodmare_foal_records USING btree (total_foal_races);
-
-
---
--- Name: index_broodmare_foal_records_on_unborn_foals_count; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_broodmare_foal_records_on_unborn_foals_count ON public.broodmare_foal_records USING btree (unborn_foals_count);
-
-
---
--- Name: index_broodmare_foal_records_on_winning_foals_count; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_broodmare_foal_records_on_winning_foals_count ON public.broodmare_foal_records USING btree (winning_foals_count);
 
 
 --
@@ -10186,13 +10186,6 @@ CREATE INDEX index_stud_breeders_cup_nominations_on_year ON public.stud_breeders
 
 
 --
--- Name: index_stud_foal_records_on_born_foals_count; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_stud_foal_records_on_born_foals_count ON public.stud_foal_records USING btree (born_foals_count);
-
-
---
 -- Name: index_stud_foal_records_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -11200,14 +11193,6 @@ ALTER TABLE ONLY public.race_entries
 
 
 --
--- Name: stud_foal_records fk_rails_97dfbe062f; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.stud_foal_records
-    ADD CONSTRAINT fk_rails_97dfbe062f FOREIGN KEY (horse_id) REFERENCES public.horses(id);
-
-
---
 -- Name: race_result_horses fk_rails_98b699570e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -11600,14 +11585,6 @@ ALTER TABLE ONLY public.auction_horses
 
 
 --
--- Name: broodmare_foal_records fk_rails_f03f5afd0c; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.broodmare_foal_records
-    ADD CONSTRAINT fk_rails_f03f5afd0c FOREIGN KEY (horse_id) REFERENCES public.horses(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
 -- Name: race_result_horses fk_rails_f05befc048; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -11694,6 +11671,9 @@ ALTER TABLE ONLY public.famous_studs
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260516143932'),
+('20260516133825'),
+('20260516103608'),
 ('20260515131341'),
 ('20260513220159'),
 ('20260513220053'),

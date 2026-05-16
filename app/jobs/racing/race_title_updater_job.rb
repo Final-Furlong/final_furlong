@@ -15,9 +15,9 @@ class Racing::RaceTitleUpdaterJob < ApplicationJob
     end
 
     step :process do |step|
-      Horses::Horse.racehorse.joins(:lifetime_race_record).where.not(lifetime_race_record: { title_abbr: [nil, ""] }).find_each(start: step.cursor) do |horse|
+      Horses::Horse.racehorse.joins(:lifetime_race_record).where.not(lifetime_race_record: { title_abbreviation: [nil, ""] }).find_each(start: step.cursor) do |horse|
         horse.update(title_abbr: horse.lifetime_race_record.title_abbreviation)
-        horses += 1
+        horses += 1 if horse.changed?
         step.advance! from: horse.id
       end
     end

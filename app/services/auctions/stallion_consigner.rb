@@ -5,7 +5,7 @@ module Auctions
       query = if stakes_quality
         starting_query.joins(:stud_foal_record).merge(Horses::StudFoalRecord.gold.or(Horses::StudFoalRecord.platinum)).select(:id)
       else
-        starting_query.joins(:stud_foal_record).merge(Horses::StudFoalRecord.not_gold_or_platinum)
+        starting_query.left_outer_joins(:stud_foal_record).merge(Horses::StudFoalRecord.not_gold_or_platinum)
       end
       query.random_order.limit(number)
     end
