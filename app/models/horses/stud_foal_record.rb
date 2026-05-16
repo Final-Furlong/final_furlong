@@ -3,27 +3,21 @@ module Horses
     include BreedRankable
 
     self.table_name = "stud_foal_records"
+    self.primary_key = :horse_id
 
     belongs_to :stud, class_name: "Horse", foreign_key: :horse_id, inverse_of: :stud_foal_record
 
-    validates :crops_count, :born_foals_count, :stillborn_foals_count, :unborn_foals_count,
-      :raced_foals_count, :winning_foals_count, :stakes_winning_foals_count,
-      :multi_stakes_winning_foals_count, :millionaire_foals_count,
-      :multi_millionaire_foals_count, :total_foal_earnings,
-      :total_foal_races, :total_foal_points, presence: true
-    validates :crops_count, :born_foals_count, :stillborn_foals_count, :unborn_foals_count,
-      :raced_foals_count, :winning_foals_count, :stakes_winning_foals_count,
-      :multi_stakes_winning_foals_count, :millionaire_foals_count,
-      :multi_millionaire_foals_count, :total_foal_earnings,
-      :total_foal_races, :total_foal_points,
-      numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-    validates :stillborn_foals_count, comparison: { less_than_or_equal_to: :born_foals_count }
-    validates :raced_foals_count, comparison: { less_than_or_equal_to: :born_foals_count }
-    validates :winning_foals_count, comparison: { less_than_or_equal_to: :raced_foals_count }
-    validates :stakes_winning_foals_count, comparison: { less_than_or_equal_to: :winning_foals_count }
-    validates :multi_stakes_winning_foals_count, comparison: { less_than_or_equal_to: :stakes_winning_foals_count }
-    validates :millionaire_foals_count, comparison: { less_than_or_equal_to: :raced_foals_count }
-    validates :multi_millionaire_foals_count, comparison: { less_than_or_equal_to: :millionaire_foals_count }
+    def readonly?
+      true
+    end
+
+    def self.refresh
+      Scenic.database.refresh_materialized_view(table_name, concurrently: false, cascade: false)
+    end
+
+    def self.populated?
+      Scenic.database.populated?(table_name)
+    end
 
     def living_foals_count
       born_foals_count - stillborn_foals_count
@@ -31,7 +25,7 @@ module Horses
 
     def living_foals_string
       value = living_foals_count.to_s
-      if crops_count.positive?
+      if crops_count.to_i.positive?
         crop_string = I18n.t("activerecord.attributes.horses/stud_foal_record.crop")
         value += " (#{crops_count} #{crop_string.downcase.pluralize(crops_count)})"
       end
@@ -80,32 +74,26 @@ end
 # Table name: stud_foal_records
 # Database name: primary
 #
-#  id                               :bigint           not null, primary key
-#  born_foals_count                 :integer          default(0), not null, indexed
-#  breed_ranking                    :string
-#  crops_count                      :integer          default(0), not null
-#  millionaire_foals_count          :integer          default(0), not null
-#  multi_millionaire_foals_count    :integer          default(0), not null
-#  multi_stakes_winning_foals_count :integer          default(0), not null
-#  raced_foals_count                :integer          default(0), not null
-#  stakes_winning_foals_count       :integer          default(0), not null
-#  stillborn_foals_count            :integer          default(0), not null
-#  total_foal_earnings              :bigint           default(0), not null
-#  total_foal_points                :integer          default(0), not null
-#  total_foal_races                 :integer          default(0), not null
-#  unborn_foals_count               :integer          default(0), not null
-#  winning_foals_count              :integer          default(0), not null
-#  created_at                       :datetime         not null
-#  updated_at                       :datetime         not null
-#  horse_id                         :bigint           not null, uniquely indexed
+#  average_earnings                 :decimal(, )
+#  born_foals_count                 :integer
+#  breed_ranking                    :text
+#  breed_ranking_points             :decimal(, )
+#  crops_count                      :bigint
+#  millionaire_foals_count          :integer
+#  multi_millionaire_foals_count    :integer
+#  multi_stakes_winning_foals_count :integer
+#  raced_foals_count                :integer
+#  stakes_winning_foals_count       :integer
+#  stillborn_foals_count            :integer
+#  total_foal_earnings              :bigint
+#  total_foal_points                :integer
+#  total_foal_races                 :integer
+#  unborn_foals_count               :integer
+#  winning_foals_count              :integer
+#  horse_id                         :bigint           primary key, uniquely indexed
 #
 # Indexes
 #
-#  index_stud_foal_records_on_born_foals_count  (born_foals_count)
-#  index_stud_foal_records_on_horse_id          (horse_id) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (horse_id => horses.id)
+#  index_stud_foal_records_on_horse_id  (horse_id) UNIQUE
 #
 

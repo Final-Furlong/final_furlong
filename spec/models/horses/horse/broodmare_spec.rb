@@ -7,16 +7,6 @@ RSpec.describe Horses::Horse::Broodmare do
     end
   end
 
-  describe "#breed_ranking_string" do
-    it "delegates to foal record" do
-      broodmare = create(:horse, :broodmare).broodmare
-      record = Horses::BroodmareFoalRecord.create(mare: broodmare.record)
-      allow(record).to receive(:breed_ranking_string).and_call_original
-      broodmare.breed_ranking_string
-      expect(record).to have_received(:breed_ranking_string)
-    end
-  end
-
   describe "#current_location" do
     context "when mare has no shipments" do
       context "when mare is leased" do

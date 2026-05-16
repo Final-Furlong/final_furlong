@@ -11,7 +11,7 @@ module BreedRankable
     def breed_ranking_string
       return I18n.t("common.none") if breed_ranking.blank?
 
-      "#{breed_ranking.titleize} (#{total_foal_points.fdiv(total_foal_races).round(1)})"
+      "#{breed_ranking.titleize} (#{breed_ranking_points})"
     end
 
     def breed_ranking_abbr

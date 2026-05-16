@@ -40,13 +40,7 @@ RSpec.describe "Boarding" do
   end
 
   def horse
-    return @horse if defined?(@horse)
-
-    @horse = create(:horse, :racehorse, :with_appearance, owner: stable)
-    Racing::RaceRecord.refresh
-    Racing::LifetimeRaceRecord.refresh
-    Racing::RaceQualification.refresh
-    @horse
+    @horse ||= create(:horse, :racehorse, :with_appearance, owner: stable)
   end
 
   def boarding
