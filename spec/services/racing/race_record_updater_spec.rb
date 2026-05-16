@@ -1,53 +1,57 @@
 RSpec.describe Racing::RaceRecordUpdater do
-  it "triggers view updates" do
+  it "triggers race record update" do
     Racing::RaceRecord.refresh
     Racing::AnnualRaceRecord.refresh
     Racing::LifetimeRaceRecord.refresh
     allow(Racing::RaceRecord).to receive(:refresh)
-    allow(Racing::AnnualRaceRecord).to receive(:refresh)
-    allow(Racing::LifetimeRaceRecord).to receive(:refresh)
 
     described_class.new.update_records(date:)
 
     expect(Racing::RaceRecord).to have_received(:refresh)
+  end
+
+  it "triggers annual race record update" do
+    Racing::RaceRecord.refresh
+    Racing::AnnualRaceRecord.refresh
+    Racing::LifetimeRaceRecord.refresh
+    allow(Racing::AnnualRaceRecord).to receive(:refresh)
+
+    described_class.new.update_records(date:)
+
     expect(Racing::AnnualRaceRecord).to have_received(:refresh)
+  end
+
+  it "triggers lifetime race record update" do
+    Racing::RaceRecord.refresh
+    Racing::AnnualRaceRecord.refresh
+    Racing::LifetimeRaceRecord.refresh
+    allow(Racing::LifetimeRaceRecord).to receive(:refresh)
+
+    described_class.new.update_records(date:)
+
     expect(Racing::LifetimeRaceRecord).to have_received(:refresh)
   end
 
-  context "when horses have sires" do
-    before do
-      horse1.update(sire: create(:horse, :stallion))
-      horse2.update(sire: create(:horse, :stallion))
-      horse3.update(sire: horse1.sire)
-      create(:race_result_horse, race: race_result, horse: horse1)
-      create(:race_result_horse, race: race_result, horse: horse2)
-      create(:race_result_horse, race: race_result, horse: horse3)
-    end
+  it "triggers broodmare record update" do
+    Racing::RaceRecord.refresh
+    Racing::AnnualRaceRecord.refresh
+    Racing::LifetimeRaceRecord.refresh
+    allow(Horses::BroodmareFoalRecord).to receive(:refresh)
 
-    it "triggers broodmare foal record update for each unique sire" do
-      described_class.new.update_records(date:)
+    described_class.new.update_records(date:)
 
-      expect(Horses::UpdateStudFoalRecordJob).to have_been_enqueued.with(horse1.sire)
-      expect(Horses::UpdateStudFoalRecordJob).to have_been_enqueued.with(horse2.sire)
-    end
+    expect(Horses::BroodmareFoalRecord).to have_received(:refresh)
   end
 
-  context "when horses have dams" do
-    before do
-      horse1.update(dam: create(:horse, :broodmare))
-      horse2.update(dam: create(:horse, :broodmare))
-      horse3.update(dam: horse1.dam)
-      create(:race_result_horse, race: race_result, horse: horse1)
-      create(:race_result_horse, race: race_result, horse: horse2)
-      create(:race_result_horse, race: race_result, horse: horse3)
-    end
+  it "triggers stud record update" do
+    Racing::RaceRecord.refresh
+    Racing::AnnualRaceRecord.refresh
+    Racing::LifetimeRaceRecord.refresh
+    allow(Horses::StudFoalRecord).to receive(:refresh)
 
-    it "triggers broodmare foal record update for each unique dam" do
-      described_class.new.update_records(date:)
+    described_class.new.update_records(date:)
 
-      expect(Horses::UpdateBroodmareFoalRecordJob).to have_been_enqueued.with(horse1.dam)
-      expect(Horses::UpdateBroodmareFoalRecordJob).to have_been_enqueued.with(horse2.dam)
-    end
+    expect(Horses::StudFoalRecord).to have_received(:refresh)
   end
 
   private
@@ -61,15 +65,15 @@ RSpec.describe Racing::RaceRecordUpdater do
   end
 
   def horse1
-    @horse1 ||= create(:horse, legacy_id: 10)
+    @horse1 ||= create(:horse)
   end
 
   def horse2
-    @horse2 ||= create(:horse, legacy_id: 20)
+    @horse2 ||= create(:horse)
   end
 
   def horse3
-    @horse3 ||= create(:horse, legacy_id: 20)
+    @horse3 ||= create(:horse)
   end
 end
 

@@ -498,7 +498,6 @@ RSpec.describe Auctions::HorseSeller do
 
   context "when horse is not the dam of unborn foals" do
     before do
-      Racing::RaceRecord.refresh
       foal_1.destroy
       foal_2.destroy
     end
@@ -528,4 +527,3 @@ RSpec.describe Auctions::HorseSeller do
     @foal_2 = create(:horse, :unborn, dam: horse)
   end
 end
-

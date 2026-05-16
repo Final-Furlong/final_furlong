@@ -6,8 +6,6 @@ RSpec.describe "Viewing Own Horses" do
       horse1 = create(:horse, owner: stable)
       horse2 = create(:horse, owner: stable)
       horse3 = create(:horse, owner: create(:stable))
-      Racing::RaceRecord.refresh
-      Racing::LifetimeRaceRecord.refresh
 
       sign_in(user)
       visit stable_horses_path

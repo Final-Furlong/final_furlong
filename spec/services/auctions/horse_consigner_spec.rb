@@ -89,23 +89,19 @@ RSpec.describe Auctions::HorseConsigner do
 
     it "returns created true" do
       create(:horse, :final_furlong)
-      create_views
       result = described_class.new.consign_horses(auction:)
       expect(result.created?).to be true
     end
 
     it "returns no error" do
       create(:horse, :final_furlong)
-      create_views
       result = described_class.new.consign_horses(auction:)
       expect(result.error).to be_nil
     end
   end
 
   context "when config specifies stallions" do
-    before do
-      stallion_config
-    end
+    before { stallion_config }
 
     it "returns created true" do
       result = described_class.new.consign_horses(auction:)
@@ -119,9 +115,7 @@ RSpec.describe Auctions::HorseConsigner do
   end
 
   context "when config specifies broodmares" do
-    before do
-      broodmare_config
-    end
+    before { broodmare_config }
 
     it "returns created true" do
       result = described_class.new.consign_horses(auction:)
@@ -135,10 +129,7 @@ RSpec.describe Auctions::HorseConsigner do
   end
 
   context "when config specifies yearlings" do
-    before do
-      yearling_config
-      create_views
-    end
+    before { yearling_config }
 
     it "returns created true" do
       result = described_class.new.consign_horses(auction:)
@@ -152,10 +143,7 @@ RSpec.describe Auctions::HorseConsigner do
   end
 
   context "when config specifies weanlings" do
-    before do
-      weanling_config
-      create_views
-    end
+    before { weanling_config }
 
     it "returns created true" do
       result = described_class.new.consign_horses(auction:)
@@ -238,12 +226,6 @@ RSpec.describe Auctions::HorseConsigner do
       maximum_age: 0,
       minimum_count: 5
     )
-  end
-
-  def create_views
-    Racing::RaceRecord.refresh
-    Racing::AnnualRaceRecord.refresh
-    Racing::LifetimeRaceRecord.refresh
   end
 end
 

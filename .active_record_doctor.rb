@@ -258,7 +258,9 @@ ActiveRecordDoctor.configure do
       "Racing::Qualifications::BreedersCupSteeplechaseClassic.horse",
       "Racing::Qualifications::BreedersCupSteeplechaseEndurance.horse",
       "Racing::Qualifications::BreedersCupSteeplechaseDistaff.horse",
-      "Racing::Qualifications::BreedersCupSteeplechaseDistaffEndurance.horse"
+      "Racing::Qualifications::BreedersCupSteeplechaseDistaffEndurance.horse",
+      "Horses::BroodmareFoalRecord.mare",
+      "Horses::StudFoalRecord.stud"
     ]
 
   detector :unindexed_foreign_keys,

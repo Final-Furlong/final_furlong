@@ -44,6 +44,17 @@ RSpec.configure do |config|
     metadata[:type] = :component
   end
 
+  config.before(:suite) do
+    views = %w[race_records annual_race_records lifetime_race_records race_qualifications stable_race_records stable_annual_race_records broodmare_foal_records stud_foal_records]
+
+    views.each do |view|
+      query = <<~SQL.squish
+        REFRESH MATERIALIZED VIEW public.#{view};
+      SQL
+      ActiveRecord::Base.connection.execute query
+    end
+  end
+
   config.use_transactional_fixtures = true
 
   # The different available types are documented in the features, such as in
