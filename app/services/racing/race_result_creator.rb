@@ -1,8 +1,9 @@
 module Racing
   class RaceResultCreator
-    attr_reader :date
+    attr_reader :date, :race
 
     def create_result(race:, time:, horses:)
+      @race = race
       @date = race.date
       race_result = Racing::RaceResult.find_or_initialize_by(date:, number: race.number)
       result = Result.new(race_result:)
@@ -32,9 +33,10 @@ module Racing
             result.created = race_horse.valid?
             stats = update_stats(horse: race_horse.horse, race_horse:, horses:, date:, racetrack: surface.racetrack)
             options = update_options(horse: race_horse.horse, surface:) if surface.surface == "steeplechase"
-            next if race_horse.save! && (options.blank? || options.save) && (stats.blank? || stats.save)
+            relationship = update_jockey_relationship(horse: race_horse.horse, horses:)
+            result.created = race_horse.save! && relationship.save! && (options.blank? || options.save) && (stats.blank? || stats.save)
+            next if result.created?
 
-            result.created = false
             raise ActiveRecord::Rollback, race_horse.errors.full_messages.to_sentence
           end
         end
@@ -87,6 +89,17 @@ module Racing
       options.assign_attributes(attrs)
     end
 
+    def update_jockey_relationship(horse:, horses:)
+      finish = horses.find { |hash| hash[:legacy_id] == horse.legacy_id }
+      entry = horse.race_entries.find_by(race:)
+      relationship = horse.jockey_relationships.find_or_initialize_by(jockey: entry.jockey)
+      relationship.experience += finish[:jockey_xp_gained].clamp(5, 20)
+      relationship.experience = relationship.experience.clamp(0, 100)
+      relationship.happiness += finish[:jockey_happiness_gained].clamp(5, 20)
+      relationship.happiness = relationship.happiness.clamp(0, 100)
+      relationship
+    end
+
     def update_stats(horse:, horses:, race_horse:, date:, racetrack:)
       stats = horse.racing_stats
       return unless stats
@@ -96,11 +109,11 @@ module Racing
       stats.energy = Config::Racing.minimum_energy if stats.energy < Config::Racing.minimum_energy
       stats.fitness += finish[:fitness_gained]
       stats.fitness = Config::Racing.maximum_fitness if stats.fitness > Config::Racing.maximum_fitness
-      stats.xp_current += finish[:experience_gained]
+      stats.xp_current += finish[:experience_gained].clamp(5, 20)
       stats.xp_current = Config::Racing.maximum_xp if stats.xp_current > Config::Racing.maximum_xp
       stats.natural_energy_current -= [10, finish[:natural_energy_used]].min
       if (data = horse.race_metadata)
-        data.update_grades(energy: stats.energy, fitness: stats.fitness, update_legacy: true)
+        data.update_grades(energy: stats.energy, fitness: stats.fitness)
         next_entry_date = horse.race_entries.where("date > ?", date).minimum(:date) || horse.future_race_entries.where("date > ?", date).minimum(:date)
         data.update(last_raced_at: date, next_entry_date:, racetrack:, location: racetrack.location, location_string: I18n.t("horse.location.at_racetrack", name: racetrack.name))
       end
@@ -136,7 +149,7 @@ module Racing
       horses.each do |horse|
         race_horse = Racing::RaceResultHorse.find_or_initialize_by(race: race_result, legacy_horse_id: horse[:legacy_id])
         horse_class = Horses::Horse.find_by(legacy_id: horse[:legacy_id])
-        entry = Racing::RaceEntry.joins(:race).where(race: { number: race_result.number, date: race_result.date }).find_by(horse: horse_class)
+        entry = horse_class.race_entries.find_by(race:)
         attrs = {
           horse: horse_class,
           stable: horse_class.manager,

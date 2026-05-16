@@ -25,6 +25,8 @@ module Api
             requires :experience_gained, type: Integer, desc: "XP Gained In The Race", values: 0..2_000
             requires :fitness_gained, type: Integer, desc: "Fitness Gained In The Race", values: 0..2_000
             requires :natural_energy_used, type: Integer, desc: "Natural Energy Used In The Race", values: 0..2_000
+            requires :jockey_happiness_gained, type: Integer, desc: "Amount of happiness gained with the jockey"
+            requires :jockey_xp_gained, type: Integer, desc: "Amount of experience gained with the jockey"
           end
         end
         post "/" do

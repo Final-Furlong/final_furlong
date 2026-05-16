@@ -68,9 +68,9 @@ module Workouts
         workout.confidence += rand(1...70)
         ActiveRecord::Base.transaction do
           relationship = Racing::HorseJockeyRelationship.find_or_initialize_by(horse: workout.horse, jockey: workout.jockey)
-          relationship.experience += gained_xp
+          relationship.experience += gained_xp.clamp(2, 5)
           relationship.experience = relationship.experience.clamp(0, 100)
-          relationship.happiness += gained_happiness
+          relationship.happiness += gained_happiness.clamp(1, 5)
           relationship.happiness = relationship.happiness.clamp(0, 100)
           relationship.save
           stats = horse.racing_stats

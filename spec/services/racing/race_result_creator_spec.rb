@@ -23,6 +23,14 @@ RSpec.describe Racing::RaceResultCreator do
           described_class.new.create_result(**new_params)
         end.to change(Racing::RaceResultHorse, :count).by(1)
       end
+
+      it "creates horse jockey relationship" do
+        new_params = params.dup
+        new_params[:horses] = horses.slice(0, 1)
+        expect do
+          described_class.new.create_result(**new_params)
+        end.to change(Racing::HorseJockeyRelationship, :count).by(1)
+      end
     end
 
     context "with multiple horses" do
@@ -41,6 +49,12 @@ RSpec.describe Racing::RaceResultCreator do
         expect do
           described_class.new.create_result(**params)
         end.to change(Racing::RaceResultHorse, :count).by(2)
+      end
+
+      it "creates horse jockey relationship" do
+        expect do
+          described_class.new.create_result(**params)
+        end.to change(Racing::HorseJockeyRelationship, :count).by(2)
       end
     end
 
@@ -149,7 +163,9 @@ RSpec.describe Racing::RaceResultCreator do
         speed_factor: 95,
         energy_used: 60,
         fitness_gained: 25,
-        natural_energy_used: 15
+        natural_energy_used: 15,
+        jockey_happiness_gained: 5,
+        jockey_xp_gained: 4
       },
       {
         finish_position: 2,
@@ -161,7 +177,9 @@ RSpec.describe Racing::RaceResultCreator do
         speed_factor: 91,
         energy_used: 60,
         fitness_gained: 25,
-        natural_energy_used: 15
+        natural_energy_used: 15,
+        jockey_happiness_gained: 5,
+        jockey_xp_gained: 4
       }
     ]
   end
