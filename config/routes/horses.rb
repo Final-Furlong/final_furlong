@@ -36,6 +36,8 @@ resources :horses, except: %i[new create destroy] do
     get :edit_name
     get "foal/:booking_id", to: "horse/foals#new", as: :new_foal
     post "foal/:booking_id", to: "horse/foals#create", as: :foal
+    get "gelding", to: "horses#gelding", as: :new_gelding
+    put "geld", to: "horses#geld", as: :gelding
     scope module: :horse, as: "horse" do
       resource :auction_consignment, only: %i[new create]
       resource :late_breeders_cup_nomination, only: %i[new create]
