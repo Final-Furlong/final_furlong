@@ -20,11 +20,11 @@ module CurrentStable
     end
 
     def geld?
-      false # TODO: implement gelding
-      # return false unless owner? || admin?
-      # return false unless %w[colt stallion].include?(record.gender)
+      return false if record.deceased?
+      return false if record.female?
+      return false if record.gelding?
 
-      # record.status != "stud"
+      owner?
     end
 
     def change_status?
@@ -53,6 +53,7 @@ module CurrentStable
       return false unless status_retired?
       return false if record.status == "stud"
       return false if record.female?
+      return false if record.gelding?
 
       status_stud_result.success?
     end

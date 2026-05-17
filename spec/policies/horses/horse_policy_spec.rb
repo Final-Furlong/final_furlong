@@ -112,6 +112,7 @@ RSpec.describe Horses::HorsePolicy do
         end
 
         it "denies when horse has foals" do
+          horse.update(gender: "mare")
           create(:horse, dam: horse)
           expect(policy).to permit_actions(:index, :show, :image, :thumbnail)
           expect(policy).not_to permit_actions(:edit_name, :update)
