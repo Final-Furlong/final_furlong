@@ -1149,6 +1149,68 @@ COMMENT ON COLUMN public.race_options.racing_style IS 'leading,off_pace,midpack,
 
 
 --
+-- Name: race_schedules; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.race_schedules (
+    id bigint NOT NULL,
+    day_number integer DEFAULT 1 NOT NULL,
+    date date NOT NULL,
+    number integer DEFAULT 1 NOT NULL,
+    race_type public.race_type DEFAULT 'maiden'::public.race_type NOT NULL,
+    age public.race_age DEFAULT '2'::public.race_age NOT NULL,
+    male_only boolean DEFAULT false NOT NULL,
+    female_only boolean DEFAULT false NOT NULL,
+    distance numeric(3,1) DEFAULT 5.0 NOT NULL,
+    grade public.race_grade,
+    surface_id bigint NOT NULL,
+    name character varying,
+    purse bigint DEFAULT 0 NOT NULL,
+    claiming_price integer,
+    qualification_required boolean DEFAULT false NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL,
+    entries_count integer DEFAULT 0 NOT NULL,
+    requires_qualification boolean DEFAULT false NOT NULL
+);
+
+
+--
+-- Name: COLUMN race_schedules.race_type; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_schedules.race_type IS 'maiden, claiming, starter_allowance, nw1_allowance, nw2_allowance, nw3_allowance, allowance, stakes';
+
+
+--
+-- Name: COLUMN race_schedules.age; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_schedules.age IS '2, 2+, 3, 3+, 4, 4+';
+
+
+--
+-- Name: COLUMN race_schedules.grade; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.race_schedules.grade IS 'Ungraded, Grade 3, Grade 2, Grade 1';
+
+
+--
+-- Name: supplemental_breeders_cup_nominations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.supplemental_breeders_cup_nominations (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    race_id bigint NOT NULL,
+    year integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
 -- Name: breeders_cup_classic_qualifiers; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -1162,12 +1224,14 @@ CREATE VIEW public.breeders_cup_classic_qualifiers AS
     COALESCE(allowance.races, (0)::bigint) AS allowance_wins,
     COALESCE(starts.points, (0)::bigint) AS points,
         CASE
-            WHEN (bn.id IS NULL) THEN false
-            ELSE true
+            WHEN ((sbn.id IS NOT NULL) OR (bn.id IS NOT NULL)) THEN true
+            ELSE false
         END AS nominated
-   FROM ((((((((public.horses h
+   FROM ((((((((((public.horses h
      LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
      LEFT JOIN public.breeders_cup_nominations bn ON ((h.id = bn.horse_id)))
+     LEFT JOIN public.supplemental_breeders_cup_nominations sbn ON ((h.id = sbn.horse_id)))
+     LEFT JOIN public.race_schedules rs ON ((sbn.race_id = rs.id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             sum(rr.points) AS points,
             rr.horse_id
@@ -1211,7 +1275,7 @@ CREATE VIEW public.breeders_cup_classic_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 8.0) AND (r.distance <= 12.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Classic'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
 
 
 --
@@ -1228,11 +1292,13 @@ CREATE VIEW public.breeders_cup_dirt_mile_qualifiers AS
     COALESCE(allowance.races, (0)::bigint) AS allowance_wins,
     COALESCE(starts.points, (0)::bigint) AS points,
         CASE
-            WHEN (bn.id IS NULL) THEN false
-            ELSE true
+            WHEN ((sbn.id IS NOT NULL) OR (bn.id IS NOT NULL)) THEN true
+            ELSE false
         END AS nominated
-   FROM ((((((((public.horses h
+   FROM ((((((((((public.horses h
      LEFT JOIN public.breeders_cup_nominations bn ON ((h.id = bn.horse_id)))
+     LEFT JOIN public.supplemental_breeders_cup_nominations sbn ON ((h.id = sbn.horse_id)))
+     LEFT JOIN public.race_schedules rs ON ((sbn.race_id = rs.id)))
      LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             sum(rr.points) AS points,
@@ -1277,7 +1343,7 @@ CREATE VIEW public.breeders_cup_dirt_mile_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Dirt Mile'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
 
 
 --
@@ -1294,12 +1360,14 @@ CREATE VIEW public.breeders_cup_distaff_qualifiers AS
     COALESCE(allowance.races, (0)::bigint) AS allowance_wins,
     COALESCE(starts.points, (0)::bigint) AS points,
         CASE
-            WHEN (bn.id IS NULL) THEN false
-            ELSE true
+            WHEN ((sbn.id IS NOT NULL) OR (bn.id IS NOT NULL)) THEN true
+            ELSE false
         END AS nominated
-   FROM ((((((((public.horses h
+   FROM ((((((((((public.horses h
      LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
      LEFT JOIN public.breeders_cup_nominations bn ON ((h.id = bn.horse_id)))
+     LEFT JOIN public.supplemental_breeders_cup_nominations sbn ON ((h.id = sbn.horse_id)))
+     LEFT JOIN public.race_schedules rs ON ((sbn.race_id = rs.id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             sum(rr.points) AS points,
             rr.horse_id
@@ -1343,7 +1411,7 @@ CREATE VIEW public.breeders_cup_distaff_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 5.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Distaff'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
 
 
 --
@@ -1360,12 +1428,14 @@ CREATE VIEW public.breeders_cup_filly_mare_sprint_qualifiers AS
     COALESCE(allowance.races, (0)::bigint) AS allowance_wins,
     COALESCE(starts.points, (0)::bigint) AS points,
         CASE
-            WHEN (bn.id IS NULL) THEN false
-            ELSE true
+            WHEN ((sbn.id IS NOT NULL) OR (bn.id IS NOT NULL)) THEN true
+            ELSE false
         END AS nominated
-   FROM ((((((((public.horses h
+   FROM ((((((((((public.horses h
      LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
      LEFT JOIN public.breeders_cup_nominations bn ON ((h.id = bn.horse_id)))
+     LEFT JOIN public.supplemental_breeders_cup_nominations sbn ON ((h.id = sbn.horse_id)))
+     LEFT JOIN public.race_schedules rs ON ((sbn.race_id = rs.id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             sum(rr.points) AS points,
             rr.horse_id
@@ -1409,7 +1479,7 @@ CREATE VIEW public.breeders_cup_filly_mare_sprint_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Filly & Mare Sprint'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
 
 
 --
@@ -1426,12 +1496,14 @@ CREATE VIEW public.breeders_cup_filly_mare_turf_qualifiers AS
     COALESCE(allowance.races, (0)::bigint) AS allowance_wins,
     COALESCE(starts.points, (0)::bigint) AS points,
         CASE
-            WHEN (bn.id IS NULL) THEN false
-            ELSE true
+            WHEN ((sbn.id IS NOT NULL) OR (bn.id IS NOT NULL)) THEN true
+            ELSE false
         END AS nominated
-   FROM ((((((((public.horses h
+   FROM ((((((((((public.horses h
      LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
      LEFT JOIN public.breeders_cup_nominations bn ON ((h.id = bn.horse_id)))
+     LEFT JOIN public.supplemental_breeders_cup_nominations sbn ON ((h.id = sbn.horse_id)))
+     LEFT JOIN public.race_schedules rs ON ((sbn.race_id = rs.id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             sum(rr.points) AS points,
             rr.horse_id
@@ -1475,7 +1547,7 @@ CREATE VIEW public.breeders_cup_filly_mare_turf_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Filly & Mare Turf'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
 
 
 --
@@ -1492,11 +1564,13 @@ CREATE VIEW public.breeders_cup_juvenile_fillies_qualifiers AS
     COALESCE(allowance_wins.wins, (0)::bigint) AS allowance_wins,
     COALESCE(dirt.points, (0)::bigint) AS points,
         CASE
-            WHEN (bn.id IS NULL) THEN false
-            ELSE true
+            WHEN ((sbn.id IS NOT NULL) OR (bn.id IS NOT NULL)) THEN true
+            ELSE false
         END AS nominated
-   FROM (((public.horses h
+   FROM (((((public.horses h
      LEFT JOIN public.breeders_cup_nominations bn ON ((h.id = bn.horse_id)))
+     LEFT JOIN public.supplemental_breeders_cup_nominations sbn ON ((h.id = sbn.horse_id)))
+     LEFT JOIN public.race_schedules rs ON ((sbn.race_id = rs.id)))
      LEFT JOIN ( SELECT race_records.horse_id,
             (sum(race_records.starts))::integer AS starts,
             (sum(race_records.stakes_starts))::integer AS stakes_starts,
@@ -1514,7 +1588,7 @@ CREATE VIEW public.breeders_cup_juvenile_fillies_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age = 2) AND (h.gender = 'filly'::public.horse_gender) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0));
+  WHERE ((h.age = 2) AND (h.gender = 'filly'::public.horse_gender) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Juvenile Fillies'::text))) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0));
 
 
 --
@@ -1531,11 +1605,13 @@ CREATE VIEW public.breeders_cup_juvenile_qualifiers AS
     COALESCE(allowance_wins.wins, (0)::bigint) AS allowance_wins,
     COALESCE(dirt.points, (0)::bigint) AS points,
         CASE
-            WHEN (bn.id IS NULL) THEN false
-            ELSE true
+            WHEN ((sbn.id IS NOT NULL) OR (bn.id IS NOT NULL)) THEN true
+            ELSE false
         END AS nominated
-   FROM (((public.horses h
+   FROM (((((public.horses h
      LEFT JOIN public.breeders_cup_nominations bn ON ((h.id = bn.horse_id)))
+     LEFT JOIN public.supplemental_breeders_cup_nominations sbn ON ((h.id = sbn.horse_id)))
+     LEFT JOIN public.race_schedules rs ON ((sbn.race_id = rs.id)))
      LEFT JOIN ( SELECT race_records.horse_id,
             (sum(race_records.starts))::integer AS starts,
             (sum(race_records.stakes_starts))::integer AS stakes_starts,
@@ -1553,7 +1629,7 @@ CREATE VIEW public.breeders_cup_juvenile_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age = 2) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0));
+  WHERE ((h.age = 2) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Juvenile'::text))) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0));
 
 
 --
@@ -1570,11 +1646,13 @@ CREATE VIEW public.breeders_cup_juvenile_turf_fillies_qualifiers AS
     COALESCE(allowance_wins.wins, (0)::bigint) AS allowance_wins,
     COALESCE(turf.points, (0)::bigint) AS points,
         CASE
-            WHEN (bn.id IS NULL) THEN false
-            ELSE true
+            WHEN ((sbn.id IS NOT NULL) OR (bn.id IS NOT NULL)) THEN true
+            ELSE false
         END AS nominated
-   FROM (((public.horses h
+   FROM (((((public.horses h
      LEFT JOIN public.breeders_cup_nominations bn ON ((h.id = bn.horse_id)))
+     LEFT JOIN public.supplemental_breeders_cup_nominations sbn ON ((h.id = sbn.horse_id)))
+     LEFT JOIN public.race_schedules rs ON ((sbn.race_id = rs.id)))
      LEFT JOIN ( SELECT race_records.horse_id,
             (sum(race_records.starts))::integer AS starts,
             (sum(race_records.stakes_starts))::integer AS stakes_starts,
@@ -1592,7 +1670,7 @@ CREATE VIEW public.breeders_cup_juvenile_turf_fillies_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age = 2) AND (h.gender = 'filly'::public.horse_gender) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0));
+  WHERE ((h.age = 2) AND (h.gender = 'filly'::public.horse_gender) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Juvenile Turf Fillies'::text))) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0));
 
 
 --
@@ -1609,11 +1687,13 @@ CREATE VIEW public.breeders_cup_juvenile_turf_qualifiers AS
     COALESCE(allowance_wins.wins, (0)::bigint) AS allowance_wins,
     COALESCE(turf.points, (0)::bigint) AS points,
         CASE
-            WHEN (bn.id IS NULL) THEN false
-            ELSE true
+            WHEN ((sbn.id IS NOT NULL) OR (bn.id IS NOT NULL)) THEN true
+            ELSE false
         END AS nominated
-   FROM (((public.horses h
+   FROM (((((public.horses h
      LEFT JOIN public.breeders_cup_nominations bn ON ((h.id = bn.horse_id)))
+     LEFT JOIN public.supplemental_breeders_cup_nominations sbn ON ((h.id = sbn.horse_id)))
+     LEFT JOIN public.race_schedules rs ON ((sbn.race_id = rs.id)))
      LEFT JOIN ( SELECT race_records.horse_id,
             (sum(race_records.starts))::integer AS starts,
             (sum(race_records.stakes_starts))::integer AS stakes_starts,
@@ -1631,7 +1711,7 @@ CREATE VIEW public.breeders_cup_juvenile_turf_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age = 2) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0));
+  WHERE ((h.age = 2) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Juvenile Turf'::text))) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0));
 
 
 --
@@ -1648,12 +1728,14 @@ CREATE VIEW public.breeders_cup_mile_qualifiers AS
     COALESCE(allowance.races, (0)::bigint) AS allowance_wins,
     COALESCE(starts.points, (0)::bigint) AS points,
         CASE
-            WHEN (bn.id IS NULL) THEN false
-            ELSE true
+            WHEN ((sbn.id IS NOT NULL) OR (bn.id IS NOT NULL)) THEN true
+            ELSE false
         END AS nominated
-   FROM ((((((((public.horses h
+   FROM ((((((((((public.horses h
      LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
      LEFT JOIN public.breeders_cup_nominations bn ON ((h.id = bn.horse_id)))
+     LEFT JOIN public.supplemental_breeders_cup_nominations sbn ON ((h.id = sbn.horse_id)))
+     LEFT JOIN public.race_schedules rs ON ((sbn.race_id = rs.id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             sum(rr.points) AS points,
             rr.horse_id
@@ -1697,7 +1779,7 @@ CREATE VIEW public.breeders_cup_mile_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Mile'::text))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
 
 
 --
@@ -1768,12 +1850,14 @@ CREATE VIEW public.breeders_cup_sc_classic_qualifiers AS
     COALESCE(allowance.races, (0)::bigint) AS allowance_wins,
     COALESCE(starts.points, (0)::bigint) AS points,
         CASE
-            WHEN (bn.id IS NULL) THEN false
-            ELSE true
+            WHEN ((sbn.id IS NOT NULL) OR (bn.id IS NOT NULL)) THEN true
+            ELSE false
         END AS nominated
-   FROM ((((((((public.horses h
+   FROM ((((((((((public.horses h
      LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
      LEFT JOIN public.breeders_cup_nominations bn ON ((h.id = bn.horse_id)))
+     LEFT JOIN public.supplemental_breeders_cup_nominations sbn ON ((h.id = sbn.horse_id)))
+     LEFT JOIN public.race_schedules rs ON ((sbn.race_id = rs.id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             sum(rr.points) AS points,
             rr.horse_id
@@ -1817,7 +1901,7 @@ CREATE VIEW public.breeders_cup_sc_classic_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 9.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Classic'::text))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
 
 
 --
@@ -1834,12 +1918,14 @@ CREATE VIEW public.breeders_cup_sc_distaff_endurance_qualifiers AS
     COALESCE(allowance.races, (0)::bigint) AS allowance_wins,
     COALESCE(starts.points, (0)::bigint) AS points,
         CASE
-            WHEN (bn.id IS NULL) THEN false
-            ELSE true
+            WHEN ((sbn.id IS NOT NULL) OR (bn.id IS NOT NULL)) THEN true
+            ELSE false
         END AS nominated
-   FROM ((((((((public.horses h
+   FROM ((((((((((public.horses h
      LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
      LEFT JOIN public.breeders_cup_nominations bn ON ((h.id = bn.horse_id)))
+     LEFT JOIN public.supplemental_breeders_cup_nominations sbn ON ((h.id = sbn.horse_id)))
+     LEFT JOIN public.race_schedules rs ON ((sbn.race_id = rs.id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             sum(rr.points) AS points,
             rr.horse_id
@@ -1883,7 +1969,7 @@ CREATE VIEW public.breeders_cup_sc_distaff_endurance_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Distaff Endurance'::text))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
 
 
 --
@@ -1900,12 +1986,14 @@ CREATE VIEW public.breeders_cup_sc_distaff_qualifiers AS
     COALESCE(allowance.races, (0)::bigint) AS allowance_wins,
     COALESCE(starts.points, (0)::bigint) AS points,
         CASE
-            WHEN (bn.id IS NULL) THEN false
-            ELSE true
+            WHEN ((sbn.id IS NOT NULL) OR (bn.id IS NOT NULL)) THEN true
+            ELSE false
         END AS nominated
-   FROM ((((((((public.horses h
+   FROM ((((((((((public.horses h
      LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
      LEFT JOIN public.breeders_cup_nominations bn ON ((h.id = bn.horse_id)))
+     LEFT JOIN public.supplemental_breeders_cup_nominations sbn ON ((h.id = sbn.horse_id)))
+     LEFT JOIN public.race_schedules rs ON ((sbn.race_id = rs.id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             sum(rr.points) AS points,
             rr.horse_id
@@ -1949,7 +2037,7 @@ CREATE VIEW public.breeders_cup_sc_distaff_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 7.0) AND (r.distance <= 16.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Distaff'::text))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
 
 
 --
@@ -1966,12 +2054,14 @@ CREATE VIEW public.breeders_cup_sc_endurance_qualifiers AS
     COALESCE(allowance.races, (0)::bigint) AS allowance_wins,
     COALESCE(starts.points, (0)::bigint) AS points,
         CASE
-            WHEN (bn.id IS NULL) THEN false
-            ELSE true
+            WHEN ((sbn.id IS NOT NULL) OR (bn.id IS NOT NULL)) THEN true
+            ELSE false
         END AS nominated
-   FROM ((((((((public.horses h
+   FROM ((((((((((public.horses h
      LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
      LEFT JOIN public.breeders_cup_nominations bn ON ((h.id = bn.horse_id)))
+     LEFT JOIN public.supplemental_breeders_cup_nominations sbn ON ((h.id = sbn.horse_id)))
+     LEFT JOIN public.race_schedules rs ON ((sbn.race_id = rs.id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             sum(rr.points) AS points,
             rr.horse_id
@@ -2015,7 +2105,7 @@ CREATE VIEW public.breeders_cup_sc_endurance_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 14.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Endurance'::text))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
 
 
 --
@@ -2032,12 +2122,14 @@ CREATE VIEW public.breeders_cup_sc_sprint_qualifiers AS
     COALESCE(allowance.races, (0)::bigint) AS allowance_wins,
     COALESCE(starts.points, (0)::bigint) AS points,
         CASE
-            WHEN (bn.id IS NULL) THEN false
-            ELSE true
+            WHEN ((sbn.id IS NOT NULL) OR (bn.id IS NOT NULL)) THEN true
+            ELSE false
         END AS nominated
-   FROM ((((((((public.horses h
+   FROM ((((((((((public.horses h
      LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
      LEFT JOIN public.breeders_cup_nominations bn ON ((h.id = bn.horse_id)))
+     LEFT JOIN public.supplemental_breeders_cup_nominations sbn ON ((h.id = sbn.horse_id)))
+     LEFT JOIN public.race_schedules rs ON ((sbn.race_id = rs.id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             sum(rr.points) AS points,
             rr.horse_id
@@ -2081,7 +2173,7 @@ CREATE VIEW public.breeders_cup_sc_sprint_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 5.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Sprint'::text))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
 
 
 --
@@ -2098,12 +2190,14 @@ CREATE VIEW public.breeders_cup_sprint_qualifiers AS
     COALESCE(allowance.races, (0)::bigint) AS allowance_wins,
     COALESCE(starts.points, (0)::bigint) AS points,
         CASE
-            WHEN (bn.id IS NULL) THEN false
-            ELSE true
+            WHEN ((sbn.id IS NOT NULL) OR (bn.id IS NOT NULL)) THEN true
+            ELSE false
         END AS nominated
-   FROM ((((((((public.horses h
+   FROM ((((((((((public.horses h
      LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
      LEFT JOIN public.breeders_cup_nominations bn ON ((h.id = bn.horse_id)))
+     LEFT JOIN public.supplemental_breeders_cup_nominations sbn ON ((h.id = sbn.horse_id)))
+     LEFT JOIN public.race_schedules rs ON ((sbn.race_id = rs.id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             sum(rr.points) AS points,
             rr.horse_id
@@ -2147,7 +2241,7 @@ CREATE VIEW public.breeders_cup_sprint_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Sprint'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
 
 
 --
@@ -2164,12 +2258,14 @@ CREATE VIEW public.breeders_cup_turf_qualifiers AS
     COALESCE(allowance.races, (0)::bigint) AS allowance_wins,
     COALESCE(starts.points, (0)::bigint) AS points,
         CASE
-            WHEN (bn.id IS NULL) THEN false
-            ELSE true
+            WHEN ((sbn.id IS NOT NULL) OR (bn.id IS NOT NULL)) THEN true
+            ELSE false
         END AS nominated
-   FROM ((((((((public.horses h
+   FROM ((((((((((public.horses h
      LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
      LEFT JOIN public.breeders_cup_nominations bn ON ((h.id = bn.horse_id)))
+     LEFT JOIN public.supplemental_breeders_cup_nominations sbn ON ((h.id = sbn.horse_id)))
+     LEFT JOIN public.race_schedules rs ON ((sbn.race_id = rs.id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             sum(rr.points) AS points,
             rr.horse_id
@@ -2213,7 +2309,7 @@ CREATE VIEW public.breeders_cup_turf_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Turf'::text))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
 
 
 --
@@ -2230,12 +2326,14 @@ CREATE VIEW public.breeders_cup_turf_sprint_qualifiers AS
     COALESCE(allowance.races, (0)::bigint) AS allowance_wins,
     COALESCE(starts.points, (0)::bigint) AS points,
         CASE
-            WHEN (bn.id IS NULL) THEN false
-            ELSE true
+            WHEN ((sbn.id IS NOT NULL) OR (bn.id IS NOT NULL)) THEN true
+            ELSE false
         END AS nominated
-   FROM ((((((((public.horses h
+   FROM ((((((((((public.horses h
      LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
      LEFT JOIN public.breeders_cup_nominations bn ON ((h.id = bn.horse_id)))
+     LEFT JOIN public.supplemental_breeders_cup_nominations sbn ON ((h.id = sbn.horse_id)))
+     LEFT JOIN public.race_schedules rs ON ((sbn.race_id = rs.id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             sum(rr.points) AS points,
             rr.horse_id
@@ -2279,7 +2377,7 @@ CREATE VIEW public.breeders_cup_turf_sprint_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Turf Sprint'::text))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
 
 
 --
@@ -5137,54 +5235,6 @@ ALTER SEQUENCE public.race_results_id_seq OWNED BY public.race_results.id;
 
 
 --
--- Name: race_schedules; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.race_schedules (
-    id bigint NOT NULL,
-    day_number integer DEFAULT 1 NOT NULL,
-    date date NOT NULL,
-    number integer DEFAULT 1 NOT NULL,
-    race_type public.race_type DEFAULT 'maiden'::public.race_type NOT NULL,
-    age public.race_age DEFAULT '2'::public.race_age NOT NULL,
-    male_only boolean DEFAULT false NOT NULL,
-    female_only boolean DEFAULT false NOT NULL,
-    distance numeric(3,1) DEFAULT 5.0 NOT NULL,
-    grade public.race_grade,
-    surface_id bigint NOT NULL,
-    name character varying,
-    purse bigint DEFAULT 0 NOT NULL,
-    claiming_price integer,
-    qualification_required boolean DEFAULT false NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL,
-    entries_count integer DEFAULT 0 NOT NULL,
-    requires_qualification boolean DEFAULT false NOT NULL
-);
-
-
---
--- Name: COLUMN race_schedules.race_type; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.race_schedules.race_type IS 'maiden, claiming, starter_allowance, nw1_allowance, nw2_allowance, nw3_allowance, allowance, stakes';
-
-
---
--- Name: COLUMN race_schedules.age; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.race_schedules.age IS '2, 2+, 3, 3+, 4, 4+';
-
-
---
--- Name: COLUMN race_schedules.grade; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.race_schedules.grade IS 'Ungraded, Grade 3, Grade 2, Grade 1';
-
-
---
 -- Name: race_schedules_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -6134,6 +6184,25 @@ CREATE MATERIALIZED VIEW public.stud_foal_records AS
   GROUP BY h.id
  HAVING ((COALESCE(sum(foals.born), (0)::bigint) + COALESCE(sum(foals.unborn), (0)::bigint)) > 0)
   WITH NO DATA;
+
+
+--
+-- Name: supplemental_breeders_cup_nominations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.supplemental_breeders_cup_nominations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: supplemental_breeders_cup_nominations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.supplemental_breeders_cup_nominations_id_seq OWNED BY public.supplemental_breeders_cup_nominations.id;
 
 
 --
@@ -7155,6 +7224,13 @@ ALTER TABLE ONLY public.stud_breeders_cup_nominations ALTER COLUMN id SET DEFAUL
 
 
 --
+-- Name: supplemental_breeders_cup_nominations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.supplemental_breeders_cup_nominations ALTER COLUMN id SET DEFAULT nextval('public.supplemental_breeders_cup_nominations_id_seq'::regclass);
+
+
+--
 -- Name: track_season_info id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -7815,6 +7891,14 @@ ALTER TABLE ONLY public.stud_breeders_cup_nominations
 
 
 --
+-- Name: supplemental_breeders_cup_nominations supplemental_breeders_cup_nominations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
+    ADD CONSTRAINT supplemental_breeders_cup_nominations_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: track_season_info track_season_info_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7929,6 +8013,13 @@ CREATE UNIQUE INDEX idx_on_horse_id_first_jockey_id_second_jockey_id_th_4d3e2bb1
 --
 
 CREATE UNIQUE INDEX idx_on_horse_id_first_jockey_id_second_jockey_id_th_b7c0ac41cd ON public.race_options USING btree (horse_id, first_jockey_id, second_jockey_id, third_jockey_id);
+
+
+--
+-- Name: idx_on_horse_id_race_id_949895b079; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_horse_id_race_id_949895b079 ON public.supplemental_breeders_cup_nominations USING btree (horse_id, race_id);
 
 
 --
@@ -10193,6 +10284,27 @@ CREATE UNIQUE INDEX index_stud_foal_records_on_horse_id ON public.stud_foal_reco
 
 
 --
+-- Name: index_supplemental_breeders_cup_nominations_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_supplemental_breeders_cup_nominations_on_horse_id ON public.supplemental_breeders_cup_nominations USING btree (horse_id);
+
+
+--
+-- Name: index_supplemental_breeders_cup_nominations_on_race_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_supplemental_breeders_cup_nominations_on_race_id ON public.supplemental_breeders_cup_nominations USING btree (race_id);
+
+
+--
+-- Name: index_supplemental_breeders_cup_nominations_on_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_supplemental_breeders_cup_nominations_on_year ON public.supplemental_breeders_cup_nominations USING btree (year);
+
+
+--
 -- Name: index_track_season_info_on_location_id_and_season; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -10854,6 +10966,14 @@ ALTER TABLE ONLY public.stables
 
 ALTER TABLE ONLY public.racehorse_shipments
     ADD CONSTRAINT fk_rails_3480687307 FOREIGN KEY (starting_location_id) REFERENCES public.locations(id);
+
+
+--
+-- Name: supplemental_breeders_cup_nominations fk_rails_36e2b07f80; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
+    ADD CONSTRAINT fk_rails_36e2b07f80 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
 
 
 --
@@ -11665,12 +11785,39 @@ ALTER TABLE ONLY public.famous_studs
 
 
 --
+-- Name: supplemental_breeders_cup_nominations fk_rails_ff44933a12; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
+    ADD CONSTRAINT fk_rails_ff44933a12 FOREIGN KEY (race_id) REFERENCES public.race_schedules(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260517123647'),
+('20260517123608'),
+('20260517123515'),
+('20260517123433'),
+('20260517123343'),
+('20260517123302'),
+('20260517123217'),
+('20260517123124'),
+('20260517123025'),
+('20260517122925'),
+('20260517122104'),
+('20260517122010'),
+('20260517121825'),
+('20260517121708'),
+('20260517121616'),
+('20260517121514'),
+('20260517121408'),
+('20260517120224'),
+('20260517113234'),
 ('20260516143932'),
 ('20260516133825'),
 ('20260516103608'),
