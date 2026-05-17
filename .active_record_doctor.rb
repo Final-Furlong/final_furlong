@@ -268,7 +268,8 @@ ActiveRecordDoctor.configure do
       "new_horse_genetics",
       "new_race_result_horses",
       "horse_genetics",
-      "breedings"
+      "breedings",
+      "supplemental_breeders_cup_nominations"
     ]
 
   detector :extraneous_indexes,
