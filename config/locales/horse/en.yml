@@ -476,6 +476,7 @@ en:
         supplement: Supplement
         supplemental_nomination: You can supplementally nominate %{name} for a single Breeders' Cup race only, in the current year. For supplemental nominations, the rank listed is the rank your horse would have on the list of qualified horses if you nominate it today. There is no guarantee that the horse will be eligible to run on Breeders' Cup day.
         supplemental_nomination_deadline: 'Deadline for supplemental nominations: 2 weeks before entries open (%{date}).'
+        supplemented: Supplementally Nominated
         tied_count:
           one: Tied with 1 other horse
           other: Tied with %{count} other horses
@@ -737,6 +738,14 @@ en:
       update:
         failure: Could not update stud options
         success: Stud options were successfully updated
+    supplemental_breeders_cup_nominations:
+      create:
+        success: Successfully nominated %{name} for %{year} %{race}
+      form:
+        description: Supplemental nomination is for a single Breeders' Cup race only, in the current year.
+        fee: The fee for nomination is 5% of the race purse, which for %{race} is %{fee}
+        nominate: Nominate
+        title: Supplemental Nomination for %{name} in %{year}
     titles:
       abbr:
         final_furlong: FFCh.

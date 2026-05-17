@@ -4,6 +4,7 @@ shared:
   breeders_cup_nomination_deadline_days: 14
   breeders_cup_nomination_fee_nominated_stud: 150000
   breeders_cup_nomination_fee_unnominated_stud: 250000
+  breeders_cup_nomination_fee_supplemental_percent: 0.05
   breeders_cup_stud_nomination_deadline_month: 2
   breeders_cup_stud_nomination_deadline_day: 14
   breeders_series_deadline_days: 14
