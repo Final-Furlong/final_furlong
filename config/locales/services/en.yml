@@ -136,3 +136,9 @@ en:
       horse_already_nominated: This horse is already nominated
       horse_not_stud: This horse is not a breeding stallion
       stable_not_manager: You do not own this horse
+    supplemental_breeders_cup_nominator:
+      budget_description: 'Supplemental Breeders'' Cup Nomination: %{name} (%{year} %{race})'
+      cannot_afford_fee: You cannot afford the fee for nomination
+      horse_already_nominated: This horse is already nominated for the Breeders' Cup
+      horse_not_racehorse: You cannot late nominate non-racehorses
+      stable_not_manager: You do not own or lease this horse

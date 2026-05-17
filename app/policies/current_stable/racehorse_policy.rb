@@ -71,6 +71,7 @@ module CurrentStable
     end
 
     def supplemental_nominate?
+      return false if record.supplemental_breeders_cup_nomination
       bc_nom = record.breeders_cup_nomination
       return false if bc_nom&.effective_year.present? && bc_nom.effective_year <= Date.current.year
 

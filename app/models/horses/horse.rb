@@ -64,6 +64,7 @@ module Horses
     has_many :jockey_relationships, class_name: "Racing::HorseJockeyRelationship", dependent: :delete_all
     has_one :race_metadata, class_name: "Racing::RacehorseMetadata", dependent: :delete
     has_one :breeders_cup_nomination, class_name: "Racing::BreedersCupNomination", inverse_of: :horse, dependent: :delete
+    has_one :supplemental_breeders_cup_nomination, class_name: "Racing::SupplementalBreedersCupNomination", inverse_of: :horse, dependent: :delete
     # rubocop:disable Rails/HasManyOrHasOneDependent
     has_one :breeders_cup_juvenile_qualification, class_name: "Racing::Qualifications::BreedersCupJuvenile", inverse_of: :horse
     has_one :breeders_cup_juvenile_fillies_qualification, class_name: "Racing::Qualifications::BreedersCupJuvenileFilly", inverse_of: :horse

@@ -24,15 +24,19 @@ end
 #  effective_year :integer          indexed
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  horse_id       :bigint           not null, uniquely indexed
+#  horse_id       :bigint           not null, uniquely indexed, uniquely indexed => [race_id]
+#  race_id        :bigint           uniquely indexed => [horse_id], indexed
 #
 # Indexes
 #
-#  index_breeders_cup_nominations_on_effective_year  (effective_year)
-#  index_breeders_cup_nominations_on_horse_id        (horse_id) UNIQUE
+#  index_breeders_cup_nominations_on_effective_year        (effective_year)
+#  index_breeders_cup_nominations_on_horse_id              (horse_id) UNIQUE
+#  index_breeders_cup_nominations_on_horse_id_and_race_id  (horse_id,race_id) UNIQUE WHERE (race_id IS NOT NULL)
+#  index_breeders_cup_nominations_on_race_id               (race_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (horse_id => horses.id)
+#  fk_rails_...  (race_id => race_schedules.id)
 #
 

@@ -39,6 +39,7 @@ resources :horses, except: %i[new create destroy] do
     scope module: :horse, as: "horse" do
       resource :auction_consignment, only: %i[new create]
       resource :late_breeders_cup_nomination, only: %i[new create]
+      resource :supplemental_breeders_cup_nomination, only: %i[new create]
       resources :events, only: :index
       resources :entries, only: :index
       resources :foals, only: :index
