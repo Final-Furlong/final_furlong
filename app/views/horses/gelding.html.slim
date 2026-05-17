@@ -1,0 +1,13 @@
+- title = t(".title", name: @horse.name)
+- content_for :title, title
+
+.text-center
+  h1.text-xl.font-bold= title
+
+p.my-2= t(".confirm")
+
+= form_with model: @horse, scope: :horse, url: gelding_horse_path(@horse), method: :put, data: { turbo_frame: "_top" } do |f|
+  = f.hidden_field :gender, value: 'gelding'
+  .float-right
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.confirm"))
