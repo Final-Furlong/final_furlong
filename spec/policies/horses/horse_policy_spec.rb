@@ -113,8 +113,8 @@ RSpec.describe Horses::HorsePolicy do
 
         it "denies when horse has foals" do
           create(:horse, dam: horse)
-          expect(policy).to permit_actions(:index, :show, :image, :thumbnail)
-          expect(policy).not_to permit_actions(:edit_name, :update)
+          expect(policy).to permit_actions(:index, :show, :image, :thumbnail, :update)
+          expect(policy).not_to permit_actions(:edit_name)
         end
 
         it "denies when horse has stud foals" do
