@@ -1,0 +1,19 @@
+/# locals: (horse:, race:, error: nil)
+ruby:
+  title = t(".title", name: horse.name_with_title, year: Date.current.year + 1)
+  content_for :title, title
+
+.text-center
+  h1.text-xl.font-bold.mb-2= title
+
+- if error
+  p.alert.alert-error.alert-outline= error
+
+p.py-2= t(".description")
+p= t(".fee", race: race.name, fee: Game::MoneyFormatter.new(race.purse * Config::Racing.breeders_cup_nomination_fee_supplemental_percent))
+
+= form_tag horse_supplemental_breeders_cup_nomination_path(horse), remote: true do |f|
+  = hidden_field_tag 'nomination[race_id]', race.id
+  .float-right
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t(".nominate"))
