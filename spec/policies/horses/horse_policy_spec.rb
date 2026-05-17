@@ -106,12 +106,14 @@ RSpec.describe Horses::HorsePolicy do
         let(:horse) { create(:horse, name: nil, sire_id: nil, dam_id: nil, owner: user.stable) }
 
         it "denies when horse has raced" do
+          horse.update(gender: "mare")
           create(:race_result_horse, horse:)
           expect(policy).to permit_actions(:index, :show, :image, :thumbnail)
           expect(policy).not_to permit_actions(:edit_name, :update)
         end
 
         it "denies when horse has foals" do
+          horse.update(gender: "mare")
           create(:horse, dam: horse)
           expect(policy).to permit_actions(:index, :show, :image, :thumbnail)
           expect(policy).not_to permit_actions(:edit_name, :update)

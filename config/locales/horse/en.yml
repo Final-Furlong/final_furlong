@@ -11,6 +11,7 @@ en:
       create_sale_offer: Set for Sale
       current_lease:
         terminate: End Lease Early
+      geld: Geld
       give_to_game: Transfer to Final Furlong
       lease_offer:
         accept: Accept Lease
