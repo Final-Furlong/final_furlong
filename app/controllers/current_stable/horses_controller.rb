@@ -44,7 +44,7 @@ module CurrentStable
     private
 
     def horse_params
-      params.expect(horse: [:name])
+      params.expect(horse: [:name, :gender])
     end
 
     def set_active_status
