@@ -3,6 +3,11 @@ en:
   horses:
     edit_name_form:
       name_hint: Max %{count} characters
+    geld:
+      success: "%{name} was gelded"
+    gelding:
+      confirm: Are you sure you wish to geld this horse? This cannot be undone.
+      title: Geld %{name}?
     horse: Horse
     index:
       auctions: Auctions (%{count})

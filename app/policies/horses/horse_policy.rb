@@ -36,7 +36,7 @@ module Horses
     end
 
     def update?
-      edit_name?
+      edit_name? || CurrentStable::HorsePolicy.new(user, record).geld?
     end
 
     private
