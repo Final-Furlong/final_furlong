@@ -4,7 +4,7 @@ class HorsesController < ApplicationController
   skip_before_action :validate_non_numeric_id, only: :image
   before_action :set_horse, except: %i[index image]
   before_action :set_horse_by_legacy_id, only: :image
-  before_action :authorize_horse, except: :index
+  before_action :authorize_horse, except: %i[index gelding geld]
   before_action :set_status_counts, only: :index
 
   attr_accessor :horses, :horse, :statuses, :active_status, :query
@@ -45,6 +45,24 @@ class HorsesController < ApplicationController
         end
       end
     end
+  end
+
+  def gelding
+    @horse = Horses::Horse.find(params[:id])
+    authorize @horse, :geld?, policy_class: CurrentStable::HorsePolicy
+  end
+
+  def geld
+    @horse = Horses::Horse.find(params[:id])
+    authorize @horse, :geld?, policy_class: CurrentStable::HorsePolicy
+    result = Horses::Gelder.new.geld(horse: @horse)
+    @horse.reload
+    if result.updated?
+      flash[:success] = t(".success", name: @horse.name)
+    else
+      flash[:error] = result.error
+    end
+    redirect_to horse_path(@horse)
   end
 
   def image
@@ -92,7 +110,7 @@ class HorsesController < ApplicationController
   end
 
   def horse_params
-    params.expect(horse: [:name])
+    params.expect(horse: [:name, :gender])
   end
 
   def set_active_status

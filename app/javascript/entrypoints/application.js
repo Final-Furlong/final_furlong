@@ -26,6 +26,11 @@ window.Turbo.config.forms.confirm = (message, element, submitter) => {
 
   messageElement.textContent = message
 
+  console.log(message)
+  console.log(element)
+  console.log(element.dataset)
+  console.log("submitter")
+  console.log(submitter)
   // Allow custom title text via data-turbo-confirm-title
   titleElement.textContent = submitter?.dataset.turboConfirmTitle || "Confirm"
   // Allow custom button text via data-turbo-confirm-button

@@ -98,8 +98,8 @@ RSpec.describe Horses::HorsePolicy do
         horse.dam_id = build(:dam)
         horse.name = nil
         horse.status = "racehorse"
-        expect(policy).to permit_actions(:index, :show, :image, :thumbnail)
-        expect(policy).not_to permit_actions(:edit_name, :update)
+        expect(policy).to permit_actions(:index, :show, :image, :thumbnail, :update)
+        expect(policy).not_to permit_actions(:edit_name)
       end
 
       context "when horse has activity" do
