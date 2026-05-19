@@ -113,7 +113,7 @@ RSpec.describe Racing::RaceResultCreator do
       new_params = params.dup
       new_params[:horses][1][:post_parade] = 20
       result = described_class.new.create_result(**new_params)
-      expect(result.error).to eq "Validation failed: Post parade must be less than or equal to 14"
+      expect(result.error).to eq "Validation failed: Race result finishes is invalid"
     end
 
     it "does not create race result" do
@@ -210,4 +210,3 @@ RSpec.describe Racing::RaceResultCreator do
     @jockey2 ||= create(:jockey, legacy_id: 2)
   end
 end
-

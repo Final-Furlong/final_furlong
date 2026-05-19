@@ -88,8 +88,20 @@ RSpec.describe Horses::HorsePolicy do
         horse.sire_id = nil
         horse.dam_id = nil
         horse.status = "racehorse"
+        horse.gender = "filly"
         expect(policy).to permit_actions(:index, :show, :image, :thumbnail)
         expect(policy).not_to permit_actions(:edit_name, :update)
+      end
+
+      it "allows when horse can be gelded" do
+        horse.date_of_birth = Date.current - 2.years
+        horse.name = "Bob"
+        horse.sire_id = nil
+        horse.dam_id = nil
+        horse.status = "racehorse"
+        horse.gender = "colt"
+        expect(policy).to permit_actions(:index, :show, :image, :thumbnail, :update)
+        expect(policy).not_to permit_actions(:edit_name)
       end
 
       it "denies when horse is 2yo and not created" do
