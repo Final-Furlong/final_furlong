@@ -82,7 +82,7 @@ module Racing
     def create_transactions(horse:)
       return if horse.earnings.zero?
 
-      jockey_fee = race.purse * Config::Racing.send[:"jockey_fee_#{horse.jockey.status.downcase}_percent"]
+      jockey_fee = horse.earnings * Config::Racing.send[:"jockey_fee_#{horse.jockey.status.downcase}_percent"]
       Accounts::BudgetTransactionCreator.new.create_transaction(
         stable: horse.stable,
         description: I18n.t("racing.race.budget_race_winnings", date: race.date, number: race.number, name: horse.horse.name, position: horse.finish_position.ordinalize),

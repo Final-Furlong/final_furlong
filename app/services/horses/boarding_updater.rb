@@ -17,7 +17,7 @@ module Horses
           days_string += "day".pluralize(boarding.days)
           description = I18n.t("services.boarding.updater.budget_description", name: horse.name, days: days_string)
           amount = boarding.days * Config::Boarding.daily_fee * -1
-          Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount:)
+          Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount:, increment_available_balance: true)
           racetrack_name = ::Racing::Racetrack.where(location: boarding.location).pick(:name)
           horse.race_metadata&.update(location_string: I18n.t("horse.location.at_racetrack", name: racetrack_name))
           result.boarding = boarding
