@@ -210,3 +210,4 @@ RSpec.describe Racing::RaceResultCreator do
     @jockey2 ||= create(:jockey, legacy_id: 2)
   end
 end
+
