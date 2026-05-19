@@ -34,13 +34,14 @@ module Racing
             stats = update_stats(horse: race_horse.horse, race_horse:, horses:, date:, racetrack: surface.racetrack)
             options = update_options(horse: race_horse.horse, surface:) if surface.surface == "steeplechase"
             relationship = update_jockey_relationship(horse: race_horse.horse, horses:)
+            create_transactions(horse: race_horse)
             result.created = race_horse.save! && relationship.save! && (options.blank? || options.save) && (stats.blank? || stats.save)
             next if result.created?
 
             raise ActiveRecord::Rollback, race_horse.errors.full_messages.to_sentence
           end
         end
-        if max_race?(date:, number: race.number)
+        if max_race?(number: race.number)
           Racing::RaceResultHorse.counter_culture_fix_counts
           Racing::RaceRecord.refresh
           Racing::LifetimeRaceRecord.refresh
@@ -74,8 +75,24 @@ module Racing
 
     private
 
-    def max_race?(date:, number:)
+    def max_race?(number:)
       number == Racing::RaceSchedule.where(date:).maximum(:number)
+    end
+
+    def create_transactions(horse:)
+      return if horse.earnings.zero?
+
+      jockey_fee = race.purse * Config::Racing.send[:"jockey_fee_#{horse.jockey.status.downcase}_percent"]
+      Accounts::BudgetTransactionCreator.new.create_transaction(
+        stable: horse.stable,
+        description: I18n.t("racing.race.budget_race_winnings", date: race.date, number: race.number, name: horse.horse.name, position: horse.finish_position.ordinalize),
+        amount: horse.earnings
+      )
+      Accounts::BudgetTransactionCreator.new.create_transaction(
+        stable: horse.stable,
+        description: I18n.t("racing.race.budget_jockey_fee", date: race.date, number: race.number, jockey: horse.jockey.name, horse: horse.horse.name),
+        amount: jockey_fee * -1
+      )
     end
 
     def update_options(horse:, surface:)

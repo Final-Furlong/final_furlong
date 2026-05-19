@@ -16,6 +16,8 @@ shared:
   entry_limit_older: 2
   entry_limit_increase_final_day: 1
   entry_limit_overall: 14
+  jockey_fee_veteran_percent: 0.15
+  jockey_fee_apprentice_percent: 0.1
   future_race_limit: 5
   future_race_max_days: 90
   future_race_max_schedule_days: 180

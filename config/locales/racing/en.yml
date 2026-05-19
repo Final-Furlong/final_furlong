@@ -102,6 +102,8 @@ en:
         4+: 4yo+
       allowance: Allowance
       breeders_cup_qualifiers: Breeders' Cup Qualifiers
+      budget_race_jockey_fee: 'Jockey Fee: %{date}, Race %{number} - %{jockey} riding %{horse}'
+      budget_race_winnings: 'Race Winnings: %{date}, Race %{number} - %{name} (%{position})'
       claim: Claim
       claiming: Claiming
       claiming_with_price: Claiming (%{price})
