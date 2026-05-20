@@ -1,0 +1,5 @@
+= turbo_stream.append "result-list" do
+  = render partial: "result", collection: @results, as: :result
+
+= turbo_stream.replace "load_more" do
+  = render_load_more(@pagy)

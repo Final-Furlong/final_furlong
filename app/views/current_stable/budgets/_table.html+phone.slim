@@ -1,0 +1,27 @@
+/# locals: (dashboard:)
+- query = dashboard.query
+.budget-search-results
+  - if dashboard.transactions.empty?
+    h4.text-muted.text-center.my-2
+      small= t("current_stable.budgets.index.no_transactions")
+  - else
+    .w-full
+      .text-center
+        .stats.border.border-neutral-content/50.shadow.stats-vertical.md:stats-horizontal
+          .stat
+            .stat-value.text-success.text-sm.md:text-xl.lg:text-3xl
+              = Game::MoneyFormatter.new(dashboard.total_positive).to_s
+            .stat-desc= t(".total_earned")
+          .stat
+            .stat-value.text-error.text-sm.md:text-xl.lg:text-3xl
+              = Game::MoneyFormatter.new(dashboard.total_negative).to_s
+            .stat-desc= t(".total_spent")
+          .stat
+            .stat-value.text-sm.md:text-xl.lg:text-3xl class=(dashboard.total_diff.positive? ? 'text-success' : 'text-error')
+              = Game::MoneyFormatter.new(dashboard.total_diff).to_s
+            .stat-desc= dashboard.total_diff.positive? ? t(".total_gained") : t(".total_lost")
+      span.w-full.my-2.hint.sm:flex.sm:justify-center.sm:items-center
+        = t(".balance_disclaimer")
+    .mx-auto.mt-2
+      = turbo_frame_tag "budget-transaction-list" do
+        = render partial: "budget_entry", collection: dashboard.transactions, as: :transaction

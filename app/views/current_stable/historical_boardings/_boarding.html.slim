@@ -1,0 +1,12 @@
+/# locals: (boarding:)
+- horse = boarding.horse
+tr
+  td class="text-#{horse.gender.downcase}"= link_to horse.name, horse_path(horse), data: { turbo_frame: "_top" }
+  td= l(boarding.start_date)
+  td= l(boarding.end_date)
+  td= boarding.location.racetrack.name
+  td
+    - if boarding.days.to_i.positive?
+      = boarding.days.to_i
+    - else
+      = (boarding.end_date - boarding.start_date).to_i

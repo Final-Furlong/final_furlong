@@ -1,0 +1,5 @@
+= turbo_stream.append "workout-list" do
+  = render partial: "workout_horse", collection: horses, as: :horse
+
+= turbo_stream.replace "load_more" do
+  = render_load_more(@pagy)

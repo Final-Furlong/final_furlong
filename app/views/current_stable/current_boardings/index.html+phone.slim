@@ -1,0 +1,9 @@
+= turbo_frame_tag "#{Current.stable.slug}-current-boardings" do
+  - if @boardings.blank?
+    p= t("current_stable.boardings.index.no_boardings")
+  - else
+    .mx-auto.overflow-x-auto.w-full
+      p.text-sm.my-2= t(".mobile_explanation")
+      = turbo_frame_tag "boarding-list" do
+        = render partial: "boarding", collection: @boardings, as: :boarding
+    = render_load_more(@pagy)

@@ -1,0 +1,21 @@
+/# locals: (workout:)
+- horse = workout.horse
+- jockey = workout.jockey
+- racetrack = workout.racetrack
+tr
+  td class="text-#{horse.gender.downcase}"= link_to horse.name, horse_path(horse), data: { turbo_frame: "_top" }
+  td data-sort=workout.date = l(workout.date)
+  td data-sort="#{jockey.last_name}, #{jockey.first_name}" = jockey.full_name
+  td data-sort=workout.effort = "#{workout.effort}%"
+  td
+    = racetrack.name
+    = " ("
+    = workout.surface_name.titleize
+    = " - "
+    = workout.condition.titleize
+    = ")"
+  td=workout.equipment_string
+  td=workout.activity_string(1)
+  td=workout.activity_string(2)
+  td=workout.activity_string(3)
+  td=workout.comment.to_s(horse.name, horse.female?)

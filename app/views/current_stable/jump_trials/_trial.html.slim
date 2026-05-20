@@ -1,0 +1,15 @@
+/# locals: (trial:)
+- horse = trial.horse
+- jockey = trial.jockey
+- racetrack = trial.racetrack
+tr
+  td class="text-#{horse.gender.downcase}"= link_to horse.name, horse_path(horse), data: { turbo_frame: "_top" }
+  td= l(trial.date)
+  td= jockey.full_name
+  td
+    = racetrack.name
+    = " ("
+    = trial.condition.titleize
+    = ")"
+  td= trial.comment.to_s(horse.name, horse.female?)
+  td= trial.time_string

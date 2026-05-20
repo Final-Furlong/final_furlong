@@ -8,21 +8,11 @@ ruby:
           end
 - content_for :breadcrumbs do
   = render Nav::Breadcrumbs::Component.new( links: [{ name: Current.stable.name, href: current_stable_path },
-                                                    { name: title, href: "#", title: true }],
-                                            mobile_links: [{ name: Current.stable.name, href: current_stable_path },
-                                                    { name: t(".title"), href: "#", title: true }])
-
-div class="sm:hidden"
-  p
-    = t(".total_balance", amount: total_money)
-  - if Current.stable.total_balance > Current.stable.available_balance
-    p= t(".available_balance", amount: available_money)
+                                                    { name: title, href: "#", title: true }])
 
 = render 'filters', dashboard: @dashboard
-.card.card-border.mt-2.p-2.shadow-md.dark:border-1.dark:border-neutral-100
-  = turbo_stream_from "budgets"
-  .card-body
-    = turbo_frame_tag "budgets" do
+= turbo_frame_tag "stable-budget-search" do
+  .card.card-border.mt-2.p-2.shadow-md.dark:border-1.dark:border-neutral-100
+    .card-body
       = render "table", dashboard: @dashboard
-
-= render Ui::Pagination::Component.new(pagy: @dashboard.pagy, classes: 'mt-2')
+      = render_load_more(@dashboard.pagy)

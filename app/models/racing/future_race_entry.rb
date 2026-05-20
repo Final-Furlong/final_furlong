@@ -29,7 +29,7 @@ module Racing
     scope :succeeded, -> { where(entry_status: "entered") }
     scope :errored, -> { where(entry_status: "errored") }
     scope :skipped, -> { where(entry_status: "skipped") }
-    scope :ordered_by_status, -> { order("entry_status ASC NULLS LAST") }
+    scope :sort_by_status, -> { order("entry_status ASC NULLS LAST") }
 
     def ship_mode = super.to_s.inquiry
 
@@ -68,6 +68,14 @@ module Racing
       Config::Shipping.modes.map do |mode|
         [I18n.t("racing.shipping.mode.#{mode}"), mode]
       end
+    end
+
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[date entry_error entry_status equipment racing_style]
+    end
+
+    def self.ransackable_associations(_auth_object = nil)
+      %w[first_jockey horse race second_jockey third_jockey]
     end
   end
 end
