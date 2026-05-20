@@ -74,7 +74,6 @@ en:
           other: "%{count} Weanlings"
     budgets:
       index:
-        available_balance: 'Available: %{amount}'
         category:
           activity_points: Activity Points
           all_breeding: All Breeding
@@ -104,7 +103,6 @@ en:
         title: Budget
         title_with_available: 'Budget: (%{total}, %{available} available)'
         title_with_total: 'Budget: %{total}'
-        total_balance: 'Total: %{amount}'
       search:
         category: Category
         date_from: Date From
@@ -125,7 +123,7 @@ en:
         title: Current Race Entries
         title_with_date: Current Race Entries for %{date}
     future_entries:
-      show:
+      entry:
         already_entered: Already racing on this day
         cannot_afford_entry: Cannot afford to entry
         cannot_afford_shipping: Cannot afford to ship
@@ -137,15 +135,16 @@ en:
         not_at_track: Not at the track
         not_qualified: Not qualified for race
         race_full: Race Full
-        result: Entry Result
         scheduled: Scheduled
         skipped: Not Entered
-        title: Scheduled Entries
-        title_with_date: Scheduled Entries for %{date}
         too_few_days_since_last_injury: Not long enough since last injury
         too_few_days_since_last_race: Not long enough since last race
         too_few_rest_days: Too few rest days
         too_few_workouts: Too few workouts
+      show:
+        result: Entry Result
+        title: Scheduled Entries
+        title_with_date: Scheduled Entries for %{date}
     horses:
       index:
         lease_offers: Lease Offers (%{count})
@@ -242,19 +241,25 @@ en:
         age_gender: Age/Gender
         horse: Horse
         title: Horses Assigned (%{count})
-      workouts:
+      schedule_horse:
+        age_gender: Age/Gender
+      workout_horse:
         age_gender: Age/Gender
         at_farm: Not at the track
         boarded: Currently Boarded
         energy: Energy
         fitness: Fitness
-        horse: Horse
-        horse_description: Horse Name (Energy/Fitness)
         in_transit: In Transit
-        title: Workouts (%{count})
-        today_activities: Activities for Today
         worked_out_today: Already Worked Today
         workout: Workout
+      workouts:
+        age_gender: Age/Gender
+        energy: Energy
+        fitness: Fitness
+        horse: Horse
+        horse_description: Horse Name (Energy/Fitness)
+        title: Workouts (%{count})
+        today_activities: Activities for Today
     training_schedules:
       activities:
         breeze: Breeze
@@ -297,10 +302,11 @@ en:
         rest_days_since_last_race: Rest Days Since Last Race
         runs_on: Runs On
         workouts_since_last_race: Workouts Since Last Race
-      show:
-        age: Age
+      horse:
         arrival: Will arrive on %{date}
         boarded: Boarded for %{days} day(s)
+      show:
+        age: Age
         energy: Energy
         fitness: Fitness
         gender: Gender

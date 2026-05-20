@@ -1,0 +1,5 @@
+= turbo_stream.append "race_list" do
+  = render partial: "post_parade_race", collection: @races, as: :race
+
+= turbo_stream.replace "load_more" do
+  = render_load_more(@pagy)

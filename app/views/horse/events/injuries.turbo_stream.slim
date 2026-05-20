@@ -1,0 +1,5 @@
+= turbo_stream.append "injury-list" do
+  = render partial: "horse/events/injury", collection: @injuries, as: :injury
+
+= turbo_stream.replace "load_more" do
+  = render_load_more(@pagy)

@@ -28,7 +28,6 @@ module Horses
 
     def actions
       [
-        { key: :geld },
         { key: :ship },
         { key: :update_race_options, policy: CurrentStable::RacehorsePolicy },
         { key: :board, policy: CurrentStable::RacehorsePolicy },
@@ -36,6 +35,7 @@ module Horses
         { key: :run_workout, policy: CurrentStable::RacehorsePolicy },
         { key: :run_jump_trial, policy: CurrentStable::RacehorsePolicy },
         { key: :nominate, policy: CurrentStable::RacehorsePolicy },
+        { key: :geld },
         { key: :change_status },
         { key: :create_lease_offer, policy: CurrentStable::LeaseOfferPolicy },
         { key: :accept, policy: CurrentStable::LeaseOfferPolicy, object: :lease_offer },

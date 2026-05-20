@@ -1,0 +1,19 @@
+- content_for :breadcrumbs do
+  - date = @date.is_a?(Date) ? @date : Date.parse(@date)
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t("racing.races.index.title"), href: racing_races_path(date: @date) },
+                  { name: t(".title"), href: "#" }, { name: l(date), href: "#" }]) do
+
+- if @races.empty?
+  h4.text-muted.text-center.my-2
+    small= t(".no_races")
+- else
+  - claiming_race = Racing::RaceSchedule.by_type("claiming").exists?(date: @date)
+  - if claiming_race && !Racing::Claim.joins(entry: :race).where(entry: { race: @races }, claimer: Current.stable).exists?
+    .text-left.mb-4
+      p= t(".claim_limit")
+      p= t(".claim_success")
+      p= t(".claim_failure")
+  = turbo_frame_tag "race_list" do
+    = render partial: "post_parade_race", collection: @races, as: :race
+
+  = render_load_more(@pagy)

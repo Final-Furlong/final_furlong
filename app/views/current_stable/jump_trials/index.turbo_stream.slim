@@ -1,0 +1,5 @@
+= turbo_stream.append "trial-list" do
+  = render partial: "trial", collection: @trials, as: :trial
+
+= turbo_stream.replace "load_more" do
+  = render_load_more(@pagy)

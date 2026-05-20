@@ -7,7 +7,7 @@ module Horse
       @query = policy_scope(Racing::HorseJockeyRelationship.where(horse: @horse).for_type(@horse.race_options.racehorse_type))
       @query = @query.includes(:horse, :jockey)
       @query = @query.merge(Racing::HorseJockeyRelationship.ordered_by_best)
-      @pagy, @relationships = pagy(:offset, @query)
+      @relationships = @query
     end
   end
 end
