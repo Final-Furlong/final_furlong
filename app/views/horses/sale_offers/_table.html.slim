@@ -1,4 +1,4 @@
-/# locals: (sale_offers:, query:)
+/# locals: (sale_offers:, query:, pagy:)
 = turbo_frame_tag "all-horse-sale-offers-search" do
   .lease-offers-search-results
     - if sale_offers.empty?
@@ -15,25 +15,6 @@
               th= t(".sell_to")
               th= Horses::SaleOffer.human_attribute_name("price")
               th= t("common.actions.title")
-            tbody.table-group-divider
-              - sale_offers.each do |sale_offer|
-                - horse = sale_offer.horse
-                tr
-                  td.wb-break-all= horse.name_with_title
-                  td.wb-break-all
-                    = horse.age
-                    = "yo "
-                    = t("horses.genders.#{horse.gender}")
-                  td= horse.owner.name
-                  td
-                    - if sale_offer.buyer == Current.stable
-                      = t(".only_you")
-                    - elsif sale_offer.new_members_only
-                      = t(".new_members_only")
-                    - else
-                      = t(".anyone")
-                  td= Game::MoneyFormatter.new(sale_offer.price).to_s
-                  td.actions-column.nav-item.dropdown
-                    = render Ui::ButtonizedLink::Component.new(url: horse_path(horse), style: :soft, size: :small, data: { turbo_frame: "_top" }) do
-                      i.ph-fill.ph-eye
-                      = t("common.actions.view")
+            tbody.table-group-divider id="offer-list"
+              = render partial: "sale_offer", collection: sale_offers, as: :sale_offer
+      = render_load_more(pagy)

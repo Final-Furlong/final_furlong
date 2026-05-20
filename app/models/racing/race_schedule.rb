@@ -178,14 +178,12 @@ class Racing::RaceSchedule < ApplicationRecord
     track_surface.surface.downcase
   end
 
-  def race_type_string(mobile = false)
-    key = "racing.race."
-    key += ".mobile." if mobile
-    key += race_type.downcase
+  def race_type_string_mobile
+    key = "racing.race.mobile.#{race_type.downcase}"
     value = I18n.t(key)
     if race_type == "stakes"
       value += " ("
-      value += mobile ? I18n.t("racing.race.mobile.#{grade.downcase.tr(" ", "_")}") : grade.titleize
+      value += I18n.t("racing.race.mobile.#{grade.downcase.tr(" ", "_")}")
       value += ")"
     elsif race_type == "claiming"
       value += " (#{Game::MoneyFormatter.new(claiming_price)})"

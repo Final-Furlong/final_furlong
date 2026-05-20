@@ -8,7 +8,7 @@ module Horse
 
       query = Horses::WorkoutPolicy::Scope.new(Current.user, @horse.workouts).resolve.includes(:jockey, :racetrack).order(date: :desc)
 
-      @pagy, @workouts = pagy(:offset, query)
+      @pagy, @workouts = pagy(:countless, query)
 
       render "horse/events/workouts"
     end

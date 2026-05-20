@@ -3,10 +3,10 @@ module CurrentStable
     before_action :set_horse, except: :index
 
     def index
-      query = policy_scope(Workouts::Workout.all, policy_scope_class: CurrentStable::WorkoutPolicy::Scope)
-      query = query.includes(:horse, :jockey, :racetrack, :comment).ransack(params[:q])
-      query.sorts = "date desc" if query.sorts.blank?
-      @pagy, @workouts = pagy(:offset, query.result)
+      @query = policy_scope(Workouts::Workout.all, policy_scope_class: CurrentStable::WorkoutPolicy::Scope)
+      @query = @query.includes(:horse, :jockey, :racetrack, :comment).ransack(params[:q])
+      @query.sorts = "date desc" if @query.sorts.blank?
+      @pagy, @workouts = pagy(:countless, @query.result)
     end
 
     def create

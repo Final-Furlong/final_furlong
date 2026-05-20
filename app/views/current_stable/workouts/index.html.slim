@@ -2,50 +2,21 @@
   - if @workouts.blank?
     p= t(".no_workouts")
   - else
-    .mx-auto.overflow-x-auto.w-full.sm:hidden
-      - @workouts.each do |workout|
-        .card.bg-base-100.w-full.px-2.rounded-none
-          .card-body.p-0.rounded-none
-            .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
-              input type="checkbox"
-              .collapse-title.font-semibold.font-medium
-                span= l(workout.date)
-              .collapse-content.text-sm
-    .hidden.mx-auto.overflow-x-auto.border.rounded-md.w-full.sm:block.sm:w-5/6
+    .mx-auto.overflow-x-auto.border.rounded-md.w-5/6
       table.table.table-zebra
         thead
           tr.border-b-1.border-gray-400.dark:border-neutral-600
-            th= t("horse.events.workouts.horse")
-            th= t("horse.events.workouts.date")
-            th= t("horse.events.workouts.jockey")
-            th= t("horse.events.workouts.effort")
-            th= t("horse.events.workouts.racetrack")
-            th= t("horse.events.workouts.equipment")
+            th= sort_link @query, :horse_name, t("horse.events.workouts.horse")
+            th= sort_link @query, :date, t("horse.events.workouts.date")
+            th= sort_link @query, :jockey_full_name, t("horse.events.workouts.jockey")
+            th= sort_link @query, :effort, t("horse.events.workouts.effort")
+            th= sort_link @query, :racetrack_name, t("horse.events.workouts.racetrack")
+            th= sort_link @query, :equipment, t("horse.events.workouts.equipment")
             th= t("horse.events.workouts.activity")
             th= t("horse.events.workouts.activity")
             th= t("horse.events.workouts.activity")
             th= t("horse.events.workouts.comment")
-        tbody
-          - @workouts.each do |workout|
-            - horse = workout.horse
-            - jockey = workout.jockey
-            - racetrack = workout.racetrack
-            tr
-              td class="text-#{horse.gender.downcase}"= link_to horse.name, horse_path(horse), data: { turbo_frame: "_top" }
-              td data-sort=workout.date = l(workout.date)
-              td data-sort="#{jockey.last_name}, #{jockey.first_name}" = jockey.full_name
-              td data-sort=workout.effort = "#{workout.effort}%"
-              td
-                = racetrack.name
-                = " ("
-                = workout.surface_name.titleize
-                = " - "
-                = workout.condition.titleize
-                = ")"
-              td=workout.equipment_string
-              td=workout.activity_string(1)
-              td=workout.activity_string(2)
-              td=workout.activity_string(3)
-              td=workout.comment.to_s(horse.name, horse.female?)
+        tbody id="workout-list"
+          = render partial: "workout", collection: @workouts, as: :workout
 
-  = render Ui::Pagination::Component.new(pagy: @pagy, classes: 'mt-2')
+      = render_load_more(@pagy)

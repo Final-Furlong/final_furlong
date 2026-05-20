@@ -8,7 +8,7 @@ module Horse
 
       query = Horses::InjuryPolicy::Scope.new(Current.user, @horse.historical_injuries).resolve.order(date: :desc)
 
-      @pagy, @injuries = pagy(:offset, query)
+      @pagy, @injuries = pagy(:countless, query)
 
       render "horse/events/injuries"
     end

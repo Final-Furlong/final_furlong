@@ -1,0 +1,59 @@
+/# locals: (workout:)
+- horse = workout.horse
+- jockey = workout.jockey
+- racetrack = workout.racetrack
+.card.bg-base-100.w-full.px-2.rounded-none
+  .card-body.p-0.rounded-none
+    .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+      input type="checkbox"
+      .collapse-title.font-semibold.font-medium
+        span= l(workout.date)
+      .collapse-content.text-sm
+        p
+          span= t(".jockey")
+          span.float-right= jockey.full_name
+        p
+          span= t(".effort")
+          span.float-right= "#{workout.effort}%"
+        p
+          span= t(".racetrack")
+          span.float-right
+            = racetrack.name
+            = " ("
+            = workout.surface_name.titleize
+            = " - "
+            = workout.condition.titleize
+            = ")"
+        p
+          span= t(".equipment")
+          span.float-right= workout.equipment_string
+        p
+          span= t(".activity")
+          span.float-right= workout.activity_string(1)
+        - if workout.activity_time(1)
+          p.text-sm
+            span= t(".time")
+            span.float-right= workout.activity_time(1)
+        - if workout.activity_time(2)
+          p
+            span= t(".activity")
+            span.float-right= workout.activity_string(2)
+          - if workout.activity_time(2)
+            p.text-sm
+              span= t(".time")
+              span.float-right= workout.activity_time(2)
+        - if workout.activity_time(3)
+          p
+            span= t(".activity")
+            span.float-right= workout.activity_string(3)
+          - if workout.activity_time(3)
+            p.text-sm
+              span= t(".time")
+              span.float-right= workout.activity_time(3)
+        p
+          span= t(".total_time")
+          span.float-right= workout.activity_time(:total) || t("common.dash")
+        p.mt-2
+          span= t(".comment")
+        p
+          span= workout.comment.to_s(horse.name, horse.female?)

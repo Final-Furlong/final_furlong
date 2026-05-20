@@ -8,7 +8,7 @@ module Horse
 
       query = Horses::JumpTrialPolicy::Scope.new(Current.user, @horse.jump_trials).resolve.includes(:jockey, :racetrack).order(date: :desc)
 
-      @pagy, @trials = pagy(:offset, query)
+      @trials = query.to_a
 
       render "horse/events/jump_trials"
     end

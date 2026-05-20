@@ -1,0 +1,21 @@
+- content_for :breadcrumbs do
+  - schedule_name = t("current_stable.training_schedules.show.title", name: schedule.name)
+  - count = @pagy.data_hash(data_keys: [:count])
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: Current.stable.name, href: current_stable_path },
+                                                   { name: schedule_name, href: stable_training_schedules_path },
+                                                   { name: t(".title", count: count[:count]), href: "#" }])
+
+h3.font-bold.text-xl = t(".today_activities")
+p= daily_activities.activity_with_distance(1)
+- if daily_activities.activity_with_distance(2) != I18n.t("common.none")
+  p= daily_activities.activity_with_distance(2)
+- if daily_activities.activity_with_distance(3) != I18n.t("common.none")
+  p= daily_activities.activity_with_distance(3)
+
+hr.my-2
+
+.mx-auto.overflow-x-auto.w-full
+  p.text-center= t(".horse_description")
+  = turbo_frame_tag "workout-list" do
+    = render partial: "workout_horse", collection: horses, as: :horse
+  = render_load_more(@pagy)

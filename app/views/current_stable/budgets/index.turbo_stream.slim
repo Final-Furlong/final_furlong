@@ -1,0 +1,5 @@
+= turbo_stream.append "budget-transaction-list" do
+  = render partial: "budget_entry", collection: @dashboard.transactions, as: :transaction
+
+= turbo_stream.replace "load_more" do
+  = render_load_more(@dashboard.pagy)
