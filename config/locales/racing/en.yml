@@ -194,6 +194,7 @@ en:
         last_race_hint: Last Race Date (Days)
         last_rest_hint: Last Date At Farm (Rest Days)
         last_shipped_hint: Last Shipment Date (Days)
+        not_a_jumper: This horse has not switched to SC
         workouts_hint: Since Last Race
     races:
       all:
