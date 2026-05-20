@@ -93,9 +93,8 @@ module Racing
         { id:, cost:, days: })
     }
 
-    def update_grades(energy:, fitness:, update_legacy: false)
-      modifier_percent = (energy * 0.2).clamp(10, 20)
-      modifier = rand(0...modifier_percent)
+    def update_grades(energy:, fitness:)
+      modifier = rand(10..20)
       graded_score = (rand(1...2) == 1) ? modifier : modifier * -1
       energy_score = energy * (100 - graded_score).fdiv(100)
       grade = if energy_score <= 40 then "F"
@@ -107,8 +106,7 @@ module Racing
       end
       self.energy_grade = grade
 
-      modifier_percent = (fitness * 0.2).clamp(10, 20)
-      modifier = rand(0...modifier_percent)
+      modifier = rand(10..20)
       graded_score = (rand(1...2) == 1) ? modifier : modifier * -1
       fitness_score = fitness * (100 - graded_score).fdiv(100)
       grade = if fitness_score <= 40 then "F"
