@@ -1,0 +1,39 @@
+/# locals: (workout:)
+- horse = workout.horse
+- jockey = workout.jockey
+- racetrack = workout.racetrack
+.card.bg-base-100.w-full.px-2.rounded-none
+  .card-body.p-0.rounded-none
+    .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+      input type="checkbox"
+      .collapse-title.font-semibold.font-medium
+        span class="text-#{horse.gender.downcase}"= horse.name
+        span.float-right= l(workout.date)
+      .collapse-content.text-sm
+        p
+          span= t("horse.events.workouts.jockey")
+          span.float-right= jockey.full_name
+        p
+          span= t("horse.events.workouts.effort")
+          span.float-right= "#{workout.effort}%"
+        p
+          span= t("horse.events.workouts.racetrack")
+          span.float-right= "#{racetrack.name} (#{workout.surface_name.titleize} - #{workout.condition.titleize})"
+        p
+          span= t("horse.events.workouts.equipment")
+          span.float-right= workout.equipment_string
+        p
+          span= t("horse.events.workouts.activity")
+          span.float-right= workout.activity_string(1)
+        - if workout.activity_count == 2
+          p
+            span= t("horse.events.workouts.activity")
+            span.float-right= workout.activity_string(2)
+        - if workout.activity_count == 3
+          p
+            span= t("horse.events.workouts.activity")
+            span.float-right= workout.activity_string(3)
+        p
+          span= t("horse.events.workouts.comment")
+        p
+          span= workout.comment.to_s(horse.name, horse.female?)

@@ -45,6 +45,17 @@ module Racing
     def jump?
       jockey_type == "jump"
     end
+
+    ransacker :full_name do |parent|
+      Arel::Nodes::InfixOperation.new("||",
+        Arel::Nodes::InfixOperation.new("||",
+          parent.table[:first_name], Arel::Nodes.build_quoted(" ")),
+        parent.table[:last_name])
+    end
+
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[date_of_birth first_name full_name gender height_in_inches jockey_type last_name status]
+    end
   end
 end
 

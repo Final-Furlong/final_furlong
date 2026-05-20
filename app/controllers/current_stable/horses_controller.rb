@@ -21,7 +21,7 @@ module CurrentStable
       @query = @query.ransack(params[:q])
       @query.sorts = "name asc" if @query.sorts.blank?
 
-      @pagy, @horses = pagy(@query.result)
+      @pagy, @horses = pagy(:countless, @query.result)
     end
 
     def show

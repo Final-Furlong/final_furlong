@@ -1,0 +1,13 @@
+/# locals: (result:)
+- race = result.race
+- horse = result.horse
+tr
+  td.text-base= l(race.date)
+  td.text-base class="text-#{horse.gender}"= link_to horse.budget_name, horse_path(horse), data: { turbo_frame: "top" }
+  td.text-base= race.race_description_string
+  td.text-base= result.equipment_string(blank: "")
+  td.text-base= result.speed_factor
+  td.text-base= [result.finish_position.ordinalize, race.horses_count].join("/")
+  td.text-base
+    = render Ui::ButtonizedLink::Component.new(url: racing_result_path(race.date, race.number), color: :neutral, extra_classes: "mt-2", data: { turbo_frame: "modal" }) do
+        i.ph.ph-fill.ph-eye

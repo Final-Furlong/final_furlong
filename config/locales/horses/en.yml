@@ -70,22 +70,26 @@ en:
     lease_offers:
       index:
         title: Horses for Lease
-      table:
-        age_gender: Age/Gender
+      lease_offer:
         anyone: Anyone
         duration: "%{duration} Months"
-        lease_to: Lease To
         new_members_only: New Members
         only_you: You
+      table:
+        age_gender: Age/Gender
+        lease_to: Lease To
     sale_offers:
       index:
         no_offers: You have no horses offered for sale.
         title: Horses for Sale
+      sale_offer:
+        anyone: Anyone
+        new_members_only: New Members
+        only_you: You
       table:
         age_gender: Age/Gender
         anyone: Anyone
         new_members_only: New Members
-        only_you: You
         sell_to: Available To
     show:
       entries: Entries (%{count})

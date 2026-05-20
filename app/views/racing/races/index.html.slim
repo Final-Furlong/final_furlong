@@ -43,9 +43,9 @@ ruby:
           td= race.racetrack.name
           td data-sort=race.race_type_sort
             span.hidden.lg:inline
-              = race.race_type_string(false)
+              = race.race_type_string
             span.inline.lg:hidden
-              = race.race_type_string(true)
+              = race.race_type_string_mobile
           td data-sort=race.distance
             span.hidden.lg:inline = t("racing.race.furlongs", number: race.distance)
             span.inline.lg:hidden = t("racing.race.mobile.furlongs", number: race.distance)

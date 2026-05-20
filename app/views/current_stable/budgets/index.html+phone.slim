@@ -1,0 +1,18 @@
+ruby:
+  total_money = Game::MoneyFormatter.new(Current.stable.total_balance).to_s
+  available_money = Game::MoneyFormatter.new(Current.stable.available_balance).to_s
+  title = if Current.stable.total_balance > Current.stable.available_balance
+            t(".title_with_available", available: available_money, total: total_money)
+          else
+            t(".title_with_total", total: total_money)
+          end
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new( links:  [{ name: Current.stable.name, href: current_stable_path },
+                                                    { name: t(".title"), href: "#", title: true }])
+
+= render 'filters', dashboard: @dashboard
+= turbo_frame_tag "stable-budget-search" do
+  .card.card-border.mt-2.p-2.shadow-md.dark:border-1.dark:border-neutral-100
+    .card-body
+      = render "table", dashboard: @dashboard
+      = render_load_more(@dashboard.pagy)

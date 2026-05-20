@@ -14,7 +14,7 @@ module Racing
       @query.sorts = ["name asc"] if @query.sorts.empty?
       @query.sorts.insert 0, Ransack::Nodes::Sort.extract(@query.context, "race_options_racehorse_type desc")
 
-      @pagy, @horses = pagy(:offset, @query.result)
+      @pagy, @horses = pagy(:countless, @query.result)
       page = status ? status.to_sym : :index
       render page
     end

@@ -1,0 +1,23 @@
+/# locals: (horse:)
+- schedule = horse.training_schedule
+.card.bg-base-100.w-full.px-2.rounded-none
+  .card-body.p-0.rounded-none
+    .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+      input type="checkbox"
+      .collapse-title.font-semibold.font-medium
+        span class="text-#{horse.gender.downcase}"
+          = horse.name_with_title
+      .collapse-content.text-sm
+        p
+          span= t(".age_gender")
+          span.float-right
+            = horse.age
+            = "yo "
+            = t("horses.genders.#{horse.gender}")
+        .mx-auto.mt-2
+          ruby:
+            confirm_message = t("current_stable.training_schedules.horse.confirm", name: horse.name)
+            data = { turbo_confirm: confirm_message, turbo_method: :delete }
+          - if schedule
+            = render Ui::Button::Component.new(color: :error, style: :outline, size: :small, http_method: :delete, data:, url: stable_training_schedule_horse_path(schedule, horse)) do
+              = t("current_stable.training_schedules.horse.remove")

@@ -1,0 +1,34 @@
+/# locals: (boarding:)
+- horse = boarding.horse
+- data = horse.race_metadata
+.card.bg-base-100.w-full.px-2.rounded-none
+  .card-body.p-0.rounded-none
+    .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
+      input type="checkbox"
+      .collapse-title.font-semibold.font-medium
+        span class="text-#{horse.gender.downcase}"
+          = horse.name_with_title
+        span.float-right
+          = [data&.energy_grade, data&.fitness_grade].compact_blank.join("/")
+          = " ("
+          = boarding.count_days
+          = ")"
+      .collapse-content.text-sm
+        p
+          span= t("horse.events.boardings.start_date")
+          span.float-right= l(boarding.start_date)
+        p
+          span= t("horse.events.boardings.days")
+          span.float-right= (Date.current - boarding.start_date).to_i
+        p
+          span= t("horse.events.boardings.location")
+          span.float-right= boarding.location.racetrack.name
+        p
+          span= t("current_stable.training_summaries.show.energy")
+          span.float-right= data&.energy_grade
+        p
+          span= t("current_stable.training_summaries.show.fitness")
+          span.float-right= data&.fitness_grade
+        p.text-center
+          = render Ui::ButtonizedLink::Component.new(color: :error, style: :outline, url: stable_boarding_path(boarding), data: { turbo_method: 'put', turbo_frame: "_top" }) do
+            = t("current_stable.boardings.index.stop_boarding")

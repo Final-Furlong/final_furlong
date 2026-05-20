@@ -1,0 +1,13 @@
+/# locals: (boarding:)
+- horse = boarding.horse
+- data = horse.race_metadata
+tr
+  td class="text-#{horse.gender.downcase}"= link_to horse.name, horse_path(horse), data: { turbo_frame: "_top" }
+  td= l(boarding.start_date)
+  td= boarding.location.racetrack.name
+  td= (Date.current - boarding.start_date).to_i
+  td= data&.energy_grade
+  td= data&.fitness_grade
+  td
+    = render Ui::ButtonizedLink::Component.new(color: :error, style: :outline, url: stable_boarding_path(boarding), data: { turbo_method: 'put', turbo_frame: "_top" }) do
+      = t("current_stable.boardings.index.stop_boarding")

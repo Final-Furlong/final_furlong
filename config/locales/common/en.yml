@@ -21,6 +21,7 @@ en:
       delete_with_name: Are you sure you want to delete %{name}?
     create: Create
     dash: "-"
+    date: Date
     day: Day
     distances:
       12_furlongs: 1 1/2 Miles

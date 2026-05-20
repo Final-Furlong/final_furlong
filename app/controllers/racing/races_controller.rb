@@ -38,9 +38,7 @@ module Racing
       query = query.where(date: @date)
       query = query.order(number: :asc)
 
-      @races = query.to_a
-      raise ActiveRecord::RecordNotFound if @races.empty?
-
+      @pagy, @races = pagy(:countless, query, limit: 2)
       authorize @races.first, :post_parade?
     end
   end
