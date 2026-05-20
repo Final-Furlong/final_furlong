@@ -1,0 +1,9 @@
+= turbo_frame_tag "#{Current.stable.slug}-training-workouts" do
+  - if @workouts.blank?
+    p= t(".no_workouts")
+  - else
+    .mx-auto.overflow-x-auto.w-full.sm:hidden
+      = turbo_frame_tag "workout-list" do
+        = render partial: "workout", collection: @workouts, as: :workout
+
+      = render_load_more(@pagy)

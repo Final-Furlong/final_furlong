@@ -185,15 +185,15 @@ en:
       view_post_parade: View Post Parade
       weight: Weight
     racehorses:
-      status:
+      racehorse:
         enter: Enter
-        last_race_hint: Last Race Date (Days)
-        last_rest_hint: Last Date At Farm (Rest Days)
-        last_shipped_hint: Last Shipment Date (Days)
-        location_hint: Racetrack (Miles from This Race)
         not_a_jumper: This horse has not switched to SC
         schedule: Schedule
         scheduled: Scheduled
+      status:
+        last_race_hint: Last Race Date (Days)
+        last_rest_hint: Last Date At Farm (Rest Days)
+        last_shipped_hint: Last Shipment Date (Days)
         workouts_hint: Since Last Race
     races:
       all:

@@ -146,6 +146,17 @@ en:
         no_shipments: No shipments found.
         scheduled: Scheduled
         starting_location: From
+      workout:
+        activity: Activity
+        comment: Comment
+        date: Date
+        effort: Effort
+        equipment: Equipment
+        horse: Horse
+        jockey: Jockey
+        racetrack: Racetrack
+        time: Time
+        total_time: Total Time
       workouts:
         activity: Activity
         comment: Comment

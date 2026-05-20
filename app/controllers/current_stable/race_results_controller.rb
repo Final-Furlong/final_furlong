@@ -14,7 +14,7 @@ module CurrentStable
       @query = policy_scope(Racing::RaceResultHorse, policy_scope_class: CurrentStable::RaceResultHorsePolicy::Scope).includes(:race)
       date = params[:date].presence
       @query = @query.where(date:) if date
-
+      @query = @query.includes(:horse, race: [:track_surface])
       @query = @query.ransack(params[:q])
       @query.sorts = ["race_date desc", "race_number asc"] if @query.sorts.blank?
 

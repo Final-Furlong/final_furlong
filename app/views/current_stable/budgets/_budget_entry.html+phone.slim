@@ -1,0 +1,14 @@
+/# locals: (transaction:)
+.card.card-border.bg-base-100.w-full.px-2.rounded-none
+  .card-body.p-0.rounded-none
+    .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+      input type="checkbox"
+      .collapse-title.font-semibold
+        span= l(transaction.created_at.to_date)
+        span.float-right class=('text-error' if transaction.amount.negative?)
+          = Game::MoneyFormatter.new(transaction.amount).to_s
+      .collapse-content.text-sm.border-t-1.border-base-content/40
+        p.mt-2= transaction.description
+        div.mt-2
+          span= Account::Budget.human_attribute_name("balance")
+          span.float-right= Game::MoneyFormatter.new(transaction.balance).to_s

@@ -1,0 +1,23 @@
+/# locals: (trial:)
+- horse = trial.horse
+- jockey = trial.jockey
+- racetrack = trial.racetrack
+.card.bg-base-100.w-full.px-2.rounded-none
+  .card-body.p-0.rounded-none
+    .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+      input type="checkbox"
+      .collapse-title.font-semibold.font-medium
+        span class="text-#{horse.gender.downcase}"= horse.name
+        span.float-right= l(trial.date)
+      .collapse-content.text-sm
+        p
+          span= t("horse.events.workouts.jockey")
+          span.float-right= jockey.full_name
+        p
+          span= t("horse.events.workouts.racetrack")
+          span.float-right= "#{racetrack.name} (#{trial.condition.titleize})"
+        p
+          span= t("horse.events.workouts.time")
+          span.float-right= trial.time_string
+        p
+          span.float-right= trial.comment.to_s(horse.name, horse.female?)

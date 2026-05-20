@@ -1,0 +1,8 @@
+= turbo_frame_tag "#{Current.stable.slug}-training-jump-trials" do
+  - if @trials.blank?
+    p= t(".no_trials")
+  - else
+    .mx-auto.overflow-x-auto.w-full
+      = turbo_frame_tag "trial-list" do
+        = render partial: "trial", collection: @trials, as: :trial
+      = render_load_more(@pagy)

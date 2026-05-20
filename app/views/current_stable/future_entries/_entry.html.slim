@@ -1,0 +1,21 @@
+/# locals: (entry:)
+- race = entry.race
+- horse = entry.horse
+- data = horse.race_metadata
+tr
+  td= l(race.date)
+  td class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), target: "_top"
+  td= race.racetrack.name
+  td class="#{'link' if (Date.current > race.entry_open_date)}"
+    = link_to_if (Date.current > race.entry_open_date), race.race_description_string, new_racing_race_entry_path(race)
+  td= data.energy_grade
+  td= data.fitness_grade
+  td
+    - if entry.entry_status == "entered"
+      span.badge.badge-success.badge-outline= t(".entered")
+    - elsif entry.entry_status == "skipped"
+      span.badge.badge-warning.badge-outline= t(".skipped")
+    - elsif entry.entry_status == "errored"
+      span.badge.badge-error.badge-outline= t(".errored", message: t(".#{entry.entry_error}"))
+    - else
+      span.badge.badge-secondary.badge-outline= t(".scheduled")

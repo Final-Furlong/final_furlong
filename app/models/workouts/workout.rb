@@ -130,6 +130,10 @@ module Workouts
     def self.ransackable_attributes(_auth_object = nil)
       %w[comment_id condition confidence date effort equipment horse_id jockey_id time_in_seconds]
     end
+
+    def self.ransackable_associations(_auth_object = nil)
+      %w[activities comment horse jockey racetrack surface]
+    end
   end
 end
 

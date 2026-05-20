@@ -5,38 +5,17 @@
                                                     { name: title, href: "#", title: true }],
                                             mobile_links: [{ name: Current.stable.name, href: current_stable_path },
                                                     { name: t(".title"), href: "#", title: true }])
-p.font-bold.text-center.w-full.my-2= "#{pagy_hash[:count]} #{Horses::Horse.model_name.human.pluralize(pagy_hash[:count])}"
-table.table.table-responsive.table-zebra.sortable.n-last
+p.font-bold.text-center.w-full.my-2= "#{@count} #{Horses::Horse.model_name.human.pluralize(@count)}"
+table.table.table-responsive.table-zebra
   thead
     tr
-      th= t("racing.race.date")
-      th= t("racing.race.horse")
-      th= t("racing.race.track")
-      th= t("racing.race.race")
-      th= t("horses.info.energy")
-      th= t("horses.info.fitness")
-      th= t(".result")
-  tbody
-    - @results.each do |result|
-      - race = result.race
-      - horse = result.horse
-      - data = horse.race_metadata
-      tr
-        td= l(race.date)
-        td class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), target: "_top"
-        td= race.racetrack.name
-        td class="#{'link' if (Date.current > race.entry_open_date)}"
-          = link_to_if (Date.current > race.entry_open_date), race.race_description_string, new_racing_race_entry_path(race)
-        td= data.energy_grade
-        td= data.fitness_grade
-        td
-          - if result.entry_status == "entered"
-            span.badge.badge-success.badge-outline= t(".entered")
-          - elsif result.entry_status == "skipped"
-            span.badge.badge-warning.badge-outline= t(".skipped")
-          - elsif result.entry_status == "errored"
-            span.badge.badge-error.badge-outline= t(".errored", message: t(".#{result.entry_error}"))
-          - else
-            span.badge.badge-secondary.badge-outline= t(".scheduled")
-
-  = render Ui::Pagination::Component.new(pagy: @pagy)
+      th= sort_link @query, :race_date, ['race_date asc', 'race_number asc', 'horse_name asc'], t("racing.race.date")
+      th= sort_link @query, :horse_name, t("racing.race.horse")
+      th= sort_link @query, :race_track_surface_racetrack_name, t("racing.race.track")
+      th= sort_link @query, :race_date, ['race_date asc', 'race_number asc', 'horse_name asc'], t("racing.race.race")
+      th= sort_link @query, :horse_race_metadata_energy_grade, t("horses.info.energy")
+      th= sort_link @query, :horse_race_metadata_fitness_grade, t("horses.info.fitness")
+      th= sort_link @query, :entry_status, t(".result")
+  tbody id="entry-list"
+    = render partial: "entry", collection: @results, as: :entry
+= render_load_more(@pagy)

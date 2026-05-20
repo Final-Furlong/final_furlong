@@ -23,6 +23,4 @@
           params:, path_name: "stable_horses_path")
   .card-body
     = turbo_frame_tag "horses" do
-      = render "table", horses: @horses, query: @query
-
-= render Ui::Pagination::Component.new(pagy: @pagy, classes: 'mt-2')
+      = render "table", horses: @horses, query: @query, pagy: @pagy

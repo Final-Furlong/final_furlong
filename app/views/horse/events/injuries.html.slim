@@ -8,13 +8,7 @@
           tr.border-b-1.border-gray-400.dark:border-neutral-600
             th= t(".date")
             th= t(".injury")
-        tbody
-          - @injuries.each do |injury|
-            tr
-              td data-sort=injury.date = l(injury.date)
-              td data-sort=injury.injury_type
-                = t("horse.injuries.#{injury.injury_type.downcase.underscore}")
-                - if injury.leg
-                  = " (#{injury.leg})"
+        tbody id="injury-list"
+          = render partial: "horse/events/injury", collection: @injuries, as: :injury
 
-  = render Ui::Pagination::Component.new(pagy: @pagy, classes: 'mt-2')
+      = render_load_more(@pagy)

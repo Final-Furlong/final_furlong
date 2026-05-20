@@ -46,9 +46,6 @@ blocks:
           - bundle config set path vendor/bundle
           - bundle config set --local without 'development'
           - bundle install
-          - curl -fsSL https://get.pnpm.io/install.sh | sh -
-          - source /home/semaphore/.bashrc
-          - pnpm install
           - cache store
           - cp config/database.yml.github_actions config/database.yml
           - bin/rails db:create:primary db:schema:load:primary
@@ -60,12 +57,18 @@ blocks:
             - name: CI_TYPE
               value: style
           commands:
+            - wget -qO- https://get.pnpm.io/install.sh | sh -
+            - source /home/semaphore/.bashrc
+            - pnpm install
             - bin/ci
         - name: Security Checks
           env_vars:
             - name: CI_TYPE
               value: security
           commands:
+            - wget -qO- https://get.pnpm.io/install.sh | sh -
+            - source /home/semaphore/.bashrc
+            - pnpm install
             - bin/ci
         - name: Performance Checks
           env_vars:

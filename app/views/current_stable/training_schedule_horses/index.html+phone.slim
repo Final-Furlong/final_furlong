@@ -1,0 +1,12 @@
+- content_for :breadcrumbs do
+  - schedule_name = t("current_stable.training_schedules.show.title", name: schedule.name)
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: Current.stable.name, href: current_stable_path },
+                                                   { name: schedule_name, href: stable_training_schedules_path },
+                                                   { name: t(".title", count: schedule.horses_count), href: "#" }])
+
+hr.my-2
+
+.mx-auto.overflow-x-auto.w-full
+  = turbo_frame_tag "horse-list" do
+    = render partial: "schedule_horse", collection: horses.includes(:training_schedule), as: :horse
+  = render_load_more(@pagy)

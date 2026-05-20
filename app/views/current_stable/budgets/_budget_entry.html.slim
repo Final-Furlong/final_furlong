@@ -1,0 +1,7 @@
+/# locals: (transaction:)
+tr
+  td.wb-break-all= l(transaction.created_at.to_date)
+  td.wb-break-all= transaction.description
+  td class=('text-error' if transaction.amount.negative?)
+    = Game::MoneyFormatter.new(transaction.amount).to_s
+  td= Game::MoneyFormatter.new(transaction.balance).to_s

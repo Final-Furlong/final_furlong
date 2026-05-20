@@ -1,4 +1,4 @@
-/# locals: (lease_offers:, query:)
+/# locals: (lease_offers:, query:, pagy:)
 = turbo_frame_tag "all-horse-lease-offers-search" do
   .lease-offers-search-results
     - if lease_offers.empty?
@@ -15,25 +15,6 @@
               th= t(".lease_to")
               th= Horses::LeaseOffer.human_attribute_name("duration_months")
               th= t("common.actions.title")
-            tbody.table-group-divider
-              - lease_offers.each do |lease_offer|
-                - horse = lease_offer.horse
-                tr
-                  td.wb-break-all= horse.name_with_title
-                  td.wb-break-all
-                    = horse.age
-                    = "yo "
-                    = t("horses.genders.#{horse.gender}")
-                  td= horse.owner.name
-                  td
-                    - if lease_offer.leaser == Current.stable
-                      = t(".only_you")
-                    - elsif lease_offer.new_members_only
-                      = t(".new_members_only")
-                    - else
-                      = t(".anyone")
-                  td= t(".duration", duration: lease_offer.duration_months)
-                  td.actions-column.nav-item.dropdown
-                    = render Ui::ButtonizedLink::Component.new(url: horse_path(horse), style: :soft, size: :small, data: { turbo_frame: "_top" }) do
-                      i.ph-fill.ph-eye
-                      = t("common.actions.view")
+            tbody.table-group-divider id="lease-offer-list"
+              = render partial: "lease_offer", collection: lease_offers, as: :lease_offer
+      = render_load_more(pagy)

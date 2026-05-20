@@ -2,7 +2,7 @@ module Horses
   class SaleOffersController < AuthenticatedController
     def index
       query = policy_scope(Horses::SaleOffer.includes(:buyer, horse: [:owner]))
-      @pagy, @sale_offers = pagy(:offset, query)
+      @pagy, @sale_offers = pagy(:countless, query)
     end
   end
 end
