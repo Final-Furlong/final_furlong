@@ -81,6 +81,9 @@ blocks:
             - name: CI_TYPE
               value: tests
           commands:
+            - wget -qO- https://get.pnpm.io/install.sh | sh -
+            - source /home/semaphore/.bashrc
+            - pnpm install
             - bin/ci
             - .semaphore/lcov-to-md.sh
             - artifact push workflow -d .semaphore/REPORT.md COVERAGE.md
