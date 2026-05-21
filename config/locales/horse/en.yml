@@ -269,6 +269,13 @@ en:
       confirm: Are you sure you want to give %{name} to Final Furlong? You will not be paid for this horse.
       confirm_title: Transfer to Final Furlong
     height: "%{height}h"
+    height_stats:
+      index:
+        birth: Birth
+        date_age: Date (Age)
+        fully_grown: Fully Grown
+        height: Height
+        height_display: "%{height}h"
     in_foal: in foal
     injuries:
       bowed_tendon: Bowed Tendon
@@ -516,13 +523,6 @@ en:
         trains_on_turf: Trains on Turf
       update:
         success: Racing options were successfully saved.
-    race_stats:
-      index:
-        jockeys: Jockeys (%{count})
-        loading_jockeys: Loading jockeys...
-        loading_stats: Loading workout stats...
-        no_jockeys: Jockeys
-        workout_stats: Workout Stats
     races:
       index:
         by_condition: Races By Track Condition
@@ -624,6 +624,15 @@ en:
         dirt: Dirt
         jump: Steeplechase
         turf: Turf
+    stats:
+      index:
+        height_stats: Height
+        jockeys: Jockeys (%{count})
+        loading_height: Loading height info...
+        loading_jockeys: Loading jockeys...
+        loading_stats: Loading workout stats...
+        no_jockeys: Jockeys
+        workout_stats: Workout Stats
     statuses:
       edit:
         title: Edit %{name} Status
