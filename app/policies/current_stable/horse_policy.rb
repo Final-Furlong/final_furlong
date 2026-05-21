@@ -35,6 +35,16 @@ module CurrentStable
       owner? || admin?
     end
 
+    def view_stats?
+      return true if manager? && record.racehorse?
+
+      !record.stillborn?
+    end
+
+    def view_height_stats?
+      !record.stillborn?
+    end
+
     def status_retired?
       Horses::Status::RETIREABLE_STATUSES.include?(record.status)
     end
@@ -191,11 +201,11 @@ module CurrentStable
     end
 
     def owner?
-      record.owner == user&.stable
+      record.owner_id == stable&.id
     end
 
     def manager?
-      record.manager == stable
+      record.manager_id == stable&.id
     end
   end
 end

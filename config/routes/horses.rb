@@ -56,7 +56,8 @@ resources :horses, except: %i[new create destroy] do
       resources :stud_nominations, only: %i[index new create]
       resource :pedigree, only: :show
       resource :race_options, only: %i[edit update]
-      resources :race_stats, only: %i[index]
+      resources :height_stats, only: %i[index]
+      resources :stats, only: %i[index]
       resources :race_nominations, only: %i[index new create]
       resources :races, only: :index
       resource :specific_race_record, only: :show
