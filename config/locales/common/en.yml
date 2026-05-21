@@ -43,6 +43,10 @@ en:
     error: Something went wrong
     filters: Filters
     month: Month
+    month_count:
+      one: 1 month
+      other: "%{count} months"
+      zero: 0 months
     next: Next
     none: None
     or: Or
@@ -59,6 +63,10 @@ en:
       'true': 'Yes'
       'yes': 'Yes'
     year: Year
+    year_count:
+      one: 1 year
+      other: "%{count} years"
+      zero: 0 years
   daisy_ui:
     abyss: Abyss
     acid: Acid

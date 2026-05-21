@@ -1,0 +1,41 @@
+ruby:
+  stats = @horse.racing_stats
+  appearance = @horse.appearance
+  days_old = (Date.current - @horse.date_of_birth).to_i
+  birth_hands, birth_extra_inches = appearance.birth_height.to_s.split('.')
+  birth_inches = (birth_hands.to_i * 4) + birth_extra_inches.to_i
+  max_hands, max_extra_inches = appearance.max_height.to_s.split('.')
+  max_inches = (max_hands.to_i * 4) + max_extra_inches.to_i
+  growth_inches = max_inches - birth_inches
+  max_peak_date = stats.peak_start_date + ((stats.peak_end_date - stats.peak_start_date).to_i / 2).days
+  days_to_peak_start_date = (stats.peak_start_date - @horse.date_of_birth).to_i
+  days_per_inch = days_to_peak_start_date.fdiv(growth_inches).ceil
+  inches = birth_inches
+= turbo_frame_tag "#{@horse.slug}-height-stats" do
+  .w-full.sm:w-2/3
+    table.table.table-responsive.table-zebra
+      thead
+        tr
+          th= t(".date_age")
+          th= t(".height")
+      tbody
+        tr
+          td
+            = "#{l(@horse.date_of_birth)} (#{t(".birth")})"
+          td= t(".height_display", height: appearance.birth_height)
+        - date = @horse.date_of_birth + days_per_inch.days
+        - while date <= Date.current && inches < max_inches
+          - inches += 1
+          tr
+            td
+              = l(date)
+              - days_old = (date - @horse.date_of_birth).to_i
+              - if days_old < 366
+                - time_string = distance_of_time_in_words(date, @horse.date_of_birth)
+              - else
+                - time_string = "#{t("common.year_count", count: days_old / 365)}, #{t("common.month_count", count: ((days_old % 365) / 31).floor)}"
+              = " (#{time_string})"
+              - if inches == max_inches && (date + days_per_inch.days) <= Date.current
+                span.badge.badge-outline.badge-warning.ml-2 = t(".fully_grown")
+            td= t(".height_display", height: "#{inches / 4}.#{inches % 4}")
+          - date += days_per_inch.days
