@@ -41,10 +41,6 @@ module CurrentStable
       manager?
     end
 
-    def view_race_stats?
-      racehorse_and_manager?
-    end
-
     def view_workout_stats?
       racehorse_and_manager?
     end
