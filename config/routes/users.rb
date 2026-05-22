@@ -15,6 +15,8 @@ get "/activation_required", to: "pages#activation", as: :activation
 resources :users
 resources :notifications, only: %i[index update destroy]
 resources :settings, only: %i[new create]
+resource :sso_login, only: :show
+resource :sso, only: :show
 
 namespace :pwa do
   resources :web_pushes, only: [:create]
