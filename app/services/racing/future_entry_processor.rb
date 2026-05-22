@@ -237,7 +237,7 @@ module Racing
         entries.sort_by { |entry| entry.horse.race_metadata.last_raced_at ? (Date.current - date.last_raced_at).to_i / 7 : FIVE_YEARS_IN_WEEKS }.reverse
       else
         entries.sort_by do |entry|
-          base_query = Racing::RaceResult.where("date > ?", 1.year.ago).where(horse: entry.horse)
+          base_query = Racing::RaceResultHorse.joins(:race).merge(Racing::RaceResult.since_date(1.year.ago)).where(horse: entry.horse)
           total_points = base_query.sum(:points)
           total_starts = base_query.count
           average_points = total_points / total_starts
