@@ -28,6 +28,7 @@ class SSOsController < ApplicationController
       message = t(".hmac_mismatch")
     end
 
+    session.delete(:sso_nonce)
     if status == "success"
       flash[:success] = t(".success")
       redirect_to current_stable_path

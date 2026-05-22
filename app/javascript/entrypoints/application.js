@@ -26,11 +26,6 @@ window.Turbo.config.forms.confirm = (message, element, submitter) => {
 
   messageElement.textContent = message
 
-  console.log(message)
-  console.log(element)
-  console.log(element.dataset)
-  console.log("submitter")
-  console.log(submitter)
   // Allow custom title text via data-turbo-confirm-title
   titleElement.textContent = submitter?.dataset.turboConfirmTitle || "Confirm"
   // Allow custom button text via data-turbo-confirm-button
@@ -56,20 +51,12 @@ window.Turbo.config.forms.confirm = (message, element, submitter) => {
 // link between clicking a link and seeing the browser respond
 window.Turbo.config.drive.progressBarDelay = 100
 
+window.Turbo.StreamActions.redirect = function () {
+  window.Turbo.visit(this.target)
+}
+
 // disable turbo temporarily
-// Turbo.session.drive = false
-
-// To see this message, add the following to the `<head>` section in your
-// views/layouts/application.html.erb
-//
-//    <%= vite_client_tag %>
-//    <%= vite_javascript_tag 'application' %>
-
-// If using a TypeScript entrypoint file:
-//     <%= vite_typescript_tag 'application' %>
-//
-// If you want to use .jsx or .tsx, add the extension:
-//     <%= vite_javascript_tag 'application.jsx' %>
+// window.Turbo.session.drive = false
 
 // Example: Load Rails libraries in Vite.
 //

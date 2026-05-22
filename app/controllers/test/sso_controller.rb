@@ -3,6 +3,8 @@ module Test
     skip_after_action :verify_pundit_authorization, only: :show
 
     def show
+      raise ActiveRecord::RecordNotFound unless Rails.env.test?
+
       user_hash = {
         admin: "true",
         avatar_url: "https://example.com/uploads/default/avatar.jpeg",

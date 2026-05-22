@@ -1,28 +1,27 @@
+# frozen_string_literal: true
+
 module Game
   class SSOHandler
-    attr_reader :return_url, :base64_payload, :nonce
+    attr_reader :nonce
 
     def initialize(return_url: nil)
       @return_url = return_url
-      @nonce = SecureRandom.hex
+      @nonce = SecureRandom.alphanumeric(20)
     end
 
     def sso_url_encoded
-      return @url_encoded if defined?(@url_encoded)
-
-      payload = "nonce=#{nonce}&return_sso_url=#{return_url}"
-      @base64_payload = encode_value(payload)
-      @url_encoded = CGI.escape(base64_payload)
+      @payload = "nonce=#{@nonce}&return_sso_url=#{@return_url}"
+      CGI.escape(encode_value(@payload))
     end
 
     def sig_hex_encoded
-      @hex_signature ||= hex_digest(base64_payload)
+      hex_digest(encode_value(@payload))
     end
 
     def sso_redirect_url
-      session_url = Rails.application.credentials.dig(:forum, :sso_session_path)
-      session_url.gsub!(":sso", sso_url_encoded)
-      session_url.gsub!(":sig", sig_hex_encoded)
+      session_url = Rails.application.credentials.dig(:forum, :sso_session_path).dup
+      session_url.sub!(":sso", sso_url_encoded)
+      session_url.sub!(":sig", sig_hex_encoded)
       [
         Rails.application.credentials.dig(:forum, :url),
         session_url
