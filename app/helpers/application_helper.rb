@@ -25,10 +25,6 @@ module ApplicationHelper
     response
   end
 
-  def old_app_horse_url(id)
-    [Rails.application.credentials.dig(:old_app, :horse_url), id].join
-  end
-
   def stakes_string(basic, stakes)
     value = number_to_delimited(basic)
     value += "(#{number_to_delimited(stakes)})" if stakes.positive?
