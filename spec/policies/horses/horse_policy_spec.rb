@@ -110,6 +110,7 @@ RSpec.describe Horses::HorsePolicy do
         horse.dam_id = build(:dam)
         horse.name = nil
         horse.status = "racehorse"
+        horse.gender = "filly"
         expect(policy).to permit_actions(:index, :show, :image, :thumbnail)
         expect(policy).not_to permit_actions(:edit_name, :update)
       end
@@ -132,7 +133,7 @@ RSpec.describe Horses::HorsePolicy do
         end
 
         it "denies when horse has stud foals" do
-          create(:horse, sire: horse)
+          create(:horse, sire: horse, gender: "stallion")
           expect(policy).to permit_actions(:index, :show, :image, :thumbnail)
           expect(policy).not_to permit_actions(:edit_name, :update)
         end
