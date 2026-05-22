@@ -1,13 +1,10 @@
 module Game
   class SSOHandler
-    attr_reader :return_url, :base64_payload
+    attr_reader :return_url, :base64_payload, :nonce
 
     def initialize(return_url: nil)
       @return_url = return_url
-    end
-
-    def nonce
-      @nonce ||= SecureRandom.hex
+      @nonce = SecureRandom.hex
     end
 
     def sso_url_encoded
