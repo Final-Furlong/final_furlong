@@ -12,7 +12,7 @@ class SSOsController < ApplicationController
         if decoded_hash[:nonce] == session[:sso_nonce]
           decoded_hash.delete(:nonce)
           user_info = decoded_hash
-          user = Account::User.find_by(email: user_info[:email])
+          user = Account::User.find_by(username: user_info[:username])
           sign_in user
           status = "success"
         else
