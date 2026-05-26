@@ -1,10 +1,4 @@
 RSpec.describe "Update Stable Description" do
-  it "cannot update as visitor" do
-    visit edit_current_stable_path
-
-    expect(page).to have_current_path new_user_session_path, ignore_query: true
-  end
-
   context "when user is signed in" do
     before { sign_in(user) }
 

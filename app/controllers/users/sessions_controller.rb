@@ -1,18 +1,14 @@
 module Users
   class SessionsController < Devise::SessionsController
-    # this override is just to get success messages instead of notice ones
     def new
-      super
-      set_flash_success
+      redirect_to sso_login_path and return
     end
 
-    # POST /resource/sign_in
     def create
       super
       set_flash_success
     end
 
-    # DELETE /resource/sign_out
     def destroy
       super
       set_flash_success
