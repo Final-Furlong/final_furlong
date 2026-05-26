@@ -8,5 +8,5 @@ hr.my-2
 
 .mx-auto.overflow-x-auto.w-full
   = turbo_frame_tag "horse-list" do
-    = render partial: "schedule_horse", collection: horses.includes(:training_schedule), as: :horse
+    = render partial: "schedule_horse", collection: horses.includes(:training_schedule), as: :horse, locals: { schedule: }
   = render_load_more(@pagy)

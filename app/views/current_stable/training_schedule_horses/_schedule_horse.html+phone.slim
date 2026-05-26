@@ -1,5 +1,5 @@
-/# locals: (horse:)
-- schedule = horse.training_schedule
+/# locals: (horse:, schedule:)
+- horse_schedule = horse.training_schedule
 .card.bg-base-100.w-full.px-2.rounded-none
   .card-body.p-0.rounded-none
     .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
@@ -7,6 +7,9 @@
       .collapse-title.font-semibold.font-medium
         span class="text-#{horse.gender.downcase}"
           = horse.name_with_title
+        - if horse_schedule
+          span.float-right.text-success
+            i.ph.ph-fill.ph-check-circle
       .collapse-content.text-sm
         p
           span= t(".age_gender")
@@ -18,6 +21,13 @@
           ruby:
             confirm_message = t("current_stable.training_schedules.horse.confirm", name: horse.name)
             data = { turbo_confirm: confirm_message, turbo_method: :delete }
-          - if schedule
-            = render Ui::Button::Component.new(color: :error, style: :outline, size: :small, http_method: :delete, data:, url: stable_training_schedule_horse_path(schedule, horse)) do
+          - if horse_schedule
+            = render Ui::Button::Component.new(color: :error, style: :outline, size: :small, http_method: :delete, data:, url: stable_training_schedule_horse_path(horse_schedule, horse)) do
               = t("current_stable.training_schedules.horse.remove")
+          - else
+            - schedule_horse = Racing::TrainingScheduleHorse.new(training_schedule: schedule)
+            = form_with model: schedule_horse, url: stable_training_schedule_horses_path do |f|
+              = f.hidden_field :training_schedule_id, value: schedule.id
+              = f.hidden_field :horse_id, value: horse.id
+              .form-actions
+                = render Ui::SubmitButton::Component.new(form: f, style: :outline, size: :small, text: t("current_stable.training_schedules.horse.add"))

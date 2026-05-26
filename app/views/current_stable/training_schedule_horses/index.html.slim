@@ -15,5 +15,5 @@ hr.my-2
           td= t(".age_gender")
           td= t("common.actions.title")
       tbody id="horse-list"
-        = render partial: "schedule_horse", collection: horses.includes(:training_schedule), as: :horse
+        = render partial: "schedule_horse", collection: horses.includes(:training_schedule), as: :horse, locals: { schedule: }
   = render_load_more(@pagy)
