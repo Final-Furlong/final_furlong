@@ -26,4 +26,4 @@
   .form-actions
     = render Ui::ButtonizedLink::Component.new(url: stable_training_schedules_path, color: :secondary, style: :outline, http_method: :get) do
       = t("common.actions.cancel")
-    = render Ui::SubmitButton::Component.new(form: f, text: t("common.create"))
+    = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.save"))

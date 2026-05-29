@@ -24,6 +24,10 @@ module Racing
       owned_by_stable?
     end
 
+    def update?
+      edit?
+    end
+
     def destroy?
       owned_by_stable?
     end
@@ -39,4 +43,3 @@ module Racing
     end
   end
 end
-
