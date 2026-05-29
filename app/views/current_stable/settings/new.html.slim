@@ -28,8 +28,7 @@
 
       p.mt-6.mb-4
         = t(".instructions")
-      = simple_form_for :web_push, url: pwa_web_pushes_path,
-              data: { "pwa--web-push-demo-target": "sendDemoPushForm" } do |f|
+      = form_with url: pwa_web_pushes_path, data: { "pwa--web-push-demo-target": "sendDemoPushForm" } do |f|
         = f.hidden_field :subscription, data: { "pwa--web-push-demo-target": "subscriptionField" }
         fieldset.flex.flex-wrap.gap-2 data-pwa--web-push-demo-target="sendPushDemoFieldset"
           = f.text_field :title, as: :text, value: t("game_title"), class: "border rounded-md p-1"

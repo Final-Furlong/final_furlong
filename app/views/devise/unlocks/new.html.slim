@@ -1,14 +1,12 @@
 h2= t(".resend_unlock_instructions")
 
-= simple_form_for(resource, as: resource_name, url: unlock_path(resource_name),
-                            html: { method: :post, data: { turbo: false } }) do |f|
-  = f.error_notification
-
+= form_with model: resource, builder: ViewComponent::Form::Builder, as: resource_name, url: unlock_path(resource_name),
+                          html: { method: :post, data: { turbo: false } } do |f|
   = f.full_error :unlock_token
   .form-inputs
-    = f.input :email, required: true, autofocus: true, input_html: { autocomplete: "email" }
+    = render Form::Fieldset::Component.new(f, resource_name, :email)
 
-  .form-actions
-    = f.button :submit, t(".resend_unlock_instructions")
+  .form-actions.mt-2
+    = f.submit t(".resend_unlock_instructions"), class: 'btn btn-primary'
 
 = render "devise/shared/links"

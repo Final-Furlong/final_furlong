@@ -2,15 +2,6 @@ RSpec.describe Users::NewUserForm, type: :model do
   subject(:form) { described_class.new(args) }
 
   describe "validation" do
-    it "validates weak password" do
-      form = described_class.new(args.merge(password: "password", password_confirmation: "password"))
-
-      expect(form).not_to be_valid
-      expect(form.errors[:password]).to eq(["must be at least 8 characters long and contain: " \
-                                            "an upper case character, a lower case character, " \
-                                            "a digit and a non-alphabet character."])
-    end
-
     it "uses user validations" do
       form = described_class.new(args.merge(username: ""))
 
@@ -56,9 +47,7 @@ RSpec.describe Users::NewUserForm, type: :model do
     {
       username: user_attributes[:username],
       name: user_attributes[:name],
-      email: user_attributes[:email],
-      password: user_attributes[:password],
-      password_confirmation: user_attributes[:password]
+      email: user_attributes[:email]
     }
   end
 
