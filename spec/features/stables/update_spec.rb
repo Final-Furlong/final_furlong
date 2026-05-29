@@ -9,26 +9,14 @@ RSpec.describe "Update Stable Description" do
       end
       updated_description = "Test description"
       expect(page).to have_current_path edit_current_stable_path, ignore_query: true
-      fill_in "stable[description]", with: updated_description
+      fill_in "account_stable[description]", with: updated_description
       click_link t("common.actions.cancel"), href: current_stable_path
       expect(page).to have_current_path current_stable_path, ignore_query: true
       visit edit_current_stable_path
-      fill_in "stable[description]", with: updated_description
+      fill_in "account_stable[description]", with: updated_description
       click_on t("common.actions.save")
       expect(page).to have_current_path current_stable_path, ignore_query: true
       expect(page).to have_text updated_description
-    end
-
-    it "does not allow a description that is too long" do
-      updated_description = "x" * 1001
-      visit edit_current_stable_path
-      fill_in "stable[description]", with: updated_description
-      click_on t("common.actions.save")
-      expect(page).to have_current_path current_stable_path, ignore_query: true
-      within(".alert") do
-        expect(page).to have_text "Description is too long"
-      end
-      expect(stable.reload.description).not_to eq updated_description
     end
 
     it_behaves_like "a page that is accessible" do

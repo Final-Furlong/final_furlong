@@ -64,13 +64,13 @@ module CurrentStable
     end
 
     def schedule_params
-      params.expect(training_schedule: [:description, :name, sunday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3],
-                                                             monday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3],
-                                                             tuesday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3],
-                                                             wednesday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3],
-                                                             thursday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3],
-                                                             friday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3],
-                                                             saturday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3]])
+      params.expect(racing_training_schedule: [:description, :name, sunday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3],
+                                                                    monday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3],
+                                                                    tuesday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3],
+                                                                    wednesday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3],
+                                                                    thursday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3],
+                                                                    friday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3],
+                                                                    saturday_activities_attributes: [:activity1, :distance1, :activity2, :distance2, :activity3, :distance3]])
         .merge(stable: Current.stable)
     end
 

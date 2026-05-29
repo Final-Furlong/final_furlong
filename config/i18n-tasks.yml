@@ -12,7 +12,6 @@ data:
   # Locale files or `File.find` patterns where translations are read from:
   read:
     - config/locales/%{locale}.yml
-    - config/locales/simple_form.%{locale}.yml
     - config/locales/**/%{locale}.yml
     ## Default:
     ## More files:
@@ -108,7 +107,6 @@ ignore_missing:
   en:
     - errors.messages.{accepted,blank,invalid,too_short,too_long}
     - devise.*
-    - simple_form..*
     - components.*
     - view_components.*
   "en-GB":
@@ -118,9 +116,6 @@ ignore_missing:
 # ignore_unused:
 # - 'activerecord.attributes.*'
 # - '{devise,pagy}.*'
-# - 'simple_form.{yes,no}'
-# - 'simple_form.{placeholders,hints,labels}.*'
-# - 'simple_form.{error_notification,required}.:'
 ignore_unused:
   - action_policy.policy.*
   - activemodel.{attributes,errors}.*
@@ -130,9 +125,6 @@ ignore_unused:
   - errors.messages.*
   - errors.messages.not_saved.{one,other} # devise
   - errors.messages.{already_confirmed,confirmation_period_expired,expired,not_found,not_locked} # devise
-  - simple_form.{error_notification,required}.
-  - simple_form.{placeholders,helpers,hints,labels}.*
-  - simple_form.{yes,no}
   - view_components.*
   - views.pagination.*
   - common.*

@@ -1,14 +1,17 @@
 devise_for :users, class_name: "Account::User", path: "", path_names: {
   sign_up: "join",
-  sign_in: "login",
   sign_out: "logout",
-  password: "forgot-password",
   confirmation: "confirm-account",
   unlock: "unlock"
 }, controllers: {
   registrations: "users/registrations",
   sessions: "users/sessions"
 }
+devise_scope :user do
+  get "edit", to: "devise/registrations#edit", as: :edit_user_registration
+  patch "/", to: "devise/registrations#update", as: :user_registration
+  delete "sign_out", to: "devise/sessions#destroy", as: :destroy_user_session
+end
 
 get "/activation_required", to: "pages#activation", as: :activation
 
