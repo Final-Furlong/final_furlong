@@ -7,39 +7,46 @@
                               data: { turbo_action: "replace", controller: "auto-submit" } do |f|
         .grid.grid-cols-1.sm:grid-cols-4.mb-2.gap-4
           div
-            label for="q_name_i_cont_all"= I18n.t("horses.search.name")
-            = f.input :name_i_cont_all, label: false, required: false,
+            fieldset.fieldset
+              legend.fieldset-legend= t("horses.search.name")
+              = f.text_field :name_i_cont_all, class: 'input', label: false, required: false,
                                         input_html: { data: { action: 'keyup->auto-submit#submit' } }
           div
-            label for="q_gender_in"= I18n.t("horses.search.gender")
-            = f.input :gender_in, label: false, required: false, collection: Horses::Gender.localised_filter_options,
-                                  selected: params.dig("q", "gender_in")&.join(",") || "",
-                                  include_blank: true,
-                                  input_html: { data: { action: 'auto-submit#submit' } }
+            fieldset.fieldset
+              legend.fieldset-legend= t("horses.search.gender")
+              = f.collection_select :gender_in, Horses::Gender.localised_filter_options, :last, :first,
+                                  { include_blank: true },
+                                  class: 'select'
           div
-            label for="q_sire_name_i_cont_all"= I18n.t("horses.search.sire")
-            = f.input :sire_name_i_cont_all, label: false, required: false,
+            fieldset.fieldset
+              legend.fieldset-legend= t("horses.search.sire")
+              = f.text_field :sire_name_i_cont_all, class: 'input', label: false, required: false,
                     input_html: { data: { action: 'keyup->auto-submit#submit' } }
           div
-            label for="q_dam_name_i_cont_all"= I18n.t("horses.search.dam")
-            = f.input :dam_name_i_cont_all, label: false, required: false,
+            fieldset.fieldset
+              legend.fieldset-legend= t("horses.search.dam")
+              = f.text_field :dam_name_i_cont_all, class: 'input', label: false, required: false,
                     input_html: { data: { action: 'keyup->auto-submit#submit' } }
           - if include_owner_filter
             div
-              label for="q_owner_name_i_cont_all"= I18n.t("horses.search.owner")
-              = f.input :owner_name_i_cont_all, label: false, required: false,
+              fieldset.fieldset
+                legend.fieldset-legend= t("horses.search.owner")
+                = f.text_field :owner_name_i_cont_all, class: 'input', label: false, required: false,
                       input_html: { data: { action: 'keyup->auto-submit#submit' } }
           div
-            label for="q_breeder_name_i_cont_all"= I18n.t("horses.search.breeder")
-            = f.input :breeder_name_i_cont_all, label: false, required: false,
+            fieldset.fieldset
+              legend.fieldset-legend= t("horses.search.breeder")
+              = f.text_field :breeder_name_i_cont_all, class: 'input', label: false, required: false,
                     input_html: { data: { action: 'keyup->auto-submit#submit' } }
           div
-            label for="q_age_gteq"= I18n.t("horses.search.min_age")
-            = f.input :age_gteq, label: false, required: false, placeholder: "0",
+            fieldset.fieldset
+              legend.fieldset-legend= t("horses.search.min_age")
+              = f.text_field :age_gteq, class: 'input', label: false, required: false, placeholder: "0",
                     input_html: { data: { action: 'keyup->auto-submit#submit' } }
           div
-            label for="q_age_lteq"= I18n.t("horses.search.max_age")
-            = f.input :age_lteq, label: false, required: false, placeholder: "10",
+            fieldset.fieldset
+              legend.fieldset-legend= t("horses.search.max_age")
+              = f.text_field :age_lteq, class: 'input', label: false, required: false, placeholder: "10",
                     input_html: { data: { action: 'keyup->auto-submit#submit' } }
 
         .float-right.flex.mt-2.justify-content-end

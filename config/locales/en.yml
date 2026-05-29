@@ -95,26 +95,9 @@ en:
       game: Game
       loading: Loading...
       notifications: Notifications
-      security: Security
+      profile: Profile
       title: Update Settings
       website: Website
-  simple_form:
-    hints:
-      stable:
-        edit:
-          description: 'Max length: 1000 characters. Allowed HTML tags: &lt;strong&gt;, &lt;em&gt;, &lt;u&gt; and &lt;br&gt;'
-    labels:
-      user:
-        name: Name
-    placeholders:
-      stable:
-        edit:
-          description: Stable Description
-      user:
-        email: Your e-mail
-        login: Username or e-mail
-        name: Your name
-        username: Username
   ssos:
     hmac_mismatch: HMAC mismatch. The message may have been tampered with.
     nonce_mismatch: SSO verification failed. Nonce mismatch.
@@ -126,6 +109,10 @@ en:
       success: User was successfully created.
     destroy:
       success: User was successfully destroyed.
+    form:
+      currently_waiting_confirmation_for_email: 'Currently waiting confirmation for: %{email}'
+      send_confirmation: Send confirmation email
+      update: Update
     index:
       title: Users
     new:

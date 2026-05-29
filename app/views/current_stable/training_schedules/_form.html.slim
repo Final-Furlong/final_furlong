@@ -1,7 +1,7 @@
 /# locals: (schedule:, url:)
-= simple_form_for schedule, as: :training_schedule, url:, html: { class: "training-schedule form" } do |f|
-  = f.input :name, required: true
-  = f.input :description, required: false
+= form_with model: schedule, as: :training_schedule, builder: FormBuilder, url:, html: { class: "training-schedule form" } do |f|
+  = f.text_field :name, required: true
+  = f.text_field :description, required: false
   table.table.table-bordered.w-full
     thead
       tr
@@ -16,12 +16,12 @@
         tr
           td= day
           = f.fields_for "#{day.downcase}_activities", schedule.send(:"#{day.downcase}_activities") do |af|
-            td= af.input :activity1, collection: activities_collection, label: false, required: false
-            td= af.input :distance1, collection: distances_collection, label: false, required: false
-            td= af.input :activity2, collection: activities_collection, label: false, required: false
-            td= af.input :distance2, collection: distances_collection, label: false, required: false
-            td= af.input :activity3, collection: activities_collection, label: false, required: false
-            td= af.input :distance3, collection: distances_collection, label: false, required: false
+            td= af.collection_select :activity1, activities_collection, :last, :first, include_blank: true
+            td= af.collection_select :distance1, distances_collection, :last, :first, include_blank: true
+            td= af.collection_select :activity2, activities_collection, :last, :first, include_blank: true
+            td= af.collection_select :distance2, distances_collection, :last, :first, include_blank: true
+            td= af.collection_select :activity3, activities_collection, :last, :first, include_blank: true
+            td= af.collection_select :distance3, distances_collection, :last, :first, include_blank: true
 
   .form-actions
     = render Ui::ButtonizedLink::Component.new(url: stable_training_schedules_path, color: :secondary, style: :outline, http_method: :get) do

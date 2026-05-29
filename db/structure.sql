@@ -6519,13 +6519,9 @@ CREATE TABLE public.users (
     last_sign_in_at timestamp with time zone,
     last_sign_in_ip character varying,
     locked_at timestamp with time zone,
-    unlock_token character varying,
-    reset_password_sent_at timestamp with time zone,
-    reset_password_token character varying,
     confirmation_sent_at timestamp with time zone,
     confirmation_token character varying,
     confirmed_at timestamp with time zone,
-    encrypted_password character varying DEFAULT ''::character varying NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL
 );
@@ -10441,7 +10437,7 @@ CREATE UNIQUE INDEX index_users_on_discourse_id ON public.users USING btree (dis
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email) WHERE (discarded_at IS NOT NULL);
+CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (lower((email)::text)) WHERE (discarded_at IS NULL);
 
 
 --
@@ -11799,6 +11795,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260530095338'),
 ('20260517123647'),
 ('20260517123608'),
 ('20260517123515'),

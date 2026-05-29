@@ -184,6 +184,7 @@ ActiveRecordDoctor.configure do
   detector :missing_unique_indexes,
     ignore_columns: [
       "Account::User(username)", # includes discarded_at WHERE
+      "Account::User(email)", # includes discarded_at WHERE
       "Horses::StallionOption(horse_id)", # indexed as stud_id
       "Racing::DistanceRaceRecord(horse_id)", # group by horse_id view
       "Racing::ConditionRaceRecord(horse_id)", # group by horse_id view
