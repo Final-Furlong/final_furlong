@@ -1,2 +1,2 @@
-= turbo_frame_tag @user do
-  = render "form", form: @user_form, url: user_path
+= turbo_frame_tag "settings-profile" do
+  = render "form", user: @user_form.user
