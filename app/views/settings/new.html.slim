@@ -3,9 +3,9 @@
         { name: t(".title"), href: "#" }])
 
 .tabs.tabs-border role="tablist"
-  input type="radio" name="settings-tab" class="tab" aria-label=t(".security") checked=(@current_tab == "security")
+  input type="radio" name="settings-tab" class="tab" aria-label=t(".profile") checked=(@current_tab == "security")
   .tab-content.border-base-300.bg-base-100.p-10
-    = turbo_frame_tag "settings-security", src: edit_user_registration_path, loading: "lazy" do
+    = turbo_frame_tag "settings-profile", src: edit_user_path(@current_user), loading: "lazy" do
       .w-full.text-center
         p.mx-auto= t(".loading")
         .mt-2.mx-auto.skeleton.w-full
@@ -27,4 +27,3 @@
         .w-full.text-center
           p.mx-auto= t(".loading")
           .mt-2.mx-auto.skeleton.w-full
-

@@ -103,12 +103,6 @@ en:
         title: Budget
         title_with_available: 'Budget: (%{total}, %{available} available)'
         title_with_total: 'Budget: %{total}'
-      search:
-        category: Category
-        date_from: Date From
-        date_to: Date To
-        description: Description
-        description_hint: Quotes ("search term") will search a phrase
       table:
         balance_disclaimer: Balance shown is at the time of the transaction, it will not reflect the amounts displayed if you are searching/sorting.
         total_earned: Total Money Earned
@@ -398,6 +392,8 @@ en:
       winners: Winners
     edit:
       header: Edit Stable
+    form:
+      description: Description
     index:
       all: All Stables
     show:

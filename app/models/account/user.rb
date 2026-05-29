@@ -19,17 +19,17 @@ module Account
     has_many :push_subscriptions, inverse_of: :user, dependent: :delete_all
 
     # Include default devise modules. Others available are:
-    # :omniauthable
-    devise :database_authenticatable, :registerable,
-      :recoverable, :rememberable, :validatable, # codespell:ignore rememberable
-      :confirmable, :lockable, :timeoutable, :trackable
+    # :omniauthable, :database_authenticatable, :registerable, :recoverable
+    devise :rememberable, :confirmable, :lockable, :timeoutable, :trackable # codespell:ignore rememberable
 
     enum :status, { pending: "pending", active: "active", deleted: "deleted", banned: "banned" }
 
-    validates :username, :status, :name, presence: true
+    validates :username, :status, :name, :email, presence: true
     validates :admin, inclusion: { in: [true, false] }
     validates :developer, inclusion: { in: [true, false] }
     validates :username, uniqueness: { case_sensitive: false }, length: { minimum: Config::Game.username_minimum_length }
+    validates :email, uniqueness: { case_sensitive: false }
+    validates :email, format: { with: /\A[^@\s]+@[^@\s]+\z/ }
 
     scope :developer, -> { where(developer: true) }
 
@@ -43,15 +43,6 @@ module Account
     end
 
     # :nocov:
-
-    # allow login via username or e-mail
-    def self.find_for_database_authentication(warden_conditions)
-      conditions = warden_conditions.dup
-      login = conditions.delete(:login)
-      where(conditions).where(
-        ["LOWER(username) = :value OR LOWER(email) = :value", { value: login.strip.downcase }]
-      ).first
-    end
 
     def self.ransackable_attributes(_auth_object = nil)
       %w[username status name email]

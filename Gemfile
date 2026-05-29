@@ -11,6 +11,7 @@ gem "solid_queue" # A database-backed ActiveJob backend [https://github.com/rail
 
 # Backend
 gem "bootsnap", require: false # Reduces boot times through caching; required in config/boot.rb
+gem "freezolite"
 gem "puma" # Use the Puma web server [https://github.com/puma/puma]
 
 # Asset management
@@ -68,7 +69,6 @@ gem "pretender"
 gem "class_variants"
 gem "pagy"
 gem "rails_vite"
-gem "simple_form"
 gem "slim-rails"
 gem "tailwindcss-rails"
 gem "tailwind_merge"
@@ -114,7 +114,6 @@ group :development do
   gem "capistrano-rails", "~> 1.3", require: false
   gem "capistrano-rbenv", "~> 2.2", require: false
   gem "ed25519", require: false # required for capistrano
-  gem "freezolite"
   gem "good_migrations"
   gem "guard", require: false
   gem "guard-bundler", require: false

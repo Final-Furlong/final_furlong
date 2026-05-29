@@ -14,6 +14,14 @@ module Account
       admin?
     end
 
+    def edit?
+      user == record
+    end
+
+    def update?
+      edit?
+    end
+
     def impersonate?
       admin? && user != record
     end

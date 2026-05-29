@@ -4,11 +4,6 @@ module Users
       redirect_to sso_login_path and return
     end
 
-    def create
-      super
-      set_flash_success
-    end
-
     def destroy
       super
       set_flash_success

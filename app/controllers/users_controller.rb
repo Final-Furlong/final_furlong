@@ -32,7 +32,8 @@ class UsersController < AuthenticatedController
 
   def update
     if @user_form.submit(user_attributes)
-      redirect_to_users
+      flash[:success] = t(".success")
+      redirect_to root_path
     else
       flash[:alert] = t(".failure")
       render :new, status: :unprocessable_entity
@@ -55,7 +56,7 @@ class UsersController < AuthenticatedController
   end
 
   def load_user
-    @user = Account::User.find_by(id: params[:id])
+    @user = Account::User.find(params[:id])
   end
 
   def new_user

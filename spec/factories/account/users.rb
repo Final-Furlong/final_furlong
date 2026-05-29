@@ -3,7 +3,6 @@ FactoryBot.define do
     sequence(:username) do |n|
       "#{SecureRandom.alphanumeric(20)}_#{n}"
     end
-    password { "abc1A$ab" }
     status { "active" }
     name { Faker::Name.first_name }
     email { Faker::Internet.email }
