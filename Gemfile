@@ -82,7 +82,6 @@ gem "data_migrate"
 gem "discard"
 gem "flag_shih_tzu" # bit mask
 gem "friendly_id"
-gem "mysql2"
 gem "nanoid"
 gem "pg" # Use postgresql as the database for Active Record
 gem "pghero"
@@ -192,4 +191,3 @@ end
 group :tools do
   gem "colorize", require: false
 end
-
