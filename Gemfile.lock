@@ -580,8 +580,6 @@ GEM
     mustermann (4.0.0)
     mustermann-grape (1.1.0)
       mustermann (>= 1.0.0)
-    mysql2 (0.5.7)
-      bigdecimal
     n_plus_one_control (0.8.0)
     nanoid (2.0.0)
     nenv (0.3.0)
@@ -1137,7 +1135,6 @@ DEPENDENCIES
   lograge
   mailtrap
   mission_control-jobs
-  mysql2
   n_plus_one_control
   nanoid
   net-ssh
@@ -1418,7 +1415,6 @@ CHECKSUMS
   multi_xml (0.8.1) sha256=addba0290bac34e9088bfe73dc4878530297a82a7bbd66cb44dcd0a4b86edf5a
   mustermann (4.0.0) sha256=91f67411bb208d1d93c41e6128cb3b0f8ddd9ec7c45966f1007e1c43c08040d7
   mustermann-grape (1.1.0) sha256=8d258a986004c8f01ce4c023c0b037c168a9ed889cf5778068ad54398fa458c5
-  mysql2 (0.5.7) sha256=ba09ede515a0ae8a7192040a1b778c0fb0f025fa5877e9be895cd325fa5e9d7b
   n_plus_one_control (0.8.0) sha256=09da5475051afbc9ec3046ed41bfa7327ffad09b34e5d15d46120cb93ab7d266
   nanoid (2.0.0) sha256=78a5c93c1595981fb37712a166d7ea1ef15a679553e5d3c72337f231febd8bfc
   nenv (0.3.0) sha256=d9de6d8fb7072228463bf61843159419c969edb34b3cef51832b516ae7972765
@@ -1610,7 +1606,7 @@ CHECKSUMS
   zonebie (0.6.1) sha256=2762da3b5392a6a81d58ab13ae497c93e1dbdbd0c70bd8b4a9397f827be35e69
 
 RUBY VERSION
-   ruby 3.4.5p51
+   ruby 4.0.5p0
 
 BUNDLED WITH
    2.7.1
