@@ -52,7 +52,7 @@ module Dashboard
       end
 
       def racetracks
-        @racetracks ||= ::Racing::Racetrack.all
+        @racetracks ||= ::Racing::Racetrack.includes(:location).all
       end
     end
   end

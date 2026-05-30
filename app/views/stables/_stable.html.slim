@@ -4,10 +4,10 @@
     h1.text-2xl= stable.name
     - if stable.user.name.present?
       p.mt-2= t(".owner", name: stable.user.name)
-    - if stable.racetrack.present?
+    - if (racetrack = Racing::Racetrack.includes(:location).find(stable.racetrack_id))
       p.mt-2
-        = t(".location", track: stable.racetrack.name, miles: stable.miles_from_track,
-                location: stable.racetrack.location.name)
+        = t(".location", track: racetrack.name, miles: stable.miles_from_track,
+                location: racetrack.location.name)
     p.mt-2
       span= t("stables.show.joined", date: l(stable.created_at.to_date, format: :long))
 

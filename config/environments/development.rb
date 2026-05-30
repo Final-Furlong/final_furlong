@@ -58,7 +58,7 @@ Rails.application.configure do
   config.active_record.query_log_tags_enabled = true
 
   config.active_record.strict_loading_by_default = true
-  config.active_record.action_on_strict_loading_violation = :log
+  config.active_record.action_on_strict_loading_violation = :raise
 
   # Highlight code that enqueued background job in logs.
   config.active_job.verbose_enqueue_logs = true

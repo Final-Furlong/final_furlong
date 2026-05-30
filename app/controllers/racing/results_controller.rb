@@ -11,7 +11,7 @@ module Racing
 
     def show
       @race = policy_scope(Racing::RaceResult.where(date: params[:date],
-        number: params[:number])).first
+        number: params[:number])).includes(track_surface: :racetrack).first
       authorize @race
     end
   end

@@ -44,7 +44,9 @@ class StablesController < AuthenticatedController
   end
 
   def find_stable!
-    Account::Stable.find(params[:id])
+    query = Account::Stable.includes(:user, racetrack: :location)
+    query = query.includes(:user) if Current.user.admin?
+    query.find(params[:id])
   end
 end
 

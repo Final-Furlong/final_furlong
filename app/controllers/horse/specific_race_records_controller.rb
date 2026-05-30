@@ -1,7 +1,8 @@
 module Horse
   class SpecificRaceRecordsController < AuthenticatedController
     def show
-      @horse = Horses::Horse.find(params[:id])
+      @horse = Horses::Horse.includes(:distance_race_record, :surface_race_record, :condition_race_record,
+        :race_type_race_record, :equipment_race_records, :location_race_records).find(params[:id])
       @distance_record = @horse.distance_race_record
       authorize @distance_record
 

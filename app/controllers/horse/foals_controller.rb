@@ -3,7 +3,7 @@ module Horse
     skip_after_action :verify_pundit_authorization, only: :index
 
     def index
-      horse = Horses::Horse.includes(:next_foal, :broodmare_foal_record, :stud_foal_record).find(params[:id])
+      horse = Horses::Horse.includes(:broodmare_foal_record, :stud_foal_record, next_foal: :stud).find(params[:id])
       authorize horse, :show?
 
       foal_type = horse.female? ? :foals : :stud_foals
