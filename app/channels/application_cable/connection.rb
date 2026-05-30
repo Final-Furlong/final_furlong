@@ -4,22 +4,17 @@ module ApplicationCable
     impersonates :user, method: :current_user, with: ->(id) { Account::User.find_by(id:) }
 
     def connect
-      self.current_user = swallow_warden_throws { env["warden"].user }
-      reject_unauthorized_connection unless current_user
-      logger.add_tags "ActionCable", "User #{current_user.id}"
+      self.current_user = find_verified_user
     end
 
     protected
 
-    def swallow_warden_throws
-      catch(:warden) do
-        result = yield
-        # This might look pointless, but it's not. We only get here if we don't throw, so we need to return early to
-        # expose the yielded value to the caller as opposed to nil
-        return result
+    def find_verified_user
+      if verified_user = User.find_by(id: cookies.encrypted[:user_id])
+        verified_user
+      else
+        reject_unauthorized_connection
       end
-      nil
     end
   end
 end
-

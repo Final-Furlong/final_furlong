@@ -14,6 +14,7 @@ class SSOsController < ApplicationController
           user_info = decoded_hash
           user = Account::User.find_by(username: user_info[:username])
           sign_in user
+          cookies.encrypted[:user_id] = user.id
           status = "success"
         else
           status = "error"
