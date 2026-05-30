@@ -1,0 +1,64 @@
+# PostgreSQL. Versions 9.3 and up are supported.
+#
+# Install the pg driver:
+#   gem install pg
+# On macOS with Homebrew:
+#   gem install pg -- --with-pg-config=/usr/local/bin/pg_config
+# On macOS with MacPorts:
+#   gem install pg -- --with-pg-config=/opt/local/lib/postgresql84/bin/pg_config
+# On Windows:
+#   gem install pg
+#       Choose the win32 build.
+#       Install PostgreSQL and put its /bin directory on your path.
+#
+# Configure Using Gemfile
+# gem "pg"
+#
+default: &default
+  adapter: postgresql
+  encoding: utf8
+  # For details on connection pooling, see Rails configuration guide
+  # https://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: 5
+
+development:
+  primary:
+    <<: *default
+    database: <%= ENV.fetch('DATABASE_NAME', 'final_furlong_development') %>
+  cache:
+    <<: *default
+    database: final_furlong_cache
+    migrations_paths: db/cache_migrate
+  cable:
+    <<: *default
+    database: final_furlong_cable
+    migrations_paths: db/cable_migrate
+test:
+  primary:
+    <<: *default
+    database: final_furlong_test
+  cache:
+    <<: *default
+    database: final_furlong_test_cache
+    migrations_paths: db/cache_migrate
+  cable:
+    <<: *default
+    database: final_furlong_test_cable
+    migrations_paths: db/cable_migrate
+
+production:
+  primary: &primary_production
+    <<: *default
+    database: <%= ENV["POSTGRES_DB"] %>
+    username: <%= ENV["POSTGRES_USER"] %>
+    password: <%= ENV["POSTGRES_PASSWORD"] %>
+    host: <%= ENV["DB_HOST"] %>
+    port: <%= ENV["DB_PORT"] %>
+  cache:
+    <<: *primary_production
+    database: final_furlong_production_cache
+    migrations_paths: db/cache_migrate
+  cable:
+    <<: *primary_production
+    database: final_furlong_production_cable
+    migrations_paths: db/cable_migrate
