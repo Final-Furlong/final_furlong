@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   match "/422", to: "errors#unprocessable", via: :all
   match "/500", to: "errors#internal_error", via: :all
 
+  resource :search, only: :show
   resources :stables, only: %i[index show]
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
