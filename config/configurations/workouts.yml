@@ -52,8 +52,8 @@ shared:
       - 16
     energy_loss_per_second_min: 0.003
     energy_loss_per_second_max: 0.004
-    fitness_gain_per_second_min: 0.007
-    fitness_gain_per_second_max: 0.008
+    fitness_gain_per_second_min: 0.014
+    fitness_gain_per_second_max: 0.016
     min_furlongs: 4
     max_furlongs: 16
     stride_inches_min: 36
@@ -74,10 +74,10 @@ shared:
       - 32
       - 36
       - 40
-    energy_loss_per_second_min: 0.004
-    energy_loss_per_second_max: 0.005
-    fitness_gain_per_second_min: 0.009
-    fitness_gain_per_second_max: 0.010
+    energy_loss_per_second_min: 0.020
+    energy_loss_per_second_max: 0.022
+    fitness_gain_per_second_min: 0.048
+    fitness_gain_per_second_max: 0.050
     min_furlongs: 4
     max_furlongs: 40
     stride_inches_min: 48
@@ -98,10 +98,10 @@ shared:
       - 32
       - 36
       - 40
-    energy_loss_per_second_min: 0.015
-    energy_loss_per_second_max: 0.020
-    fitness_gain_per_second_min: 0.02
-    fitness_gain_per_second_max: 0.025
+    energy_loss_per_second_min: 0.034
+    energy_loss_per_second_max: 0.038
+    fitness_gain_per_second_min: 0.070
+    fitness_gain_per_second_max: 0.073
     min_furlongs: 4
     max_furlongs: 40
     stride_inches_min: 120
@@ -120,8 +120,8 @@ shared:
       - 24
     energy_loss_per_second_min: 0.045
     energy_loss_per_second_max: 0.070
-    fitness_gain_per_second_min: 0.08
-    fitness_gain_per_second_max: 0.085
+    fitness_gain_per_second_min: 0.10
+    fitness_gain_per_second_max: 0.11
     min_furlongs: 4
     max_furlongs: 24
     stride_length: average
@@ -133,10 +133,10 @@ shared:
       - 4
       - 5
       - 6
-    energy_loss_per_second_min: 0.180
-    energy_loss_per_second_max: 0.200
-    fitness_gain_per_second_min: 0.300
-    fitness_gain_per_second_max: 0.400
+    energy_loss_per_second_min: 0.065
+    energy_loss_per_second_max: 0.085
+    fitness_gain_per_second_min: 0.20
+    fitness_gain_per_second_max: 0.30
     min_furlongs: 1
     max_furlongs: 6
     stride_length: max
