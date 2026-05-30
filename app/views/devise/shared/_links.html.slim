@@ -1,9 +1,4 @@
 .mt-2
-  - if controller_name != "sessions"
-    = render Ui::Link::Component.new(url: new_session_path(resource_name)) do
-      = t(".sign_in")
-    br
-
   - if false && devise_mapping.registerable? && controller_name != "registrations"
     = render Ui::Link::Component.new(url: new_registration_path(resource_name)) do
       = t("layouts.nav.join")

@@ -4,7 +4,7 @@ devise_for :users, class_name: "Account::User", path: "", path_names: {
   confirmation: "confirm-account",
   unlock: "unlock"
 }, controllers: {
-  registrations: "users/registrations",
+  confirmations: "users/confirmations",
   sessions: "users/sessions"
 }
 devise_scope :user do

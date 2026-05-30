@@ -1,9 +1,5 @@
 module Users
   class SessionsController < Devise::SessionsController
-    def new
-      redirect_to sso_login_path and return
-    end
-
     def destroy
       super
       set_flash_success
