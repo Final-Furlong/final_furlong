@@ -10,13 +10,16 @@ gem "solid_cache" # A database-backed ActiveSupport::Cache::Store [https://githu
 
 # Backend
 gem "bootsnap", require: false # Reduces boot times through caching; required in config/boot.rb
+gem "kamal", require: false
 gem "puma" # Use the Puma web server [https://github.com/puma/puma]
+gem "thruster", require: false
 
 # Asset management
 gem "fastimage"
 gem "image_processing" # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "jbuilder" # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "propshaft" # Deliver assets for Rails [https://github.com/rails/propshaft]
+gem "ruby-vips"
 gem "stimulus-rails" # Hotwire"s modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "turbo-rails" # Hotwire"s SPA-like page accelerator [https://turbo.hotwired.dev]
 
@@ -82,7 +85,6 @@ gem "data_migrate"
 gem "discard"
 gem "flag_shih_tzu" # bit mask
 gem "friendly_id"
-gem "mysql2"
 gem "nanoid"
 gem "pg" # Use postgresql as the database for Active Record
 gem "pghero"
