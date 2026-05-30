@@ -3,6 +3,8 @@ class Workouts::AutoWorkoutJob < ApplicationJob
 
   queue_as :low_priority
 
+  retry_on FloatDomainError
+
   def perform(date: Date.current)
     return if run_today?(date:)
     return unless run_today?(name: "Racing::EnergyFitnessUpdaterJob", date:)

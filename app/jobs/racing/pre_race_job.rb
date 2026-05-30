@@ -3,6 +3,8 @@ class Racing::PreRaceJob < ApplicationJob
 
   queue_as :default
 
+  retry_on ActiveRecord::RecordInvalid
+
   def perform(tomorrow: Date.tomorrow)
     horses = 0
     races = 0

@@ -45,7 +45,7 @@ class Pwa::WebPushJob < ApplicationJob
   end
 
   def icon_url
-    ActionController::Base.helpers.asset_url("app-icons/icon-192.png")
+    "#{ENV.fetch("RAILS_APP_URL", "http://localhost:3000/")}app-icons/icon-192.png"
   end
 
   def vapid

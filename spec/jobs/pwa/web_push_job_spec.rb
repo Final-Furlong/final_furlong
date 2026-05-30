@@ -128,7 +128,7 @@ RSpec.describe Pwa::WebPushJob, :perform_enqueueed_jobs do
     {
       title:,
       body: message,
-      icon: ActionController::Base.helpers.asset_url("app-icons/icon-192.png")
+      icon: "http://localhost:3000/app-icons/icon-192.png"
     }.to_json
   end
 end
