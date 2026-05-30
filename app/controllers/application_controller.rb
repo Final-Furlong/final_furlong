@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
     msg = t("#{policy_name}.#{error_key}", scope: "pundit", default: :default, **error_message_18n_params)
     flash[:error] = msg # rubocop:disable Rails/ActionControllerFlashBeforeRender
     respond_to do |format|
-      format.html { redirect_to(request.referer || root_path) }
+      format.html { redirect_to root_path }
       format.js { render js: } # e.g. use your standard js notify application }
     end
   end
