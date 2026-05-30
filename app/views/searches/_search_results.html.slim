@@ -1,0 +1,33 @@
+/# locals: (query:, results:, counts:)
+.mt-4
+  - if query.present?
+    .results-summary.text-center= "Found #{counts[:total]} results for \"#{query}\""
+
+    - if results[:horses].any?
+      hr.my-2
+      section.search-results-section
+        h2.font-bold.text-xl
+          = Horses::Horse.model_name.human.pluralize.titleize
+          = " (#{counts[:horses]})"
+        - results[:horses].each do |document|
+          - horse = document.searchable
+          p class="text-#{horse.gender}"= link_to horse.name_with_title, horse_path(horse), data: { turbo_frame: "_top" }
+        - if counts[:horses] > results[:horses].count
+          = link_to t(".see_horses_count", count: counts[:horses]),  horses_path(q: { name_i_cont_all: @query }), class: 'link link-secondary text-sm', data: { turbo_frame: "_top" }
+
+    - if results[:stables].any?
+      hr.my-2
+      section.search-results-section
+        h2.font-bold.text-lg = "Stables (#{results[:stables].count})"
+        ul.list-inline
+          - results[:stables].each do |document|
+            - stable = document.searchable
+            li.list-inline-item
+              = link_to stable.name, stable_path(stable)
+            - if counts[:stables] > results[:stables].count
+              = link_to 'See all stables', stables_path(q: { name_i_cont: @query }), class: 'btn btn-link'
+
+    - if counts[:total].zero?
+      .no-results
+        p= "No results found for \"#{query}\""
+        p= "Try different keywords or check your spelling."

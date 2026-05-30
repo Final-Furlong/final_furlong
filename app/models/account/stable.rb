@@ -2,8 +2,11 @@ module Account
   class Stable < ApplicationRecord
     include PublicIdGenerator
     include FriendlyId
+    include PgSearch::Model
 
     friendly_id :slug_candidates, use: [:slugged, :finders]
+
+    multisearchable against: [:name], if: lambda { |record| record.user.status == "active" }
 
     attribute :miles_from_track, default: -> { 10 }
 
