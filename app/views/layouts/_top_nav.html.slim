@@ -10,11 +10,11 @@
     ul.menu-horizontal.bg-base-200.text-base-content.min-h-full[
       class="sm:border-0 dark:border-neutral-100/50"
     ]
-      li.pr-4
-        .hidden.border.rounded-md.md:block
-          form.flex.p-2 role="search" disabled=true
-            input type="search" disabled=true placeholder=t(".search_placeholder") aria-label=t(".search_aria_label")
       - if signed_in?
+        li.pr-4
+        .hidden.border.rounded-md.md:block
+          = form_with url: search_path, method: :get, data: { controller: 'auto-submit', 'auto-submit-delay-value' => 500 } do |f|
+            = f.search_field :query, placeholder: t(".search_placeholder"), class: "input", data: { action: 'keyup->auto-submit#submit' }
         li.px-2.pt-2.hidden.sm:block
           = link_to root_path do
             i.ph-fill.ph-house.text-2xl alt=t(".home")

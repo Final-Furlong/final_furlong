@@ -88,6 +88,7 @@ gem "nanoid"
 gem "pg" # Use postgresql as the database for Active Record
 gem "pghero"
 gem "pg_query", ">= 2"
+gem "pg_search"
 gem "rails-pg-extras"
 gem "scenic" # versioned views
 gem "store_model"

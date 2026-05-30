@@ -45,6 +45,5 @@ en:
     top_nav:
       home: Home
       open_menu: Open Menu
-      search_aria_label: Search
-      search_placeholder: Search...
+      search_placeholder: Search horses/stables...
       settings: Settings
