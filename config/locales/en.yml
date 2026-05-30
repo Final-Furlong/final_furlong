@@ -85,6 +85,15 @@ en:
     training_schedules:
       activity_with_distance: "%{activity} for %{distance}"
       maximum_allowed_text: You have the maximum number of schedules for your stable
+  searches:
+    search_results:
+      see_horses_count:
+        one: See 1 horse
+        other: See all %{count} horses
+        zero: No more horses
+    show:
+      search: Search for "%{query}"
+      title: Horse / Stable Search
   settings:
     create:
       success:
