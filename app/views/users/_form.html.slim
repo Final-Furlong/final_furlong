@@ -1,13 +1,12 @@
-/# locals: (form:)
-= simple_form_for form, as: :user, url:, html: { class: "user form" } do |f|
-  = render Forms::ErrorMessages::Component.new(object: form)
-  = f.input :username, input_html: { autofocus: true }, disabled: form.persisted?
-  = f.input :email
-  = f.input :name
-  - unless form.persisted?
-    = f.input :password
-    = f.input :password_confirmation
-  = f.input :stable_name, disabled: form.persisted?
-  = render Ui::Link::Component.new(url: users_path, color: :secondary, style: :outline) do
-    = t("common.actions.cancel")
-  = render Ui::SubmitButton.new(form: f)
+/# locals: (user:)
+= styled_form_with model: user, url: user_path(user), data: { turbo: false } do |f|
+  = f.text_field :username, disabled: true
+  = f.text_field :name, required: true
+  = f.email_field :email, required: true
+  - if user.pending_reconfirmation?
+    div.mt-2
+      p.text-warning= t(".currently_waiting_confirmation_for_email", email: user.unconfirmed_email)
+      = render Ui::Link::Component.new(url: new_confirmation_path(:user)) do
+        = t(".send_confirmation")
+
+  = f.submit t(".update"), class: "mt-2 btn btn-primary btn-sm"

@@ -7,6 +7,7 @@ module Account
     friendly_id :username, use: [:slugged, :finders]
 
     self.strict_loading_by_default = false
+    self.ignored_columns += ["encrypted_password", "reset_password_sent_at", "reset_password_token", "unlock_token"]
 
     attr_accessor :login
 
@@ -19,17 +20,17 @@ module Account
     has_many :push_subscriptions, inverse_of: :user, dependent: :delete_all
 
     # Include default devise modules. Others available are:
-    # :omniauthable
-    devise :database_authenticatable, :registerable,
-      :recoverable, :rememberable, :validatable, # codespell:ignore rememberable
-      :confirmable, :lockable, :timeoutable, :trackable
+    # :omniauthable, :database_authenticatable, :registerable, :recoverable, :lockable
+    devise :rememberable, :confirmable, :timeoutable, :trackable # codespell:ignore rememberable
 
     enum :status, { pending: "pending", active: "active", deleted: "deleted", banned: "banned" }
 
-    validates :username, :status, :name, presence: true
+    validates :username, :status, :name, :email, presence: true
     validates :admin, inclusion: { in: [true, false] }
     validates :developer, inclusion: { in: [true, false] }
     validates :username, uniqueness: { case_sensitive: false }, length: { minimum: Config::Game.username_minimum_length }
+    validates :email, uniqueness: { case_sensitive: false }
+    validates :email, format: { with: /\A[^@\s]+@[^@\s]+\z/ }
 
     scope :developer, -> { where(developer: true) }
 
@@ -43,15 +44,6 @@ module Account
     end
 
     # :nocov:
-
-    # allow login via username or e-mail
-    def self.find_for_database_authentication(warden_conditions)
-      conditions = warden_conditions.dup
-      login = conditions.delete(:login)
-      where(conditions).where(
-        ["LOWER(username) = :value OR LOWER(email) = :value", { value: login.strip.downcase }]
-      ).first
-    end
 
     def self.ransackable_attributes(_auth_object = nil)
       %w[username status name email]
@@ -73,21 +65,17 @@ end
 #  current_sign_in_ip                       :string
 #  developer                                :boolean          default(FALSE), not null, indexed
 #  discarded_at                             :datetime
-#  email                                    :string           default(""), not null, uniquely indexed
-#  encrypted_password                       :string           default(""), not null
+#  email                                    :string           default(""), not null
 #  failed_attempts                          :integer          default(0), not null
 #  last_sign_in_at                          :datetime
 #  last_sign_in_ip                          :string
 #  locked_at                                :datetime
 #  name                                     :string           not null, indexed
 #  remember_created_at                      :datetime
-#  reset_password_sent_at                   :datetime
-#  reset_password_token                     :string
 #  sign_in_count                            :integer          default(0), not null
 #  slug                                     :string           uniquely indexed
 #  status(pending, active, deleted, banned) :enum             default("pending"), not null
 #  unconfirmed_email                        :string
-#  unlock_token                             :string
 #  username                                 :string           not null, uniquely indexed
 #  created_at                               :datetime         not null
 #  updated_at                               :datetime         not null
@@ -99,7 +87,7 @@ end
 #  index_users_on_admin         (admin) WHERE (discarded_at IS NOT NULL)
 #  index_users_on_developer     (developer) WHERE (discarded_at IS NOT NULL)
 #  index_users_on_discourse_id  (discourse_id) UNIQUE WHERE (discarded_at IS NOT NULL)
-#  index_users_on_email         (email) UNIQUE WHERE (discarded_at IS NOT NULL)
+#  index_users_on_email         (lower((email)::text)) UNIQUE WHERE (discarded_at IS NULL)
 #  index_users_on_name          (name) WHERE (discarded_at IS NOT NULL)
 #  index_users_on_public_id     (public_id) UNIQUE WHERE (discarded_at IS NOT NULL)
 #  index_users_on_slug          (slug) UNIQUE WHERE (discarded_at IS NOT NULL)

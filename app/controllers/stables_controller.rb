@@ -10,20 +10,18 @@ class StablesController < AuthenticatedController
   end
 
   def show
-    @stable = load_stable
+    @stable = params[:id] ? find_stable! : Current.stable
     authorize @stable
   end
 
   def edit
-    stable = load_stable
-    authorize stable
-
-    @stable_form = Stables::UpdateDescription.new(stable:, description: stable.description)
+    @stable = Current.stable
+    authorize @stable
   end
 
   def update
-    stable = load_stable
-    authorize stable
+    @stable = Current.stable
+    authorize @stable
     outcome = Stables::UpdateDescription.run(update_params)
 
     if outcome.valid?
@@ -42,11 +40,7 @@ class StablesController < AuthenticatedController
   end
 
   def stable_params
-    params.expect(stable: [:description])
-  end
-
-  def load_stable
-    params[:id] ? find_stable! : Current.stable
+    params.expect(account_stable: [:description])
   end
 
   def find_stable!
