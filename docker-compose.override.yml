@@ -1,0 +1,16 @@
+services:
+  app:
+    build:
+      dockerfile: Dockerfile.dev
+    environment:
+      RAILS_ENV: development
+
+  db:
+    environment:
+      POSTGRES_PASSWORD: shhhhItsASecret
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  good_job:
+    build:
+      dockerfile: Dockerfile.dev
