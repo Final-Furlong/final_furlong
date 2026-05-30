@@ -31,7 +31,7 @@ Rails.application.configure do
   config.force_ssl = true
 
   # Skip http-to-https redirect for the default health check endpoint.
-  config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
+  config.ssl_options = { redirect: { exclude: ->(request) { ["/health/app", "/health/upstream"].include?(request.path) } } }
 
   # Log to STDOUT with the current request id as a default log tag.
   config.log_tags = [:request_id]
@@ -42,7 +42,8 @@ Rails.application.configure do
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
   # Prevent health checks from clogging up the logs.
-  config.silence_healthcheck_path = "/up"
+  config.middleware.insert_before Rails::Rack::Logger, Rails::Rack::SilenceRequest, path: "/health/app"
+  config.middleware.insert_before Rails::Rack::Logger, Rails::Rack::SilenceRequest, path: "/health/upstream"
 
   # Don't log any deprecations.
   config.active_support.report_deprecations = false
@@ -83,6 +84,6 @@ Rails.application.configure do
   ]
 
   # Skip DNS rebinding protection for the default health check endpoint.
-  config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  config.host_authorization = { redirect: { exclude: ->(request) { ["/health/app", "/health/upstream"].include?(request.path) } } }
 end
 
