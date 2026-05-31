@@ -28,6 +28,7 @@ module Account
     has_many :race_results, class_name: "Racing::RaceResult", through: :race_result_finishes, source: :race
     has_many :claims, class_name: "Racing::Claim", inverse_of: :claimer, dependent: :delete_all
     has_many :pending_claims, class_name: "Racing::Claim", inverse_of: :owner, dependent: :delete_all
+    has_many :breeders_series_nominations, class_name: "Racing::BreedersSeriesNomination", inverse_of: :stable, dependent: :delete_all
     # rubocop:disable Rails/HasManyOrHasOneDependent
     has_many :annual_race_records, class_name: "Racing::StableAnnualRaceRecord", inverse_of: :stable
     has_many :race_records, class_name: "Racing::StableRaceRecord", inverse_of: :stable
@@ -101,4 +102,3 @@ end
 #  fk_rails_...  (racetrack_id => racetracks.id) ON DELETE => nullify ON UPDATE => cascade
 #  fk_rails_...  (user_id => users.id) ON DELETE => restrict ON UPDATE => cascade
 #
-
