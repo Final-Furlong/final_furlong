@@ -12,6 +12,7 @@ end
 # Database name: primary
 #
 #  id                             :bigint           not null, primary key
+#  allele                         :string
 #  breeding_potential             :integer          default(0), not null
 #  breeding_potential_grandparent :integer          default(0), not null
 #  dosage                         :string           indexed
