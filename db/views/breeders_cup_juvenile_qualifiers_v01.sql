@@ -7,12 +7,14 @@ SELECT
   COALESCE(dirt.stakes_thirds, 0) AS stakes_thirds,
   COALESCE(allowance_wins.wins, 0) AS allowance_wins,
   COALESCE(dirt.points, 0) AS points,
-  CASE WHEN bn.id IS NULL THEN false
-  ELSE true
+  CASE WHEN sbn.id IS NOT NULL OR bn.id IS NOT NULL THEN true
+  ELSE false
   END AS nominated
 FROM
   horses h
   LEFT OUTER JOIN breeders_cup_nominations bn ON h.id = bn.horse_id
+  LEFT OUTER JOIN supplemental_breeders_cup_nominations sbn ON h.id = sbn.horse_id
+  LEFT JOIN race_schedules rs ON sbn.race_id = rs.id
   LEFT JOIN (
     SELECT
       horse_id,
@@ -54,8 +56,11 @@ FROM
   ) AS allowance_wins ON h.id = allowance_wins.horse_id
 WHERE
   h.age = 2
+  AND h.status = 'racehorse'
   AND h.gender IN ('colt', 'gelding')
   AND (bn.effective_year IS NULL OR bn.effective_year <= DATE_PART('Year', CURRENT_DATE))
+  AND (sbn.id IS NULL OR (sbn.year = DATE_PART('Year', CURRENT_DATE) AND rs.name = 'Breeders'' Cup Juvenile'))
   AND COALESCE(dirt.starts, 0) > 0
   AND (COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0) + COALESCE(dirt.stakes_thirds, 0) +
   COALESCE(allowance_wins.wins, 0)) > 0
+WITH DATA;

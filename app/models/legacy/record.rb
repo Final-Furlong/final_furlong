@@ -2,7 +2,7 @@ module Legacy
   class Record < ApplicationRecord
     self.abstract_class = true
 
-    # connects_to database: { writing: :legacy, reading: :legacy }
+    connects_to database: { writing: :legacy, reading: :legacy }
 
     def format_attribute(value)
       value.to_s

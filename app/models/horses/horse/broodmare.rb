@@ -26,7 +26,7 @@ class Horses::Horse::Broodmare < ActiveRecord::AssociatedObject
   end
 
   def last_shipment
-    record.broodmare_shipments.current.order(arrival_date: :desc).first
+    record.broodmare_shipments.includes(:ending_farm).current.order(arrival_date: :desc).first
   end
 end
 
