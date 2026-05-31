@@ -4,6 +4,7 @@ ruby:
   next_date = Racing::RaceSchedule.where('date > ?', date).minimum(:date)
   actions = [:post_parade, :search]
   actions << :breeders_cup_qualifiers if Racing::RaceSchedule.breeders_cup.current_year.exists?
+  actions << :breeders_series_qualifiers if Racing::RaceSchedule.breeders_series.current_year.exists?
 - content_for :breadcrumbs do
   = render Nav::Breadcrumbs::Component.new(links: [{ name: t(".title"), href: "#" },
     { name: l(date), href: "#" }]) do

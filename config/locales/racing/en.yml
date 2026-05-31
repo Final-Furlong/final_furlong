@@ -18,6 +18,38 @@ en:
           zero: No Horses Qualified
         rank: Rank
         record: Record
+    breeders_series_qualifiers:
+      index:
+        loading_qualifiers: Loading qualifiers...
+        races_already_run: Breeders' Series races have already been run this year.
+        series_title_2yo_dirt: 2yo Dirt Series
+        series_title_2yo_filly_dirt: 2yo Dirt Fillies Series
+        series_title_2yo_filly_turf: 2yo Turf Fillies Series
+        series_title_2yo_turf: 2yo Turf Series
+        series_title_3yo_dirt: 3yo Dirt Series
+        series_title_3yo_filly_dirt: 3yo Dirt Fillies Series
+        series_title_3yo_filly_turf: 3yo Turf Fillies Series
+        series_title_3yo_turf: 3yo Turf Series
+        series_title_4yo_dirt: 4yo+ Dirt Series
+        series_title_4yo_mare_dirt: 4yo+ Dirt Mares Series
+        series_title_4yo_mare_turf: 4yo+ Turf Mares Series
+        series_title_4yo_turf: 4yo+ Turf Series
+        series_title_steeplechase: Steeplechase Series
+        series_title_steeplechase_filly: Steeplechase Fillies/Mares Series
+        title: Breeders' Series Qualifiers
+      qualifier:
+        age: "%{age}yo"
+        tied_count:
+          one: Tied with 1 horse
+          other: Tied with %{count} horses
+      show:
+        qualified_count:
+          one: 1 Qualified
+          other: "%{count} Qualified"
+          zero: No Horses Qualified
+        races: Races
+        rank: Rank
+        record: Record
     claims:
       create:
         failure: Could not submit claim
@@ -102,6 +134,7 @@ en:
         4+: 4yo+
       allowance: Allowance
       breeders_cup_qualifiers: Breeders' Cup Qualifiers
+      breeders_series_qualifiers: Breeders' Series Qualifiers
       budget_race_jockey_fee: 'Jockey Fee: %{date}, Race %{number} - %{jockey} riding %{horse}'
       budget_race_winnings: 'Race Winnings: %{date}, Race %{number} - %{name} (%{position})'
       claim: Claim

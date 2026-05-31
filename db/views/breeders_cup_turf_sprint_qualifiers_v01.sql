@@ -7,13 +7,15 @@ SELECT
   COALESCE(stakes_third.races, 0) AS stakes_thirds,
   COALESCE(allowance.races, 0) AS allowance_wins,
   COALESCE(starts.points, 0) AS points,
-  CASE WHEN bn.id IS NULL THEN false
-  ELSE true
+  CASE WHEN sbn.id IS NOT NULL OR bn.id IS NOT NULL THEN true
+  ELSE false
   END AS nominated
 FROM
   horses h
   LEFT JOIN race_options ro ON h.id = ro.horse_id
   LEFT OUTER JOIN breeders_cup_nominations bn ON h.id = bn.horse_id
+  LEFT OUTER JOIN supplemental_breeders_cup_nominations sbn ON h.id = sbn.horse_id
+  LEFT JOIN race_schedules rs ON sbn.race_id = rs.id
   LEFT JOIN (
     SELECT
       COUNT(r.id) AS races,
@@ -122,8 +124,11 @@ FROM
   ) AS allowance ON h.id = allowance.horse_id
 WHERE
   h.age > 2
+  AND h.status = 'racehorse'
   AND ro.racehorse_type = 'flat'
   AND (bn.effective_year IS NULL OR bn.effective_year <= DATE_PART('Year', CURRENT_DATE))
+  AND (sbn.id IS NULL OR (sbn.year = DATE_PART('Year', CURRENT_DATE) AND rs.name = 'Breeders'' Cup Turf Sprint'))
   AND COALESCE(starts.races, 0) > 0
   AND (COALESCE(stakes_win.races, 0) + COALESCE(stakes_second.races, 0) + COALESCE(stakes_third.races, 0) +
   COALESCE(allowance.races, 0)) > 0
+WITH DATA;
