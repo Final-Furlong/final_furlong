@@ -1,0 +1,22 @@
+ruby:
+  class_info = Config::Racing.qualification_classes.find { |info| info[:series] == @series_key }
+  klass = class_info[:class].constantize
+  pd klass
+  nominated_count = klass.count
+= turbo_frame_tag "series-#{@series_key}" do
+    p.text-lg= t(".races")
+    - @races.each do |race|
+      p.text-base-content/50
+        = "#{l(race.date)} - #{race.race_description_string}"
+    p.text-center.text-lg
+      = t(".qualified_count", count: nominated_count)
+
+    table.table.table-zebra
+      thead
+        tr
+          th= t("horses.info.name")
+          th= t("racing.race.age")
+          th= t(".record")
+          th= t(".rank")
+      tbody
+        = render partial: "qualifier", collection: klass.joins(:horse).includes(:horse).merge(Horses::Horse.not_game_owned).ordered, as: :qualifier, locals: { klass: }

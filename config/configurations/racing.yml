@@ -204,3 +204,45 @@ shared:
       class: Racing::Qualifications::BreedersCupSteeplechaseDistaff
     - key: breeders_cup_sc_distaff_endurance_qualification
       class: Racing::Qualifications::BreedersCupSteeplechaseDistaffEndurance
+    - key: breeders_series_2yo_dirt_qualification
+      series: 2yo_dirt
+      class: Racing::Qualifications::BreedersSeries2yoDirt
+    - key: breeders_series_2yo_filly_dirt_qualification
+      series: 2yo_filly_dirt
+      class: Racing::Qualifications::BreedersSeries2yoFilliesDirt
+    - key: breeders_series_2yo_turf_qualification
+      series: 2yo_turf
+      class: Racing::Qualifications::BreedersSeries2yoTurf
+    - key: breeders_series_2yo_filly_turf_qualification
+      series: 2yo_filly_turf
+      class: Racing::Qualifications::BreedersSeries2yoFilliesTurf
+    - key: breeders_series_3yo_dirt_qualification
+      series: 3yo_dirt
+      class: Racing::Qualifications::BreedersSeries3yoDirt
+    - key: breeders_series_3yo_filly_dirt_qualification
+      series: 3yo_filly_dirt
+      class: Racing::Qualifications::BreedersSeries3yoFilliesDirt
+    - key: breeders_series_3yo_turf_qualification
+      series: 3yo_turf
+      class: Racing::Qualifications::BreedersSeries3yoTurf
+    - key: breeders_series_3yo_filly_turf_qualification
+      series: 3yo_filly_turf
+      class: Racing::Qualifications::BreedersSeries3yoFilliesTurf
+    - key: breeders_series_4yo_dirt_qualification
+      series: 4yo_dirt
+      class: Racing::Qualifications::BreedersSeries4yoDirt
+    - key: breeders_series_4yo_mare_dirt_qualification
+      series: 4yo_mare_dirt
+      class: Racing::Qualifications::BreedersSeries4yoMaresDirt
+    - key: breeders_series_4yo_turf_qualification
+      series: 4yo_turf
+      class: Racing::Qualifications::BreedersSeries4yoTurf
+    - key: breeders_series_4yo_mare_turf_qualification
+      series: 4yo_mare_turf
+      class: Racing::Qualifications::BreedersSeries4yoMaresTurf
+    - key: breeders_series_steeplechase_qualification
+      series: steeplechase
+      class: Racing::Qualifications::BreedersSeriesSteeplechase
+    - key: breeders_series_filly_steeplechase_qualification
+      series: steeplechase_filly
+      class: Racing::Qualifications::BreedersSeriesFilliesSteeplechase
