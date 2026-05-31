@@ -87,6 +87,20 @@ module Horses
     has_one :breeders_cup_sc_endurance_qualification, class_name: "Racing::Qualifications::BreedersCupSteeplechaseEndurance", inverse_of: :horse
     has_one :breeders_cup_sc_distaff_qualification, class_name: "Racing::Qualifications::BreedersCupSteeplechaseDistaff", inverse_of: :horse
     has_one :breeders_cup_sc_distaff_endurance_qualification, class_name: "Racing::Qualifications::BreedersCupSteeplechaseDistaffEndurance", inverse_of: :horse
+    has_one :breeders_series_2yo_dirt_qualification, class_name: "Racing::Qualifications::BreedersSeries2yoDirt", inverse_of: :horse
+    has_one :breeders_series_2yo_filly_dirt_qualification, class_name: "Racing::Qualifications::BreedersSeries2yoFilliesDirt", inverse_of: :horse
+    has_one :breeders_series_2yo_turf_qualification, class_name: "Racing::Qualifications::BreedersSeries2yoTurf", inverse_of: :horse
+    has_one :breeders_series_2yo_filly_turf_qualification, class_name: "Racing::Qualifications::BreedersSeries2yoFilliesTurf", inverse_of: :horse
+    has_one :breeders_series_3yo_dirt_qualification, class_name: "Racing::Qualifications::BreedersSeries3yoDirt", inverse_of: :horse
+    has_one :breeders_series_3yo_filly_dirt_qualification, class_name: "Racing::Qualifications::BreedersSeries3yoFilliesDirt", inverse_of: :horse
+    has_one :breeders_series_3yo_turf_qualification, class_name: "Racing::Qualifications::BreedersSeries3yoTurf", inverse_of: :horse
+    has_one :breeders_series_3yo_filly_turf_qualification, class_name: "Racing::Qualifications::BreedersSeries3yoFilliesTurf", inverse_of: :horse
+    has_one :breeders_series_4yo_dirt_qualification, class_name: "Racing::Qualifications::BreedersSeries4yoDirt", inverse_of: :horse
+    has_one :breeders_series_4yo_mare_dirt_qualification, class_name: "Racing::Qualifications::BreedersSeries4yoMaresDirt", inverse_of: :horse
+    has_one :breeders_series_4yo_turf_qualification, class_name: "Racing::Qualifications::BreedersSeries4yoTurf", inverse_of: :horse
+    has_one :breeders_series_4yo_mare_turf_qualification, class_name: "Racing::Qualifications::BreedersSeries4yoMaresTurf", inverse_of: :horse
+    has_one :breeders_series_steeplechase_qualification, class_name: "Racing::Qualifications::BreedersSeriesSteeplechase", inverse_of: :horse
+    has_one :breeders_series_filly_steeplechase_qualification, class_name: "Racing::Qualifications::BreedersSeriesFilliesSteeplechase", inverse_of: :horse
     # rubocop:enable Rails/HasManyOrHasOneDependent
 
     has_many :foals, class_name: "Horses::Horse", inverse_of: :dam, dependent: :nullify
@@ -278,6 +292,22 @@ module Horses
 
       current_year_days = boardings.current_year.where(location_id: data.location_id).sum(:days)
       Config::Boarding.max_yearly_days - current_year_days.to_i
+    end
+
+    def breeders_series_types
+      case race_options.racehorse_type
+      when "flat"
+        case age
+        when 2
+          female? ? %w[2yo_filly_dirt 2yo_filly_turf] : %w[2yo_dirt 2yo_turf]
+        when 3
+          female? ? %w[3yo_mare_dirt 3yo_mare_turf] : %w[3yo_dirt 3yo_turf]
+        else
+          female? ? %w[4yo_mare_dirt 4yo_mare_turf] : %w[4yo_dirt 4yo_turf]
+        end
+      else
+        female? ? ["steeplechase_filly"] : ["steeplechase"]
+      end
     end
 
     def stillborn?

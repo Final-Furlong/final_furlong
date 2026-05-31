@@ -15,7 +15,7 @@ module Racing
     end
 
     def new
-      race = Racing::RaceSchedule.includes(:entries, track_surface: :racetrack).find(params[:race_id])
+      race = Racing::RaceSchedule.includes(:entries).find(params[:race_id])
       @entry = Racing::RaceEntry.new(date: race.date, race:)
       authorize @entry, :show?
     end
