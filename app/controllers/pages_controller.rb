@@ -3,5 +3,8 @@ class PagesController < ApplicationController
 
   def home
   end
-end
 
+  def error
+    raise "There is a problem!"
+  end
+end

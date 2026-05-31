@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   get "service-worker" => "rails/pwa#service_worker", :as => :pwa_service_worker
 
   get "/home", to: "pages#home", as: :home
+  get "/error", to: "pages#error", as: :show_error
 
   root to: "pages#home"
 end
