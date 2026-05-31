@@ -17,4 +17,3 @@ module Legacy
     end
   end
 end
-
