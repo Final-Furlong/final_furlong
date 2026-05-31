@@ -57,4 +57,3 @@ module Horses
     end
   end
 end
-
