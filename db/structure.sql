@@ -100,6 +100,28 @@ CREATE TYPE public.breed_record AS ENUM (
 
 
 --
+-- Name: breeders_series_types; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.breeders_series_types AS ENUM (
+    '2yo_dirt',
+    '2yo_filly_dirt',
+    '2yo_turf',
+    '2yo_filly_turf',
+    '3yo_dirt',
+    '3yo_filly_dirt',
+    '3yo_turf',
+    '3yo_filly_turf',
+    '4yo_dirt',
+    '4yo_mare_dirt',
+    '4yo_turf',
+    '4yo_mare_turf',
+    'steeplechase',
+    'steeplechase_filly'
+);
+
+
+--
 -- Name: breeding_statuses; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -208,6 +230,18 @@ CREATE TYPE public.horse_color AS ENUM (
     'mahogany_bay',
     'red_chestnut',
     'strawberry_roan'
+);
+
+
+--
+-- Name: horse_event_types; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.horse_event_types AS ENUM (
+    'gelded',
+    'switched_to_sc',
+    'retired_racing',
+    'retired_breeding'
 );
 
 
@@ -1211,10 +1245,10 @@ CREATE TABLE public.supplemental_breeders_cup_nominations (
 
 
 --
--- Name: breeders_cup_classic_qualifiers; Type: VIEW; Schema: public; Owner: -
+-- Name: breeders_cup_classic_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.breeders_cup_classic_qualifiers AS
+CREATE MATERIALIZED VIEW public.breeders_cup_classic_qualifiers AS
  SELECT h.id AS horse_id,
     COALESCE(starts.races, (0)::bigint) AS starts,
     COALESCE(stakes.races, (0)::bigint) AS stakes_starts,
@@ -1275,14 +1309,15 @@ CREATE VIEW public.breeders_cup_classic_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 8.0) AND (r.distance <= 12.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Classic'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.status = 'racehorse'::public.horse_status) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Classic'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
+  WITH NO DATA;
 
 
 --
--- Name: breeders_cup_dirt_mile_qualifiers; Type: VIEW; Schema: public; Owner: -
+-- Name: breeders_cup_dirt_mile_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.breeders_cup_dirt_mile_qualifiers AS
+CREATE MATERIALIZED VIEW public.breeders_cup_dirt_mile_qualifiers AS
  SELECT h.id AS horse_id,
     COALESCE(starts.races, (0)::bigint) AS starts,
     COALESCE(stakes.races, (0)::bigint) AS stakes_starts,
@@ -1343,14 +1378,15 @@ CREATE VIEW public.breeders_cup_dirt_mile_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Dirt Mile'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.status = 'racehorse'::public.horse_status) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Dirt Mile'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
+  WITH NO DATA;
 
 
 --
--- Name: breeders_cup_distaff_qualifiers; Type: VIEW; Schema: public; Owner: -
+-- Name: breeders_cup_distaff_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.breeders_cup_distaff_qualifiers AS
+CREATE MATERIALIZED VIEW public.breeders_cup_distaff_qualifiers AS
  SELECT h.id AS horse_id,
     COALESCE(starts.races, (0)::bigint) AS starts,
     COALESCE(stakes.races, (0)::bigint) AS stakes_starts,
@@ -1411,14 +1447,15 @@ CREATE VIEW public.breeders_cup_distaff_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 5.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Distaff'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Distaff'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
+  WITH NO DATA;
 
 
 --
--- Name: breeders_cup_filly_mare_sprint_qualifiers; Type: VIEW; Schema: public; Owner: -
+-- Name: breeders_cup_filly_mare_sprint_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.breeders_cup_filly_mare_sprint_qualifiers AS
+CREATE MATERIALIZED VIEW public.breeders_cup_filly_mare_sprint_qualifiers AS
  SELECT h.id AS horse_id,
     COALESCE(starts.races, (0)::bigint) AS starts,
     COALESCE(stakes.races, (0)::bigint) AS stakes_starts,
@@ -1479,14 +1516,15 @@ CREATE VIEW public.breeders_cup_filly_mare_sprint_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Filly & Mare Sprint'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Filly & Mare Sprint'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
+  WITH NO DATA;
 
 
 --
--- Name: breeders_cup_filly_mare_turf_qualifiers; Type: VIEW; Schema: public; Owner: -
+-- Name: breeders_cup_filly_mare_turf_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.breeders_cup_filly_mare_turf_qualifiers AS
+CREATE MATERIALIZED VIEW public.breeders_cup_filly_mare_turf_qualifiers AS
  SELECT h.id AS horse_id,
     COALESCE(starts.races, (0)::bigint) AS starts,
     COALESCE(stakes.races, (0)::bigint) AS stakes_starts,
@@ -1547,14 +1585,15 @@ CREATE VIEW public.breeders_cup_filly_mare_turf_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Filly & Mare Turf'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Filly & Mare Turf'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
+  WITH NO DATA;
 
 
 --
--- Name: breeders_cup_juvenile_fillies_qualifiers; Type: VIEW; Schema: public; Owner: -
+-- Name: breeders_cup_juvenile_fillies_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.breeders_cup_juvenile_fillies_qualifiers AS
+CREATE MATERIALIZED VIEW public.breeders_cup_juvenile_fillies_qualifiers AS
  SELECT h.id AS horse_id,
     COALESCE(dirt.starts, 0) AS starts,
     COALESCE(dirt.stakes_starts, 0) AS stakes_starts,
@@ -1588,14 +1627,15 @@ CREATE VIEW public.breeders_cup_juvenile_fillies_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age = 2) AND (h.gender = 'filly'::public.horse_gender) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Juvenile Fillies'::text))) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0));
+  WHERE ((h.age = 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = 'filly'::public.horse_gender) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Juvenile Fillies'::text))) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WITH NO DATA;
 
 
 --
--- Name: breeders_cup_juvenile_qualifiers; Type: VIEW; Schema: public; Owner: -
+-- Name: breeders_cup_juvenile_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.breeders_cup_juvenile_qualifiers AS
+CREATE MATERIALIZED VIEW public.breeders_cup_juvenile_qualifiers AS
  SELECT h.id AS horse_id,
     COALESCE(dirt.starts, 0) AS starts,
     COALESCE(dirt.stakes_starts, 0) AS stakes_starts,
@@ -1629,14 +1669,15 @@ CREATE VIEW public.breeders_cup_juvenile_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age = 2) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Juvenile'::text))) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0));
+  WHERE ((h.age = 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Juvenile'::text))) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WITH NO DATA;
 
 
 --
--- Name: breeders_cup_juvenile_turf_fillies_qualifiers; Type: VIEW; Schema: public; Owner: -
+-- Name: breeders_cup_juvenile_turf_fillies_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.breeders_cup_juvenile_turf_fillies_qualifiers AS
+CREATE MATERIALIZED VIEW public.breeders_cup_juvenile_turf_fillies_qualifiers AS
  SELECT h.id AS horse_id,
     COALESCE(turf.starts, 0) AS starts,
     COALESCE(turf.stakes_starts, 0) AS stakes_starts,
@@ -1670,14 +1711,15 @@ CREATE VIEW public.breeders_cup_juvenile_turf_fillies_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age = 2) AND (h.gender = 'filly'::public.horse_gender) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Juvenile Turf Fillies'::text))) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0));
+  WHERE ((h.age = 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = 'filly'::public.horse_gender) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Juvenile Turf Fillies'::text))) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WITH NO DATA;
 
 
 --
--- Name: breeders_cup_juvenile_turf_qualifiers; Type: VIEW; Schema: public; Owner: -
+-- Name: breeders_cup_juvenile_turf_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.breeders_cup_juvenile_turf_qualifiers AS
+CREATE MATERIALIZED VIEW public.breeders_cup_juvenile_turf_qualifiers AS
  SELECT h.id AS horse_id,
     COALESCE(turf.starts, 0) AS starts,
     COALESCE(turf.stakes_starts, 0) AS stakes_starts,
@@ -1711,14 +1753,15 @@ CREATE VIEW public.breeders_cup_juvenile_turf_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age = 2) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Juvenile Turf'::text))) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0));
+  WHERE ((h.age = 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Juvenile Turf'::text))) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WITH NO DATA;
 
 
 --
--- Name: breeders_cup_mile_qualifiers; Type: VIEW; Schema: public; Owner: -
+-- Name: breeders_cup_mile_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.breeders_cup_mile_qualifiers AS
+CREATE MATERIALIZED VIEW public.breeders_cup_mile_qualifiers AS
  SELECT h.id AS horse_id,
     COALESCE(starts.races, (0)::bigint) AS starts,
     COALESCE(stakes.races, (0)::bigint) AS stakes_starts,
@@ -1779,7 +1822,8 @@ CREATE VIEW public.breeders_cup_mile_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Mile'::text))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.status = 'racehorse'::public.horse_status) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Mile'::text))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
+  WITH NO DATA;
 
 
 --
@@ -1837,10 +1881,10 @@ ALTER SEQUENCE public.breeders_cup_potential_entries_id_seq OWNED BY public.bree
 
 
 --
--- Name: breeders_cup_sc_classic_qualifiers; Type: VIEW; Schema: public; Owner: -
+-- Name: breeders_cup_sc_classic_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.breeders_cup_sc_classic_qualifiers AS
+CREATE MATERIALIZED VIEW public.breeders_cup_sc_classic_qualifiers AS
  SELECT h.id AS horse_id,
     COALESCE(starts.races, (0)::bigint) AS starts,
     COALESCE(stakes.races, (0)::bigint) AS stakes_starts,
@@ -1901,14 +1945,15 @@ CREATE VIEW public.breeders_cup_sc_classic_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 9.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Classic'::text))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Classic'::text))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
+  WITH NO DATA;
 
 
 --
--- Name: breeders_cup_sc_distaff_endurance_qualifiers; Type: VIEW; Schema: public; Owner: -
+-- Name: breeders_cup_sc_distaff_endurance_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.breeders_cup_sc_distaff_endurance_qualifiers AS
+CREATE MATERIALIZED VIEW public.breeders_cup_sc_distaff_endurance_qualifiers AS
  SELECT h.id AS horse_id,
     COALESCE(starts.races, (0)::bigint) AS starts,
     COALESCE(stakes.races, (0)::bigint) AS stakes_starts,
@@ -1969,14 +2014,15 @@ CREATE VIEW public.breeders_cup_sc_distaff_endurance_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Distaff Endurance'::text))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Distaff Endurance'::text))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
+  WITH NO DATA;
 
 
 --
--- Name: breeders_cup_sc_distaff_qualifiers; Type: VIEW; Schema: public; Owner: -
+-- Name: breeders_cup_sc_distaff_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.breeders_cup_sc_distaff_qualifiers AS
+CREATE MATERIALIZED VIEW public.breeders_cup_sc_distaff_qualifiers AS
  SELECT h.id AS horse_id,
     COALESCE(starts.races, (0)::bigint) AS starts,
     COALESCE(stakes.races, (0)::bigint) AS stakes_starts,
@@ -2037,14 +2083,15 @@ CREATE VIEW public.breeders_cup_sc_distaff_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 7.0) AND (r.distance <= 16.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Distaff'::text))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Distaff'::text))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
+  WITH NO DATA;
 
 
 --
--- Name: breeders_cup_sc_endurance_qualifiers; Type: VIEW; Schema: public; Owner: -
+-- Name: breeders_cup_sc_endurance_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.breeders_cup_sc_endurance_qualifiers AS
+CREATE MATERIALIZED VIEW public.breeders_cup_sc_endurance_qualifiers AS
  SELECT h.id AS horse_id,
     COALESCE(starts.races, (0)::bigint) AS starts,
     COALESCE(stakes.races, (0)::bigint) AS stakes_starts,
@@ -2105,14 +2152,15 @@ CREATE VIEW public.breeders_cup_sc_endurance_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 14.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Endurance'::text))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Endurance'::text))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
+  WITH NO DATA;
 
 
 --
--- Name: breeders_cup_sc_sprint_qualifiers; Type: VIEW; Schema: public; Owner: -
+-- Name: breeders_cup_sc_sprint_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.breeders_cup_sc_sprint_qualifiers AS
+CREATE MATERIALIZED VIEW public.breeders_cup_sc_sprint_qualifiers AS
  SELECT h.id AS horse_id,
     COALESCE(starts.races, (0)::bigint) AS starts,
     COALESCE(stakes.races, (0)::bigint) AS stakes_starts,
@@ -2173,14 +2221,15 @@ CREATE VIEW public.breeders_cup_sc_sprint_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 5.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Sprint'::text))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.status = 'racehorse'::public.horse_status) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Sprint'::text))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
+  WITH NO DATA;
 
 
 --
--- Name: breeders_cup_sprint_qualifiers; Type: VIEW; Schema: public; Owner: -
+-- Name: breeders_cup_sprint_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.breeders_cup_sprint_qualifiers AS
+CREATE MATERIALIZED VIEW public.breeders_cup_sprint_qualifiers AS
  SELECT h.id AS horse_id,
     COALESCE(starts.races, (0)::bigint) AS starts,
     COALESCE(stakes.races, (0)::bigint) AS stakes_starts,
@@ -2241,14 +2290,15 @@ CREATE VIEW public.breeders_cup_sprint_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Sprint'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Sprint'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
+  WITH NO DATA;
 
 
 --
--- Name: breeders_cup_turf_qualifiers; Type: VIEW; Schema: public; Owner: -
+-- Name: breeders_cup_turf_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.breeders_cup_turf_qualifiers AS
+CREATE MATERIALIZED VIEW public.breeders_cup_turf_qualifiers AS
  SELECT h.id AS horse_id,
     COALESCE(starts.races, (0)::bigint) AS starts,
     COALESCE(stakes.races, (0)::bigint) AS stakes_starts,
@@ -2309,14 +2359,15 @@ CREATE VIEW public.breeders_cup_turf_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Turf'::text))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.status = 'racehorse'::public.horse_status) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Turf'::text))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
+  WITH NO DATA;
 
 
 --
--- Name: breeders_cup_turf_sprint_qualifiers; Type: VIEW; Schema: public; Owner: -
+-- Name: breeders_cup_turf_sprint_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.breeders_cup_turf_sprint_qualifiers AS
+CREATE MATERIALIZED VIEW public.breeders_cup_turf_sprint_qualifiers AS
  SELECT h.id AS horse_id,
     COALESCE(starts.races, (0)::bigint) AS starts,
     COALESCE(stakes.races, (0)::bigint) AS stakes_starts,
@@ -2377,7 +2428,602 @@ CREATE VIEW public.breeders_cup_turf_sprint_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Turf Sprint'::text))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0));
+  WHERE ((h.age > 2) AND (h.status = 'racehorse'::public.horse_status) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Turf Sprint'::text))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
+  WITH NO DATA;
+
+
+--
+-- Name: breeders_series_nominations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.breeders_series_nominations (
+    id bigint NOT NULL,
+    stable_id bigint NOT NULL,
+    series_type public.breeders_series_types,
+    year integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN breeders_series_nominations.series_type; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.breeders_series_nominations.series_type IS '2yo_dirt,2yo_filly_dirt,2yo_turf,2yo_filly_turf,3yo_dirt,3yo_filly_dirt,3yo_turf,3yo_filly_turf,4yo_dirt,4yo_mare_dirt,4yo_turf,4yo_mare_turf,steeplechase,steeplechase_filly';
+
+
+--
+-- Name: stables; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.stables (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    legacy_id integer,
+    slug character varying,
+    public_id character varying(12),
+    available_balance bigint DEFAULT 0,
+    total_balance bigint DEFAULT 0,
+    last_online_at timestamp with time zone,
+    description text,
+    miles_from_track integer DEFAULT 1 NOT NULL,
+    racetrack_id bigint,
+    user_id bigint NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: breeders_series_2yo_dirt_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.breeders_series_2yo_dirt_qualifiers AS
+ SELECT DISTINCT h.id AS horse_id,
+    COALESCE(dirt.starts, 0) AS starts,
+    COALESCE(dirt.stakes_starts, 0) AS stakes_starts,
+    COALESCE(dirt.stakes_wins, 0) AS stakes_wins,
+    COALESCE(dirt.stakes_seconds, 0) AS stakes_seconds,
+    COALESCE(dirt.stakes_thirds, 0) AS stakes_thirds,
+    COALESCE(allowance_wins.wins, (0)::bigint) AS allowance_wins,
+    COALESCE(dirt.points, (0)::bigint) AS points
+   FROM (((((public.horses h
+     LEFT JOIN public.stables b ON ((h.breeder_id = b.id)))
+     LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
+     LEFT JOIN public.breeders_series_nominations bn ON ((b.id = bn.stable_id)))
+     LEFT JOIN ( SELECT race_records.horse_id,
+            (sum(race_records.starts))::integer AS starts,
+            (sum(race_records.stakes_starts))::integer AS stakes_starts,
+            (sum(race_records.stakes_wins))::integer AS stakes_wins,
+            (sum(race_records.stakes_seconds))::integer AS stakes_seconds,
+            (sum(race_records.stakes_thirds))::integer AS stakes_thirds,
+            sum(race_records.points) AS points
+           FROM public.race_records
+          WHERE ((race_records.surface = 'dirt'::public.track_surface) AND ((race_records.year)::double precision = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY race_records.horse_id) dirt ON ((h.id = dirt.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
+  WHERE ((h.age = 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WITH NO DATA;
+
+
+--
+-- Name: breeders_series_2yo_fillies_dirt_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.breeders_series_2yo_fillies_dirt_qualifiers AS
+ SELECT DISTINCT h.id AS horse_id,
+    COALESCE(dirt.starts, 0) AS starts,
+    COALESCE(dirt.stakes_starts, 0) AS stakes_starts,
+    COALESCE(dirt.stakes_wins, 0) AS stakes_wins,
+    COALESCE(dirt.stakes_seconds, 0) AS stakes_seconds,
+    COALESCE(dirt.stakes_thirds, 0) AS stakes_thirds,
+    COALESCE(allowance_wins.wins, (0)::bigint) AS allowance_wins,
+    COALESCE(dirt.points, (0)::bigint) AS points
+   FROM (((((public.horses h
+     LEFT JOIN public.stables b ON ((h.breeder_id = b.id)))
+     LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
+     LEFT JOIN public.breeders_series_nominations bn ON ((b.id = bn.stable_id)))
+     LEFT JOIN ( SELECT race_records.horse_id,
+            (sum(race_records.starts))::integer AS starts,
+            (sum(race_records.stakes_starts))::integer AS stakes_starts,
+            (sum(race_records.stakes_wins))::integer AS stakes_wins,
+            (sum(race_records.stakes_seconds))::integer AS stakes_seconds,
+            (sum(race_records.stakes_thirds))::integer AS stakes_thirds,
+            sum(race_records.points) AS points
+           FROM public.race_records
+          WHERE ((race_records.surface = 'dirt'::public.track_surface) AND ((race_records.year)::double precision = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY race_records.horse_id) dirt ON ((h.id = dirt.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
+  WHERE ((h.age = 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = 'filly'::public.horse_gender) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WITH NO DATA;
+
+
+--
+-- Name: breeders_series_2yo_fillies_turf_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.breeders_series_2yo_fillies_turf_qualifiers AS
+ SELECT DISTINCT h.id AS horse_id,
+    COALESCE(turf.starts, 0) AS starts,
+    COALESCE(turf.stakes_starts, 0) AS stakes_starts,
+    COALESCE(turf.stakes_wins, 0) AS stakes_wins,
+    COALESCE(turf.stakes_seconds, 0) AS stakes_seconds,
+    COALESCE(turf.stakes_thirds, 0) AS stakes_thirds,
+    COALESCE(allowance_wins.wins, (0)::bigint) AS allowance_wins,
+    COALESCE(turf.points, (0)::bigint) AS points
+   FROM (((((public.horses h
+     LEFT JOIN public.stables b ON ((h.breeder_id = b.id)))
+     LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
+     LEFT JOIN public.breeders_series_nominations bn ON ((b.id = bn.stable_id)))
+     LEFT JOIN ( SELECT race_records.horse_id,
+            (sum(race_records.starts))::integer AS starts,
+            (sum(race_records.stakes_starts))::integer AS stakes_starts,
+            (sum(race_records.stakes_wins))::integer AS stakes_wins,
+            (sum(race_records.stakes_seconds))::integer AS stakes_seconds,
+            (sum(race_records.stakes_thirds))::integer AS stakes_thirds,
+            sum(race_records.points) AS points
+           FROM public.race_records
+          WHERE ((race_records.surface = 'turf'::public.track_surface) AND ((race_records.year)::double precision = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY race_records.horse_id) turf ON ((h.id = turf.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
+  WHERE ((h.age = 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = 'filly'::public.horse_gender) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WITH NO DATA;
+
+
+--
+-- Name: breeders_series_2yo_turf_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.breeders_series_2yo_turf_qualifiers AS
+ SELECT DISTINCT h.id AS horse_id,
+    COALESCE(turf.starts, 0) AS starts,
+    COALESCE(turf.stakes_starts, 0) AS stakes_starts,
+    COALESCE(turf.stakes_wins, 0) AS stakes_wins,
+    COALESCE(turf.stakes_seconds, 0) AS stakes_seconds,
+    COALESCE(turf.stakes_thirds, 0) AS stakes_thirds,
+    COALESCE(allowance_wins.wins, (0)::bigint) AS allowance_wins,
+    COALESCE(turf.points, (0)::bigint) AS points
+   FROM (((((public.horses h
+     LEFT JOIN public.stables b ON ((h.breeder_id = b.id)))
+     LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
+     LEFT JOIN public.breeders_series_nominations bn ON ((b.id = bn.stable_id)))
+     LEFT JOIN ( SELECT race_records.horse_id,
+            (sum(race_records.starts))::integer AS starts,
+            (sum(race_records.stakes_starts))::integer AS stakes_starts,
+            (sum(race_records.stakes_wins))::integer AS stakes_wins,
+            (sum(race_records.stakes_seconds))::integer AS stakes_seconds,
+            (sum(race_records.stakes_thirds))::integer AS stakes_thirds,
+            sum(race_records.points) AS points
+           FROM public.race_records
+          WHERE ((race_records.surface = 'turf'::public.track_surface) AND ((race_records.year)::double precision = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY race_records.horse_id) turf ON ((h.id = turf.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
+  WHERE ((h.age = 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WITH NO DATA;
+
+
+--
+-- Name: breeders_series_3yo_dirt_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.breeders_series_3yo_dirt_qualifiers AS
+ SELECT DISTINCT h.id AS horse_id,
+    COALESCE(dirt.starts, 0) AS starts,
+    COALESCE(dirt.stakes_starts, 0) AS stakes_starts,
+    COALESCE(dirt.stakes_wins, 0) AS stakes_wins,
+    COALESCE(dirt.stakes_seconds, 0) AS stakes_seconds,
+    COALESCE(dirt.stakes_thirds, 0) AS stakes_thirds,
+    COALESCE(allowance_wins.wins, (0)::bigint) AS allowance_wins,
+    COALESCE(dirt.points, (0)::bigint) AS points
+   FROM (((((public.horses h
+     LEFT JOIN public.stables b ON ((h.breeder_id = b.id)))
+     LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
+     LEFT JOIN public.breeders_series_nominations bn ON ((b.id = bn.stable_id)))
+     LEFT JOIN ( SELECT race_records.horse_id,
+            (sum(race_records.starts))::integer AS starts,
+            (sum(race_records.stakes_starts))::integer AS stakes_starts,
+            (sum(race_records.stakes_wins))::integer AS stakes_wins,
+            (sum(race_records.stakes_seconds))::integer AS stakes_seconds,
+            (sum(race_records.stakes_thirds))::integer AS stakes_thirds,
+            sum(race_records.points) AS points
+           FROM public.race_records
+          WHERE ((race_records.surface = 'dirt'::public.track_surface) AND ((race_records.year)::double precision = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY race_records.horse_id) dirt ON ((h.id = dirt.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
+  WHERE ((h.age = 3) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WITH NO DATA;
+
+
+--
+-- Name: breeders_series_3yo_fillies_dirt_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.breeders_series_3yo_fillies_dirt_qualifiers AS
+ SELECT DISTINCT h.id AS horse_id,
+    COALESCE(dirt.starts, 0) AS starts,
+    COALESCE(dirt.stakes_starts, 0) AS stakes_starts,
+    COALESCE(dirt.stakes_wins, 0) AS stakes_wins,
+    COALESCE(dirt.stakes_seconds, 0) AS stakes_seconds,
+    COALESCE(dirt.stakes_thirds, 0) AS stakes_thirds,
+    COALESCE(allowance_wins.wins, (0)::bigint) AS allowance_wins,
+    COALESCE(dirt.points, (0)::bigint) AS points
+   FROM (((((public.horses h
+     LEFT JOIN public.stables b ON ((h.breeder_id = b.id)))
+     LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
+     LEFT JOIN public.breeders_series_nominations bn ON ((b.id = bn.stable_id)))
+     LEFT JOIN ( SELECT race_records.horse_id,
+            (sum(race_records.starts))::integer AS starts,
+            (sum(race_records.stakes_starts))::integer AS stakes_starts,
+            (sum(race_records.stakes_wins))::integer AS stakes_wins,
+            (sum(race_records.stakes_seconds))::integer AS stakes_seconds,
+            (sum(race_records.stakes_thirds))::integer AS stakes_thirds,
+            sum(race_records.points) AS points
+           FROM public.race_records
+          WHERE ((race_records.surface = 'dirt'::public.track_surface) AND ((race_records.year)::double precision = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY race_records.horse_id) dirt ON ((h.id = dirt.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
+  WHERE ((h.age = 3) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = 'filly'::public.horse_gender) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WITH NO DATA;
+
+
+--
+-- Name: breeders_series_3yo_fillies_turf_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.breeders_series_3yo_fillies_turf_qualifiers AS
+ SELECT DISTINCT h.id AS horse_id,
+    COALESCE(turf.starts, 0) AS starts,
+    COALESCE(turf.stakes_starts, 0) AS stakes_starts,
+    COALESCE(turf.stakes_wins, 0) AS stakes_wins,
+    COALESCE(turf.stakes_seconds, 0) AS stakes_seconds,
+    COALESCE(turf.stakes_thirds, 0) AS stakes_thirds,
+    COALESCE(allowance_wins.wins, (0)::bigint) AS allowance_wins,
+    COALESCE(turf.points, (0)::bigint) AS points
+   FROM (((((public.horses h
+     LEFT JOIN public.stables b ON ((h.breeder_id = b.id)))
+     LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
+     LEFT JOIN public.breeders_series_nominations bn ON ((b.id = bn.stable_id)))
+     LEFT JOIN ( SELECT race_records.horse_id,
+            (sum(race_records.starts))::integer AS starts,
+            (sum(race_records.stakes_starts))::integer AS stakes_starts,
+            (sum(race_records.stakes_wins))::integer AS stakes_wins,
+            (sum(race_records.stakes_seconds))::integer AS stakes_seconds,
+            (sum(race_records.stakes_thirds))::integer AS stakes_thirds,
+            sum(race_records.points) AS points
+           FROM public.race_records
+          WHERE ((race_records.surface = 'turf'::public.track_surface) AND ((race_records.year)::double precision = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY race_records.horse_id) turf ON ((h.id = turf.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
+  WHERE ((h.age = 3) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = 'filly'::public.horse_gender) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WITH NO DATA;
+
+
+--
+-- Name: breeders_series_3yo_turf_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.breeders_series_3yo_turf_qualifiers AS
+ SELECT DISTINCT h.id AS horse_id,
+    COALESCE(turf.starts, 0) AS starts,
+    COALESCE(turf.stakes_starts, 0) AS stakes_starts,
+    COALESCE(turf.stakes_wins, 0) AS stakes_wins,
+    COALESCE(turf.stakes_seconds, 0) AS stakes_seconds,
+    COALESCE(turf.stakes_thirds, 0) AS stakes_thirds,
+    COALESCE(allowance_wins.wins, (0)::bigint) AS allowance_wins,
+    COALESCE(turf.points, (0)::bigint) AS points
+   FROM (((((public.horses h
+     LEFT JOIN public.stables b ON ((h.breeder_id = b.id)))
+     LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
+     LEFT JOIN public.breeders_series_nominations bn ON ((b.id = bn.stable_id)))
+     LEFT JOIN ( SELECT race_records.horse_id,
+            (sum(race_records.starts))::integer AS starts,
+            (sum(race_records.stakes_starts))::integer AS stakes_starts,
+            (sum(race_records.stakes_wins))::integer AS stakes_wins,
+            (sum(race_records.stakes_seconds))::integer AS stakes_seconds,
+            (sum(race_records.stakes_thirds))::integer AS stakes_thirds,
+            sum(race_records.points) AS points
+           FROM public.race_records
+          WHERE ((race_records.surface = 'turf'::public.track_surface) AND ((race_records.year)::double precision = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY race_records.horse_id) turf ON ((h.id = turf.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
+  WHERE ((h.age = 3) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WITH NO DATA;
+
+
+--
+-- Name: breeders_series_4yo_dirt_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.breeders_series_4yo_dirt_qualifiers AS
+ SELECT DISTINCT h.id AS horse_id,
+    COALESCE(dirt.starts, 0) AS starts,
+    COALESCE(dirt.stakes_starts, 0) AS stakes_starts,
+    COALESCE(dirt.stakes_wins, 0) AS stakes_wins,
+    COALESCE(dirt.stakes_seconds, 0) AS stakes_seconds,
+    COALESCE(dirt.stakes_thirds, 0) AS stakes_thirds,
+    COALESCE(allowance_wins.wins, (0)::bigint) AS allowance_wins,
+    COALESCE(dirt.points, (0)::bigint) AS points
+   FROM (((((public.horses h
+     LEFT JOIN public.stables b ON ((h.breeder_id = b.id)))
+     LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
+     LEFT JOIN public.breeders_series_nominations bn ON ((b.id = bn.stable_id)))
+     LEFT JOIN ( SELECT race_records.horse_id,
+            (sum(race_records.starts))::integer AS starts,
+            (sum(race_records.stakes_starts))::integer AS stakes_starts,
+            (sum(race_records.stakes_wins))::integer AS stakes_wins,
+            (sum(race_records.stakes_seconds))::integer AS stakes_seconds,
+            (sum(race_records.stakes_thirds))::integer AS stakes_thirds,
+            sum(race_records.points) AS points
+           FROM public.race_records
+          WHERE ((race_records.surface = 'dirt'::public.track_surface) AND ((race_records.year)::double precision = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY race_records.horse_id) dirt ON ((h.id = dirt.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
+  WHERE ((h.age >= 4) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WITH NO DATA;
+
+
+--
+-- Name: breeders_series_4yo_mares_dirt_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.breeders_series_4yo_mares_dirt_qualifiers AS
+ SELECT DISTINCT h.id AS horse_id,
+    COALESCE(dirt.starts, 0) AS starts,
+    COALESCE(dirt.stakes_starts, 0) AS stakes_starts,
+    COALESCE(dirt.stakes_wins, 0) AS stakes_wins,
+    COALESCE(dirt.stakes_seconds, 0) AS stakes_seconds,
+    COALESCE(dirt.stakes_thirds, 0) AS stakes_thirds,
+    COALESCE(allowance_wins.wins, (0)::bigint) AS allowance_wins,
+    COALESCE(dirt.points, (0)::bigint) AS points
+   FROM (((((public.horses h
+     LEFT JOIN public.stables b ON ((h.breeder_id = b.id)))
+     LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
+     LEFT JOIN public.breeders_series_nominations bn ON ((b.id = bn.stable_id)))
+     LEFT JOIN ( SELECT race_records.horse_id,
+            (sum(race_records.starts))::integer AS starts,
+            (sum(race_records.stakes_starts))::integer AS stakes_starts,
+            (sum(race_records.stakes_wins))::integer AS stakes_wins,
+            (sum(race_records.stakes_seconds))::integer AS stakes_seconds,
+            (sum(race_records.stakes_thirds))::integer AS stakes_thirds,
+            sum(race_records.points) AS points
+           FROM public.race_records
+          WHERE ((race_records.surface = 'dirt'::public.track_surface) AND ((race_records.year)::double precision = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY race_records.horse_id) dirt ON ((h.id = dirt.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
+  WHERE ((h.age >= 4) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WITH NO DATA;
+
+
+--
+-- Name: breeders_series_4yo_mares_turf_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.breeders_series_4yo_mares_turf_qualifiers AS
+ SELECT DISTINCT h.id AS horse_id,
+    COALESCE(turf.starts, 0) AS starts,
+    COALESCE(turf.stakes_starts, 0) AS stakes_starts,
+    COALESCE(turf.stakes_wins, 0) AS stakes_wins,
+    COALESCE(turf.stakes_seconds, 0) AS stakes_seconds,
+    COALESCE(turf.stakes_thirds, 0) AS stakes_thirds,
+    COALESCE(allowance_wins.wins, (0)::bigint) AS allowance_wins,
+    COALESCE(turf.points, (0)::bigint) AS points
+   FROM (((((public.horses h
+     LEFT JOIN public.stables b ON ((h.breeder_id = b.id)))
+     LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
+     LEFT JOIN public.breeders_series_nominations bn ON ((b.id = bn.stable_id)))
+     LEFT JOIN ( SELECT race_records.horse_id,
+            (sum(race_records.starts))::integer AS starts,
+            (sum(race_records.stakes_starts))::integer AS stakes_starts,
+            (sum(race_records.stakes_wins))::integer AS stakes_wins,
+            (sum(race_records.stakes_seconds))::integer AS stakes_seconds,
+            (sum(race_records.stakes_thirds))::integer AS stakes_thirds,
+            sum(race_records.points) AS points
+           FROM public.race_records
+          WHERE ((race_records.surface = 'turf'::public.track_surface) AND ((race_records.year)::double precision = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY race_records.horse_id) turf ON ((h.id = turf.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
+  WHERE ((h.age >= 4) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WITH NO DATA;
+
+
+--
+-- Name: breeders_series_4yo_turf_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.breeders_series_4yo_turf_qualifiers AS
+ SELECT DISTINCT h.id AS horse_id,
+    COALESCE(turf.starts, 0) AS starts,
+    COALESCE(turf.stakes_starts, 0) AS stakes_starts,
+    COALESCE(turf.stakes_wins, 0) AS stakes_wins,
+    COALESCE(turf.stakes_seconds, 0) AS stakes_seconds,
+    COALESCE(turf.stakes_thirds, 0) AS stakes_thirds,
+    COALESCE(allowance_wins.wins, (0)::bigint) AS allowance_wins,
+    COALESCE(turf.points, (0)::bigint) AS points
+   FROM (((((public.horses h
+     LEFT JOIN public.stables b ON ((h.breeder_id = b.id)))
+     LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
+     LEFT JOIN public.breeders_series_nominations bn ON ((b.id = bn.stable_id)))
+     LEFT JOIN ( SELECT race_records.horse_id,
+            (sum(race_records.starts))::integer AS starts,
+            (sum(race_records.stakes_starts))::integer AS stakes_starts,
+            (sum(race_records.stakes_wins))::integer AS stakes_wins,
+            (sum(race_records.stakes_seconds))::integer AS stakes_seconds,
+            (sum(race_records.stakes_thirds))::integer AS stakes_thirds,
+            sum(race_records.points) AS points
+           FROM public.race_records
+          WHERE ((race_records.surface = 'turf'::public.track_surface) AND ((race_records.year)::double precision = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY race_records.horse_id) turf ON ((h.id = turf.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
+  WHERE ((h.age >= 4) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WITH NO DATA;
+
+
+--
+-- Name: breeders_series_nominations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.breeders_series_nominations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: breeders_series_nominations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.breeders_series_nominations_id_seq OWNED BY public.breeders_series_nominations.id;
+
+
+--
+-- Name: breeders_series_steeplechase_fillies_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.breeders_series_steeplechase_fillies_qualifiers AS
+ SELECT DISTINCT h.id AS horse_id,
+    COALESCE(jump.starts, 0) AS starts,
+    COALESCE(jump.stakes_starts, 0) AS stakes_starts,
+    COALESCE(jump.stakes_wins, 0) AS stakes_wins,
+    COALESCE(jump.stakes_seconds, 0) AS stakes_seconds,
+    COALESCE(jump.stakes_thirds, 0) AS stakes_thirds,
+    COALESCE(allowance_wins.wins, (0)::bigint) AS allowance_wins,
+    COALESCE(jump.points, (0)::bigint) AS points
+   FROM (((((public.horses h
+     LEFT JOIN public.stables b ON ((h.breeder_id = b.id)))
+     LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
+     LEFT JOIN public.breeders_series_nominations bn ON ((b.id = bn.stable_id)))
+     LEFT JOIN ( SELECT race_records.horse_id,
+            (sum(race_records.starts))::integer AS starts,
+            (sum(race_records.stakes_starts))::integer AS stakes_starts,
+            (sum(race_records.stakes_wins))::integer AS stakes_wins,
+            (sum(race_records.stakes_seconds))::integer AS stakes_seconds,
+            (sum(race_records.stakes_thirds))::integer AS stakes_thirds,
+            sum(race_records.points) AS points
+           FROM public.race_records
+          WHERE ((race_records.surface = 'steeplechase'::public.track_surface) AND ((race_records.year)::double precision = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY race_records.horse_id) jump ON ((h.id = jump.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
+  WHERE ((h.age >= 3) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(jump.starts, 0) > 0) AND ((((COALESCE(jump.stakes_wins, 0) + COALESCE(jump.stakes_seconds, 0)) + COALESCE(jump.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WITH NO DATA;
+
+
+--
+-- Name: breeders_series_steeplechase_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.breeders_series_steeplechase_qualifiers AS
+ SELECT DISTINCT h.id AS horse_id,
+    COALESCE(jump.starts, 0) AS starts,
+    COALESCE(jump.stakes_starts, 0) AS stakes_starts,
+    COALESCE(jump.stakes_wins, 0) AS stakes_wins,
+    COALESCE(jump.stakes_seconds, 0) AS stakes_seconds,
+    COALESCE(jump.stakes_thirds, 0) AS stakes_thirds,
+    COALESCE(allowance_wins.wins, (0)::bigint) AS allowance_wins,
+    COALESCE(jump.points, (0)::bigint) AS points
+   FROM (((((public.horses h
+     LEFT JOIN public.stables b ON ((h.breeder_id = b.id)))
+     LEFT JOIN public.race_options ro ON ((h.id = ro.horse_id)))
+     LEFT JOIN public.breeders_series_nominations bn ON ((b.id = bn.stable_id)))
+     LEFT JOIN ( SELECT race_records.horse_id,
+            (sum(race_records.starts))::integer AS starts,
+            (sum(race_records.stakes_starts))::integer AS stakes_starts,
+            (sum(race_records.stakes_wins))::integer AS stakes_wins,
+            (sum(race_records.stakes_seconds))::integer AS stakes_seconds,
+            (sum(race_records.stakes_thirds))::integer AS stakes_thirds,
+            sum(race_records.points) AS points
+           FROM public.race_records
+          WHERE ((race_records.surface = 'steeplechase'::public.track_surface) AND ((race_records.year)::double precision = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY race_records.horse_id) jump ON ((h.id = jump.horse_id)))
+     LEFT JOIN ( SELECT count(r.id) AS wins,
+            rr.horse_id
+           FROM ((public.race_result_horses rr
+             LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+             LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
+  WHERE ((h.age >= 3) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(jump.starts, 0) > 0) AND ((((COALESCE(jump.stakes_wins, 0) + COALESCE(jump.stakes_seconds, 0)) + COALESCE(jump.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WITH NO DATA;
 
 
 --
@@ -2425,7 +3071,8 @@ CREATE TABLE public.breeding_stats (
     soundness integer DEFAULT 0 NOT NULL,
     dosage character varying,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    allele character varying
 );
 
 
@@ -4055,6 +4702,80 @@ CREATE SEQUENCE public.horse_attributes_id_seq
 --
 
 ALTER SEQUENCE public.horse_attributes_id_seq OWNED BY public.horse_attributes.id;
+
+
+--
+-- Name: horse_comments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.horse_comments (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    stable_id bigint NOT NULL,
+    comment text NOT NULL,
+    private boolean DEFAULT true NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: horse_comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.horse_comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: horse_comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.horse_comments_id_seq OWNED BY public.horse_comments.id;
+
+
+--
+-- Name: horse_events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.horse_events (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    event_type public.horse_event_types,
+    date date NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN horse_events.event_type; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.horse_events.event_type IS 'gelded,switched_to_sc,retired_racing,retired_breeding';
+
+
+--
+-- Name: horse_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.horse_events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: horse_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.horse_events_id_seq OWNED BY public.horse_events.id;
 
 
 --
@@ -6007,28 +6728,6 @@ ALTER SEQUENCE public.stable_notes_id_seq OWNED BY public.stable_notes.id;
 
 
 --
--- Name: stables; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.stables (
-    id bigint NOT NULL,
-    name character varying NOT NULL,
-    legacy_id integer,
-    slug character varying,
-    public_id character varying(12),
-    available_balance bigint DEFAULT 0,
-    total_balance bigint DEFAULT 0,
-    last_online_at timestamp with time zone,
-    description text,
-    miles_from_track integer DEFAULT 1 NOT NULL,
-    racetrack_id bigint,
-    user_id bigint NOT NULL,
-    created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
-);
-
-
---
 -- Name: stables_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -6854,6 +7553,13 @@ ALTER TABLE ONLY public.breeders_cup_potential_entries ALTER COLUMN id SET DEFAU
 
 
 --
+-- Name: breeders_series_nominations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breeders_series_nominations ALTER COLUMN id SET DEFAULT nextval('public.breeders_series_nominations_id_seq'::regclass);
+
+
+--
 -- Name: breeding_slots id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -6956,6 +7662,20 @@ ALTER TABLE ONLY public.horse_appearances ALTER COLUMN id SET DEFAULT nextval('p
 --
 
 ALTER TABLE ONLY public.horse_attributes ALTER COLUMN id SET DEFAULT nextval('public.horse_attributes_id_seq'::regclass);
+
+
+--
+-- Name: horse_comments id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horse_comments ALTER COLUMN id SET DEFAULT nextval('public.horse_comments_id_seq'::regclass);
+
+
+--
+-- Name: horse_events id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horse_events ALTER COLUMN id SET DEFAULT nextval('public.horse_events_id_seq'::regclass);
 
 
 --
@@ -7455,6 +8175,14 @@ ALTER TABLE ONLY public.breeders_cup_potential_entries
 
 
 --
+-- Name: breeders_series_nominations breeders_series_nominations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breeders_series_nominations
+    ADD CONSTRAINT breeders_series_nominations_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: breeding_slots breeding_slots_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7580,6 +8308,22 @@ ALTER TABLE ONLY public.horse_appearances
 
 ALTER TABLE ONLY public.horse_attributes
     ADD CONSTRAINT horse_attributes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: horse_comments horse_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horse_comments
+    ADD CONSTRAINT horse_comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: horse_events horse_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horse_events
+    ADD CONSTRAINT horse_events_pkey PRIMARY KEY (id);
 
 
 --
@@ -8046,6 +8790,111 @@ CREATE INDEX idx_breedings_denied_stud_mare_year ON public.breedings USING btree
 
 
 --
+-- Name: idx_on_allowance_wins_01479dea35; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_allowance_wins_01479dea35 ON public.breeders_series_2yo_fillies_dirt_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: idx_on_allowance_wins_15a9825669; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_allowance_wins_15a9825669 ON public.breeders_series_4yo_mares_dirt_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: idx_on_allowance_wins_1da02d1708; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_allowance_wins_1da02d1708 ON public.breeders_cup_filly_mare_sprint_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: idx_on_allowance_wins_5066640cae; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_allowance_wins_5066640cae ON public.breeders_series_steeplechase_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: idx_on_allowance_wins_6958126666; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_allowance_wins_6958126666 ON public.breeders_cup_juvenile_turf_fillies_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: idx_on_allowance_wins_7fb8bb470f; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_allowance_wins_7fb8bb470f ON public.breeders_cup_filly_mare_turf_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: idx_on_allowance_wins_8d662409bb; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_allowance_wins_8d662409bb ON public.breeders_series_steeplechase_fillies_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: idx_on_allowance_wins_c2226437e5; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_allowance_wins_c2226437e5 ON public.breeders_series_4yo_mares_turf_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: idx_on_allowance_wins_de83206749; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_allowance_wins_de83206749 ON public.breeders_series_3yo_fillies_turf_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: idx_on_allowance_wins_e3d463a019; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_allowance_wins_e3d463a019 ON public.breeders_series_3yo_fillies_dirt_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: idx_on_allowance_wins_eae2332575; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_allowance_wins_eae2332575 ON public.breeders_cup_juvenile_fillies_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: idx_on_allowance_wins_fb35a643e9; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_allowance_wins_fb35a643e9 ON public.breeders_cup_sc_distaff_endurance_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: idx_on_allowance_wins_ff848b4097; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_allowance_wins_ff848b4097 ON public.breeders_series_2yo_fillies_turf_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: idx_on_horse_id_7ef0f30f1f; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_horse_id_7ef0f30f1f ON public.breeders_series_steeplechase_fillies_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: idx_on_horse_id_a722cf4d93; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_horse_id_a722cf4d93 ON public.breeders_cup_juvenile_turf_fillies_qualifiers USING btree (horse_id);
+
+
+--
 -- Name: idx_on_horse_id_first_jockey_id_second_jockey_id_th_4d3e2bb186; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8064,6 +8913,251 @@ CREATE UNIQUE INDEX idx_on_horse_id_first_jockey_id_second_jockey_id_th_b7c0ac41
 --
 
 CREATE INDEX idx_on_horse_id_race_id_949895b079 ON public.supplemental_breeders_cup_nominations USING btree (horse_id, race_id);
+
+
+--
+-- Name: idx_on_nominated_77d0ced509; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_nominated_77d0ced509 ON public.breeders_cup_juvenile_turf_fillies_qualifiers USING btree (nominated);
+
+
+--
+-- Name: idx_on_nominated_fcdcc60603; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_nominated_fcdcc60603 ON public.breeders_cup_sc_distaff_endurance_qualifiers USING btree (nominated);
+
+
+--
+-- Name: idx_on_points_2934513348; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_points_2934513348 ON public.breeders_series_steeplechase_fillies_qualifiers USING btree (points);
+
+
+--
+-- Name: idx_on_stable_id_series_type_year_8e8c9eec73; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_stable_id_series_type_year_8e8c9eec73 ON public.breeders_series_nominations USING btree (stable_id, series_type, year);
+
+
+--
+-- Name: idx_on_stakes_seconds_0ec6025c16; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_seconds_0ec6025c16 ON public.breeders_series_4yo_mares_dirt_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: idx_on_stakes_seconds_174056d3df; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_seconds_174056d3df ON public.breeders_cup_filly_mare_turf_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: idx_on_stakes_seconds_2f68d4b2a7; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_seconds_2f68d4b2a7 ON public.breeders_series_2yo_fillies_dirt_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: idx_on_stakes_seconds_34046d50e5; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_seconds_34046d50e5 ON public.breeders_series_steeplechase_fillies_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: idx_on_stakes_seconds_44d12aa8c4; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_seconds_44d12aa8c4 ON public.breeders_series_2yo_fillies_turf_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: idx_on_stakes_seconds_4ff9d665e1; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_seconds_4ff9d665e1 ON public.breeders_cup_filly_mare_sprint_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: idx_on_stakes_seconds_6299b20d76; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_seconds_6299b20d76 ON public.breeders_series_3yo_fillies_turf_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: idx_on_stakes_seconds_9cb5baa0c6; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_seconds_9cb5baa0c6 ON public.breeders_series_4yo_mares_turf_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: idx_on_stakes_seconds_a7fdb3416e; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_seconds_a7fdb3416e ON public.breeders_cup_sc_distaff_endurance_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: idx_on_stakes_seconds_baa304970e; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_seconds_baa304970e ON public.breeders_cup_juvenile_fillies_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: idx_on_stakes_seconds_c6dedeb196; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_seconds_c6dedeb196 ON public.breeders_series_steeplechase_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: idx_on_stakes_seconds_d59d9793ed; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_seconds_d59d9793ed ON public.breeders_series_3yo_fillies_dirt_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: idx_on_stakes_seconds_de1a16769d; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_seconds_de1a16769d ON public.breeders_cup_juvenile_turf_fillies_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: idx_on_stakes_thirds_06b1723b73; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_thirds_06b1723b73 ON public.breeders_cup_juvenile_fillies_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: idx_on_stakes_thirds_1c4b20c091; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_thirds_1c4b20c091 ON public.breeders_series_steeplechase_fillies_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: idx_on_stakes_thirds_3e561673d4; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_thirds_3e561673d4 ON public.breeders_cup_sc_distaff_endurance_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: idx_on_stakes_thirds_40aff126c3; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_thirds_40aff126c3 ON public.breeders_series_2yo_fillies_dirt_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: idx_on_stakes_thirds_4520661d16; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_thirds_4520661d16 ON public.breeders_cup_juvenile_turf_fillies_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: idx_on_stakes_thirds_4ee0222403; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_thirds_4ee0222403 ON public.breeders_series_2yo_fillies_turf_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: idx_on_stakes_thirds_600f84fe5d; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_thirds_600f84fe5d ON public.breeders_series_4yo_mares_dirt_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: idx_on_stakes_thirds_699277faa6; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_thirds_699277faa6 ON public.breeders_series_3yo_fillies_dirt_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: idx_on_stakes_thirds_747aae2a58; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_thirds_747aae2a58 ON public.breeders_series_3yo_fillies_turf_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: idx_on_stakes_thirds_c61aeef92d; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_thirds_c61aeef92d ON public.breeders_series_4yo_mares_turf_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: idx_on_stakes_thirds_fefe5194f9; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_thirds_fefe5194f9 ON public.breeders_cup_filly_mare_sprint_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: idx_on_stakes_wins_147dde5f62; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_wins_147dde5f62 ON public.breeders_cup_sc_distaff_endurance_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: idx_on_stakes_wins_177682cbbf; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_wins_177682cbbf ON public.breeders_series_3yo_fillies_turf_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: idx_on_stakes_wins_3bc5e8c702; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_wins_3bc5e8c702 ON public.breeders_series_steeplechase_fillies_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: idx_on_stakes_wins_65cceac31f; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_wins_65cceac31f ON public.breeders_series_3yo_fillies_dirt_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: idx_on_stakes_wins_66d83b275b; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_wins_66d83b275b ON public.breeders_series_2yo_fillies_turf_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: idx_on_stakes_wins_92826ef8fb; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_wins_92826ef8fb ON public.breeders_cup_juvenile_turf_fillies_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: idx_on_stakes_wins_ce3640aaa0; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_stakes_wins_ce3640aaa0 ON public.breeders_series_2yo_fillies_dirt_qualifiers USING btree (stakes_wins);
 
 
 --
@@ -8291,6 +9385,398 @@ CREATE INDEX index_boardings_on_start_date ON public.boardings USING btree (star
 
 
 --
+-- Name: index_breeders_cup_classic_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_classic_qualifiers_on_allowance_wins ON public.breeders_cup_classic_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_cup_classic_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_cup_classic_qualifiers_on_horse_id ON public.breeders_cup_classic_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_cup_classic_qualifiers_on_nominated; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_classic_qualifiers_on_nominated ON public.breeders_cup_classic_qualifiers USING btree (nominated);
+
+
+--
+-- Name: index_breeders_cup_classic_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_classic_qualifiers_on_points ON public.breeders_cup_classic_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_cup_classic_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_classic_qualifiers_on_stakes_seconds ON public.breeders_cup_classic_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_cup_classic_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_classic_qualifiers_on_stakes_thirds ON public.breeders_cup_classic_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_cup_classic_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_classic_qualifiers_on_stakes_wins ON public.breeders_cup_classic_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_cup_dirt_mile_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_dirt_mile_qualifiers_on_allowance_wins ON public.breeders_cup_dirt_mile_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_cup_dirt_mile_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_cup_dirt_mile_qualifiers_on_horse_id ON public.breeders_cup_dirt_mile_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_cup_dirt_mile_qualifiers_on_nominated; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_dirt_mile_qualifiers_on_nominated ON public.breeders_cup_dirt_mile_qualifiers USING btree (nominated);
+
+
+--
+-- Name: index_breeders_cup_dirt_mile_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_dirt_mile_qualifiers_on_points ON public.breeders_cup_dirt_mile_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_cup_dirt_mile_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_dirt_mile_qualifiers_on_stakes_seconds ON public.breeders_cup_dirt_mile_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_cup_dirt_mile_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_dirt_mile_qualifiers_on_stakes_thirds ON public.breeders_cup_dirt_mile_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_cup_dirt_mile_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_dirt_mile_qualifiers_on_stakes_wins ON public.breeders_cup_dirt_mile_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_cup_distaff_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_distaff_qualifiers_on_allowance_wins ON public.breeders_cup_distaff_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_cup_distaff_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_cup_distaff_qualifiers_on_horse_id ON public.breeders_cup_distaff_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_cup_distaff_qualifiers_on_nominated; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_distaff_qualifiers_on_nominated ON public.breeders_cup_distaff_qualifiers USING btree (nominated);
+
+
+--
+-- Name: index_breeders_cup_distaff_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_distaff_qualifiers_on_points ON public.breeders_cup_distaff_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_cup_distaff_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_distaff_qualifiers_on_stakes_seconds ON public.breeders_cup_distaff_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_cup_distaff_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_distaff_qualifiers_on_stakes_thirds ON public.breeders_cup_distaff_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_cup_distaff_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_distaff_qualifiers_on_stakes_wins ON public.breeders_cup_distaff_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_cup_filly_mare_sprint_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_cup_filly_mare_sprint_qualifiers_on_horse_id ON public.breeders_cup_filly_mare_sprint_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_cup_filly_mare_sprint_qualifiers_on_nominated; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_filly_mare_sprint_qualifiers_on_nominated ON public.breeders_cup_filly_mare_sprint_qualifiers USING btree (nominated);
+
+
+--
+-- Name: index_breeders_cup_filly_mare_sprint_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_filly_mare_sprint_qualifiers_on_points ON public.breeders_cup_filly_mare_sprint_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_cup_filly_mare_sprint_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_filly_mare_sprint_qualifiers_on_stakes_wins ON public.breeders_cup_filly_mare_sprint_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_cup_filly_mare_turf_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_cup_filly_mare_turf_qualifiers_on_horse_id ON public.breeders_cup_filly_mare_turf_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_cup_filly_mare_turf_qualifiers_on_nominated; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_filly_mare_turf_qualifiers_on_nominated ON public.breeders_cup_filly_mare_turf_qualifiers USING btree (nominated);
+
+
+--
+-- Name: index_breeders_cup_filly_mare_turf_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_filly_mare_turf_qualifiers_on_points ON public.breeders_cup_filly_mare_turf_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_cup_filly_mare_turf_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_filly_mare_turf_qualifiers_on_stakes_thirds ON public.breeders_cup_filly_mare_turf_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_cup_filly_mare_turf_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_filly_mare_turf_qualifiers_on_stakes_wins ON public.breeders_cup_filly_mare_turf_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_cup_juvenile_fillies_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_cup_juvenile_fillies_qualifiers_on_horse_id ON public.breeders_cup_juvenile_fillies_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_cup_juvenile_fillies_qualifiers_on_nominated; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_juvenile_fillies_qualifiers_on_nominated ON public.breeders_cup_juvenile_fillies_qualifiers USING btree (nominated);
+
+
+--
+-- Name: index_breeders_cup_juvenile_fillies_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_juvenile_fillies_qualifiers_on_points ON public.breeders_cup_juvenile_fillies_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_cup_juvenile_fillies_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_juvenile_fillies_qualifiers_on_stakes_wins ON public.breeders_cup_juvenile_fillies_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_cup_juvenile_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_juvenile_qualifiers_on_allowance_wins ON public.breeders_cup_juvenile_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_cup_juvenile_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_cup_juvenile_qualifiers_on_horse_id ON public.breeders_cup_juvenile_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_cup_juvenile_qualifiers_on_nominated; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_juvenile_qualifiers_on_nominated ON public.breeders_cup_juvenile_qualifiers USING btree (nominated);
+
+
+--
+-- Name: index_breeders_cup_juvenile_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_juvenile_qualifiers_on_points ON public.breeders_cup_juvenile_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_cup_juvenile_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_juvenile_qualifiers_on_stakes_seconds ON public.breeders_cup_juvenile_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_cup_juvenile_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_juvenile_qualifiers_on_stakes_thirds ON public.breeders_cup_juvenile_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_cup_juvenile_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_juvenile_qualifiers_on_stakes_wins ON public.breeders_cup_juvenile_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_cup_juvenile_turf_fillies_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_juvenile_turf_fillies_qualifiers_on_points ON public.breeders_cup_juvenile_turf_fillies_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_cup_juvenile_turf_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_juvenile_turf_qualifiers_on_allowance_wins ON public.breeders_cup_juvenile_turf_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_cup_juvenile_turf_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_juvenile_turf_qualifiers_on_horse_id ON public.breeders_cup_juvenile_turf_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_cup_juvenile_turf_qualifiers_on_nominated; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_juvenile_turf_qualifiers_on_nominated ON public.breeders_cup_juvenile_turf_qualifiers USING btree (nominated);
+
+
+--
+-- Name: index_breeders_cup_juvenile_turf_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_juvenile_turf_qualifiers_on_points ON public.breeders_cup_juvenile_turf_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_cup_juvenile_turf_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_juvenile_turf_qualifiers_on_stakes_seconds ON public.breeders_cup_juvenile_turf_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_cup_juvenile_turf_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_juvenile_turf_qualifiers_on_stakes_thirds ON public.breeders_cup_juvenile_turf_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_cup_juvenile_turf_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_juvenile_turf_qualifiers_on_stakes_wins ON public.breeders_cup_juvenile_turf_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_cup_mile_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_mile_qualifiers_on_allowance_wins ON public.breeders_cup_mile_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_cup_mile_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_mile_qualifiers_on_horse_id ON public.breeders_cup_mile_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_cup_mile_qualifiers_on_nominated; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_mile_qualifiers_on_nominated ON public.breeders_cup_mile_qualifiers USING btree (nominated);
+
+
+--
+-- Name: index_breeders_cup_mile_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_mile_qualifiers_on_points ON public.breeders_cup_mile_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_cup_mile_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_mile_qualifiers_on_stakes_seconds ON public.breeders_cup_mile_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_cup_mile_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_mile_qualifiers_on_stakes_thirds ON public.breeders_cup_mile_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_cup_mile_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_mile_qualifiers_on_stakes_wins ON public.breeders_cup_mile_qualifiers USING btree (stakes_wins);
+
+
+--
 -- Name: index_breeders_cup_nominations_on_effective_year; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8330,6 +9816,755 @@ CREATE INDEX index_breeders_cup_potential_entries_on_rank ON public.breeders_cup
 --
 
 CREATE INDEX index_breeders_cup_potential_entries_on_stable_id ON public.breeders_cup_potential_entries USING btree (stable_id);
+
+
+--
+-- Name: index_breeders_cup_sc_classic_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_classic_qualifiers_on_allowance_wins ON public.breeders_cup_sc_classic_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_cup_sc_classic_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_classic_qualifiers_on_horse_id ON public.breeders_cup_sc_classic_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_cup_sc_classic_qualifiers_on_nominated; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_classic_qualifiers_on_nominated ON public.breeders_cup_sc_classic_qualifiers USING btree (nominated);
+
+
+--
+-- Name: index_breeders_cup_sc_classic_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_classic_qualifiers_on_points ON public.breeders_cup_sc_classic_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_cup_sc_classic_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_classic_qualifiers_on_stakes_seconds ON public.breeders_cup_sc_classic_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_cup_sc_classic_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_classic_qualifiers_on_stakes_thirds ON public.breeders_cup_sc_classic_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_cup_sc_classic_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_classic_qualifiers_on_stakes_wins ON public.breeders_cup_sc_classic_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_cup_sc_distaff_endurance_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_distaff_endurance_qualifiers_on_horse_id ON public.breeders_cup_sc_distaff_endurance_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_cup_sc_distaff_endurance_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_distaff_endurance_qualifiers_on_points ON public.breeders_cup_sc_distaff_endurance_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_cup_sc_distaff_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_distaff_qualifiers_on_allowance_wins ON public.breeders_cup_sc_distaff_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_cup_sc_distaff_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_cup_sc_distaff_qualifiers_on_horse_id ON public.breeders_cup_sc_distaff_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_cup_sc_distaff_qualifiers_on_nominated; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_distaff_qualifiers_on_nominated ON public.breeders_cup_sc_distaff_qualifiers USING btree (nominated);
+
+
+--
+-- Name: index_breeders_cup_sc_distaff_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_distaff_qualifiers_on_points ON public.breeders_cup_sc_distaff_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_cup_sc_distaff_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_distaff_qualifiers_on_stakes_seconds ON public.breeders_cup_sc_distaff_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_cup_sc_distaff_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_distaff_qualifiers_on_stakes_thirds ON public.breeders_cup_sc_distaff_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_cup_sc_distaff_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_distaff_qualifiers_on_stakes_wins ON public.breeders_cup_sc_distaff_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_cup_sc_endurance_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_endurance_qualifiers_on_allowance_wins ON public.breeders_cup_sc_endurance_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_cup_sc_endurance_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_cup_sc_endurance_qualifiers_on_horse_id ON public.breeders_cup_sc_endurance_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_cup_sc_endurance_qualifiers_on_nominated; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_endurance_qualifiers_on_nominated ON public.breeders_cup_sc_endurance_qualifiers USING btree (nominated);
+
+
+--
+-- Name: index_breeders_cup_sc_endurance_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_endurance_qualifiers_on_points ON public.breeders_cup_sc_endurance_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_cup_sc_endurance_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_endurance_qualifiers_on_stakes_seconds ON public.breeders_cup_sc_endurance_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_cup_sc_endurance_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_endurance_qualifiers_on_stakes_thirds ON public.breeders_cup_sc_endurance_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_cup_sc_endurance_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_endurance_qualifiers_on_stakes_wins ON public.breeders_cup_sc_endurance_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_cup_sc_sprint_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_sprint_qualifiers_on_allowance_wins ON public.breeders_cup_sc_sprint_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_cup_sc_sprint_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_cup_sc_sprint_qualifiers_on_horse_id ON public.breeders_cup_sc_sprint_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_cup_sc_sprint_qualifiers_on_nominated; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_sprint_qualifiers_on_nominated ON public.breeders_cup_sc_sprint_qualifiers USING btree (nominated);
+
+
+--
+-- Name: index_breeders_cup_sc_sprint_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_sprint_qualifiers_on_points ON public.breeders_cup_sc_sprint_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_cup_sc_sprint_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_sprint_qualifiers_on_stakes_seconds ON public.breeders_cup_sc_sprint_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_cup_sc_sprint_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_sprint_qualifiers_on_stakes_thirds ON public.breeders_cup_sc_sprint_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_cup_sc_sprint_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sc_sprint_qualifiers_on_stakes_wins ON public.breeders_cup_sc_sprint_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_cup_sprint_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sprint_qualifiers_on_allowance_wins ON public.breeders_cup_sprint_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_cup_sprint_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_cup_sprint_qualifiers_on_horse_id ON public.breeders_cup_sprint_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_cup_sprint_qualifiers_on_nominated; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sprint_qualifiers_on_nominated ON public.breeders_cup_sprint_qualifiers USING btree (nominated);
+
+
+--
+-- Name: index_breeders_cup_sprint_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sprint_qualifiers_on_points ON public.breeders_cup_sprint_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_cup_sprint_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sprint_qualifiers_on_stakes_seconds ON public.breeders_cup_sprint_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_cup_sprint_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sprint_qualifiers_on_stakes_thirds ON public.breeders_cup_sprint_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_cup_sprint_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_sprint_qualifiers_on_stakes_wins ON public.breeders_cup_sprint_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_cup_turf_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_turf_qualifiers_on_allowance_wins ON public.breeders_cup_turf_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_cup_turf_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_cup_turf_qualifiers_on_horse_id ON public.breeders_cup_turf_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_cup_turf_qualifiers_on_nominated; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_turf_qualifiers_on_nominated ON public.breeders_cup_turf_qualifiers USING btree (nominated);
+
+
+--
+-- Name: index_breeders_cup_turf_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_turf_qualifiers_on_points ON public.breeders_cup_turf_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_cup_turf_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_turf_qualifiers_on_stakes_seconds ON public.breeders_cup_turf_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_cup_turf_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_turf_qualifiers_on_stakes_thirds ON public.breeders_cup_turf_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_cup_turf_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_turf_qualifiers_on_stakes_wins ON public.breeders_cup_turf_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_cup_turf_sprint_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_turf_sprint_qualifiers_on_allowance_wins ON public.breeders_cup_turf_sprint_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_cup_turf_sprint_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_cup_turf_sprint_qualifiers_on_horse_id ON public.breeders_cup_turf_sprint_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_cup_turf_sprint_qualifiers_on_nominated; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_turf_sprint_qualifiers_on_nominated ON public.breeders_cup_turf_sprint_qualifiers USING btree (nominated);
+
+
+--
+-- Name: index_breeders_cup_turf_sprint_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_turf_sprint_qualifiers_on_points ON public.breeders_cup_turf_sprint_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_cup_turf_sprint_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_turf_sprint_qualifiers_on_stakes_seconds ON public.breeders_cup_turf_sprint_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_cup_turf_sprint_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_turf_sprint_qualifiers_on_stakes_thirds ON public.breeders_cup_turf_sprint_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_cup_turf_sprint_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_cup_turf_sprint_qualifiers_on_stakes_wins ON public.breeders_cup_turf_sprint_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_series_2yo_dirt_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_2yo_dirt_qualifiers_on_allowance_wins ON public.breeders_series_2yo_dirt_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_series_2yo_dirt_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_series_2yo_dirt_qualifiers_on_horse_id ON public.breeders_series_2yo_dirt_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_series_2yo_dirt_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_2yo_dirt_qualifiers_on_points ON public.breeders_series_2yo_dirt_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_series_2yo_dirt_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_2yo_dirt_qualifiers_on_stakes_seconds ON public.breeders_series_2yo_dirt_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_series_2yo_dirt_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_2yo_dirt_qualifiers_on_stakes_thirds ON public.breeders_series_2yo_dirt_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_series_2yo_dirt_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_2yo_dirt_qualifiers_on_stakes_wins ON public.breeders_series_2yo_dirt_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_series_2yo_fillies_dirt_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_series_2yo_fillies_dirt_qualifiers_on_horse_id ON public.breeders_series_2yo_fillies_dirt_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_series_2yo_fillies_dirt_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_2yo_fillies_dirt_qualifiers_on_points ON public.breeders_series_2yo_fillies_dirt_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_series_2yo_fillies_turf_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_series_2yo_fillies_turf_qualifiers_on_horse_id ON public.breeders_series_2yo_fillies_turf_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_series_2yo_fillies_turf_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_2yo_fillies_turf_qualifiers_on_points ON public.breeders_series_2yo_fillies_turf_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_series_2yo_turf_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_2yo_turf_qualifiers_on_allowance_wins ON public.breeders_series_2yo_turf_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_series_2yo_turf_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_series_2yo_turf_qualifiers_on_horse_id ON public.breeders_series_2yo_turf_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_series_2yo_turf_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_2yo_turf_qualifiers_on_points ON public.breeders_series_2yo_turf_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_series_2yo_turf_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_2yo_turf_qualifiers_on_stakes_seconds ON public.breeders_series_2yo_turf_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_series_2yo_turf_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_2yo_turf_qualifiers_on_stakes_thirds ON public.breeders_series_2yo_turf_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_series_2yo_turf_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_2yo_turf_qualifiers_on_stakes_wins ON public.breeders_series_2yo_turf_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_series_3yo_dirt_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_3yo_dirt_qualifiers_on_allowance_wins ON public.breeders_series_3yo_dirt_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_series_3yo_dirt_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_series_3yo_dirt_qualifiers_on_horse_id ON public.breeders_series_3yo_dirt_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_series_3yo_dirt_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_3yo_dirt_qualifiers_on_points ON public.breeders_series_3yo_dirt_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_series_3yo_dirt_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_3yo_dirt_qualifiers_on_stakes_seconds ON public.breeders_series_3yo_dirt_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_series_3yo_dirt_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_3yo_dirt_qualifiers_on_stakes_thirds ON public.breeders_series_3yo_dirt_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_series_3yo_dirt_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_3yo_dirt_qualifiers_on_stakes_wins ON public.breeders_series_3yo_dirt_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_series_3yo_fillies_dirt_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_series_3yo_fillies_dirt_qualifiers_on_horse_id ON public.breeders_series_3yo_fillies_dirt_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_series_3yo_fillies_dirt_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_3yo_fillies_dirt_qualifiers_on_points ON public.breeders_series_3yo_fillies_dirt_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_series_3yo_fillies_turf_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_series_3yo_fillies_turf_qualifiers_on_horse_id ON public.breeders_series_3yo_fillies_turf_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_series_3yo_fillies_turf_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_3yo_fillies_turf_qualifiers_on_points ON public.breeders_series_3yo_fillies_turf_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_series_3yo_turf_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_3yo_turf_qualifiers_on_allowance_wins ON public.breeders_series_3yo_turf_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_series_3yo_turf_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_series_3yo_turf_qualifiers_on_horse_id ON public.breeders_series_3yo_turf_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_series_3yo_turf_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_3yo_turf_qualifiers_on_points ON public.breeders_series_3yo_turf_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_series_3yo_turf_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_3yo_turf_qualifiers_on_stakes_seconds ON public.breeders_series_3yo_turf_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_series_3yo_turf_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_3yo_turf_qualifiers_on_stakes_thirds ON public.breeders_series_3yo_turf_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_series_3yo_turf_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_3yo_turf_qualifiers_on_stakes_wins ON public.breeders_series_3yo_turf_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_series_4yo_dirt_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_4yo_dirt_qualifiers_on_allowance_wins ON public.breeders_series_4yo_dirt_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_series_4yo_dirt_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_series_4yo_dirt_qualifiers_on_horse_id ON public.breeders_series_4yo_dirt_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_series_4yo_dirt_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_4yo_dirt_qualifiers_on_points ON public.breeders_series_4yo_dirt_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_series_4yo_dirt_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_4yo_dirt_qualifiers_on_stakes_seconds ON public.breeders_series_4yo_dirt_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_series_4yo_dirt_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_4yo_dirt_qualifiers_on_stakes_thirds ON public.breeders_series_4yo_dirt_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_series_4yo_dirt_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_4yo_dirt_qualifiers_on_stakes_wins ON public.breeders_series_4yo_dirt_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_series_4yo_mares_dirt_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_series_4yo_mares_dirt_qualifiers_on_horse_id ON public.breeders_series_4yo_mares_dirt_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_series_4yo_mares_dirt_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_4yo_mares_dirt_qualifiers_on_points ON public.breeders_series_4yo_mares_dirt_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_series_4yo_mares_dirt_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_4yo_mares_dirt_qualifiers_on_stakes_wins ON public.breeders_series_4yo_mares_dirt_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_series_4yo_mares_turf_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_series_4yo_mares_turf_qualifiers_on_horse_id ON public.breeders_series_4yo_mares_turf_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_series_4yo_mares_turf_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_4yo_mares_turf_qualifiers_on_points ON public.breeders_series_4yo_mares_turf_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_series_4yo_mares_turf_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_4yo_mares_turf_qualifiers_on_stakes_wins ON public.breeders_series_4yo_mares_turf_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_series_4yo_turf_qualifiers_on_allowance_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_4yo_turf_qualifiers_on_allowance_wins ON public.breeders_series_4yo_turf_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: index_breeders_series_4yo_turf_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_series_4yo_turf_qualifiers_on_horse_id ON public.breeders_series_4yo_turf_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_series_4yo_turf_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_4yo_turf_qualifiers_on_points ON public.breeders_series_4yo_turf_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_series_4yo_turf_qualifiers_on_stakes_seconds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_4yo_turf_qualifiers_on_stakes_seconds ON public.breeders_series_4yo_turf_qualifiers USING btree (stakes_seconds);
+
+
+--
+-- Name: index_breeders_series_4yo_turf_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_4yo_turf_qualifiers_on_stakes_thirds ON public.breeders_series_4yo_turf_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_series_4yo_turf_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_4yo_turf_qualifiers_on_stakes_wins ON public.breeders_series_4yo_turf_qualifiers USING btree (stakes_wins);
+
+
+--
+-- Name: index_breeders_series_nominations_on_series_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_nominations_on_series_type ON public.breeders_series_nominations USING btree (series_type);
+
+
+--
+-- Name: index_breeders_series_nominations_on_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_nominations_on_year ON public.breeders_series_nominations USING btree (year);
+
+
+--
+-- Name: index_breeders_series_steeplechase_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_series_steeplechase_qualifiers_on_horse_id ON public.breeders_series_steeplechase_qualifiers USING btree (horse_id);
+
+
+--
+-- Name: index_breeders_series_steeplechase_qualifiers_on_points; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_steeplechase_qualifiers_on_points ON public.breeders_series_steeplechase_qualifiers USING btree (points);
+
+
+--
+-- Name: index_breeders_series_steeplechase_qualifiers_on_stakes_thirds; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_steeplechase_qualifiers_on_stakes_thirds ON public.breeders_series_steeplechase_qualifiers USING btree (stakes_thirds);
+
+
+--
+-- Name: index_breeders_series_steeplechase_qualifiers_on_stakes_wins; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_steeplechase_qualifiers_on_stakes_wins ON public.breeders_series_steeplechase_qualifiers USING btree (stakes_wins);
 
 
 --
@@ -8813,6 +11048,48 @@ CREATE UNIQUE INDEX index_horse_appearances_on_horse_id ON public.horse_appearan
 --
 
 CREATE UNIQUE INDEX index_horse_attributes_on_horse_id ON public.horse_attributes USING btree (horse_id);
+
+
+--
+-- Name: index_horse_comments_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horse_comments_on_horse_id ON public.horse_comments USING btree (horse_id);
+
+
+--
+-- Name: index_horse_comments_on_private; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horse_comments_on_private ON public.horse_comments USING btree (private);
+
+
+--
+-- Name: index_horse_comments_on_stable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horse_comments_on_stable_id ON public.horse_comments USING btree (stable_id);
+
+
+--
+-- Name: index_horse_events_on_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horse_events_on_date ON public.horse_events USING btree (date);
+
+
+--
+-- Name: index_horse_events_on_event_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horse_events_on_event_type ON public.horse_events USING btree (event_type);
+
+
+--
+-- Name: index_horse_events_on_horse_id_and_event_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_horse_events_on_horse_id_and_event_type ON public.horse_events USING btree (horse_id, event_type);
 
 
 --
@@ -10852,6 +13129,14 @@ ALTER TABLE ONLY public.sale_offers
 
 
 --
+-- Name: horse_comments fk_rails_0ae080edc5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horse_comments
+    ADD CONSTRAINT fk_rails_0ae080edc5 FOREIGN KEY (stable_id) REFERENCES public.stables(id);
+
+
+--
 -- Name: horse_sales fk_rails_0b809fb199; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -11212,6 +13497,14 @@ ALTER TABLE ONLY public.auction_horses
 
 
 --
+-- Name: breeders_series_nominations fk_rails_6bd999aae9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breeders_series_nominations
+    ADD CONSTRAINT fk_rails_6bd999aae9 FOREIGN KEY (stable_id) REFERENCES public.stables(id);
+
+
+--
 -- Name: stables fk_rails_6c0fff5a3e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -11249,6 +13542,14 @@ ALTER TABLE ONLY public.race_result_horses
 
 ALTER TABLE ONLY public.sale_offers
     ADD CONSTRAINT fk_rails_7486325072 FOREIGN KEY (buyer_id) REFERENCES public.stables(id);
+
+
+--
+-- Name: horse_comments fk_rails_761da1d142; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horse_comments
+    ADD CONSTRAINT fk_rails_761da1d142 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
 
 
 --
@@ -11545,6 +13846,14 @@ ALTER TABLE ONLY public.boardings
 
 ALTER TABLE ONLY public.motor_taggable_tags
     ADD CONSTRAINT fk_rails_ba9ebe2280 FOREIGN KEY (tag_id) REFERENCES public.motor_tags(id);
+
+
+--
+-- Name: horse_events fk_rails_bcdc776af0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.horse_events
+    ADD CONSTRAINT fk_rails_bcdc776af0 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
 
 
 --
@@ -11850,9 +14159,15 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260531165429'),
+('20260531163615'),
+('20260531162540'),
+('20260531135542'),
+('20260531134544'),
 ('20260530172847'),
 ('20260530134221'),
 ('20260530095338'),
+('20260518103821'),
 ('20260517123647'),
 ('20260517123608'),
 ('20260517123515'),
