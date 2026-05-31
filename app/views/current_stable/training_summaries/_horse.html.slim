@@ -29,7 +29,7 @@ tr
       = t("common.dash")
   td.text-sm
     - if horse.race_entries.present?
-      - next_entry = horse.race_entries.joins(:race).merge(Racing::RaceSchedule.order(date: :asc)).first
+      - next_entry = horse.race_entries.joins(:race).includes(:race).merge(Racing::RaceSchedule.order(date: :asc)).first
       = l(next_entry.race.date, format: :month_day)
       = " - "
       = next_entry.race.distance_abbr
@@ -37,7 +37,7 @@ tr
       = [next_entry.race.track_surface.surface_abbr, next_entry.equipment_string(blank: "")].compact_blank.join(" - ")
     - elsif horse.future_race_entries.present?
       i.ph.ph-fill.ph-clock.mr-2
-      - next_entry = horse.future_race_entries.joins(:race).merge(Racing::RaceSchedule.order(date: :asc)).first
+      - next_entry = horse.future_race_entries.joins(:race).includes(:race).merge(Racing::RaceSchedule.order(date: :asc)).first
       = l(next_entry.race.date, format: :month_day)
       = " - "
       = next_entry.race.distance_abbr
