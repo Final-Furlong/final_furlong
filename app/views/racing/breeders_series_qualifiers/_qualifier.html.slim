@@ -1,0 +1,27 @@
+/# locals: (qualifier:, klass:)
+ruby:
+  better_ranked = klass.better_ranked(qualifier).count
+  rank = better_ranked + 1
+  tied = klass.identically_ranked(qualifier).count - 1
+tr
+  td class="text-#{qualifier.horse.gender}"
+    = link_to qualifier.horse.name_with_title, horse_path(qualifier.horse), data: { turbo_frame: "_top" }
+  td= t(".age", age: qualifier.horse.age)
+  td
+    span
+      = t("horse.race_nominations.index.starts_count", count: qualifier.starts)
+      = ", "
+    span
+      = t("horse.race_nominations.index.stakes_wins_count", count: qualifier.stakes_wins)
+      = ", "
+    span
+      = t("horse.race_nominations.index.stakes_places_count", count: qualifier.stakes_seconds + qualifier.stakes_thirds)
+      = ", "
+    span
+      = t("horse.race_nominations.index.allowance_wins_count", count: qualifier.allowance_wins)
+      = " - "
+    span= t("horse.race_nominations.index.points_count", count: qualifier.points)
+  td
+    = rank.ordinalize
+    - if tied.positive?
+      = " (#{t(".tied_count", count: tied)})"

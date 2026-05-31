@@ -18,6 +18,38 @@ en:
           zero: No Horses Qualified
         rank: Rank
         record: Record
+    breeders_series_qualifiers:
+      index:
+        series_title_2yo_dirt: 2yo Dirt Series
+        series_title_2yo_filly_dirt: 2yo Dirt Fillies Series
+        series_title_2yo_turf: 2yo Turf Series
+        series_title_2yo_filly_turf: 2yo Turf Fillies Series
+        series_title_3yo_dirt: 3yo Dirt Series
+        series_title_3yo_filly_dirt: 3yo Dirt Fillies Series
+        series_title_3yo_filly_turf: 3yo Turf Fillies Series
+        series_title_3yo_turf: 3yo Turf Series
+        series_title_4yo_dirt: 4yo+ Dirt Series
+        series_title_4yo_mare_dirt: 4yo+ Dirt Mares Series
+        series_title_4yo_mare_turf: 4yo+ Turf Mares Series
+        series_title_4yo_turf: 4yo+ Turf Series
+        series_title_steeplechase: Steeplechase Series
+        series_title_steeplechase_filly: Steeplechase Fillies/Mares Series
+        loading_qualifiers: Loading qualifiers...
+        races_already_run: Breeders' Series races have already been run this year.
+        title: Breeders' Series Qualifiers
+      qualifier:
+        age: "%{age}yo"
+        tied_count:
+          one: Tied with 1 horse
+          other: Tied with %{count} horses
+      show:
+        qualified_count:
+          one: 1 Qualified
+          other: "%{count} Qualified"
+          zero: No Horses Qualified
+        races: Races
+        rank: Rank
+        record: Record
     claims:
       create:
         failure: Could not submit claim
@@ -50,9 +82,9 @@ en:
       gender: Gender
       name: Horse
       new:
-        entry_fee: 'Entry Fee: %{fee}'
+        entry_fee: "Entry Fee: %{fee}"
         entry_limit: You may enter %{horses} in this race.
-        horses: 'Horses Entered: %{count}'
+        horses: "Horses Entered: %{count}"
         qualification_entry: The top 14 qualified horses can enter immediately. The remaining 6 qualified horses may enter on the last day of entries (%{date}), if the race is not full.
         requires_qualification: This race requires qualification.
         title: Enter Race
@@ -65,7 +97,7 @@ en:
       stable: Stable
     entry: Entry
     entry_options:
-      budget_description: 'Entry Fee: %{date}, Race %{number} - %{name}'
+      budget_description: "Entry Fee: %{date}, Race %{number} - %{name}"
       create:
         failure: "%{name} could not be entered"
         success: "%{name} was successfully entered"
@@ -74,7 +106,7 @@ en:
       form:
         first_jockey: First Choice Jockey
         jockey_decide: Let the jockey decide
-        next_race_note: 'Note on the next race entry: %{content}'
+        next_race_note: "Note on the next race entry: %{content}"
         racing_style: Running Style
         second_jockey: Second Choice Jockey
         third_jockey: Third Choice Jockey
@@ -94,16 +126,17 @@ en:
       age: Age
       age_desc: for %{age}
       ages:
-        '2': 2yo
+        "2": 2yo
         2+: 2yo+
-        '3': 3yo
+        "3": 3yo
         3+: 3yo+
-        '4': 4yo
+        "4": 4yo
         4+: 4yo+
       allowance: Allowance
       breeders_cup_qualifiers: Breeders' Cup Qualifiers
-      budget_race_jockey_fee: 'Jockey Fee: %{date}, Race %{number} - %{jockey} riding %{horse}'
-      budget_race_winnings: 'Race Winnings: %{date}, Race %{number} - %{name} (%{position})'
+      breeders_series_qualifiers: Breeders' Series Qualifiers
+      budget_race_jockey_fee: "Jockey Fee: %{date}, Race %{number} - %{jockey} riding %{horse}"
+      budget_race_winnings: "Race Winnings: %{date}, Race %{number} - %{name} (%{position})"
       claim: Claim
       claiming: Claiming
       claiming_with_price: Claiming (%{price})
@@ -237,7 +270,7 @@ en:
         title: Race Results
       injuries: Injuries
       no_injuries: No Injuries
-      race_number: 'Race #%{number}'
+      race_number: "Race #%{number}"
       speed_factor: Speed Factor
       weight: Lbs.
     scheduled_entries:
