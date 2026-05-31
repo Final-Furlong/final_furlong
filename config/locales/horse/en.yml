@@ -472,6 +472,21 @@ en:
         breeders_cup_turf_qualification: Age 3yo+, Turf, 10-14f
         breeders_cup_turf_sprint_qualification: Age 3yo+, Turf, 4-8f
         breeders_series: Breeders' Series
+        breeders_series_2yo_dirt_qualification: 2yo Dirt (Male)
+        breeders_series_2yo_filly_dirt_qualification: 2yo Dirt (Female)
+        breeders_series_2yo_filly_turf_qualification: 2yo Turf (Female)
+        breeders_series_2yo_turf_qualification: 2yo Turf (Male)
+        breeders_series_3yo_dirt_qualification: 3yo Dirt (Male)
+        breeders_series_3yo_filly_dirt_qualification: 3yo Dirt (Female)
+        breeders_series_3yo_filly_turf_qualification: 3yo Turf (Female)
+        breeders_series_3yo_turf_qualification: 3yo Turf (Male)
+        breeders_series_4yo_dirt_qualification: 4yo Dirt (Male)
+        breeders_series_4yo_mare_dirt_qualification: 4yo+ Dirt (Female)
+        breeders_series_4yo_mare_turf_qualification: 4yo+ Turf (Female)
+        breeders_series_4yo_turf_qualification: 4yo Turf (Male)
+        breeders_series_filly_steeplechase_qualification: Steeplechase (Female)
+        breeders_series_nomination: Nominated
+        breeders_series_steeplechase_qualification: Steeplechase (Male)
         late_nomination: Late Nomination
         not_nominated: Not Nominated
         not_qualified: Not Qualified (Needs 1+ allowance wins, or 1+ top 3 finishes in a stakes race)
