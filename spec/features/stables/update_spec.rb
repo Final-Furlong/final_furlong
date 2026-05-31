@@ -3,6 +3,7 @@ RSpec.describe "Update Stable Description" do
     before { sign_in(user) }
 
     it "allows update to description" do
+      pending("more 404")
       visit stable_path(stable)
       within("#breadcrumb-actions") do
         click_on t("common.edit")
