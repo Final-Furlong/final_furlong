@@ -10,7 +10,7 @@ unless Rails.env.local?
     # We recommend adjusting this value in production.
     config.traces_sample_rate = 0.25
 
-    config.rails.report_rescued_exceptions = false
+    config.rails.report_rescued_exceptions = true
 
     config.enable_logs = true
     # Patch Ruby logger to forward logs
