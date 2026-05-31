@@ -97,7 +97,7 @@ class Racing::RaceSchedule < ApplicationRecord
     where(date: start_date..end_date)
   }
   scope :breeders_cup, -> { by_type("stakes").where("name ILIKE ?", "Breeders' Cup %") }
-  scope :breeders_series, -> { by_type("stakes").where("name ILIKE ?", "% Breeders' Series") }
+  scope :breeders_series, -> { by_type("stakes").where("name ILIKE ?", "% Breeders' Stakes") }
 
   def race_type = super.to_s.inquiry
 

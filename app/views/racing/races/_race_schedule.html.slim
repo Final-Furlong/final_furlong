@@ -5,9 +5,9 @@ tr
   td= race.racetrack.name
   td
     span.hidden.lg:inline
-      = race.race_type_string(false)
+      = race.race_type_string_table(false)
     span.inline.lg:hidden
-      = race.race_type_string(true)
+      = race.race_type_string_table(true)
   td
     span.hidden.lg:inline = t("racing.race.furlongs", number: race.distance)
     span.inline.lg:hidden = t("racing.race.mobile.furlongs", number: race.distance)
