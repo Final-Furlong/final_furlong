@@ -3,10 +3,5 @@ class PagesController < ApplicationController
 
   def home
   end
-
-  def error
-    _value = 1 / 0
-    raise "There is a problem!"
-  end
 end
 
