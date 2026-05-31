@@ -57,7 +57,7 @@ module Racing
     def view_qualifiers?
       return false unless logged_in?
       return false unless record.requires_qualification?
-      return false unless record.name.starts_with?("Breeders' Cup ") || record.name.ends_with?(" Breeders' Series")
+      return false unless record.name.starts_with?("Breeders' Cup ") || record.name.ends_with?(" Breeders' Stakes")
 
       Date.current < record.entry_open_date
     end
