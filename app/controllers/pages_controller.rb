@@ -5,6 +5,8 @@ class PagesController < ApplicationController
   end
 
   def error
+    _value = 1 / 0
     raise "There is a problem!"
   end
 end
+
