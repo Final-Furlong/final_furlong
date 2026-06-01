@@ -20,8 +20,8 @@ module Account
     has_many :push_subscriptions, inverse_of: :user, dependent: :delete_all
 
     # Include default devise modules. Others available are:
-    # :omniauthable, :database_authenticatable, :registerable, :recoverable, :lockable
-    devise :rememberable, :confirmable, :timeoutable, :trackable # codespell:ignore rememberable
+    # :omniauthable, :database_authenticatable, :registerable, :recoverable, :lockable, :rememberable
+    devise :confirmable, :timeoutable, :trackable
 
     enum :status, { pending: "pending", active: "active", deleted: "deleted", banned: "banned" }
 

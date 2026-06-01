@@ -77,6 +77,8 @@ Rails.application.configure do
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [:id]
 
+  config.active_record.action_on_strict_loading_violation = :log
+
   # Enable DNS rebinding protection and other `Host` header attacks.
   config.hosts = [
     "finalfurlong.org", # Allow requests from finalfurlong.org
@@ -86,4 +88,3 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end
-
