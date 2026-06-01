@@ -13,7 +13,7 @@ RSpec.describe Account::Stable do
   describe ".ransackable_attributes" do
     it "contains the right fields" do
       expect(described_class.ransackable_attributes).to match_array(
-                                                          %w[bred_horses_count description horses_count name unborn_horses_count]
+                                                          %w[id description horses_count name unborn_horses_count]
                                                         )
     end
   end

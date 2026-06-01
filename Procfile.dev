@@ -1,4 +1,4 @@
 web: bin/rails server -p 3000
 css: bin/rails tailwindcss:watch
-jobs: bin/jobs
+#jobs: bin/jobs
 vite: pnpm vite
