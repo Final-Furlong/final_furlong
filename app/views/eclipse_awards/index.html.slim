@@ -1,0 +1,15 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t(".title"), href: stables_path }])
+
+= turbo_frame_tag "eclipse-awards" do
+  .mx-auto
+    = render "filters", query: @query
+    table.table-responsive.table.bordered.table-zebra.w-full
+      thead
+        tr
+          th.text-sm.text-center= sort_link @query, :category, [:category, :year], t(".category")
+          th.text-sm.text-center= sort_link @query, :year, [:year, :category], t(".year")
+          th.text-sm.text-center= t(".winner")
+      tbody id="award-list"
+        = render partial: "award", collection: @awards, as: :award
+    = render_load_more(@pagy)
