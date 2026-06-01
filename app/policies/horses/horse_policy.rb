@@ -39,6 +39,12 @@ module Horses
       edit_name? || CurrentStable::HorsePolicy.new(user, record).geld?
     end
 
+    def view_highlights?
+      return false unless logged_in?
+
+      %w[weanling yearling unborn].exclude?(record.status)
+    end
+
     private
 
     def manager?

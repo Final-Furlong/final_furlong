@@ -41,6 +41,7 @@ module Racing
             raise ActiveRecord::Rollback, race_horse.errors.full_messages.to_sentence
           end
         end
+        Racing::RaceSeriesWinnerCheckJob.perform_later(race:)
         if max_race?(number: race.number)
           Racing::RaceResultHorse.counter_culture_fix_counts
           Racing::RaceRecord.refresh

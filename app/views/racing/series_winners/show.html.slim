@@ -1,0 +1,20 @@
+ruby:
+  class_info = Config::Racing.qualification_classes.find { |info| info[:series] == @series_key }
+  klass = class_info[:class].constantize
+  nominated_count = klass.count
+= turbo_frame_tag "series-#{@series.id}" do
+    p.text-lg= t(".races")
+    - [@series.first_race, @series.second_race, @series.third_race].each do |race|
+      p.text-base-content/50
+        = race.race_description_string(show_number: false)
+
+    - if @winners.blank?
+      p.text-center.text-base-content/50= t(".no_winners")
+    - else
+      table.table.table-zebra
+        thead
+          tr
+            th= t("horses.info.name")
+            th= t("common.year")
+        tbody
+          = render partial: "winner", collection: @winners, as: :winner

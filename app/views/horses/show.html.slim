@@ -35,6 +35,14 @@
           p.mx-auto= t(".loading_races")
           .mt-2.mx-auto.skeleton.h-32.w-32.sm:w-3/4
 
+  - if horse.eclipse_awards.exists? || horse.race_series_wins.exists?
+    input.tab[ type="radio" name="horse" aria-label=t(".highlights") id="highlights" ]
+    .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+      = turbo_frame_tag "#{@horse.slug}-highlights", src: horse_highlights_path(@horse), loading: "lazy" do
+        .w-full.text-center
+          p.mx-auto= t(".loading_highlights")
+          .mt-2.mx-auto.skeleton.h-32.w-32.sm:w-3/4
+
   - if CurrentStable::RacehorsePolicy.new(Current.user, horse).view_nominations?
     input.tab[ type="radio" name="horse" aria-label=t(".nominations") id="nominations" ]
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4

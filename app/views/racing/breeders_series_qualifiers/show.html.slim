@@ -1,7 +1,6 @@
 ruby:
   class_info = Config::Racing.qualification_classes.find { |info| info[:series] == @series_key }
   klass = class_info[:class].constantize
-  pd klass
   nominated_count = klass.count
 = turbo_frame_tag "series-#{@series_key}" do
     p.text-lg= t(".races")

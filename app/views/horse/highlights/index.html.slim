@@ -1,0 +1,12 @@
+= turbo_frame_tag "#{@horse.slug}-highlights" do
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    - if @horse.eclipse_awards.exists?
+      div
+        p.text-center.mb-2 = t(".eclipse_awards")
+        - @horse.eclipse_awards.each do |award|
+          p.text-center= t(".award", year: award.year, name: t("eclipse_awards.award.category_#{award.category}"))
+    - if @horse.race_series_wins.exists?
+      div
+        p.text-center.mb-2 = t(".series_wins")
+        - @horse.race_series_wins.each do |series|
+          p.text-center= t(".series_win", year: series.year, name: series.series.title)

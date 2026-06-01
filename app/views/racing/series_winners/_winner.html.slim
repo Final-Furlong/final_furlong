@@ -1,0 +1,5 @@
+/# locals: (winner:)
+tr
+  td class="text-#{winner.horse.gender}"
+    = link_to winner.horse.name_with_title, horse_path(winner.horse), data: { turbo_frame: "_top" }
+  td= winner.year

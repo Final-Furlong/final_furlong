@@ -18,7 +18,7 @@ module Racing
       else
         (@series_key.include?("dirt") ? "dirt" : "steeplechase")
       end
-      @races = Racing::RaceSchedule.breeders_series.current_year.for_age(@series_key.to_s[0]).for_gender(gender).for_racehorse_type(racehorse_type).joins(:track_surface).merge(Racing::TrackSurface.send(surface)).all
+      @races = Racing::RaceSchedule.breeders_series.current_year.for_age(@series_key.to_s[0]).for_gender(gender).for_racehorse_type(racehorse_type).joins(:track_surface).merge(Racing::TrackSurface.send(surface)).order(date: :asc).all
       authorize @races.first, :view_qualifiers?
     end
   end
