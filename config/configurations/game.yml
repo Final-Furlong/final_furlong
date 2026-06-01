@@ -15,3 +15,23 @@ shared:
     - claiming
     - entering
     - redeem
+  eclipse_awards:
+    - 2 Year Old Colt
+    - 2 Year Old Filly
+    - 3 Year Old Colt
+    - 3 Year Old Filly
+    - Older Horse
+    - Older Mare
+    - Sprinter
+    - Classic Horse
+    - Endurance Horse
+    - Turf Horse
+    - Turf Mare
+    - Steeplechase Colt
+    - Steeplechase Filly
+    - Steeplechase Horse
+    - Steeplechase Mare
+    - Horse of the Year
+    - Stable of the Year
+    - Breeder of the Year
+    - Sire of the Year
