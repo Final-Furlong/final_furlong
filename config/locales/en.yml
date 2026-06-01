@@ -1,6 +1,37 @@
 ---
 en:
   day: Day
+  eclipse_awards:
+    award:
+      category_2yo_colt: 2yo Colt
+      category_2yo_filly: 2yo Filly
+      category_3yo_colt: 3yo Colt
+      category_3yo_filly: 3yo Filly
+      category_breeder: Breeder
+      category_classic: Classic
+      category_endurance: Endurance
+      category_horse: Horse
+      category_older_horse: Older Horse
+      category_older_mare: Older Mare
+      category_sc_colt: SC Colt
+      category_sc_filly: SC Filly
+      category_sc_horse: SC Horse
+      category_sc_mare: SC Mare
+      category_sire: Sire
+      category_sprinter: Sprinter
+      category_stable: Stable
+      category_turf_horse: Turf Horse
+      category_turf_mare: Turf Mare
+    filters:
+      category: Category
+      horse: Horse
+      stable: Stable
+      year: Year
+    index:
+      category: Category
+      title: Eclipse Awards
+      winner: Winner
+      year: Year
   game_title: Final Furlong
   horses:
     genders:
