@@ -165,6 +165,33 @@ CREATE TYPE public.budget_activity_type AS ENUM (
 
 
 --
+-- Name: eclipse_award_categories; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.eclipse_award_categories AS ENUM (
+    '2yo_colt',
+    '2yo_filly',
+    '3yo_colt',
+    '3yo_filly',
+    'older_horse',
+    'older_mare',
+    'sprinter',
+    'classic',
+    'endurance',
+    'turf_horse',
+    'turf_mare',
+    'sc_colt',
+    'sc_filly',
+    'sc_horse',
+    'sc_mare',
+    'horse',
+    'stable',
+    'breeder',
+    'sire'
+);
+
+
+--
 -- Name: future_entry_errors; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -4225,6 +4252,47 @@ CREATE VIEW public.distance_race_records AS
 
 
 --
+-- Name: eclipse_awards; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.eclipse_awards (
+    id bigint NOT NULL,
+    awardable_type character varying NOT NULL,
+    awardable_id bigint NOT NULL,
+    year integer DEFAULT 0 NOT NULL,
+    category public.eclipse_award_categories NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN eclipse_awards.category; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.eclipse_awards.category IS '2yo_colt,2yo_filly,3yo_colt,3yo_filly,older_horse,older_mare,sprinter,classic,endurance,turf_horse,turf_mare,sc_colt,sc_filly,sc_horse,sc_mare,horse,stable,breeder,sire';
+
+
+--
+-- Name: eclipse_awards_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.eclipse_awards_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: eclipse_awards_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.eclipse_awards_id_seq OWNED BY public.eclipse_awards.id;
+
+
+--
 -- Name: equipment_race_records; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -7602,6 +7670,13 @@ ALTER TABLE ONLY public.claims ALTER COLUMN id SET DEFAULT nextval('public.claim
 
 
 --
+-- Name: eclipse_awards id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.eclipse_awards ALTER COLUMN id SET DEFAULT nextval('public.eclipse_awards_id_seq'::regclass);
+
+
+--
 -- Name: famous_studs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -8236,6 +8311,14 @@ ALTER TABLE ONLY public.claims
 
 ALTER TABLE ONLY public.data_migrations
     ADD CONSTRAINT data_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: eclipse_awards eclipse_awards_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.eclipse_awards
+    ADD CONSTRAINT eclipse_awards_pkey PRIMARY KEY (id);
 
 
 --
@@ -8878,6 +8961,13 @@ CREATE INDEX idx_on_allowance_wins_fb35a643e9 ON public.breeders_cup_sc_distaff_
 --
 
 CREATE INDEX idx_on_allowance_wins_ff848b4097 ON public.breeders_series_2yo_fillies_turf_qualifiers USING btree (allowance_wins);
+
+
+--
+-- Name: idx_on_awardable_type_awardable_id_year_e897327595; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_awardable_type_awardable_id_year_e897327595 ON public.eclipse_awards USING btree (awardable_type, awardable_id, year);
 
 
 --
@@ -10803,6 +10893,13 @@ CREATE INDEX index_claims_on_owner_id ON public.claims USING btree (owner_id);
 --
 
 CREATE INDEX index_claims_on_race_date ON public.claims USING btree (race_date);
+
+
+--
+-- Name: index_eclipse_awards_on_year_and_category; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_eclipse_awards_on_year_and_category ON public.eclipse_awards USING btree (year, category);
 
 
 --
@@ -14159,6 +14256,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260601095103'),
 ('20260601084836'),
 ('20260531165429'),
 ('20260531163615'),
