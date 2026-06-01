@@ -3308,7 +3308,7 @@ CREATE MATERIALIZED VIEW public.broodmare_foal_records AS
             h2.dam_id
            FROM (public.horses h2
              LEFT JOIN public.lifetime_race_records lrr ON ((h2.id = lrr.horse_id)))) foals ON ((h.id = foals.dam_id)))
-     LEFT JOIN public.breedings b ON ((b.mare_id = h.id)))
+     LEFT JOIN public.breedings b ON (((b.mare_id = h.id) AND (b.status = 'bred'::public.breeding_statuses))))
   WHERE ((h.status = ANY (ARRAY['broodmare'::public.horse_status, 'retired_broodmare'::public.horse_status, 'deceased'::public.horse_status])) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((h.date_of_death IS NULL) OR (h.date_of_birth <> h.date_of_death)) AND ((b.id IS NULL) OR (b.status = 'bred'::public.breeding_statuses)))
   GROUP BY h.id
  HAVING (((COALESCE(sum(foals.born), (0)::bigint) + COALESCE(sum(foals.unborn), (0)::bigint)) > 0) OR (count(b.id) > 0))
@@ -14159,6 +14159,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260601084836'),
 ('20260531165429'),
 ('20260531163615'),
 ('20260531162540'),

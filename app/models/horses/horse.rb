@@ -302,7 +302,7 @@ module Horses
         when 2
           female? ? %w[2yo_filly_dirt 2yo_filly_turf] : %w[2yo_dirt 2yo_turf]
         when 3
-          female? ? %w[3yo_mare_dirt 3yo_mare_turf] : %w[3yo_dirt 3yo_turf]
+          female? ? %w[3yo_filly_dirt 3yo_filly_turf] : %w[3yo_dirt 3yo_turf]
         else
           female? ? %w[4yo_mare_dirt 4yo_mare_turf] : %w[4yo_dirt 4yo_turf]
         end
