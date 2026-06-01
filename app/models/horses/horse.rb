@@ -68,6 +68,7 @@ module Horses
     has_one :race_metadata, class_name: "Racing::RacehorseMetadata", dependent: :delete
     has_one :breeders_cup_nomination, class_name: "Racing::BreedersCupNomination", inverse_of: :horse, dependent: :delete
     has_one :supplemental_breeders_cup_nomination, class_name: "Racing::SupplementalBreedersCupNomination", inverse_of: :horse, dependent: :delete
+    has_many :eclipse_awards, class_name: "Game::EclipseAward", inverse_of: :awardable, dependent: :delete_all
     # rubocop:disable Rails/HasManyOrHasOneDependent
     has_one :breeders_cup_juvenile_qualification, class_name: "Racing::Qualifications::BreedersCupJuvenile", inverse_of: :horse
     has_one :breeders_cup_juvenile_fillies_qualification, class_name: "Racing::Qualifications::BreedersCupJuvenileFilly", inverse_of: :horse
@@ -356,7 +357,7 @@ module Horses
     end
 
     def self.ransackable_attributes(_auth_object = nil)
-      %w[age breeder_id dam_id date_of_birth date_of_death foals_count gender location_bred_id name owner_id sire_id status unborn_foals_count]
+      %w[id age breeder_id dam_id date_of_birth date_of_death foals_count gender location_bred_id name owner_id sire_id status unborn_foals_count]
     end
 
     def self.ransackable_associations(_auth_object = nil)

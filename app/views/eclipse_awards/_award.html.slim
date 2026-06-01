@@ -1,0 +1,10 @@
+/# locals: (award:)
+tr
+  td.text-center= t(".category_#{award.category}")
+  td.text-center= award.year
+  td.text-center
+    - if award.awardable_type == "Horses::Horse"
+      - horse = award.awardable
+      span class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), data: { turbo_frame: "_top" }
+    - else
+      = link_to award.awardable.name, stable_path(award.awardable), data: { turbo_frame: "_top" }
