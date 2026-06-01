@@ -1,0 +1,22 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t(".title"), href: "#" }])
+
+= turbo_frame_tag "series-winners" do
+  - if @series.blank?
+    p.text-center= t(".races_already_run")
+  - else
+    - @series.each do |series|
+      - winners_count = series.winners.size
+      .card.card-border.bg-base-100.w-full.px-2.rounded-none
+        .card-body.p-0.rounded-none
+          .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
+            input type="checkbox"
+            .collapse-title.font-semibold.font-medium
+              span class=class_names("text-base-content/70": winners_count.zero?)
+                = series.title
+                = " (#{winners_count})"
+            .collapse-content.text-sm.border-t-1.border-base-content/40
+              = turbo_frame_tag "series-#{series.id}", src: racing_series_winner_path(series), loading: "lazy" do
+                .w-full.text-center
+                  p.mx-auto= t(".loading_winners")
+                  .mt-2.mx-auto.skeleton.w-full

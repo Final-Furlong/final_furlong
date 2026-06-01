@@ -276,6 +276,13 @@ en:
     scheduled_entries:
       index:
         title: Scheduled Entries for %{race} (%{track})
+    series_winners:
+      index:
+        loading_winners: Loading winners...
+        title: Race Series Winners
+      show:
+        no_winners: No winners of this series
+        races: Races
     shipping:
       future_races:
         entries_open: When entries open

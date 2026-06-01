@@ -276,6 +276,12 @@ en:
         fully_grown: Fully Grown
         height: Height
         height_display: "%{height}h"
+    highlights:
+      index:
+        award: "%{year} %{name} of the Year"
+        eclipse_awards: Eclipse Awards
+        series_win: "%{year} %{name}"
+        series_wins: Race Series Wins
     in_foal: in foal
     injuries:
       bowed_tendon: Bowed Tendon

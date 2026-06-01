@@ -9,6 +9,7 @@ resources :horses, except: %i[new create destroy] do
     resources :future_races, except: :new do
       get :search, on: :collection
     end
+    resources :highlights, only: :index
     get "future_races/:race_id/new", to: "future_races#new", as: :new_future_race
     resources :mare_bookings, except: :show do
       collection do

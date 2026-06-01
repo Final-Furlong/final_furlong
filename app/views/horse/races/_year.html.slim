@@ -29,9 +29,9 @@
         - dashboard.races.each do |finish|
           - horse = finish.horse
           - race = finish.race
-          - winner = finish.finish_position == 1 ? finish : race.horses.find_by(finish_position: 1)
-          - second = finish.finish_position == 2 ? finish : race.horses.find_by(finish_position: 2)
-          - third = finish.finish_position == 3 ? finish : race.horses.find_by(finish_position: 3)
+          - winner = finish.finish_position == 1 ? finish : race.horses.includes(:horse).find_by(finish_position: 1)
+          - second = finish.finish_position == 2 ? finish : race.horses.includes(:horse).find_by(finish_position: 2)
+          - third = finish.finish_position == 3 ? finish : race.horses.includes(:horse).find_by(finish_position: 3)
           tr
             td.border-r-1.border-b-1.border-base-content rowspan=(winner.fractions ? 5 : 4)
               = l(race.date)

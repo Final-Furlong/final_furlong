@@ -13,6 +13,7 @@ namespace :racing do
     resources :entries, only: %i[new destroy]
     resources :entry_options, only: %i[new create edit update]
   end
+  resources :series_winners, only: %i[index show]
   resources :results, only: :index
   get "races/:date/:number", to: "races#show", as: :race
   get "results/:date/:number", to: "results#show", as: :result
