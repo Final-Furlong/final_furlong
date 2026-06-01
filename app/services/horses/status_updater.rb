@@ -17,12 +17,12 @@ module Horses
           horse.current_injuries.delete_all
           horse.training_schedules_horse&.destroy
           horse.breeders_cup_nomination&.destroy
-          Horse::Event.create!(horse:, event_type: "retired_racing", date: Date.current)
+          ::Horses::Event.create!(horse:, event_type: "retired_racing", date: Date.current)
         elsif horse.stud?
           horse.stud_options&.destroy
-          Horse::Event.create!(horse:, event_type: "retired_breeding", date: Date.current)
+          ::Horses::Event.create!(horse:, event_type: "retired_breeding", date: Date.current)
         elsif horse.broodmare?
-          Horse::Event.create!(horse:, event_type: "retired_breeding", date: Date.current)
+          ::Horses::Event.create!(horse:, event_type: "retired_breeding", date: Date.current)
         end
         @horse.update(status:)
       end

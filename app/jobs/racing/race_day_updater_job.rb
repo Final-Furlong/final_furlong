@@ -18,7 +18,7 @@ class Racing::RaceDayUpdaterJob < ApplicationJob
     Horses::Horse.racehorse.joins(:race_options).where(race_options: { racehorse_type: "flat" }).where(id: Racing::RaceResultHorse.joins(:race).merge(Racing::RaceResult.by_track("steeplechase")).select(:horse_id)).find_each do |horse|
       options = horse.race_options
       options.update_columns(racehorse_type: "jump")
-      Horse::Event.create!(horse:, event_type: "switched_to_sc", date:)
+      ::Horses::Event.create!(horse:, event_type: "switched_to_sc", date:)
       swapped_to_sc += 1
     end
     Horses::Horse.racehorse.joins(:race_options).where(race_options: { racehorse_type: "jump" }).where.not(id: Racing::RaceResultHorse.joins(:race).merge(Racing::RaceResult.by_track("steeplechase")).select(:horse_id)).find_each do |horse|

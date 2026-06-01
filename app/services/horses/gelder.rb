@@ -10,7 +10,7 @@ module Horses
         if horse.stud?
           horse.stud_options&.destroy
         end
-        Horse::Event.create!(horse:, event_type: "gelded", date: Date.current)
+        ::Horses::Event.create!(horse:, event_type: "gelded", date: Date.current)
         if horse.update(attrs)
           result.updated = true
         else
