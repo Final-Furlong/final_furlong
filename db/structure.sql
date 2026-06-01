@@ -6076,6 +6076,75 @@ ALTER SEQUENCE public.race_schedules_id_seq OWNED BY public.race_schedules.id;
 
 
 --
+-- Name: race_series; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.race_series (
+    id bigint NOT NULL,
+    title character varying NOT NULL,
+    first_race_id bigint NOT NULL,
+    second_race_id bigint NOT NULL,
+    third_race_id bigint NOT NULL,
+    age public.race_age NOT NULL,
+    female_only boolean DEFAULT false NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: race_series_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.race_series_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: race_series_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.race_series_id_seq OWNED BY public.race_series.id;
+
+
+--
+-- Name: race_series_winners; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.race_series_winners (
+    id bigint NOT NULL,
+    series_id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    year integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: race_series_winners_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.race_series_winners_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: race_series_winners_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.race_series_winners_id_seq OWNED BY public.race_series_winners.id;
+
+
+--
 -- Name: race_type_race_records; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -7971,6 +8040,20 @@ ALTER TABLE ONLY public.race_schedules ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
+-- Name: race_series id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_series ALTER COLUMN id SET DEFAULT nextval('public.race_series_id_seq'::regclass);
+
+
+--
+-- Name: race_series_winners id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_series_winners ALTER COLUMN id SET DEFAULT nextval('public.race_series_winners_id_seq'::regclass);
+
+
+--
 -- Name: racehorse_metadata id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -8658,6 +8741,22 @@ ALTER TABLE ONLY public.race_schedules
 
 
 --
+-- Name: race_series race_series_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_series
+    ADD CONSTRAINT race_series_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: race_series_winners race_series_winners_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_series_winners
+    ADD CONSTRAINT race_series_winners_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: racehorse_metadata racehorse_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8968,6 +9067,13 @@ CREATE INDEX idx_on_allowance_wins_ff848b4097 ON public.breeders_series_2yo_fill
 --
 
 CREATE INDEX idx_on_awardable_type_awardable_id_year_e897327595 ON public.eclipse_awards USING btree (awardable_type, awardable_id, year);
+
+
+--
+-- Name: idx_on_first_race_id_second_race_id_third_race_id_8fa7a43bf7; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_first_race_id_second_race_id_third_race_id_8fa7a43bf7 ON public.race_series USING btree (first_race_id, second_race_id, third_race_id);
 
 
 --
@@ -12226,6 +12332,62 @@ CREATE INDEX index_race_schedules_on_surface_id ON public.race_schedules USING b
 
 
 --
+-- Name: index_race_series_on_age; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_series_on_age ON public.race_series USING btree (age);
+
+
+--
+-- Name: index_race_series_on_female_only; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_series_on_female_only ON public.race_series USING btree (female_only);
+
+
+--
+-- Name: index_race_series_on_second_race_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_series_on_second_race_id ON public.race_series USING btree (second_race_id);
+
+
+--
+-- Name: index_race_series_on_third_race_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_series_on_third_race_id ON public.race_series USING btree (third_race_id);
+
+
+--
+-- Name: index_race_series_on_title; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_series_on_title ON public.race_series USING btree (title);
+
+
+--
+-- Name: index_race_series_winners_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_series_winners_on_horse_id ON public.race_series_winners USING btree (horse_id);
+
+
+--
+-- Name: index_race_series_winners_on_series_id_and_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_race_series_winners_on_series_id_and_year ON public.race_series_winners USING btree (series_id, year);
+
+
+--
+-- Name: index_race_series_winners_on_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_series_winners_on_year ON public.race_series_winners USING btree (year);
+
+
+--
 -- Name: index_racehorse_metadata_on_at_home; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -13322,6 +13484,14 @@ ALTER TABLE ONLY public.race_result_horses
 
 
 --
+-- Name: race_series_winners fk_rails_216bbc2266; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_series_winners
+    ADD CONSTRAINT fk_rails_216bbc2266 FOREIGN KEY (series_id) REFERENCES public.race_series(id);
+
+
+--
 -- Name: breeders_cup_potential_entries fk_rails_22428bae28; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -13383,6 +13553,14 @@ ALTER TABLE ONLY public.stallion_options
 
 ALTER TABLE ONLY public.future_race_entries
     ADD CONSTRAINT fk_rails_30632c54bf FOREIGN KEY (third_jockey_id) REFERENCES public.jockeys(id);
+
+
+--
+-- Name: race_series fk_rails_32b193c416; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_series
+    ADD CONSTRAINT fk_rails_32b193c416 FOREIGN KEY (third_race_id) REFERENCES public.race_schedules(id);
 
 
 --
@@ -13722,6 +13900,14 @@ ALTER TABLE ONLY public.racing_stats
 
 
 --
+-- Name: race_series_winners fk_rails_8e489bb23a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_series_winners
+    ADD CONSTRAINT fk_rails_8e489bb23a FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
 -- Name: breeders_cup_nominations fk_rails_9113856ed2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -13799,6 +13985,14 @@ ALTER TABLE ONLY public.active_storage_variant_records
 
 ALTER TABLE ONLY public.jump_trials
     ADD CONSTRAINT fk_rails_99433bffc7 FOREIGN KEY (racetrack_id) REFERENCES public.racetracks(id);
+
+
+--
+-- Name: race_series fk_rails_99ee4ccbd0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_series
+    ADD CONSTRAINT fk_rails_99ee4ccbd0 FOREIGN KEY (first_race_id) REFERENCES public.race_schedules(id);
 
 
 --
@@ -13935,6 +14129,14 @@ ALTER TABLE ONLY public.breeding_stats
 
 ALTER TABLE ONLY public.boardings
     ADD CONSTRAINT fk_rails_b7a9ec2495 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
+-- Name: race_series fk_rails_ba1a11a16a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.race_series
+    ADD CONSTRAINT fk_rails_ba1a11a16a FOREIGN KEY (second_race_id) REFERENCES public.race_schedules(id);
 
 
 --
@@ -14256,6 +14458,8 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260601181959'),
+('20260601173020'),
 ('20260601095103'),
 ('20260601084836'),
 ('20260531165429'),

@@ -24,6 +24,6 @@
             = f.text_field :year_eq, class: 'input', type: 'text'
 
         .float-right.flex.mt-2.justify-content-end
-          = render Ui::ButtonizedLink::Component.new(url: eclipse_awards_path, color: :error, style: :outline, size: :small, extra_classes: "me-2", http_method: :get) do
+          = render Ui::ButtonizedLink::Component.new(url: awards_path, color: :error, style: :outline, size: :small, extra_classes: "me-2", http_method: :get, data: { turbo_frame: "_top" }) do
             = t("common.search_form.reset_filters")
           = render Ui::SubmitButton::Component.new(form: f, size: :small, extra_classes: "d-lg-none", text: t("common.search_form.action"))

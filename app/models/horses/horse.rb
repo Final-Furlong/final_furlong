@@ -69,6 +69,7 @@ module Horses
     has_one :breeders_cup_nomination, class_name: "Racing::BreedersCupNomination", inverse_of: :horse, dependent: :delete
     has_one :supplemental_breeders_cup_nomination, class_name: "Racing::SupplementalBreedersCupNomination", inverse_of: :horse, dependent: :delete
     has_many :eclipse_awards, class_name: "Game::EclipseAward", inverse_of: :awardable, dependent: :delete_all
+    has_many :race_series_wins, class_name: "Racing::RaceSeriesWinner", inverse_of: :horse, dependent: :delete_all
     # rubocop:disable Rails/HasManyOrHasOneDependent
     has_one :breeders_cup_juvenile_qualification, class_name: "Racing::Qualifications::BreedersCupJuvenile", inverse_of: :horse
     has_one :breeders_cup_juvenile_fillies_qualification, class_name: "Racing::Qualifications::BreedersCupJuvenileFilly", inverse_of: :horse

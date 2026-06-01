@@ -25,9 +25,9 @@
     - dashboard.races.each do |finish|
       - horse = finish.horse
       - race = finish.race
-      - winner = finish.finish_position == 1 ? finish : race.horses.find_by(finish_position: 1)
-      - second = finish.finish_position == 2 ? finish : race.horses.find_by(finish_position: 2)
-      - third = finish.finish_position == 3 ? finish : race.horses.find_by(finish_position: 3)
+      - winner = finish.finish_position == 1 ? finish : race.horses.includes(:horse).find_by(finish_position: 1)
+      - second = finish.finish_position == 2 ? finish : race.horses.includes(:horse).find_by(finish_position: 2)
+      - third = finish.finish_position == 3 ? finish : race.horses.includes(:horse).find_by(finish_position: 3)
       .card.card-border.bg-base-100.w-full.px-2.rounded-none
         .card-body.p-0.rounded-none
           .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none

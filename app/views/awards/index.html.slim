@@ -1,0 +1,23 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t(".title"), href: "#" }])
+
+.tabs.tabs-border.dark:border-neutral-400 role="tablist"
+  - if !Game::EclipseAward.exists?
+    input.tab type="radio" name="awards" aria-label=t(".eclipse_awards") id="awards" disabled=true
+  - else
+    input.tab type="radio" name="awards" aria-label=t(".eclipse_awards") id="awards"
+    .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+      = turbo_frame_tag "eclipse-awards", src: eclipse_awards_path, loading: "lazy" do
+        .w-full.text-center
+          p.mx-auto= t(".loading_eclipse_awards")
+          .mt-2.mx-auto.skeleton.w-full
+
+  - if !Racing::RaceSeriesWinner.exists?
+    input.tab type="radio" name="awards" aria-label=t(".series_winners") id="series-winners" disabled=true
+  - else
+    input.tab type="radio" name="awards" aria-label=t(".series_winners") id="series-winners"
+    .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+      = turbo_frame_tag "series-winners", src: racing_series_winners_path, loading: "lazy" do
+        .w-full.text-center
+          p.mx-auto= t(".loading_series_winners")
+          .mt-2.mx-auto.skeleton.w-full

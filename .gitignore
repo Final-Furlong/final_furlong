@@ -72,3 +72,7 @@ ci_results.txt
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Ignore key files for decrypting credentials and more.
+/config/credentials/*.key
+
