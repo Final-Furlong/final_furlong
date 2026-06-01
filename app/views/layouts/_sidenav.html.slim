@@ -24,6 +24,13 @@ nav class="drawer-side is-drawer-close:overflow-visible"
             span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.all_horses")
       li
         button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
+          data-tip=t("layouts.sidenav.eclipse_awards") aria-label=t("layouts.sidenav.eclipse_awards")
+        ]
+          a.transition.duration-75 href=eclipse_awards_path aria-label=t("layouts.sidenav.eclipse_awards")
+            i.ph.ph-fill.ph-trophy
+            span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.eclipse_awards")
+      li
+        button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
           data-tip=t(".forum") aria-label=t(".forum")
         ]
           = render Ui::Link::Component.new(url: Rails.application.credentials.dig(:forum, :url), data: { aria_label: t(".forum") }) do
