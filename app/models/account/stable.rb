@@ -15,6 +15,7 @@ module Account
 
     has_many :budget_transactions, class_name: "Account::Budget", inverse_of: :stable, dependent: :delete_all
     has_many :notes, class_name: "Account::StableNote", inverse_of: :stable, dependent: :delete_all
+    has_many :eclipse_awards, class_name: "Game::EclipseAward", inverse_of: :awardable, dependent: :delete_all
     has_many :bred_horses, class_name: "Horses::Horse", foreign_key: :breeder_id, inverse_of: :breeder,
       dependent: :restrict_with_exception
     has_many :horses, class_name: "Horses::Horse", foreign_key: :owner_id, inverse_of: :owner,
@@ -43,7 +44,11 @@ module Account
     scope :not_game, -> { where.not(name: Config::Game.stable) }
 
     def self.ransackable_attributes(_auth_object = nil)
-      %w[bred_horses_count description horses_count name unborn_horses_count]
+      %w[id description horses_count name unborn_horses_count]
+    end
+
+    def self.ransackable_associations(_auth_object = nil)
+      %w[eclipse_awards]
     end
 
     def newbie?

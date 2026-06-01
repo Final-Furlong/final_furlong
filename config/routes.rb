@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
   resource :search, only: :show
   resources :stables, only: %i[index show]
+  resources :eclipse_awards, only: :index
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   get "manifest" => "rails/pwa#manifest", :as => :pwa_manifest
