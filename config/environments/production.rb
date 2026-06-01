@@ -78,6 +78,7 @@ Rails.application.configure do
   config.active_record.attributes_for_inspect = [:id]
 
   config.active_record.action_on_strict_loading_violation = :log
+  config.active_record.strict_loading_mode = :n_plus_one_only
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   config.hosts = [
@@ -88,3 +89,4 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end
+
