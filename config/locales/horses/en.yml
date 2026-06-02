@@ -92,11 +92,16 @@ en:
         new_members_only: New Members
         sell_to: Available To
     show:
+      comments_count:
+        one: Comments (1)
+        other: Comments (%{count})
+        zero: Comments
       entries: Entries (%{count})
       foals: Foals
       highlights: Highlights
       history: History
       info: Info
+      loading_comments: Loading comments...
       loading_entries: Loading entries...
       loading_foals: Loading foals...
       loading_highlights: Loading highlights...
