@@ -67,7 +67,7 @@ production:
     queue: default
     schedule: 14 8 * * 2,5 # Tues/Sat AM
   race_breeders_cup_selector:
-    class: Racing::PreRaceJob
+    class: Racing::BreedersCupSelectionJob
     queue: default
     schedule: 14 9 * * 2,5 # Tues/Sat AM
   race_entry_prerace:
