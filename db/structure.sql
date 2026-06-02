@@ -4783,7 +4783,8 @@ CREATE TABLE public.horse_comments (
     comment text NOT NULL,
     private boolean DEFAULT true NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    title character varying
 );
 
 
@@ -14458,6 +14459,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260602101413'),
 ('20260601181959'),
 ('20260601173020'),
 ('20260601095103'),

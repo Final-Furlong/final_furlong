@@ -152,10 +152,7 @@ en:
     success: Signed in successfully
   users:
     create:
-      failure: User could not be created.
       success: User was successfully created.
-    destroy:
-      success: User was successfully destroyed.
     form:
       currently_waiting_confirmation_for_email: 'Currently waiting confirmation for: %{email}'
       send_confirmation: Send confirmation email

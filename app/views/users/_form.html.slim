@@ -1,12 +1,13 @@
 /# locals: (user:)
-= styled_form_with model: user, url: user_path(user), data: { turbo: false } do |f|
-  = f.text_field :username, disabled: true
-  = f.text_field :name, required: true
-  = f.email_field :email, required: true
-  - if user.pending_reconfirmation?
-    div.mt-2
-      p.text-warning= t(".currently_waiting_confirmation_for_email", email: user.unconfirmed_email)
-      = render Ui::Link::Component.new(url: new_confirmation_path(:user)) do
-        = t(".send_confirmation")
+= turbo_frame_tag "user-form" do
+  = styled_form_with model: user, url: user_path(user), method: :put do |f|
+    = f.text_field :username, disabled: true
+    = f.text_field :name
+    = f.email_field :email, required: true
+    - if user.pending_reconfirmation?
+      div.mt-2
+        p.text-warning= t(".currently_waiting_confirmation_for_email", email: user.unconfirmed_email)
+        = render Ui::Link::Component.new(url: new_confirmation_path(:user)) do
+          = t(".send_confirmation")
 
-  = f.submit t(".update"), class: "mt-2 btn btn-primary btn-sm"
+    = f.submit t(".update"), class: "mt-2 btn btn-primary btn-sm"
