@@ -1,0 +1,26 @@
+/# locals: (horse:, comment:)
+.mx-auto.card.card-border.border-base-content/80.bg-base-100.w-full.sm:w-3/4.px-2.rounded-md
+  .card-body.p-0.rounded-none
+    div.mt-2.flex
+      p.flex-1.text-lg= comment.title
+      .flex-none
+        - if policy(comment).destroy?
+          = render Ui::ButtonizedLink::Component.new(url: horse_comment_path(horse, comment), color: :error, style: :outline, size: :small, extra_classes: 'float-right inline', data: { turbo_method: :delete, turbo_confirm: t(".confirm_delete") }) do
+            = t("common.actions.delete")
+        - if policy(comment).edit?
+          = render Ui::ButtonizedLink::Component.new(url: edit_horse_comment_path(horse, comment), color: :success, style: :outline, size: :small, extra_classes: 'float-right inline mr-2', data: { turbo_frame: "modal" }) do
+            = t("common.actions.edit")
+    p= comment.comment
+    div
+      - if comment.private?
+        span.mr-2
+          i.ph.ph-fill.ph-lock-simple
+        span.italic
+          = t(".private")
+      - else
+        span.mr-2
+          i.ph.ph-lock-simple-open
+        span.italic
+          = t(".public")
+      span.float-right.ml-auto.text-xs.dark:text-neutral-content
+        = time_ago_in_words(comment.created_at) + " ago"

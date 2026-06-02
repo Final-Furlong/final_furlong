@@ -1,0 +1,9 @@
+/# locals: (horse:, comment:, url:)
+= turbo_frame_tag "comment-form" do
+  = styled_form_with model: comment, url:, id: "comment-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+    = f.text_field :title
+    = f.text_area :comment, required: true, rows: 30, columns: 30, class: 'h-48 w-full'
+    = f.check_box :private, label: t(".private"), help: t(".private_hint"), required: true
+    .float-right
+      = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+      = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.save"))

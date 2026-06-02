@@ -1,3 +1,6 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: @dashboard.horse.name, href: horse_path(@dashboard.horse) }, { name: t(".title"), href: "#" }])
+
 = turbo_frame_tag "#{@dashboard.horse.slug}-foals" do
   - if @dashboard.horse.female?
     = render "dam_foals", dashboard: @dashboard
