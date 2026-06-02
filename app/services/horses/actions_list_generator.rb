@@ -49,7 +49,6 @@ module Horses
         { key: :consign_to_auction },
         { key: :remove_from_auction },
         { key: :update_stud_options, policy: CurrentStable::StallionPolicy },
-        { key: :view_comments },
         { key: :nominate_weanling },
         { key: :change_owner, policy: Admin::HorsePolicy },
         { key: :give_to_game }

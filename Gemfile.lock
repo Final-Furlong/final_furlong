@@ -1029,9 +1029,6 @@ GEM
       whenever
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    yaaf (3.1.0)
-      activemodel (>= 5.2)
-      activerecord (>= 5.2)
     yalphabetize (0.12.1)
       psych-comments
     yaml (0.4.0)
@@ -1206,7 +1203,6 @@ DEPENDENCIES
   web-push
   whenever
   whenever-test
-  yaaf
   yalphabetize
   zonebie
 
@@ -1593,7 +1589,6 @@ CHECKSUMS
   whenever (1.1.2) sha256=af139a25cf6b5c7d2122686724c0b9a4a7495135a1f79a404e29f4cce48abd83
   whenever-test (1.0.1) sha256=ab4be9d79547b50c1cd9881aef1dcb6cd2636b5d773d5beb45caf6da730a3fb6
   xpath (3.2.0) sha256=6dfda79d91bb3b949b947ecc5919f042ef2f399b904013eb3ef6d20dd3a4082e
-  yaaf (3.1.0) sha256=0dd407ea7c7032b653974252b8394581828e7cc31d5461ea0bfba01764fd1258
   yalphabetize (0.12.1) sha256=07afe91abaaa785e6528e6b8d44fe0e665e29510c9665c8e13ca3261e7b51fa2
   yaml (0.4.0) sha256=240e69d1e6ce3584d6085978719a0faa6218ae426e034d8f9b02fb54d3471942
   yard (0.9.43) sha256=cf8733a8f0485df2a162927e9b5f182215a61f6d22de096b8f402c726a1c5821

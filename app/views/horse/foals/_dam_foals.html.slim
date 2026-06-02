@@ -1,16 +1,4 @@
 /# locals: (dashboard:)
-.mx-auto.sm:hidden
-  .tabs.tabs-border role="tablist"
-    input.tab type="radio" name="foals" aria-label=t(".summary") disabled=dashboard.born_foals_count.to_i.zero?
-    .tab-content.border-base-300.bg-base-100
-      = render "dam_foal_summary", dashboard: dashboard
-
-    - foals_count = dashboard.born_foals_count
-    - label = foals_count.to_i.positive? ? t(".foals_with_count", count: foals_count) : t(".foals")
-    input.tab type="radio" name="foals" aria-label=label checked="checked"
-    .tab-content.border-base-300.bg-base-100
-      = render "dam_foal_list", dashboard: dashboard
-.hidden.sm:block
-  = render "dam_foal_summary", dashboard: dashboard
-  .mt-4
-    = render "dam_foal_list", dashboard: dashboard
+= render "dam_foal_summary", dashboard: dashboard
+.mt-4
+  = render "dam_foal_list", dashboard: dashboard
