@@ -1,9 +1,7 @@
 module Horses::Racehorse
   class BreedersCupNominator
     def nominate_horses(horse_ids:, stable:)
-      pd horse_ids
       horses = Horses::Horse.managed_by(stable).where(id: horse_ids)
-      pd horses
       result = Result.new(horses:, created: false)
       if horse_ids.count != horses.count
         result.error = error("do_not_own_all_horses")
