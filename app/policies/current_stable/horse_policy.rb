@@ -45,6 +45,16 @@ module CurrentStable
       !record.stillborn?
     end
 
+    def view_comments?
+      return false unless logged_in?
+
+      record.comments.visible_by_all.exists?
+    end
+
+    def create_comment?
+      owner?
+    end
+
     def status_retired?
       Horses::Status::RETIREABLE_STATUSES.include?(record.status)
     end
@@ -132,11 +142,6 @@ module CurrentStable
       auction = auction_horse.auction
 
       auction.future?
-    end
-
-    def view_comments?
-      # TODO: migrate comments + implement editing them
-      false
     end
 
     def view_events?
