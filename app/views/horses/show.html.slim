@@ -1,3 +1,4 @@
+- horse_policy = CurrentStable::HorsePolicy.new(Current.user, horse)
 - content_for :breadcrumbs do
   = render "breadcrumbs", horse: @horse
 
@@ -85,7 +86,7 @@
           p.mx-auto= t(".loading_nominations")
           .mt-2.mx-auto.skeleton.w-full
 
-  - if CurrentStable::HorsePolicy.new(Current.user, horse).view_events?
+  - if horse_policy.view_events?
     input.tab[ type="radio" name="horse" aria-label=t(".history") id="history" ]
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
       = turbo_frame_tag "#{@horse.slug}-history", src: horse_events_path(@horse), loading: "lazy" do
@@ -93,7 +94,7 @@
           p.mx-auto= t(".loading_history")
           .mt-2.mx-auto.skeleton.w-full
 
-  - if CurrentStable::HorsePolicy.new(Current.user, horse).view_stats?
+  - if horse_policy.view_stats?
     input.tab[ type="radio" name="horse" aria-label=t(".stats") id="stats" ]
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
       = turbo_frame_tag "#{@horse.slug}-stats", src: horse_stats_path(@horse), loading: "lazy" do
@@ -107,3 +108,12 @@
       .w-full.text-center
         p.mx-auto= t(".loading_images")
         .mt-2.mx-auto.skeleton.w-full
+
+  - if horse_policy.view_comments? || horse_policy.create_comment?
+    - comments_count = policy_scope(@horse.comments).count
+    input.tab[ type="radio" name="horse" aria-label=t(".comments_count", count: comments_count) id="comments" ]
+    .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+      = turbo_frame_tag "#{@horse.slug}-comments", src: horse_comments_path(@horse), loading: "lazy" do
+        .w-full.text-center
+          p.mx-auto= t(".loading_comments")
+          .mt-2.mx-auto.skeleton.w-full

@@ -15,7 +15,7 @@ end
 
 get "/activation_required", to: "pages#activation", as: :activation
 
-resources :users
+resources :users, except: %i[new create destroy]
 resources :notifications, only: %i[index update destroy]
 resources :settings, only: %i[new create]
 resource :sso_login, only: :show
