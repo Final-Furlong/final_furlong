@@ -1,0 +1,12 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: @horse.name, href: horse_path(@horse) }, { name: t(".title"), href: "#" }])
+
+= turbo_frame_tag "#{@horse.slug}-comments" do
+  - if policy(@horse.comments.build).create?
+    = render Ui::ButtonizedLink::Component.new(url: new_horse_comment_path(@horse), color: :success, style: :outline, size: :small, extra_classes: 'float-right inline', data: { turbo_frame: "modal" }) do
+      = t("common.actions.create")
+  .clear-both
+  - if @comments.blank?
+    p.text-center.text-base-content/80= t(".no_comments")
+  - else
+    = render partial: "comment", collection: @comments, locals: { horse: @horse }

@@ -6,6 +6,7 @@ end
 resources :horses, except: %i[new create destroy] do
   scope module: :horse do
     resources :boardings, only: %i[index new create destroy]
+    resources :comments, only: %i[index new create edit update destroy]
     resources :future_races, except: :new do
       get :search, on: :collection
     end
