@@ -22,6 +22,7 @@ module Horses
 
     has_one :appearance, class_name: "Appearance", dependent: :delete
     has_one :genetics, class_name: "Genetics", dependent: :delete
+    has_many :comments, class_name: "Comment", dependent: :delete_all
 
     has_one :auction_horse, class_name: "Auctions::Horse", dependent: :destroy
     has_one :lease_offer, class_name: "Horses::LeaseOffer", inverse_of: :horse, dependent: :delete
