@@ -1,0 +1,4 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: @horse.name, href: horse_path(@horse) }, { name: t(".title"), href: "#" }])
+
+= render "form", comment: @comment, horse: @horse, url: horse_comment_path(@horse, @comment)

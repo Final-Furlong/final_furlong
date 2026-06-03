@@ -33,7 +33,6 @@ gem "active_job-performs"
 gem "active_record-associated_object"
 gem "dry-monads"
 gem "dry-validation"
-gem "yaaf"
 
 # Utilities
 gem "base64", "0.1.1"
