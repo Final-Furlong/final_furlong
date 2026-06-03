@@ -52,6 +52,28 @@ en:
       stop:
         confirm: Are you sure you want to stop boarding %{horse}?
         confirm_title: Stop Boarding
+    comments:
+      comment:
+        confirm_delete: Are you sure you want to delete this comment?
+        private: Private
+        public: Publicly visible
+      create:
+        success: Comment successfully created
+      destroy:
+        failure: Comment could not be deleted
+        success: Comment successfully deleted
+      edit:
+        title: Edit Comment
+      form:
+        private: Private
+        private_hint: "(Visible only to you)"
+      index:
+        no_comments: No comments found
+        title: Comments
+      new:
+        title: Create Comment
+      update:
+        success: Comment successfully updated
     created: Created
     entries:
       entries:
@@ -196,6 +218,8 @@ en:
       form:
         select_day: Select Day
         submit: Breed
+      index:
+        title: Foals
       new:
         breed: Breed to %{stud}
         date_range: Breeding can happen between %{min} and %{max}
