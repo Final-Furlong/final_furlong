@@ -1,3 +1,5 @@
+require "openssl"
+
 module Api
   module V1
     module Defaults
@@ -11,14 +13,34 @@ module Api
         formatter :json,
           Grape::Formatter::ActiveModelSerializers
 
+        before do
+          validate_api_key
+        end
+
         helpers do
+          def validate_api_key
+            api_key = headers["Api-Key"]
+            expected_key = Rails.application.credentials.dig(:api, :key)
+
+            error!("Missing configured api key", 500) unless expected_key
+            error!("No API key provided", 401) unless api_key
+
+            unless secure_compare(api_key, expected_key)
+              error!("Invalid API key", 401)
+            end
+          end
+
+          def secure_compare(a, b)
+            return false unless a.bytesize == b.bytesize
+
+            OpenSSL.secure_compare(a, b)
+          end
+
           def permitted_params
             @permitted_params ||= declared(params, include_missing: false, evaluate_given: true)
           end
 
-          def logger
-            Rails.logger
-          end
+          delegate :logger, to: :Rails
 
           def rails_routes
             Rails.application.routes.default_url_options[:host] = ENV.fetch("RAILS_APP_URL", "http://localhost:3000")
