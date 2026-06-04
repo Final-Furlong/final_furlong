@@ -212,6 +212,7 @@ GEM
       activerecord (>= 4.2)
       activesupport (>= 4.2)
     crass (1.0.6)
+    csv (3.3.5)
     cuprite (0.15.1)
       capybara (~> 3.0)
       ferrum (~> 0.15.0)
@@ -417,6 +418,10 @@ GEM
     hana (1.3.7)
     highline (3.1.2)
       reline
+    httparty (0.24.2)
+      csv
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.14.8)
       concurrent-ruby (~> 1.0)
     i18n-debug (1.2.0)
@@ -563,6 +568,8 @@ GEM
       turbo-rails
     msgpack (1.8.0)
     multi_json (1.21.1)
+    multi_xml (0.8.1)
+      bigdecimal (>= 3.1, < 5)
     mustermann (4.0.0)
     mustermann-grape (1.1.0)
       mustermann (>= 1.0.0)
@@ -1115,6 +1122,7 @@ DEPENDENCIES
   guard-haml_lint
   guard-rspec
   guard-rubocop
+  httparty
   i18n-debug
   i18n-spec
   i18n-tasks
@@ -1273,6 +1281,7 @@ CHECKSUMS
   connection_pool (3.0.2) sha256=33fff5ba71a12d2aa26cb72b1db8bba2a1a01823559fb01d29eb74c286e62e0a
   counter_culture (3.13.1) sha256=c297961933d9a9b96683fc298d68fde44039eca7c5876a2b05c3b180fe1c6328
   crass (1.0.6) sha256=dc516022a56e7b3b156099abc81b6d2b08ea1ed12676ac7a5657617f012bd45d
+  csv (3.3.5)
   cuprite (0.15.1) sha256=0b3a25b2e408b345dfa0bae8bc5e7f021f913737c746edece9ca9fbb57eba259
   data_migrate (11.3.1) sha256=18b9b2189d15e482d5335f3fc2248b8b447204bd8257ded872dd077737168ffb
   date (3.5.1) sha256=750d06384d7b9c15d562c76291407d89e368dda4d4fff957eb94962d325a0dc0
@@ -1349,6 +1358,7 @@ CHECKSUMS
   haml_lint (0.73.0) sha256=df91d20093ed7c11c4b331d19544e4147b6260f3566cdc919165bb891206d7bd
   hana (1.3.7) sha256=5425db42d651fea08859811c29d20446f16af196308162894db208cac5ce9b0d
   highline (3.1.2) sha256=67cbd34d19f6ef11a7ee1d82ffab5d36dfd5b3be861f450fc1716c7125f4bb4a
+  httparty (0.24.2)
   i18n (1.14.8) sha256=285778639134865c5e0f6269e0b818256017e8cde89993fdfcbfb64d088824a5
   i18n-debug (1.2.0) sha256=9d3efa42c0fb9b5df49bc4b762c682fdaf323ab02e442e62443f42ead7d57bcb
   i18n-spec (0.6.0) sha256=38780cdded08582a2e8953e8574ab9e5a3fad2601fb5aa62d58295399b9956d0
@@ -1403,6 +1413,7 @@ CHECKSUMS
   mission_control-jobs (1.1.0) sha256=b13da9cde3344fec7c744b79d2a34c3ecd454f45d4d593d4c968ba762315e84c
   msgpack (1.8.0) sha256=e64ce0212000d016809f5048b48eb3a65ffb169db22238fb4b72472fecb2d732
   multi_json (1.21.1) sha256=e6126a31808e3b4d19f483c775ceac34df190dffa62adfb63a165ee14ba68080
+  multi_xml (0.8.1)
   mustermann (4.0.0) sha256=91f67411bb208d1d93c41e6128cb3b0f8ddd9ec7c45966f1007e1c43c08040d7
   mustermann-grape (1.1.0) sha256=8d258a986004c8f01ce4c023c0b037c168a9ed889cf5778068ad54398fa458c5
   mysql2 (0.5.7) sha256=ba09ede515a0ae8a7192040a1b778c0fb0f025fa5877e9be895cd325fa5e9d7b

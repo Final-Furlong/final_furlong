@@ -42,14 +42,18 @@ module Racing
           end
         end
         Racing::RaceSeriesWinnerCheckJob.perform_later(race:)
-        if max_race?(number: race.number)
-          Racing::RaceResultHorse.counter_culture_fix_counts
-          Racing::RaceRecord.refresh
-          Racing::LifetimeRaceRecord.refresh
-          UpdateRaceResultHorseAbbreviationsJob.perform_later(date:)
-          Racing::RaceDayUpdaterJob.perform_later(date:)
-          Daily::ProcessFutureShipmentsJob.perform_later
-          User::SendDeveloperNotifications.call(title: "FF Races Finished", message: "Races finished running!")
+        if result.created?
+          if max_race?(number: race.number)
+            Racing::RaceResultHorse.counter_culture_fix_counts
+            Racing::RaceRecord.refresh
+            Racing::LifetimeRaceRecord.refresh
+            UpdateRaceResultHorseAbbreviationsJob.perform_later(date:)
+            Racing::RaceDayUpdaterJob.perform_later(date:)
+            Daily::ProcessFutureShipmentsJob.perform_later
+            User::SendDeveloperNotifications.call(title: "FF Races Finished", message: "Races finished running!")
+          elsif ENV.fetch("USE_PHP_API", "false") == "true"
+            Racing::TriggerRaceJob.perform_later(date: race.date, number: race.number + 1)
+          end
         end
         return result
       rescue => e
