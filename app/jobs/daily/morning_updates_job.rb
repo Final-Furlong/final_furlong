@@ -1,5 +1,5 @@
 class Daily::MorningUpdatesJob < ApplicationJob
-  queue_as :default
+  queue_as :latency_30s
 
   def perform
     return if run_today?
