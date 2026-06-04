@@ -95,6 +95,7 @@ blocks:
             - qlty coverage publish coverage/lcov.info
       secrets:
         - name: Qlty Code Coverage
+        - name: Rails Credentials Key
   - name: Reports
     dependencies:
       - CI
