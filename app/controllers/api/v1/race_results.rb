@@ -36,7 +36,7 @@ module Api
           if permitted_params[:number] > 1
             previous_number = permitted_params[:number] - 1
             result = Racing::RaceResult.where(date: permitted_params[:date], number: previous_number)
-            error!({ error: "invalid", detail: "Cannot skip number #{prev_number}" }, 500) unless result.exists?
+            error!({ error: "invalid", detail: "Cannot skip number #{previous_number}" }, 500) unless result.exists?
           end
           result = Racing::RaceResultCreator.new.create_result(race:, time: permitted_params[:time], horses: permitted_params[:horses])
           error!({ error: "invalid", detail: result.error }, 500) unless result.created?
