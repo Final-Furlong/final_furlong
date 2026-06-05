@@ -4,10 +4,10 @@ RSpec.describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
       allow(Auctions::HorseSeller).to receive(:new).and_return mock_seller
     end
 
-    it "uses low_priority queue", perform_enqueueed_jobs: false do
+    it "uses medium queue", perform_enqueueed_jobs: false do
       expect do
         described_class.perform_later(auction)
-      end.to have_enqueued_job.on_queue("default").at_least(:once)
+      end.to have_enqueued_job.on_queue("latency_2m").at_least(:once)
     end
 
     context "when there are current high bids on horses" do
