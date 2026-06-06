@@ -45,7 +45,10 @@ module FinalFurlong
     config.mission_control.jobs.http_basic_auth_enabled = false
 
     config.active_record.schema_format = :sql
+
+    config.active_record.strict_loading_by_default = true
     config.active_record.strict_loading_mode = :n_plus_one_only
+    config.active_record.action_on_strict_loading_violation = :log
 
     # Don't generate system test files.
     config.generators do |g|

@@ -77,9 +77,6 @@ Rails.application.configure do
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [:id]
 
-  config.active_record.action_on_strict_loading_violation = :log
-  config.active_record.strict_loading_mode = :n_plus_one_only
-
   # Enable DNS rebinding protection and other `Host` header attacks.
   config.hosts = [
     "finalfurlong.org", # Allow requests from finalfurlong.org
