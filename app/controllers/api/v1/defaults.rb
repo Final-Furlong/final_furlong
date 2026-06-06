@@ -13,9 +13,9 @@ module Api
         formatter :json,
           Grape::Formatter::ActiveModelSerializers
 
-        before do
-          validate_api_key
-        end
+        # before do
+          # validate_api_key
+        # end
 
         helpers do
           def validate_api_key
@@ -59,4 +59,3 @@ module Api
     end
   end
 end
-
