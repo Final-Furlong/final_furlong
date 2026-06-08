@@ -42,7 +42,7 @@ module FinalFurlong
     # config.eager_load_paths << Rails.root.join("extras")
     config.active_record.default_timezone = :local
 
-    config.mission_control.jobs.http_basic_auth_enabled = false
+    config.active_job.queue_adapter = :good_job
 
     config.active_record.schema_format = :sql
 

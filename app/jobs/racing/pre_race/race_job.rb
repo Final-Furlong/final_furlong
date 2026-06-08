@@ -1,30 +1,21 @@
-class Racing::PreRaceJob < ApplicationJob
-  include ActiveJob::Continuable
-
-  queue_as :default
+class Racing::PreRace::RaceJob < ApplicationJob
+  queue_as :latency_5m
 
   retry_on ActiveRecord::RecordInvalid
 
-  def perform(tomorrow: Date.tomorrow)
+  def perform(id:)
     horses = 0
-    races = 0
+    return unless Racing::RaceEntry.joins(:race).where(race_id: id).needs_pre_race.exists?
 
-    step :process do |step|
-      entries = Racing::RaceEntry.where(date: tomorrow).needs_pre_race
-      Racing::RaceSchedule.where(date: tomorrow).joins(:entries).where(entries:).find_each(start: step.cursor) do |race|
-        index = 1
-        taken_jockey_ids = race.entries.where.not(jockey: nil).pluck(:jockey_id)
-        race.entries.order("RANDOM()").each do |entry|
-          taken_jockey_ids << process_entry(entry, race, index, taken_jockey_ids)
-          horses += 1
-          index += 1
-        end
-        races += 1
-
-        step.advance! from: race.id
-      end
+    race = Racing::RaceSchedule.find_by(id:)
+    index = 1
+    taken_jockey_ids = race.entries.where.not(jockey: nil).pluck(:jockey_id)
+    race.entries.includes(:horse, :jockey, :first_jockey, :second_jockey, :third_jockey, :odd).order("RANDOM()").each do |entry|
+      taken_jockey_ids << process_entry(entry, race, index, taken_jockey_ids)
+      horses + 1
+      index += 1
     end
-    store_job_info(outcome: { horses:, races: })
+    store_job_info(outcome: { horses: })
   end
 
   private
