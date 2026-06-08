@@ -1,5 +1,4 @@
 = turbo_stream.append "#{Current.stable.slug}-current-entries" do
   = render partial: "entry", collection: @results, as: :entry
 
-= turbo_stream.replace "load_more" do
-  = render_load_more(@pagy)
+= render "shared/loading", pagy: @pagy

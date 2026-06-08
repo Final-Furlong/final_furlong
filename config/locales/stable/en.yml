@@ -44,13 +44,16 @@ en:
         horse: Horse (Location - Days Available)
         start: Start Boarding
       index:
-        current: Current Boardings (%{count})
-        historical: Boarding History (%{count})
+        current_count:
+          one: Current Boardings (1)
+          other: Current Boardings (%{count})
+          zero: Current Boardings
+        historical_count:
+          one: Boarding History (1)
+          other: Boarding History (%{count})
+          zero: Boarding History
         loading_current_boardings: Loading current boardings...
         loading_historical_boardings: Loading boarding history...
-        no_boardings: No boardings
-        no_current: Current Boardings
-        no_historical: Boarding History
         stop_boarding: Stop Boarding
         title: Boardings
       update:
@@ -219,14 +222,22 @@ en:
         unsubscribe_action: Unsubscribe
     shipments:
       index:
-        current_broodmares: Current Broodmares (%{count})
-        current_racehorses: Current Racehorses (%{count})
-        no_current_broodmares: Current Broodmares
-        no_current_racehorses: Current Racehorses
-        no_scheduled_broodmares: Scheduled Broodmares
-        no_scheduled_racehorses: Scheduled Racehorses
-        scheduled_broodmares: Scheduled Broodmares (%{count})
-        scheduled_racehorses: Scheduled Racehorses (%{count})
+        current_broodmares_count:
+          one: Current Broodmares (1)
+          other: Current Broodmares (%{count})
+          zero: Current Broodmares
+        current_racehorses_count:
+          one: Current Racehorses (1)
+          other: Current Racehorses (%{count})
+          zero: Current Racehorses
+        scheduled_broodmares_count:
+          one: Scheduled Broodmares (1)
+          other: Scheduled Broodmares (%{count})
+          zero: Scheduled Broodmares
+        scheduled_racehorses_count:
+          one: Scheduled Racehorses (1)
+          other: Scheduled Racehorses (%{count})
+          zero: Scheduled Racehorses
         title: Stable Shipments
     training_schedule_horses:
       create:
@@ -314,18 +325,24 @@ en:
         qualifying_level: Qualifying Race
     trainings:
       index:
-        jump_trials: Jump Trials (%{count})
+        jump_trials_count:
+          one: Jump Trial (1)
+          other: Jump Trials (%{count})
+          zero: Jump Trials
         loading_jump_trials: Loading jump trials...
         loading_schedules: Loading schedules...
         loading_training_summary: Loading training summary...
         loading_workouts: Loading workouts...
-        no_jump_trials: Jump Trials
-        no_schedules: Schedules
-        no_workouts: Workouts
-        schedules: Schedules (%{count})
+        schedules_count:
+          one: Schedule (1)
+          other: Schedules (%{count})
+          zero: Schedules
         title: Training
         training_summary: Summary
-        workouts: Workouts (%{count})
+        workouts_count:
+          one: Workout (1)
+          other: Workouts (%{count})
+          zero: Workouts
     unbred_mares:
       mare:
         approved_booking_count:

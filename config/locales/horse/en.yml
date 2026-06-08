@@ -111,25 +111,37 @@ en:
         no_boarding: No boarding history.
         start_date: Start Date
       index:
-        boarding: Boarding (%{count})
+        boarding_count:
+          one: Boarding (1)
+          other: Boarding (%{count})
+          zero: Boarding
         highlights: Highlights
-        injuries: Injuries (%{count})
-        jump_trials: Jump Trials (%{count})
+        injuries_count:
+          one: Injuries (1)
+          other: Injuries (%{count})
+          zero: Injuries
+        jump_trials_count:
+          one: Jump Trials (1)
+          other: Jump Trials (%{count})
+          zero: Jump Trials
         loading_boarding: Loading boarding...
         loading_injuries: Loading injuries...
         loading_jump_trials: Loading jump trials...
         loading_sales: Loading sales/leases...
         loading_shipping: Loading shipping...
         loading_workouts: Loading workouts...
-        no_boarding: Boarding
-        no_injuries: Injuries
-        no_jump_trials: Jump Trials
-        no_sales: Sales/Leases
-        no_shipping: Shipping
-        no_workouts: Workouts
-        sales: Sales/Leases (%{count})
-        shipping: Shipping (%{count})
-        workouts: Workouts (%{count})
+        sales_count:
+          one: Sales/Leases (1)
+          other: Sales/Leases (%{count})
+          zero: Sales/Leases
+        shipping_count:
+          one: Shipping (1)
+          other: Shipping (%{count})
+          zero: Shipping
+        workouts_count:
+          one: Workouts (1)
+          other: Workouts (%{count})
+          zero: Workouts
       injuries:
         date: Date
         injury: Injury

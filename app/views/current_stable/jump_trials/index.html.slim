@@ -14,4 +14,4 @@
             th= sort_link @query, :time_in_seconds, t("horse.events.workouts.time")
         tbody id="trial-list"
           = render partial: "trial", collection: @trials, as: :trial
-      = render_load_more(@pagy)
+      = render_load_more(@pagy, tag: "jump-trials-load-more")

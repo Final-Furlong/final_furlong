@@ -2,7 +2,7 @@ module Auctions
   class HorsesController < AuthenticatedController
     def show
       @auction = Auction.find(params[:auction_id])
-      @auction_horse = @auction.horses.find(params[:id])
+      @auction_horse = @auction.horses.includes(:horse).find(params[:id])
       authorize @auction_horse
     end
 
