@@ -1,5 +1,4 @@
 = turbo_stream.append "workout-list" do
   = render partial: "horse/events/workout", collection: @workouts, as: :workout
 
-= turbo_stream.replace "load_more" do
-  = render_load_more(@pagy)
+= render "shared/loading", pagy: @pagy, tag: "workouts-load-more"

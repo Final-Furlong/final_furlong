@@ -1,6 +1,6 @@
 module ApplicationHelper
-  def render_load_more(pagy)
-    render "shared/load_more", pagy:
+  def render_load_more(pagy, tag: "load-more")
+    render "shared/load_more", pagy:, tag:
   end
 
   def render_turbo_stream_flash_messages

@@ -85,7 +85,7 @@ module Dashboard
 
       def horse_counts(auction)
         hash = { selling: {}, buying: {} }
-        auction.bids.includes(horse: :horse).where(bidder: Current.stable).find_each do |bid|
+        auction.bids.includes(:bidder, horse: :horse).where(bidder: Current.stable).find_each do |bid|
           hash[:buying][bid.horse_id] ||= {}
           horse = bid.horse
           hash[:buying][bid.horse_id][:horse_name] = horse.horse.budget_name
@@ -93,7 +93,7 @@ module Dashboard
           hash[:buying][bid.horse_id][:horse_slug] = horse.horse.slug
           hash[:buying][bid.horse_id][:auction_horse_id] = horse.id
           hash[:buying][bid.horse_id][:status] = horse.sold? ? :sold : :unsold
-          current_bid = auction.bids.where(bidder: Current.stable, horse:).current_high_bid
+          current_bid = auction.bids.includes(:bidder).where(bidder: Current.stable, horse:).current_high_bid
           hash[:buying][bid.horse_id][:current_high_bid] = current_bid.exists?
           if current_bid.exists?
             current_bid = current_bid.first
@@ -103,7 +103,7 @@ module Dashboard
             hash[:buying][bid.horse_id][:state] = horse.sold? ? :sold : :pending
             hash[:buying][bid.horse_id][:bid_at] = current_bid.bid_at
           else
-            current_bid = auction.bids.where(horse:).current_high_bid.first
+            current_bid = auction.bids.includes(:bidder).where(horse:).current_high_bid.first
             last_bid = auction.bids.where(horse:, bidder: Current.stable).winning.first
             hash[:buying][bid.horse_id][:current_bid] = current_bid.current_bid
             hash[:buying][bid.horse_id][:current_bidder] = current_bid.bidder.name
