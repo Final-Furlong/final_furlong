@@ -1,0 +1,38 @@
+/# locals: (dashboard:, type:, items:)
+- query_type = items.to_s.start_with?("current") ? :current : :future
+- associations = type == :racing_shipments ? %i[starting_location ending_location] : %i[starting_farm ending_farm]
+.mx-auto.overflow-x-auto.w-full
+  - dashboard.send(items.to_sym).each do |horse|
+    - shipment = horse.send(type).send(query_type).includes(associations).order(arrival_date: :desc).first
+    - next unless shipment
+    - data = dashboard.data(shipment)
+    .card.bg-base-100.w-full.px-2.rounded-none
+      .card-body.p-0.rounded-none
+        .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
+          input type="checkbox"
+          .collapse-title.font-semibold.font-medium
+            span= horse.name
+          .collapse-content.text-sm
+            p
+              span= Shipping::Route.human_attribute_name("starting_location")
+              span.float-right= data[:start_location]
+            p
+              span= Shipping::Route.human_attribute_name("ending_location")
+              span.float-right= data[:end_location]
+            p
+              - if query_type == :current
+                span= Shipping::Route.human_attribute_name("arrival_date")
+                span.float-right= l(shipment.arrival_date)
+                p.text-center
+                  = render Ui::ButtonizedLink::Component.new(url: horse_path(horse), style: :outline, size: :small, data: { turbo_frame: "_top" }) do
+                    = t("common.actions.view")
+              - else
+                span= Shipping::Route.human_attribute_name("departure_date")
+                span.float-right= l(shipment.departure_date)
+                div
+                  = render Ui::ButtonizedLink::Component.new(url: horse_path(horse), style: :outline, size: :small, data: { turbo_frame: "_top" }) do
+                    = t("common.actions.view")
+                  .float-right
+                    = render Ui::Button::Component.new(url: shipment_horse_path(horse, shipment.id), color: :error, style: :outline, size: :small,
+                            http_method: :delete, data: { turbo_confirm: t("horse.events.shipments.confirm_delete"), turbo_frame: "_top" }) do
+                      = t("common.actions.delete")

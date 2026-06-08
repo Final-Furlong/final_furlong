@@ -58,9 +58,11 @@ en:
       info:
         view_full_page: Full Details
       show:
-        bidding: Bidding (%{count})
+        bidding_count:
+          one: Bidding (1)
+          other: Bidding (%{count})
+          zero: Bidding
         details: Details
-        no_bids: Bidding
     index:
       auction_title: Title
       auctioneer: Auctioneer
@@ -76,18 +78,26 @@ en:
       hours: Hrs
       hours_until_sold: Horses will sell %{hours} hours after the last bid is placed, or at the close of the auction.
       minutes: Mins
-      no_pending: Sale Pending
-      no_purchase_limit: There is no limit on how many horses you may purchase.
-      no_sold: Sold
       no_spending_limit: There is no spending limit for this auction.
-      no_unsold: For Sale
-      pending_horses: Sale Pending (%{count})
-      purchase_limit: You are limited to purchasing %{limit} %{horses}.
+      pending_horses_count:
+        one: Sale Pending (1)
+        other: Sale Pending (%{count})
+        zero: Sale Pending
+      purchase_limit_count:
+        one: You are limited to purchasing %{count} horse.
+        other: You are limited to purchasing %{count} horses.
+        zero: There is no limit on how many horses you may purchase.
       reserve_not_met: Not Met
       seconds: Secs
-      sold_horses: Sold (%{count})
+      sold_horses_count:
+        one: Sold (1)
+        other: Sold (%{count})
+        zero: Sold
       spending_limit: You are limit to spending %{limit} total.
       starts_in: This auction will start in
-      unsold_horses: For Sale (%{count})
+      unsold_horses_count:
+        one: For Sale (1)
+        other: For Sale (%{count})
+        zero: For Sale
     update:
       success: Auction was successfully updated

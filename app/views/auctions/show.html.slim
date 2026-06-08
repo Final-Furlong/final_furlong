@@ -29,11 +29,7 @@
       .sm:ml-2.mt-1.text-xs
         = t(".hours_until_sold", hours: @auction.hours_until_sold)
         br
-        - if @auction.horse_purchase_cap_per_stable.to_i.positive?
-          - horses = Horses::Horse.model_name.human.downcase.pluralize(@auction.horse_purchase_cap_per_stable)
-          = t(".purchase_limit", limit: @auction.horse_purchase_cap_per_stable, horses:)
-        - else
-          = t(".no_purchase_limit")
+        = t(".purchase_limit_count", count: @auction.horse_purchase_cap_per_stable.to_i)
         br
         - if @auction.spending_cap_per_stable.to_i.positive?
           - limit = Game::MoneyFormatter.new(@auction.spending_cap_per_stable).to_s
@@ -43,7 +39,7 @@
 
 .card.card-border.mt-2.shadow-md.dark:border-1.dark:border-neutral-100
   .tabs.tabs-border.dark:border-neutral-400 role="tablist"
-    - label = @unsold.positive? ? t(".unsold_horses", count: @unsold) : t(".no_unsold")
+    - label = t(".unsold_horses_count", count: @unsold)
     - if @active_tab == :unsold
       a.tab.tab-active = label
     - else
@@ -52,7 +48,7 @@
       - if @active_tab == :unsold
         = render "auctions/horses/index", auction: @auction, active_tab: @active_tab, include_reserve: @include_reserve, horses: @horses, pagy: @pagy
 
-    - label = @pending.positive? ? t(".pending_horses", count: @pending) : t(".no_pending")
+    - label = t(".pending_horses_count", count: @pending)
     - if @active_tab == :pending
       a.tab.tab-active = label
     - else
@@ -61,7 +57,7 @@
       - if @active_tab == :pending
         = render "auctions/horses/index", auction: @auction, active_tab: @active_tab, include_reserve: @include_reserve, horses: @horses, pagy: @pagy
 
-    - label = @sold.positive? ? t(".sold_horses", count: @sold) : t(".no_sold")
+    - label = t(".sold_horses_count", count: @sold)
     - if @active_tab == :sold
       a.tab.tab-active = label
     - else

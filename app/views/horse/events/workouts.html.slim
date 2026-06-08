@@ -19,4 +19,4 @@
         tbody id="workout-list"
           = render partial: "horse/events/workout", collection: @workouts, as: :workout
 
-      = render_load_more(@pagy)
+      = render_load_more(@pagy, tag: "workouts-load-more")
