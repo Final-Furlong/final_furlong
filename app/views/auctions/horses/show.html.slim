@@ -13,7 +13,7 @@
       .mt-2
         = render "info", horse:
     - bid_count = @auction_horse.bids.size
-    - label = bid_count.zero? ? t(".no_bids") : t(".bidding", count: bid_count)
-    input.tab type="radio" name="horses" aria-label=label checked=(current_tab.to_sym == :bidding)
+    - bid_count = number_with_delimiter(bid_count) unless bid_count < 2
+    input.tab type="radio" name="horses" aria-label=t(".bidding_count", count: bid_count) checked=(current_tab.to_sym == :bidding)
     .tab-content.bg-base-100.py-2
       = render "bidding", auction_horse: @auction_horse

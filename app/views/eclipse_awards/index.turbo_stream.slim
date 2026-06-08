@@ -1,4 +1,3 @@
 = turbo_stream.append "award-list", partial: "award", collection: @awards, as: :award
 
-= turbo_stream.replace "load_more" do
-  = render_load_more(@pagy)
+= render "shared/loading", pagy: @pagy

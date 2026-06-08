@@ -14,8 +14,7 @@
 
     - if policy(Racing::TrainingSchedule).index?
       - schedules_count = Current.stable.training_schedules.count
-      - label = schedules_count.zero? ? t(".no_schedules") : t(".schedules", count: schedules_count)
-      input.tab type="radio" name="stable-trainings" aria-label=label id="schedules"
+      input.tab type="radio" name="stable-trainings" aria-label=t(".schedules_count", count: schedules_count) id="schedules"
       .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
         = turbo_frame_tag "#{Current.stable.slug}-training-schedules", src: stable_training_schedules_path, loading: "lazy" do
           .w-full.text-center
@@ -24,24 +23,20 @@
 
     - if policy(Workouts::Workout).index?
       - workouts_count = Workouts::Workout.where(horse: Horses::Horse.managed_by(Current.stable)).count
-      - if workouts_count.zero?
-        input.tab type="radio" name="stable-trainings" aria-label=t(".no_workouts") id="workouts" disabled=true
-      - else
-        input.tab type="radio" name="stable-trainings" aria-label=t(".workouts", count: workouts_count) id="workouts"
-        .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
-          = turbo_frame_tag "#{Current.stable.slug}-training-workouts", src: stable_workouts_path, loading: "lazy" do
-            .w-full.text-center
-              p.mx-auto= t(".loading_workouts")
-              .mt-2.mx-auto.skeleton.w-full
+      - workouts_count = number_with_delimiter(workouts_count) unless workouts_count < 2
+      input.tab type="radio" name="stable-trainings" aria-label=t(".workouts_count", count: workouts_count) id="workouts"
+      .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+        = turbo_frame_tag "#{Current.stable.slug}-training-workouts", src: stable_workouts_path, loading: "lazy" do
+          .w-full.text-center
+            p.mx-auto= t(".loading_workouts")
+            .mt-2.mx-auto.skeleton.w-full
 
     - if policy(Workouts::JumpTrial).index?
       - trials_count = Workouts::JumpTrial.where(horse: Horses::Horse.managed_by(Current.stable)).count
-      - if trials_count.zero?
-        input.tab type="radio" name="stable-trainings" aria-label=t(".no_jump_trials") id="jump-trials" disabled=true
-      - else
-        input.tab type="radio" name="stable-trainings" aria-label=t(".jump_trials", count: trials_count) id="jump-trials"
-        .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
-          = turbo_frame_tag "#{Current.stable.slug}-training-jump-trials", src: stable_jump_trials_path, loading: "lazy" do
-            .w-full.text-center
-              p.mx-auto= t(".loading_jump_trials")
-              .mt-2.mx-auto.skeleton.w-full
+      - trials_count = number_with_delimiter(trials_count) unless trials_count < 2
+      input.tab type="radio" name="stable-trainings" aria-label=t(".jump_trials_count", count: trials_count) id="jump-trials"
+      .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+        = turbo_frame_tag "#{Current.stable.slug}-training-jump-trials", src: stable_jump_trials_path, loading: "lazy" do
+          .w-full.text-center
+            p.mx-auto= t(".loading_jump_trials")
+            .mt-2.mx-auto.skeleton.w-full

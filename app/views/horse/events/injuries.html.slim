@@ -11,4 +11,4 @@
         tbody id="injury-list"
           = render partial: "horse/events/injury", collection: @injuries, as: :injury
 
-      = render_load_more(@pagy)
+      = render_load_more(@pagy, tag: "injuries-load-more")
