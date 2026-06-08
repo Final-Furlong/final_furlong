@@ -2,7 +2,7 @@ class Auctions::TriggerSalesProcessingJob < ApplicationJob
   queue_as :latency_30s
 
   def perform
-    Actions::Horse.counter_culture_fix_counts
+    Auctions::Horse.counter_culture_fix_counts
     Auction.current.find_each do |auction|
       schedule_next_sales_job(auction:)
     end
@@ -26,4 +26,3 @@ class Auctions::TriggerSalesProcessingJob < ApplicationJob
     Auctions::ProcessSalesJob.set(good_job_labels: [auction.id], wait_until: next_updated_at).perform_later(auction) unless Time.current > next_updated_at
   end
 end
-
