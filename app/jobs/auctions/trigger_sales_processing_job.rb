@@ -4,11 +4,18 @@ class Auctions::TriggerSalesProcessingJob < ApplicationJob
   def perform
     Auctions::Horse.counter_culture_fix_counts
     Auction.current.find_each do |auction|
+      run_sales_job(auction:)
       schedule_next_sales_job(auction:)
     end
   end
 
   private
+
+  def run_sales_job(auction:)
+    return unless auction.pending_sales_count.positive?
+
+    Auctions::ProcessSalesJob.set(good_job_labels: [auction.id], wait: 5.seconds).perform_later(auction)
+  end
 
   def schedule_next_sales_job(auction:)
     return unless auction.horses.unsold.exists?
@@ -26,3 +33,4 @@ class Auctions::TriggerSalesProcessingJob < ApplicationJob
     Auctions::ProcessSalesJob.set(good_job_labels: [auction.id], wait_until: next_updated_at).perform_later(auction) unless Time.current > next_updated_at
   end
 end
+
