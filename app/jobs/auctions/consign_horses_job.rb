@@ -1,5 +1,5 @@
 class Auctions::ConsignHorsesJob < ApplicationJob
-  queue_as :low_priority
+  queue_as :latency_30s
 
   class AuctionNotCreated < StandardError; end
 

@@ -1,9 +1,9 @@
 RSpec.describe Auctions::CreateTwoYearOldAuctionJob, :perform_enqueued_jobs do
   describe "#perform" do
-    it "uses low_priority queue", perform_enqueueed_jobs: false do
+    it "uses medium queue", perform_enqueueed_jobs: false do
       expect do
         described_class.perform_later
-      end.to have_enqueued_job.on_queue("low_priority")
+      end.to have_enqueued_job.on_queue("latency_2m")
     end
 
     context "when auction already exists" do
