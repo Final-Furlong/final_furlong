@@ -1,5 +1,5 @@
 class Daily::DeleteEmptyAuctionsJob < ApplicationJob
-  queue_as :low_priority
+  queue_as :latency_30s
 
   def perform
     return if run_today?
