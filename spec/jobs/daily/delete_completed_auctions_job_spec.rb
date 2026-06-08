@@ -1,9 +1,9 @@
 RSpec.describe Daily::DeleteCompletedAuctionsJob, :perform_enqueued_jobs do
   describe "#perform" do
-    it "uses low_priority queue", perform_enqueueed_jobs: false do
+    it "uses fast queue", perform_enqueueed_jobs: false do
       expect do
         described_class.perform_later(auction: nil)
-      end.to have_enqueued_job.on_queue("low_priority")
+      end.to have_enqueued_job.on_queue("latency_30s")
     end
 
     context "when no auctions have ended" do

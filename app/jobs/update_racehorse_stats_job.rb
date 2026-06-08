@@ -1,27 +1,19 @@
 class UpdateRacehorseStatsJob < ApplicationJob
-  include ActiveJob::Continuable
-
-  queue_as :low_priority
+  queue_as :latency_5m
 
   def perform
     racetrack = Racing::Racetrack.find_by(name: "Churchill Downs")
     Account::Stable.where(racetrack: nil).update_all(racetrack_id: racetrack.id) # rubocop:disable Rails/SkipsModelValidations
     new_horses = 0
     updated_horses = 0
-    step :process_locations do |step|
-      Horses::Horse.racehorse.where.associated(:race_metadata).find_each(start: step.cursor) do |horse|
-        migrate_location(horse:)
-        updated_horses += 1
-        step.advance! from: horse.id
-      end
+    Horses::Horse.racehorse.where.associated(:race_metadata).find_each do |horse|
+      migrate_location(horse:)
+      updated_horses += 1
     end
     deleted = 0
-    step :cleanup do |step|
-      Horses::Horse.where.not(status: "racehorse").where.associated(:race_metadata).find_each(start: step.cursor) do |horse|
-        Racing::RacehorseMetadata.where(horse:).first&.destroy
-        deleted += 1
-        step.advance! from: horse.id
-      end
+    Horses::Horse.where.not(status: "racehorse").where.associated(:race_metadata).find_each do |horse|
+      Racing::RacehorseMetadata.where(horse:).first&.destroy
+      deleted += 1
     end
     store_job_info(outcome: { new_horses:, updated_horses:, deleted: })
   end

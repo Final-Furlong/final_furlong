@@ -1,7 +1,12 @@
 class Auctions::ProcessSalesJob < ApplicationJob
-  queue_as :default
+  include GoodJob::ActiveJobExtensions::Concurrency
 
-  limits_concurrency to: 1, key: ->(auction) { auction }, duration: 5.minutes
+  queue_as :latency_2m
+
+  good_job_concurrency_rule(
+    label: -> { arguments.first[:auction_id] },
+    total_limit: 1
+  )
 
   def perform(auction)
     horses = []
@@ -60,7 +65,7 @@ class Auctions::ProcessSalesJob < ApplicationJob
     else
       next_updated_at + auction.hours_until_sold.hours
     end
-    Auctions::ProcessSalesJob.set(wait_until: next_updated_at).perform_later(auction) unless Time.current > next_updated_at
+    Auctions::ProcessSalesJob.set(good_job_labels: [auction.id], wait_until: next_updated_at).perform_later(auction) unless Time.current > next_updated_at
   end
 end
 
