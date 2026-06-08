@@ -24,4 +24,4 @@
           th.text-sm.text-center= sort_link @query, :race_metadata_injury_nulls_last, [:race_metadata_injury_nulls_last, 'name asc'], t(".last_injury")
       tbody id="horse-list"
         = render partial: "horse", collection: @horses, as: :horse
-    = render_load_more(@pagy)
+    = render_load_more(@pagy, tag: "training-summary-load-more")

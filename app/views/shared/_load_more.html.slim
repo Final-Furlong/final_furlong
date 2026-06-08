@@ -1,4 +1,4 @@
-/# locals: (pagy: nil)
+/# locals: (pagy: nil, tag:)
 - if pagy&.next
-  = turbo_frame_tag "load_more", loading: :lazy, src: request.params.merge(page: pagy.next, format: :turbo_stream) do
+  = turbo_frame_tag tag, loading: :lazy, src: request.params.merge(page: pagy.next, format: :turbo_stream) do
     = render "shared/loading_spinner"

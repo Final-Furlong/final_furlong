@@ -8,8 +8,8 @@ module Dashboard
         :scheduled_racehorses_count, :scheduled_broodmares_count
 
       def initialize(query:)
-        @current_racehorse_shipments = query.racehorse.joins(:racing_shipments).where("racehorse_shipments.arrival_date > ?", Date.current).distinct
-        @scheduled_racehorse_shipments = query.racehorse.joins(:racing_shipments).where("racehorse_shipments.departure_date > ?", Date.current).distinct
+        @current_racehorse_shipments = query.racehorse.joins(:racing_shipments).includes(racing_shipments: :starting_location).where("racehorse_shipments.arrival_date > ?", Date.current).distinct
+        @scheduled_racehorse_shipments = query.racehorse.joins(:racing_shipments).includes(racing_shipments: :starting_location).where("racehorse_shipments.departure_date > ?", Date.current).distinct
         @current_broodmare_shipments = query.broodmare.joins(:broodmare_shipments).where("broodmare_shipments.arrival_date > ?", Date.current).distinct
         @scheduled_broodmare_shipments = query.broodmare.joins(:broodmare_shipments).where("broodmare_shipments.departure_date > ?", Date.current).distinct
 

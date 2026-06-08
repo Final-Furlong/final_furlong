@@ -1,5 +1,4 @@
 = turbo_stream.append "boarding-list" do
   = render partial: "boarding", collection: @boardings, as: :boarding
 
-= turbo_stream.replace "load_more" do
-  = render_load_more(@pagy)
+= render "shared/loading", pagy: @pagy

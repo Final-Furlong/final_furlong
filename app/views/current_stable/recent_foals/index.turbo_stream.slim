@@ -4,8 +4,7 @@
 = turbo_stream.append "forum-foal-list" do
   = render partial: "current_stable/recent_foals/foal_forum", collection: @foals, as: :foal
 
-= turbo_stream.replace "load_more" do
-  = render_load_more(@pagy)
+= render "shared/loading", pagy: @pagy
 
 - unless @pagy.next
   = turbo_stream.replace "forum-copy-button" do

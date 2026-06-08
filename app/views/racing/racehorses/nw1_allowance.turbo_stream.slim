@@ -1,5 +1,4 @@
 = turbo_stream.append "horse-list" do
   = render partial: "racehorse", collection: @horses, as: :horse, locals: { race: @race }
 
-= turbo_stream.replace "load_more" do
-  = render_load_more(@pagy)
+= render "shared/loading", pagy: @pagy

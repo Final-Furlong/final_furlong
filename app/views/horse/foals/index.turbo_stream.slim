@@ -5,5 +5,4 @@
   = turbo_stream.append "#{@dashboard.horse.slug}-foal-list" do
     = render partial: "sire_unborn_foal", collection: @dashboard.unborn_foals, as: :breeding
 
-= turbo_stream.replace "load_more" do
-  = render_load_more(@dashboard.pagy)
+= render "shared/loading", pagy: @dashboard.pagy
