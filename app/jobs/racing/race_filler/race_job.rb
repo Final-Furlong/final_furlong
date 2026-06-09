@@ -1,11 +1,23 @@
 class Racing::RaceFiller::RaceJob < ApplicationJob
   queue_as :latency_5m
 
-  def perform(id:, stable_id:)
-    owner = Account::Stable.find(stable_id)
-    race = Racing::RaceSchedule.includes(:track_surface).find_by(id:)
-    horses_needed = Config::Racing.minimum_horses - race.entries_count
-    process_race(Config::Racing.minimum_horses, horses_needed, race, owner)
+  def perform(tomorrow: Date.tomorrow)
+    owner = Account::Stable.find_by(name: Config::Game.stable)
+    return unless owner
+
+    horses = 0
+    races = 0
+
+    Racing::RaceSchedule.includes(:track_surface).where(date: tomorrow).where.not(race_type: "stakes").where(entries_count: ...Config::Racing.minimum_horses).find_each do |race|
+      horses_needed = Config::Racing.minimum_horses - race.entries_count
+      horses, races = process_race(Config::Racing.minimum_horses, horses_needed, race, owner, horses, races)
+    end
+
+    Racing::RaceSchedule.where(date: tomorrow).where(race_type: "stakes").where(entries_count: ...Config::Racing.minimum_horses_stakes).find_each do |race|
+      horses_needed = Config::Racing.minimum_horses_stakes - race.entries_count
+      horses, races = process_race(Config::Racing.minimum_horses_stakes, horses_needed, race, owner, horses, races)
+    end
+    store_job_info(outcome: { horses:, races: })
   end
 
   private

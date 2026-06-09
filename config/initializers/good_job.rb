@@ -62,7 +62,7 @@ Rails.application.configure do
       },
       race_entry_filler: {
         cron: "14 9 * * 2,5", # Tues/Fri AM
-        class: "Racing::RaceFiller::ProcessingJob"
+        class: "Racing::RaceFiller::RaceJob"
       },
       race_entry_prerace: {
         cron: "14 10 * * 2,5", # Tues/Fri AM

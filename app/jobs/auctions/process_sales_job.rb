@@ -5,7 +5,8 @@ class Auctions::ProcessSalesJob < ApplicationJob
 
   good_job_concurrency_rule(
     label: -> { arguments.first[:auction_id] },
-    total_limit: 1
+    enqueue_limit: 3,
+    perform_throttle: [1, 5.minutes]
   )
 
   def perform(auction)
