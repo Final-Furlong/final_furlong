@@ -7,7 +7,7 @@ class Workouts::ProcessWorkoutJob < ApplicationJob
     weekday = date.strftime("%A").downcase
     schedule = Racing::TrainingSchedule.find(schedule_id)
     activities = schedule.send("#{weekday}_activities")
-    training_horse = schedule.training_schedule_horses.includes(:horse).where(horse: { id: horse_id })
+    training_horse = schedule.training_schedule_horses.includes(:horse).where(horse: { id: horse_id }).first
     horse = training_horse.horse
     return if horse.current_boarding.present?
     return if horse.race_metadata.at_home?
@@ -73,4 +73,3 @@ class Workouts::ProcessWorkoutJob < ApplicationJob
     jockeys.sample
   end
 end
-
