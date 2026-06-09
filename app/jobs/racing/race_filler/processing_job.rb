@@ -9,12 +9,12 @@ class Racing::RaceFiller::ProcessingJob < ApplicationJob
 
     batch = GoodJob::Batch.new
     Racing::RaceSchedule.includes(:track_surface).where(date: tomorrow).where.not(race_type: "stakes").where(entries_count: ...Config::Racing.minimum_horses).find_each do |race|
-      batch.add(Racing::RaceFiller::RaceJob.perform_later(id: race.id))
+      batch.add(Racing::RaceFiller::RaceJob.perform_later(id: race.id, stable_id: owner.id))
       races += 1
     end
 
     Racing::RaceSchedule.where(date: tomorrow).where(race_type: "stakes").where(entries_count: ...Config::Racing.minimum_horses_stakes).find_each do |race|
-      batch.add(Racing::RaceFiller::RaceJob.perform_later(id: race.id))
+      batch.add(Racing::RaceFiller::RaceJob.perform_later(id: race.id, stable_id: owner.id))
       races += 1
     end
     batch.enqueue

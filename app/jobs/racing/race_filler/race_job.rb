@@ -1,7 +1,8 @@
 class Racing::RaceFiller::RaceJob < ApplicationJob
   queue_as :latency_5m
 
-  def perform(id:)
+  def perform(id:, stable_id:)
+    owner = Account::Stable.find(stable_id)
     race = Racing::RaceSchedule.includes(:track_surface).find_by(id:)
     horses_needed = Config::Racing.minimum_horses - race.entries_count
     process_race(Config::Racing.minimum_horses, horses_needed, race, owner)
