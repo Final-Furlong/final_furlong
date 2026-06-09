@@ -22,7 +22,7 @@ class Racing::RaceFiller::RaceJob < ApplicationJob
 
   private
 
-  def process_race(total_horses_needed, horses_needed, race, owner)
+  def process_race(total_horses_needed, horses_needed, race, owner, horses, races)
     query = Horses::Horse.racehorse.joins(:race_options, :race_metadata, :race_qualification, :racing_stats)
       .managed_by(owner).where.missing(:race_entries).where.missing(:future_race_entries).merge(Racing::RacingStats.min_energy(Config::Racing.minimum_energy_racefiller))
     if owner.name != Config::Game.stable || race.race_type != "claiming"
@@ -45,6 +45,7 @@ class Racing::RaceFiller::RaceJob < ApplicationJob
         result = Racing::GameEntryCreator.new.create_entry(race:, horse:)
         if result.created?
           horses_needed -= 1
+          horses += 1
           Racing::RaceEntry.counter_culture_fix_counts
           horses_needed = total_horses_needed - race.reload.entries_count
         end
@@ -52,6 +53,8 @@ class Racing::RaceFiller::RaceJob < ApplicationJob
         next
       end
     end
+    races += 1
+    [horses, races]
   end
 end
 
