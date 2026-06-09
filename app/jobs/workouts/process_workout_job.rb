@@ -11,8 +11,8 @@ class Workouts::ProcessWorkoutJob < ApplicationJob
     horse = training_horse.horse
     return if horse.current_boarding.present?
     return if horse.race_metadata.at_home?
-    return if horse.race_result_finishes.joins(:race).where(race: { date: yesterday }).present?
-    return if horse.workouts.where(date: yesterday).present?
+    return if horse.race_result_finishes.joins(:race).where(race: { date: }).present?
+    return if horse.workouts.where(date:).present?
     return if horse.race_entries.present?
 
     data = horse.race_metadata
@@ -38,7 +38,7 @@ class Workouts::ProcessWorkoutJob < ApplicationJob
       jockey: pick_jockey(horse),
       surface: pick_surface(horse, racetrack),
       params:,
-      date: yesterday,
+      date:,
       auto: true
     )
   end
@@ -73,3 +73,4 @@ class Workouts::ProcessWorkoutJob < ApplicationJob
     jockeys.sample
   end
 end
+
