@@ -9,9 +9,9 @@ class Horses::FutureRaceEntryShipmentJob < ApplicationJob
 
     route = Shipping::Route.with_locations(race_location, horse_location).first
     shipment = Shipping::RacehorseShipment.new(
-      horse: entry.horse, departure_date: today, scheduled: true, starting_location: horse_location, ending_location: race_location
+      horse: entry.horse, departure_date: date, scheduled: true, starting_location: horse_location, ending_location: race_location
     )
-    max_travel_days = (race.travel_deadline - today).to_i
+    max_travel_days = (race.travel_deadline - date).to_i
     if (entry.ship_mode.blank? || entry.ship_mode.road?) && route.road_days && route.road_days < max_travel_days
       shipment.mode = "road"
       days = route.road_days
@@ -20,7 +20,7 @@ class Horses::FutureRaceEntryShipmentJob < ApplicationJob
       shipment.mode = "air" if shipment.mode.blank?
       days = route.air_days
     end
-    shipment.arrival_date = today + days.days
+    shipment.arrival_date = date + days.days
     shipment.shipping_type = horse.race_metadata.at_home? ? "farm_to_track" : "track_to_track"
     Horses::Racehorse::FutureShipmentProcessor.new.ship_horse(shipment:)
   end
