@@ -18,14 +18,14 @@ class Daily::ProcessFutureShipmentsJob < ApplicationJob
     end
 
     Racing::FutureRaceEntry.where(ship_date: date, ship_only_if_horse_is_entered: false).find_each do |entry|
-      batch.add(Horses::FutureRaceEntryShipmentJob.perform_later(id: shipment.id, date:))
+      batch.add(Horses::FutureRaceEntryShipmentJob.perform_later(id: entry.id, date:))
       racehorse_count += 1
     end
 
     weekday = date.strftime("%A").downcase
     if %w[tuesday friday].include?(weekday)
       Racing::FutureRaceEntry.where(ship_when_entries_open: true, ship_only_if_horse_is_entered: false).find_each do |entry|
-        batch.add(Horses::FutureRaceEntryShipmentJob.perform_later(id: shipment.id, date:))
+        batch.add(Horses::FutureRaceEntryShipmentJob.perform_later(id: entry.id, date:))
         racehorse_count += 1
       end
     end
@@ -34,4 +34,3 @@ class Daily::ProcessFutureShipmentsJob < ApplicationJob
     store_job_info(outcome:)
   end
 end
-

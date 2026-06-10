@@ -137,7 +137,7 @@
             th= t(".next_race")
             td
               ruby:
-                next_entry = horse.race_entries.joins(:race).order(race: { date: :asc }).first
+                next_entry = horse.race_entries.joins(:race).includes(:race).order(race: { date: :asc }).first
                 if next_entry
                   next_race = next_entry.race
                   date = l(next_race.date, format: :slashes)
