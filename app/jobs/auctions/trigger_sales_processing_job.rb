@@ -30,8 +30,9 @@ class Auctions::TriggerSalesProcessingJob < ApplicationJob
     else
       next_updated_at + auction.hours_until_sold.hours
     end
-    return if next_updated_at < Time.current + 5.minutes
+    return if next_updated_at < 5.minutes.from_now
 
     Auctions::ProcessSalesJob.set(good_job_labels: [auction.id], wait_until: next_updated_at).perform_later(auction) unless Time.current > next_updated_at
   end
 end
+

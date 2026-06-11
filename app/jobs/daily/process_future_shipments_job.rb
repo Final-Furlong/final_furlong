@@ -34,3 +34,4 @@ class Daily::ProcessFutureShipmentsJob < ApplicationJob
     store_job_info(outcome:)
   end
 end
+

@@ -12,7 +12,7 @@ module Horse
       @breeding = Horses::Breeding.new(mare: @horse, stud: @stud)
       if (failure = policy(@breeding).request_booking_result.failure)
         if %i[approval_required outside_mare_limit_met_current_stable].include?(failure)
-          flash[:error] = t(".#{failure}") if failure.to_s == "outside_mare_limit_met_current_stable"
+          flash.now[:error] = t(".#{failure}") if failure.to_s == "outside_mare_limit_met_current_stable"
           render "horse/pending_mare_bookings/approval_required", locals: { mare: @horse, stud: @stud }
         else
           flash[:error] = t(".#{failure}")
@@ -94,3 +94,4 @@ module Horse
     end
   end
 end
+
