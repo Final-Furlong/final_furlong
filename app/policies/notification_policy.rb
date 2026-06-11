@@ -1,7 +1,7 @@
 class NotificationPolicy < AuthenticatedPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
-      user.notifications
+      user&.notifications
     end
   end
 
