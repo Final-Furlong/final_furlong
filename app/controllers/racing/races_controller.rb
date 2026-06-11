@@ -7,6 +7,7 @@ module Racing
       query = query.order(number: :asc) # TODO: replace with user-picked field(s)
 
       @races = query.to_a
+      raise ActiveRecord::RecordNotFound if @races.blank?
     end
 
     def all
@@ -43,4 +44,3 @@ module Racing
     end
   end
 end
-
