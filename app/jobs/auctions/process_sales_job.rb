@@ -5,9 +5,11 @@ class Auctions::ProcessSalesJob < ApplicationJob
 
   good_job_concurrency_rule(
     label: -> { arguments.first[:auction_id] },
-    enqueue_limit: 3,
+    total_limit: 2,
     perform_throttle: [1, 5.minutes]
   )
+
+  discard_on GoodJob::ActiveJobExtensions::Concurrency::ConcurrencyExceededError
 
   def perform(auction)
     horses = []
