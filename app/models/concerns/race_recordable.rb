@@ -36,6 +36,18 @@ module RaceRecordable
       Game::MoneyFormatter.new(earnings).to_s
     end
 
+    def points_string
+      "#{number_to_delimited(points)}pts"
+    end
+
+    def races_string
+      [starts_string, wins_string, seconds_string, thirds_string, fourths_string].join("-")
+    end
+
+    def overall_string
+      [races_string, earnings_string, points_string].join(" - ")
+    end
+
     private
 
     def stakes_string(basic, stakes)
