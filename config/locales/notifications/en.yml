@@ -8,6 +8,11 @@ en:
         link: View Bidding
     destroy:
       success: Notification was successfully deleted
+    eclipse_award_voting_notification:
+      message: You have until %{date} to vote for this award.
+      title: 'Eclipse Award Voting: %{year} %{category}'
+      view_voting:
+        link: Vote
     failed_future_shipment:
       message: Could not perform the scheduled shipment for %{name} to %{location}
       title: Failed Scheduled Shipment

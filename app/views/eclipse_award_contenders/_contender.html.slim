@@ -1,0 +1,38 @@
+/# locals: (contender:, vote:)
+- if contender.awardable_type == "Horses::Horse"
+  - horse = contender.awardable
+tr
+  td
+    - if contender.awardable_type == "Horses::Horse"
+      span class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), data: { turbo_frame: "_top" }
+    - else
+      = link_to contender.awardable.name, stable_path(contender.awardable), data: { turbo_frame: "_top" }
+  - if contender.record.present?
+    td
+      - if contender.record.include?(',')
+        - horse_ids = contender.record.split(',')
+        - pd horse_ids.last
+        - horse_ids.each do |id|
+          - horse = Horses::Horse.find(id)
+          = link_to horse.name_with_title, horse_path(horse), class: "text-#{horse.gender}", target: "_blank"
+          - unless id == horse_ids.last
+            = ",&nbsp;".html_safe
+      - else
+        = contender.record
+  - else
+  - if params[:category] == "horse"
+    td
+      - awards = Game::EclipseAward.where(year: params[:year], awardable: horse)
+      - localised_awards = awards.map { |award| t("eclipse_awards.award.category_#{award.category}") }.join(', ')
+      span= localised_awards
+  td
+    - if policy(contender).vote?
+      = render Ui::Button::Component.new(url: eclipse_award_votes_path(contender_id: contender.id), style: :outline, size: :small, form_class: 'inline',
+        http_method: :post, data: { turbo_confirm: t(".approve_vote", name: contender.awardable.name), turbo_frame: "_top" }) do
+        = t(".vote")
+    - elsif vote.present? && vote.contender == contender
+      = render Ui::Button::Component.new(url: "#", style: :success, size: :small) do
+        = t(".voted")
+    - else
+      = render Ui::Button::Component.new(url: "#", style: :outline, disabled: true, size: :small) do
+        = t(".vote")

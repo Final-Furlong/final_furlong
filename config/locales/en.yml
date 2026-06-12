@@ -8,6 +8,22 @@ en:
       series_winners: Race Series Winners
       title: Award Winners
   day: Day
+  eclipse_award_contenders:
+    contender:
+      approve_vote: Vote for %{name}?
+      vote: Vote
+      voted: Your Vote
+    index:
+      awards: Awards
+      horses: Top Horses
+      name: Name
+      record: Record
+      title: Voting for %{year} %{category} of the Year
+      voting_deadline: Voting ends at %{time}
+  eclipse_award_votes:
+    create:
+      failure: Could not process vote
+      success: Successfully voted for %{name}
   eclipse_awards:
     award:
       category_2yo_colt: 2yo Colt
