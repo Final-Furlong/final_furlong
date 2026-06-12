@@ -4252,6 +4252,49 @@ CREATE VIEW public.distance_race_records AS
 
 
 --
+-- Name: eclipse_award_contenders; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.eclipse_award_contenders (
+    id bigint NOT NULL,
+    awardable_type character varying NOT NULL,
+    awardable_id bigint NOT NULL,
+    year integer DEFAULT 0 NOT NULL,
+    category public.eclipse_award_categories NOT NULL,
+    voting_starts_at timestamp(6) with time zone NOT NULL,
+    voting_ends_at timestamp(6) with time zone NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN eclipse_award_contenders.category; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.eclipse_award_contenders.category IS '2yo_colt,2yo_filly,3yo_colt,3yo_filly,older_horse,older_mare,sprinter,classic,endurance,turf_horse,turf_mare,sc_colt,sc_filly,sc_horse,sc_mare,horse,stable,breeder,sire';
+
+
+--
+-- Name: eclipse_award_contenders_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.eclipse_award_contenders_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: eclipse_award_contenders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.eclipse_award_contenders_id_seq OWNED BY public.eclipse_award_contenders.id;
+
+
+--
 -- Name: eclipse_awards; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -7843,6 +7886,13 @@ ALTER TABLE ONLY public.claims ALTER COLUMN id SET DEFAULT nextval('public.claim
 
 
 --
+-- Name: eclipse_award_contenders id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.eclipse_award_contenders ALTER COLUMN id SET DEFAULT nextval('public.eclipse_award_contenders_id_seq'::regclass);
+
+
+--
 -- Name: eclipse_awards id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -8498,6 +8548,14 @@ ALTER TABLE ONLY public.claims
 
 ALTER TABLE ONLY public.data_migrations
     ADD CONSTRAINT data_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: eclipse_award_contenders eclipse_award_contenders_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.eclipse_award_contenders
+    ADD CONSTRAINT eclipse_award_contenders_pkey PRIMARY KEY (id);
 
 
 --
@@ -9207,10 +9265,24 @@ CREATE INDEX idx_on_allowance_wins_ff848b4097 ON public.breeders_series_2yo_fill
 
 
 --
+-- Name: idx_on_awardable_type_awardable_id_year_5127159ebc; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_on_awardable_type_awardable_id_year_5127159ebc ON public.eclipse_award_contenders USING btree (awardable_type, awardable_id, year);
+
+
+--
 -- Name: idx_on_awardable_type_awardable_id_year_e897327595; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX idx_on_awardable_type_awardable_id_year_e897327595 ON public.eclipse_awards USING btree (awardable_type, awardable_id, year);
+
+
+--
+-- Name: idx_on_awardable_type_category_awardable_id_080fd0216f; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_awardable_type_category_awardable_id_080fd0216f ON public.eclipse_award_contenders USING btree (awardable_type, category, awardable_id);
 
 
 --
@@ -11143,6 +11215,27 @@ CREATE INDEX index_claims_on_owner_id ON public.claims USING btree (owner_id);
 --
 
 CREATE INDEX index_claims_on_race_date ON public.claims USING btree (race_date);
+
+
+--
+-- Name: index_eclipse_award_contenders_on_voting_ends_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_eclipse_award_contenders_on_voting_ends_at ON public.eclipse_award_contenders USING btree (voting_ends_at);
+
+
+--
+-- Name: index_eclipse_award_contenders_on_voting_starts_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_eclipse_award_contenders_on_voting_starts_at ON public.eclipse_award_contenders USING btree (voting_starts_at);
+
+
+--
+-- Name: index_eclipse_award_contenders_on_year_and_category; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_eclipse_award_contenders_on_year_and_category ON public.eclipse_award_contenders USING btree (year, category);
 
 
 --
@@ -14798,6 +14891,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260612113902'),
 ('20260608141919'),
 ('20260602101413'),
 ('20260601181959'),

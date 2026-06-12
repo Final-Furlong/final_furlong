@@ -1,0 +1,18 @@
+- category = t("eclipse_awards.award.category_#{params[:category]}")
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t(".title", year: params[:year], category:), href: stables_path }])
+
+= turbo_frame_tag "eclipse-award-contenders" do
+  .mx-auto
+    p.text-lg.text-center= t(".voting_deadline", time: l(@contenders.first.voting_ends_at))
+    table.table-responsive.table.bordered.table-zebra.w-full
+      thead
+        tr
+          th.text-sm.text-center= t(".name")
+          th.text-sm.text-center= t(".record")
+          - if params[:category] == "horse"
+            th.text-sm.text-center= t(".awards")
+          th
+      tbody id="contender-list"
+        = render partial: "contender", collection: @contenders, as: :contender
+    = render_load_more(@pagy)

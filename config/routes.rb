@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   resource :search, only: :show
   resources :stables, only: %i[index show]
   resources :awards, only: :index
+  resources :eclipse_award_contenders, only: :index
   resources :eclipse_awards, only: :index
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
