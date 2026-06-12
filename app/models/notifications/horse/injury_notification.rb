@@ -2,7 +2,7 @@ module Notifications::Horse
   class InjuryNotification < ::Notification
     def message
       key = "notifications.horse_injury_notification.message"
-      injury_text = I18n.t("notifications.horse_injury_notification.injuries.#{params["injury"]}")
+      injury_text = I18n.t("notifications.horse_injury_notification.injuries.#{params["injury"].tr(" ", "_")}")
       i18n_params = { horse: params["horse_name"], injury: injury_text }
       if params["leg"]
         key += "_with_leg"

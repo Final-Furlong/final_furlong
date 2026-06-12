@@ -8,6 +8,23 @@ en:
       series_winners: Race Series Winners
       title: Award Winners
   day: Day
+  eclipse_award_contenders:
+    contender:
+      approve_vote: Vote for %{name}?
+      cannot_vote: Vote
+      vote: Vote
+      voted: Your Vote
+    index:
+      awards: Awards
+      horses: Top Horses
+      name: Name
+      record: Record
+      title: Voting for %{year} %{category} of the Year
+      voting_deadline: Voting ends at %{time}
+  eclipse_award_votes:
+    create:
+      failure: Could not process vote
+      success: Successfully voted for %{name}
   eclipse_awards:
     award:
       category_2yo_colt: 2yo Colt
@@ -116,11 +133,11 @@ en:
           zero: today
         horses_count: " with %{count} %{horses}"
         next_races_count:
-          one: '1 race will be run '
+          one: "1 race will be run "
           other: "%{count} races will be run "
         races_count: "%{number} %{races} have been run"
         recent_races_count:
-          one: '1 race was run '
+          one: "1 race was run "
           other: "%{count} races were run "
   racing:
     training_schedules:
@@ -157,7 +174,7 @@ en:
     create:
       success: User was successfully created.
     form:
-      currently_waiting_confirmation_for_email: 'Currently waiting confirmation for: %{email}'
+      currently_waiting_confirmation_for_email: "Currently waiting confirmation for: %{email}"
       send_confirmation: Send confirmation email
       update: Update
     index:
