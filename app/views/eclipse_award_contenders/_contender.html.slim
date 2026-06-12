@@ -1,0 +1,20 @@
+/# locals: (contender:)
+- if contender.awardable_type == "Horses::Horse"
+  - horse = contender.awardable
+tr
+  td
+    - if contender.awardable_type == "Horses::Horse"
+      span class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), data: { turbo_frame: "_top" }
+    - else
+      = link_to contender.awardable.name, stable_path(contender.awardable), data: { turbo_frame: "_top" }
+  - if params[:category] == "horse"
+    - record = horse.annual_race_records.find_by(year: params[:year])
+    td
+      = [record.starts_string, record.wins_string, record.thirds_string, record.fourths_string].join("-")
+      = " - #{record.earnings_string} - #{record.points}pts"
+  - else
+  - if params[:category] == "horse"
+    td
+      - awards = Game::EclipseAward.where(year: params[:year], awardable: horse)
+      - localised_awards = awards.map { |award| t("eclipse_awards.award.category_#{award.category}") }.join(', ')
+      span= localised_awards

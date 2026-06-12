@@ -75,6 +75,10 @@ Rails.application.configure do
       race_breeders_cup_selection: {
         cron: "14 11 * * 2,5", # Tues/Fri AM
         class: "Racing::BreedersCup::BulkSelectionJob"
+      },
+      race_runner: {
+        cron: "14 10 * * 3,6", # Wed/Sat AM
+        class: "Racing::TriggerRaceJob"
       }
     },
     dashboard_default_locale: :en

@@ -1,5 +1,6 @@
 shared:
   currency: $
+  eclipse_award_voting_days: 21
   notification_expiration_after_reading: 30
   online_minutes: 15
   title: Final Furlong
