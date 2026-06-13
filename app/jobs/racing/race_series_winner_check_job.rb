@@ -1,4 +1,6 @@
 class Racing::RaceSeriesWinnerCheckJob < ApplicationJob
+  include GoodJob::ActiveJobExtensions::Concurrency
+
   queue_as :latency_30s
 
   good_job_concurrency_rule(

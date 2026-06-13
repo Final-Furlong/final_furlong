@@ -1,5 +1,7 @@
 module Racing
   class TriggerRaceJob < ApplicationJob
+    include GoodJob::ActiveJobExtensions::Concurrency
+
     queue_as :latency_2m
 
     class RaceRunError < StandardError; end

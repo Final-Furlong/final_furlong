@@ -1,4 +1,6 @@
 class Racing::RaceDayUpdaterJob < ApplicationJob
+  include GoodJob::ActiveJobExtensions::Concurrency
+
   queue_as :latency_5m
 
   good_job_concurrency_rule(

@@ -1,4 +1,6 @@
 class Daily::ProcessFutureShipmentsJob < ApplicationJob
+  include GoodJob::ActiveJobExtensions::Concurrency
+
   queue_as :latency_2m
 
   good_job_concurrency_rule(
