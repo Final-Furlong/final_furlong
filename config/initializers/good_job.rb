@@ -68,6 +68,10 @@ Rails.application.configure do
         cron: "14 10 * * 2,5", # Tues/Fri AM
         class: "Racing::PreRace::ProcessingJob"
       },
+      race_runner: {
+        cron: "14 11 * * 3,6", # Wed/Sat AM
+        class: "Racing::TriggerRaceJob"
+      },
       race_future_entry_process: {
         cron: "44 0 * * 1,2,4,5", # Mon/Tues/Fri/Sat AM
         class: "Racing::FutureEntryProcessingJob"
