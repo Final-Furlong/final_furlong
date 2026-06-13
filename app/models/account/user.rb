@@ -38,12 +38,12 @@ module Account
 
     # broadcasts_to ->(_user) { "users" }, inserts_by: :prepend
 
-    # :nocov:
+    # simplecov:disable
     def active_for_authentication?
       super && !discarded?
     end
 
-    # :nocov:
+    # simplecov:disable
 
     def self.ransackable_attributes(_auth_object = nil)
       %w[username status name email]

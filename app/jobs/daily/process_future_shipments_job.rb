@@ -1,6 +1,11 @@
 class Daily::ProcessFutureShipmentsJob < ApplicationJob
   queue_as :latency_2m
 
+  good_job_concurrency_rule(
+    label: -> { arguments.first[:date] },
+    total_limit: 1
+  )
+
   def perform(date: Date.current)
     batch = GoodJob::Batch.new
     unless run_today?

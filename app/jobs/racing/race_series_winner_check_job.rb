@@ -1,7 +1,13 @@
 class Racing::RaceSeriesWinnerCheckJob < ApplicationJob
   queue_as :latency_30s
 
-  def perform(race:)
+  good_job_concurrency_rule(
+    label: -> { arguments.first[:race_id] },
+    total_limit: 1
+  )
+
+  def perform(race_id:)
+    race = Racing::RaceSchedule.find(race_id)
     series = Racing::RaceSeries.find_by(third_race: race)
     return unless series
 

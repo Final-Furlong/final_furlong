@@ -1,6 +1,6 @@
 module Racing
   class TriggerRaceJob < ApplicationJob
-    queue_as :default
+    queue_as :latency_2m
 
     class RaceRunError < StandardError; end
     class CodeSetupError < StandardError; end
@@ -8,6 +8,11 @@ module Racing
 
     retry_on HTTParty::NetworkError
     retry_on RaceRunError
+
+    good_job_concurrency_rule(
+      label: -> { arguments.first[:date] },
+      total_limit: 1
+    )
 
     def perform(date: Date.current, number: 1)
       return unless ENV.fetch("USE_PHP_API", "false") == "true"

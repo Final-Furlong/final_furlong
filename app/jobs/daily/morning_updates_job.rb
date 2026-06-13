@@ -9,6 +9,8 @@ class Daily::MorningUpdatesJob < ApplicationJob
       classes << job_class.to_s
       job_class.perform_later
     end
+    Daily::ProcessFutureShipmentsJob.set(good_job_labels: [Date.current]).perform_later
+    classes << "Daily::ProcessFutureShipmentsJob"
 
     store_job_info(outcome: { classes: classes.count })
   end
@@ -17,8 +19,8 @@ class Daily::MorningUpdatesJob < ApplicationJob
     [Horses::UpdateBoardingJob, Horses::UpdateLeasesJob, Horses::UpdateSalesJob,
       Horses::NameHorsesJob, Horses::UpdateBabiesJob, Horses::GrowthJob,
       Horses::RetireMaresJob, Horses::KillMaresJob,
-      Daily::DeleteReadNotificationsJob, Daily::ProcessFutureShipmentsJob,
-      Racing::RestDayUpdaterJob, Racing::WeatherForecastJob]
+      Racing::RestDayUpdaterJob, Racing::WeatherForecastJob,
+      Daily::DeleteReadNotificationsJob]
   end
 end
 

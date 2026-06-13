@@ -1,6 +1,11 @@
 class Racing::RaceDayUpdaterJob < ApplicationJob
   queue_as :latency_5m
 
+  good_job_concurrency_rule(
+    label: -> { arguments.first[:date] },
+    total_limit: 1
+  )
+
   def perform(date:)
     result = {}
     Racing::RaceRecordUpdater.new.update_records(date:)

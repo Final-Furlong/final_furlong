@@ -1,6 +1,11 @@
 class UpdateRaceResultHorseAbbreviationsJob < ApplicationJob
   queue_as :latency_5m
 
+  good_job_concurrency_rule(
+    label: -> { arguments.first[:date] },
+    total_limit: 1
+  )
+
   def perform(date: nil)
     query = if date.present?
       Racing::RacehorseMetadata.joins(horse: { race_result_finishes: :race }).where(race_results: { date: })

@@ -1,6 +1,11 @@
 class User::SendDeveloperNotifications < ApplicationService
   attr_reader :title, :message
 
+  good_job_concurrency_rule(
+    label: -> { arguments.first[:title] },
+    total_limit: 1
+  )
+
   def call(title:, message:)
     @title = title
     @message = message

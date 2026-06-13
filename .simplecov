@@ -1,39 +1,35 @@
 require "simplecov-cobertura"
 require "simplecov-lcov"
 
-SimpleCov.profiles.define 'common' do
-  load_profile "test_frameworks"
+SimpleCov.profiles.define "common" do
+  coverage_dir "coverage"
 
-  add_filter %r{^/config/}
-  add_filter %r{^/db/}
-  add_filter "lib/generators"
-  add_filter "lib/tasks"
-  add_filter "models/legacy/"
-  add_filter "services/migrate_legacy_"
-  add_filter(%r{^/spec/})
-  add_filter(%r{^/test/})
+  cover "app/**/*.rb"
 
-  add_group "API", "app/controllers/api"
-  add_group 'Controllers' do |file|
-    file.filename[%r'/app/controllers'].present? && file.filename[%r'/app/controllers/api'].blank?
-  end
-  add_group "DB", %w[app/models app/repositories app/queries]
-  add_group "Policies", "app/policies"
-  add_group "Forms", "app/forms"
-  add_group "Jobs", %w[app/jobs app/workers]
-  add_group "Mailers", "app/mailers"
-  add_group "Operations", %w[app/interactions app/services]
-  add_group "Lib", %w[lib/ app/validation/final_furlong]
-  add_group "View Components", "app/components"
+  # skip "models/legacy/"
+  # skip "services/migrate_legacy_"
 
-  track_files "{app,lib}/**/*.rb"
-
-  enable_coverage(:branch)
-  primary_coverage :line
+  # group "API", "app/controllers/api"
+  # group "Controllers" do |file|
+    # file.filename[%r{/app/controllers}].present? && file.filename[%r{/app/controllers/api}].blank?
+  # end
+  # group "DB", %w[app/models app/repositories app/queries]
+  # group "Policies", "app/policies"
+  # group "Forms", "app/forms"
+  # group "Jobs", %w[app/jobs app/workers]
+  # group "Mailers", "app/mailers"
+  # group "Operations", %w[app/interactions app/services]
+  # group "Lib", %w[lib/ app/validation/final_furlong]
+  # group "View Components", "app/components"
 end
 
-SimpleCov.profiles.define 'ci' do
-  require 'undercover/simplecov_formatter'
+SimpleCov.profiles.define "ci" do
+  require "undercover/simplecov_formatter"
+
+  SimpleCov::Formatter::LcovFormatter.config do |c|
+    c.report_with_single_file = true
+    c.single_report_path = "coverage/lcov.info"
+  end
 
   formatter SimpleCov::Formatter::MultiFormatter.new(
     [
@@ -44,8 +40,8 @@ SimpleCov.profiles.define 'ci' do
   )
 end
 
-SimpleCov.profiles.define 'local' do
-  require 'undercover/simplecov_formatter'
+SimpleCov.profiles.define "local" do
+  require "undercover/simplecov_formatter"
 
   formatter SimpleCov::Formatter::MultiFormatter.new(
     [
@@ -54,33 +50,4 @@ SimpleCov.profiles.define 'local' do
       SimpleCov::Formatter::Undercover
     ]
   )
-end
-
-SimpleCov.profiles.define "default" do
-  coverage_dir "coverage"
-end
-
-SimpleCov.start do
-  load_profile "common"
-
-  env_test_type = ENV.fetch('TEST_TYPE', nil)
-  arg_test_types = ARGV.select { |arg| arg.start_with?(/~?type:/) }.map { |arg| arg.gsub('type:', '') }
-  if env_test_type == 'unit' || arg_test_types.include?('~system')
-    load_profile "unit"
-  elsif env_test_type == 'system' || arg_test_types.include?('system')
-    load_profile "system"
-  else
-    load_profile "default"
-  end
-
-  SimpleCov::Formatter::LcovFormatter.config do |c|
-    c.report_with_single_file = true
-    c.single_report_path = "coverage/lcov.info"
-  end
-
-  if ENV["CI"]
-    load_profile 'ci'
-  else
-    load_profile 'local'
-  end
 end

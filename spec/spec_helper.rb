@@ -1,7 +1,18 @@
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
-if ENV.fetch("COVERAGE", false) || ENV.fetch("CI", false)
-  require "simplecov"
-  SimpleCov.start ENV.fetch("EXTERNAL_CI", false) ? "ci" : "local"
+require "simplecov"
+SimpleCov.start do
+  load_profile "common"
+
+  merge_subprocesses true
+  merge_timeout 360
+  enable_coverage :branch
+  primary_coverage :line
+
+  if ENV["CI"]
+    load_profile "ci"
+  else
+    load_profile "local"
+  end
 end
 
 require "flatware_helper"

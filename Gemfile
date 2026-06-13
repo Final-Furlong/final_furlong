@@ -180,7 +180,7 @@ group :test do
   gem "rspec-rails"
   gem "selenium-webdriver"
   gem "shoulda-matchers"
-  gem "simplecov", require: false
+  gem "simplecov", "1.0.0.rc2"
   gem "simplecov-cobertura", require: false
   gem "simplecov-lcov", require: false
   gem "sus"
