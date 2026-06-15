@@ -9,7 +9,8 @@ class Daily::MorningUpdatesJob < ApplicationJob
       classes << job_class.to_s
       job_class.perform_later
     end
-    Daily::ProcessFutureShipmentsJob.set(good_job_labels: [Date.current]).perform_later
+    date = Date.current
+    Daily::ProcessFutureShipmentsJob.set(good_job_labels: [date]).perform_later(date:)
     classes << "Daily::ProcessFutureShipmentsJob"
 
     store_job_info(outcome: { classes: classes.count })
