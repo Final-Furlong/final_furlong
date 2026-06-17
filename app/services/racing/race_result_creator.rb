@@ -41,8 +41,8 @@ module Racing
             raise ActiveRecord::Rollback, race_horse.errors.full_messages.to_sentence
           end
         end
-        Racing::RaceSeriesWinnerCheckJob.set(good_job_labels: [race.id], wait: 10.minutes).perform_later(race_id: race.id)
         if result.created?
+          Racing::RaceSeriesWinnerCheckJob.set(good_job_labels: [race.id], wait: 10.minutes).perform_later(race_id: race.id)
           if max_race?(number: race.number)
             Racing::RaceResultHorse.counter_culture_fix_counts
             Racing::RaceRecord.refresh
@@ -51,7 +51,7 @@ module Racing
             Racing::RaceDayUpdaterJob.set(good_job_labels: [date]).perform_later(date:)
             Daily::ProcessFutureShipmentsJob.set(good_job_labels: [date]).perform_later
             User::SendDeveloperNotifications.call(title: "FF Races Finished", message: "Races finished running!")
-          elsif ENV.fetch("USE_PHP_API", "false") == "true"
+          else
             Racing::TriggerRaceJob.set(good_job_labels: [date], wait: 30.seconds).perform_later(date:, number: race.number + 1)
           end
         end
@@ -60,6 +60,7 @@ module Racing
         race_result.destroy if race_result.persisted?
         result.created = false
         result.error = e.message
+        result.error += ", #{e.backtrace.first}"
         return result
       end
     end

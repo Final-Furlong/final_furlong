@@ -39,7 +39,7 @@ module Api
             error!({ error: "invalid", detail: "Cannot skip number #{previous_number}" }, 500) unless result.exists?
           end
           result = Racing::RaceResultCreator.new.create_result(race:, time: permitted_params[:time], horses: permitted_params[:horses])
-          error!({ error: "invalid", detail: result.error }, 500) unless result.created?
+          error!({ error: "invalid", detail: "Race error: #{result.error}" }, 500) unless result.created?
 
           { race_result_id: result.race_result&.id }
         end

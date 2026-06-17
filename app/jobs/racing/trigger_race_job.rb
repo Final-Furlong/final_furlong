@@ -17,8 +17,6 @@ module Racing
     )
 
     def perform(date: Date.current, number: 1)
-      return unless ENV.fetch("USE_PHP_API", "false") == "true"
-
       race = Racing::RaceSchedule.find_by(date:, number:)
       return unless race
 
