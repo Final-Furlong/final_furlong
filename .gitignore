@@ -32,6 +32,7 @@
 .nvmrc
 .node-version
 .ruby-version
+.pnpm-store/
 /config/database.yml
 !config/database.yml.sample
 coverage/
@@ -75,4 +76,3 @@ ci_results.txt
 
 # Ignore key files for decrypting credentials and more.
 /config/credentials/*.key
-
