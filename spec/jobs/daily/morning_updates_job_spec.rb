@@ -64,7 +64,7 @@ RSpec.describe Daily::MorningUpdatesJob, :perform_enqueued_jobs do
 
     it "stores job result" do
       count = described_class.new.class_list.count
-      expect { described_class.perform_later }.to change(JobStat, :count).by_at_least(count + 1)
+      expect { described_class.perform_later }.to change(JobStat, :count).by_at_least(count + 2)
       expect(JobStat.find_by(name: described_class.name)).to have_attributes(outcome: { classes: count + 1 }.stringify_keys)
     end
   end
