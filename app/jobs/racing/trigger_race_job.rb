@@ -28,7 +28,9 @@ module Racing
         body: { id: race.id },
         headers: { "X_API_KEY" => Rails.application.credentials.dig(:php_app, :api_key) },
         format: :plain)
-      unless response.code == 200
+      if response.code == 200
+        Racing::TriggerRaceJob.set(good_job_labels: [date], wait: 10.seconds).perform_later(date:, number: number + 1)
+      else
         body = JSON.parse(response, symbolize_names: true)
         message = body[:message]
         if message == "cannot write to file" || message.starts_with?("Cannot open ")

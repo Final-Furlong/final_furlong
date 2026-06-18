@@ -51,8 +51,6 @@ module Racing
             Racing::RaceDayUpdaterJob.set(good_job_labels: [date]).perform_later(date:)
             Daily::ProcessFutureShipmentsJob.set(good_job_labels: [date]).perform_later(date:)
             User::SendDeveloperNotifications.call(title: "FF Races Finished", message: "Races finished running!")
-          else
-            Racing::TriggerRaceJob.set(good_job_labels: [date], wait: 30.seconds).perform_later(date:, number: race.number + 1)
           end
         end
         return result
