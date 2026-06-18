@@ -18,6 +18,7 @@ class Auctions::TriggerSalesProcessingJob < ApplicationJob
   end
 
   def schedule_next_sales_job(auction:)
+    return if auction.pending_sales_count.positive?
     return unless auction.horses.unsold.exists?
 
     next_updated_at = if auction.bids.current_high_bid.sale_time_not_met.exists?
@@ -35,4 +36,3 @@ class Auctions::TriggerSalesProcessingJob < ApplicationJob
     Auctions::ProcessSalesJob.set(good_job_labels: [auction.id], wait_until: next_updated_at).perform_later(auction) unless Time.current > next_updated_at
   end
 end
-
