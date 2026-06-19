@@ -32,7 +32,7 @@ module Horses
       return false if record.age > Config::Horses.max_rename_age && record.name.present?
       return false if record.age > Config::Horses.max_rename_age && !record.created?
 
-      record.owner == stable
+      record.owner_id == stable&.id
     end
 
     def update?
@@ -48,8 +48,7 @@ module Horses
     private
 
     def manager?
-      record.manager == stable
+      record.manager_id == stable&.id
     end
   end
 end
-
