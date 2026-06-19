@@ -5,10 +5,6 @@ CI.run do
   limited_ci = ENV.fetch("LIMITED_CI", false)
   ci_type = ENV.fetch("CI_TYPE", "all")
 
-  unless limited_ci || %w[security performance].include?(ci_type)
-    step "Setup", external_ci ? "bin/rails assets:precompile" : "bin/setup test"
-  end
-
   if ci_type == "style" || ci_type == "all"
     step "Style: Ruby", "bundle exec rubocop"
     step "Style: Slim", "SLIM_LINT_RUBOCOP_CONF=.rubocop_slim.yml bundle exec slim-lint"
@@ -18,12 +14,14 @@ CI.run do
   end
 
   if ci_type == "security" || ci_type == "all"
+    step "Setup", external_ci ? "bin/rails assets:precompile" : "bin/setup test"
     step "Security: Gem audit", "bin/bundler-audit"
     step "Security: PNPM vulnerability audit", "pnpm audit --ignore-unfixable --prod"
     step "Security: Brakeman code analysis", "bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error"
   end
 
   if ci_type == "performance" || ci_type == "all"
+    step "Setup", external_ci ? "bin/rails assets:precompile" : "bin/setup test"
     step "Performance: Active Record Doctor", "bundle exec rake active_record_doctor"
   end
 
@@ -46,4 +44,3 @@ CI.run do
     end
   end
 end
-

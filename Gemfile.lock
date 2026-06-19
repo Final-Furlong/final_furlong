@@ -150,7 +150,7 @@ GEM
     bindex (0.8.1)
     binding_of_caller (2.0.0)
       debug_inspector (>= 1.2.0)
-    bootsnap (1.24.4)
+    bootsnap (1.24.6)
       msgpack (~> 1.2)
     brakeman (8.0.4)
       racc
@@ -331,8 +331,6 @@ GEM
       rspec (>= 3.8)
     formatador (1.2.3)
       reline
-    freezolite (0.7.0)
-      require-hooks (~> 0.4)
     friendly_id (5.7.0)
       activerecord (>= 4.0.0)
     fspath (3.1.2)
@@ -572,7 +570,7 @@ GEM
       railties (>= 7.1)
       stimulus-rails
       turbo-rails
-    msgpack (1.8.0)
+    msgpack (1.8.3)
     multi_json (1.21.1)
     multi_xml (0.8.1)
       bigdecimal (>= 3.1, < 5)
@@ -760,7 +758,6 @@ GEM
       rack (>= 1.4)
     requestjs-rails (0.0.14)
       railties (>= 7.1.0)
-    require-hooks (0.4.0)
     responders (3.2.0)
       actionpack (>= 7.0)
       railties (>= 7.0)
@@ -1105,7 +1102,6 @@ DEPENDENCIES
   fixture_factory
   flag_shih_tzu
   flatware-rspec
-  freezolite
   friendly_id
   good_job
   good_migrations
@@ -1250,7 +1246,7 @@ CHECKSUMS
   bigdecimal (4.1.2) sha256=53d217666027eab4280346fba98e7d5b66baaae1b9c3c1c0ffe89d48188a3fbd
   bindex (0.8.1) sha256=7b1ecc9dc539ed8bccfc8cb4d2732046227b09d6f37582ff12e50a5047ceb17e
   binding_of_caller (2.0.0) sha256=e53eebf8428a85587aede7b43a83e7419eb85b8b690938a96aa330d03052d517
-  bootsnap (1.24.4) sha256=a4d939fc2cc5242a83d3a7cb4fb97743ac58475afe91e0600479a3df6f117541
+  bootsnap (1.24.6) sha256=c60bab88c70332290f0a2636a288f675299eb4f804a02a3c085b42eca9da164a
   brakeman (8.0.4) sha256=7bf921fa9638544835df9aa7b3e720a9a72c0267f34f92135955edd80d4dcf6f
   browser (6.2.0) sha256=281d5295788825c9396427c292c2d2be0a5c91875c93c390fde6e5d61a5ace2d
   builder (3.3.0) sha256=497918d2f9dca528fdca4b88d84e4ef4387256d984b8154e9d5d3fe5a9c8835f
@@ -1327,7 +1323,6 @@ CHECKSUMS
   flatware (2.4.0) sha256=67623b700d53b2ce1d1ef98bef938600a136c804630fb2e74eade69c67e04559
   flatware-rspec (2.4.0) sha256=5c7494fab9bdddd3edd7348cccaf6ec2a483bbe473998700f086add713182938
   formatador (1.2.3) sha256=19fa898133c2c26cdbb5d09f6998c1e137ad9427a046663e55adfe18b950d894
-  freezolite (0.7.0) sha256=bc665ea47406ce4971a1cea4debde1675f467132f545d17b12ea7039acd19d3c
   friendly_id (5.7.0) sha256=b8994416ebaceebc7c60bc556e84ef32a3a663e2e582eb04c429216cc98de4c4
   fspath (3.1.2) sha256=b5ac9bafb97e2c8f8f9e303cd98ebd484be76fe9aa588bc4d01c6d99e78c9d75
   fugit (1.12.1) sha256=5898f478ede9b415f0804e42b8f3fd53f814bd85eebffceebdbc34e1107aaf68
@@ -1407,7 +1402,7 @@ CHECKSUMS
   mini_mime (1.1.5) sha256=8681b7e2e4215f2a159f9400b5816d85e9d8c6c6b491e96a12797e798f8bccef
   minitest (6.0.6) sha256=153ea36d1d987a62942382b61075745042a2b3123b1cd48f4c3675af9cc7d6f1
   mission_control-jobs (1.1.0) sha256=b13da9cde3344fec7c744b79d2a34c3ecd454f45d4d593d4c968ba762315e84c
-  msgpack (1.8.0) sha256=e64ce0212000d016809f5048b48eb3a65ffb169db22238fb4b72472fecb2d732
+  msgpack (1.8.3) sha256=8bda4a6428d3244e50d6bd55854d354edbada88a4e1f4f5731a39a0f86bee6a1
   multi_json (1.21.1) sha256=e6126a31808e3b4d19f483c775ceac34df190dffa62adfb63a165ee14ba68080
   multi_xml (0.8.1) sha256=addba0290bac34e9088bfe73dc4878530297a82a7bbd66cb44dcd0a4b86edf5a
   mustermann (4.0.0) sha256=91f67411bb208d1d93c41e6128cb3b0f8ddd9ec7c45966f1007e1c43c08040d7
@@ -1493,7 +1488,6 @@ CHECKSUMS
   reline (0.6.3) sha256=1198b04973565b36ec0f11542ab3f5cfeeec34823f4e54cebde90968092b1835
   request_store (1.7.0) sha256=e1b75d5346a315f452242a68c937ef8e48b215b9453a77a6c0acdca2934c88cb
   requestjs-rails (0.0.14) sha256=bb494198993b9bf136adeeffa3594c0143c7d16c7de4485c5e20d9c126e69a2d
-  require-hooks (0.4.0) sha256=005f4c6435b4edae73e358cdbaba48370a4121f9ce893d5d2a3c66fce855677d
   responders (3.2.0) sha256=89c2d6ac0ae16f6458a11524cae4a8efdceba1a3baea164d28ee9046bd3df55a
   reverse_markdown (3.0.2) sha256=818ebb92ce39dbb1a291690dd1ec9a6d62530d4725296b17e9c8f668f9a5b8af
   rexml (3.4.4) sha256=19e0a2c3425dfbf2d4fc1189747bdb2f849b6c5e74180401b15734bc97b5d142
@@ -1603,7 +1597,7 @@ CHECKSUMS
   zonebie (0.6.1) sha256=2762da3b5392a6a81d58ab13ae497c93e1dbdbd0c70bd8b4a9397f827be35e69
 
 RUBY VERSION
-   ruby 3.4.5p51
+  ruby 4.0.5
 
 BUNDLED WITH
-   2.7.1
+  4.0.10

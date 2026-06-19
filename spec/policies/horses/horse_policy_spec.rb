@@ -2,7 +2,7 @@ RSpec.describe Horses::HorsePolicy do
   subject(:policy) { described_class.new(user, horse) }
 
   let(:user) { build_stubbed(:user) }
-  let(:horse) { build_stubbed(:horse, name: nil) }
+  let(:horse) { build_stubbed(:horse, name: nil, gender: 'filly') }
 
   describe "scope" do
     subject(:scope) { described_class::Scope.new(user, Horses::Horse.all).resolve }
@@ -46,7 +46,7 @@ RSpec.describe Horses::HorsePolicy do
 
   context "when user is logged in and does own the horse" do
     let(:user) { create(:user) }
-    let(:horse) { build_stubbed(:horse, owner: user.stable) }
+    let(:horse) { build_stubbed(:horse, owner: user.stable, gender: 'filly') }
 
     it "allows public actions" do
       expect(policy).to permit_actions(:index, :show, :image, :thumbnail)
@@ -116,26 +116,25 @@ RSpec.describe Horses::HorsePolicy do
       end
 
       context "when horse has activity" do
-        let(:horse) { create(:horse, name: nil, sire_id: nil, dam_id: nil, owner: user.stable) }
+        let(:horse) { create(:horse, name: nil, sire_id: nil, dam_id: nil, owner: user.stable, gender: 'mare') }
 
         it "denies when horse has raced" do
-          horse.update(gender: "mare")
           create(:race_result_horse, horse:)
           expect(policy).to permit_actions(:index, :show, :image, :thumbnail)
           expect(policy).not_to permit_actions(:edit_name, :update)
         end
 
         it "denies when horse has foals" do
-          horse.update(gender: "mare")
           create(:horse, dam: horse)
           expect(policy).to permit_actions(:index, :show, :image, :thumbnail)
           expect(policy).not_to permit_actions(:edit_name, :update)
         end
 
         it "denies when horse has stud foals" do
+          horse.update(gender: "stallion")
           create(:horse, sire: horse, gender: "stallion")
-          expect(policy).to permit_actions(:index, :show, :image, :thumbnail)
-          expect(policy).not_to permit_actions(:edit_name, :update)
+          expect(policy).to permit_actions(:index, :show, :image, :thumbnail, :update)
+          expect(policy).not_to permit_actions(:edit_name)
         end
       end
     end
@@ -154,4 +153,3 @@ RSpec.describe Horses::HorsePolicy do
     it_behaves_like "not permitting anything for an unborn horse"
   end
 end
-
