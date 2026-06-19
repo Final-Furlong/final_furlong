@@ -49,6 +49,7 @@ spec/examples.txt
 .envrc
 .idea/
 .zed
+.mise/
 
 .env
 .env.*.local
@@ -75,4 +76,3 @@ ci_results.txt
 
 # Ignore key files for decrypting credentials and more.
 /config/credentials/*.key
-
