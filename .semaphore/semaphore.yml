@@ -13,6 +13,7 @@ global_job_config:
   prologue:
     commands:
       - checkout
+      - ./bin/mise install
       - sem-version ruby $(cat .ruby-version)
   epilogue:
     always:
@@ -38,7 +39,6 @@ blocks:
       prologue:
         commands:
           - sem-service start postgres 17.6
-          - sem-service start mysql 8 --username=developer --password=password --db=final_furlong_legacy_test
           - cache restore
           - bundle config set deployment true
           - bundle config set path vendor/bundle
