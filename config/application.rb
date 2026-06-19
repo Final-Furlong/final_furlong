@@ -20,7 +20,7 @@ require "action_cable/engine"
 
 Bundler.require(*Rails.groups)
 
-require "freezolite/auto"
+# require "freezolite/auto"
 
 module FinalFurlong
   class Application < Rails::Application
