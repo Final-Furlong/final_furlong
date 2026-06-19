@@ -2,12 +2,8 @@
 
 CI.run do
   external_ci = ENV.fetch("EXTERNAL_CI", false)
-  limited_ci = ENV.fetch("LIMITED_CI", false)
+  ENV.fetch("LIMITED_CI", false)
   ci_type = ENV.fetch("CI_TYPE", "all")
-
-  unless limited_ci || %w[security performance].include?(ci_type)
-    step "Setup", external_ci ? "bin/rails assets:precompile" : "bin/setup test"
-  end
 
   if ci_type == "style" || ci_type == "all"
     step "Style: Ruby", "bundle exec rubocop"
@@ -18,16 +14,19 @@ CI.run do
   end
 
   if ci_type == "security" || ci_type == "all"
+    step "Setup", external_ci ? "bin/rails assets:precompile" : "bin/setup test"
     step "Security: Gem audit", "bin/bundler-audit"
     step "Security: PNPM vulnerability audit", "pnpm audit --ignore-unfixable --prod"
     step "Security: Brakeman code analysis", "bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error"
   end
 
   if ci_type == "performance" || ci_type == "all"
+    step "Setup", external_ci ? "bin/rails assets:precompile" : "bin/setup test"
     step "Performance: Active Record Doctor", "bundle exec rake active_record_doctor"
   end
 
   if ci_type == "tests" || ci_type == "all"
+    step "Setup", external_ci ? "bin/rails assets:precompile" : "bin/setup test"
     step "Tests: Setup", "pnpm playwright install --with-deps chromium" if external_ci
     step "Tests: Rails", external_ci ? "bin/rspec --format RspecJunitFormatter --out report.xml --format progress" : "bin/rspec"
     unless external_ci
@@ -46,4 +45,3 @@ CI.run do
     end
   end
 end
-
