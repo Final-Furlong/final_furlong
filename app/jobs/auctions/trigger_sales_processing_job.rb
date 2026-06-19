@@ -36,3 +36,4 @@ class Auctions::TriggerSalesProcessingJob < ApplicationJob
     Auctions::ProcessSalesJob.set(good_job_labels: [auction.id], wait_until: next_updated_at).perform_later(auction) unless Time.current > next_updated_at
   end
 end
+

@@ -60,7 +60,7 @@ module Racing
         race_result.destroy if race_result.persisted?
         result.created = false
         result.error = e.message
-        result.error += ", #{e.backtrace.first}"
+        Sentry.capture_exception(e)
         return result
       end
     end
