@@ -57,16 +57,15 @@ RSpec.describe Daily::MorningUpdatesJob, :perform_enqueued_jobs do
     end
 
     it "triggers future shipments job" do
-      allow(Daily::ProcessFutureShipmentsJob).to receive(:perform_later)
+      allow(Daily::ProcessFutureShipmentsJob).to receive(:set).and_call_original
       described_class.perform_later
-      expect(Daily::ProcessFutureShipmentsJob).to have_received(:perform_later)
+      expect(Daily::ProcessFutureShipmentsJob).to have_received(:set)
     end
 
     it "stores job result" do
       count = described_class.new.class_list.count
       expect { described_class.perform_later }.to change(JobStat, :count).by_at_least(count + 1)
-      expect(JobStat.find_by(name: described_class.name)).to have_attributes(outcome: { classes: count }.stringify_keys)
+      expect(JobStat.find_by(name: described_class.name)).to have_attributes(outcome: { classes: count + 1 }.stringify_keys)
     end
   end
 end
-
