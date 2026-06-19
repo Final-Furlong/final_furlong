@@ -10,7 +10,6 @@ gem "solid_cache" # A database-backed ActiveSupport::Cache::Store [https://githu
 
 # Backend
 gem "bootsnap", require: false # Reduces boot times through caching; required in config/boot.rb
-gem "freezolite"
 gem "puma" # Use the Puma web server [https://github.com/puma/puma]
 
 # Asset management

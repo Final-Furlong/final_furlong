@@ -37,17 +37,12 @@ blocks:
     task:
       prologue:
         commands:
-          - sem-service start postgres 17.6
-          - sem-service start mysql 8 --username=developer --password=password --db=final_furlong_legacy_test
           - cache restore
           - bundle config set deployment true
           - bundle config set path vendor/bundle
           - bundle config set --local without 'development'
           - bundle install
           - cache store
-          - cp config/database.yml.github_actions config/database.yml
-          - bin/rails db:create:primary db:schema:load:primary
-          - bin/rails db:create:cache db:schema:load:cache
       jobs:
         - name: Run Linters
           env_vars:
@@ -63,6 +58,10 @@ blocks:
             - name: CI_TYPE
               value: security
           commands:
+            - sem-service start postgres 17.6
+            - cp config/database.yml.github_actions config/database.yml
+            - bin/rails db:create:primary db:schema:load:primary
+            - bin/rails db:create:cache db:schema:load:cache
             - wget -qO- https://get.pnpm.io/install.sh | sh -
             - source /home/semaphore/.bashrc
             - pnpm install
@@ -72,12 +71,23 @@ blocks:
             - name: CI_TYPE
               value: performance
           commands:
+            - sem-service start postgres 17.6
+            - cp config/database.yml.github_actions config/database.yml
+            - bin/rails db:create:primary db:schema:load:primary
+            - bin/rails db:create:cache db:schema:load:cache
+            - wget -qO- https://get.pnpm.io/install.sh | sh -
+            - source /home/semaphore/.bashrc
+            - pnpm install
             - bin/ci
         - name: Tests
           env_vars:
             - name: CI_TYPE
               value: tests
           commands:
+            - sem-service start postgres 17.6
+            - cp config/database.yml.github_actions config/database.yml
+            - bin/rails db:create:primary db:schema:load:primary
+            - bin/rails db:create:cache db:schema:load:cache
             - wget -qO- https://get.pnpm.io/install.sh | sh -
             - source /home/semaphore/.bashrc
             - pnpm install
