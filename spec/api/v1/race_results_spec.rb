@@ -36,7 +36,7 @@ RSpec.describe Api::V1::RaceResults do
         post("/api/v1/race_results", params:, headers: { "Api-Key" => Rails.application.credentials.dig(:api, :key) })
 
         expect(response).to have_http_status :internal_server_error
-        expect(json_body).to eq({ error: "invalid", detail: error })
+        expect(json_body).to eq({ error: "invalid", detail: "Race error: #{error}" })
       end
     end
 
@@ -143,4 +143,3 @@ RSpec.describe Api::V1::RaceResults do
     @horse2 ||= create(:horse, legacy_id: 4)
   end
 end
-
