@@ -13,7 +13,7 @@ module Racing
 
     good_job_concurrency_rule(
       label: -> { arguments.first[:date] },
-      total_limit: 1
+      total_limit: 2
     )
 
     def perform(date: Date.current, number: 1)
@@ -42,4 +42,3 @@ module Racing
     end
   end
 end
-
