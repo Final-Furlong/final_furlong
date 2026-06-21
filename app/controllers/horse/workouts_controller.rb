@@ -6,7 +6,7 @@ module Horse
       @horse = Horses::Horse.find(params[:id])
       authorize @horse, :view_workouts?, policy_class: CurrentStable::HorsePolicy
 
-      query = Horses::WorkoutPolicy::Scope.new(Current.user, @horse.workouts).resolve.includes(:jockey, :racetrack).order(date: :desc)
+      query = Horses::WorkoutPolicy::Scope.new(Current.user, @horse.workouts).resolve.includes(:comment, :jockey, :racetrack, :surface).order(date: :desc)
 
       @pagy, @workouts = pagy(:countless, query)
 

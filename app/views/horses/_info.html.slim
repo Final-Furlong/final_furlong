@@ -35,10 +35,18 @@
         td= horse.location_bred_name
       tr
         th= t(".gender")
-        td= horse.gender.titleize
+        td
+          = horse.gender.titleize
+          - if CurrentStable::HorsePolicy.new(Current.user, horse).geld?
+            = render Ui::ButtonizedLink::Component.new(url: new_gelding_horse_path(horse), color: :error, style: :outline, size: :small, extra_classes: "ml-2", http_method: :get, data: { turbo_frame: "modal" }) do
+              = t("horse.actions.geld")
       tr
         th= t(".status")
-        td= horse.status.titleize
+        td
+          = horse.status.titleize
+          - if CurrentStable::HorsePolicy.new(Current.user, horse).change_status?
+            = render Ui::ButtonizedLink::Component.new(url: edit_horse_status_path(horse), color: :info, style: :outline, size: :small, extra_classes: "ml-2", http_method: :get, data: { turbo_frame: "modal" }) do
+              = t("horse.actions.change_status")
       tr
         th= t(".color")
         td= horse.appearance.color.titleize
@@ -54,7 +62,12 @@
         td= link_to horse.breeder.name, stable_path(horse.breeder), target: "_top"
       tr
         th= t(".owner")
-        td= link_to horse.owner.name, stable_path(horse.owner), target: "_top"
+        td
+          = link_to horse.owner.name, stable_path(horse.owner), target: "_top"
+          - if CurrentStable::HorsePolicy.new(Current.user, horse).give_to_game?
+            - data = { turbo_method: :put, turbo_confirm: t("horse.give_to_game.confirm", name: horse.name), turbo_confirm_title: t("horse.give_to_game.confirm_title"), turbo_frame: "_top" }
+            = render Ui::ButtonizedLink::Component.new(url: edit_horse_status_path(horse), color: :error, style: :outline, size: :small, extra_classes: "ml-2", http_method: :get, data:) do
+              = t("horse.actions.give_to_game")
       - unless horse.dead?
         - if horse.racehorse? || horse.broodmare?
           tr
@@ -62,8 +75,8 @@
             td
               - if horse.racehorse?
                 = horse.race_metadata.location_string
-                - if horse.racing.in_transit?
-                  em.ml-2= t(".in_transit", date: l(horse.racing.last_shipment.arrival_date))
+                - if horse.in_transit?
+                  em.ml-2= t(".in_transit", date: l(horse.last_shipment.arrival_date))
                 - elsif (board = horse.current_boarding)
                   - days = "#{board.count_days} #{I18n.t("common.day").pluralize(board.count_days)}"
                   em.ml-2= t(".boarded", days:)

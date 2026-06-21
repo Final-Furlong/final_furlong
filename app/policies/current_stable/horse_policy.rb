@@ -28,7 +28,7 @@ module CurrentStable
     end
 
     def change_status?
-      return false if record.current_lease
+      return false if record.leaser_id.present?
       return false unless Horses::Status::LIVING_STATUSES.include?(record.status)
       return false if Horses::Status::RETIRED_STATUSES.include?(record.status)
 

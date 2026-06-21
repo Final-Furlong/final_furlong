@@ -6,7 +6,7 @@ class SSOsController < ApplicationController
 
   def show
     handler = Game::SSOHandler.new
-    if handler.hex_digest(params[:sso]) == params[:sig]
+    if params[:sso] && handler.hex_digest(params[:sso]) == params[:sig]
       if handler.base64? params[:sso]
         decoded_hash = handler.decoded_hash(params[:sso])
         if decoded_hash[:nonce] == session[:sso_nonce]

@@ -126,7 +126,7 @@ module Horse
 
     def destroy
       @horse = Horses::Horse.racehorse.find(params[:horse_id])
-      @entry = @horse.future_race_entries.find_by(race_id: params[:id])
+      @entry = @horse.future_race_entries.includes(:race).find_by(race_id: params[:id])
       authorize @entry
 
       @current_entries = @horse.race_entries.order(date: :asc)
