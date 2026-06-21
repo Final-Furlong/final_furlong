@@ -35,8 +35,6 @@ module Horses
         { key: :run_workout, policy: CurrentStable::RacehorsePolicy },
         { key: :run_jump_trial, policy: CurrentStable::RacehorsePolicy },
         { key: :nominate, policy: CurrentStable::RacehorsePolicy },
-        { key: :geld },
-        { key: :change_status },
         { key: :create_lease_offer, policy: CurrentStable::LeaseOfferPolicy },
         { key: :accept, policy: CurrentStable::LeaseOfferPolicy, object: :lease_offer },
         { key: :reject, policy: CurrentStable::LeaseOfferPolicy, object: :lease_offer },
@@ -50,8 +48,7 @@ module Horses
         { key: :remove_from_auction },
         { key: :update_stud_options, policy: CurrentStable::StallionPolicy },
         { key: :nominate_weanling },
-        { key: :change_owner, policy: Admin::HorsePolicy },
-        { key: :give_to_game }
+        { key: :change_owner, policy: Admin::HorsePolicy }
       ]
     end
   end

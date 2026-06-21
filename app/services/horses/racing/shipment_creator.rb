@@ -41,7 +41,7 @@ module Horses
         end
 
         cost = (shipment.mode == "road") ? route[:road_cost] : route[:air_cost]
-        if stable&.available_balance.nil? || (stable&.available_balance&.<= cost)
+        if stable&.available_balance.nil? || (stable.available_balance <= cost)
           shipment.errors.add(:mode, :cannot_afford)
           store_shipment_errors
           result.shipment = shipment
@@ -90,7 +90,7 @@ module Horses
       end
 
       def shipping_type(params)
-        if horse.racehorse? && horse.racing.at_farm?
+        if horse.racehorse? && horse.at_farm?
           "farm_to_track"
         elsif params[:ending_location] == "Farm"
           "track_to_farm"
