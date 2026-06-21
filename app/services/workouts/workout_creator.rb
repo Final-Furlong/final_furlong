@@ -127,7 +127,7 @@ module Workouts
         end
         stat.recent_time_in_seconds = time
         stat.recent_date = workout.date
-        stat.save!
+        stat.save
       end
     end
 

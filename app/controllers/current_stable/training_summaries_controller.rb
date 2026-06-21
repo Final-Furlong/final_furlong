@@ -19,11 +19,13 @@ module CurrentStable
         params[:q][:gender_in] = Horses::Gender::FEMALE_GENDERS
       end
 
+      @query = @query.joins(:race_qualification, :race_metadata)
       @query = @query.includes(:race_qualification, :race_metadata,
         :race_entries, :future_race_entries,
         :current_boarding).ransack(params[:q])
       @query.sorts = "name asc" if @query.sorts.blank?
 
+      @count = @query.result.count
       @pagy, @horses = pagy(:countless, @query.result)
     end
   end

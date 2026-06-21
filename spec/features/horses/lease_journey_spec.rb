@@ -58,7 +58,6 @@ RSpec.describe "Leasing Journey" do
 
       sign_in(leaser_user)
       visit horse_path(horse)
-      click_on t("view_components.nav.breadcrumbs.actions.title")
       click_on t("horse.actions.current_lease.terminate")
       within "dialog" do
         check "horses_lease_termination_request[owner_accepted_end]"
@@ -163,4 +162,3 @@ RSpec.describe "Leasing Journey" do
     @horse ||= create(:horse, :racehorse, :with_appearance, owner: leaser)
   end
 end
-

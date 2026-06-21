@@ -15,6 +15,6 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym "RESTful"
   inflect.acronym "SSO"
   inflect.acronym "SSOs"
-  inflect.uncountable %w[retired deceased info series]
+  inflect.uncountable %w[data retired deceased info series]
 end
 

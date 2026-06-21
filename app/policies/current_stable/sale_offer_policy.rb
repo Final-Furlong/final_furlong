@@ -72,7 +72,7 @@ module CurrentStable
     end
 
     def owner?
-      record.owner == stable
+      record&.owner == stable
     end
   end
 end
