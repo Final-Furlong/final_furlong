@@ -11706,13 +11706,6 @@ CREATE INDEX index_horses_on_dam_id ON public.horses USING btree (dam_id);
 
 
 --
--- Name: index_horses_on_date_of_birth; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_horses_on_date_of_birth ON public.horses USING btree (date_of_birth);
-
-
---
 -- Name: index_horses_on_date_of_birth_and_leaser_id; Type: INDEX; Schema: public; Owner: -
 --
 

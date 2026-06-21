@@ -117,7 +117,7 @@ end
 #
 #  id                                                                                                                 :bigint           not null, primary key
 #  age                                                                                                                :integer          default(0), not null, indexed, indexed => [status]
-#  date_of_birth                                                                                                      :date             not null, indexed, indexed => [leaser_id], indexed => [manager_id], indexed => [owner_id]
+#  date_of_birth                                                                                                      :date             not null, indexed => [leaser_id], indexed => [manager_id], indexed => [owner_id]
 #  date_of_death                                                                                                      :date             indexed
 #  dosage_abbr                                                                                                        :string
 #  gender(colt, filly, mare, stallion, gelding)                                                                       :enum             not null, indexed, indexed => [status]
@@ -142,7 +142,6 @@ end
 #  index_horses_on_age                           (age)
 #  index_horses_on_breeder_id                    (breeder_id)
 #  index_horses_on_dam_id                        (dam_id)
-#  index_horses_on_date_of_birth                 (date_of_birth)
 #  index_horses_on_date_of_birth_and_leaser_id   (date_of_birth,leaser_id) WHERE (leaser_id IS NOT NULL)
 #  index_horses_on_date_of_birth_and_manager_id  (date_of_birth,manager_id)
 #  index_horses_on_date_of_birth_and_owner_id    (date_of_birth,owner_id) WHERE (leaser_id IS NULL)
