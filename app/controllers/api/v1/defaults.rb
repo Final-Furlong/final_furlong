@@ -13,6 +13,10 @@ module Api
         formatter :json,
           Grape::Formatter::ActiveModelSerializers
 
+        rescue_from Grape::Exceptions::ValidationErrors do |e|
+          error!({ messages: e.full_messages }, 400)
+        end
+
         before do
           validate_api_key
         end
