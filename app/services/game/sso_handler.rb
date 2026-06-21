@@ -19,17 +19,19 @@ module Game
     end
 
     def sso_redirect_url
-      session_url = Rails.application.credentials.dig(:forum, :sso_session_path).dup
+      session_url = Rails.application.credentials.forum.sso_session_path!
+      session_url = session_url.dup
       session_url.sub!(":sso", sso_url_encoded)
       session_url.sub!(":sig", sig_hex_encoded)
       [
-        Rails.application.credentials.dig(:forum, :url),
+        Rails.application.credentials.forum.url!,
         session_url
       ].join("")
     end
 
     def hex_digest(value)
-      OpenSSL::HMAC.hexdigest("SHA256", Rails.application.credentials.dig(:forum, :sso_key), value).downcase
+      sso_key = Rails.application.credentials.forum.sso_key!
+      OpenSSL::HMAC.hexdigest("SHA256", sso_key, value).downcase
     end
 
     def base64?(data)
