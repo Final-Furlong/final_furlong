@@ -21,7 +21,7 @@ module Workouts
     validates :effort, numericality: { only_integer: true, greater_than: 0 }
     validates :confidence, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, on: :complete_workout
     validates :equipment, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-    validates :time_in_seconds, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true, on: :complete_workout
+    validates :time_in_seconds, numericality: { only_integer: true, greater_than: 0, less_than: 10_000 }, allow_nil: true, on: :complete_workout
     validates :auto, :special_event, inclusion: { in: [true, false] }
     validates :horse_id, uniqueness: { scope: :date }
 
