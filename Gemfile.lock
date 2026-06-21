@@ -377,9 +377,6 @@ GEM
     grape-active_model_serializers (2.0.1)
       active_model_serializers (>= 0.10.0)
       grape (>= 2.3.0)
-    grape-entity (1.0.4)
-      activesupport (>= 3.0.0)
-      multi_json (>= 1.0)
     grape_logging (3.0.0)
       grape (>= 2.4.0)
       rack
@@ -571,7 +568,6 @@ GEM
       stimulus-rails
       turbo-rails
     msgpack (1.8.3)
-    multi_json (1.21.1)
     multi_xml (0.8.1)
       bigdecimal (>= 3.1, < 5)
     mustermann (4.0.0)
@@ -1107,7 +1103,6 @@ DEPENDENCIES
   good_migrations
   grape
   grape-active_model_serializers
-  grape-entity
   grape_logging
   guard
   guard-bundler
@@ -1337,7 +1332,6 @@ CHECKSUMS
   google-protobuf (4.34.1-x86_64-linux-musl) sha256=8c0e91436fbe504ffc64f0bd621f2e69adbcce8ed2c58439d7a21117069cfdd7
   grape (3.2.1) sha256=448072f55904e5a4dca2e3781f0a373942514be65402cafb6177f5bc73db1b94
   grape-active_model_serializers (2.0.1) sha256=1714f0bb3a8771c3bd96ce75a3d7eb532080e30a70abd61f275f6cd329588c42
-  grape-entity (1.0.4) sha256=cda42416d87831de0da2f28aa1f5ba9b38856b936b4a5ba995e52d32de1ec0bd
   grape_logging (3.0.0) sha256=7b62d984ce96df15d120508668debe307e6a59ac1c511f1d9b5f3b4bea793e13
   guard (2.20.1) sha256=ab9cd7873854e6b76080c0589f781ff3e390e441bdda20165804df54f977015a
   guard-bundler (3.1.0) sha256=d0e60e46d6c06e201e79f61623211f64961cb000188f55fb76e36dc892ff0e35
@@ -1403,7 +1397,6 @@ CHECKSUMS
   minitest (6.0.6) sha256=153ea36d1d987a62942382b61075745042a2b3123b1cd48f4c3675af9cc7d6f1
   mission_control-jobs (1.1.0) sha256=b13da9cde3344fec7c744b79d2a34c3ecd454f45d4d593d4c968ba762315e84c
   msgpack (1.8.3) sha256=8bda4a6428d3244e50d6bd55854d354edbada88a4e1f4f5731a39a0f86bee6a1
-  multi_json (1.21.1) sha256=e6126a31808e3b4d19f483c775ceac34df190dffa62adfb63a165ee14ba68080
   multi_xml (0.8.1) sha256=addba0290bac34e9088bfe73dc4878530297a82a7bbd66cb44dcd0a4b86edf5a
   mustermann (4.0.0) sha256=91f67411bb208d1d93c41e6128cb3b0f8ddd9ec7c45966f1007e1c43c08040d7
   mustermann-grape (1.1.0) sha256=8d258a986004c8f01ce4c023c0b037c168a9ed889cf5778068ad54398fa458c5

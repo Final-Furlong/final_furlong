@@ -59,7 +59,6 @@ gem "whenever", require: false
 # API
 gem "grape"
 gem "grape-active_model_serializers"
-gem "grape-entity"
 gem "grape_logging"
 
 # Admin
