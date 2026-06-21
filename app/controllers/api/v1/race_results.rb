@@ -3,10 +3,6 @@ module Api
     class RaceResults < Grape::API
       include Api::V1::Defaults
 
-      rescue_from Grape::Exceptions::ValidationErrors do |e|
-        error!({ messages: e.full_messages }, 400)
-      end
-
       resource :race_results do
         desc "Create a race result"
         params do

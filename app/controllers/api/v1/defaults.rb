@@ -13,6 +13,10 @@ module Api
         formatter :json,
           Grape::Formatter::ActiveModelSerializers
 
+        rescue_from Grape::Exceptions::ValidationErrors do |e|
+          error!({ error: "invalid", detail: e.full_messages }, 400)
+        end
+
         before do
           validate_api_key
         end
@@ -22,11 +26,11 @@ module Api
             api_key = headers["Api-Key"]
             expected_key = Rails.application.credentials.dig(:api, :key)
 
-            error!("Missing configured api key", 500) unless expected_key
-            error!("No API key provided", 401) unless api_key
+            error!({ error: "invalid", detail: "Missing configured api key" }, 500) unless expected_key
+            error!({ error: "invalid", detail: "No API key provided" }, 401) unless api_key
 
             unless secure_compare(api_key, expected_key)
-              error!("Invalid API key", 401)
+              error!({ error: "invalid", detail: "Invalid API key" }, 401)
             end
           end
 
@@ -49,11 +53,11 @@ module Api
         end
 
         rescue_from ActiveRecord::RecordNotFound do |e|
-          error!(e, 404)
+          error!({ error: "not_found", detail: e }, 404)
         end
 
         rescue_from ActiveRecord::RecordInvalid do |e|
-          error!(e, 422)
+          error!({ error: "invalid", detail: e }, 422)
         end
       end
     end
