@@ -40,22 +40,21 @@ RSpec.describe Api::V1::RaceResults do
       end
     end
 
-    context "when API Key is missing" do
+    context "when params are invalid" do
       it "returns error" do
-        post("/api/v1/race_results", params:, headers: {})
+        new_params = params.dup
+        new_params[:horses] = []
+        post("/api/v1/race_results", params: new_params, headers: { "Api-Key" => Rails.application.credentials.dig(:api, :key) })
 
-        expect(response).to have_http_status :unauthorized
-        expect(json_body).to eq({ error: "No API key provided" })
+        expect(response).to have_http_status :bad_request
+        expect(json_body[:error]).to eq "invalid"
+        expect(json_body[:detail]).to include("horses[0][finish_position] is missing")
       end
     end
 
-    context "when API key is wrong" do
-      it "returns error" do
-        post("/api/v1/race_results", params:, headers: { "Api-Key" => "foo" })
-
-        expect(response).to have_http_status :unauthorized
-        expect(json_body).to eq({ error: "Invalid API key" })
-      end
+    it_behaves_like "an endpoint that requires an API key" do
+      let(:method) { :post }
+      let(:url) { "/api/v1/race_results" }
     end
   end
 
