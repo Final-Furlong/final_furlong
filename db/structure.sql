@@ -11720,6 +11720,13 @@ CREATE INDEX index_horses_on_date_of_birth_and_leaser_id ON public.horses USING 
 
 
 --
+-- Name: index_horses_on_date_of_birth_and_manager_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horses_on_date_of_birth_and_manager_id ON public.horses USING btree (date_of_birth, manager_id);
+
+
+--
 -- Name: index_horses_on_date_of_birth_and_owner_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -14798,6 +14805,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260621142418'),
 ('20260608141919'),
 ('20260602101413'),
 ('20260601181959'),
