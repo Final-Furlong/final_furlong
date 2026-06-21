@@ -24,10 +24,9 @@ module Racing
         raise PreRaceError.new("Race #{race.id} needs pre-race stuff!")
       end
 
-      response = HTTParty.post(Rails.application.credentials.dig(:php_app, :url),
-        body: { id: race.id },
-        headers: { "X_API_KEY" => Rails.application.credentials.dig(:php_app, :api_key) },
-        format: :plain)
+      url = Rails.application.credentials.php_app.url!
+      api_key = Rails.application.credentials.php_app.api_key!
+      response = HTTParty.post(url, body: { id: race.id }, headers: { "X_API_KEY" => api_key }, format: :plain)
       if response.code == 200
         Racing::TriggerRaceJob.set(good_job_labels: [date], wait: 10.seconds).perform_later(date:, number: number + 1)
       else

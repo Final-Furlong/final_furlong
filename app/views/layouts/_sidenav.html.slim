@@ -33,7 +33,7 @@ nav class="drawer-side is-drawer-close:overflow-visible"
         button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
           data-tip=t(".forum") aria-label=t(".forum")
         ]
-          = render Ui::Link::Component.new(url: Rails.application.credentials.dig(:forum, :url), data: { aria_label: t(".forum") }) do
+          = render Ui::Link::Component.new(url: Rails.application.credentials.forum.url!, data: { aria_label: t(".forum") }) do
             i.ph.ph-fill.ph-chat-text
             span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t(".forum")
       .divider.my-0
