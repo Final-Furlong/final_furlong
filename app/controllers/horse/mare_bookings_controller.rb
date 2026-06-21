@@ -31,7 +31,7 @@ module Horse
       @breeding = Horses::Breeding.new(mare: @horse, stud: @stud, slot:, stable: @horse.manager, status: "approved", date:, year: date.year, fee:)
       if (failure = policy(@breeding).request_booking_result.failure)
         flash[:error] = t(".#{failure}")
-      elsif @breeding.save!
+      elsif @breeding.save
         flash[:success] = t(".success", name: @stud.name)
         respond_to do |format|
           format.html { redirect_to horse_path(@horse) }

@@ -316,6 +316,10 @@ en:
         fitness: Fitness
         gender: Gender
         horse: Horse
+        horses_count:
+          one: 1 Horse
+          other: "%{count} Horses"
+          zero: No horses found
         last_injury: Last Injury
         last_race: Last Race
         last_race_hint: Race Info (Days Since | Rest Days Since)

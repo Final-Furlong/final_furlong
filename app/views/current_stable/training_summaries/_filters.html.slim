@@ -24,31 +24,34 @@
         div
           fieldset.fieldset
             legend.fieldset-legend= t(".age")
-            label.label
+            .join
               - Config::Racing.filter_ages.each do |age|
-                - plain_age = age.gsub('yo', '')
-                = checkbox_tag 'q[age_in][]', plain_age, checked: params.dig(:q, :age_in).to_a.include?(plain_age), class: "checkbox"
-                = age
+                label.label.join-item.mr-2
+                  - plain_age = age.gsub('yo', '')
+                  = checkbox_tag 'q[age_in][]', plain_age, checked: params.dig(:q, :age_in).to_a.include?(plain_age), class: "checkbox"
+                  = age
         div
           fieldset.fieldset
             legend.fieldset-legend= t(".gender")
-            label.label
+            .join
               - Config::Horses.filter_genders.each do |gender|
-                - check_gender = gender == "male" ? "colt" : "filly"
-                = radio_button_tag 'q[gender_in]', gender, checked: params.dig(:q, :gender_in).to_a.include?(check_gender), class: "radio"
-                = gender.capitalize
+                label.label.join-item.mr-2
+                  - check_gender = gender == "male" ? "colt" : "filly"
+                  = radio_button_tag 'q[gender_in]', gender, checked: params.dig(:q, :gender_in).to_a.include?(check_gender), class: "radio"
+                  = gender.capitalize
         div
           fieldset.fieldset
             legend.fieldset-legend= t(".runs_on")
-            label.label
+            .join
               - Config::Racing.surfaces.each do |surface|
-                = radio_button_tag "q[runs_on]", surface, checked: params.dig(:q, :runs_on).to_s == surface, class: "radio"
-                = t("racing.race.surface_#{surface}")
+                label.label.join-item.mr-2
+                  = radio_button_tag "q[runs_on]", surface, checked: params.dig(:q, :runs_on).to_s == surface, class: "radio"
+                  = t("racing.race.surface_#{surface}")
         div
           fieldset.fieldset
             legend.fieldset-legend= t(".location")
             label.label
-              = f.collection_select :race_metadata_location_string_eq, Racing::RacehorseMetadata.joins(:horse).merge(Horses::Horse.managed_by(Current.stable)).order(location_string: :asc).select(:location_string).distinct, :location_string, :location_string, { include_blank: true }, { class: 'select' }
+              = f.collection_select :location, Racing::RacehorseMetadata.joins(:horse).merge(Horses::Horse.managed_by(Current.stable)).order(location_string: :asc).select(:location_string).distinct, :location_string, :location_string, { include_blank: true }, { class: 'select' }
         div
           fieldset.fieldset
             legend.fieldset-legend= t(".entered_to_race")
