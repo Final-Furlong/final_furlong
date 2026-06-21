@@ -1,6 +1,7 @@
 = turbo_frame_tag "#{Current.stable.slug}-training-summary" do
   .mx-auto
     = render "filters", query: @query
+    p.text-lg.text-center= t(".horses_count", count: @count)
     table.table-responsive.table.bordered.table-zebra.table-xs.w-full
       thead
         tr

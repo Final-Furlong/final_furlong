@@ -50,7 +50,7 @@ module CurrentStable
     end
 
     def view_nominations?
-      return false unless %w[weanling yearling racehorse].include?(record.status)
+      return false unless %w[racehorse].include?(record.status)
 
       logged_in?
     end
