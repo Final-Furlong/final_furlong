@@ -300,6 +300,7 @@ en:
         forecast_explanation: Rain is the chance of rain for tomorrow and the following race day(s)
         rain: Rain (%{date})
         rain_percent: "%{percent}%"
+        rain_percent_unknown: Unknown
         title: Racetracks
         tomorrow_rain: Rain (Tomorrow)
     workout_comments:
