@@ -29,7 +29,7 @@ module Shipping
     def options_for_destination_select(horse)
       location_query = Location
       list = []
-      unless horse.racing.at_farm?
+      unless horse.at_farm?
         list << [horse.manager.name, "Farm"]
         location_query = location_query.where.not(id: horse.race_metadata.location.id)
       end
