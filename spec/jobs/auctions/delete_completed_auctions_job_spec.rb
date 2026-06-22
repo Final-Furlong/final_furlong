@@ -35,3 +35,4 @@ RSpec.describe Auctions::DeleteCompletedAuctionsJob, :perform_enqueued_jobs do
     end
   end
 end
+

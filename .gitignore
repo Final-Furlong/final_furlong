@@ -32,6 +32,7 @@
 .nvmrc
 .node-version
 .ruby-version
+.rubocop
 /config/database.yml
 !config/database.yml.sample
 coverage/

@@ -78,3 +78,4 @@ RSpec.describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
     @final_furlong ||= Account::Stable.find_by(name:) || create(:stable, name:)
   end
 end
+
