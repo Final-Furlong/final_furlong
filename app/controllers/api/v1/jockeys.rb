@@ -10,7 +10,8 @@ module Api
         end
         route_param :id do
           get do
-            Racing::Jockey.find(params[:id])
+            jockey = Racing::Jockey.find(params[:id])
+            ::Racing::JockeyBlueprint.render_as_json(jockey)
           end
         end
       end
