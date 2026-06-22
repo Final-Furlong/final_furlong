@@ -2,8 +2,12 @@ module Horses
   class RacehorseBlueprint < ::Blueprinter::Base
     identifier :id
 
-    fields :name, :gender, :status, :owner_id, :breeder_id,
+    fields :name, :gender, :status, :owner_id, :breeder_id, :manager_id,
       :date_of_birth, :age, :date_of_death, :sire_id, :dam_id
+
+    field :manager_name do |horse, options|
+      horse.manager.name
+    end
 
     field :owner_name do |horse, options|
       horse.owner.name
@@ -94,6 +98,8 @@ module Horses
       end
       total_max_points.zero? ? 0 : (total_points.fdiv(total_max_points) * 100).round
     end
+
+    association :racing_stats, blueprint: ::Racing::RacingStatsBlueprint
 
     association :next_race_entry, blueprint: ::Racing::RaceEntryBlueprint, name: :race_entry
 
