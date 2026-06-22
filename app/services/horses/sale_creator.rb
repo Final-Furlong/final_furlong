@@ -36,7 +36,16 @@ module Horses
           update_activity(original_owner.user, :sold_horse)
 
           horse.update(owner: stable, manager: stable)
-          horse.training_schedules_horse&.destroy
+          if horse.racehorse?
+            horse.training_schedules_horse&.destroy
+            unless horse.current_boarding
+              last_shipment = horse.racing_shipments.order(arrival_date: :desc).first
+              if last_shipment&.shipping_type == "track_to_farm"
+                racetrack = stable.racetrack
+                horse.race_metadata&.update(racetrack:, location: racetrack.location, location_string: stable.name)
+              end
+            end
+          end
           Horses::Horse.unborn.where(dam: horse).find_each do |foal|
             foal.update(owner: stable, manager: stable)
           end
