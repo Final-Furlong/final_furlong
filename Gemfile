@@ -57,8 +57,8 @@ gem "web-push"
 gem "whenever", require: false
 
 # API
+gem "blueprinter"
 gem "grape"
-gem "grape-active_model_serializers"
 gem "grape_logging"
 
 # Admin

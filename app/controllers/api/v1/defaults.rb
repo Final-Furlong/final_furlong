@@ -10,8 +10,6 @@ module Api
         version "v1", using: :path
         default_format :json
         format :json
-        formatter :json,
-          Grape::Formatter::ActiveModelSerializers
 
         rescue_from Grape::Exceptions::ValidationErrors do |e|
           error!({ error: "invalid", detail: e.full_messages }, 400)
