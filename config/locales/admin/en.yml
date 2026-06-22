@@ -1,6 +1,15 @@
 ---
 en:
   admin:
+    horses:
+      owners:
+        form:
+          new_owner: New Owner
+        edit:
+          title: Edit Owner for %{name}
+        update:
+          failure: Owner update was not successful
+          success: Owner was successfully updated
     job_stats:
       index:
         class: Class
