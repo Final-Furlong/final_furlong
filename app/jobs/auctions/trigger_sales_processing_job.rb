@@ -6,6 +6,9 @@ class Auctions::TriggerSalesProcessingJob < ApplicationJob
     Auction.current.find_each do |auction|
       run_sales_job(auction:)
       schedule_next_sales_job(auction:)
+    end
+    Auction.ended.find_each do |auction|
+      run_sales_job(auction:)
       schedule_deletion(auction:)
     end
   end
