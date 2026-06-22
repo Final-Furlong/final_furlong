@@ -35,6 +35,10 @@ module CurrentStable
       owner? || admin?
     end
 
+    def change_owner?
+      admin?
+    end
+
     def view_stats?
       return true if manager? && record.racehorse?
 

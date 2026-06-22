@@ -106,7 +106,16 @@ module Auctions
         end
         auction_horse.update(sold_at: Time.current)
         horse.update(owner: buyer, manager: buyer)
-        horse.training_schedules_horse&.destroy
+        if horse.racehorse?
+          horse.training_schedules_horse&.destroy
+          unless horse.current_boarding
+            last_shipment = horse.racing_shipments.order(arrival_date: :desc).first
+            if last_shipment&.shipping_type == "track_to_farm"
+              racetrack = buyer.racetrack
+              horse.race_metadata&.update(racetrack:, location: racetrack.location, location_string: buyer.name)
+            end
+          end
+        end
         Auctions::Horse.counter_culture_fix_counts
 
         result.sold = true
