@@ -9,8 +9,6 @@ class Auction < ApplicationRecord
   has_many :bids, class_name: "Auctions::Bid", dependent: :delete_all
   has_many :consignment_configs, class_name: "Auctions::ConsignmentConfig", dependent: :delete_all
 
-  after_commit :schedule_deletion, on: %i[create update]
-
   validates :start_time, :end_time, :hours_until_sold, :title, :horses_count,
     :sold_horses_count, :pending_sales_count, presence: true
   validates :title, length: { in: 10..500 }
@@ -117,10 +115,6 @@ class Auction < ApplicationRecord
   end
 
   private
-
-  def schedule_deletion
-    Daily::DeleteCompletedAuctionsJob.set(good_job_labels: [id], wait_until: end_time + 1.minute).perform_later(auction: self)
-  end
 
   def start_time_plus_min_duration
     start_time + Config::Auctions.minimum_duration_days.days

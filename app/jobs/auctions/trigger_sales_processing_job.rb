@@ -6,15 +6,24 @@ class Auctions::TriggerSalesProcessingJob < ApplicationJob
     Auction.current.find_each do |auction|
       run_sales_job(auction:)
       schedule_next_sales_job(auction:)
+      schedule_deletion(auction:)
     end
   end
 
   private
 
+  def schedule_deletion(auction:)
+    return unless auction.ended?
+    return if auction.pending_sales_count.positive?
+    return if auction.horses.unsold.exists?
+
+    Auctions::DeleteCompletedAuctionsJob.set(good_job_labels: [auction.id], wait: 30.seconds).perform_later(id: auction.id)
+  end
+
   def run_sales_job(auction:)
     return unless auction.pending_sales_count.positive?
 
-    Auctions::ProcessSalesJob.set(good_job_labels: [auction.id], wait: 5.seconds).perform_later(auction)
+    Auctions::ProcessSalesJob.set(good_job_labels: [auction.id], wait: 5.seconds).perform_later(id: auction.id)
   end
 
   def schedule_next_sales_job(auction:)
@@ -33,7 +42,7 @@ class Auctions::TriggerSalesProcessingJob < ApplicationJob
     end
     return if next_updated_at < 5.minutes.from_now
 
-    Auctions::ProcessSalesJob.set(good_job_labels: [auction.id], wait_until: next_updated_at).perform_later(auction) unless Time.current > next_updated_at
+    Auctions::ProcessSalesJob.set(good_job_labels: [auction.id], wait_until: next_updated_at).perform_later(id: auction.id) unless Time.current > next_updated_at
   end
 end
 

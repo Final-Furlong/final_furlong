@@ -4,17 +4,18 @@ class Auctions::ProcessSalesJob < ApplicationJob
   queue_as :latency_2m
 
   good_job_concurrency_rule(
-    label: -> { arguments.first[:auction_id] },
+    label: -> { arguments.first[:id] },
     total_limit: 2,
     perform_throttle: [1, 5.minutes]
   )
 
   discard_on GoodJob::ActiveJobExtensions::Concurrency::ConcurrencyExceededError
 
-  def perform(auction)
+  def perform(id:)
+    auction = Auction.find(id)
     horses = []
     outcome = {}
-    Auctions::Horse.where(auction_id: auction.id).where.associated(:bids).distinct.each do |ah|
+    Auctions::Horse.where(auction_id: id).where.associated(:bids).distinct.each do |ah|
       next if ah.sold_at.present?
       wb = ah.bids.current_high_bid.first
       if wb.nil?
@@ -64,11 +65,11 @@ class Auctions::ProcessSalesJob < ApplicationJob
       5.minutes.ago
     end
     next_updated_at = if next_updated_at > auction.end_time
-      auction.end_time - 5.minutes
+      auction.end_time + 5.minutes
     else
       next_updated_at + auction.hours_until_sold.hours
     end
-    Auctions::ProcessSalesJob.set(good_job_labels: [auction.id], wait_until: next_updated_at).perform_later(auction) unless Time.current > next_updated_at
+    Auctions::ProcessSalesJob.set(good_job_labels: [auction.id], wait_until: next_updated_at).perform_later(id: auction.id) unless Time.current > next_updated_at
   end
 end
 

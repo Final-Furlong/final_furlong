@@ -6,7 +6,7 @@ RSpec.describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
 
     it "uses medium queue", perform_enqueueed_jobs: false do
       expect do
-        described_class.perform_later(auction)
+        described_class.perform_later(id: auction.id)
       end.to have_enqueued_job.on_queue("latency_2m").at_least(:once)
     end
 
@@ -15,7 +15,7 @@ RSpec.describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
         bid
         bid2
         allow(Auctions::HorseSeller).to receive(:new).and_return mock_seller
-        described_class.perform_later(auction)
+        described_class.perform_later(id: auction.id)
         expect(mock_seller).to have_received(:process_sale).with(bid: bid.reload)
         expect(mock_seller).to have_received(:process_sale).with(bid: bid2.reload)
       end
@@ -78,4 +78,3 @@ RSpec.describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
     @final_furlong ||= Account::Stable.find_by(name:) || create(:stable, name:)
   end
 end
-

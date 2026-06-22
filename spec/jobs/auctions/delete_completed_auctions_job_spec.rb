@@ -1,8 +1,8 @@
-RSpec.describe Daily::DeleteCompletedAuctionsJob, :perform_enqueued_jobs do
+RSpec.describe Auctions::DeleteCompletedAuctionsJob, :perform_enqueued_jobs do
   describe "#perform" do
     it "uses fast queue", perform_enqueueed_jobs: false do
       expect do
-        described_class.perform_later(auction: nil)
+        described_class.perform_later(id: nil)
       end.to have_enqueued_job.on_queue("latency_30s")
     end
 
@@ -11,7 +11,7 @@ RSpec.describe Daily::DeleteCompletedAuctionsJob, :perform_enqueued_jobs do
         auction = create(:auction)
         auction.update_column(:end_time, 10.minutes.from_now)
         allow(Auctions::DeleteCompletedAuctionService).to receive(:call)
-        described_class.perform_later(auction:)
+        described_class.perform_later(id: auction.id)
         expect(Auctions::DeleteCompletedAuctionService).not_to have_received(:call)
       end
     end
@@ -21,18 +21,17 @@ RSpec.describe Daily::DeleteCompletedAuctionsJob, :perform_enqueued_jobs do
         auction = create(:auction)
         auction.update_column(:end_time, 1.day.ago)
         allow(Auctions::DeleteCompletedAuctionService).to receive(:call)
-        described_class.perform_later(auction:)
+        described_class.perform_later(id: auction.id)
         expect(Auctions::DeleteCompletedAuctionService).to have_received(:call).with(auction:)
       end
 
       it "stores job result" do
         auction = create(:auction)
         auction.update_column(:end_time, 1.day.ago)
-        expect { described_class.perform_later(auction:) }.to change(JobStat, :count).by(1)
+        expect { described_class.perform_later(id: auction.id) }.to change(JobStat, :count).by(1)
         expect(JobStat.last).to have_attributes(name: described_class.name,
           outcome: { deleted: true, auction_id: auction.id }.stringify_keys)
       end
     end
   end
 end
-

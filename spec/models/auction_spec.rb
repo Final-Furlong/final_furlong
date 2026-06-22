@@ -105,22 +105,6 @@ RSpec.describe Auction do
     end
   end
 
-  describe "callbacks" do
-    before { ActiveJob::Base.queue_adapter = :good_job }
-
-    after { ActiveJob::Base.queue_adapter = :test }
-
-    context "when auction is created" do
-      it "enqueues the auction deletion job" do
-        freeze_time
-        auction = build(:auction)
-        expect do
-          auction.save
-        end.to change(GoodJob::Job, :count).by(1)
-      end
-    end
-  end
-
   describe "#active?" do
     context "when current date is between start/end times" do
       it "returns true" do
