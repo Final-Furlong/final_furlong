@@ -1,6 +1,6 @@
 = turbo_frame_tag "#{@horse.slug}-mare-bookings" do
   ruby:
-    last_race_date = @horse.race_result_finishes.joins(:race).merge(Racing::RaceResult.ordered_by_date(:desc)).first.race.date
+    last_race_date = @horse.race_result_finishes.joins(:race).includes(:race).merge(Racing::RaceResult.ordered_by_date(:desc)).first.race.date
     raced_this_year = last_race_date.year == Date.current.year
     min_breed_date = last_race_date + 1.day if raced_this_year
     unless min_breed_date
@@ -28,6 +28,7 @@
       - if @bookings.empty?
         p.text-center.text-base-content/70= t(".no_bookings", name: @horse.name)
       - else
+        - pd @bookings
         table.table.table-responsive.table-zebra.sortable.n-last.asc
           thead
             tr
