@@ -18,7 +18,6 @@ class Auctions::TriggerSalesProcessingJob < ApplicationJob
   def schedule_deletion(auction:)
     return unless auction.ended?
     return if auction.pending_sales_count.positive?
-    return if auction.horses.unsold.exists?
 
     Auctions::DeleteCompletedAuctionsJob.set(good_job_labels: [auction.id], wait: 30.seconds).perform_later(id: auction.id)
   end
