@@ -32,7 +32,7 @@ class Racing::RaceSchedule < ApplicationRecord
   scope :past, -> { where(date: ...Date.current) }
   scope :entries_open, -> { where("date BETWEEN ? AND ?", Date.current + Config::Racing.entry_deadline_days.days, Date.current + (Config::Racing.entry_open_days + 1).days) }
   scope :entries_not_yet_open, -> { future.where(date: (Date.current + (Config::Racing.entry_open_days + 1).days)..) }
-  scope :entries_not_closed, -> { where("date > ?", Date.current + Config::Racing.entry_deadline_days.days) }
+  scope :entries_not_closed, -> { where(date: (Date.current + Config::Racing.entry_deadline_days.days)..) }
   scope :available_for_scheduling, -> { future.entries_not_closed.where(date: ..(Date.current + Config::Racing.future_race_max_schedule_days.days)) }
   scope :by_type, ->(type) { where(race_type: type) }
   scope :for_age, ->(age) {
