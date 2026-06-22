@@ -15,7 +15,7 @@ module Api
             requires :positions, type: String, desc: "Positions"
             requires :margins, type: String, desc: "Margins"
             requires :fractions, type: String, desc: "Fractions"
-            requires :legacy_id, type: Integer, desc: "Legacy ID", values: 1..10_000_000
+            requires :id, type: Integer, values: 1..10_000_000
             requires :speed_factor, type: Integer, desc: "Speed Factor", values: 0..1_000
             requires :energy_used, type: Integer, desc: "Energy Used In The Race", values: 0..2_000
             requires :experience_gained, type: Integer, desc: "XP Gained In The Race", values: 0..2_000

@@ -115,7 +115,7 @@ module Racing
     end
 
     def update_jockey_relationship(horse:, horses:)
-      finish = horses.find { |hash| hash[:legacy_id] == horse.legacy_id }
+      finish = horses.find { |hash| hash[:id] == horse.id }
       entry = horse.race_entries.find_by(race:)
       relationship = horse.jockey_relationships.find_or_initialize_by(jockey: entry.jockey)
       relationship.experience += finish[:jockey_xp_gained].clamp(5, 20)
@@ -129,7 +129,7 @@ module Racing
       stats = horse.racing_stats
       return unless stats
 
-      finish = horses.find { |hash| hash[:legacy_id] == horse.legacy_id }
+      finish = horses.find { |hash| hash[:id] == horse.id }
       stats.energy -= finish[:energy_used]
       stats.energy = Config::Racing.minimum_energy if stats.energy < Config::Racing.minimum_energy
       fitness_gained = finish[:energy_used].abs * 2
@@ -174,8 +174,8 @@ module Racing
     def process_race_horses(race_result:, horses:)
       race_horses = []
       horses.each do |horse|
-        race_horse = Racing::RaceResultHorse.find_or_initialize_by(race: race_result, legacy_horse_id: horse[:legacy_id])
-        horse_class = Horses::Horse.find_by(legacy_id: horse[:legacy_id])
+        race_horse = Racing::RaceResultHorse.find_or_initialize_by(race: race_result, horse_id: horse[:id])
+        horse_class = Horses::Horse.find(horse[:id])
         entry = horse_class.race_entries.find_by(race:)
         attrs = {
           horse: horse_class,
