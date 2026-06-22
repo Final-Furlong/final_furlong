@@ -1,6 +1,8 @@
 class Horses::FutureRaceEntryShipmentJob < ApplicationJob
   def perform(id:, date:)
-    entry = Racing::FutureRaceEntry.where(ship_date: date, ship_only_if_horse_is_entered: false).find_by(id:)
+    entry = Racing::FutureRaceEntry.find_by(id:)
+    return unless entry
+
     race = entry.race
     horse = entry.horse
     race_location = race.racetrack.location
