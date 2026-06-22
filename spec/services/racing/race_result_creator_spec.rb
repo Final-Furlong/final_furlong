@@ -159,7 +159,7 @@ RSpec.describe Racing::RaceResultCreator do
         positions: "2|2|2|2|1",
         margins: "1|1|1|1|Head",
         fractions: "0:10|0:20|0:30|0:40|0:50",
-        legacy_id: horse1.legacy_id,
+        id: horse1.id,
         speed_factor: 95,
         energy_used: 60,
         fitness_gained: 25,
@@ -173,7 +173,7 @@ RSpec.describe Racing::RaceResultCreator do
         positions: "1|1|1|1|2",
         margins: "1|1|1|1|Head",
         fractions: "0:10|0:20|0:30|0:40|0:50",
-        legacy_id: horse2.legacy_id,
+        id: horse2.id,
         speed_factor: 91,
         energy_used: 60,
         fitness_gained: 25,
@@ -187,7 +187,7 @@ RSpec.describe Racing::RaceResultCreator do
   def horse1
     return @horse1 if defined?(@horse1)
 
-    @horse1 = create(:horse, :racehorse, legacy_id: 10)
+    @horse1 = create(:horse, :racehorse)
     @horse1.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
     create(:race_entry, horse: @horse1, race:, jockey: jockey1)
     @horse1
@@ -196,18 +196,18 @@ RSpec.describe Racing::RaceResultCreator do
   def horse2
     return @horse2 if defined?(@horse2)
 
-    @horse2 = create(:horse, :racehorse, legacy_id: 20)
+    @horse2 = create(:horse, :racehorse)
     @horse2.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
     create(:race_entry, horse: @horse2, race:, jockey: jockey2)
     @horse2
   end
 
   def jockey1
-    @jockey1 ||= create(:jockey, legacy_id: 1)
+    @jockey1 ||= create(:jockey)
   end
 
   def jockey2
-    @jockey2 ||= create(:jockey, legacy_id: 2)
+    @jockey2 ||= create(:jockey)
   end
 end
 
