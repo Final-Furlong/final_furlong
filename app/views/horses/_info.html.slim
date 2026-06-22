@@ -64,9 +64,12 @@
         th= t(".owner")
         td
           = link_to horse.owner.name, stable_path(horse.owner), target: "_top"
+          - if CurrentStable::HorsePolicy.new(Current.user, horse).change_owner?
+            = render Ui::ButtonizedLink::Component.new(url: edit_admin_horses_owner_path(horse), color: :error, style: :outline, size: :small, extra_classes: "ml-2", http_method: :get, data: { turbo_frame: "modal" }) do
+              = t("horse.actions.change_owner")
           - if CurrentStable::HorsePolicy.new(Current.user, horse).give_to_game?
             - data = { turbo_method: :put, turbo_confirm: t("horse.give_to_game.confirm", name: horse.name), turbo_confirm_title: t("horse.give_to_game.confirm_title"), turbo_frame: "_top" }
-            = render Ui::ButtonizedLink::Component.new(url: edit_horse_status_path(horse), color: :error, style: :outline, size: :small, extra_classes: "ml-2", http_method: :get, data:) do
+            = render Ui::ButtonizedLink::Component.new(url: horse_owner_path(horse), style: :outline, size: :small, extra_classes: "ml-2", http_method: :get, data:) do
               = t("horse.actions.give_to_game")
       - unless horse.dead?
         - if horse.racehorse? || horse.broodmare?

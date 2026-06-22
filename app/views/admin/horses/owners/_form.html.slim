@@ -1,0 +1,6 @@
+/# locals: (horse:)
+= styled_form_with model: horse, url: admin_horses_owner_path(horse), id: "horse-owner-form", method: :put, html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+  = f.select :owner_id, Account::Stable.active.where.not(id: @horse.owner_id).order(name: :asc).collect { |p| [ p.name, p.id ] }, class: 'select', required: true
+  .float-right
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.save"))
