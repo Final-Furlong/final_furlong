@@ -5,6 +5,7 @@ en:
       boarding:
         create: Create Boarding
         stop: Stop Boarding
+      change_owner: Change Owner
       change_status: Change Status
       consign_to_auction: Consign to Auction
       create_lease_offer: Set for Lease
