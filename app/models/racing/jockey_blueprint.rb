@@ -2,7 +2,7 @@ module Racing
   class JockeyBlueprint < Blueprinter::Base
     identifier :id
 
-    fields :id, :first_name, :last_name, :gender, :status,
+    fields :first_name, :last_name, :gender, :status,
       :height_in_inches, :weight, :jockey_type, :break_speed, :min_speed,
       :average_speed, :max_speed, :consistency, :fast, :good, :wet, :slow,
       :dirt, :turf, :steeplechase, :courage, :leading, :off_pace, :midpack, :closing,

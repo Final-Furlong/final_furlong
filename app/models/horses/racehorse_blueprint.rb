@@ -13,7 +13,9 @@ module Horses
       horse.breeder.name
     end
 
-    association :racing_stats, blueprint: ::Racing::RacingStatsBlueprint
+    association :race_entry, blueprint: ::Racing::RaceEntryBlueprint do |horse, options|
+      horse.race_entries.order(date: :asc).first
+    end
   end
 end
 
