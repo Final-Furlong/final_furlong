@@ -5,7 +5,7 @@ RSpec.describe Api::V1::Jockeys do
         get("/api/v1/jockeys/#{jockey.id}", headers: { "Api-Key" => Rails.application.credentials.api.key! })
 
         expect(response).to have_http_status :ok
-        expect(json_body).to eq ActiveModelSerializers::SerializableResource.new(jockey, adapter: :json).as_json.first.last.symbolize_keys
+        expect(json_body).to eq ::Racing::JockeyBlueprint.render_as_json(jockey).symbolize_keys
       end
     end
 
