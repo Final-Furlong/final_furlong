@@ -1,6 +1,6 @@
 module Racing
   class RaceEntryBlueprint < Blueprinter::Base
-    identifier :horse_id
+    identifier :id
 
     fields :equipment, :post_parade, :jockey_id, :weight, :racing_style
 
