@@ -818,6 +818,10 @@ GEM
       rubocop-rspec (~> 3.5)
     ruby-debug-ide (0.7.5)
       rake (>= 0.8.1)
+    ruby-lsp (0.26.9)
+      language_server-protocol (~> 3.17.0)
+      prism (>= 1.2, < 2.0)
+      rbs (>= 3, < 5)
     ruby-next-core (1.2.0)
     ruby-pg-extras (5.6.18)
       pg
@@ -1153,6 +1157,7 @@ DEPENDENCIES
   rubocop-rspec
   rubocop-rspec_rails
   ruby-debug-ide
+  ruby-lsp
   scenic
   selenium-webdriver
   sentry-rails
@@ -1490,6 +1495,7 @@ CHECKSUMS
   rubocop-rspec (3.9.0) sha256=8fa70a3619408237d789aeecfb9beef40576acc855173e60939d63332fdb55e2
   rubocop-rspec_rails (2.32.0) sha256=4a0d641c72f6ebb957534f539d9d0a62c47abd8ce0d0aeee1ef4701e892a9100
   ruby-debug-ide (0.7.5) sha256=5ec9b2d78e9aa106d23e29e4fdfeb9dc687a279bd25de060c6343aa135314488
+  ruby-lsp (0.26.9) sha256=33a01c001c00a76b4e821efc04ed7572983430f31ca5d6f3e343d0b6ccab4129
   ruby-next-core (1.2.0) sha256=f6a7d00bb5186cecbb02f7f1845a0f3a2c9788d35b6ccff5c9be3f0d46799b86
   ruby-pg-extras (5.6.18) sha256=70f54bfdb51f9c3263356618e95cbdd1fea5c35fdd232902074f4a8ac3cd14e8
   ruby-progressbar (1.13.0) sha256=80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33

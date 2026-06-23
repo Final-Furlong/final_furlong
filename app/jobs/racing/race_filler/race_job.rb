@@ -38,7 +38,7 @@ class Racing::RaceFiller::RaceJob < ApplicationJob
     if surface_type.flat?
       query = query.merge(Racing::RaceOption.send(surface_type.to_sym))
     end
-    query = query.order("race_metadata.last_raced_at DESC")
+    query = query.order("race_metadata.last_raced_at DESC NULLS FIRST")
     query = query.limit(100)
     query.each do |horse|
       if horses_needed > 0

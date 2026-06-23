@@ -28,7 +28,7 @@ module Horses
           if booking.valid? && booking.save
             if stud.manager != mare.manager
               Game::NotificationCreator.new.create_notification(
-                type: ::MareBookingApprovalNotification,
+                type: ::Notifications::Breeding::Mare::BookingApprovalNotification,
                 user: mare.manager.user,
                 params: {
                   booking_id: booking.id,

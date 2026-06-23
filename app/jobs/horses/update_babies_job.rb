@@ -31,7 +31,7 @@ class Horses::UpdateBabiesJob < ApplicationJob
     sire = foal.sire.name
     dam = foal.dam.name
     Game::NotificationCreator.new.create_notification(
-      type: ::HorseStillbornNotification,
+      type: ::Notifications::Horse::StillbornNotification,
       user: foal.owner.user,
       params: { horse_id: foal.slug, sire_name: sire, dam_name: dam }
     )
@@ -46,7 +46,7 @@ class Horses::UpdateBabiesJob < ApplicationJob
       dam = foal.dam.name
     end
     Game::NotificationCreator.new.create_notification(
-      type: ::HorseBornNotification,
+      type: ::Notifications::Horse::BornNotification,
       user: foal.owner.user,
       params: { horse_id: foal.slug, created:, sire_name: sire, dam_name: dam }
     )

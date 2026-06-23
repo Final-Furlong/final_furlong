@@ -32,6 +32,19 @@ en:
     horse_died_notification:
       message: "%{horse} has died"
       title: Horse Died
+    horse_injury_notification:
+      injuries:
+        bowed_tendon: has a bowed tendon on
+        broken_leg: has broken
+        cut: has a cut on
+        heart_attack: has suffered a heart attack
+        heat: has heat on
+        limping: is limping on
+        overheat: has overheated
+        swelling: has swelling in
+      message: "%{horse} %{injury}"
+      message_with_leg: "%{horse} %{injury} their %{leg} leg"
+      title: Injured Horse
     horse_premature_notification:
       message: The foal for %{sire} x %{dam} was born premature
       title: 'Foal Birth: %{mare}'
@@ -68,24 +81,12 @@ en:
     mare_booking_approval_notification:
       message: "%{stable} has approved a booking to %{stud} for %{mare} (Slot %{start} - %{end})"
       title: Mare Booking Approved
-      view_mare:
-        link: View %{name}
-      view_stud:
-        link: View %{name}
     mare_booking_deletion_notification:
       message: "%{stable} has cancelled a booking to %{stud} for %{mare} (Slot %{start} - %{end})"
       title: Mare Booking Cancelled
-      view_mare:
-        link: View %{name}
-      view_stud:
-        link: View %{name}
     mare_booking_denial_notification:
       message: "%{stable} has declined a booking to %{stud} for %{mare} (Slot %{start} - %{end})"
       title: Mare Booking Declined
-      view_mare:
-        link: View %{name}
-      view_stud:
-        link: View %{name}
     notification:
       default_message: We do not know how to describe what happened.
       status:
@@ -114,17 +115,10 @@ en:
     stud_booking_request_cancellation_notification:
       message: "%{stable} has cancelled a requested booking to %{stud} for %{mare} (Slot %{start} - %{end})"
       title: Stud Booking Request Cancelled
-      view_mare:
-        link: View %{name}
-      view_stud:
-        link: View %{name}
     stud_booking_request_notification:
       message: "%{stable} has requested a booking to %{stud} for %{mare} (Slot %{start} - %{end})"
       message_with_comment: "%{stable} has requested a booking to %{stud} for %{mare} (Slot %{start} - %{end}). Their comment: %{comment}"
       title: Stud Booking Request
-      view_mare:
-        link: View %{name}
-      view_stud:
-        link: View %{name}
     update:
       success: Notification was marked as %{status}
+    view_horse: View %{name}

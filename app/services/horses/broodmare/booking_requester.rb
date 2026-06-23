@@ -49,7 +49,7 @@ module Horses
             }
             notification_params[:message] = message if message.present?
             Game::NotificationCreator.new.create_notification(
-              type: ::StudBookingRequestNotification,
+              type: ::Notifications::Breeding::Stud::BookingRequestNotification,
               user: stud.manager.user,
               params: notification_params
             )
