@@ -27,7 +27,7 @@ class Horses::RetireMaresJob < ApplicationJob
 
   def notify_retirement(horse:)
     Game::NotificationCreator.new.create_notification(
-      type: ::HorseRetiredNotification,
+      type: ::Notifications::Horse::RetiredNotification,
       user: horse.owner.user,
       params: { horse_id: horse.slug, horse_name: horse.name }
     )

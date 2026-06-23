@@ -124,6 +124,7 @@ group :development do
   gem "image_optim", require: false
   gem "image_optim_pack", require: false
   gem "image_optim_rails", require: false
+  gem "ruby-lsp"
   gem "terminal-notifier", require: false
   gem "terminal-notifier-guard", require: false
   gem "yalphabetize", require: false

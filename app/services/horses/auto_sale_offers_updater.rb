@@ -6,7 +6,7 @@ module Horses
         horse = offer.horse
         ActiveRecord::Base.transaction do
           Game::NotificationCreator.new.create_notification(
-            type: ::SaleOfferNotification,
+            type: ::Notifications::HorseSale::OfferNotification,
             user: offer.buyer.user,
             params: {
               offer_id: offer.id,
@@ -24,7 +24,7 @@ module Horses
         horse = offer.horse
         ActiveRecord::Base.transaction do
           Game::NotificationCreator.new.create_notification(
-            type: ::SaleOfferExpiryNotification,
+            type: ::Notifications::HorseSale::OfferExpiryNotification,
             user: offer.owner.user,
             params: {
               offer_id: offer.id,

@@ -5,6 +5,7 @@ module Horses
     include FriendlyId
     include PgSearch::Model
     include Raceable
+    include Injurable
 
     friendly_id :name_and_foal_status, use: [:slugged, :finders, :history]
 

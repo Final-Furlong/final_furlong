@@ -59,7 +59,7 @@ RSpec.describe Horses::LeaseCreator do
     it "creates notification" do
       expect do
         described_class.new.accept_offer(horse:, stable:)
-      end.to change(::LeaseAcceptanceNotification, :count).by(1)
+      end.to change(::Notifications::HorseLease::AcceptanceNotification, :count).by(1)
     end
   end
 
