@@ -6,7 +6,7 @@ module Horses
         horse = lease.horse
         ActiveRecord::Base.transaction do
           Game::NotificationCreator.new.create_notification(
-            type: ::LeaseExpiryNotification,
+            type: ::Notifications::HorseLease::ExpiryNotification,
             user: lease.owner.user,
             params: {
               horse_id: horse.slug,
@@ -14,7 +14,7 @@ module Horses
             }
           )
           Game::NotificationCreator.new.create_notification(
-            type: ::LeaseExpiryNotification,
+            type: ::Notifications::HorseLease::ExpiryNotification,
             user: lease.leaser.user,
             params: {
               horse_id: horse.slug,

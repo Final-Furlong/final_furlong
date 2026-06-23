@@ -27,7 +27,7 @@ class Notification < ApplicationRecord
     I18n.t("notifications.notification.default_message")
   end
 
-  def type
+  def notification_type
     :info
   end
 

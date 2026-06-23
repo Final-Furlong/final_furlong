@@ -50,7 +50,8 @@ module Horses
             foal.update(owner: stable, manager: stable)
           end
 
-          ::SaleAcceptanceNotification.create!(
+          Game::NotificationCreator.new.create_notification(
+            type: ::Notifications::HorseSale::AcceptanceNotification,
             user: original_owner.user,
             params: {
               horse_id: horse.slug,
@@ -59,7 +60,7 @@ module Horses
               price:
             }
           )
-          SaleOfferNotification.param_equals(:offer_id, offer.id).delete_all
+          ::Notifications::HorseSale::OfferNotification.param_equals(:offer_id, offer.id).delete_all
           offer.destroy!
           result.created = true
         else

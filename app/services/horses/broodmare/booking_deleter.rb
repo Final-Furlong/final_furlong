@@ -15,7 +15,7 @@ module Horses
           if booking.destroy!
             if stud.manager != mare.manager && stud.stud_options&.approval_required
               Game::NotificationCreator.new.create_notification(
-                type: ::StudBookingRequestCancellationNotification,
+                type: ::Notifications::Breeding::Stud::BookingRequestCancellationNotification,
                 user: stud.manager.user,
                 params: {
                   booking_id: booking.id,
