@@ -15,7 +15,7 @@ module Horses
           if offer.buyer
             if offer.offer_start_date <= Date.current
               Game::NotificationCreator.new.create_notification(
-                type: ::SaleOfferNotification,
+                type: ::Notifications::HorseSale::OfferNotification,
                 user: offer.buyer.user,
                 params: {
                   offer_id: offer.id,

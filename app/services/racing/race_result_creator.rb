@@ -2,7 +2,7 @@ module Racing
   class RaceResultCreator
     attr_reader :date, :race
 
-    def create_result(race:, time:, horses:)
+    def create_result(race:, time:, horses:, injuries: [])
       @race = race
       @date = race.date
       race_result = Racing::RaceResult.find_or_initialize_by(date:, number: race.number)
@@ -29,6 +29,7 @@ module Racing
 
         if race_result.persisted?
           race_horses = process_race_horses(race_result:, horses:)
+          process_injuries(injuries:)
           race_horses.each do |race_horse|
             result.created = race_horse.valid?
             stats = update_stats(horse: race_horse.horse, race_horse:, horses:, date:, racetrack: surface.racetrack)
@@ -202,6 +203,13 @@ module Racing
         race_horses << race_horse
       end
       race_horses
+    end
+
+    def process_injuries(injuries:)
+      injuries.each do |injury|
+        horse = Horses::Horse.find(injury[:horse_id])
+        Horses::Horse::Injurer.new(horse:, date:, injury: injury[:injury_type]).run
+      end
     end
   end
 end

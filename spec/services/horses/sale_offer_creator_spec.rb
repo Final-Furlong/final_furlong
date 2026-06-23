@@ -13,7 +13,7 @@ RSpec.describe Horses::SaleOfferCreator do
         new_params = params.dup.merge(offer_start_date: Date.current, buyer_id: buyer.id)
         expect do
           described_class.new.create_offer(horse:, params: new_params)
-        end.to change(::SaleOfferNotification, :count).by(1)
+        end.to change(::Notifications::HorseSale::OfferNotification, :count).by(1)
       end
 
       it "does not create notification for buyer if offer has not started" do
@@ -21,7 +21,7 @@ RSpec.describe Horses::SaleOfferCreator do
         new_params = params.dup.merge(buyer_id: buyer.id)
         expect do
           described_class.new.create_offer(horse:, params: new_params)
-        end.not_to change(::SaleOfferNotification, :count)
+        end.not_to change(::Notifications::HorseSale::OfferNotification, :count)
       end
     end
   end

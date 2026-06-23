@@ -11,32 +11,6 @@ module Horses
     scope :current, -> { where(date: ...Date.current).where("rest_date > ?", Date.current) }
     scope :healed, -> { where(rest_date: ...Date.current) }
 
-    def self.rest_days(type)
-      case type
-      when "heat"
-        rand(3...5)
-      when "swelling"
-        rand(5...7)
-      when "cut"
-        rand(7...14)
-      when "limping"
-        rand(14...21)
-      when "overheat"
-        rand(30...65)
-      when "bowed tendon"
-        rand(60...95)
-      when "broken leg"
-        rand(365...435)
-      end
-    end
-
-    def self.pick_leg(type)
-      case type
-      when "heat", "swelling", "cut", "limping", "bowed tendon", "broken leg"
-        Config::Injuries.legs.sample.upcase
-      end
-    end
-
     def self.ransackable_attributes(_auth_object = nil)
       %w[date horse_id injury_type rest_date]
     end

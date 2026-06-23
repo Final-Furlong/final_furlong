@@ -7,7 +7,7 @@ module Horses
         duration = "#{offer.duration_months} #{"month".pluralize(offer.duration_months)}"
         ActiveRecord::Base.transaction do
           Game::NotificationCreator.new.create_notification(
-            type: ::LeaseOfferNotification,
+            type: ::Notifications::HorseLease::OfferNotification,
             user: offer.leaser.user,
             params: {
               offer_id: offer.id,
@@ -27,7 +27,7 @@ module Horses
         duration = "#{offer.duration_months} #{"month".pluralize(offer.duration_months)}"
         ActiveRecord::Base.transaction do
           Game::NotificationCreator.new.create_notification(
-            type: ::LeaseOfferExpiryNotification,
+            type: ::Notifications::HorseLease::OfferExpiryNotification,
             user: offer.owner.user,
             params: {
               offer_id: offer.id,

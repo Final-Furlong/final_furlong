@@ -13,7 +13,7 @@ RSpec.describe Horses::LeaseOfferCreator do
         new_params = params.dup.merge(offer_start_date: Date.current, leaser_id: leaser.id)
         expect do
           described_class.new.create_offer(horse:, params: new_params)
-        end.to change(::LeaseOfferNotification, :count).by(1)
+        end.to change(::Notifications::HorseLease::OfferNotification, :count).by(1)
       end
 
       it "does not create notification for leaser if offer has not started" do
@@ -21,7 +21,7 @@ RSpec.describe Horses::LeaseOfferCreator do
         new_params = params.dup.merge(leaser_id: leaser.id)
         expect do
           described_class.new.create_offer(horse:, params: new_params)
-        end.not_to change(::LeaseOfferNotification, :count)
+        end.not_to change(::Notifications::HorseLease::OfferNotification, :count)
       end
     end
   end

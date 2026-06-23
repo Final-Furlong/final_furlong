@@ -15,7 +15,7 @@ module Horses
           if booking.destroy!
             if stud.manager != mare.manager
               Game::NotificationCreator.new.create_notification(
-                type: ::MareBookingDeletionNotification,
+                type: ::Notifications::Breeding::Mare::BookingDeletionNotification,
                 user: mare.manager.user,
                 params: {
                   booking_id: booking.id,

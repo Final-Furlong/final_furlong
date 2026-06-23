@@ -187,7 +187,8 @@ module Auctions
       return unless previous_bid.notify_if_outbid
 
       horse = auction_horse.horse
-      ::AuctionOutbidNotification.create!(
+      Game::NotificationCreator.new.create_notification(
+        type: ::Notifications::Auction::OutbidNotification,
         user: previous_bid.bidder.user,
         params: {
           horse_id: horse.slug,

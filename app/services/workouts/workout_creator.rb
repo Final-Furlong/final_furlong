@@ -134,19 +134,7 @@ module Workouts
     def pick_and_save_injury
       return unless (injury = pick_injury)
 
-      Horses::Injury.create!(
-        horse:,
-        date: workout.date,
-        injury_type: injury,
-        rest_date: workout.date + Horses::Injury.rest_days(injury).days
-      )
-      Horses::HistoricalInjury.create!(
-        horse:,
-        date: workout.date,
-        injury_type: injury,
-        leg: Horses::Injury.pick_leg(injury)
-      )
-      horse.training_schedules_horse&.destroy
+      Horses::Horse::Injurer.new(horse:, date: workout.date, injury:).run
     end
 
     def gained_happiness
