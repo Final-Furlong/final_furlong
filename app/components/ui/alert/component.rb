@@ -5,7 +5,7 @@ module Ui
 
       def initialize(notification: nil, type: :info, title: "", body: "", style: :normal, icon: false)
         @notification = notification
-        @type = notification&.type || type
+        @type = notification&.notification_type || type
         @title = notification&.title || title
         @body = notification&.message || body
         @style = style

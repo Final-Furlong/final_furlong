@@ -59,7 +59,7 @@ RSpec.describe Horses::SaleCreator do
     it "creates notification" do
       expect do
         described_class.new.accept_offer(horse:, stable:)
-      end.to change(::SaleAcceptanceNotification, :count).by(1)
+      end.to change(::Notifications::HorseSale::AcceptanceNotification, :count).by(1)
     end
   end
 

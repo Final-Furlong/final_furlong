@@ -49,7 +49,7 @@ module Horse
 
     def create_owner_notification(horse, offer, leaser)
       Game::NotificationCreator.new.create_notification(
-        type: ::LeaseRejectionNotification,
+        type: ::Notifications::HorseLease::RejectionNotification,
         user: horse.owner.user,
         params: {
           offer_id: offer.id,

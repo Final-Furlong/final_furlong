@@ -27,7 +27,7 @@ RSpec.describe "Leasing Journey" do
       page.find(".notification-link").click
     end
     expect(page).to have_current_path(notifications_path)
-    notification = LeaseOfferNotification.find_by!(user: leasee_user)
+    notification = ::Notifications::HorseLease::OfferNotification.find_by!(user: leasee_user)
     expect(page).to have_text notification.message
     click_on t("horse.actions.lease_offer.accept")
     within "dialog" do
@@ -95,7 +95,7 @@ RSpec.describe "Leasing Journey" do
       page.find(".notification-link").click
     end
     expect(page).to have_current_path(notifications_path)
-    notification = LeaseOfferNotification.find_by!(user: leasee_user)
+    notification = ::Notifications::HorseLease::OfferNotification.find_by!(user: leasee_user)
     expect(page).to have_text notification.message
     click_on t("horse.actions.lease_offer.accept")
     expect(page).to have_text t("horse.lease_offer_acceptances.create.success")

@@ -35,7 +35,7 @@ class Horses::KillMaresJob < ApplicationJob
 
   def notify_death(horse:)
     Game::NotificationCreator.new.create_notification(
-      type: ::HorseDiedNotification,
+      type: ::Notifications::Horse::DiedNotification,
       user: horse.owner.user,
       params: { horse_id: horse.slug, horse_name: horse.name }
     )
@@ -44,7 +44,7 @@ class Horses::KillMaresJob < ApplicationJob
   def notify_stillborn(foal:, mare:)
     sire = foal.sire.name
     Game::NotificationCreator.new.create_notification(
-      type: ::HorseStillbornNotification,
+      type: ::Notifications::Horse::StillbornNotification,
       user: foal.owner.user,
       params: { horse_id: foal.slug, sire_name: sire, dam_name: mare.name }
     )
@@ -53,7 +53,7 @@ class Horses::KillMaresJob < ApplicationJob
   def notify_premature(foal:, mare:)
     sire = foal.sire.name
     Game::NotificationCreator.new.create_notification(
-      type: ::HorsePrematureNotification,
+      type: ::Notifications::Horse::PrematureNotification,
       user: foal.owner.user,
       params: { horse_id: foal.slug, sire_name: sire, dam_name: mare.name }
     )

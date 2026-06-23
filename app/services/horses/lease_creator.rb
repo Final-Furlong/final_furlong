@@ -42,7 +42,8 @@ module Horses
 
           horse.update(manager: stable)
           horse.training_schedules_horse&.destroy
-          ::LeaseAcceptanceNotification.create!(
+          Game::NotificationCreator.new.create_notification(
+            type: ::Notifications::HorseLease::AcceptanceNotification,
             user: horse.owner.user,
             params: {
               horse_id: horse.slug,
@@ -51,7 +52,7 @@ module Horses
               fee: Game::MoneyFormatter.new(lease.fee).to_s
             }
           )
-          LeaseOfferNotification.param_equals(:offer_id, offer.id).delete_all
+          ::Notifications::HorseLease::OfferNotification.param_equals(:offer_id, offer.id).delete_all
           offer.destroy!
           result.created = true
         else
