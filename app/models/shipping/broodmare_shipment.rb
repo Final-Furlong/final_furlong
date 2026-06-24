@@ -26,7 +26,7 @@ module Shipping
     end
 
     def options_for_destination_select
-      starting_farm ||= horse.broodmare.current_location
+      starting_farm ||= horse.current_location
       owned_stud_ids = Account::Stable.joins(:horses).where.not(id: starting_farm.id).where(horses: { id: Horses::Horse.stud.where.missing(:current_lease).select(:id) }).group(:owner_id).count
 
       stables = []
@@ -44,7 +44,7 @@ module Shipping
     end
 
     def options_for_mode_select
-      starting_farm ||= horse.broodmare.current_location
+      starting_farm ||= horse.current_location
       return [] if starting_farm.blank? || ending_farm.blank?
 
       modes.map do |mode|
@@ -56,7 +56,7 @@ module Shipping
     end
 
     def route
-      starting_location = horse.broodmare.current_location.racetrack.location
+      starting_location = horse.current_location.racetrack.location
       ending_location = ending_farm.racetrack.location
       route = Shipping::Route.with_locations(starting_location, ending_location)
       route.is_a?(Shipping::Route) ? route : route.first

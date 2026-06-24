@@ -16,7 +16,7 @@ tr
         = horse.lifetime_race_record&.race_record_races_only || t("horse.unraced")
     - if @active_status.to_s == 'broodmare'
       td
-        = horse.broodmare.breed_ranking_string
+        = horse.breed_ranking_string
       td
         - if horse.next_foal.present?
           - stud = horse.next_foal.stud
@@ -27,7 +27,7 @@ tr
           span.italic= t("horses.info.not_in_foal")
     - if @active_status.to_s == 'stud'
       td
-        = horse.stud.breed_ranking_string
+        = horse.stud_breed_ranking_string
       td
         - breedings = horse.breedings.by_year(Date.current.year)
         - approved = breedings.select { |breeding| breeding.approved? }
