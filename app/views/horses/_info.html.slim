@@ -194,7 +194,7 @@
           th= t(".breeding_record")
           td
             - if horse.female?
-              = horse.broodmare.breed_ranking_string || t("common.none")
+              = horse.breed_ranking_string || t("common.none")
             - else
               = horse.stud_breed_ranking_string || t("common.none")
       - if Horses::Status::FEMALE_BREEDING_STATUSES.include?(horse.status) || (horse.female? && horse.deceased?)
