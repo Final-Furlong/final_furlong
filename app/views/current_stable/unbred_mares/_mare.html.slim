@@ -1,9 +1,9 @@
 /# locals: (mare:)
 li
   = link_to mare.name_with_title, horse_path(mare), data: { turbo_frame: "_top" }
-  - if mare.broodmare.in_transit?
-    - date = mare.broodmare.last_shipment.arrival_date
-    .tooltip.tooltip-right.text-lg data-tip= t(".in_transit", location: mare.broodmare.current_location_name, date: l(date))
+  - if mare.in_transit?
+    - date = mare.last_shipment.arrival_date
+    .tooltip.tooltip-right.text-lg data-tip= t(".in_transit", location: mare.current_location_name, date: l(date))
       i.ph-fill.ph-truck.ml-2
   - approved_bookings = Horses::Breeding.current_year.approved.where(mare:).count
   - if approved_bookings.positive?

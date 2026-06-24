@@ -27,7 +27,7 @@ module Racing
       url = Rails.application.credentials.php_app.url!
       api_key = Rails.application.credentials.php_app.api_key!
       response = HTTParty.post(url, body: { id: race.id }, headers: { "X_API_KEY" => api_key }, format: :plain)
-      if response.code == 200
+      if response.code == 200 && !max_race?(date:, number:)
         Racing::TriggerRaceJob.set(good_job_labels: [date], wait: 10.seconds).perform_later(date:, number: number + 1)
       else
         body = JSON.parse(response, symbolize_names: true)
@@ -38,6 +38,12 @@ module Racing
           raise RaceRunError.new(message)
         end
       end
+    end
+
+    private
+
+    def max_race?(date:, number:)
+      number == Racing::RaceSchedule.where(date:).maximum(:number)
     end
   end
 end
