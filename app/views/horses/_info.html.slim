@@ -84,9 +84,9 @@
                   - days = "#{board.count_days} #{I18n.t("common.day").pluralize(board.count_days)}"
                   em.ml-2= t(".boarded", days:)
               - else
-                = horse.broodmare.current_location_name
-                - if horse.broodmare.in_transit?
-                  em.ml-2= t(".in_transit", date: l(horse.broodmare.last_shipment.arrival_date))
+                = horse.current_location_name
+                - if horse.in_transit?
+                  em.ml-2= t(".in_transit", date: l(horse.last_shipment.arrival_date))
         - if horse.current_lease&.persisted?
           = turbo_frame_tag dom_id(horse) do
             tr
@@ -196,7 +196,7 @@
             - if horse.female?
               = horse.broodmare.breed_ranking_string || t("common.none")
             - else
-              = horse.stud.breed_ranking_string || t("common.none")
+              = horse.stud_breed_ranking_string || t("common.none")
       - if Horses::Status::FEMALE_BREEDING_STATUSES.include?(horse.status) || (horse.female? && horse.deceased?)
         - if horse.foals.born.present?
           tr
