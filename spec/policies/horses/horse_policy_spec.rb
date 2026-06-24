@@ -55,18 +55,21 @@ RSpec.describe Horses::HorsePolicy do
     context "when horse is eligible for naming" do
       it "allows when horse is 0yo" do
         horse.date_of_birth = Date.new(Date.current.year, 1, 1)
+        horse.age = 0
         horse.status = "weanling"
         expect(policy).to permit_actions(:index, :show, :image, :thumbnail, :edit_name, :update)
       end
 
       it "allows when horse is 1yo" do
         horse.date_of_birth = Date.current - 1.year
+        horse.age = 1
         horse.status = "yearling"
         expect(policy).to permit_actions(:index, :show, :image, :thumbnail, :edit_name, :update)
       end
 
       it "allows when horse is 2yo and created" do
         horse.date_of_birth = Date.current - 2.years
+        horse.age = 2
         horse.sire_id = nil
         horse.dam_id = nil
         horse.name = nil

@@ -18,13 +18,13 @@ tr
     - if horse.broodmare? || horse.stud?
       .tooltip.ml-2.text-lg data-tip=t(".breed_ranking")
         - if horse.broodmare?
-          - if horse.broodmare_foal_record && horse.broodmare.breed_ranking_string != I18n.t("common.none")
-            span.badge.badge-outline.badge-sm class="text-#{horse.broodmare_foal_record.breed_ranking}" = horse.broodmare.breed_ranking_string
+          - if horse.broodmare_foal_record && horse.breed_ranking_string != I18n.t("common.none")
+            span.badge.badge-outline.badge-sm class="text-#{horse.broodmare_foal_record.breed_ranking}" = horse.breed_ranking_string
           - else
             span.badge.badge-outline.badge-sm.text-neutral-content/50= t("horse.no_breed_ranking")
         - elsif horse.stud?
-          - if horse.stud_foal_record && horse.stud.breed_ranking_string != I18n.t("common.none")
-            span.badge.badge-outline.badge-sm class="text-#{horse.stud_foal_record.breed_ranking}" = horse.stud.breed_ranking_string
+          - if horse.stud_foal_record && horse.stud_breed_ranking_string != I18n.t("common.none")
+            span.badge.badge-outline.badge-sm class="text-#{horse.stud_foal_record.breed_ranking}" = horse.stud_breed_ranking_string
           - else
             span.badge.badge-outline.badge-sm.text-neutral-content/50= t("horse.no_breed_ranking")
   - if @include_reserve

@@ -9,7 +9,7 @@ module Horses
         result = Result.new(shipment:)
         stable = horse.manager
 
-        shipment.starting_farm = horse.broodmare.current_location
+        shipment.starting_farm = horse.current_location
         shipment.ending_farm = Account::Stable.find(params[:ending_farm])
         shipment.departure_date = params[:departure_date]
         shipment.mode = params[:mode].to_s
@@ -72,9 +72,7 @@ module Horses
         (shipment.mode == "road") ? route[:road_days] : route[:air_days]
       end
 
-      def current_location_name
-        horse.broodmare.current_location_name
-      end
+      delegate :current_location_name, to: :horse
 
       def lookup_route(shipment)
         starting_location = shipment.starting_farm.racetrack.location

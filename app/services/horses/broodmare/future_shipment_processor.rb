@@ -14,7 +14,7 @@ module Horses
         stable = horse.manager
         end_location_name = shipment.ending_farm.name
 
-        if horse.broodmare.current_location != shipment.starting_farm
+        if horse.current_location != shipment.starting_farm
           notify_failed_shipment(end_location_name, stable)
           return
         end
