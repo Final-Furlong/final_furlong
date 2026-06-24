@@ -15,11 +15,17 @@ Rails.application.configure do
       },
       canary_health_check: {
         cron: "*/5 * * * *",
-        class: "CanaryJob"
+        class: "CanaryJob",
+        enabled_by_default: -> { Rails.env.production? }
       },
       daily_update: {
-        cron: "2 0 * * *",
+        cron: "17 0 * * *",
         class: "Daily::MorningUpdatesJob",
+        enabled_by_default: -> { Rails.env.production? }
+      },
+      yearly_update: {
+        cron: "1 0 1 1 *",
+        class: "Yearly::StartOfYearJob",
         enabled_by_default: -> { Rails.env.production? }
       },
       horse_energy_fitness: {

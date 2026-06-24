@@ -165,29 +165,6 @@ RSpec.describe Horses::Horse do
     end
   end
 
-  describe "#age" do
-    context "when horse is stillborn" do
-      it "returns 0" do
-        horse = build(:horse, date_of_birth: 1.year.ago, date_of_death: 1.year.ago)
-        expect(horse.age).to eq 0
-      end
-    end
-
-    context "when horse is not stillborn, but dead" do
-      it "returns age at death" do
-        horse = build(:horse, date_of_birth: 10.years.ago, date_of_death: 2.years.ago)
-        expect(horse.age).to eq 8
-      end
-    end
-
-    context "when horse is alive" do
-      it "returns current age" do
-        horse = build(:horse, date_of_birth: 10.years.ago)
-        expect(horse.age).to eq 10
-      end
-    end
-  end
-
   describe "#created?" do
     context "when horse has no sire or dam" do
       it "returns true" do

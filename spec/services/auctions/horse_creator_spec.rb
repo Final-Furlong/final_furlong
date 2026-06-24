@@ -267,7 +267,7 @@ RSpec.describe Auctions::HorseCreator do
   context "when 2yos are not allowed and horse is 2yo" do
     before do
       auction.update(racehorse_allowed_2yo: false)
-      horse.update(status: "racehorse", date_of_birth: 2.years.ago)
+      horse.update(status: "racehorse", age: 2)
     end
 
     it "returns created false" do
@@ -290,7 +290,7 @@ RSpec.describe Auctions::HorseCreator do
   context "when 3yos are not allowed and horse is 3yo" do
     before do
       auction.update(racehorse_allowed_3yo: false)
-      horse.update(status: "racehorse", date_of_birth: 3.years.ago)
+      horse.update(status: "racehorse", age: 3)
     end
 
     it "returns created false" do
@@ -313,7 +313,7 @@ RSpec.describe Auctions::HorseCreator do
   context "when older racehorses are not allowed and horse is 4yo+" do
     before do
       auction.update(racehorse_allowed_older: false)
-      horse.update(status: "racehorse", date_of_birth: 5.years.ago)
+      horse.update(status: "racehorse", age: 5)
     end
 
     it "returns created false" do
@@ -336,7 +336,7 @@ RSpec.describe Auctions::HorseCreator do
   context "when yearlings are not allowed and horse is yearling" do
     before do
       auction.update(yearling_allowed: false)
-      horse.update(status: "yearling", date_of_birth: 1.year.ago)
+      horse.update(status: "yearling", age: 1)
     end
 
     it "returns created false" do
@@ -359,7 +359,7 @@ RSpec.describe Auctions::HorseCreator do
   context "when weanlings are not allowed and horse is weanling" do
     before do
       auction.update(weanling_allowed: false)
-      horse.update(status: "weanling", date_of_birth: 1.day.ago)
+      horse.update(status: "weanling", age: 0)
     end
 
     it "returns created false" do

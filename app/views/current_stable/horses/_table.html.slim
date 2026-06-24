@@ -9,6 +9,7 @@
         table.table.table-responsive.table-striped
           thead
             tr
+              - pd query
               th= sort_link query, :name, Horses::Horse.human_attribute_name("name")
               - unless @active_status.to_s == 'yearling' || @active_status.to_s == 'weanling'
                 th= sort_link query, :age, Horses::Horse.human_attribute_name("age")

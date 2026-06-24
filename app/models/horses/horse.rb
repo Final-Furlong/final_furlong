@@ -4,8 +4,12 @@ module Horses
     include FinalFurlong::Horses::Validation
     include FriendlyId
     include PgSearch::Model
+
     include Raceable
     include Injurable
+    include Breedable
+    include Broodmareable
+    include Studable
 
     friendly_id :name_and_foal_status, use: [:slugged, :finders, :history]
 
@@ -17,12 +21,9 @@ module Horses
     belongs_to :sire, class_name: "Horse", optional: true
     belongs_to :dam, class_name: "Horse", optional: true
     belongs_to :location_bred, class_name: "Location"
-
-    has_object :broodmare
-    has_object :stud
+    has_many :slugs, class_name: "FriendlyId::Slug", inverse_of: :sluggable, dependent: :delete_all
 
     has_one :appearance, class_name: "Appearance", dependent: :delete
-    has_one :genetics, class_name: "Genetics", dependent: :delete
     has_many :comments, class_name: "Comment", dependent: :delete_all
 
     has_one :auction_horse, class_name: "Auctions::Horse", dependent: :destroy
@@ -32,22 +33,6 @@ module Horses
     has_many :past_leases, -> { where.not(active: true) }, class_name: "Horses::Lease", inverse_of: :horse, dependent: :destroy
     has_one :sale_offer, class_name: "Horses::SaleOffer", inverse_of: :horse, dependent: :delete
     has_many :sales, class_name: "Horses::Sale", inverse_of: :horse, dependent: :delete_all
-    has_many :slugs, class_name: "FriendlyId::Slug", inverse_of: :sluggable, dependent: :delete_all
-
-    has_many :foals, class_name: "Horses::Horse", inverse_of: :dam, dependent: :nullify
-    has_one :last_broodmare_shipment, -> { order(departure_date: :desc) }, class_name: "Shipping::BroodmareShipment", inverse_of: :horse, dependent: :delete
-    has_many :broodmare_shipments, class_name: "Shipping::BroodmareShipment", dependent: :delete_all
-    has_many :due_dates, -> { where.not(status: "denied") }, class_name: "Horses::Breeding", dependent: :delete_all, inverse_of: :mare
-    has_one :next_foal, -> { where(status: "bred").where(year: (Date.current.year - 1)..).order(year: :asc) }, class_name: "Horses::Breeding", dependent: :delete, inverse_of: :mare
-    has_one :parent_breeding_record, class_name: "Horses::Breeding", dependent: :delete, inverse_of: :first_foal
-    has_one :twin_parent_breeding_record, class_name: "Horses::Breeding", dependent: :delete, inverse_of: :second_foal
-
-    has_one :famous_stud, class_name: "Horses::Stud::FamousStud", inverse_of: :horse, dependent: :delete
-    has_many :stud_foals, class_name: "Horses::Horse", inverse_of: :sire, dependent: :nullify
-    has_many :breedings, class_name: "Horses::Breeding", dependent: :delete_all, inverse_of: :stud
-    has_many :stud_nominations, class_name: "Horses::Stud::BreedersCupNomination", dependent: :delete_all, inverse_of: :stud
-
-    has_one :breeding_stats, class_name: "Horses::BreedingStats", dependent: :delete, inverse_of: :horse
 
     has_many :future_events, class_name: "Horses::FutureEvent", inverse_of: :horse, dependent: :delete_all
 
@@ -95,26 +80,11 @@ module Horses
     scope :without_lease, -> { where.missing(:current_lease) }
     scope :with_leaser, ->(stable) { joins(:current_lease).where(current_lease: { leaser: stable }) }
     scope :managed_by, ->(stable) { born.where(manager: stable) }
-    scope :racehorse_status, ->(status) {
-      joins(:race_qualification).merge(::Racing::RaceQualification.send(:qualified_for, status))
-    }
     scope :random_order, -> { order("RANDOM()") }
-    scope :stud_available_for_stable, ->(stable) {
-      joins(:stud_options).where("(manager_id = ? AND stallion_options.total_booked_count < ?) OR (outside_mares_allowed > outside_mares_count)", stable.id, Config::Breedings.max_mares_per_year)
-    }
-    scope :full_sibs, ->(horse) { born.not_stillborn.with_sire.with_dam.where(sire: horse.sire, dam: horse.dam).where.not(id: horse.id) }
-    scope :half_sibs, ->(horse) { born.not_stillborn.with_sire.with_dam.where.not(sire: horse.sire).where(dam: horse.dam).where.not(id: horse.id) }
 
     # broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
 
     def to_key = [slug]
-
-    def age
-      return 0 if stillborn?
-
-      max_date = date_of_death || Date.current
-      max_date.year - date_of_birth.year
-    end
 
     def created?
       sire.blank? && dam.blank?
