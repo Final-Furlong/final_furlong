@@ -38,12 +38,12 @@ module Horses
         return result
       end
 
-      if mare.broodmare.current_location != breeding.stud.manager
+      if mare.current_location != breeding.stud.manager
         result.error = error("mare_needs_shipping")
         return result
       end
 
-      if mare.broodmare.in_transit?
+      if mare.in_transit?
         result.error = error("mare_in_transit")
         return result
       end

@@ -18,7 +18,7 @@ module Ui
 
       def css_classes
         ClassVariants.build(
-          base: "badge font-medium shadow-sm",
+          base: "badge font-medium shadow-sm ml-2",
           variants: {
             color: {
               primary: "badge-primary",
