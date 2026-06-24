@@ -41,9 +41,9 @@
           th= t("horses.info.breeding_record")
           td
             - if horse.female?
-              = horse.broodmare.breed_ranking_string || t("common.none")
+              = horse.breed_ranking_string || t("common.none")
             - else
-              = horse.stud.breed_ranking_string
+              = horse.stud_breed_ranking_string
       - if Horses::Status::FEMALE_BREEDING_STATUSES.include?(horse.status)
         - if horse.foals.born.present?
           tr
