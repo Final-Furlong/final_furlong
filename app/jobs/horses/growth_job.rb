@@ -1,5 +1,5 @@
 class Horses::GrowthJob < ApplicationJob
-  queue_as :latency_2m
+  queue_as :latency_5m
 
   def perform
     return if run_today?

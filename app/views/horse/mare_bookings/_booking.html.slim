@@ -13,10 +13,10 @@ tr
       - if min_breed_date && slot.date < min_breed_date
         span.badge.badge-error.badge-outline= t(".invalid_date")
       - elsif slot.date >= Date.current && CurrentStable::FoalPolicy.new(Current.user, @horse).create?
-        - if @horse.broodmare.current_location == booking.stud.manager && !@horse.broodmare.in_transit?
+        - if @horse.current_location == booking.stud.manager && !@horse.in_transit?
           = render Ui::ButtonizedLink::Component.new(url: new_foal_horse_path(@horse, booking), style: :outline, size: :small, data: { turbo_frame: "modal" }) do
             = t(".breed")
-        - elsif @horse.broodmare.in_transit?
+        - elsif @horse.in_transit?
           span.badge.badge-info.badge-outline= t(".in_transit")
         - else
           = render Ui::ButtonizedLink::Component.new(url: new_horse_shipment_path(@horse, end_farm_id: booking.stud.manager_id), color: :warning, style: :outline, size: :small, data: { turbo_frame: "modal" }) do
