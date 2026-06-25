@@ -44,6 +44,24 @@ module Api
           { race_result_id: result.race_result&.id }
         end
       end
+
+      resource :race_times do
+        desc "Fetch historical finish times for races"
+        params do
+          requires :distance, type: Float
+          requires :condition, type: String
+          requires :surface, type: String
+          optional :min_date, type: String
+        end
+        get do
+          query = Racing::RaceResult.joins(:track_surface).where(distance: permitted_params[:distance], condition: permitted_params[:condition], track_surface: { surface: permitted_params[:surface] })
+          if permitted_params[:min_date]
+            query = query.where(date: permitted_params[:min_date]..)
+          end
+          time = query.average(:time_in_seconds)
+          { time: }
+        end
+      end
     end
   end
 end

@@ -3,7 +3,9 @@ module Api
     class Base < Grape::API
       mount Api::V1::Horses
       mount Api::V1::Jockeys
+      mount Api::V1::RaceResultHorses
       mount Api::V1::RaceResults
+      mount Api::V1::RaceSchedules
     end
   end
 end
