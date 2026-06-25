@@ -8,77 +8,6 @@ module Racing
     validates :energy_grade, :fitness_grade, inclusion: { in: Config::Racing.letter_grades.map(&:upcase) }
     validates :at_home, :in_transit, :currently_injured, inclusion: { in: [true, false] }
 
-    scope :min_energy, ->(grade) { min_grade(grade, "energy_grade") }
-    scope :max_energy, ->(grade) { max_grade(grade, "energy_grade") }
-    scope :energy_within, ->(max, min) { grade_within(max, min, "energy_grade") }
-    scope :min_fitness, ->(grade) { min_grade(grade, "fitness_grade") }
-    scope :max_fitness, ->(grade) { max_grade(grade, "fitness_grade") }
-    scope :fitness_within, ->(max, min) { grade_within(max, min, "fitness_grade") }
-    scope :min_grade, ->(grade, key) {
-      case grade.to_s.upcase
-      when "A"
-        where(key => grade)
-      when "B"
-        where(key => ["A", "B"])
-      when "C"
-        where(key => ["A", "B", "C"])
-      when "D"
-        where(key => ["A", "B", "C", "D"])
-      else
-        all
-      end
-    }
-    scope :max_grade, ->(grade, key) {
-      case grade.to_s.upcase
-      when "A"
-        all
-      when "B"
-        where(key => ["B", "C", "D", "F"])
-      when "C"
-        where(key => ["C", "D", "F"])
-      when "D"
-        where(key => ["D", "F"])
-      when "F"
-        where(key => "F")
-      end
-    }
-    scope :grade_within, ->(max_grade, min_grade, key) {
-      grades1 = case max_grade.to_s.upcase
-      when "A"
-        ["A", "B", "C", "D", "F"]
-      when "B"
-        ["B", "C", "D", "F"]
-      when "C"
-        ["C", "D", "F"]
-      when "D"
-        ["D", "F"]
-      when "F"
-        ["F"]
-      end
-      grades2 = case min_grade.to_s.upcase
-      when "A"
-        ["A"]
-      when "B"
-        ["A", "B"]
-      when "C"
-        ["A", "B", "C"]
-      when "D"
-        ["A", "B", "C", "D"]
-      when "F"
-        ["A", "B", "C", "D", "F"]
-      end
-      where(key => (grades1 & grades2).to_a)
-    }
-    scope :raced_before, ->(days) { where("last_raced_at IS NULL OR last_raced_at < ?", Date.current - days.to_i.days) }
-    scope :raced_since, ->(days) { where(last_raced_at: (Date.current - days.to_i.days)..) }
-    scope :shipped_before, ->(days) { where("last_shipped_at IS NULL OR last_shipped_at < ?", Date.current - days.to_i.days) }
-    scope :shipped_since, ->(days) { where(last_shipped_at: (Date.current - days.to_i.days)..) }
-    scope :min_rest_days, ->(number) { where(rest_days_since_last_race: number.to_i..) }
-    scope :max_rest_days, ->(number) { where(rest_days_since_last_race: ..number.to_i) }
-    scope :min_workouts, ->(number) { where(workouts_since_last_race: number.to_i..) }
-    scope :max_workouts, ->(number) { where(workouts_since_last_race: ..number.to_i) }
-    scope :injured_before, ->(days) { where("last_injured_at IS NULL OR last_injured_at < ?", Date.current - days.to_i.days) }
-    scope :injured_since, ->(days) { where(last_injured_at: (Date.current - days.to_i.days)..) }
     scope :at_home, -> { where(at_home: true) }
     scope :not_at_home, -> { at_home.invert_where }
     scope :boardable, -> { where(at_home: false, in_transit: false) }
@@ -147,6 +76,42 @@ module Racing
       end
     end
 
+    def self.min_grade_levels(grade)
+      case grade.to_s.upcase
+      when "A"
+        [grade.to_s.upcase]
+      when "B"
+        %w[A B]
+      when "C"
+        %w[A B C]
+      when "D"
+        %w[A B C D]
+      else
+        %w[A B C D F]
+      end
+    end
+
+    def self.max_grade_levels(grade)
+      case grade.to_s.upcase
+      when "A"
+        %w[A B C D F]
+      when "B"
+        %w[B C D F]
+      when "C"
+        %w[C D F]
+      when "D"
+        %w[D F]
+      when "F"
+        %w[F]
+      end
+    end
+
+    def self.grade_levels_range(min_grade, max_grade)
+      grades1 = max_grade_levels(max_grade)
+      grades2 = min_grade_levels(min_grade)
+      (grades1 & grades2).to_a
+    end
+
     def self.ransackable_attributes(_auth_object = nil)
       %w[at_home energy_grade fitness_grade in_transit last_raced_at last_rested_at last_shipped_at racetrack_id
         rest_days_since_last_race workouts_since_last_race location_string last_injured_at currently_injured]
@@ -157,7 +122,7 @@ module Racing
     end
 
     def self.ransackable_scopes(_auth_object = nil)
-      %i[min_energy max_energy]
+      %i[]
     end
   end
 end

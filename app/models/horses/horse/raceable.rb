@@ -85,13 +85,19 @@ module Horses::Horse::Raceable
     scope :sort_by_race_metadata_injury_nulls_last_desc, -> { joins(:race_metadata).order("race_metadata.last_injured_at DESC NULLS LAST") }
     scope :sort_by_race_metadata_entry_nulls_last_asc, -> { joins(:race_metadata).order("race_metadata.next_entry_date ASC NULLS LAST") }
     scope :sort_by_race_metadata_entry_nulls_last_desc, -> { joins(:race_metadata).order("race_metadata.next_entry_date DESC NULLS LAST") }
-    scope :location, ->(value) { joins(:race_metadata).where(race_metadata: { location_string: value }) }
-    scope :min_energy, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.min_energy(value)) }
-    scope :max_energy, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.max_energy(value)) }
-    scope :energy_in, ->(max_value, min_value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.energy_within(max_value, min_value)) }
-    scope :min_fitness, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.min_fitness(value)) }
-    scope :max_fitness, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.max_fitness(value)) }
-    scope :fitness_in, ->(max_value, min_value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.fitness_within(max_value, min_value)) }
+    scope :sort_by_energy_asc, -> { joins(:race_metadata).order("race_metadata.energy_grade ASC") }
+    scope :sort_by_energy_desc, -> { joins(:race_metadata).order("race_metadata.energy_grade DESC") }
+    scope :sort_by_fitness_asc, -> { joins(:race_metadata).order("race_metadata.fitness_grade ASC") }
+    scope :sort_by_fitness_desc, -> { joins(:race_metadata).order("race_metadata.fitness_grade DESC") }
+    scope :sort_by_location_asc, -> { joins(:race_metadata).order("race_metadata.location_string ASC") }
+    scope :sort_by_location_desc, -> { joins(:race_metadata).order("race_metadata.location_string DESC") }
+    scope :location, ->(value) { where(race_metadata: { location_string: value }) }
+    scope :min_energy, ->(value) { where(race_metadata: { energy_grade: ::Racing::RacehorseMetadata.min_grade_levels(value) }) }
+    scope :max_energy, ->(value) { where(race_metadata: { energy_grade: ::Racing::RacehorseMetadata.max_grade_levels(value) }) }
+    scope :energy_in, ->(max_value, min_value) { where(race_metadata: { energy_grade: ::Racing::RacehorseMetadata.grade_levels_range(min_value, max_value) }) }
+    scope :min_fitness, ->(value) { where(race_metadata: { fitness_grade: ::Racing::RacehorseMetadata.min_grade_levels(value) }) }
+    scope :max_fitness, ->(value) { where(race_metadata: { fitness_grade: ::Racing::RacehorseMetadata.max_grade_levels(value) }) }
+    scope :fitness_in, ->(max_value, min_value) { where(race_metadata: { fitness_grade: ::Racing::RacehorseMetadata.grade_levels_range(min_value, max_value) }) }
     scope :entry_status, ->(status) {
       case status.to_s.downcase
       when "current"
@@ -115,12 +121,15 @@ module Horses::Horse::Raceable
     scope :runs_on_dirt, -> { runs_on("dirt") }
     scope :runs_on_turf, -> { runs_on("turf") }
     scope :runs_on_steeplechase, -> { runs_on("sc") }
-    scope :min_rest_days_since_last_race, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.min_rest_days(value)) }
-    scope :max_rest_days_since_last_race, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.max_rest_days(value)) }
-    scope :min_days_since_last_shipment, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.shipped_before(value)) }
-    scope :max_days_since_last_shipment, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.shipped_since(value)) }
-    scope :min_workouts_since_last_race, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.min_workouts(value)) }
-    scope :max_workouts_since_last_race, ->(value) { joins(:race_metadata).merge(::Racing::RacehorseMetadata.max_workouts(value)) }
+    scope :min_days_since_last_race, ->(days) { joins(:race_metadata).where("last_raced_at IS NULL OR last_raced_at < ?", Date.current - days.to_i.days) }
+    scope :min_rest_days_since_last_race, ->(value) { joins(:race_metadata).where(race_metadata: { rest_days_since_last_race: value.to_i.. }) }
+    scope :max_rest_days_since_last_race, ->(value) { joins(:race_metadata).where(race_metadata: { rest_days_since_last_race: ..value.to_i }) }
+    scope :min_days_since_last_shipment, ->(days) { joins(:race_metadata).where("last_shipped_at IS NULL OR last_shipped_at < ?", Date.current - days.to_i.days) }
+    scope :max_days_since_last_shipment, ->(days) { joins(:race_metadata).where(race_metadata: { last_shipped_at: (Date.current - days.to_i.days).. }) }
+    scope :min_workouts_since_last_race, ->(value) { joins(:race_metadata).where(race_metadata: { workouts_since_last_race: value.to_i.. }) }
+    scope :max_workouts_since_last_race, ->(value) { joins(:race_metadata).where(race_metadata: { workouts_since_last_race: ..value.to_i }) }
+    scope :min_days_since_last_injury, ->(days) { joins(:race_metadata).where("last_injured_at IS NULL OR last_injured_at < ?", Date.current - days.to_i.days) }
+    scope :max_days_since_last_injury, ->(days) { joins(:race_metadata).where(race_metadata: { last_injured_at: (Date.current - days.to_i.days).. }) }
 
     delegate :track_record, to: :lifetime_race_record, allow_nil: true
 
