@@ -7,6 +7,8 @@ module CurrentStable
     end
 
     def current_entries?
+      return false if record != stable
+
       Racing::RaceEntry.exists?(stable:)
     end
   end

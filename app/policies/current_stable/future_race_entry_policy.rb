@@ -10,10 +10,13 @@ module CurrentStable
       return false unless logged_in?
       return false if record.date < Date.current
 
-      record.stable == stable
+      record == stable
     end
 
     def future_races?
+      return false unless logged_in?
+      return false unless record == stable
+
       Racing::FutureRaceEntry.where(stable:).future.exists?
     end
   end

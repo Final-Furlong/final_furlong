@@ -3,9 +3,19 @@
   .stable.card.card-border.border-gray-300.shadow-md.mx-2.my-2.dark:border-neutral-300
     .card-body
       .card-title
-        text-lg.card-header
-          = render Ui::Link::Component.new(url: stable_path(stable), data: { turbo_frame: "_top" }) do
-            = stable.name
+        .flex.w-full
+          text-lg.card-header.flex-1
+            = render Ui::Link::Component.new(url: stable_path(stable), data: { turbo_frame: "_top" }) do
+              = stable.name
+          - if policy(stable).send_private_message?
+            .flex-none
+              ruby:
+                forum_url = Rails.application.credentials.forum.url!
+                pm_url = Rails.application.credentials.forum.private_message_path!
+                pm_url = pm_url.dup
+                pm_url.sub!(":username", stable.user.username)
+              = render Ui::ButtonizedLink::Component.new(url: "#{forum_url}#{pm_url}", style: :outline, size: :small, data: { turbo_frame: "_top" }) do
+                = t(".send_pm")
       .card-subtitle.mb-2
         span.text-muted= "@#{stable.user.username}"
         = render Users::OnlineBadge::Component.new(online: SessionsRepository.online?(resource: stable))

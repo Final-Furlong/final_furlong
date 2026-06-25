@@ -11,11 +11,15 @@ module CurrentStable
     end
 
     def race_results?
-      index?
+      return false unless index?
+
+      record == stable
     end
 
     def recent_race_results?
-      index?
+      return false unless index?
+
+      record == stable
     end
 
     def show?

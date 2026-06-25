@@ -30,6 +30,7 @@ module Accounts
         [
           { key: :impersonate },
           { key: :edit },
+          { key: :send_private_message },
           { key: :current_entries, policy: CurrentStable::RaceEntryPolicy },
           { key: :recent_race_results, policy: CurrentStable::RaceResultPolicy },
           { key: :future_races, policy: CurrentStable::FutureRaceEntryPolicy },

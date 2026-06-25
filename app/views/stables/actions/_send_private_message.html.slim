@@ -1,0 +1,6 @@
+ruby:
+  forum_url = Rails.application.credentials.forum.url!
+  pm_url = Rails.application.credentials.forum.private_message_path!
+  pm_url = pm_url.dup
+  pm_url.sub!(":username", object.user.username)
+= link_to t("account.stables.stable.send_pm"), [forum_url, pm_url].join(""), class: classes, data: { turbo_frame: "modal" }
