@@ -7,7 +7,7 @@ RSpec.describe Horses::Status do
         unborn: "unborn", weanling: "weanling", yearling: "yearling",
         racehorse: "racehorse", broodmare: "broodmare", stud: "stud",
         retired: "retired", retired_broodmare: "retired_broodmare",
-        retired_stud: "retired_stud", deceased: "deceased"
+        retired_stud: "retired_stud"
       })
     end
 

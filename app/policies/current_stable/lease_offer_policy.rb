@@ -8,7 +8,8 @@ module CurrentStable
 
     def create_lease_offer?
       return false unless owner?
-      return false unless Horses::Status::LEASEABLE_STATUSES.include?(record.status)
+      return false unless record.active?
+      return false if record.foal?
       return false if record.current_lease
       return false if record.lease_offer
       unless record.racehorse?

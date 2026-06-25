@@ -159,7 +159,7 @@ RSpec.describe "Leasing Journey" do
   end
 
   def horse
-    @horse ||= create(:horse, :racehorse, :with_appearance, owner: leaser)
+    @horse ||= create(:racehorse, :with_appearance, owner: leaser)
   end
 end
 

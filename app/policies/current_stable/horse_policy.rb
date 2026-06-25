@@ -29,8 +29,8 @@ module CurrentStable
 
     def change_status?
       return false if record.leaser_id.present?
-      return false unless Horses::Status::LIVING_STATUSES.include?(record.status)
-      return false if Horses::Status::RETIRED_STATUSES.include?(record.status)
+      return false if record.deceased?
+      return false if record.retired?
 
       owner? || admin?
     end
@@ -103,9 +103,9 @@ module CurrentStable
 
     def ship?
       shipment = if record.racehorse?
-        Shipping::RacehorseShipment.new(horse: record)
+        Horses::Racehorse::Shipment.new(horse: record)
       elsif record.broodmare?
-        Shipping::BroodmareShipment.new(horse: record)
+        Horses::Broodmare::Shipment.new(horse: record)
       else
         return false
       end
@@ -114,7 +114,7 @@ module CurrentStable
 
     def consign_to_auction?
       return false unless owner?
-      return false unless Horses::Status::SELLABLE_STATUSES.include?(record.status)
+      return false unless record.active?
       return false if record.current_lease&.persisted?
       return false if record.sale_offer&.persisted?
       return false if record.auction_horse&.persisted?

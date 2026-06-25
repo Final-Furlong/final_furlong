@@ -12,16 +12,16 @@ module Horse
 
     def new
       horse = Horses::Horse.find(params[:horse_id])
-      @boarding = Horses::Boarding.new(horse:)
+      @boarding = Horses::Racehorse::Boarding.new(horse:)
       authorize @boarding
     end
 
     def create
       horse = Horses::Horse.find(params[:horse_id])
-      @boarding = Horses::Boarding.new(horse:)
+      @boarding = Horses::Racehorse::Boarding.new(horse:)
       authorize @boarding
 
-      result = Horses::BoardingCreator.new.start_boarding(horse:)
+      result = Horses::Racehorse::BoardingCreator.new.start_boarding(horse:)
       if result.created?
         flash[:success] = t(".success")
         redirect_to stable_boardings_path
@@ -38,10 +38,10 @@ module Horse
 
     def destroy
       horse = Horses::Horse.find(params[:horse_id])
-      @boarding = Horses::Boarding.find_by(horse:, id: params[:id])
+      @boarding = Horses::Racehorse::Boarding.find_by(horse:, id: params[:id])
       authorize @boarding
 
-      result = Horses::BoardingUpdater.new.stop_boarding(boarding: @boarding)
+      result = Horses::Racehorse::BoardingUpdater.new.stop_boarding(boarding: @boarding)
       if result.updated?
         flash[:success] = t(".success") # rubocop:disable Rails/ActionControllerFlashBeforeRender
       else

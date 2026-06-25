@@ -22,24 +22,24 @@ class Racing::RaceDayUpdaterJob < ApplicationJob
     # rubocop:disable Rails/SkipsModelValidations
     Racing::RacehorseMetadata.where(next_entry_date: ..date).update_all(next_entry_date: nil)
     swapped_to_sc = 0
-    Horses::Horse.racehorse.joins(:race_options).where(race_options: { racehorse_type: "flat" }).where(id: Racing::RaceResultHorse.joins(:race).merge(Racing::RaceResult.by_track("steeplechase")).select(:horse_id)).find_each do |horse|
+    Horses::Horse::Racehorse.joins(:race_options).where(race_options: { racehorse_type: "flat" }).where(id: Racing::RaceResultHorse.joins(:race).merge(Racing::RaceResult.by_track("steeplechase")).select(:horse_id)).find_each do |horse|
       options = horse.race_options
       options.update_columns(racehorse_type: "jump")
       ::Horses::Event.create!(horse:, event_type: "switched_to_sc", date:)
       swapped_to_sc += 1
     end
-    Horses::Horse.racehorse.joins(:race_options).where(race_options: { racehorse_type: "jump" }).where.not(id: Racing::RaceResultHorse.joins(:race).merge(Racing::RaceResult.by_track("steeplechase")).select(:horse_id)).find_each do |horse|
+    Horses::Horse::Racehorse.joins(:race_options).where(race_options: { racehorse_type: "jump" }).where.not(id: Racing::RaceResultHorse.joins(:race).merge(Racing::RaceResult.by_track("steeplechase")).select(:horse_id)).find_each do |horse|
       options = horse.race_options
       options.update_columns(racehorse_type: "flat")
     end
     # rubocop:enable Rails/SkipsModelValidations
-    Horses::Horse.racehorse.joins(:race_metadata).where(race_metadata: { next_entry_date: nil }).where.associated(:race_entries).find_each do |horse|
+    Horses::Horse::Racehorse.joins(:race_metadata).where(race_metadata: { next_entry_date: nil }).where.associated(:race_entries).find_each do |horse|
       horse.race_metadata.update(next_entry_date: horse.race_entries.order(date: :asc).first&.date)
     end
-    Horses::Horse.racehorse.joins(:race_metadata).where(race_metadata: { next_entry_date: nil }).where.missing(:race_entries).where.associated(:future_race_entries).find_each do |horse|
+    Horses::Horse::Racehorse.joins(:race_metadata).where(race_metadata: { next_entry_date: nil }).where.missing(:race_entries).where.associated(:future_race_entries).find_each do |horse|
       horse.race_metadata.update(next_entry_date: horse.future_race_entries.order(date: :asc).first&.date)
     end
-    Horses::Horse.racehorse.joins(:race_metadata).where(race_metadata: { next_entry_date: nil }).where.missing(:race_entries).where.missing(:future_race_entries).find_each do |horse|
+    Horses::Horse::Racehorse.joins(:race_metadata).where(race_metadata: { next_entry_date: nil }).where.missing(:race_entries).where.missing(:future_race_entries).find_each do |horse|
       horse.race_metadata.update(next_entry_date: nil)
     end
     result[:new_jumpers] = swapped_to_sc

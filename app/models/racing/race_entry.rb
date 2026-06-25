@@ -5,7 +5,7 @@ module Racing
 
     attr_accessor :shipping_mode
 
-    belongs_to :horse, class_name: "Horses::Horse"
+    belongs_to :horse, class_name: "Horses::Horse::Racehorse"
     belongs_to :race, class_name: "Racing::RaceSchedule"
     belongs_to :stable, class_name: "Account::Stable"
     belongs_to :jockey, class_name: "Racing::Jockey", optional: true

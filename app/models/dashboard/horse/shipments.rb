@@ -22,8 +22,8 @@ module Dashboard
 
       def load_shipments(status)
         class_name = (status.to_s.downcase == "racehorse") ?
-                       Shipping::RacehorseShipment.includes(:starting_location, :ending_location) :
-                       Shipping::BroodmareShipment.includes(:starting_farm, :ending_farm)
+                       Horses::Racehorse::Shipment.includes(:starting_location, :ending_location) :
+                       Horses::Broodmare::Shipment.includes(:starting_farm, :ending_farm)
         class_name.where(horse:).order(departure_date: :desc).map do |shipment|
           hash = {
             id: shipment.id,

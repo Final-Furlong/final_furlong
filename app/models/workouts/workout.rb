@@ -7,7 +7,7 @@ module Workouts
     attr_accessor :special_event_type, :special_event_time, :confidence,
       :energy_loss, :fitness_gain
 
-    belongs_to :horse, class_name: "Horses::Horse"
+    belongs_to :horse, class_name: "Horses::Horse::Racehorse"
     belongs_to :jockey, class_name: "Racing::Jockey"
     belongs_to :location
     belongs_to :racetrack, class_name: "Racing::Racetrack"

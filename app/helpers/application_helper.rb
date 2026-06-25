@@ -1,4 +1,10 @@
 module ApplicationHelper
+  def safe_delimited_number(number, options = {})
+    return number if number < 1000
+
+    ActiveSupport::NumberHelper.number_to_delimited(number, options)
+  end
+
   def render_load_more(pagy, tag: "load-more")
     render "shared/load_more", pagy:, tag:
   end

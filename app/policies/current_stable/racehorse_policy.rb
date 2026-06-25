@@ -92,13 +92,13 @@ module CurrentStable
       return false if data&.in_transit?
       return false if data&.at_home?
 
-      !Horses::Boarding.current.exists?(horse: record)
+      !Horses::Racehorse::Boarding.current.exists?(horse: record)
     end
 
     def stop_boarding?
       return false unless manager?
 
-      Horses::Boarding.current.exists?(horse: record)
+      Horses::Racehorse::Boarding.current.exists?(horse: record)
     end
 
     def run_workout?

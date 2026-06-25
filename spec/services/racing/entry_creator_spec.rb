@@ -360,7 +360,7 @@ RSpec.describe Racing::EntryCreator do
           end
 
           it "does not ship the horse" do
-            expect { described_class.new.create_entry(**params) }.not_to change(Shipping::RacehorseShipment, :count)
+            expect { described_class.new.create_entry(**params) }.not_to change(Horses::Racehorse::Shipment, :count)
           end
         end
 
@@ -379,7 +379,7 @@ RSpec.describe Racing::EntryCreator do
           it_behaves_like "an entry without errors"
 
           it "does ship the horse" do
-            expect { described_class.new.create_entry(**params) }.to change(Shipping::RacehorseShipment, :count)
+            expect { described_class.new.create_entry(**params) }.to change(Horses::Racehorse::Shipment, :count)
           end
         end
 
@@ -399,7 +399,7 @@ RSpec.describe Racing::EntryCreator do
           end
 
           it "does not ship the horse" do
-            expect { described_class.new.create_entry(**params) }.not_to change(Shipping::RacehorseShipment, :count)
+            expect { described_class.new.create_entry(**params) }.not_to change(Horses::Racehorse::Shipment, :count)
           end
         end
       end
@@ -419,7 +419,7 @@ RSpec.describe Racing::EntryCreator do
         end
 
         it "does not ship the horse" do
-          expect { described_class.new.create_entry(**params) }.not_to change(Shipping::RacehorseShipment, :count)
+          expect { described_class.new.create_entry(**params) }.not_to change(Horses::Racehorse::Shipment, :count)
         end
       end
     end

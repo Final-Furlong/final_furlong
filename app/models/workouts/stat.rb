@@ -2,7 +2,7 @@ module Workouts
   class Stat < ApplicationRecord
     self.table_name = "workout_stats"
 
-    belongs_to :horse, class_name: "Horses::Horse", inverse_of: :workout_stats
+    belongs_to :horse, class_name: "Horses::Horse::Racehorse", inverse_of: :workout_stats
 
     validates :best_time_in_seconds, :best_date, :recent_time_in_seconds,
       :recent_date, presence: true

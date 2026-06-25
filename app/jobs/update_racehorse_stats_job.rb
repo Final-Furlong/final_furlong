@@ -36,7 +36,7 @@ class UpdateRacehorseStatsJob < ApplicationJob
   end
 
   def location_name(horse)
-    last_shipment = Shipping::RacehorseShipment.where(horse_id: horse.id).order(departure_date: :desc).first
+    last_shipment = Horses::Racehorse::Shipment.where(horse_id: horse.id).order(departure_date: :desc).first
     return horse.manager.name if last_shipment.blank?
 
     case last_shipment.shipping_type

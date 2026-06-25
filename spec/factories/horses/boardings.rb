@@ -1,6 +1,6 @@
 FactoryBot.define do
-  factory :boarding, class: "Horses::Boarding" do
-    horse
+  factory :boarding, class: "Horses::Racehorse::Boarding" do
+    horse { association :racehorse }
     location
     start_date { Date.current }
 

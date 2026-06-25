@@ -8,7 +8,7 @@ module CurrentStable
 
     def create?
       return false unless record.horse.owner == stable
-      return false unless Horses::Status::SELLABLE_STATUSES.include?(record.horse.status)
+      return false unless record.active?
       return false if record.horse.current_lease&.persisted?
       return false if record.horse.sale_offer.persisted?
       return false if record.horse.auction_horse&.persisted?
