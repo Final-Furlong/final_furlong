@@ -98,6 +98,19 @@ module Horses::Horse::Raceable
     scope :min_fitness, ->(value) { where(race_metadata: { fitness_grade: ::Racing::RacehorseMetadata.min_grade_levels(value) }) }
     scope :max_fitness, ->(value) { where(race_metadata: { fitness_grade: ::Racing::RacehorseMetadata.max_grade_levels(value) }) }
     scope :fitness_in, ->(max_value, min_value) { where(race_metadata: { fitness_grade: ::Racing::RacehorseMetadata.grade_levels_range(min_value, max_value) }) }
+    scope :shippable_to_location, ->(id, cost, days) {
+      # n.b. DISTINCT UNNEST(ARRAY[]) is postgres-specific syntax
+      where("race_metadata.location_id = :id OR race_metadata.location_id IN
+        (SELECT DISTINCT UNNEST(ARRAY[starting_location_id, ending_location_id]) FROM shipment_routes
+        WHERE ((starting_location_id = race_metadata.location_id AND ending_location_id = :id) OR
+          (starting_location_id = :id AND ending_location_id = race_metadata.location_id))
+          AND ((road_days IS NOT NULL AND road_days <= :days AND road_cost <= :cost) OR
+            (air_days IS NOT NULL AND air_days <= :days AND air_cost <= :cost)))",
+        { id:, cost:, days: })
+    }
+    scope :at_home, -> { where(race_metadata: { at_home: true }) }
+    scope :not_at_home, -> { where(race_metadata: { at_home: false }) }
+    scope :boardable, -> { where(race_metadata: { at_home: false, in_transit: false }) }
     scope :entry_status, ->(status) {
       case status.to_s.downcase
       when "current"
