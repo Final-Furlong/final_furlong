@@ -4,19 +4,19 @@ module CurrentStable
       def resolve
         refined_scope = scope.managed_by(stable)
         if (energy = game_settings[:minimum_energy])
-          refined_scope = refined_scope.merge(Racing::RacehorseMetadata.min_energy(energy))
+          refined_scope = refined_scope.min_energy(energy)
         end
         if (min_days = game_settings[:minimum_days_since_last_race])
-          refined_scope = refined_scope.merge(Racing::RacehorseMetadata.raced_before(min_days)) if min_days.positive?
+          refined_scope = refined_scope.min_days_since_last_race(min_days) if min_days.positive?
         end
         if (min_days = game_settings[:minimum_days_since_last_injury])
-          refined_scope = refined_scope.merge(Racing::RacehorseMetadata.injured_before(min_days)) if min_days.positive?
+          refined_scope = refined_scope.min_days_since_last_injury(min_days) if min_days.positive?
         end
         if (min_days = game_settings[:minimum_rest_days_since_last_race])
-          refined_scope = refined_scope.merge(Racing::RacehorseMetadata.min_rest_days(min_days)) if min_days.positive?
+          refined_scope = refined_scope.min_rest_days(min_days) if min_days.positive?
         end
         if (min_workouts = game_settings[:minimum_workouts_since_last_race])
-          refined_scope = refined_scope.merge(Racing::RacehorseMetadata.min_workouts(min_workouts)) if min_workouts.positive?
+          refined_scope = refined_scope.min_workouts_since_last_race(min_workouts) if min_workouts.positive?
         end
 
         refined_scope

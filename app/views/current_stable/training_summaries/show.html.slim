@@ -8,9 +8,9 @@
           th.text-sm.text-center= sort_link @query, :name, t(".horse")
           th.text-sm.text-center= sort_link @query, :age, [:age, 'name asc'], t(".age")
           th.text-sm.text-center= sort_link @query, :gender, [:gender, 'name asc'], t(".gender")
-          th.text-sm.text-center= sort_link @query, :race_metadata_energy_grade, [:race_metadata_energy_grade, 'name asc'], t(".energy")
-          th.text-sm.text-center= sort_link @query, :race_metadata_fitness_grade, [:race_metadata_fitness_grade, 'name asc'], t(".fitness")
-          th.text-sm.text-center= sort_link @query, :race_metadata_location_string, [:race_metadata_location_string, 'name asc'], t(".location")
+          th.text-sm.text-center= sort_link @query, :energy, [:energy, 'name asc'], t(".energy")
+          th.text-sm.text-center= sort_link @query, :fitness, [:fitness, 'name asc'], t(".fitness")
+          th.text-sm.text-center= sort_link @query, :race_metadata_location_string, [:location, 'name asc'], t(".location")
           th.text-sm.text-center= sort_link @query, :race_qualification, [:race_qualification, 'name asc'], t(".qualifying_level")
           th.text-sm.text-center
             = sort_link @query, :race_metadata_race_nulls_last, [:race_metadata_race_nulls_last, 'name asc'] do
