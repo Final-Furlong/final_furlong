@@ -9,8 +9,8 @@ module Racing
       Racing::RaceRecord.refresh
       Racing::LifetimeRaceRecord.refresh
       Racing::AnnualRaceRecord.refresh
-      Horses::BroodmareFoalRecord.refresh
-      Horses::StudFoalRecord.refresh
+      Horses::Broodmare::FoalRecord.refresh
+      Horses::Stud::FoalRecord.refresh
     end
   end
 end

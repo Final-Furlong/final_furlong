@@ -1,4 +1,4 @@
-RSpec.describe Auctions::HorseConsigner do
+describe Auctions::HorseConsigner do
   context "when auction is not in the future" do
     let(:auction) { past_auction }
 

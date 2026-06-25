@@ -1,4 +1,4 @@
-RSpec.describe Horses::LeaseTerminationRequest do
+describe Horses::LeaseTerminationRequest do
   describe "associations" do
     it { is_expected.to belong_to(:lease).class_name("Horses::Lease") }
   end

@@ -1,4 +1,4 @@
-RSpec.describe CreateActivationService do
+describe CreateActivationService do
   subject(:migrate) { described_class.new(user.id) }
 
   let(:user) { create(:user, :pending) }

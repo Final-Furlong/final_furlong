@@ -1,4 +1,4 @@
-RSpec.describe Auctions::BidCreator do
+describe Auctions::BidCreator do
   context "when auction cannot be found" do
     it "returns created false" do
       result = described_class.new.create_bid(bid_params.merge(auction_id: SecureRandom.uuid))

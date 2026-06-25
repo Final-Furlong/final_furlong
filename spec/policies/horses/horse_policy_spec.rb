@@ -1,4 +1,4 @@
-RSpec.describe Horses::HorsePolicy do
+describe Horses::HorsePolicy do
   subject(:policy) { described_class.new(user, horse) }
 
   let(:user) { build_stubbed(:user) }
@@ -8,12 +8,12 @@ RSpec.describe Horses::HorsePolicy do
     subject(:scope) { described_class::Scope.new(user, Horses::Horse.all).resolve }
 
     it "includes born horses" do
-      expect(scope).to eq Horses::HorsesQuery.new.born
+      expect(scope).to eq Horses::Horse.born
     end
   end
 
   shared_examples "not permitting anything for an unborn horse" do
-    let(:horse) { build_stubbed(:horse, :unborn) }
+    let(:horse) { build_stubbed(:foal, :unborn) }
 
     it "does not allow the correct actions" do
       expect(policy).not_to permit_actions(:show, :image, :thumbnail, :edit_name, :update)
@@ -109,8 +109,8 @@ RSpec.describe Horses::HorsePolicy do
 
       it "denies when horse is 2yo and not created" do
         horse.date_of_birth = Date.current - 2.years
-        horse.sire = build(:sire)
-        horse.dam_id = build(:dam)
+        horse.sire = build(:stallion)
+        horse.dam = build(:broodmare)
         horse.name = nil
         horse.status = "racehorse"
         horse.gender = "filly"
@@ -118,24 +118,31 @@ RSpec.describe Horses::HorsePolicy do
         expect(policy).not_to permit_actions(:edit_name, :update)
       end
 
-      context "when horse has activity" do
+      context "when horse has raced" do
         let(:horse) { create(:horse, name: nil, sire_id: nil, dam_id: nil, owner: user.stable, gender: "mare") }
 
-        it "denies when horse has raced" do
+        it "denies" do
           create(:race_result_horse, horse:)
           expect(policy).to permit_actions(:index, :show, :image, :thumbnail)
           expect(policy).not_to permit_actions(:edit_name, :update)
         end
+      end
 
-        it "denies when horse has foals" do
+      context "when horse is broodmare with foals" do
+        let(:horse) { create(:broodmare, name: nil, sire_id: nil, dam_id: nil, owner: user.stable, gender: "mare") }
+
+        it "denies" do
           create(:horse, dam: horse)
           expect(policy).to permit_actions(:index, :show, :image, :thumbnail)
           expect(policy).not_to permit_actions(:edit_name, :update)
         end
+      end
 
-        it "denies when horse has stud foals" do
-          horse.update(gender: "stallion")
-          create(:horse, sire: horse, gender: "stallion")
+      context "when horse is stud with foals" do
+        let(:horse) { create(:stallion, name: nil, sire_id: nil, dam_id: nil, owner: user.stable, gender: "stallion") }
+
+        it "denies" do
+          create(:horse, sire: horse)
           expect(policy).to permit_actions(:index, :show, :image, :thumbnail, :update)
           expect(policy).not_to permit_actions(:edit_name)
         end

@@ -1,4 +1,4 @@
-RSpec.describe Racing::TrackTypePreferenceCalculator do
+describe Racing::TrackTypePreferenceCalculator do
   describe "#call" do
     context "when dirt track" do
       it "is correct" do

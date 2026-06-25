@@ -1,4 +1,4 @@
-RSpec.describe Racing::EntryCreator do
+describe Racing::EntryCreator do
   describe "#create_entry" do
     let(:params) { { race:, horse:, stable: } }
 
@@ -117,7 +117,7 @@ RSpec.describe Racing::EntryCreator do
       it_behaves_like "an entry with errors" do
         let(:error) { I18n.t("services.races.entry_creator.horse_not_racehorse") }
 
-        before { horse.update(status: "retired") }
+        before { horse.update(state: "retired") }
       end
     end
 
@@ -360,7 +360,7 @@ RSpec.describe Racing::EntryCreator do
           end
 
           it "does not ship the horse" do
-            expect { described_class.new.create_entry(**params) }.not_to change(Shipping::RacehorseShipment, :count)
+            expect { described_class.new.create_entry(**params) }.not_to change(Horses::Racehorse::Shipment, :count)
           end
         end
 
@@ -379,7 +379,7 @@ RSpec.describe Racing::EntryCreator do
           it_behaves_like "an entry without errors"
 
           it "does ship the horse" do
-            expect { described_class.new.create_entry(**params) }.to change(Shipping::RacehorseShipment, :count)
+            expect { described_class.new.create_entry(**params) }.to change(Horses::Racehorse::Shipment, :count)
           end
         end
 
@@ -399,7 +399,7 @@ RSpec.describe Racing::EntryCreator do
           end
 
           it "does not ship the horse" do
-            expect { described_class.new.create_entry(**params) }.not_to change(Shipping::RacehorseShipment, :count)
+            expect { described_class.new.create_entry(**params) }.not_to change(Horses::Racehorse::Shipment, :count)
           end
         end
       end
@@ -419,7 +419,7 @@ RSpec.describe Racing::EntryCreator do
         end
 
         it "does not ship the horse" do
-          expect { described_class.new.create_entry(**params) }.not_to change(Shipping::RacehorseShipment, :count)
+          expect { described_class.new.create_entry(**params) }.not_to change(Horses::Racehorse::Shipment, :count)
         end
       end
     end
@@ -476,10 +476,10 @@ RSpec.describe Racing::EntryCreator do
         let(:error) { I18n.t("services.races.entry_creator.max_entries_stable") }
 
         before do
-          horse = create(:horse, :racehorse, owner: stable)
+          horse = create(:racehorse, owner: stable)
           horse.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
           create(:race_entry, race:, horse:)
-          horse = create(:horse, :racehorse, owner: stable)
+          horse = create(:racehorse, owner: stable)
           horse.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
           create(:race_entry, race:, horse:)
         end
@@ -490,13 +490,13 @@ RSpec.describe Racing::EntryCreator do
           let(:error) { I18n.t("services.races.entry_creator.max_entries_stable") }
 
           before do
-            horse = create(:horse, :racehorse, owner: stable)
+            horse = create(:racehorse, owner: stable)
             horse.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
             create(:race_entry, race:, horse:)
-            horse = create(:horse, :racehorse, owner: stable)
+            horse = create(:racehorse, owner: stable)
             horse.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
             create(:race_entry, race:, horse:)
-            horse = create(:horse, :racehorse, owner: stable)
+            horse = create(:racehorse, owner: stable)
             horse.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
             create(:race_entry, race:, horse:)
           end
@@ -507,7 +507,7 @@ RSpec.describe Racing::EntryCreator do
     context "when stable has less than max extra entries in the race" do
       it_behaves_like "an entry without errors" do
         before do
-          horse = create(:horse, :racehorse, owner: stable)
+          horse = create(:racehorse, owner: stable)
           horse.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
           create(:race_entry, race:, horse:)
         end
@@ -520,7 +520,7 @@ RSpec.describe Racing::EntryCreator do
 
         before do
           14.times do
-            horse = create(:horse, :racehorse)
+            horse = create(:racehorse)
             horse.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
             create(:race_entry, race:, horse:)
           end
@@ -548,7 +548,7 @@ RSpec.describe Racing::EntryCreator do
   def horse
     return @horse if defined?(@horse)
 
-    @horse = create(:horse, :racehorse)
+    @horse = create(:racehorse)
     @race_option = create(:race_option, horse: @horse)
     @race_metadata = @horse.race_metadata
     @race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)

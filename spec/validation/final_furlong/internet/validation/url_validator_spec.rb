@@ -1,4 +1,4 @@
-RSpec.describe FinalFurlong::Internet::Validation::UrlValidator do
+describe FinalFurlong::Internet::Validation::UrlValidator do
   it "fails when url is nil" do
     model = set_model
     expect(model).not_to be_valid

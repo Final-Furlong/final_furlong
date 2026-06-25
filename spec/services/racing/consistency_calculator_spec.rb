@@ -1,4 +1,4 @@
-RSpec.describe Racing::ConsistencyCalculator do
+describe Racing::ConsistencyCalculator do
   describe "#call" do
     it "is correct" do
       10.times do |n|

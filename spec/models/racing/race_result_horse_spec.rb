@@ -1,4 +1,4 @@
-RSpec.describe Racing::RaceResultHorse do
+describe Racing::RaceResultHorse do
   describe "associations" do
     it { is_expected.to belong_to(:race).class_name("Racing::RaceResult").inverse_of(:horses) }
     it { is_expected.to belong_to(:horse).class_name("Horses::Horse").inverse_of(:race_result_finishes) }

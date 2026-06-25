@@ -1,4 +1,4 @@
-RSpec.describe Stables::List do
+describe Stables::List do
   describe "#run" do
     it "fetches stables" do
       create(:stable)

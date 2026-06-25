@@ -1,4 +1,4 @@
-RSpec.describe Account::User do
+describe Account::User do
   describe "attributes" do
     it "sets status to pending" do
       expect(described_class.new.status).to eq "pending"

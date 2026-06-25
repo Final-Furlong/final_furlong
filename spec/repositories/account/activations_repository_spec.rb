@@ -1,4 +1,4 @@
-RSpec.describe Account::ActivationsRepository do
+describe Account::ActivationsRepository do
   subject(:repo) { described_class.new(model: Account::Activation) }
 
   describe "#find_by!" do

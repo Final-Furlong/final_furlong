@@ -1,4 +1,4 @@
-RSpec.describe Horses::Lease do
+describe Horses::Lease do
   describe "associations" do
     subject(:lease) { build_stubbed(:lease) }
 
@@ -17,7 +17,7 @@ RSpec.describe Horses::Lease do
     describe "end date" do
       context "when horse is a racehorse" do
         it "can be 3-12 months" do
-          lease = build(:lease, horse: create(:horse, :racehorse))
+          lease = build(:lease, horse: create(:racehorse))
           (3...12).each do |months|
             lease.start_date = Date.current
             lease.end_date = Date.current + months.months
@@ -26,7 +26,7 @@ RSpec.describe Horses::Lease do
         end
 
         it "cannot be less than 3 months" do
-          lease = build(:lease, horse: create(:horse, :racehorse))
+          lease = build(:lease, horse: create(:racehorse))
           lease.start_date = Date.current
           lease.end_date = Date.current + 3.months - 1.day
           expect(lease).not_to be_valid
@@ -34,7 +34,7 @@ RSpec.describe Horses::Lease do
         end
 
         it "cannot be more than 1 year" do
-          lease = build(:lease, horse: create(:horse, :racehorse))
+          lease = build(:lease, horse: create(:racehorse))
           lease.start_date = Date.current
           lease.end_date = Date.current + 1.year + 1.day
           expect(lease).not_to be_valid
@@ -44,14 +44,14 @@ RSpec.describe Horses::Lease do
 
       context "when horse is a stud" do
         it "can be 12 months" do
-          lease = build(:lease, horse: create(:horse, :stallion))
+          lease = build(:lease, horse: create(:stallion))
           lease.start_date = Date.current
           lease.end_date = Date.current + 1.year
           expect(lease).to be_valid
         end
 
         it "cannot be less than 1 year" do
-          lease = build(:lease, horse: create(:horse, :stallion))
+          lease = build(:lease, horse: create(:stallion))
           lease.start_date = Date.current
           lease.end_date = Date.current + 1.year - 1.day
           expect(lease).not_to be_valid
@@ -59,7 +59,7 @@ RSpec.describe Horses::Lease do
         end
 
         it "cannot be more than 1 year" do
-          lease = build(:lease, horse: create(:horse, :stallion))
+          lease = build(:lease, horse: create(:stallion))
           lease.start_date = Date.current
           lease.end_date = Date.current + 1.year + 1.day
           expect(lease).not_to be_valid
@@ -69,14 +69,14 @@ RSpec.describe Horses::Lease do
 
       context "when horse is a broodmare" do
         it "can be 12 months" do
-          lease = build(:lease, horse: create(:horse, :broodmare))
+          lease = build(:lease, horse: create(:broodmare))
           lease.start_date = Date.current
           lease.end_date = Date.current + 1.year
           expect(lease).to be_valid
         end
 
         it "cannot be less than 1 year" do
-          lease = build(:lease, horse: create(:horse, :broodmare))
+          lease = build(:lease, horse: create(:broodmare))
           lease.start_date = Date.current
           lease.end_date = Date.current + 1.year - 1.day
           expect(lease).not_to be_valid
@@ -84,7 +84,7 @@ RSpec.describe Horses::Lease do
         end
 
         it "cannot be more than 1 year" do
-          lease = build(:lease, horse: create(:horse, :broodmare))
+          lease = build(:lease, horse: create(:broodmare))
           lease.start_date = Date.current
           lease.end_date = Date.current + 1.year + 1.day
           expect(lease).not_to be_valid

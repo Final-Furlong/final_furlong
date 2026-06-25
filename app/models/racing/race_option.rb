@@ -3,7 +3,7 @@ module Racing
     include Equipmentable
     include RaceRunnable
 
-    belongs_to :horse, class_name: "Horses::Horse"
+    belongs_to :horse, class_name: "Horses::Horse::Racehorse"
     belongs_to :first_jockey, class_name: "Racing::Jockey", optional: true
     belongs_to :second_jockey, class_name: "Racing::Jockey", optional: true
     belongs_to :third_jockey, class_name: "Racing::Jockey", optional: true

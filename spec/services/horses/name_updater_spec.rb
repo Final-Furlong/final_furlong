@@ -1,4 +1,4 @@
-RSpec.describe Horses::NameUpdater do
+describe Horses::NameUpdater do
   context "when name is valid" do
     it "returns updated" do
       result = described_class.new.change_name(horse:, params:)

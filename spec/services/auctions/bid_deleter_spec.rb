@@ -1,4 +1,4 @@
-RSpec.describe Auctions::BidDeleter do
+describe Auctions::BidDeleter do
   before { bid }
 
   context "when other bids exist that are not to be deleted" do

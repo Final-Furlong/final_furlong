@@ -1,4 +1,4 @@
-RSpec.describe FinalFurlong::Horses::Validation::NameValidator do
+describe FinalFurlong::Horses::Validation::NameValidator do
   describe "basic validator" do
     it "is valid when nil" do
       model = ModelWithDefaultHorseNameValidation.new

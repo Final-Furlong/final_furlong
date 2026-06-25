@@ -1,4 +1,4 @@
-RSpec.describe Racing::RaceDayUpdaterJob, :perform_enqueueed_jobs do
+describe Racing::RaceDayUpdaterJob, :perform_enqueueed_jobs do
   it "uses slow queue", perform_enqueueed_jobs: false do
     expect do
       described_class.perform_later(date:)

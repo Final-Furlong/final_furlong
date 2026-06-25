@@ -4,14 +4,18 @@ module Auctions
       raise NotImplementedError, "#{self.class.name} must implement select_horses"
     end
 
+    def base_class
+      raise NotImplementedError, "#{self.class} needs to implement base_class"
+    end
+
     private
 
     def base_query
-      Horses::Horse.game_owned.born.not_deceased.not_retired.where.missing(:auction_horse)
+      base_class.game_owned.born.active.where.missing(:auction_horse)
     end
 
     def consigned_to_auction
-      Horses::Horse.where.associated(:auction_horse).pluck(:id)
+      base_class.where.associated(:auction_horse).pluck(:id)
     end
   end
 end

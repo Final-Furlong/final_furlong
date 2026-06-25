@@ -1,4 +1,4 @@
-RSpec.describe FinalFurlong::Common do
+describe FinalFurlong::Common do
   it "is a module" do
     expect(described_class).to be_a Module
   end

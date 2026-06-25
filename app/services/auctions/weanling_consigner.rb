@@ -12,6 +12,10 @@ module Auctions
         horses.shuffle.slice(0, number)
       end
     end
+
+    def base_class
+      Horses::Horse::Foal
+    end
   end
 end
 

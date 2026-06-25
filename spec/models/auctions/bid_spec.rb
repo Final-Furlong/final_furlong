@@ -1,4 +1,4 @@
-RSpec.describe Auctions::Bid do
+describe Auctions::Bid do
   describe "associations" do
     it { is_expected.to belong_to(:auction).class_name("::Auction") }
     it { is_expected.to belong_to(:horse).class_name("Auctions::Horse") }

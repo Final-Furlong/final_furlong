@@ -181,7 +181,7 @@ module Racing
         end
         if result[:message].nil? && data.location != race.racetrack.location
           if data.in_transit
-            shipment = Shipping::RacehorseShipment.where(horse:).order(departure_date: :desc).first
+            shipment = Horses::Racehorse::Shipment.where(horse:).order(departure_date: :desc).first
             if shipment.ending_location != race.racetrack.location || shipment.arrival_date > race.travel_deadline
               result[:message] = "cannot_ship_in_time"
             end

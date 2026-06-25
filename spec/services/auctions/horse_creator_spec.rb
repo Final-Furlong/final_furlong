@@ -1,4 +1,4 @@
-RSpec.describe Auctions::HorseCreator do
+describe Auctions::HorseCreator do
   context "when auction is not found" do
     it "returns created false" do
       result = described_class.new.create_horse(params.merge(auction_id: SecureRandom.uuid))
@@ -179,7 +179,7 @@ RSpec.describe Auctions::HorseCreator do
   end
 
   context "when horse is dead" do
-    before { horse.update(date_of_death: 1.year.ago) }
+    before { horse.update(date_of_death: 1.year.ago, state: "deceased") }
 
     it "returns created false" do
       result = described_class.new.create_horse(params)
@@ -199,7 +199,7 @@ RSpec.describe Auctions::HorseCreator do
   end
 
   context "when horse is unborn" do
-    before { horse.update(date_of_birth: 1.year.from_now, status: "unborn") }
+    before { horse.update(date_of_birth: 1.year.from_now, state: "unborn") }
 
     it "returns created false" do
       result = described_class.new.create_horse(params)
@@ -219,10 +219,9 @@ RSpec.describe Auctions::HorseCreator do
   end
 
   context "when broodmares are not allowed and horse is broodmare" do
-    before do
-      auction.update(broodmare_allowed: false)
-      horse.update(status: "broodmare")
-    end
+    let(:horse_type) { :broodmare }
+
+    before { auction.update(broodmare_allowed: false) }
 
     it "returns created false" do
       result = described_class.new.create_horse(params)
@@ -242,10 +241,9 @@ RSpec.describe Auctions::HorseCreator do
   end
 
   context "when stallions are not allowed and horse is stallion" do
-    before do
-      auction.update(stallion_allowed: false)
-      horse.update(status: "stud")
-    end
+    let(:horse_type) { :stallion }
+
+    before { auction.update(stallion_allowed: false) }
 
     it "returns created false" do
       result = described_class.new.create_horse(params)
@@ -267,7 +265,7 @@ RSpec.describe Auctions::HorseCreator do
   context "when 2yos are not allowed and horse is 2yo" do
     before do
       auction.update(racehorse_allowed_2yo: false)
-      horse.update(status: "racehorse", age: 2)
+      horse.update(date_of_birth: 2.years.ago)
     end
 
     it "returns created false" do
@@ -290,7 +288,7 @@ RSpec.describe Auctions::HorseCreator do
   context "when 3yos are not allowed and horse is 3yo" do
     before do
       auction.update(racehorse_allowed_3yo: false)
-      horse.update(status: "racehorse", age: 3)
+      horse.update(date_of_birth: 3.years.ago)
     end
 
     it "returns created false" do
@@ -313,7 +311,7 @@ RSpec.describe Auctions::HorseCreator do
   context "when older racehorses are not allowed and horse is 4yo+" do
     before do
       auction.update(racehorse_allowed_older: false)
-      horse.update(status: "racehorse", age: 5)
+      horse.update(date_of_birth: 5.years.ago)
     end
 
     it "returns created false" do
@@ -334,9 +332,11 @@ RSpec.describe Auctions::HorseCreator do
   end
 
   context "when yearlings are not allowed and horse is yearling" do
+    let(:horse_type) { :foal }
+
     before do
       auction.update(yearling_allowed: false)
-      horse.update(status: "yearling", age: 1)
+      horse.update(date_of_birth: 1.year.ago)
     end
 
     it "returns created false" do
@@ -357,9 +357,11 @@ RSpec.describe Auctions::HorseCreator do
   end
 
   context "when weanlings are not allowed and horse is weanling" do
+    let(:horse_type) { :foal }
+
     before do
       auction.update(weanling_allowed: false)
-      horse.update(status: "weanling", age: 0)
+      horse.update(date_of_birth: Date.new(Date.current.year, 1, 1))
     end
 
     it "returns created false" do
@@ -527,7 +529,11 @@ RSpec.describe Auctions::HorseCreator do
   end
 
   def horse
-    @horse ||= create(:horse, owner: stable)
+    @horse ||= create(horse_type, owner: stable)
+  end
+
+  def horse_type
+    :horse
   end
 
   def stable

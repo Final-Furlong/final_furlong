@@ -1,4 +1,4 @@
-RSpec.describe Stables::UpdateDescription do
+describe Stables::UpdateDescription do
   describe "#run" do
     context "when stable is invalid" do
       it "raises error" do

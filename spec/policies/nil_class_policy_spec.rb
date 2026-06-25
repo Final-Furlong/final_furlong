@@ -1,4 +1,4 @@
-RSpec.describe NilClassPolicy do
+describe NilClassPolicy do
   subject(:policy) { described_class.new(user, Account::User.new) }
 
   let(:user) { build_stubbed(:user) }

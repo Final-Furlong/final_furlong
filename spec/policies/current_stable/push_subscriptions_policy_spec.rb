@@ -1,4 +1,4 @@
-RSpec.describe CurrentStable::PushSubscriptionsPolicy do
+describe CurrentStable::PushSubscriptionsPolicy do
   subject(:policy) { described_class.new(user, Account::User.new) }
 
   let(:user) { create(:user) }

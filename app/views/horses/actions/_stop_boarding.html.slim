@@ -1,4 +1,4 @@
-- boarding = Horses::Boarding.current.find_by(horse: object)
+- boarding = Horses::Racehorse::Boarding.current.find_by(horse: object)
 = button_to t("horse.actions.boarding.stop"), horse_boarding_path(object, boarding),
         class: classes, method: :delete,
         data: { turbo_confirm: t("horse.boardings.stop.confirm", horse: object.name),

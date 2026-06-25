@@ -1,4 +1,4 @@
-RSpec.describe "Users" do
+describe "Users" do
   describe "GET /index" do
     it "succeeds" do
       admin = create(:admin)

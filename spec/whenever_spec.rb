@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe "Whenever Schedule" do # rubocop:disable RSpec/DescribeClass
+describe "Whenever Schedule" do # rubocop:disable RSpec/DescribeClass
   before do
     load "Rakefile" # Makes sure rake tasks are loaded so you can assert in rake jobs
   end

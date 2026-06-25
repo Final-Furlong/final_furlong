@@ -1,4 +1,4 @@
-RSpec.describe Horses::SaleOffer do
+describe Horses::SaleOffer do
   describe "associations" do
     subject(:offer) { build_stubbed(:sale_offer) }
 
@@ -195,6 +195,26 @@ RSpec.describe Horses::SaleOffer do
           offer2 = create(:sale_offer, owner: stable)
 
           result = described_class.valid_for_stable(stable)
+          expect(result).to include offer1
+          expect(result).not_to include offer2
+        end
+      end
+
+      context "when stable is blank" do
+        it "includes active leases only" do
+          offer1 = create(:sale_offer, offer_start_date: Date.current)
+          offer2 = create(:sale_offer, offer_start_date: 1.day.from_now)
+
+          result = described_class.valid_for_stable(nil)
+          expect(result).to include offer1
+          expect(result).not_to include offer2
+        end
+
+        it "includes non-new member leases, excludes new member leases" do
+          offer1 = create(:sale_offer, new_members_only: false)
+          offer2 = create(:sale_offer, new_members_only: true)
+
+          result = described_class.valid_for_stable(nil)
           expect(result).to include offer1
           expect(result).not_to include offer2
         end

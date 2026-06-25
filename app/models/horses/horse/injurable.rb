@@ -2,8 +2,7 @@ module Horses::Horse::Injurable
   extend ActiveSupport::Concern
 
   included do
-    has_many :current_injuries, class_name: "Horses::Injury", inverse_of: :horse, dependent: :delete_all
-    has_many :historical_injuries, class_name: "Horses::HistoricalInjury", inverse_of: :horse, dependent: :delete_all
+    has_many :current_injuries, class_name: "Horses::Racehorse::Injury", inverse_of: :horse, dependent: :delete_all
     has_one :latest_injury, -> { order date: :desc }, class_name:
       "Horses::HistoricalInjury", inverse_of: :horse, dependent: :delete
     scope :injury_status, ->(value) {

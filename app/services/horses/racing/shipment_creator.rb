@@ -5,7 +5,7 @@ module Horses
 
       def ship_horse(horse:, params:)
         @horse = horse
-        @shipment = horse.send(association_name).build
+        @shipment = horse.shipments.build
         @result = Result.new(shipment:)
         stable = horse.manager
 
@@ -113,11 +113,7 @@ module Horses
       end
 
       def shipment_type
-        horse.racehorse? ? Shipping::RacehorseShipment : Shipping::BroodmareShipment
-      end
-
-      def association_name
-        horse.racehorse? ? :racing_shipments : :broodmare_shipments
+        horse.racehorse? ? Horses::Racehorse::Shipment : Horses::Broodmare::Shipment
       end
 
       def lookup_route(shipment, stable)

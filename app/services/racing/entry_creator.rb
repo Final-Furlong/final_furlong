@@ -30,7 +30,7 @@ module Racing
         return result
       end
 
-      if !horse.racehorse?
+      if !horse.racehorse? || !horse.active?
         result.error = error("horse_not_racehorse")
         return result
       end
@@ -97,7 +97,7 @@ module Racing
           return result
         end
       elsif data.in_transit
-        shipment = Shipping::RacehorseShipment.where(horse:).order(departure_date: :desc).first
+        shipment = Horses::Racehorse::Shipment.where(horse:).order(departure_date: :desc).first
         if shipment.ending_location != race_location
           result.error = I18n.t("services.races.entry_creator.horse_in_transit_elsewhere", name: horse.name)
           return result
@@ -133,7 +133,7 @@ module Racing
           continue = true
         end
         if stop_boarding && continue
-          boarding_result = ::Horses::BoardingUpdater.new.stop_boarding(boarding: horse.current_boarding)
+          boarding_result = ::Horses::Racehorse::BoardingUpdater.new.stop_boarding(boarding: horse.current_boarding)
           if boarding_result.updated?
             continue = true
           else

@@ -1,4 +1,4 @@
-RSpec.describe Account::Stable do
+describe Account::Stable do
   describe "associations" do
     subject(:stable) { described_class.new }
 

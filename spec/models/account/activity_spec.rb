@@ -1,4 +1,4 @@
-RSpec.describe Account::Activity do
+describe Account::Activity do
   describe "associations" do
     it { is_expected.to belong_to(:stable) }
     it { is_expected.to belong_to(:budget).optional }

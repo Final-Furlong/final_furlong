@@ -1,4 +1,4 @@
-RSpec.describe Racing::RaceResultCreator do
+describe Racing::RaceResultCreator do
   context "when all info is provided" do
     context "with a single horse" do
       it "returns creates true" do
@@ -187,7 +187,7 @@ RSpec.describe Racing::RaceResultCreator do
   def horse1
     return @horse1 if defined?(@horse1)
 
-    @horse1 = create(:horse, :racehorse)
+    @horse1 = create(:racehorse)
     @horse1.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
     create(:race_entry, horse: @horse1, race:, jockey: jockey1)
     @horse1
@@ -196,7 +196,7 @@ RSpec.describe Racing::RaceResultCreator do
   def horse2
     return @horse2 if defined?(@horse2)
 
-    @horse2 = create(:horse, :racehorse)
+    @horse2 = create(:racehorse)
     @horse2.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
     create(:race_entry, horse: @horse2, race:, jockey: jockey2)
     @horse2

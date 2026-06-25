@@ -2,7 +2,7 @@ module Workouts
   class JumpTrial < ApplicationRecord
     include Timeable
 
-    belongs_to :horse, class_name: "Horses::Horse"
+    belongs_to :horse, class_name: "Horses::Horse::Racehorse"
     belongs_to :jockey, class_name: "Racing::Jockey"
     belongs_to :racetrack, class_name: "Racing::Racetrack"
     belongs_to :comment, inverse_of: :jump_trials

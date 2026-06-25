@@ -1,4 +1,4 @@
-RSpec.describe Daily::DeleteEmptyAuctionsJob, :perform_enqueued_jobs do
+describe Daily::DeleteEmptyAuctionsJob, :perform_enqueued_jobs do
   describe "#perform" do
     it "uses fast queue", perform_enqueueed_jobs: false do
       expect do

@@ -1,4 +1,4 @@
-RSpec.describe Account::UsersQuery do
+describe Account::UsersQuery do
   subject(:query) { described_class.new }
 
   describe ".active" do

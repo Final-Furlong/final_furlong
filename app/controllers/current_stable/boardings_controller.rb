@@ -8,15 +8,15 @@ module CurrentStable
 
     def new
       authorize %i[current_stable boarding]
-      @boarding = Horses::Boarding.new
+      @boarding = Horses::Racehorse::Boarding.new
     end
 
     def create
       authorize %i[current_stable boarding]
-      @boarding = Horses::Boarding.new
+      @boarding = Horses::Racehorse::Boarding.new
       horse = Horses::Horse.racehorse.managed_by(Current.stable).find(boarding_params[:horse_id])
 
-      result = Horses::BoardingCreator.new.start_boarding(horse:)
+      result = Horses::Racehorse::BoardingCreator.new.start_boarding(horse:)
       if result.created?
         flash[:success] = t(".success")
         redirect_to stable_boardings_path
@@ -32,10 +32,10 @@ module CurrentStable
     end
 
     def update
-      boarding = Horses::Boarding.find(params[:id])
+      boarding = Horses::Racehorse::Boarding.find(params[:id])
       authorize boarding, policy_class: CurrentStable::BoardingPolicy
 
-      result = Horses::BoardingUpdater.new.stop_boarding(boarding:)
+      result = Horses::Racehorse::BoardingUpdater.new.stop_boarding(boarding:)
       if result.updated?
         flash[:success] = t(".success")
       else

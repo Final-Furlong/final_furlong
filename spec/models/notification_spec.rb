@@ -1,4 +1,4 @@
-RSpec.describe Notification do
+describe Notification do
   describe "associations" do
     it { is_expected.to belong_to(:user).class_name("Account::User") }
   end

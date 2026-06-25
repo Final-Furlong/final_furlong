@@ -1,4 +1,4 @@
-RSpec.describe Horses::Sale do
+describe Horses::Sale do
   describe "associations" do
     it { is_expected.to belong_to(:horse) }
     it { is_expected.to belong_to(:seller).class_name("Account::Stable") }

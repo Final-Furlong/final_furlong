@@ -1,4 +1,4 @@
-RSpec.describe AuctionPolicy do
+describe AuctionPolicy do
   subject(:policy) { described_class.new(user, auction) }
 
   let(:user) { build_stubbed(:user) }

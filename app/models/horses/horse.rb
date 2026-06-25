@@ -6,10 +6,8 @@ module Horses
     include PgSearch::Model
 
     include Raceable
-    include Injurable
     include Breedable
-    include Broodmareable
-    include Studable
+    include Typeable
 
     friendly_id :name_and_foal_status, use: [:slugged, :finders, :history]
 
@@ -18,13 +16,15 @@ module Horses
     belongs_to :breeder, class_name: "Account::Stable"
     belongs_to :owner, class_name: "Account::Stable"
     belongs_to :manager, class_name: "Account::Stable", optional: true
-    belongs_to :sire, class_name: "Horse", optional: true
-    belongs_to :dam, class_name: "Horse", optional: true
+    belongs_to :sire, class_name: "Horses::Horse::Stud", optional: true
+    belongs_to :dam, class_name: "Horses::Horse::Broodmare", optional: true
     belongs_to :location_bred, class_name: "Location"
     has_many :slugs, class_name: "FriendlyId::Slug", inverse_of: :sluggable, dependent: :delete_all
 
     has_one :appearance, class_name: "Appearance", dependent: :delete
     has_many :comments, class_name: "Comment", dependent: :delete_all
+
+    has_many :historical_injuries, class_name: "Horses::HistoricalInjury", inverse_of: :horse, dependent: :delete_all
 
     has_one :auction_horse, class_name: "Auctions::Horse", dependent: :destroy
     has_one :lease_offer, class_name: "Horses::LeaseOffer", inverse_of: :horse, dependent: :delete
@@ -36,35 +36,39 @@ module Horses
 
     has_many :future_events, class_name: "Horses::FutureEvent", inverse_of: :horse, dependent: :delete_all
 
-    enum :status, Status::STATUSES
     enum :gender, Gender::VALUES
+    enum :state, { active: "active", retired: "retired", deceased: "deceased", unborn: "unborn" }
 
     validates :date_of_birth, :age, :gender, :status, presence: true
     validates :date_of_death, comparison: { greater_than_or_equal_to: :date_of_birth }, if: :date_of_death
     validates :name, length: { maximum: Config::Horses.max_name_length }
+    validates :age, numericality: { only_integer: true, greater_than_or_equal_to: -1, less_than_or_equal_to: 40 }
     validate :name_required, on: :update
     validates_horse_name :name, on: :update, if: :name_changed?
+
+    before_validation :calculate_age
 
     scope :game_owned, -> { joins(:owner).where(owner: { name: Config::Game.stable }) }
     scope :not_game_owned, -> { game_owned.invert_where }
 
-    scope :alive, -> { where(status: Status::LIVING_STATUSES) }
-    scope :retired, -> { where(status: Status::RETIRED_STATUSES) }
-    scope :not_retired, -> { where.not(status: Status::RETIRED_STATUSES) }
+    scope :alive, -> { where.not(state: %w[unborn deceased]) }
+    scope :retired, -> { where(state: "retired") }
+    scope :not_retired, -> { retired.invert_where }
+    scope :deceased, -> { where(status: "deceased") }
     scope :not_deceased, -> { where.not(status: "deceased") }
-    scope :not_famous_stud, -> { where.missing(:famous_stud) }
-    scope :born, -> { where(date_of_birth: ..Date.current) }
-    scope :unborn, -> { where(date_of_birth: Date.current + 1.day..) }
-    scope :stillborn, -> { where("date_of_birth = date_of_death") }
+    scope :born, -> { where.not(state: "unborn") }
+    scope :unborn, -> { born.invert_where }
+    scope :stillborn, -> { deceased.where("date_of_birth = date_of_death") }
     scope :not_stillborn, -> { where(date_of_death: nil).or(where("#{table_name}.date_of_death > #{table_name}.date_of_birth")) }
     scope :created, -> { where(sire_id: nil, dam_id: nil) }
-    scope :not_created, -> { where("sire_id IS NULL AND dam_id IS NULL") }
+    scope :not_created, -> { created.invert_where }
     scope :female, -> { where(gender: Gender::FEMALE_GENDERS) }
     scope :not_female, -> { where.not(gender: Gender::FEMALE_GENDERS) }
-    scope :max_yob, ->(year) { where("DATE_PART('Year', #{table_name}.date_of_birth) <= ?", year) }
-    scope :min_age, ->(age) { where("DATE_PART('Year', #{table_name}.date_of_birth) <= ?", Date.current.year - age.to_i) }
-    scope :max_age, ->(age) { where("DATE_PART('Year', #{table_name}.date_of_birth) >= ?", Date.current.year - age.to_i) }
+    scope :min_age, ->(age) { where(age: age..) }
+    scope :max_age, ->(age) { where(age: ..age) }
+    scope :with_age, ->(age) { where(age:) }
     scope :with_yob, ->(year) { where("DATE_PART('Year', #{table_name}.date_of_birth) = ?", year) }
+    scope :max_yob, ->(year) { where("DATE_PART('Year', #{table_name}.date_of_birth) <= ?", year) }
     scope :with_sire, -> { where.associated(:sire) }
     scope :with_dam, -> { where.associated(:dam) }
     scope :order_by_yob, ->(dir = "asc") do
@@ -77,12 +81,12 @@ module Horses
     end
     scope :order_by_name, ->(dir = "asc") { order(name: dir.to_sym) }
     scope :with_owner, ->(stable) { where(owner: stable) }
-    scope :without_lease, -> { where.missing(:current_lease) }
-    scope :with_leaser, ->(stable) { joins(:current_lease).where(current_lease: { leaser: stable }) }
-    scope :managed_by, ->(stable) { born.where(manager: stable) }
+    scope :without_lease, -> { where(leaser_id: nil) }
+    scope :with_leaser, ->(stable) { where(leaser_id: stable&.id) }
+    scope :managed_by, ->(stable) { born.where(manager_id: stable&.id) }
     scope :random_order, -> { order("RANDOM()") }
 
-    # broadcasts_to ->(_horse) { "horses" }, inserts_by: :prepend
+    alias_method :dead?, :deceased?
 
     def to_key = [slug]
 
@@ -96,6 +100,10 @@ module Horses
 
     def male?
       !female?
+    end
+
+    def unborn?
+      state == "unborn"
     end
 
     def location_bred_name
@@ -136,16 +144,6 @@ module Horses
       [name_with_title, manager.name, Game::MoneyFormatter.new(stud_options.stud_fee)].join(" - ")
     end
 
-    def stillborn?
-      self[:date_of_birth] == self[:date_of_death]
-    end
-
-    def dead?
-      return false unless self[:date_of_death]
-
-      self[:date_of_death] >= self[:date_of_birth]
-    end
-
     def name_and_foal_status
       return name if name.present?
 
@@ -178,6 +176,17 @@ module Horses
 
     def year_of_birth
       date_of_birth&.year
+    end
+
+    def calculate_age
+      age = if date_of_birth.blank?
+        0
+      elsif date_of_death
+        date_of_death.year - date_of_birth.year
+      else
+        Date.current.year - date_of_birth.year
+      end
+      self.age = age
     end
 
     def self.ransackable_attributes(_auth_object = nil)
@@ -223,8 +232,10 @@ end
 #  gender(colt, filly, mare, stallion, gelding)                                                                       :enum             not null, indexed, indexed => [status]
 #  name                                                                                                               :string(18)       indexed, indexed => [status]
 #  slug                                                                                                               :string           indexed
+#  state(active,retired,unborn,deceased)                                                                              :enum             default("active"), indexed
 #  status(unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased) :enum             default("unborn"), not null, indexed => [owner_id], indexed => [age], indexed => [breeder_id], indexed => [dam_id], indexed => [gender], indexed => [leaser_id], indexed => [name], indexed => [owner_id], indexed => [sire_id]
 #  title_abbr                                                                                                         :string
+#  type(Racehorse,Broodmare,Stud,Foal)                                                                                :string           default("Horses::Horse::Foal"), indexed
 #  created_at                                                                                                         :datetime         not null
 #  updated_at                                                                                                         :datetime         not null
 #  breeder_id                                                                                                         :bigint           not null, indexed, indexed => [status]
@@ -256,6 +267,7 @@ end
 #  index_horses_on_public_id                     (public_id)
 #  index_horses_on_sire_id                       (sire_id)
 #  index_horses_on_slug                          (slug)
+#  index_horses_on_state                         (state)
 #  index_horses_on_status_and_age                (status,age)
 #  index_horses_on_status_and_breeder_id         (status,breeder_id)
 #  index_horses_on_status_and_dam_id             (status,dam_id)
@@ -264,6 +276,7 @@ end
 #  index_horses_on_status_and_name               (status,name)
 #  index_horses_on_status_and_owner_id           (status,owner_id)
 #  index_horses_on_status_and_sire_id            (status,sire_id)
+#  index_horses_on_type                          (type)
 #
 # Foreign Keys
 #

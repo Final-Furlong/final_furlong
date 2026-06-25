@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Horses::Gender do
+describe Horses::Gender do
   describe "constants" do
     it "defines genders" do
       expect(described_class::VALUES).to eq({

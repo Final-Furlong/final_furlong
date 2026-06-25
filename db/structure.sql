@@ -315,6 +315,18 @@ CREATE TYPE public.horse_leg_marking AS ENUM (
 
 
 --
+-- Name: horse_states; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.horse_states AS ENUM (
+    'active',
+    'retired',
+    'unborn',
+    'deceased'
+);
+
+
+--
 -- Name: horse_status; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -1148,7 +1160,9 @@ CREATE TABLE public.horses (
     leaser_id bigint,
     manager_id bigint,
     title_abbr character varying,
-    dosage_abbr character varying
+    dosage_abbr character varying,
+    type character varying DEFAULT 'Horses::Horse::Foal'::character varying,
+    state public.horse_states DEFAULT 'active'::public.horse_states
 );
 
 
@@ -1164,6 +1178,20 @@ COMMENT ON COLUMN public.horses.gender IS 'colt, filly, mare, stallion, gelding'
 --
 
 COMMENT ON COLUMN public.horses.status IS 'unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased';
+
+
+--
+-- Name: COLUMN horses.type; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.horses.type IS 'Racehorse,Broodmare,Stud,Foal';
+
+
+--
+-- Name: COLUMN horses.state; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.horses.state IS 'active,retired,unborn,deceased';
 
 
 --
@@ -11804,6 +11832,13 @@ CREATE INDEX index_horses_on_slug ON public.horses USING btree (slug);
 
 
 --
+-- Name: index_horses_on_state; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horses_on_state ON public.horses USING btree (state);
+
+
+--
 -- Name: index_horses_on_status_and_age; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -11857,6 +11892,13 @@ CREATE INDEX index_horses_on_status_and_owner_id ON public.horses USING btree (s
 --
 
 CREATE INDEX index_horses_on_status_and_sire_id ON public.horses USING btree (status, sire_id);
+
+
+--
+-- Name: index_horses_on_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horses_on_type ON public.horses USING btree (type);
 
 
 --
@@ -14798,6 +14840,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260625133719'),
 ('20260621142418'),
 ('20260608141919'),
 ('20260602101413'),

@@ -1,4 +1,4 @@
-RSpec.describe "Leasing Journey" do
+describe "Leasing Journey" do
   before { setup_data }
 
   it "allows lease to be offered, accepted, and cancelled early", :js do
@@ -159,7 +159,7 @@ RSpec.describe "Leasing Journey" do
   end
 
   def horse
-    @horse ||= create(:horse, :racehorse, :with_appearance, owner: leaser)
+    @horse ||= create(:racehorse, :with_appearance, owner: leaser)
   end
 end
 

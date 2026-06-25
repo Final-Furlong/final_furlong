@@ -1,4 +1,4 @@
-RSpec.describe Api::V1::Jockeys do
+describe Api::V1::Jockeys do
   describe "GET /api/v1/jockeys" do
     context "when jockey exists" do
       it "returns jockey info" do

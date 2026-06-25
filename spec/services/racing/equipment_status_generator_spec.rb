@@ -1,4 +1,4 @@
-RSpec.describe Racing::EquipmentStatusGenerator do
+describe Racing::EquipmentStatusGenerator do
   describe "#call" do
     context "when the horse has extra equipment it does not want" do
       it "hates it" do

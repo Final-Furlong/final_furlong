@@ -1,4 +1,4 @@
-RSpec.describe User::SendDeveloperNotifications do
+describe User::SendDeveloperNotifications do
   before { ActiveJob::Base.queue_adapter = :test }
 
   describe "#call" do
