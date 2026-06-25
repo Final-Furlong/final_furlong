@@ -48,7 +48,7 @@ module Racing
           errored_count = Racing::FutureRaceEntry.errored.where(stable:).count
           skipped_count = Racing::FutureRaceEntry.skipped.where(stable:).count
           Game::NotificationCreator.new.create_notification(
-            type: ::Notifictions::Racing::FutureEntryProcessingNotification,
+            type: ::Notifications::Racing::FutureEntryProcessingNotification,
             user: stable.user,
             params: {
               date:,
