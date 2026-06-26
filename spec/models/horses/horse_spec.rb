@@ -10,8 +10,6 @@ RSpec.describe Horses::Horse do
 
     it { is_expected.to have_one(:appearance).class_name("Horses::Appearance").dependent(:delete) }
     it { is_expected.to have_one(:genetics).class_name("Horses::Genetics").dependent(:delete) }
-    it { is_expected.to have_one(:training_schedule).class_name("Racing::TrainingSchedule").through(:training_schedules_horse) }
-    it { is_expected.to have_one(:training_schedules_horse).class_name("Racing::TrainingScheduleHorse").dependent(:destroy) }
     it { is_expected.to have_one(:auction_horse).class_name("Auctions::Horse").dependent(:destroy) }
     it { is_expected.to have_one(:lease_offer).class_name("Horses::LeaseOffer").dependent(:delete) }
     it { is_expected.to have_one(:current_lease).class_name("Horses::Lease").dependent(:destroy) }
@@ -23,16 +21,11 @@ RSpec.describe Horses::Horse do
     it { is_expected.to have_many(:race_results).class_name("Racing::RaceResult").through(:race_result_finishes) }
     it { is_expected.to have_one(:sale_offer).class_name("Horses::SaleOffer").dependent(:delete) }
     it { is_expected.to have_many(:sales).class_name("Horses::Sale").dependent(:delete_all) }
-    it { is_expected.to have_one(:current_boarding).class_name("Horses::Boarding").dependent(:delete) }
-    it { is_expected.to have_many(:boardings).class_name("Horses::Boarding").dependent(:delete_all) }
+    it { is_expected.to have_one(:current_boarding).class_name("Horses::Racehorse::Boarding").dependent(:delete) }
+    it { is_expected.to have_many(:boardings).class_name("Horses::Racehorse::Boarding").dependent(:delete_all) }
     it { is_expected.to have_many(:race_records).class_name("Racing::RaceRecord").inverse_of(:horse) }
     it { is_expected.to have_many(:annual_race_records).class_name("Racing::AnnualRaceRecord").inverse_of(:horse) }
     it { is_expected.to have_one(:lifetime_race_record).class_name("Racing::LifetimeRaceRecord").inverse_of(:horse) }
-
-    it { is_expected.to have_many(:foals).class_name("Horses::Horse").inverse_of(:dam).dependent(:nullify) }
-    it { is_expected.to have_many(:stud_foals).class_name("Horses::Horse").inverse_of(:sire).dependent(:nullify) }
-    it { is_expected.to have_one(:broodmare_foal_record).inverse_of(:mare).dependent(:delete) }
-    it { is_expected.to have_one(:stud_foal_record).inverse_of(:stud).dependent(:delete) }
   end
 
   describe "validations" do
@@ -65,50 +58,6 @@ RSpec.describe Horses::Horse do
         horse.name = "Bob2"
 
         expect(horse).to be_valid
-      end
-    end
-  end
-
-  describe "#stillborn?" do
-    context "when date of birth == date of death" do
-      it "returns true" do
-        horse = build_stubbed(:horse, :stillborn)
-
-        expect(horse.stillborn?).to be true
-      end
-    end
-
-    context "when date of birth != date of death" do
-      it "returns false" do
-        horse = build_stubbed(:horse)
-
-        expect(horse.stillborn?).to be false
-      end
-    end
-  end
-
-  describe "#dead?" do
-    context "when date of birth == date of death" do
-      it "returns true" do
-        horse = described_class.new(date_of_birth: Date.current, date_of_death: Date.current)
-
-        expect(horse.dead?).to be true
-      end
-    end
-
-    context "when date of death is nil" do
-      it "returns false" do
-        horse = described_class.new(date_of_birth: Date.current, date_of_death: nil)
-
-        expect(horse.dead?).to be false
-      end
-    end
-
-    context "when date of death > date of birth" do
-      it "returns true" do
-        horse = described_class.new(date_of_birth: Date.current - 1.day, date_of_death: Date.current)
-
-        expect(horse.dead?).to be true
       end
     end
   end

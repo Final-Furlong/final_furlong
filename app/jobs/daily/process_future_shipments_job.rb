@@ -12,14 +12,14 @@ class Daily::ProcessFutureShipmentsJob < ApplicationJob
     batch = GoodJob::Batch.new
     unless run_today?
       broodmare_count = 0
-      Shipping::BroodmareShipment.scheduled.where(departure_date: date).find_each do |shipment|
+      Horses::Broodmare::Shipment.scheduled.where(departure_date: date).find_each do |shipment|
         batch.add(Horses::FutureBroodmareShipmentJob.perform_later(id: shipment.id, date:))
         broodmare_count += 1
       end
     end
 
     racehorse_count = 0
-    Shipping::RacehorseShipment.scheduled.where(departure_date: date).find_each do |shipment|
+    Horses::Racehorse::Shipment.scheduled.where(departure_date: date).find_each do |shipment|
       batch.add(Horses::FutureBroodmareShipmentJob.perform_later(id: shipment.id, date:))
       racehorse_count += 1
     end

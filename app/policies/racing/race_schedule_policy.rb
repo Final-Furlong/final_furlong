@@ -78,7 +78,7 @@ module Racing
     def add_entry_result
       return Failure(:cannot_enter) unless enter?
       return Failure(:race_full) if record.entries_count >= Config::Racing.entry_limit_overall
-      horses_count = Horses::Horse.racehorse.managed_by(stable).joins(:race_entries).where(race_entries: { race: record }).count
+      horses_count = Horses::Horse::Racehorse.managed_by(stable).joins(:race_entries).where(race_entries: { race: record }).count
       return Failure(:max_stable_entries) if horses_count >= record.entry_limit
 
       Success()

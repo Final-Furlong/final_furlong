@@ -11,7 +11,7 @@ module Horse
       @horse = Horses::Horse.find(params[:id])
       authorize @horse, :create_lease_offer?, policy_class: CurrentStable::LeaseOfferPolicy
 
-      result = Horses::LeaseOfferCreator.new.create_offer(horse: @horse, params: lease_params)
+      result = Horses::Leasing::OfferCreator.new.create_offer(horse: @horse, params: lease_params)
       @lease_offer = result.offer
       if result.created?
         flash[:success] = t(".success")

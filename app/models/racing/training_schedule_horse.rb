@@ -3,7 +3,7 @@ module Racing
     self.table_name = "training_schedules_horses"
 
     belongs_to :training_schedule, class_name: "Racing::TrainingSchedule"
-    belongs_to :horse, class_name: "Horses::Horse"
+    belongs_to :horse, class_name: "Horses::Horse::Racehorse"
 
     delegate :stable, to: :training_schedule
 

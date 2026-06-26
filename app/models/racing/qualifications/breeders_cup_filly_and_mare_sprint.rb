@@ -4,7 +4,7 @@ module Racing::Qualifications
 
     self.table_name = "breeders_cup_filly_mare_sprint_qualifiers"
 
-    belongs_to :horse, class_name: "Horses::Horse", inverse_of: :breeders_cup_filly_and_mare_sprint_qualification
+    belongs_to :horse, class_name: "Horses::Horse::Racehorse", inverse_of: :breeders_cup_filly_and_mare_sprint_qualification
   end
 end
 

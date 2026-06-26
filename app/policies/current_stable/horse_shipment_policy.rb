@@ -13,13 +13,13 @@ module CurrentStable
         return false if record.horse.race_entries.present?
         return false if record.horse.current_boarding.present?
         return false if record.horse.racing_shipments.future.present?
-        last_date = Shipping::RacehorseShipment.where(horse: record.horse).maximum(:arrival_date)
+        last_date = Horses::Racehorse::Shipment.where(horse: record.horse).maximum(:arrival_date)
         return true unless last_date
 
         return last_date < Date.current
       elsif record.horse.broodmare?
         return false if record.horse.broodmare_shipments.future.present?
-        last_date = Shipping::BroodmareShipment.where(horse: record.horse).maximum(:arrival_date)
+        last_date = Horses::Broodmare::Shipment.where(horse: record.horse).maximum(:arrival_date)
         return true unless last_date
 
         return last_date < Date.current

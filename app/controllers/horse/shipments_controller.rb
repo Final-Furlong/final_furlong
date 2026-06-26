@@ -42,7 +42,7 @@ module Horse
 
     def destroy
       @horse = Horses::Horse.find(params[:id])
-      shipment = @horse.racehorse? ? Shipping::RacehorseShipment.find(params[:shipment_id]) : Shipping::BroodmareShipment.find(params[:shipment_id])
+      shipment = @horse.racehorse? ? Horses::Racehorse::Shipment.find(params[:shipment_id]) : Horses::Broodmare::Shipment.find(params[:shipment_id])
       authorize shipment, :destroy?, policy_class: CurrentStable::HorseShipmentPolicy
 
       if shipment.destroy!

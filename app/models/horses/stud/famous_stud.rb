@@ -1,10 +1,8 @@
-module Horses
-  module Stud
-    class FamousStud < ApplicationRecord
-      belongs_to :horse, class_name: "Horses::Horse", inverse_of: :famous_stud
+module Horses::Stud
+  class FamousStud < ApplicationRecord
+    belongs_to :horse, class_name: "Horses::Horse::Stud", inverse_of: :famous_stud
 
-      validates :horse_id, uniqueness: true
-    end
+    validates :horse_id, uniqueness: true
   end
 end
 

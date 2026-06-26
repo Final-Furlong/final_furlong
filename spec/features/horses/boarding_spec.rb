@@ -40,7 +40,7 @@ RSpec.describe "Boarding" do
   end
 
   def horse
-    @horse ||= create(:horse, :racehorse, :with_appearance, owner: stable)
+    @horse ||= create(:racehorse, :with_appearance, owner: stable)
   end
 
   def boarding

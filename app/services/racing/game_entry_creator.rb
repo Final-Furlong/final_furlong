@@ -24,7 +24,7 @@ module Racing
       if data.location != race_location && !data.in_transit
         needs_shipment = true
       elsif data.in_transit
-        shipment = Shipping::RacehorseShipment.where(horse:).order(departure_date: :desc).first
+        shipment = Horses::Racehorse::Shipment.where(horse:).order(departure_date: :desc).first
         if shipment.ending_location != race_location
           result.error = I18n.t("services.races.entry_creator.horse_in_transit_elsewhere", name: horse.name)
           return result
@@ -44,7 +44,7 @@ module Racing
 
       ActiveRecord::Base.transaction do
         horse.race_metadata.update(location: @race_location, racetrack: race.racetrack) if needs_shipment
-        ::Horses::BoardingUpdater.new.stop_boarding(boarding: horse.current_boarding) if stop_boarding
+        ::Horses::Racehorse::BoardingUpdater.new.stop_boarding(boarding: horse.current_boarding) if stop_boarding
         description = I18n.t("racing.entry_options.budget_description", date: race.date, number: race.number, name: horse.name)
         Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: race.entry_fee.to_i * -1, activity_type: "entering")
         result.created = entry.save!

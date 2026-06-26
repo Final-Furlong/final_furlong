@@ -4,8 +4,8 @@ class Horses::UpdateLeasesJob < ApplicationJob
   def perform
     return if run_today?
 
-    result = Horses::AutoLeaseOffersUpdater.new.call
-    result2 = Horses::AutoLeasesUpdater.new.call
+    result = Horses::Leasing::AutoOffersUpdater.new.call
+    result2 = Horses::Leasing::AutoLeasesUpdater.new.call
 
     store_job_info(outcome: result.merge(result2))
   end

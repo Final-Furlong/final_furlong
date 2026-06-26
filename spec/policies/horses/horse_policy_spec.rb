@@ -8,7 +8,7 @@ RSpec.describe Horses::HorsePolicy do
     subject(:scope) { described_class::Scope.new(user, Horses::Horse.all).resolve }
 
     it "includes born horses" do
-      expect(scope).to eq Horses::HorsesQuery.new.born
+      expect(scope).to eq Horses::Horse.born
     end
   end
 

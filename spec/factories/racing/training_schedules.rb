@@ -4,12 +4,12 @@ FactoryBot.define do
     friday_activities do
       { activity1: "canter", activity2: "", activity3: "", distance1: 4, distance2: nil, distance3: nil }
     end
-    stable { association :stable }
+    stable
   end
 
   factory :training_schedule_horse, class: "Racing::TrainingScheduleHorse" do
-    training_schedule { association :training_schedule }
-    horse { association :horse, owner: instance.training_schedule.stable }
+    training_schedule
+    horse { association :racehorse, owner: instance.training_schedule.stable }
   end
 end
 

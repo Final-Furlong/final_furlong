@@ -13,8 +13,8 @@ module Dashboard
       private
 
       def load_boardings
-        query = Horses::Boarding.where(horse:)
-        Horses::BoardingPolicy::Scope.new(Current.user, query).resolve.order(end_date: :desc, start_date: :desc)
+        query = Horses::Racehorse::Boarding.where(horse:)
+        Horses::Racehorse::BoardingPolicy::Scope.new(Current.user, query).resolve.order(end_date: :desc, start_date: :desc)
       end
     end
   end

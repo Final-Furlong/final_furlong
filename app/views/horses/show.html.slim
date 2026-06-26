@@ -15,7 +15,7 @@
         p.mx-auto= t(".loading_pedigree")
         .mt-2.mx-auto.skeleton.w-full
 
-  - if CurrentStable::RacehorsePolicy.new(Current.user, horse).enter_race?
+  - if horse.racehorse? && CurrentStable::RacehorsePolicy.new(Current.user, horse).enter_race?
     - entries_count = horse.race_entries.count + horse.future_race_entries.count
     - label = entries_count.zero? ? t(".no_entries") : t(".entries", count: entries_count)
     input.tab[ type="radio" name="horse" aria-label=label id="entries" ]
@@ -26,7 +26,7 @@
             p.mx-auto= t(".loading_entries")
             .mt-2.mx-auto.skeleton.w-full
 
-  - unless %w[weanling yearling].include?(horse.status)
+  - unless horse.foal?
     input.tab[ type="radio" name="horse" aria-label=t(".races") id="races"
       disabled=!horse.lifetime_race_record
     ]
@@ -44,7 +44,7 @@
           p.mx-auto= t(".loading_highlights")
           .mt-2.mx-auto.skeleton.h-32.w-32.sm:w-3/4
 
-  - if CurrentStable::RacehorsePolicy.new(Current.user, horse).view_nominations?
+  - if horse.racehorse? && CurrentStable::RacehorsePolicy.new(Current.user, horse).view_nominations?
     input.tab[ type="radio" name="horse" aria-label=t(".nominations") id="nominations" ]
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
       = turbo_frame_tag "#{@horse.slug}-nominations", src: horse_race_nominations_path(@horse), loading: "lazy" do
@@ -52,9 +52,9 @@
           p.mx-auto= t(".loading_nominations")
           .mt-2.mx-auto.skeleton.w-full
 
-  - unless %w[racehorse weanling yearling].include?(horse.status)
+  - if horse.respond_to?(:foals) || horse.respond_to?(:next_foal)
     input.tab[ type="radio" name="horse" aria-label=t(".foals") id="foals"
-      disabled=((horse.female? && horse.foals.empty? && horse.next_foal.blank?) || (horse.male? && horse.stud_foals.empty? && horse.breedings.empty?))
+      disabled=(horse.foals.empty? && (!horse.female? || horse.next_foal.blank?) && (!horse.male? || horse.breedings.empty?))
     ]
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
       = turbo_frame_tag "#{@horse.slug}-foals", src: horse_foals_path(@horse), loading: "lazy" do
@@ -62,7 +62,7 @@
           p.mx-auto= t(".loading_foals")
           .mt-2.mx-auto.skeleton.w-full
 
-  - if CurrentStable::BroodmarePolicy.new(Current.user, horse).breed?
+  - if horse.broodmare? && CurrentStable::BroodmarePolicy.new(Current.user, horse).breed?
     input.tab[ type="radio" name="horse" aria-label=t(".mare_bookings") id="mare-bookings" ]
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
       = turbo_frame_tag "#{@horse.slug}-mare-bookings", src: horse_mare_bookings_path(@horse), loading: "lazy" do
@@ -70,7 +70,7 @@
           p.mx-auto= t(".loading_mare_bookings")
           .mt-2.mx-auto.skeleton.w-full
 
-  - if CurrentStable::StallionPolicy.new(Current.user, horse).manage_bookings?
+  - if horse.stallion? && CurrentStable::StallionPolicy.new(Current.user, horse).manage_bookings?
     input.tab[ type="radio" name="horse" aria-label=t(".stud_bookings") id="stud-bookings" ]
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
       = turbo_frame_tag "#{@horse.slug}-stud-bookings", src: horse_stud_bookings_path(@horse), loading: "lazy" do
@@ -78,7 +78,7 @@
           p.mx-auto= t(".loading_stud_bookings")
           .mt-2.mx-auto.skeleton.w-full
 
-  - if CurrentStable::StallionPolicy.new(Current.user, horse).view_nominations?
+  - if horse.stallion? && CurrentStable::StallionPolicy.new(Current.user, horse).view_nominations?
     input.tab[ type="radio" name="horse" aria-label=t(".nominations") id="nominations" ]
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
       = turbo_frame_tag "#{@horse.slug}-nominations", src: horse_stud_nominations_path(@horse), loading: "lazy" do

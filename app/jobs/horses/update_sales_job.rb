@@ -4,7 +4,7 @@ class Horses::UpdateSalesJob < ApplicationJob
   def perform
     return if run_today?
 
-    result = Horses::AutoSaleOffersUpdater.new.call
+    result = Horses::Selling::AutoOffersUpdater.new.call
     store_job_info(outcome: result)
   end
 end

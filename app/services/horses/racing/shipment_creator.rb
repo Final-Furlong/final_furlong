@@ -113,7 +113,7 @@ module Horses
       end
 
       def shipment_type
-        horse.racehorse? ? Shipping::RacehorseShipment : Shipping::BroodmareShipment
+        horse.racehorse? ? Horses::Racehorse::Shipment : Horses::Broodmare::Shipment
       end
 
       def association_name
