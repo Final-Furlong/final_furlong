@@ -91,6 +91,14 @@ module Horses::Horse::Raceable
     scope :sort_by_fitness_desc, -> { joins(:race_metadata).order("race_metadata.fitness_grade DESC") }
     scope :sort_by_location_asc, -> { joins(:race_metadata).order("race_metadata.location_string ASC") }
     scope :sort_by_location_desc, -> { joins(:race_metadata).order("race_metadata.location_string DESC") }
+    scope :sort_by_last_raced_asc, -> { joins(:race_metadata).order("race_metadata.last_raced_at ASC") }
+    scope :sort_by_last_raced_desc, -> { joins(:race_metadata).order("race_metadata.last_raced_at DESC") }
+    scope :sort_by_last_rested_asc, -> { joins(:race_metadata).order("race_metadata.last_rested_at ASC") }
+    scope :sort_by_last_rested_desc, -> { joins(:race_metadata).order("race_metadata.last_rested_at DESC") }
+    scope :sort_by_last_shipped_asc, -> { joins(:race_metadata).order("race_metadata.last_shipped_at ASC") }
+    scope :sort_by_last_shipped_desc, -> { joins(:race_metadata).order("race_metadata.last_shipped_at DESC") }
+    scope :sort_by_workouts_asc, -> { joins(:race_metadata).order("race_metadata.workouts_since_last_race ASC") }
+    scope :sort_by_workouts_desc, -> { joins(:race_metadata).order("race_metadata.workouts_since_last_race DESC") }
     scope :location, ->(value) { where(race_metadata: { location_string: value }) }
     scope :min_energy, ->(value) { where(race_metadata: { energy_grade: ::Racing::RacehorseMetadata.min_grade_levels(value) }) }
     scope :max_energy, ->(value) { where(race_metadata: { energy_grade: ::Racing::RacehorseMetadata.max_grade_levels(value) }) }
