@@ -10,7 +10,6 @@ ruby:
   = render Nav::Breadcrumbs::Component.new( links:  [{ name: Current.stable.name, href: current_stable_path },
                                                     { name: t(".title"), href: "#", title: true }])
 
-= render 'filters', dashboard: @dashboard
 = turbo_frame_tag "stable-budget-search" do
   .card.card-border.mt-2.p-2.shadow-md.dark:border-1.dark:border-neutral-100
     .card-body
