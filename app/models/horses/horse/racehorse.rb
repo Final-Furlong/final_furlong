@@ -2,6 +2,8 @@ module Horses
   class Horse::Racehorse < Horse
     include Injurable
 
+    friendly_id :name_and_foal_status, use: [:slugged, :finders, :history]
+
     has_many :workouts, class_name: "Workouts::Workout", foreign_key: :horse_id, inverse_of: :horse, dependent: :destroy
     has_many :workout_stats, class_name: "Workouts::Stat", foreign_key: :horse_id, inverse_of: :horse, dependent: :delete_all
     has_many :jump_trials, class_name: "Workouts::JumpTrial", foreign_key: :horse_id, inverse_of: :horse, dependent: :delete_all

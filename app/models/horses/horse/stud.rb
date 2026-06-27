@@ -1,5 +1,7 @@
 module Horses
   class Horse::Stud < Horse
+    friendly_id :name_and_foal_status, use: [:slugged, :finders, :history]
+
     has_one :famous_stud, class_name: "Horses::Stud::FamousStud", foreign_key: :horse_id, inverse_of: :horse, dependent: :delete
     has_many :foals, class_name: "Horses::Horse", inverse_of: :sire, dependent: :nullify
     has_many :breedings, class_name: "Horses::Breeding", inverse_of: :stud, dependent: :delete_all

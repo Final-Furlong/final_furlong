@@ -1,5 +1,7 @@
 module Horses
   class Horse::Foal < Horse
+    friendly_id :name_and_foal_status, use: [:slugged, :finders, :history]
+
     has_one :breeders_cup_nomination, class_name: "Racing::BreedersCupNomination", foreign_key: :horse_id, inverse_of: :horse, dependent: :delete
     has_one :supplemental_breeders_cup_nomination, class_name: "Racing::SupplementalBreedersCupNomination", foreign_key: :horse_id, inverse_of: :horse, dependent: :delete
     has_one :parent_breeding_record, class_name: "Horses::Breeding", inverse_of: :first_foal, dependent: :delete

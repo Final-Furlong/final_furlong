@@ -1,5 +1,7 @@
 module Horses
   class Horse::Broodmare < Horse
+    friendly_id :name_and_foal_status, use: [:slugged, :finders, :history]
+
     has_many :foals, class_name: "Horses::Horse", inverse_of: :dam, dependent: :nullify
     has_one :last_broodmare_shipment, -> { order(departure_date: :desc) }, class_name: "Horses::Broodmare::Shipment", inverse_of: :horse, dependent: :delete
     has_many :shipments, class_name: "Horses::Broodmare::Shipment", inverse_of: :horse, dependent: :delete_all
