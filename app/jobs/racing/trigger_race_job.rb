@@ -24,6 +24,10 @@ module Racing
         raise PreRaceError.new("Race #{race.id} needs pre-race stuff!")
       end
 
+      if Racing::RaceResult.exists?(date:, number:)
+        return
+      end
+
       url = Rails.application.credentials.php_app.url!
       api_key = Rails.application.credentials.php_app.api_key!
       response = HTTParty.post(url, body: { id: race.id }, headers: { "X_API_KEY" => api_key }, format: :plain)
