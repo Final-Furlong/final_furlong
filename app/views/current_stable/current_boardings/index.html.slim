@@ -10,8 +10,8 @@
             th= sort_link @query, :start_date, t("horse.events.boardings.start_date")
             th= sort_link @query, :location_racetrack_name, t("horse.events.boardings.location")
             th= t("horse.events.boardings.days")
-            th= sort_link @query, :horse_race_metadata_energy_grade, t("current_stable.training_summaries.show.energy")
-            th= sort_link @query, :horse_race_metadata_fitness_grade, t("current_stable.training_summaries.show.fitness")
+            th= sort_link @query, :horse_race_metadata_energy_grade, [:horse_race_metadata_energy_grade, 'horse_name asc'], t("current_stable.training_summaries.show.energy")
+            th= sort_link @query, :horse_race_metadata_fitness_grade, [:horse_race_metadata_fitness_grade, 'horse_name asc'], t("current_stable.training_summaries.show.fitness")
             th
         tbody id="boarding-list"
           = render partial: "boarding", collection: @boardings, as: :boarding

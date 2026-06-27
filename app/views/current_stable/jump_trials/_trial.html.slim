@@ -1,7 +1,8 @@
 /# locals: (trial:)
-- horse = trial.horse
-- jockey = trial.jockey
-- racetrack = trial.racetrack
+ruby:
+  horse = trial.horse
+  jockey = trial.jockey
+  racetrack = trial.racetrack
 tr
   td class="text-#{horse.gender.downcase}"= link_to horse.name, horse_path(horse), data: { turbo_frame: "_top" }
   td= l(trial.date)

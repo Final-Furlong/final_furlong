@@ -7,11 +7,11 @@ module Dashboard
         :current_racehorses_count, :current_broodmares_count,
         :scheduled_racehorses_count, :scheduled_broodmares_count
 
-      def initialize(query:)
-        @current_racehorse_shipments = query.racehorse.joins(:shipments).includes(shipments: :starting_location).where("racehorse_shipments.arrival_date > ?", Date.current).distinct
-        @scheduled_racehorse_shipments = query.racehorse.joins(:shipments).includes(shipments: :starting_location).where("racehorse_shipments.departure_date > ?", Date.current).distinct
-        @current_broodmare_shipments = query.broodmare.joins(:broodmare_shipments).where("broodmare_shipments.arrival_date > ?", Date.current).distinct
-        @scheduled_broodmare_shipments = query.broodmare.joins(:broodmare_shipments).where("broodmare_shipments.departure_date > ?", Date.current).distinct
+      def initialize(stable:)
+        @current_racehorse_shipments = Horses::Horse::Racehorse.managed_by(stable).joins(:shipments).includes(shipments: :starting_location).where("racehorse_shipments.arrival_date > ?", Date.current).distinct
+        @scheduled_racehorse_shipments = Horses::Horse::Racehorse.managed_by(stable).joins(:shipments).includes(shipments: :starting_location).where("racehorse_shipments.departure_date > ?", Date.current).distinct
+        @current_broodmare_shipments = Horses::Horse::Broodmare.managed_by(stable).joins(:shipments).where("broodmare_shipments.arrival_date > ?", Date.current).distinct
+        @scheduled_broodmare_shipments = Horses::Horse::Broodmare.managed_by(stable).joins(:shipments).where("broodmare_shipments.departure_date > ?", Date.current).distinct
 
         @current_racehorses_count = @current_racehorse_shipments.count
         @scheduled_racehorses_count = @scheduled_racehorse_shipments.count
