@@ -9,7 +9,7 @@ class Horses::Horse::Injurer
 
   def run
     ActiveRecord::Base.transaction do
-      Horses::Injury.create!(
+      Horses::Racehorse::Injury.create!(
         horse:,
         date:,
         injury_type:,
