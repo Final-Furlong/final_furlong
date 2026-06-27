@@ -3,7 +3,7 @@ class Workouts::UpdateStatsJob < ApplicationJob
 
   def perform
     activities = %w[walk jog canter gallop breeze]
-    Horses::Horse.racehorse.where.missing(:workout_stats).where.associated(:workouts).distinct.find_each do |horse|
+    Horses::Horse::Racehorse.where.missing(:workout_stats).where.associated(:workouts).distinct.find_each do |horse|
       activities.each do |activity|
         best_workout = Workouts::Workout.where(horse:).joins(:activities)
           .merge(Workouts::Activity.by_activity(activity).with_time)

@@ -37,7 +37,7 @@ module Racing
       return false unless logged_in?
       return false if record.race.date < Date.current
       race = record.race
-      return false if race.future_entries.where(horse: Horses::Horse.racehorse.managed_by(stable)).count >= race.last_day_entry_limit
+      return false if race.future_entries.where(horse: Horses::Horse::Racehorse.managed_by(stable)).count >= race.last_day_entry_limit
 
       horse = record.horse
       return true unless horse

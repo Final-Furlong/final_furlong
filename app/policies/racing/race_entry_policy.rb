@@ -39,7 +39,7 @@ module Racing
       # return false if Date.current > race.entry_deadline
       # return false if Date.current < race.entry_open_date
       max_owned_horses = race.requires_qualification? ? Config::Racing.entry_limit_overall : race.entry_limit
-      return false if race.entries.where(horse: Horses::Horse.racehorse.managed_by(stable)).count >= max_owned_horses
+      return false if race.entries.where(horse: Horses::Horse::Racehorse.managed_by(stable)).count >= max_owned_horses
 
       horse = record.horse
       return true unless horse

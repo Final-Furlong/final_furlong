@@ -4,7 +4,7 @@ module Horses
     has_many :foals, class_name: "Horses::Horse", inverse_of: :sire, dependent: :nullify
     has_many :breedings, class_name: "Horses::Breeding", inverse_of: :stud, dependent: :delete_all
     has_many :nominations, class_name: "Horses::Stud::BreedersCupNomination", inverse_of: :stud, dependent: :delete_all
-    has_one :stud_options, class_name: "Horses::StallionOption", inverse_of: :stud, dependent: :delete
+    has_one :stud_options, class_name: "Horses::Stud::StallionOption", inverse_of: :stud, dependent: :delete
     # rubocop:disable Rails/HasManyOrHasOneDependent
     has_one :foal_record, class_name: "Horses::Stud::FoalRecord", inverse_of: :stud
     # rubocop:enable Rails/HasManyOrHasOneDependent

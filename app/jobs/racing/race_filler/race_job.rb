@@ -23,7 +23,7 @@ class Racing::RaceFiller::RaceJob < ApplicationJob
   private
 
   def process_race(total_horses_needed, horses_needed, race, owner, horses, races)
-    query = Horses::Horse.racehorse.joins(:race_options, :race_metadata, :race_qualification, :racing_stats)
+    query = Horses::Horse::Racehorse.joins(:race_options, :race_metadata, :race_qualification, :racing_stats)
       .managed_by(owner).where.missing(:race_entries).where.missing(:future_race_entries).min_energy(Config::Racing.minimum_energy_racefiller)
     if owner.name != Config::Game.stable || race.race_type != "claiming"
       query = query.merge(Racing::RaceQualification.qualified_for_exactly(race.race_type))

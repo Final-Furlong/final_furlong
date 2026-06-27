@@ -5,7 +5,7 @@ class UpdateStillwaterHorsesJob < ApplicationJob
     owner = Account::Stable.find_by(name: "Stillwater Farms")
     flat_jocks = Racing::Jockey.flat.active.all.to_a
     jump_jocks = Racing::Jockey.jump.active.all.to_a
-    Horses::Horse.racehorse.where(owner:).find_each do |horse|
+    Horses::Horse::Racehorse.where(owner:).find_each do |horse|
       options = horse.race_options
       relationships = horse.jockey_relationships.order(happiness: :desc, experience: :desc).all.to_a
       relationships = relationships.delete_if { |jr| jr.happiness < jr.experience / 2 }

@@ -6,7 +6,7 @@ class UpdateRacehorseStatsJob < ApplicationJob
     Account::Stable.where(racetrack: nil).update_all(racetrack_id: racetrack.id) # rubocop:disable Rails/SkipsModelValidations
     new_horses = 0
     updated_horses = 0
-    Horses::Horse.racehorse.where.associated(:race_metadata).find_each do |horse|
+    Horses::Horse::Racehorse.where.associated(:race_metadata).find_each do |horse|
       migrate_location(horse:)
       updated_horses += 1
     end
@@ -61,4 +61,3 @@ class UpdateRacehorseStatsJob < ApplicationJob
     [egrade, fgrade]
   end
 end
-

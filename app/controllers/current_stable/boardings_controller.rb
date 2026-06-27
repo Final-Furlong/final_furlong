@@ -14,7 +14,7 @@ module CurrentStable
     def create
       authorize %i[current_stable boarding]
       @boarding = Horses::Racehorse::Boarding.new
-      horse = Horses::Horse.racehorse.managed_by(Current.stable).find(boarding_params[:horse_id])
+      horse = Horses::Horse::Racehorse.managed_by(Current.stable).find(boarding_params[:horse_id])
 
       result = Horses::Racehorse::BoardingCreator.new.start_boarding(horse:)
       if result.created?

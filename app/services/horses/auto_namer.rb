@@ -2,7 +2,7 @@ module Horses
   class AutoNamer
     def call
       horses_updated = 0
-      Horses::Horse.racehorse.min_age(2).not_created.where(name: nil).find_each do |horse|
+      Horses::Horse::Racehorse.min_age(2).not_created.where(name: nil).find_each do |horse|
         set_name(horse:)
         horses_updated += 1
       end

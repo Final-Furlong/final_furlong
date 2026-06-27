@@ -2,7 +2,7 @@ module CurrentStable
   class BoardingPolicy < ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
       def resolve
-        scope.where(horse: Horses::Horse.racehorse.managed_by(Current.stable))
+        scope.where(horse: Horses::Horse::Racehorse.managed_by(Current.stable))
       end
     end
 
@@ -15,7 +15,7 @@ module CurrentStable
     end
 
     def create?
-      Horses::Horse.racehorse.managed_by(stable).where.missing(:current_boarding).present?
+      Horses::Horse::Racehorse.managed_by(stable).where.missing(:current_boarding).present?
     end
 
     def update?
@@ -25,11 +25,11 @@ module CurrentStable
     end
 
     def list_current?
-      Horses::Horse.racehorse.managed_by(stable).where.associated(:current_boarding).present?
+      Horses::Horse::Racehorse.managed_by(stable).where.associated(:current_boarding).present?
     end
 
     def list_historical?
-      Horses::Horse.racehorse.managed_by(stable).where.associated(:boardings).present?
+      Horses::Horse::Racehorse.managed_by(stable).where.associated(:boardings).present?
     end
   end
 end

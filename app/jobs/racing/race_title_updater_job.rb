@@ -10,7 +10,7 @@ class Racing::RaceTitleUpdaterJob < ApplicationJob
       Racing::LifetimeRaceRecord.refresh
     end
 
-    Horses::Horse.racehorse.joins(:lifetime_race_record).where.not(lifetime_race_record: { title_abbreviation: [nil, ""] }).find_each do |horse|
+    Horses::Horse::Racehorse.joins(:lifetime_race_record).where.not(lifetime_race_record: { title_abbreviation: [nil, ""] }).find_each do |horse|
       horse.update(title_abbr: horse.lifetime_race_record.title_abbreviation)
       horses += 1 if horse.changed?
     end

@@ -13,11 +13,11 @@ module CurrentStable
       authorize schedule, :view_horses?
       type = params[:type].to_s.inquiry
       if type.workouts?
-        query = policy_scope(Horses::Horse.racehorse.joins(:training_schedule).where(training_schedules: { id: schedule }),
+        query = policy_scope(Horses::Horse::Racehorse.joins(:training_schedule).where(training_schedules: { id: schedule }),
           policy_scope_class: Racing::TrainingScheduleHorsePolicy::Scope)
         query = query.includes(:race_metadata, :race_options, :current_boarding).order(name: :asc)
       else
-        horses_query = Horses::Horse.racehorse.left_joins(:training_schedule).where(training_schedules: { id: [schedule, nil] })
+        horses_query = Horses::Horse::Racehorse.left_joins(:training_schedule).where(training_schedules: { id: [schedule, nil] })
         query = policy_scope(horses_query, policy_scope_class: CurrentStable::HorsePolicy::Scope)
       end
       query = query.order(training_schedules: { id: :asc }, name: :asc)
@@ -66,7 +66,7 @@ module CurrentStable
     end
 
     def set_stable_horses
-      @horses = Horses::Horse.racehorse.where.missing(:training_schedule).managed_by(Current.stable).order(name: :asc)
+      @horses = Horses::Horse::Racehorse.where.missing(:training_schedule).managed_by(Current.stable).order(name: :asc)
     end
 
     def schedule_params

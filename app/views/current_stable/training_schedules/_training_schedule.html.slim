@@ -6,9 +6,9 @@
         .flex.space-x-2.mr-2
           h1.card-title= training_schedule.name
           ruby:
-            query = Horses::Horse.racehorse.joins(:training_schedule).where(training_schedules: { id: training_schedule })
+            query = Horses::Horse::Racehorse.joins(:training_schedule).where(training_schedules: { id: training_schedule })
             horses_count = Racing::TrainingScheduleHorsePolicy::Scope.new(Current.user, query).resolve.count
-            total_horses_count = Horses::Horse.racehorse.managed_by(Current.stable).joins(:training_schedule).where(training_schedules: { id: training_schedule }).count
+            total_horses_count = Horses::Horse::Racehorse.managed_by(Current.stable).joins(:training_schedule).where(training_schedules: { id: training_schedule }).count
           = render Ui::ButtonizedLink::Component.new(url: stable_training_schedule_horses_path(training_schedule, type: "workouts"), size: :small, color: :neutral, data: { turbo_frame: "_top" }) do
             = t("current_stable.training_schedules.show.workouts_count", count: horses_count)
 
@@ -40,4 +40,3 @@
               td= training_schedule.send(:"#{day.downcase}_activities").activity_with_distance(1)
               td= training_schedule.send(:"#{day.downcase}_activities").activity_with_distance(2)
               td= training_schedule.send(:"#{day.downcase}_activities").activity_with_distance(3)
-

@@ -2,7 +2,7 @@ module CurrentStable
   class FutureRaceEntryPolicy < ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
       def resolve
-        scope.where(horse: Horses::Horse.racehorse.managed_by(stable))
+        scope.where(horse: Horses::Horse::Racehorse.managed_by(stable))
       end
     end
 

@@ -3,7 +3,7 @@ module Horse
     skip_after_action :verify_pundit_authorization, only: :index
 
     def index
-      @horse = Horses::Horse.includes(:manager, :race_options, :race_qualification).find(params[:horse_id])
+      @horse = Horses::Horse::Racehorse.includes(:manager, :race_options, :race_qualification).find(params[:horse_id])
       authorize @horse, :schedule_race?, policy_class: CurrentStable::RacehorsePolicy
 
       @dashboard = Dashboard::Horse::FutureRaces.new(horse: @horse, params:)
@@ -17,7 +17,7 @@ module Horse
     end
 
     def search
-      @horse = Horses::Horse.includes(:manager, :race_options, :race_qualification).find(params[:horse_id])
+      @horse = Horses::Horse::Racehorse.includes(:manager, :race_options, :race_qualification).find(params[:horse_id])
       authorize @horse, :schedule_race?, policy_class: CurrentStable::RacehorsePolicy
 
       @dashboard = Dashboard::Horse::FutureRaces.new(horse: @horse, params:)
@@ -32,7 +32,7 @@ module Horse
 
     def new
       race = Racing::RaceSchedule.find(params[:race_id])
-      @horse = Horses::Horse.racehorse.find(params[:horse_id])
+      @horse = Horses::Horse::Racehorse.find(params[:horse_id])
       @entry = Racing::FutureRaceEntry.new(date: race.date, race:, horse: @horse)
       authorize @entry
 
@@ -49,7 +49,7 @@ module Horse
 
     def edit
       race = Racing::RaceSchedule.find(params[:id])
-      @horse = Horses::Horse.racehorse.find(params[:horse_id])
+      @horse = Horses::Horse::Racehorse.find(params[:horse_id])
       @entry = @horse.future_race_entries.find_by(race:)
       authorize @entry
 
@@ -65,7 +65,7 @@ module Horse
 
     def create
       race = Racing::RaceSchedule.find(entry_params[:race_id])
-      @horse = Horses::Horse.racehorse.find(params[:horse_id])
+      @horse = Horses::Horse::Racehorse.find(params[:horse_id])
       @entry = Racing::FutureRaceEntry.new(date: race.date, race:, horse: @horse)
       @entry.store_initial_options
       authorize @entry
@@ -125,7 +125,7 @@ module Horse
     end
 
     def destroy
-      @horse = Horses::Horse.racehorse.find(params[:horse_id])
+      @horse = Horses::Horse::Racehorse.find(params[:horse_id])
       @entry = @horse.future_race_entries.includes(:race).find_by(race_id: params[:id])
       authorize @entry
 

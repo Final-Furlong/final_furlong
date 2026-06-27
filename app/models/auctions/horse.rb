@@ -25,15 +25,15 @@ module Auctions
     scope :unsold, -> { where(sold_at: nil) }
     scope :with_reserve, -> { where.not(reserve_price: nil) }
     scope :racehorse_2yo, -> {
-      joins(:horse).merge(Horses::Horse.racehorse)
+      joins(:horse).merge(Horses::Horse::Racehorse)
         .merge(Horses::Horse.with_yob(Date.current.year - 2))
     }
     scope :racehorse_3yo, -> {
-      joins(:horse).merge(Horses::Horse.racehorse)
+      joins(:horse).merge(Horses::Horse::Racehorse)
         .merge(Horses::Horse.with_yob(Date.current.year - 3))
     }
     scope :racehorse_older, -> {
-      joins(:horse).merge(Horses::Horse.racehorse)
+      joins(:horse).merge(Horses::Horse::Racehorse)
         .merge(Horses::Horse.max_yob(Date.current.year - 4))
     }
     scope :stallion, -> { joins(:horse).merge(Horses::Horse::Stud) }

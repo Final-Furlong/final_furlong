@@ -6,7 +6,7 @@
 = turbo_frame_tag "#{Current.stable.slug}-boardings" do
   .tabs.tabs-border.dark:border-neutral-400 role="tablist"
     - if policy(%i[current_stable boarding]).list_current?
-      - count = Horses::Horse.racehorse.managed_by(Current.stable).where.associated(:current_boarding).count
+      - count = Horses::Horse::Racehorse.managed_by(Current.stable).where.associated(:current_boarding).count
       input.tab type="radio" name="stable-boardings" aria-label=t(".current_count", count: count) id="stable-current-boardings" disabled=count.zero?
       .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
         = turbo_frame_tag "#{Current.stable.slug}-current-boardings", src: stable_current_boardings_path, loading: "lazy" do
@@ -15,7 +15,7 @@
             .mt-2.mx-auto.skeleton.w-full
 
     - if policy(%i[current_stable boarding]).list_historical?
-      - count = Horses::Racehorse::Boarding.ended.where(horse: Horses::Horse.racehorse.managed_by(Current.stable)).count
+      - count = Horses::Racehorse::Boarding.ended.where(horse: Horses::Horse::Racehorse.managed_by(Current.stable)).count
       - count = number_with_delimiter(count) unless count < 2
       input.tab type="radio" name="stable-boardings" aria-label=t(".historical_count", count: count) id="stable-historical-boardings" disabled=count.to_i.zero?
       .tab-content.border-base-400.bg-base-100.p-2.sm:p-4

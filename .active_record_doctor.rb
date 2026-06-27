@@ -100,8 +100,8 @@ ActiveRecordDoctor.configure do
       "Horses::Horse.unborn_foals_count",
       "Horses::Stallion.foals_count",
       "Horses::Stallion.unborn_foals_count",
-      "Horses::StallionOption.outside_mares_count",
-      "Horses::StallionOption.total_booked_count",
+      "Horses::Stud::StallionOption.outside_mares_count",
+      "Horses::Stud::StallionOption.total_booked_count",
       "Racing::TrainingSchedule.horses_count",
       "Racing::TrainingSchedule.sunday_activities",
       "Racing::TrainingSchedule.monday_activities",
@@ -211,8 +211,8 @@ ActiveRecordDoctor.configure do
       "Racing::Qualifications::BreedersSeries4yoTurf.horse",
       "Racing::Qualifications::BreedersSeriesFilliesSteeplechase.horse",
       "Racing::Qualifications::BreedersSeriesSteeplechase.horse",
-      "Horses::BroodmareFoalRecord.mare",
-      "Horses::StudFoalRecord.stud"
+      "Horses::Broodmare::FoalRecord.mare",
+      "Horses::Stud::FoalRecord.stud"
     ]
 
   detector :unindexed_foreign_keys,
