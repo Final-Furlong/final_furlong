@@ -1,4 +1,4 @@
-RSpec.describe "Impersonate Stable Index" do
+describe "Impersonate Stable Index" do
   it "does not allow impersonating as visitor" do
     user = create(:user, :without_stable, email: "user@example.com", username: "user123")
     stable = create(:stable, user:)

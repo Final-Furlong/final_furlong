@@ -1,4 +1,4 @@
-RSpec.describe Racing::TrainingSchedulesQuery do
+describe Racing::TrainingSchedulesQuery do
   subject(:query) { described_class.new }
 
   describe "#with_stable" do

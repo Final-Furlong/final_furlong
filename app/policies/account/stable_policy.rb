@@ -41,7 +41,7 @@ module Account
       return false unless logged_in?
       return false unless record == stable
 
-      Horses::Horse.weanling.managed_by(Current.stable).joins(sire: :stud_nominations).where(sire: { stud_breeders_cup_nominations: { year: Date.current.year } }).where.missing(:breeders_cup_nomination).exists?
+      Horses::Horse::Foal.weanling.managed_by(Current.stable).joins(sire: :nominations).where(sire: { stud_breeders_cup_nominations: { year: Date.current.year } }).where.missing(:breeders_cup_nomination).exists?
     end
   end
 end

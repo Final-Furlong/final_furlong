@@ -91,7 +91,10 @@ en:
         studs_count:
           one: 1 stallion
           other: "%{count} stallions"
-        unborn_count:
+        unborn_this_year_count:
+          one: 1 foal due this year
+          other: "%{count} foals due this year"
+        unborn_next_year_count:
           one: 1 foal due next year
           other: "%{count} foals due next year"
         weanlings_count:
@@ -113,11 +116,11 @@ en:
           zero: today
         horses_count: " with %{count} %{horses}"
         next_races_count:
-          one: '1 race will be run '
+          one: "1 race will be run "
           other: "%{count} races will be run "
         races_count: "%{number} %{races} have been run"
         recent_races_count:
-          one: '1 race was run '
+          one: "1 race was run "
           other: "%{count} races were run "
   racing:
     training_schedules:
@@ -154,7 +157,7 @@ en:
     create:
       success: User was successfully created.
     form:
-      currently_waiting_confirmation_for_email: 'Currently waiting confirmation for: %{email}'
+      currently_waiting_confirmation_for_email: "Currently waiting confirmation for: %{email}"
       send_confirmation: Send confirmation email
       update: Update
     index:

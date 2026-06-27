@@ -20,7 +20,7 @@
             next_race_date = Racing::RaceSchedule.where('date >= ?', Date.current).minimum(:date) || Date.current
             race_count = Racing::RaceSchedule.where(date: next_race_date).count
             days_from_now = (next_race_date - Date.current).to_i
-            horses_count = Racing::RaceEntry.where(date: next_race_date).count
+            horses_count = Racing::RaceSchedule.where(date: next_race_date).sum(:entries_count)
           p
             = t(".next_races_count", count: race_count)
             = t(".days_from_now_count", count: days_from_now)

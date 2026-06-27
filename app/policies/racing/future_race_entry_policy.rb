@@ -21,10 +21,11 @@ module Racing
     def new?
       return false unless logged_in?
       return false if record.date < Date.current
+      return false unless record.horse.racehorse? && record.horse.active?
       race = record.race
-      current_entries = Horses::Horse.racehorse.managed_by(stable).joins(:race_entries).where(race_entries: { race: }).count
+      current_entries = Horses::Horse::Racehorse.managed_by(stable).joins(:race_entries).where(race_entries: { race: }).count
       if current_entries == race.entry_limit && race.entry_limit < race.last_day_entry_limit
-        scheduled_horses_count = Horses::Horse.racehorse.managed_by(stable).joins(:future_race_entries).where(future_race_entries: { race: }).count
+        scheduled_horses_count = Horses::Horse::Racehorse.managed_by(stable).joins(:future_race_entries).where(future_race_entries: { race: }).count
         return true if scheduled_horses_count < (race.last_day_entry_limit - race.entry_limit)
       end
       return false if Date.current >= race.entry_open_date
@@ -40,13 +41,13 @@ module Racing
 
       horse = record.horse
       return true unless horse
-      return false unless horse.racehorse?
+      return false unless horse.racehorse? && horse.active?
       return false unless manager?
       return false if horse.future_race_entries.exists?(date: record.race.date)
       return false if horse.future_race_entries.count >= Config::Racing.future_race_limit
-      current_entries = Horses::Horse.racehorse.managed_by(stable).joins(:race_entries).where(race_entries: { race: }).count
+      current_entries = Horses::Horse::Racehorse.managed_by(stable).joins(:race_entries).where(race_entries: { race: }).count
       if current_entries == race.entry_limit && race.entry_limit < race.last_day_entry_limit
-        scheduled_horses_count = Horses::Horse.racehorse.managed_by(stable).joins(:future_race_entries).where(future_race_entries: { race: }).count
+        scheduled_horses_count = Horses::Horse::Racehorse.managed_by(stable).joins(:future_race_entries).where(future_race_entries: { race: }).count
         return true if scheduled_horses_count < (race.last_day_entry_limit - race.entry_limit)
       end
 
@@ -61,7 +62,7 @@ module Racing
 
       horse = record.horse
       return true unless horse
-      return false unless horse.racehorse?
+      return false unless horse.racehorse? && horse.active?
 
       manager?
     end

@@ -1,4 +1,4 @@
-RSpec.describe "Impersonating users" do
+describe "Impersonating users" do
   let(:user) { create(:user) }
   let(:current_user) { create(:admin) }
 

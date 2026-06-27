@@ -8,7 +8,7 @@ en:
         dob_future: must not be in future
         dob_in_far_past: must be no more than 150 years ago
         phone_invalid_mobile: is invalid
-        weak: 'must be at least 8 characters long and contain: an upper case character, a lower case character, a digit and a non-alphabet character.'
+        weak: "must be at least 8 characters long and contain: an upper case character, a lower case character, a digit and a non-alphabet character."
   activerecord:
     attributes:
       auctions/bid:
@@ -145,11 +145,11 @@ en:
               invalid_gallop: must be between 1/2 mile and 3 miles
               invalid_jog: must be between 1/2 mile and 5 miles
               invalid_walk: must be between 1/2 mile and 2 miles
-        shipping/broodmare_shipment:
+        horses/broodmare/shipment:
           attributes:
             ending_farm:
               other_than: cannot be the same as the starting farm
-        shipping/racehorse_shipment:
+        horses/racehorse/shipment:
           attributes:
             mode:
               cannot_afford: costs more than you can afford

@@ -1,4 +1,4 @@
-RSpec.describe Game::BreedingSeason do
+describe Game::BreedingSeason do
   describe ".start_date" do
     it "returns current year's start date" do
       expect(described_class.start_date).to eq Date.new(Date.current.year, 2, 15)

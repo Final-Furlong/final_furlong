@@ -1,6 +1,6 @@
-RSpec.describe Racing::RaceOption do
+describe Racing::RaceOption do
   describe "associations" do
-    it { is_expected.to belong_to(:horse).class_name("Horses::Horse") }
+    it { is_expected.to belong_to(:horse).class_name("Horses::Horse::Racehorse") }
     it { is_expected.to belong_to(:first_jockey).class_name("Racing::Jockey").optional }
     it { is_expected.to belong_to(:second_jockey).class_name("Racing::Jockey").optional }
     it { is_expected.to belong_to(:third_jockey).class_name("Racing::Jockey").optional }

@@ -2,7 +2,7 @@ module Horses
   class HorsePolicy < ::ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
       def resolve
-        Horses::HorsesQuery.new.born
+        Horses::Horse.born
       end
     end
 
@@ -26,8 +26,8 @@ module Horses
       return false if record.deceased?
       return false if record.unborn?
       return false if record.race_result_finishes.exists?
-      return false if record.foals.exists?
-      return false if record.stud_foals.exists?
+      return false if record.broodmare? && record.foals.exists?
+      return false if record.stud? && record.foals.exists?
       return true if admin?
       return false if record.age > Config::Horses.max_rename_age && record.name.present?
       return false if record.age > Config::Horses.max_rename_age && !record.created?
@@ -42,7 +42,7 @@ module Horses
     def view_highlights?
       return false unless logged_in?
 
-      %w[weanling yearling unborn].exclude?(record.status)
+      !record.foal?
     end
 
     private

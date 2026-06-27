@@ -1,4 +1,4 @@
-RSpec.describe Stables::Find do
+describe Stables::Find do
   describe "#run" do
     context "when given a non-string id" do
       it "returns error" do

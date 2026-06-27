@@ -1,4 +1,4 @@
-RSpec.describe Racing::RaceSchedule do
+describe Racing::RaceSchedule do
   describe "associations" do
     it { is_expected.to belong_to(:track_surface).class_name("Racing::TrackSurface").inverse_of(:scheduled_races) }
   end

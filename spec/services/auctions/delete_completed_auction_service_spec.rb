@@ -1,4 +1,4 @@
-RSpec.describe Auctions::DeleteCompletedAuctionService do
+describe Auctions::DeleteCompletedAuctionService do
   context "when auction is blank" do
     it "does nothing" do
       expect(described_class.call(auction: nil)).to be_nil

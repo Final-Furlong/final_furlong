@@ -1,4 +1,4 @@
-RSpec.describe SessionsRepository do
+describe SessionsRepository do
   describe ".online" do
     context "when resource has #last_online_at attribute" do
       context "when older than #{Config::Game.online_minutes} minutes ago" do

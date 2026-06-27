@@ -1,4 +1,4 @@
-RSpec.describe Users::OnlineBadge::Component, type: :component do
+describe Users::OnlineBadge::Component, type: :component do
   context "when online" do
     it "renders online badge" do
       render_inline(described_class.new(online: true))

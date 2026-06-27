@@ -109,7 +109,7 @@ module Auctions
         if horse.racehorse?
           horse.training_schedules_horse&.destroy
           unless horse.current_boarding
-            last_shipment = horse.racing_shipments.order(arrival_date: :desc).first
+            last_shipment = horse.shipments.order(arrival_date: :desc).first
             if last_shipment&.shipping_type == "track_to_farm"
               racetrack = buyer.racetrack
               horse.race_metadata&.update(racetrack:, location: racetrack.location, location_string: buyer.name)

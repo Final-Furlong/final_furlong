@@ -72,11 +72,11 @@ module Auctions
           return result
         end
       end
-      if !auction.yearling_allowed? && horse.yearling?
+      if !auction.yearling_allowed? && horse.foal? && horse.age == 1
         result.error = error("yearlings_not_allowed")
         return result
       end
-      if !auction.weanling_allowed? && horse.weanling?
+      if !auction.weanling_allowed? && horse.foal? && horse.age == 0
         result.error = error("weanlings_not_allowed")
         return result
       end

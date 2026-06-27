@@ -1,4 +1,4 @@
-RSpec.describe CurrentStable::SettingsPolicy do
+describe CurrentStable::SettingsPolicy do
   subject(:policy) { described_class.new(user, Account::User.new) }
 
   let(:user) { create(:user) }

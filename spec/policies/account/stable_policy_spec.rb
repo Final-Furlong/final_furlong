@@ -1,4 +1,4 @@
-RSpec.describe Account::StablePolicy do
+describe Account::StablePolicy do
   subject(:policy) { described_class.new(user, stable) }
 
   let(:stable) { build(:stable) }

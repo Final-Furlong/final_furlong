@@ -1,4 +1,4 @@
-RSpec.describe "Boarding" do
+describe "Boarding" do
   before { setup_data }
 
   it "allows boarding to be started, shown, and stopped", :js do
@@ -40,7 +40,7 @@ RSpec.describe "Boarding" do
   end
 
   def horse
-    @horse ||= create(:horse, :racehorse, :with_appearance, owner: stable)
+    @horse ||= create(:racehorse, :with_appearance, owner: stable)
   end
 
   def boarding

@@ -4,7 +4,7 @@ module Horses
       racehorse: "racehorse", broodmare: "broodmare", stud: "stud",
       yearling: "yearling", weanling: "weanling", retired: "retired",
       retired_broodmare: "retired_broodmare", retired_stud: "retired_stud",
-      deceased: "deceased", unborn: "unborn"
+      unborn: "unborn"
     }
 
     LIVING_STATUSES = %w[weanling yearling racehorse broodmare stud retired retired_broodmare retired_stud]

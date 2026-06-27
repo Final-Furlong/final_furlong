@@ -1,4 +1,4 @@
-RSpec.describe Auctions::DeleteCompletedAuctionsJob, :perform_enqueued_jobs do
+describe Auctions::DeleteCompletedAuctionsJob, :perform_enqueued_jobs do
   describe "#perform" do
     it "uses fast queue", perform_enqueueed_jobs: false do
       expect do

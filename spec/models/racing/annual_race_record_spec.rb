@@ -1,6 +1,6 @@
 require_relative "../../shared/scenic_examples"
 
-RSpec.describe Racing::AnnualRaceRecord do
+describe Racing::AnnualRaceRecord do
   it_behaves_like "a materialized view"
 
   describe "associations" do

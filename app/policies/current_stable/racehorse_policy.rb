@@ -36,6 +36,7 @@ module CurrentStable
 
     def update_race_options?
       return false unless record.racehorse?
+      return false unless record.active?
       return false if record.race_options.blank?
 
       manager?
@@ -87,22 +88,24 @@ module CurrentStable
     def board?
       return false unless manager?
       return false unless record.racehorse?
+      return false unless record.active?
 
       data = record.race_metadata
       return false if data&.in_transit?
       return false if data&.at_home?
 
-      !Horses::Boarding.current.exists?(horse: record)
+      !Horses::Racehorse::Boarding.current.exists?(horse: record)
     end
 
     def stop_boarding?
       return false unless manager?
 
-      Horses::Boarding.current.exists?(horse: record)
+      Horses::Racehorse::Boarding.current.exists?(horse: record)
     end
 
     def run_workout?
       return false unless record.racehorse?
+      return false unless record.active?
 
       data = record.race_metadata
       return false unless data
@@ -117,6 +120,7 @@ module CurrentStable
 
     def run_jump_trial?
       return false unless record.racehorse?
+      return false unless record.active?
 
       return false if record.age < Config::Workouts.dig(:jump_trial, :min_age)
       return false if record.race_options&.racehorse_type == "jump"
@@ -136,6 +140,7 @@ module CurrentStable
 
     def racehorse_and_manager?
       return false unless record.racehorse?
+      return false unless record.active?
 
       manager?
     end

@@ -1,4 +1,4 @@
-RSpec.describe Auctions::BidIncrementor do
+describe Auctions::BidIncrementor do
   context "when new current bid is not higher than previous maximum bid" do
     it "returns created true" do
       result = described_class.new.increment_bid(bid_params)

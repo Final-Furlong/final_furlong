@@ -1,4 +1,4 @@
-RSpec.describe Racing::TrainingScheduleHorse do
+describe Racing::TrainingScheduleHorse do
   describe "associations" do
     it { is_expected.to belong_to(:training_schedule).class_name("Racing::TrainingSchedule") }
   end

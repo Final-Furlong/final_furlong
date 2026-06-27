@@ -1,4 +1,4 @@
-RSpec.describe Auction do
+describe Auction do
   describe "associations" do
     it { is_expected.to belong_to(:auctioneer).class_name("Account::Stable") }
     it { is_expected.to have_many(:horses).class_name("Auctions::Horse").dependent(:destroy) }

@@ -1,4 +1,4 @@
-RSpec.describe ApplicationRepository do
+describe ApplicationRepository do
   subject(:repo) { described_class.new(model:) }
 
   let(:model) { Account::User }

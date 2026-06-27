@@ -1,6 +1,6 @@
 require "ostruct"
 
-RSpec.describe Pwa::WebPushJob, :perform_enqueueed_jobs do
+describe Pwa::WebPushJob, :perform_enqueueed_jobs do
   describe "#perform" do
     it "uses fast queue", perform_enqueueed_jobs: false do
       expect do

@@ -8,7 +8,7 @@ module CurrentStable
 
     def create?
       return false unless record.horse.owner == stable
-      return false unless Horses::Status::SELLABLE_STATUSES.include?(record.horse.status)
+      return false unless record.active?
       return false if record.horse.current_lease&.persisted?
       return false if record.horse.sale_offer.persisted?
       return false if record.horse.auction_horse&.persisted?
@@ -20,7 +20,7 @@ module CurrentStable
           races_count = record.horse.race_result_finishes.joins(:race).merge(Racing::RaceResult.since_date(last_sale_date)).count
           races_count >= Config::Sales.minimum_races
         elsif record.horse.stud?
-          return false # TODO: hook up bookings check
+          true
         else
           return false
         end

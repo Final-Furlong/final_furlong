@@ -24,8 +24,6 @@ module Auctions
 
       number_consigned = 0
       auction.consignment_configs.each do |config|
-        horse_type_check = config.horse_type.to_s.downcase
-        horse_type_number_consigned = Auctions::Horse.joins(:horse).where(auction:).merge(Horses::Horse.send(horse_type_check.to_sym)).count
         consigner_class = case config.horse_type.to_s.downcase
         when "racehorse"
           Auctions::RacehorseConsigner
@@ -40,6 +38,7 @@ module Auctions
         else
           raise UnknownConsignmentTypeError
         end
+        horse_type_number_consigned = consigner_class.new.base_class.joins(:auction_horse).where(auction_horse: { auction_id: auction.id }).count
         horses = consigner_class.new.select_horses(
           number: config.minimum_count - horse_type_number_consigned,
           stakes_quality: config.stakes_quality,

@@ -1,4 +1,4 @@
-RSpec.describe Racing::FutureEntryCreator do
+describe Racing::FutureEntryCreator do
   describe "#create_entry" do
     let(:params) { { race:, horse:, stable: } }
 
@@ -113,7 +113,7 @@ RSpec.describe Racing::FutureEntryCreator do
       it_behaves_like "an entry with errors" do
         let(:error) { I18n.t("services.races.future_entry_creator.horse_not_racehorse") }
 
-        before { horse.update(status: "retired") }
+        before { horse.update(state: "retired") }
       end
     end
 
@@ -355,9 +355,9 @@ RSpec.describe Racing::FutureEntryCreator do
         let(:error) { I18n.t("services.races.future_entry_creator.max_entries_stable") }
 
         before do
-          create(:future_race_entry, race:, horse: create(:horse, :racehorse, owner: stable))
-          create(:future_race_entry, race:, horse: create(:horse, :racehorse, owner: stable))
-          create(:future_race_entry, race:, horse: create(:horse, :racehorse, owner: stable))
+          create(:future_race_entry, race:, horse: create(:racehorse, owner: stable))
+          create(:future_race_entry, race:, horse: create(:racehorse, owner: stable))
+          create(:future_race_entry, race:, horse: create(:racehorse, owner: stable))
         end
       end
     end
@@ -365,7 +365,7 @@ RSpec.describe Racing::FutureEntryCreator do
     context "when stable has less than max extra entries in the race" do
       it_behaves_like "an entry without errors" do
         before do
-          create(:future_race_entry, race:, horse: create(:horse, :racehorse))
+          create(:future_race_entry, race:, horse: create(:racehorse))
         end
       end
     end
@@ -390,7 +390,7 @@ RSpec.describe Racing::FutureEntryCreator do
   def horse
     return @horse if defined?(@horse)
 
-    @horse = create(:horse, :racehorse)
+    @horse = create(:racehorse)
     @race_option = create(:race_option, horse: @horse)
     horse.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
     refresh_views

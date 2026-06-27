@@ -29,8 +29,8 @@ module CurrentStable
 
     def change_status?
       return false if record.leaser_id.present?
-      return false unless Horses::Status::LIVING_STATUSES.include?(record.status)
-      return false if Horses::Status::RETIRED_STATUSES.include?(record.status)
+      return false if record.deceased?
+      return false if record.retired?
 
       owner? || admin?
     end
@@ -40,7 +40,7 @@ module CurrentStable
     end
 
     def view_stats?
-      return true if manager? && record.racehorse?
+      return true if manager? && record.racehorse? && record.active?
 
       !record.stillborn?
     end
@@ -60,13 +60,17 @@ module CurrentStable
     end
 
     def status_retired?
-      Horses::Status::RETIREABLE_STATUSES.include?(record.status)
+      return false if record.retired?
+      return false if record.deceased?
+      return false if record.unborn?
+
+      true
     end
 
     def status_broodmare?
       return false unless status_retired?
       return false unless record.female?
-      return false if record.status == "broodmare"
+      return false if record.broodmare?
       return true if record.historical_injuries.retireable.exists?
       return true if record.lifetime_race_record&.starts.to_i >= Config::Racing.min_races_to_retire
 
@@ -75,7 +79,7 @@ module CurrentStable
 
     def status_stud?
       return false unless status_retired?
-      return false if record.status == "stud"
+      return false if record.stud?
       return false if record.female?
       return false if record.gelding?
 
@@ -102,10 +106,12 @@ module CurrentStable
     end
 
     def ship?
+      return false unless record.active?
+
       shipment = if record.racehorse?
-        Shipping::RacehorseShipment.new(horse: record)
+        Horses::Racehorse::Shipment.new(horse: record)
       elsif record.broodmare?
-        Shipping::BroodmareShipment.new(horse: record)
+        Horses::Broodmare::Shipment.new(horse: record)
       else
         return false
       end
@@ -114,7 +120,7 @@ module CurrentStable
 
     def consign_to_auction?
       return false unless owner?
-      return false unless Horses::Status::SELLABLE_STATUSES.include?(record.status)
+      return false unless record.active?
       return false if record.current_lease&.persisted?
       return false if record.sale_offer&.persisted?
       return false if record.auction_horse&.persisted?
@@ -185,7 +191,7 @@ module CurrentStable
 
     def create_workout?
       return false unless manager?
-      return false unless record.racehorse?
+      return false unless record.racehorse? && record.active?
 
       !record.workouts.exists?(date: Date.current)
     end
@@ -193,7 +199,7 @@ module CurrentStable
     def view_boarding?
       return false unless manager?
 
-      record.racehorse?
+      record.racehorse? && record.active?
     end
 
     def nominate_weanling?

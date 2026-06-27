@@ -1,4 +1,4 @@
-RSpec.describe "Update Stable Description" do
+describe "Update Stable Description" do
   context "when user is signed in" do
     before { sign_in(user) }
 

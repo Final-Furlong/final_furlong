@@ -1,4 +1,4 @@
-RSpec.describe Racing::TrainingSchedulePolicy do
+describe Racing::TrainingSchedulePolicy do
   subject(:policy) { described_class.new(user, schedule) }
 
   let(:user) { build_stubbed(:user) }

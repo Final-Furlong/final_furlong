@@ -1,4 +1,4 @@
-RSpec.describe Api::V1::RaceResults do
+describe Api::V1::RaceResults do
   describe "POST /api/v1/race_results" do
     context "when race result creation works" do
       it "returns race result ID" do

@@ -10,7 +10,7 @@ class Horses::FutureRaceEntryShipmentJob < ApplicationJob
     return if race_location == horse_location
 
     route = Shipping::Route.with_locations(race_location, horse_location).first
-    shipment = Shipping::RacehorseShipment.new(
+    shipment = Horses::Racehorse::Shipment.new(
       horse: entry.horse, departure_date: date, scheduled: true, starting_location: horse_location, ending_location: race_location
     )
     max_travel_days = (race.travel_deadline - date).to_i

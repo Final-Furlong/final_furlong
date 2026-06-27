@@ -32,7 +32,7 @@ module Racing
       end
       result = Result.new(entry:)
 
-      if !horse.racehorse?
+      if !horse.racehorse? || !horse.active?
         result.error = error("horse_not_racehorse")
         return result
       end

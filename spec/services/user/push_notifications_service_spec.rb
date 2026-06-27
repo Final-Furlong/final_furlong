@@ -1,6 +1,6 @@
 require "ostruct"
 
-RSpec.describe User::PushNotificationsService do
+describe User::PushNotificationsService do
   before { ActiveJob::Base.queue_adapter = :test }
 
   describe "#call" do

@@ -1,4 +1,4 @@
-RSpec.describe CurrentStable::HorsePolicy do
+describe CurrentStable::HorsePolicy do
   subject(:policy) { described_class.new(user, horse) }
 
   describe "#scope" do

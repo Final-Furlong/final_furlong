@@ -1,4 +1,4 @@
-RSpec.describe Auctions::HorseSeller do
+describe Auctions::HorseSeller do
   attr_reader :bid, :auction, :auction_horse, :horse, :legacy_stable_buyer,
     :legacy_stable_seller, :legacy_buyer_balance, :legacy_seller_balance,
     :legacy_horse, :legacy_training_schedule, :legacy_training_schedule_horse,
@@ -40,7 +40,7 @@ RSpec.describe Auctions::HorseSeller do
       )
     end
 
-    it "modifies legacy stable for buyer" do
+    it "modifies available balance for buyer" do
       original_available_balance = buyer.available_balance
       original_total_balance = buyer.total_balance
       described_class.new.process_sale(bid:)
@@ -50,7 +50,7 @@ RSpec.describe Auctions::HorseSeller do
       )
     end
 
-    it "modifies legacy stable for seller" do
+    it "modifies available balance for seller" do
       original_available_balance = seller.available_balance
       original_total_balance = seller.total_balance
       described_class.new.process_sale(bid:)
@@ -62,12 +62,6 @@ RSpec.describe Auctions::HorseSeller do
 
     it "creates horse sale transaction" do
       expect { described_class.new.process_sale(bid:) }.to change(Horses::Sale, :count).by(1)
-    end
-
-    it "updates unborn foals" do
-      described_class.new.process_sale(bid:)
-      expect(foal_1.reload).to have_attributes(owner: bid.bidder)
-      expect(foal_2.reload).to have_attributes(owner: bid.bidder)
     end
 
     it "modifies auction horse" do
@@ -389,6 +383,17 @@ RSpec.describe Auctions::HorseSeller do
     it_behaves_like "a processed sale"
   end
 
+  context "when horse is broodmare with foals due" do
+    let(:horse_type) { :broodmare }
+
+    it "updates unborn foals" do
+      foals
+      described_class.new.process_sale(bid:)
+      expect(foal_1.reload).to have_attributes(owner: bid.bidder)
+      expect(foal_2.reload).to have_attributes(owner: bid.bidder)
+    end
+  end
+
   context "when horse has a maximum_price set" do
     before do
       auction_horse.update(maximum_price: 100_000)
@@ -497,10 +502,7 @@ RSpec.describe Auctions::HorseSeller do
   end
 
   context "when horse is not the dam of unborn foals" do
-    before do
-      foal_1.destroy
-      foal_2.destroy
-    end
+    let(:horse_type) { :broodmare }
 
     it "returns sold true" do
       result = described_class.new.process_sale(bid:)
@@ -515,14 +517,30 @@ RSpec.describe Auctions::HorseSeller do
   end
 
   def setup_data
-    @auction = create(:auction, :current)
-    @bid = create(:auction_bid, auction:, bid_at: Time.current - auction.hours_until_sold.hours - 1.minute, current_high_bid: true)
-    @auction_horse = @bid.horse
-    @horse = @auction_horse.horse
+    @bid = create(:auction_bid, auction:, horse: auction_horse, bid_at: Time.current - auction.hours_until_sold.hours - 1.minute, current_high_bid: true)
     @buyer = bid.bidder
     @seller = horse.owner
     @buyer.update(available_balance: 200_000, total_balance: 200_000)
     @seller.update(available_balance: 200_000, total_balance: 200_000)
+  end
+
+  def auction
+    @auction ||= create(:auction, :current)
+  end
+
+  def auction_horse
+    @auction_horse ||= create(:auction_horse, horse:, auction:)
+  end
+
+  def horse
+    @horse ||= create(horse_type)
+  end
+
+  def horse_type
+    :racehorse
+  end
+
+  def foals
     @foal_1 = create(:horse, :unborn, dam: horse)
     @foal_2 = create(:horse, :unborn, dam: horse)
   end

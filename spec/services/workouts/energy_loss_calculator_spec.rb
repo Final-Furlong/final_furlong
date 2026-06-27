@@ -1,4 +1,4 @@
-RSpec.describe Workouts::EnergyLossCalculator do
+describe Workouts::EnergyLossCalculator do
   subject(:calculator) { described_class.new(activity) }
 
   let(:activity) { "walk" }

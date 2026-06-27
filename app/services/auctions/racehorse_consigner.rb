@@ -1,7 +1,7 @@
 module Auctions
   class RacehorseConsigner < BaseHorseConsigner
     def select_horses(number:, min_age:, max_age:, stakes_quality: false)
-      query = base_query.racehorse.min_age(min_age).max_age(max_age)
+      query = base_query.min_age(min_age).max_age(max_age)
       if stakes_quality
         query = query.joins(:lifetime_race_record).merge(Racing::LifetimeRaceRecord.stakes_level)
         query.random_order.limit(number)
@@ -11,6 +11,10 @@ module Auctions
         horses = horses1 + horses2
         horses.shuffle.slice(0, number)
       end
+    end
+
+    def base_class
+      Horses::Horse::Racehorse
     end
   end
 end

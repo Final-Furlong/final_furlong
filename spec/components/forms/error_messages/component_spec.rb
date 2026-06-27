@@ -1,4 +1,4 @@
-RSpec.describe Forms::ErrorMessages::Component do
+describe Forms::ErrorMessages::Component do
   subject(:component) { described_class.new(object: user) }
 
   let(:user) { build(:user) }

@@ -1,4 +1,4 @@
-RSpec.describe "Current Stable > Horses" do
+describe "Current Stable > Horses" do
   describe "GET /index" do
     it "succeeds" do
       user = create(:user)

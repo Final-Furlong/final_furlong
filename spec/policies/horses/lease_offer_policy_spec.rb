@@ -1,4 +1,4 @@
-RSpec.describe Horses::LeaseOfferPolicy do
+describe Horses::LeaseOfferPolicy do
   subject(:policy) { described_class.new(user, offer) }
 
   let(:user) { create(:user) }

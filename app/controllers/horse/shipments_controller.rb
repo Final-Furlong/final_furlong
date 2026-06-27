@@ -12,7 +12,7 @@ module Horse
 
     def new
       horse = Horses::Horse.find(params[:id])
-      @shipment = horse.racehorse? ? horse.racing_shipments.build : horse.broodmare_shipments.build
+      @shipment = horse.shipments
       authorize @shipment, :create?, policy_class: CurrentStable::HorseShipmentPolicy
 
       @shipment.ending_farm = Account::Stable.find(params[:end_farm_id]) if horse.broodmare? && params[:end_farm_id]
@@ -20,7 +20,7 @@ module Horse
 
     def create
       horse = Horses::Horse.find(params[:id])
-      shipment = horse.racehorse? ? horse.racing_shipments.build : horse.broodmare_shipments.build
+      shipment = horse.shipments.build
       authorize shipment, :create?, policy_class: CurrentStable::HorseShipmentPolicy
 
       result = creator_class(horse).new.ship_horse(horse:, params: shipment_params)
@@ -42,7 +42,7 @@ module Horse
 
     def destroy
       @horse = Horses::Horse.find(params[:id])
-      shipment = @horse.racehorse? ? Shipping::RacehorseShipment.find(params[:shipment_id]) : Shipping::BroodmareShipment.find(params[:shipment_id])
+      shipment = @horse.shipments.find(params[:shipment_id])
       authorize shipment, :destroy?, policy_class: CurrentStable::HorseShipmentPolicy
 
       if shipment.destroy!
@@ -59,15 +59,14 @@ module Horse
 
     def destination_dependent_fields
       horse = Horses::Horse.find(params[:id])
+      @shipment = horse.shipments.build
       if horse.racehorse?
-        @shipment = horse.racing_shipments.build
         @shipment.ending_location = if params[:ending_location_id] == "Farm"
           horse.manager.racetrack.location
         else
           Location.find(params[:ending_location_id])
         end
       else
-        @shipment = horse.broodmare_shipments.build
         @shipment.ending_farm = Account::Stable.find(params[:ending_location_id])
       end
       authorize @shipment, :create?, policy_class: CurrentStable::HorseShipmentPolicy

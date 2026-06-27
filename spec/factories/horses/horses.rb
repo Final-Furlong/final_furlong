@@ -1,8 +1,9 @@
 FactoryBot.define do
-  factory :horse, class: "Horses::Horse" do
+  factory :horse, class: "Horses::Horse::Racehorse" do
     name { "Horse #{SecureRandom.alphanumeric(12)}" }
     gender { %w[colt filly gelding].sample }
     status { "racehorse" }
+    state { "active" }
     date_of_birth { Date.current - 3.years }
     owner factory: :stable
     breeder { owner }
@@ -23,22 +24,25 @@ FactoryBot.define do
     end
 
     trait :with_sire do
-      sire { association :sire }
+      sire { association :stallion }
     end
 
     trait :with_dam do
-      dam { association :dam }
+      dam { association :broodmare }
     end
 
-    factory :sire do
-      stallion
+    trait :retired do
+      status { "retired" }
+      state { "retired" }
     end
 
-    factory :dam do
-      broodmare
+    trait :dead do
+      status { "deceased" }
+      state { "deceased" }
+      date_of_death { Date.current }
     end
 
-    trait :racehorse do
+    factory :racehorse, class: "Horses::Horse::Racehorse" do
       status { "racehorse" }
 
       after(:create) do |horse|
@@ -46,66 +50,49 @@ FactoryBot.define do
       end
     end
 
-    trait :weanling do
-      name { nil }
-      status { "weanling" }
-      date_of_birth { Date.current - (6 - Date.current.month).months }
-      gender { %w[colt filly].sample }
+    factory :foal, class: "Horses::Horse::Foal" do
+      trait :weanling do
+        name { nil }
+        status { "weanling" }
+        state { "active" }
+        date_of_birth { Date.current - (6 - Date.current.month).months }
+        gender { %w[colt filly].sample }
+      end
+
+      trait :yearling do
+        status { "yearling" }
+        state { "active" }
+        date_of_birth { Date.current - 1.year }
+        gender { %w[colt filly].sample }
+      end
+
+      trait :unborn do
+        name { nil }
+        status { "unborn" }
+        state { "unborn" }
+        date_of_birth { Date.current + 6.months }
+        gender { %w[colt filly].sample }
+      end
+
+      trait :stillborn do
+        status { "deceased" }
+        state { "deceased" }
+        date_of_birth { Date.current - (6 - Date.current.month).months }
+        date_of_death { date_of_birth }
+        gender { %w[colt filly].sample }
+      end
     end
 
-    trait :yearling do
-      status { "yearling" }
-      date_of_birth { Date.current - 1.year }
-      gender { %w[colt filly].sample }
-    end
-
-    trait :stallion do
+    factory :stallion, class: "Horses::Horse::Stud" do
       status { "stud" }
       date_of_birth { Date.current - 7.years }
       gender { "stallion" }
     end
 
-    trait :broodmare do
+    factory :broodmare, class: "Horses::Horse::Broodmare" do
       status { "broodmare" }
       date_of_birth { Date.current - 6.years }
       gender { "mare" }
-    end
-
-    trait :retired do
-      status { "retired" }
-      date_of_birth { Date.current - 5.years }
-      gender { %w[mare stallion gelding].sample }
-    end
-
-    trait :retired_stud do
-      status { "retired_stud" }
-      date_of_birth { Date.current - 5.years }
-      gender { "stallion" }
-    end
-
-    trait :retired_broodmare do
-      status { "retired_broodmare" }
-      date_of_birth { Date.current - 5.years }
-      gender { "mare" }
-    end
-
-    trait :stillborn do
-      status { "deceased" }
-      date_of_birth { Date.current - (6 - Date.current.month).months }
-      date_of_death { date_of_birth }
-      gender { %w[colt filly].sample }
-    end
-
-    trait :dead do
-      status { "deceased" }
-      date_of_death { Date.current }
-    end
-
-    trait :unborn do
-      name { nil }
-      status { "unborn" }
-      date_of_birth { Date.current + 6.months }
-      gender { %w[colt filly].sample }
     end
   end
 end
@@ -123,8 +110,10 @@ end
 #  gender(colt, filly, mare, stallion, gelding)                                                                       :enum             not null, indexed, indexed => [status]
 #  name                                                                                                               :string(18)       indexed, indexed => [status]
 #  slug                                                                                                               :string           indexed
+#  state(active,retired,unborn,deceased)                                                                              :enum             default("active"), indexed
 #  status(unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased) :enum             default("unborn"), not null, indexed => [owner_id], indexed => [age], indexed => [breeder_id], indexed => [dam_id], indexed => [gender], indexed => [leaser_id], indexed => [name], indexed => [owner_id], indexed => [sire_id]
 #  title_abbr                                                                                                         :string
+#  type(Racehorse,Broodmare,Stud,Foal)                                                                                :string           default("Horses::Horse::Foal"), indexed
 #  created_at                                                                                                         :datetime         not null
 #  updated_at                                                                                                         :datetime         not null
 #  breeder_id                                                                                                         :bigint           not null, indexed, indexed => [status]
@@ -156,6 +145,7 @@ end
 #  index_horses_on_public_id                     (public_id)
 #  index_horses_on_sire_id                       (sire_id)
 #  index_horses_on_slug                          (slug)
+#  index_horses_on_state                         (state)
 #  index_horses_on_status_and_age                (status,age)
 #  index_horses_on_status_and_breeder_id         (status,breeder_id)
 #  index_horses_on_status_and_dam_id             (status,dam_id)
@@ -164,6 +154,7 @@ end
 #  index_horses_on_status_and_name               (status,name)
 #  index_horses_on_status_and_owner_id           (status,owner_id)
 #  index_horses_on_status_and_sire_id            (status,sire_id)
+#  index_horses_on_type                          (type)
 #
 # Foreign Keys
 #

@@ -1,4 +1,4 @@
-RSpec.describe "Stable Index" do
+describe "Stable Index" do
   it "allows viewing as anonymous user" do
     visit stables_path
     expect(page).to have_text t("stables.index.all")

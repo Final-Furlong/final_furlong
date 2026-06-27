@@ -1,4 +1,4 @@
-RSpec.describe Racing::RaceScheduleUpdater do
+describe Racing::RaceScheduleUpdater do
   context "when not all races have been run" do
     it "skips updating the schedule" do
       date = Date.new(2022, 1, 1)

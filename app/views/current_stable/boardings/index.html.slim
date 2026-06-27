@@ -15,7 +15,7 @@
             .mt-2.mx-auto.skeleton.w-full
 
     - if policy(%i[current_stable boarding]).list_historical?
-      - count = Horses::Boarding.ended.where(horse: Horses::Horse.racehorse.managed_by(Current.stable)).count
+      - count = Horses::Racehorse::Boarding.ended.where(horse: Horses::Horse.racehorse.managed_by(Current.stable)).count
       - count = number_with_delimiter(count) unless count < 2
       input.tab type="radio" name="stable-boardings" aria-label=t(".historical_count", count: count) id="stable-historical-boardings" disabled=count.to_i.zero?
       .tab-content.border-base-400.bg-base-100.p-2.sm:p-4

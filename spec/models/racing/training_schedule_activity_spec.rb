@@ -1,4 +1,4 @@
-RSpec.describe Racing::TrainingScheduleActivity do
+describe Racing::TrainingScheduleActivity do
   describe "validations" do
     it { is_expected.to validate_inclusion_of(:activity1).in_array(Config::Workouts.activities).allow_blank }
     it { is_expected.to validate_inclusion_of(:activity2).in_array(Config::Workouts.activities).allow_blank }

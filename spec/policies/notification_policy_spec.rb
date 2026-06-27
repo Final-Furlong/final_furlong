@@ -1,4 +1,4 @@
-RSpec.describe NotificationPolicy do
+describe NotificationPolicy do
   subject(:policy) { described_class.new(user, notification) }
 
   let(:user) { build_stubbed(:user) }

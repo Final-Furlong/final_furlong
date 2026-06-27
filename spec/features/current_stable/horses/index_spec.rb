@@ -1,4 +1,4 @@
-RSpec.describe "Viewing Own Horses" do
+describe "Viewing Own Horses" do
   context "when horses exist" do
     it "shows horses owned by the stable" do
       stable = create(:stable)

@@ -16,10 +16,20 @@ module Account
     has_many :budget_transactions, class_name: "Account::Budget", inverse_of: :stable, dependent: :delete_all
     has_many :notes, class_name: "Account::StableNote", inverse_of: :stable, dependent: :delete_all
     has_many :eclipse_awards, class_name: "Game::EclipseAward", inverse_of: :awardable, dependent: :delete_all
+
     has_many :bred_horses, class_name: "Horses::Horse", foreign_key: :breeder_id, inverse_of: :breeder,
       dependent: :restrict_with_exception
     has_many :horses, class_name: "Horses::Horse", foreign_key: :owner_id, inverse_of: :owner,
       dependent: :restrict_with_exception
+    has_many :foals, class_name: "Horses::Horse::Foal", foreign_key: :owner_id, inverse_of: :owner,
+      dependent: :restrict_with_exception
+    has_many :racehorses, class_name: "Horses::Horse::Racehorse", foreign_key: :owner_id, inverse_of: :owner,
+      dependent: :restrict_with_exception
+    has_many :broodmares, class_name: "Horses::Horse::Broodmare", foreign_key: :owner_id, inverse_of: :owner,
+      dependent: :restrict_with_exception
+    has_many :studs, class_name: "Horses::Horse::Stud", foreign_key: :owner_id, inverse_of: :owner,
+      dependent: :restrict_with_exception
+
     has_many :training_schedules, class_name: "Racing::TrainingSchedule", inverse_of: :stable,
       dependent: :restrict_with_exception
     has_many :breedings, class_name: "Horses::Breeding", inverse_of: :stable, dependent: :delete_all

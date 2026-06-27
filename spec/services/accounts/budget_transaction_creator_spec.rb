@@ -1,4 +1,4 @@
-RSpec.describe Accounts::BudgetTransactionCreator do
+describe Accounts::BudgetTransactionCreator do
   describe "#create_transaction" do
     context "when opening balance for stable" do
       it "creates budget transaction" do

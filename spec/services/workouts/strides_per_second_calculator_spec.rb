@@ -1,4 +1,4 @@
-RSpec.describe Workouts::StridesPerSecondCalculator do
+describe Workouts::StridesPerSecondCalculator do
   let(:weight_modifier) { rand(0..20).fdiv(10) }
   let(:equipment_status) { Racing::EquipmentStatusGenerator::STATUS_MODIFIERS[Racing::EquipmentStatusGenerator::STATUS_MODIFIERS.keys.sample] }
   let(:track_preference) { rand(96..105).fdiv(100) }

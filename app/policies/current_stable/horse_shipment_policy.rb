@@ -9,17 +9,17 @@ module CurrentStable
     def create?
       return false unless manager?
       return false unless shipping_allowed?
+      return false unless record.horse.racehorse? || record.horse.broodmare?
+      return false if record.horse.shipments.future.present?
       if record.horse.racehorse?
         return false if record.horse.race_entries.present?
         return false if record.horse.current_boarding.present?
-        return false if record.horse.racing_shipments.future.present?
-        last_date = Shipping::RacehorseShipment.where(horse: record.horse).maximum(:arrival_date)
+        last_date = Horses::Racehorse::Shipment.where(horse: record.horse).maximum(:arrival_date)
         return true unless last_date
 
         return last_date < Date.current
       elsif record.horse.broodmare?
-        return false if record.horse.broodmare_shipments.future.present?
-        last_date = Shipping::BroodmareShipment.where(horse: record.horse).maximum(:arrival_date)
+        last_date = Horses::Broodmare::Shipment.where(horse: record.horse).maximum(:arrival_date)
         return true unless last_date
 
         return last_date < Date.current
@@ -39,21 +39,23 @@ module CurrentStable
     private
 
     def shipping_allowed?
+      return false unless record.horse.active?
+
       record.horse.racehorse? || record.horse.broodmare?
     end
 
     def leaser?
       return false if record.current_lease.blank?
 
-      record.current_lease.leaser == user&.stable
+      record.current_lease.leaser_id == stable&.id
     end
 
     def owner?
-      record.horse.owner == user&.stable
+      record.horse.owner_id == stable&.id
     end
 
     def manager?
-      record.horse.manager == stable
+      record.horse.manager_id == stable&.id
     end
   end
 end

@@ -13,7 +13,7 @@ module Horse
       @current_lease = horse.current_lease
       authorize @current_lease, :terminate?, policy_class: CurrentStable::LeasePolicy
 
-      result = Horses::LeaseTerminator.new.call(current_lease: @current_lease, stable: Current.stable, params: lease_params)
+      result = Horses::Leasing::Terminator.new.call(current_lease: @current_lease, stable: Current.stable, params: lease_params)
       if result.terminated?
         flash[:success] = t(".success_with_termination")
         redirect_to horse_path(horse)

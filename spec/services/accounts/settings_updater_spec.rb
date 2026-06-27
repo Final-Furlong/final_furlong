@@ -1,4 +1,4 @@
-RSpec.describe Accounts::SettingsUpdater do
+describe Accounts::SettingsUpdater do
   describe "#call" do
     context "with user" do
       before { allow(Current).to receive(:user).and_return user }

@@ -1,4 +1,4 @@
-RSpec.describe Account::ActivationQuery do
+describe Account::ActivationQuery do
   subject(:query) { described_class.new }
 
   describe "#activated" do

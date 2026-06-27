@@ -1,4 +1,4 @@
-RSpec.describe Auctions::MixedAuctionCreator do
+describe Auctions::MixedAuctionCreator do
   context "when auction params are invalid" do
     it "returns created false result" do
       result = described_class.new.create_auction(auction_params.merge(title: nil))

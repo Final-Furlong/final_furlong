@@ -1,4 +1,4 @@
-RSpec.describe Racing::RaceRecordUpdater do
+describe Racing::RaceRecordUpdater do
   it "triggers race record update" do
     Racing::RaceRecord.refresh
     Racing::AnnualRaceRecord.refresh
@@ -36,22 +36,22 @@ RSpec.describe Racing::RaceRecordUpdater do
     Racing::RaceRecord.refresh
     Racing::AnnualRaceRecord.refresh
     Racing::LifetimeRaceRecord.refresh
-    allow(Horses::BroodmareFoalRecord).to receive(:refresh)
+    allow(Horses::Broodmare::FoalRecord).to receive(:refresh)
 
     described_class.new.update_records(date:)
 
-    expect(Horses::BroodmareFoalRecord).to have_received(:refresh)
+    expect(Horses::Broodmare::FoalRecord).to have_received(:refresh)
   end
 
   it "triggers stud record update" do
     Racing::RaceRecord.refresh
     Racing::AnnualRaceRecord.refresh
     Racing::LifetimeRaceRecord.refresh
-    allow(Horses::StudFoalRecord).to receive(:refresh)
+    allow(Horses::Stud::FoalRecord).to receive(:refresh)
 
     described_class.new.update_records(date:)
 
-    expect(Horses::StudFoalRecord).to have_received(:refresh)
+    expect(Horses::Stud::FoalRecord).to have_received(:refresh)
   end
 
   private

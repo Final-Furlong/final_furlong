@@ -1,4 +1,4 @@
-RSpec.describe Racing::TrackConditionPreferenceCalculator do
+describe Racing::TrackConditionPreferenceCalculator do
   describe "#call" do
     context "when fast track" do
       it "is correct" do

@@ -1,4 +1,4 @@
-RSpec.describe FinalFurlong::Internet::Validation::PasswordValidator do
+describe FinalFurlong::Internet::Validation::PasswordValidator do
   describe "validating password strength" do
     it "fails when nil" do
       model = set_model
