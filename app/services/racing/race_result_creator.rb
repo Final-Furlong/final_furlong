@@ -44,15 +44,7 @@ module Racing
         end
         if result.created?
           Racing::RaceSeriesWinnerCheckJob.set(good_job_labels: [race.id], wait: 10.minutes).perform_later(race_id: race.id)
-          if max_race?(number: race.number)
-            Racing::RaceResultHorse.counter_culture_fix_counts
-            Racing::RaceRecord.refresh
-            Racing::LifetimeRaceRecord.refresh
-            UpdateRaceResultHorseAbbreviationsJob.set(good_job_labels: [date]).perform_later(date:)
-            Racing::RaceDayUpdaterJob.set(good_job_labels: [date]).perform_later(date:)
-            Daily::ProcessFutureShipmentsJob.set(good_job_labels: [date]).perform_later(date:)
-            User::SendDeveloperNotifications.call(title: "FF Races Finished", message: "Races finished running!")
-          end
+          Racing::RaceResultFinisherJob.set(good_job_labels: [date]).perform_later(date:) if max_race?(number: race.number)
         end
         return result
       rescue => e
