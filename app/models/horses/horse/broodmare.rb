@@ -5,8 +5,6 @@ module Horses
     has_many :shipments, class_name: "Horses::Broodmare::Shipment", inverse_of: :horse, dependent: :delete_all
     has_many :due_dates, -> { where.not(status: "denied") }, class_name: "Horses::Breeding", inverse_of: :mare, dependent: :delete_all
     has_one :next_foal, -> { where(status: "bred").where(year: (Date.current.year - 1)..).order(year: :asc) }, class_name: "Horses::Breeding", inverse_of: :mare, dependent: :delete
-    has_one :parent_breeding_record, class_name: "Horses::Breeding", inverse_of: :first_foal, dependent: :delete
-    has_one :twin_parent_breeding_record, class_name: "Horses::Breeding", inverse_of: :second_foal, dependent: :delete
     # rubocop:disable Rails/HasManyOrHasOneDependent
     has_one :foal_record, class_name: "Horses::Broodmare::FoalRecord", inverse_of: :mare
     # rubocop:enable Rails/HasManyOrHasOneDependent

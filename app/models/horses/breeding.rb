@@ -7,11 +7,11 @@ module Horses
     attr_accessor :message
 
     belongs_to :slot, class_name: "Breeding::Slot", inverse_of: :breedings, optional: true
-    belongs_to :mare, class_name: "Horses::Horse", inverse_of: :next_foal, optional: true
-    belongs_to :stud, class_name: "Horses::Horse", inverse_of: :breedings
+    belongs_to :mare, class_name: "Horses::Horse::Broodmare", inverse_of: :next_foal, optional: true
+    belongs_to :stud, class_name: "Horses::Horse::Stud", inverse_of: :breedings
     belongs_to :stable, class_name: "Account::Stable", inverse_of: :breedings
-    belongs_to :first_foal, class_name: "Horses::Horse", inverse_of: :parent_breeding_record, optional: true
-    belongs_to :second_foal, class_name: "Horses::Horse", inverse_of: :twin_parent_breeding_record, optional: true
+    belongs_to :first_foal, class_name: "Horses::Horse::Foal", inverse_of: :parent_breeding_record, optional: true
+    belongs_to :second_foal, class_name: "Horses::Horse::Foal", inverse_of: :twin_parent_breeding_record, optional: true
 
     validates :fee, :status, presence: true
     validates :mare_id, presence: true, unless: :open_booking

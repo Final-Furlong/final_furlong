@@ -2,6 +2,8 @@ module Horses
   class Horse::Foal < Horse
     has_one :breeders_cup_nomination, class_name: "Racing::BreedersCupNomination", foreign_key: :horse_id, inverse_of: :horse, dependent: :delete
     has_one :supplemental_breeders_cup_nomination, class_name: "Racing::SupplementalBreedersCupNomination", foreign_key: :horse_id, inverse_of: :horse, dependent: :delete
+    has_one :parent_breeding_record, class_name: "Horses::Breeding", inverse_of: :first_foal, dependent: :delete
+    has_one :twin_parent_breeding_record, class_name: "Horses::Breeding", inverse_of: :second_foal, dependent: :delete
 
     scope :yearling, -> { active.with_age(1) }
     scope :weanling, -> { active.with_age(0) }
