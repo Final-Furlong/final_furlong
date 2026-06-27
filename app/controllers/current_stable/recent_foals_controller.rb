@@ -12,7 +12,7 @@ module CurrentStable
       else
         @query.where(date_of_birth: ..Date.current)
       end
-      @query = @query.includes(:breeder, :appearance, sire: :stud_foal_record, dam: [:broodmare_foal_record, :sire])
+      @query = @query.includes(:breeder, :appearance, sire: :foal_record, dam: [:foal_record, :sire])
       @query = @query.ransack(params[:q])
       update_user_activity
 

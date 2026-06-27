@@ -20,13 +20,13 @@ ruby:
   = t("horse.created")
 - else
   = foal.sire.name_with_title
-  = foal.sire.stud_foal_record&.breed_ranking_abbr
+  = foal.sire.foal_record&.breed_ranking_abbr
 = " x "
 - if foal.dam.blank?
   = t("horse.created")
 - else
   = foal.dam.name_with_title
-  = foal.dam.broodmare_foal_record&.breed_ranking_abbr
+  = foal.dam.foal_record&.breed_ranking_abbr
   - if foal.dam.sire.blank?
     = " - #{t("horse.created")}"
   - else

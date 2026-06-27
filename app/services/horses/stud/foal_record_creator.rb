@@ -5,7 +5,7 @@ module Horses::Stud
     def create_record(horse:)
       return unless horse.male?
 
-      record = horse.stud_foal_record || horse.build_stud_foal_record
+      record = horse.foal_record || horse.build_foal_record
       attrs = {
         born_foals_count: horse.stud_foals.born.count,
         stillborn_foals_count: horse.stud_foals.born.stillborn.count,

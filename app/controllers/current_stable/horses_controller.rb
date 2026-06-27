@@ -14,9 +14,9 @@ module CurrentStable
       when :racehorse
         @query = @query.includes(:lifetime_race_record)
       when :broodmare
-        @query = @query.includes(:broodmare_foal_record, next_foal: :stud)
+        @query = @query.includes(:foal_record, next_foal: :stud)
       when :stud
-        @query = @query.includes(:stud_foal_record)
+        @query = @query.includes(:foal_record)
       when :yearling, :weanling
         @query = @query.includes(:sire, :dam)
       end

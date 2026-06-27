@@ -110,8 +110,7 @@ class Auction < ApplicationRecord
       paginated_horses = horses.send(type.to_sym)
     end
     paginated_horses.includes(winning_bid: :bidder, horse: [:owner, :sire, :dam,
-      :lifetime_race_record, :surface_race_record,
-      :broodmare_foal_record, :stud_foal_record]).order("horses.name": :asc, "horses.id": :asc)
+      :lifetime_race_record, :surface_race_record]).order("horses.name": :asc, "horses.id": :asc)
   end
 
   private
