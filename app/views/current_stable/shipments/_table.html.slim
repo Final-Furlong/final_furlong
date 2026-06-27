@@ -1,6 +1,6 @@
 /# locals: (dashboard:, type:, items:)
 - query_type = items.to_s.start_with?("current") ? :current : :future
-- associations = type == :racing_shipments ? %i[starting_location ending_location] : %i[starting_farm ending_farm]
+- associations = type == :shipments ? %i[starting_location ending_location] : %i[starting_farm ending_farm]
 .mx-auto.overflow-x-auto.border.rounded-md.w-5/6
   .table-responsive-md
     table.table.table-responsive.table-zebra.sortable

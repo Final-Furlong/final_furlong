@@ -5,7 +5,7 @@ module Horses
 
       def ship_horse(horse:, params:)
         @horse = horse
-        @shipment = horse.broodmare_shipments.build
+        @shipment = horse.shipments.build
         result = Result.new(shipment:)
         stable = horse.manager
 

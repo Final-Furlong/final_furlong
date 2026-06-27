@@ -148,7 +148,7 @@ module Horses
     end
 
     def last_shipment
-      racing_shipments.not_future.order(arrival_date: :desc).first
+      shipments.not_future.order(arrival_date: :desc).first
     end
 
     def boarding_available_days

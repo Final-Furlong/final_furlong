@@ -15,12 +15,12 @@ ruby:
       checked=(@dashboard.active_tab == :current_racehorses) disabled=crc.zero?
     ]
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
-      = render "table", items: :current_racehorse_shipments, type: :racing_shipments, dashboard: @dashboard
+      = render "table", items: :current_racehorse_shipments, type: :shipments, dashboard: @dashboard
     input.tab[ type="radio" name="shipments" aria-label=t(".scheduled_racehorses_count", count: src)
       checked=(@dashboard.active_tab == :scheduled_racehorses) disabled=src.zero?
     ]
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
-      = render "table", items: :scheduled_racehorse_shipments, type: :racing_shipments, dashboard: @dashboard
+      = render "table", items: :scheduled_racehorse_shipments, type: :shipments, dashboard: @dashboard
     input.tab[ type="radio" name="shipments" aria-label=t(".current_broodmares_count", count: cbc)
       checked=(@dashboard.active_tab == :current_broodmares) disabled=cbc.zero?
     ]

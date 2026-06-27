@@ -9,7 +9,7 @@ tr
   td.text-sm.text-center
     = data.location_string
     - if data.in_transit?
-      .tooltip.text-lg data-tip=t(".arrival", date: l(horse.racing_shipments.order(arrival_date: :desc).pick(:arrival_date)))
+      .tooltip.text-lg data-tip=t(".arrival", date: l(horse.shipments.order(arrival_date: :desc).pick(:arrival_date)))
         i.ph-fill.ph-truck.ml-2
     - elsif horse.current_boarding.present?
       .tooltip.text-lg data-tip=t(".boarded", days: horse.current_boarding.count_days)

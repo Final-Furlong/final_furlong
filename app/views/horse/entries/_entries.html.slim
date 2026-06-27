@@ -34,7 +34,7 @@ ruby:
   button.btn.btn-outline.btn-sm.btn-info.mr-2
     = t(".location", location: data.location_string)
     - if data.in_transit?
-      .tooltip.text-lg data-tip=t("current_stable.training_summaries.horse.arrival", date: l(horse.racing_shipments.order(arrival_date: :desc).pick(:arrival_date)))
+      .tooltip.text-lg data-tip=t("current_stable.training_summaries.horse.arrival", date: l(horse.shipments.order(arrival_date: :desc).pick(:arrival_date)))
         i.ph-fill.ph-truck
     - elsif horse.current_boarding.present?
       .tooltip.text-lg data-tip=t("current_stable.training_summaries.horse.boarded", days: horse.current_boarding.count_days)
