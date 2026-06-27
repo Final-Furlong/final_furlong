@@ -61,3 +61,4 @@ class UpdateRacehorseStatsJob < ApplicationJob
     [egrade, fgrade]
   end
 end
+
