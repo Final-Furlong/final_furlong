@@ -26,8 +26,8 @@ p.text-center.font-bold= t(".available_studs")
                 tr
                   td= t("common.text.no")
                   td
-                    - query = Horses::Horse::Stud.joins(:stud_options).includes(:stud_options, :manager).stud_available_for_stable(Current.stable).merge(Horses::StallionOption.no_approval).order(name: :asc)
-                    - query2 = Horses::Horse::Stud.joins(:stud_options).includes(:stud_options, :manager).merge(Horses::StallionOption.bookings_available).managed_by(Current.stable).order(name: :asc)
+                    - query = Horses::Horse::Stud.active.joins(:stud_options).includes(:stud_options, :manager).stud_available_for_stable(Current.stable).merge(Horses::Stud::StallionOption.no_approval).order(name: :asc)
+                    - query2 = Horses::Horse::Stud.active.joins(:stud_options).includes(:stud_options, :manager).merge(Horses::Stud::StallionOption.bookings_available).managed_by(Current.stable).order(name: :asc)
                     - no_approval_studs = (query.to_a + query2.to_a - applied_studs.to_a).uniq.sort_by { |stud| stud.name }
                     = f.collection_select :stud_id, no_approval_studs, :id, :name_with_owner_fee, { prompt: t(".select_stud") }, { class: "select w-full", disabled: query.size.zero?, data: { action: 'change->mare-booking#loadPickDateButton', 'mare-booking-target' => 'stud' } }
                   td
@@ -36,7 +36,7 @@ p.text-center.font-bold= t(".available_studs")
                 tr
                   td= t("common.text.yes")
                   td.pt-4
-                    - query = Horses::Horse::Stud.joins(:stud_options).includes(:stud_options, :manager).stud_available_for_stable(Current.stable).merge(Horses::StallionOption.approval).order(name: :asc)
+                    - query = Horses::Horse::Stud.active.joins(:stud_options).includes(:stud_options, :manager).stud_available_for_stable(Current.stable).merge(Horses::Stud::StallionOption.approval).order(name: :asc)
                     - approval_studs = query.to_a.reject { |stud| no_approval_studs.include?(stud) || applied_studs.include?(stud) }
                     = f.collection_select :stud_id, approval_studs, :id, :name_with_owner_fee, { prompt: t(".select_stud") }, { class: "select w-full", disabled: query.size.zero?, data: { action: 'change->mare-booking#loadRequestBookingButton', 'mare-booking-target' => 'requestStud' } }
                   td

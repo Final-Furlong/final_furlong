@@ -19,6 +19,13 @@ module Horses
     def breed_ranking_string
       foal_record&.breed_ranking_string
     end
+
+    def name_with_owner_fee
+      return name_with_title unless active?
+
+      pd name if stud_options.blank?
+      [name_with_title, manager.name, Game::MoneyFormatter.new(stud_options.stud_fee)].join(" - ")
+    end
   end
 end
 
