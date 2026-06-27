@@ -36,7 +36,7 @@ module Horses
           booking.open_booking = true
           booking.mare = nil
         else
-          booking.mare = Horses::Horse.broodmare.find(params[:mare_id])
+          booking.mare = Horses::Horse::Broodmare.find(params[:mare_id])
           booking.open_booking = false
         end
         booking.status = "approved"

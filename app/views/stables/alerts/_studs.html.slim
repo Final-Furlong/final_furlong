@@ -1,6 +1,6 @@
 ruby:
   date = [[Current.user.last_sign_in_at&.to_date, Date.current - 1.day].compact_blank.min, Date.new(Date.current.year, 1, 1)].compact_blank.max
-  studs = Horses::Horse.stud.managed_by(Current.stable)
+  studs = Horses::Horse::Stud.managed_by(Current.stable)
   bred_mares = Horses::Breeding.current_year.bred.where(stud: studs).where('updated_at BETWEEN ? AND ?', date.beginning_of_day, Date.current.end_of_day).exists?
   bred_studs = if bred_mares
     Horses::Breeding.current_year.bred.where(stud: studs).where('updated_at BETWEEN ? AND ?', date.beginning_of_day, Date.current.end_of_day).group(:stud_id).count

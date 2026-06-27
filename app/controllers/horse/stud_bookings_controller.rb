@@ -67,7 +67,7 @@ module Horse
     end
 
     def destroy
-      @horse = Horses::Horse.stud.includes(:manager).find(params[:horse_id])
+      @horse = Horses::Horse::Stud.includes(:manager).find(params[:horse_id])
       authorize @horse, :manage_bookings?, policy_class: CurrentStable::StallionPolicy
       @breeding = Horses::Breeding.where(stud: @horse).includes(:mare, :stable).find(params[:id])
       authorize @breeding
@@ -119,7 +119,7 @@ module Horse
       mare_stable = Account::Stable.find(params[:stable_id])
 
       @booking = Horses::Breeding.new(stud: @horse, slot:, stable: mare_stable)
-      broodmares = Horses::Horse.broodmare.left_outer_joins(:next_foal).where(manager: mare_stable)
+      broodmares = Horses::Horse::Broodmare.left_outer_joins(:next_foal).where(manager: mare_stable)
         .where("(breedings.year != ? OR breedings.id IS NULL)", Date.current.year).order(name: :asc)
       stud_slots = @booking.options_for_stud_slot_select(@horse)
       broodmares = broodmares.select do |mare|

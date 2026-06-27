@@ -4,7 +4,7 @@
   data: { turbo_frame: "_top", 'mare-booking-selected-slot-id-value' => booking.slot_id } do |f|
   p.text-lg
     = t("horse.mare_bookings.new.stud", name: stud.name)
-    - if stud.stud_nominations.current_year.exists?
+    - if stud.nominations.current_year.exists?
       span.badge.badge-outline.badge-success.rounded-sm.ml-2= t("horse.mare_bookings.studs.bc_nominated")
     - else
       span.badge.badge-outline.badge-error.rounded-sm.ml-2= t("horse.mare_bookings.studs.not_bc_nominated")

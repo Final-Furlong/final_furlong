@@ -6,9 +6,9 @@ module Horse
     end
 
     def new
-      @horse = Horses::Horse.broodmare.includes(:next_foal, :manager).find(params[:horse_id])
+      @horse = Horses::Horse::Broodmare.includes(:next_foal, :manager).find(params[:horse_id])
       authorize @horse, :breed?, policy_class: CurrentStable::BroodmarePolicy
-      @stud = Horses::Horse.stud.left_outer_joins(:stud_nominations).includes(:stud_options, :stud_nominations).merge(Horses::Stud::BreedersCupNomination.possible_current_year).find(params[:stud_id])
+      @stud = Horses::Horse::Stud.left_outer_joins(:stud_nominations).includes(:stud_options, :nominations).merge(Horses::Stud::BreedersCupNomination.possible_current_year).find(params[:stud_id])
       @breeding = Horses::Breeding.new(mare: @horse, stud: @stud)
       if (failure = policy(@breeding).request_booking_result.failure)
         if %i[approval_required outside_mare_limit_met_current_stable].include?(failure)
@@ -22,9 +22,9 @@ module Horse
     end
 
     def create
-      @horse = Horses::Horse.broodmare.includes(:manager).find(params[:horse_id])
+      @horse = Horses::Horse::Broodmare.includes(:manager).find(params[:horse_id])
       authorize @horse, :breed?, policy_class: CurrentStable::BroodmarePolicy
-      @stud = Horses::Horse.stud.includes(:stud_options).find(breeding_params[:stud_id])
+      @stud = Horses::Horse::Stud.includes(:stud_options).find(breeding_params[:stud_id])
       slot = ::Breeding::Slot.where(start_day: ..(breeding_params[:day])).order(start_day: :desc).find_by(month: breeding_params[:month])
       date = Date.new(Date.current.year, breeding_params[:month].to_i, breeding_params[:day].to_i)
       fee = (@horse.manager == @stud.manager) ? 0 : @stud.stud_options.stud_fee
@@ -43,7 +43,7 @@ module Horse
     end
 
     def destroy
-      @horse = Horses::Horse.broodmare.includes(:manager).find(params[:horse_id])
+      @horse = Horses::Horse::Broodmare.includes(:manager).find(params[:horse_id])
       authorize @horse, :breed?, policy_class: CurrentStable::BroodmarePolicy
       @breeding = Horses::Breeding.where(mare: @horse).includes(:stud).find(params[:id])
       authorize @breeding
@@ -59,9 +59,9 @@ module Horse
     end
 
     def pick_date
-      @horse = Horses::Horse.broodmare.includes(:next_foal, :manager).find(params[:horse_id])
+      @horse = Horses::Horse::Broodmare.includes(:next_foal, :manager).find(params[:horse_id])
       authorize @horse, :breed?, policy_class: CurrentStable::BroodmarePolicy
-      @stud = Horses::Horse.stud.includes(:stud_options).find(params[:stud_id])
+      @stud = Horses::Horse::Stud.includes(:stud_options).find(params[:stud_id])
       @breeding = Horses::Breeding.new(mare: @horse, stud: @stud)
       if (failure = policy(@breeding).request_booking_result.failure)
         if %i[approval_required outside_mare_limit_met_current_stable].include?(failure)
@@ -81,9 +81,9 @@ module Horse
     end
 
     def available_slots
-      @horse = Horses::Horse.broodmare.includes(:next_foal, :manager).find(params[:horse_id])
+      @horse = Horses::Horse::Broodmare.includes(:next_foal, :manager).find(params[:horse_id])
       authorize @horse, :create_booking?, policy_class: CurrentStable::BroodmarePolicy
-      @stud = Horses::Horse.stud.includes(:stud_options, :manager).find(params[:stud_id]) if params[:stud_id]
+      @stud = Horses::Horse::Stud.includes(:stud_options, :manager).find(params[:stud_id]) if params[:stud_id]
       slots = Horses::Breeding.new(mare: @horse, stud: @stud).options_for_mare_slot_select(@horse)
 
       render json: slots.map { |slot| { id: slot.last, display: slot.first } }
@@ -92,9 +92,9 @@ module Horse
     end
 
     def load_slot_row
-      @horse = Horses::Horse.broodmare.includes(:next_foal, :manager).find(params[:horse_id])
+      @horse = Horses::Horse::Broodmare.includes(:next_foal, :manager).find(params[:horse_id])
       authorize @horse, :breed?, policy_class: CurrentStable::BroodmarePolicy
-      @stud = Horses::Horse.stud.includes(:stud_options, :manager).find(params[:stud_id])
+      @stud = Horses::Horse::Stud.includes(:stud_options, :manager).find(params[:stud_id])
       @slot = ::Breeding::Slot.find(params[:slot_id])
       @breeding = Horses::Breeding.new(mare: @horse, stud: @stud, slot: @slot)
       if (failure = policy(@breeding).request_booking_result.failure)
@@ -110,9 +110,9 @@ module Horse
     end
 
     def month_dependent_fields
-      @horse = Horses::Horse.broodmare.includes(:next_foal, :manager).find(params[:horse_id])
+      @horse = Horses::Horse::Broodmare.includes(:next_foal, :manager).find(params[:horse_id])
       authorize @horse, :breed?, policy_class: CurrentStable::BroodmarePolicy
-      @stud = Horses::Horse.stud.includes(:stud_options, :manager).find(params[:stud_id])
+      @stud = Horses::Horse::Stud.includes(:stud_options, :manager).find(params[:stud_id])
       @breeding = Horses::Breeding.new(mare: @horse, stud: @stud)
       authorize @breeding, :request_booking?
       @month = params[:month]

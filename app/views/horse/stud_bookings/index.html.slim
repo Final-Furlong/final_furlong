@@ -7,7 +7,7 @@
     last_race_date = @horse.race_result_finishes.joins(:race).merge(Racing::RaceResult.ordered_by_date(:desc)).first.race.date
     raced_this_year = last_race_date.year == Date.current.year
     min_breed_date = last_race_date + 1.day if raced_this_year
-    stud_bc_nomination = @horse.stud_nominations.where(year: Date.current.year + 1).exists?
+    stud_bc_nomination = @horse.nominations.exists?(year: Date.current.year + 1)
   p.font-bold.text-center.text-lg
     = t(".title", year: Date.current.year)
     - if bred_count.positive?

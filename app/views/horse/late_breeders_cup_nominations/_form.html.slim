@@ -2,7 +2,7 @@
 ruby:
   title = t(".title", name: horse.name_with_title, year: Date.current.year + 1)
   sire = horse.sire
-  stud_bc_nomination = sire.stud_nominations.exists?(year: horse.date_of_birth.year)
+  stud_bc_nomination = sire.nominations.exists?(year: horse.date_of_birth.year)
   content_for :title, title
 
 .text-center

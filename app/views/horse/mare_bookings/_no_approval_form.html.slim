@@ -6,7 +6,7 @@
           'mare-booking-day-placeholder-value' => t("horse.mare_bookings.new.day_select") } do |f|
   p.text-lg
     = t("horse.mare_bookings.new.stud", name: stud.name)
-    - if stud.stud_nominations.current_year.exists?
+    - if stud.nominations.current_year.exists?
       span.badge.badge-outline.badge-success.rounded-sm.ml-2= t("horse.mare_bookings.studs.bc_nominated")
     - else
       span.badge.badge-outline.badge-error.rounded-sm.ml-2= t("horse.mare_bookings.studs.not_bc_nominated")

@@ -27,7 +27,7 @@ module Horses::Broodmare
 
     def options_for_destination_select
       starting_farm ||= horse.current_location
-      owned_stud_ids = Account::Stable.joins(:horses).where.not(id: starting_farm.id).where(horses: { id: Horses::Horse.stud.where.missing(:current_lease).select(:id) }).group(:owner_id).count
+      owned_stud_ids = Account::Stable.joins(:horses).where.not(id: starting_farm.id).where(horses: { id: Horses::Horse::Stud.where.missing(:current_lease).select(:id) }).group(:owner_id).count
 
       stables = []
       stable_ids = []
@@ -36,7 +36,7 @@ module Horses::Broodmare
         stables << [Account::Stable.where(id: stable_id).pick(:name), stable_id]
       end
       stable_ids << starting_farm.id
-      Horses::Horse.stud.joins(:current_lease).where.not(current_lease: { leaser_id: stable_ids }).find_each do |stud|
+      Horses::Horse::Stud.joins(:current_lease).where.not(current_lease: { leaser_id: stable_ids }).find_each do |stud|
         manager = stud.manager
         stables << [manager.name, manager.id]
       end

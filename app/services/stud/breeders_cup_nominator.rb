@@ -5,7 +5,7 @@ module Stud
     def create_nomination(horse:, stable:)
       result = Result.new
 
-      if horse.stud_nominations.exists?(year: Date.current.year + 1)
+      if horse.nominations.exists?(year: Date.current.year + 1)
         result.error = error("horse_already_nominated")
         return result
       end
@@ -20,7 +20,7 @@ module Stud
         return result
       end
 
-      nomination = horse.stud_nominations.build(year: Date.current.year + 1)
+      nomination = horse.nominations.build(year: Date.current.year + 1)
       fee = Config::Racing.breeders_cup_nomination_fee_stud
 
       if fee > stable.available_balance

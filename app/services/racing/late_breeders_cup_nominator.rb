@@ -21,7 +21,7 @@ module Racing
       end
 
       nomination = horse.build_breeders_cup_nomination(effective_year: Date.current.year + 1)
-      fee = if horse.sire.stud_nominations.exists?(year: horse.date_of_birth.year)
+      fee = if horse.sire.nominations.exists?(year: horse.date_of_birth.year)
         Config::Racing.breeders_cup_nomination_fee_nominated_stud
       else
         Config::Racing.breeders_cup_nomination_fee_unnominated_stud

@@ -14,14 +14,14 @@ module Horse
     end
 
     def new
-      horse = Horses::Horse.broodmare.find(params[:id])
+      horse = Horses::Horse::Broodmare.find(params[:id])
       authorize horse, :breed?, policy_class: CurrentStable::BroodmarePolicy
       @breeding = Horses::Breeding.find_by(stable: horse.manager, id: params[:booking_id])
       @breeding.mare = horse
     end
 
     def create
-      horse = Horses::Horse.broodmare.find(params[:id])
+      horse = Horses::Horse::Broodmare.find(params[:id])
       authorize horse, :breed?, policy_class: CurrentStable::BroodmarePolicy
       breeding = Horses::Breeding.find_by(stable: horse.manager, id: params[:booking_id])
 

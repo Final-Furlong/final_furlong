@@ -1,6 +1,6 @@
 ruby:
   title = t(".title")
-  weanlings = Horses::Horse.weanling.managed_by(Current.stable).includes(:dam, :breeders_cup_nomination, sire: :stud_nominations).order(name: :asc)
+  weanlings = Horses::Horse.weanling.managed_by(Current.stable).includes(:dam, :breeders_cup_nomination, sire: :nominations).order(name: :asc)
 
 - content_for :breadcrumbs do
   = render Nav::Breadcrumbs::Component.new(links: [{ name: Current.stable.name, href: current_stable_path },
@@ -34,7 +34,7 @@ ruby:
             - dam = horse.dam
             tr
               td class="text-#{horse.gender}"
-                - if !horse.breeders_cup_nomination && !sire.blank? && sire.stud_nominations.exists?(year: horse.date_of_birth.year)
+                - if !horse.breeders_cup_nomination && !sire.blank? && sire.nominations.exists?(year: horse.date_of_birth.year)
                   label
                     = checkbox_tag 'horse_ids[]', horse.id, false, class: 'checkbox', data: { checkbox_select_all_target: "checkbox" }
                     span.ml-2= horse.name
@@ -46,5 +46,5 @@ ruby:
               td
                 - if horse.breeders_cup_nomination
                   span.text-success= t(".nominated")
-                - elsif sire.blank? || !sire.stud_nominations.exists?(year: horse.date_of_birth.year)
+                - elsif sire.blank? || !sire.nominations.exists?(year: horse.date_of_birth.year)
                   span.text-error= t(".not_eligible")

@@ -15,7 +15,7 @@ module Dashboard
             racers: 0,
             winners: 0,
             stakes_winners: 0,
-            status: horse.stud_nominations.exists?(year:) ? :nominated : :not_nominated
+            status: horse.nominations.exists?(year:) ? :nominated : :not_nominated
           }
           if year <= Date.current.year - 2 && info.last.to_i.positive?
             data[:racers] = horse.stud_foals.with_yob(year).where.associated(:lifetime_race_record).count
@@ -35,7 +35,7 @@ module Dashboard
             racers: 0,
             winners: 0,
             stakes_winners: 0,
-            status: horse.stud_nominations.exists?(year: Date.current.year + 1) ? :nominated : :not_nominated
+            status: horse.nominations.exists?(year: Date.current.year + 1) ? :nominated : :not_nominated
           }
         end
       end

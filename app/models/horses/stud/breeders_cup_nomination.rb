@@ -2,7 +2,7 @@ module Horses::Stud
   class BreedersCupNomination < ApplicationRecord
     self.table_name = "stud_breeders_cup_nominations"
 
-    belongs_to :stud, class_name: "Horses::Horse::Stud", inverse_of: :stud_nominations
+    belongs_to :stud, class_name: "Horses::Horse::Stud", inverse_of: :nominations
 
     validates :year, presence: true, uniqueness: { scope: :stud_id }
 

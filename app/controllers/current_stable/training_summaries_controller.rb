@@ -3,7 +3,7 @@ module CurrentStable
     def show
       authorize %i[current_stable training_summary]
 
-      @query = policy_scope(Horses::Horse.racehorse, policy_scope_class: CurrentStable::HorsePolicy::Scope)
+      @query = policy_scope(Horses::Horse::Racehorse, policy_scope_class: CurrentStable::HorsePolicy::Scope)
       if params.dig(:q, :min_energy).present? && params.dig(:q, :max_energy).present?
         params[:q][:energy_in] = [params.dig(:q, :max_energy), params.dig(:q, :min_energy)]
       end

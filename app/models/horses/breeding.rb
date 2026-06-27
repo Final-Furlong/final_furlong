@@ -143,7 +143,7 @@ module Horses
 
     def options_for_stable_select
       list = [[stud.manager.name, stud.manager.id]]
-      Account::Stable.where.not(id: stud.manager_id).active.joins(:horses).where(horses: Horses::Horse.broodmare).distinct.order(name: :asc).each do |stable|
+      Account::Stable.where.not(id: stud.manager_id).active.joins(:horses).where(horses: Horses::Horse::Broodmare).distinct.order(name: :asc).each do |stable|
         list << [stable.name, stable.id]
       end
       list
