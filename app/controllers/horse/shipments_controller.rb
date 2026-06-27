@@ -12,7 +12,7 @@ module Horse
 
     def new
       horse = Horses::Horse.find(params[:id])
-      @shipment = horse.shipments
+      @shipment = horse.shipments.build
       authorize @shipment, :create?, policy_class: CurrentStable::HorseShipmentPolicy
 
       @shipment.ending_farm = Account::Stable.find(params[:end_farm_id]) if horse.broodmare? && params[:end_farm_id]
