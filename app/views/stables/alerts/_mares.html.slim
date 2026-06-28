@@ -1,5 +1,5 @@
 ruby:
-  mares_count = Horses::Horse::Broodmare.managed_by(Current.stable).broodmare.where.missing(:next_foal).count
+  mares_count = Horses::Horse::Broodmare.managed_by(Current.stable).broodmare.active.where.missing(:next_foal).count
 - if mares_count.positive?
   .card.bg-base-100.w-full
     .card-body.p-0.rounded-none

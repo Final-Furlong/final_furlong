@@ -51,7 +51,8 @@ module CurrentStable
     end
 
     def view_nominations?
-      return false unless %w[racehorse].include?(record.status)
+      return false unless record.racehorse?
+      return false unless record.active?
 
       logged_in?
     end

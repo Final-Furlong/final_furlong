@@ -70,7 +70,7 @@
           p.mx-auto= t(".loading_mare_bookings")
           .mt-2.mx-auto.skeleton.w-full
 
-  - if horse.stallion? && CurrentStable::StallionPolicy.new(Current.user, horse).manage_bookings?
+  - if horse.stud? && CurrentStable::StallionPolicy.new(Current.user, horse).manage_bookings?
     input.tab[ type="radio" name="horse" aria-label=t(".stud_bookings") id="stud-bookings" ]
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
       = turbo_frame_tag "#{@horse.slug}-stud-bookings", src: horse_stud_bookings_path(@horse), loading: "lazy" do
@@ -78,7 +78,7 @@
           p.mx-auto= t(".loading_stud_bookings")
           .mt-2.mx-auto.skeleton.w-full
 
-  - if horse.stallion? && CurrentStable::StallionPolicy.new(Current.user, horse).view_nominations?
+  - if horse.stud? && CurrentStable::StallionPolicy.new(Current.user, horse).view_nominations?
     input.tab[ type="radio" name="horse" aria-label=t(".nominations") id="nominations" ]
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
       = turbo_frame_tag "#{@horse.slug}-nominations", src: horse_stud_nominations_path(@horse), loading: "lazy" do

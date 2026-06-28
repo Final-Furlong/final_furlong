@@ -8,6 +8,17 @@ module Racing
     validates :energy_grade, :fitness_grade, inclusion: { in: Config::Racing.letter_grades.map(&:upcase) }
     validates :at_home, :in_transit, :currently_injured, inclusion: { in: [true, false] }
 
+    scope :shippable_to_location, ->(id, cost, days) {
+      # n.b. DISTINCT UNNEST(ARRAY[]) is postgres-specific syntax
+      where("racehorse_metadata.location_id = :id OR racehorse_metadata.location_id IN
+        (SELECT DISTINCT UNNEST(ARRAY[starting_location_id, ending_location_id]) FROM shipment_routes
+        WHERE ((starting_location_id = racehorse_metadata.location_id AND ending_location_id = :id) OR
+          (starting_location_id = :id AND ending_location_id = racehorse_metadata.location_id))
+          AND ((road_days IS NOT NULL AND road_days <= :days AND road_cost <= :cost) OR
+            (air_days IS NOT NULL AND air_days <= :days AND air_cost <= :cost)))",
+        { id:, cost:, days: })
+    }
+
     def update_grades(energy:, fitness:)
       modifier = rand(10..20)
       graded_score = (rand(1...2) == 1) ? modifier : modifier * -1

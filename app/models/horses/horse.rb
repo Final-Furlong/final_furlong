@@ -11,7 +11,7 @@ module Horses
 
     friendly_id :name_and_foal_status, use: [:slugged, :finders, :history]
 
-    multisearchable against: [:name], if: lambda { |record| %w[stillborn unborn].exclude?(record.status) }
+    multisearchable against: [:name], if: lambda { |record| %w[stillborn unborn].exclude?(record.state) }
 
     belongs_to :breeder, class_name: "Account::Stable"
     belongs_to :owner, class_name: "Account::Stable"

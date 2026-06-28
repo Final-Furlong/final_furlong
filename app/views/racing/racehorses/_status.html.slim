@@ -17,15 +17,15 @@
                   = Racing::RacehorseMetadata.human_attribute_name("last_raced_at")
                   .tooltip.ml-2.text-lg data-tip=t(".last_race_hint")
                     i.ph-fill.ph-info
-              th= sort_link query, :energy, t("horses.info.energy")
-              th= sort_link query, :fitness, t("horses.info.fitness")
+              th= sort_link query, :race_metadata_energy_grade, t("horses.info.energy")
+              th= sort_link query, :race_metadata_fitness_grade, t("horses.info.fitness")
               th
                 = sort_link query, :last_rested do
                   = Racing::RacehorseMetadata.human_attribute_name("last_rested_at")
                   .tooltip.ml-2.text-lg data-tip=t(".last_rest_hint")
                     i.ph-fill.ph-info
               th
-                = sort_link query, :location do
+                = sort_link query, :race_metadata_location_string do
                   = Horses::Horse.human_attribute_name("location")
                     .tooltip.ml-2.text-lg data-tip=t(".location_hint")
                       i.ph-fill.ph-info

@@ -6,7 +6,7 @@ module Dashboard
       def initialize(horse:)
         @horse = horse
         @shipments = []
-        @shipments = load_shipments(horse.status)
+        @shipments = load_shipments
         @current_shipment = @shipments.first if @shipments.present? && !@shipments.first[:start_date].future? && @shipments.first[:end_date].future?
       end
 
@@ -20,8 +20,8 @@ module Dashboard
         current_shipment[:end_date]
       end
 
-      def load_shipments(status)
-        class_name = (status.to_s.downcase == "racehorse") ?
+      def load_shipments
+        class_name = horse.racehorse? ?
                        Horses::Racehorse::Shipment.includes(:starting_location, :ending_location) :
                        Horses::Broodmare::Shipment.includes(:starting_farm, :ending_farm)
         class_name.where(horse:).order(departure_date: :desc).map do |shipment|

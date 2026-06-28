@@ -72,7 +72,7 @@
             = render Ui::ButtonizedLink::Component.new(url: horse_owner_path(horse), style: :outline, size: :small, extra_classes: "ml-2", http_method: :get, data:) do
               = t("horse.actions.give_to_game")
       - unless horse.dead?
-        - if horse.racehorse? || horse.broodmare?
+        - if horse.active? && (horse.racehorse? || horse.broodmare?)
           tr
             th= t(".location")
             td
@@ -193,7 +193,7 @@
         tr
           th= t(".breeding_record")
           td= horse.breed_ranking_string || t("common.none")
-      - if Horses::Status::FEMALE_BREEDING_STATUSES.include?(horse.status) || (horse.female? && horse.deceased?)
+      - if horse.broodmare?
         - if horse.foals.born.present?
           tr
             th= t(".last_foal")

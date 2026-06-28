@@ -16,6 +16,13 @@ module Horses
     }
     scope :not_famous_stud, -> { where.missing(:famous_stud) }
 
+    def status
+      return I18n.t("horses.statuses.deceased") if deceased?
+
+      key = retired? ? "retired_stud" : "stud"
+      I18n.t("horses.statuses.#{key}")
+    end
+
     def breed_ranking_string
       foal_record&.breed_ranking_string
     end

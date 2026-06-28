@@ -11,6 +11,13 @@ module Horses
     has_one :foal_record, class_name: "Horses::Broodmare::FoalRecord", inverse_of: :mare
     # rubocop:enable Rails/HasManyOrHasOneDependent
 
+    def status
+      return I18n.t("horses.statuses.deceased") if deceased?
+
+      key = retired? ? "retired_broodmare" : "broodmare"
+      I18n.t("horses.status.#{key}")
+    end
+
     def breed_ranking_string
       foal_record&.breed_ranking_string
     end

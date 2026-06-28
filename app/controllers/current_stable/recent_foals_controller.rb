@@ -1,8 +1,8 @@
 module CurrentStable
   class RecentFoalsController < AuthenticatedController
     def index
-      @query = policy_scope(Horses::Horse, policy_scope_class: CurrentStable::HorsePolicy::Scope)
-      @date = Date.parse(params[:date])
+      @query = policy_scope(Horses::Horse::Foal, policy_scope_class: CurrentStable::HorsePolicy::Scope)
+      @date = Date.parse(params[:date] || "#{Date.current.year}-01-01")
       @query = if @date
         if params[:this_date]
           @query.where(date_of_birth: @date)

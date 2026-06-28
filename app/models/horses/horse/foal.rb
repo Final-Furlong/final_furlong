@@ -9,6 +9,13 @@ module Horses
 
     scope :yearling, -> { active.with_age(1) }
     scope :weanling, -> { active.with_age(0) }
+
+    def status
+      return I18n.t("horses.statuses.deceased") if deceased?
+
+      key = yearling? ? "yearling" : "weanling"
+      I18n.t("horses.statuses.#{key}")
+    end
   end
 end
 

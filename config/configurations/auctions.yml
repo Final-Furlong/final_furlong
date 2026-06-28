@@ -6,12 +6,11 @@ shared:
   maximum_duration_days: 14
   minimum_increment: 500
   minimum_starting_bid: 1000
-  horse_statuses:
+  horse_types:
     - racehorse
     - stud
     - broodmare
-    - yearling
-    - weanling
+    - foal
   hours_until_sold:
     - 12
     - 24

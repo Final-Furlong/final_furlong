@@ -23,6 +23,14 @@ module Horses::Horse::Typeable
       type == "Horses::Horse::Stud"
     end
 
+    def weanling?
+      !stillborn? && age == 0
+    end
+
+    def yearling?
+      !stillborn? && age == 1
+    end
+
     def stillborn?
       self[:date_of_birth] == self[:date_of_death]
     end

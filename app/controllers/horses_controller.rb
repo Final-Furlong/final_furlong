@@ -100,6 +100,8 @@ class HorsesController < ApplicationController
 
   def set_horse
     @horse = Horses::Horse.find(params[:id])
+    pd @horse
+    @horse
   end
 
   def set_horse_by_legacy_id

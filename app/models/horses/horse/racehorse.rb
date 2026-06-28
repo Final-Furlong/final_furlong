@@ -62,26 +62,20 @@ module Horses
     }
     scope :sort_by_race_qualification_asc, -> { joins(:race_qualification).merge(::Racing::RaceQualification.sort_by_qualified_asc) }
     scope :sort_by_race_qualification_desc, -> { joins(:race_qualification).merge(::Racing::RaceQualification.sort_by_qualified_desc) }
-    scope :sort_by_race_metadata_race_nulls_last_asc, -> { joins(:race_metadata).order("race_metadata.last_raced_at ASC NULLS LAST") }
-    scope :sort_by_race_metadata_race_nulls_last_desc, -> { joins(:race_metadata).order("race_metadata.last_raced_at DESC NULLS LAST") }
-    scope :sort_by_race_metadata_injury_nulls_last_asc, -> { joins(:race_metadata).order("race_metadata.last_injured_at ASC NULLS LAST") }
-    scope :sort_by_race_metadata_injury_nulls_last_desc, -> { joins(:race_metadata).order("race_metadata.last_injured_at DESC NULLS LAST") }
-    scope :sort_by_race_metadata_entry_nulls_last_asc, -> { joins(:race_metadata).order("race_metadata.next_entry_date ASC NULLS LAST") }
-    scope :sort_by_race_metadata_entry_nulls_last_desc, -> { joins(:race_metadata).order("race_metadata.next_entry_date DESC NULLS LAST") }
-    scope :sort_by_energy_asc, -> { joins(:race_metadata).order("race_metadata.energy_grade ASC") }
-    scope :sort_by_energy_desc, -> { joins(:race_metadata).order("race_metadata.energy_grade DESC") }
-    scope :sort_by_fitness_asc, -> { joins(:race_metadata).order("race_metadata.fitness_grade ASC") }
-    scope :sort_by_fitness_desc, -> { joins(:race_metadata).order("race_metadata.fitness_grade DESC") }
-    scope :sort_by_location_asc, -> { joins(:race_metadata).order("race_metadata.location_string ASC") }
-    scope :sort_by_location_desc, -> { joins(:race_metadata).order("race_metadata.location_string DESC") }
-    scope :sort_by_last_raced_asc, -> { joins(:race_metadata).order("race_metadata.last_raced_at ASC") }
-    scope :sort_by_last_raced_desc, -> { joins(:race_metadata).order("race_metadata.last_raced_at DESC") }
-    scope :sort_by_last_rested_asc, -> { joins(:race_metadata).order("race_metadata.last_rested_at ASC") }
-    scope :sort_by_last_rested_desc, -> { joins(:race_metadata).order("race_metadata.last_rested_at DESC") }
-    scope :sort_by_last_shipped_asc, -> { joins(:race_metadata).order("race_metadata.last_shipped_at ASC") }
-    scope :sort_by_last_shipped_desc, -> { joins(:race_metadata).order("race_metadata.last_shipped_at DESC") }
-    scope :sort_by_workouts_asc, -> { joins(:race_metadata).order("race_metadata.workouts_since_last_race ASC") }
-    scope :sort_by_workouts_desc, -> { joins(:race_metadata).order("race_metadata.workouts_since_last_race DESC") }
+    scope :sort_by_race_metadata_race_nulls_last_asc, -> { joins(:race_metadata).order("last_raced_at ASC NULLS LAST") }
+    scope :sort_by_race_metadata_race_nulls_last_desc, -> { joins(:race_metadata).order("last_raced_at DESC NULLS LAST") }
+    scope :sort_by_race_metadata_injury_nulls_last_asc, -> { joins(:race_metadata).order("last_injured_at ASC NULLS LAST") }
+    scope :sort_by_race_metadata_injury_nulls_last_desc, -> { joins(:race_metadata).order("last_injured_at DESC NULLS LAST") }
+    scope :sort_by_race_metadata_entry_nulls_last_asc, -> { joins(:race_metadata).order("next_entry_date ASC NULLS LAST") }
+    scope :sort_by_race_metadata_entry_nulls_last_desc, -> { joins(:race_metadata).order("next_entry_date DESC NULLS LAST") }
+    scope :sort_by_last_raced_asc, -> { joins(:race_metadata).order("racehorse_metadata.last_raced_at ASC NULLS LAST") }
+    scope :sort_by_last_raced_desc, -> { joins(:race_metadata).order("racehorse_metadata.last_raced_at DESC NULLS LAST") }
+    scope :sort_by_last_rested_asc, -> { joins(:race_metadata).order("racehorse_metadata.last_rested_at ASC NULLS LAST") }
+    scope :sort_by_last_rested_desc, -> { joins(:race_metadata).order("racehorse_metadata.last_rested_at DESC NULLS LAST") }
+    scope :sort_by_last_shipped_asc, -> { joins(:race_metadata).order("racehorse_metadata.last_shipped_at ASC NULLS LAST") }
+    scope :sort_by_last_shipped_desc, -> { joins(:race_metadata).order("racehorse_metadata.last_shipped_at DESC NULLS LAST") }
+    scope :sort_by_workouts_asc, -> { joins(:race_metadata).order("racehorse_metadata.workouts_since_last_race ASC NULLS LAST") }
+    scope :sort_by_workouts_desc, -> { joins(:race_metadata).order("racehorse_metadata.workouts_since_last_race DESC NULLS LAST") }
     scope :location, ->(value) { where(race_metadata: { location_string: value }) }
     scope :min_energy, ->(value) { where(race_metadata: { energy_grade: ::Racing::RacehorseMetadata.min_grade_levels(value) }) }
     scope :max_energy, ->(value) { where(race_metadata: { energy_grade: ::Racing::RacehorseMetadata.max_grade_levels(value) }) }
@@ -89,16 +83,6 @@ module Horses
     scope :min_fitness, ->(value) { where(race_metadata: { fitness_grade: ::Racing::RacehorseMetadata.min_grade_levels(value) }) }
     scope :max_fitness, ->(value) { where(race_metadata: { fitness_grade: ::Racing::RacehorseMetadata.max_grade_levels(value) }) }
     scope :fitness_in, ->(max_value, min_value) { where(race_metadata: { fitness_grade: ::Racing::RacehorseMetadata.grade_levels_range(min_value, max_value) }) }
-    scope :shippable_to_location, ->(id, cost, days) {
-      # n.b. DISTINCT UNNEST(ARRAY[]) is postgres-specific syntax
-      where("race_metadata.location_id = :id OR race_metadata.location_id IN
-        (SELECT DISTINCT UNNEST(ARRAY[starting_location_id, ending_location_id]) FROM shipment_routes
-        WHERE ((starting_location_id = race_metadata.location_id AND ending_location_id = :id) OR
-          (starting_location_id = :id AND ending_location_id = race_metadata.location_id))
-          AND ((road_days IS NOT NULL AND road_days <= :days AND road_cost <= :cost) OR
-            (air_days IS NOT NULL AND air_days <= :days AND air_cost <= :cost)))",
-        { id:, cost:, days: })
-    }
     scope :at_home, -> { where(race_metadata: { at_home: true }) }
     scope :not_at_home, -> { where(race_metadata: { at_home: false }) }
     scope :boardable, -> { where(race_metadata: { at_home: false, in_transit: false }) }
@@ -136,6 +120,13 @@ module Horses
     scope :max_days_since_last_injury, ->(days) { joins(:race_metadata).where(race_metadata: { last_injured_at: (Date.current - days.to_i.days).. }) }
 
     delegate :in_transit?, to: :race_metadata
+
+    def status
+      return I18n.t("horses.statuses.deceased") if deceased?
+
+      key = retired? ? "retired" : "racehorse"
+      I18n.t("horses.statuses.#{key}")
+    end
 
     def retire(status)
       Horses::Racehorse::Retirement.new(horse: self, status:).run

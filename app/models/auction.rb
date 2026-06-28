@@ -32,9 +32,9 @@ class Auction < ApplicationRecord
   scope :by_auctioneer, ->(auctioneer) { where(auctioneer:) }
   scope :outside_horses_allowed, -> { where(outside_horses_allowed: true) }
   scope :valid_for_horse, ->(horse) {
-    return none unless Config::Auctions.horse_statuses.map(&:downcase).include?(horse.status)
-    query = case horse.status
-    when "racehorse"
+    return none unless horse.active?
+    return none unless Config::Auctions.horse_types.map(&:downcase).any? { |type| horse.send("#{type}?") }
+    query = if horse.racehorse?
       case horse.age.to_i
       when 2
         where(racehorse_allowed_2yo: true)
@@ -43,13 +43,13 @@ class Auction < ApplicationRecord
       else
         where(racehorse_allowed_older: true)
       end
-    when "broodmare"
+    elsif horse.broodmare?
       where(broodmare_allowed: true)
-    when "stud"
+    elsif horse.stud?
       where(stallion_allowed: true)
-    when "yearling"
+    elsif horse.yearling?
       where(yearling_allowed: true)
-    when "weanling"
+    elsif horse.weanling?
       where(weanling_allowed: true)
     end
 
