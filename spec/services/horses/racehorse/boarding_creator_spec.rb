@@ -123,7 +123,7 @@ describe Horses::Racehorse::BoardingCreator do
     return @horse if defined?(@horse)
 
     @horse = create(:racehorse)
-    @horse.race_metadata.update(location:, racetrack:)
+    @horse.racehorse_metadata.update(location:, racetrack:)
     @horse
   end
 

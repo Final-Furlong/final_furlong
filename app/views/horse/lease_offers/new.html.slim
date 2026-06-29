@@ -6,7 +6,7 @@ ruby:
   h1.text-xl.font-bold= t(".title")
   .alert.alert-info
     div
-      .text-sm= t(".duration.#{horse.status}")
-      .text-sm= t(".rules.#{horse.status}")
+      .text-sm= t(".duration.#{horse.type_string}")
+      .text-sm= t(".rules.#{horse.type_string}")
 
 = render "form", lease_offer: @lease_offer, horse: horse

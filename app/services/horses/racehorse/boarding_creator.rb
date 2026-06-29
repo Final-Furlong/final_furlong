@@ -10,7 +10,7 @@ module Horses::Racehorse
         return result
       end
 
-      location = horse.race_metadata&.location
+      location = horse.racehorse_metadata&.location
 
       unless location
         result.error = error("location_not_found")
