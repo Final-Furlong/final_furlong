@@ -91,7 +91,7 @@ module CurrentStable
       return false unless record.racehorse?
       return false unless record.active?
 
-      data = record.race_metadata
+      data = record.racehorse_metadata
       return false if data&.in_transit?
       return false if data&.at_home?
 
@@ -108,7 +108,7 @@ module CurrentStable
       return false unless record.racehorse?
       return false unless record.active?
 
-      data = record.race_metadata
+      data = record.racehorse_metadata
       return false unless data
       return false if data.in_transit
       return false if data.at_home
@@ -125,7 +125,7 @@ module CurrentStable
 
       return false if record.age < Config::Workouts.dig(:jump_trial, :min_age)
       return false if record.race_options&.racehorse_type == "jump"
-      data = record.race_metadata
+      data = record.racehorse_metadata
       return false unless data
       return false if data.in_transit
       return false if data.at_home

@@ -33,14 +33,14 @@ class Racing::RaceDayUpdaterJob < ApplicationJob
       options.update_columns(racehorse_type: "flat")
     end
     # rubocop:enable Rails/SkipsModelValidations
-    Horses::Horse::Racehorse.joins(:race_metadata).where(race_metadata: { next_entry_date: nil }).where.associated(:race_entries).find_each do |horse|
-      horse.race_metadata.update(next_entry_date: horse.race_entries.order(date: :asc).first&.date)
+    Horses::Horse::Racehorse.joins(:racehorse_metadata).where(racehorse_metadata: { next_entry_date: nil }).where.associated(:race_entries).find_each do |horse|
+      horse.racehorse_metadata.update(next_entry_date: horse.race_entries.order(date: :asc).first&.date)
     end
-    Horses::Horse::Racehorse.joins(:race_metadata).where(race_metadata: { next_entry_date: nil }).where.missing(:race_entries).where.associated(:future_race_entries).find_each do |horse|
-      horse.race_metadata.update(next_entry_date: horse.future_race_entries.order(date: :asc).first&.date)
+    Horses::Horse::Racehorse.joins(:racehorse_metadata).where(racehorse_metadata: { next_entry_date: nil }).where.missing(:race_entries).where.associated(:future_race_entries).find_each do |horse|
+      horse.racehorse_metadata.update(next_entry_date: horse.future_race_entries.order(date: :asc).first&.date)
     end
-    Horses::Horse::Racehorse.joins(:race_metadata).where(race_metadata: { next_entry_date: nil }).where.missing(:race_entries).where.missing(:future_race_entries).find_each do |horse|
-      horse.race_metadata.update(next_entry_date: nil)
+    Horses::Horse::Racehorse.joins(:racehorse_metadata).where(racehorse_metadata: { next_entry_date: nil }).where.missing(:race_entries).where.missing(:future_race_entries).find_each do |horse|
+      horse.racehorse_metadata.update(next_entry_date: nil)
     end
     result[:new_jumpers] = swapped_to_sc
     store_job_info(outcome: result)
