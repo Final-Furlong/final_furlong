@@ -10,7 +10,7 @@ table.table.table-responsive.table-zebra.sortable.n-last
   tbody
     - @entries.each do |entry|
       - horse = entry.horse
-      - data = horse.race_metadata
+      - data = horse.racehorse_metadata
       tr
         td class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), target: "_top"
         td= data.energy_grade

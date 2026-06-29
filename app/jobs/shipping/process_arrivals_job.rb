@@ -9,7 +9,7 @@ class Shipping::ProcessArrivalsJob < ApplicationJob
     horses = 0
     Horses::Racehorse::Shipment.where("arrival_date > ? AND arrival_date <= ?", min_date, Date.current).find_each do |shipment|
       horse = shipment.horse
-      next unless (date = horse.race_metadata)
+      next unless (date = horse.racehorse_metadata)
 
       racetrack = Racing::Racetrack.find_by(location: shipment.ending_location)
 

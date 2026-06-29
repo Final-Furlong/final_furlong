@@ -27,7 +27,7 @@ module Horse
       @workout = @horse.workouts.build
       jockey_id = workout_params.delete(:jockey)
       jockey = Racing::Jockey.find(jockey_id) if jockey_id.present?
-      racetrack = @horse.race_metadata.racetrack
+      racetrack = @horse.racehorse_metadata.racetrack
       surface_name = workout_params.delete(:surface)
       surface = racetrack.surfaces.find_by(surface: surface_name) if surface_name.present?
 

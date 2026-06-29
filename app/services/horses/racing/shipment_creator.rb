@@ -9,7 +9,7 @@ module Horses
         @result = Result.new(shipment:)
         stable = horse.manager
 
-        shipment.starting_location = horse.race_metadata.location
+        shipment.starting_location = horse.racehorse_metadata.location
         shipment.ending_location = if params[:ending_location] == "Farm"
           stable.racetrack.location
         else
@@ -56,7 +56,7 @@ module Horses
           if shipment.valid? && shipment.save
             unless shipment.future?
               end_location_name = ending_location_name(stable, shipment.shipping_type)
-              horse.race_metadata&.update(in_transit: true, location_string: end_location_name, location: shipment.ending_location, racetrack: ending_racetrack)
+              horse.racehorse_metadata&.update(in_transit: true, location_string: end_location_name, location: shipment.ending_location, racetrack: ending_racetrack)
               description = I18n.t("services.shipment_creator.description", horse: horse.name, start: current_location_name, end: end_location_name)
               Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: cost.abs * -1)
             end
@@ -100,7 +100,7 @@ module Horses
       end
 
       def current_location_name
-        horse.race_metadata.location.name
+        horse.racehorse_metadata.location.name
       end
 
       def ending_location_name(stable, shipping_type)

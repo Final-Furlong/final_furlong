@@ -4,7 +4,7 @@ module Racing
       def resolve
         refined_scope = scope.managed_by(stable)
         if (energy = game_settings[:minimum_energy])
-          refined_scope = refined_scope.joins(:race_metadata).min_energy(energy)
+          refined_scope = refined_scope.joins(:racehorse_metadata).min_energy(energy)
         end
         refined_scope
       end

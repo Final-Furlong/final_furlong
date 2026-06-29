@@ -100,8 +100,6 @@ class HorsesController < ApplicationController
 
   def set_horse
     @horse = Horses::Horse.find(params[:id])
-    pd @horse
-    @horse
   end
 
   def set_horse_by_legacy_id
@@ -113,10 +111,10 @@ class HorsesController < ApplicationController
   end
 
   def set_active_status
-    if params.dig(:q, :status_in)
-      @active_status = :retired
-    elsif params.dig(:q, :status_eq)
-      @active_status = params.dig(:q, :status_eq).to_sym
+    if (type_query = params.dig(:q, :type_eq))
+      @active_status = type_query.delete("Horses::Horse::").downcase.to_sym
+    elsif (state_query = params.dig(:q, :state_eq))
+      @active_status = state_query.to_sym
     else
       starting_status
     end
@@ -125,10 +123,11 @@ class HorsesController < ApplicationController
   def starting_status
     @active_status = set_first_status
     params[:q] ||= {}
-    if set_first_status == :retired
-      params[:q][:status_in] = %i[retired retired_stud retired_broodmare]
+    if %i[retired deceased].include? set_first_status
+      params[:q][:state_eq] = set_first_status
     else
-      params[:q][:status_eq] = set_first_status
+      params[:q][:type_eq] = "Horses::Horse::#{set_first_status.to_s.capitalize}"
+      params[:q][:state_eq] = "active"
     end
   end
 

@@ -319,7 +319,7 @@ class Racing::PreRace::RaceJob < ApplicationJob
   def confidence(entry, race)
     horse = entry.horse
     max_confidence = 100
-    last_race_date = horse.race_metadata.last_raced_at
+    last_race_date = horse.racehorse_metadata.last_raced_at
     if last_race_date
       confidence = horse.workouts.where("date > ?", last_race_date).where.not(confidence: [0, nil]).average(:confidence)
     end
