@@ -21,12 +21,14 @@ module Horses
           Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: 0)
 
           horse.update(owner: game_stable, manager: game_stable)
-          horse.training_schedules_horse&.destroy
-          horse.race_entries.each do |entry|
-            entry.claims.each do |claim|
-              claim.destroy
+          horse.training_schedules_horse&.destroy if horse.respond_to?(:training_schedule_horse)
+          if horse.respond_to?(:race_entries)
+            horse.race_entries.each do |entry|
+              entry.claims.each do |claim|
+                claim.destroy
+              end
+              entry.destroy
             end
-            entry.destroy
           end
           Horses::Horse.unborn.where(dam: horse).find_each do |foal|
             foal.update(owner: game_stable, manager: game_stable)
