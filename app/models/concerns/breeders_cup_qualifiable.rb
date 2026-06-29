@@ -18,7 +18,7 @@ module BreedersCupQualifiable
         .where("(stakes_seconds + stakes_thirds) = ?", record.stakes_seconds + record.stakes_thirds)
     }
     scope :nominated, -> { where(nominated: true) }
-    scope :not_nominated, -> { nominated.invert_where }
+    scope :not_nominated, -> { where(nominated: false) }
     scope :random_order, -> { order("RANDOM()") }
 
     def readonly?

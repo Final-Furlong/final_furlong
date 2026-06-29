@@ -39,7 +39,7 @@ module Racing
     }
     scope :without_activities, ->(weekday) {
       if WEEKDAYS.include?(weekday)
-        with_activities(weekday).invert_where
+        where("#{weekday.downcase}_activities" => { activity1: nil, activity2: nil, activity3: nil, distance1: nil, distance2: nil, distance3: nil }.to_json)
       else
         none
       end

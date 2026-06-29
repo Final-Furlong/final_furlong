@@ -8,7 +8,7 @@ module Horses::Stud
     validates :stud_fee, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: Config::Breedings.max_stud_fee }
 
     scope :no_approval, -> { where(approval_required: false) }
-    scope :approval, -> { no_approval.invert_where }
+    scope :approval, -> { where(approval_required: true) }
     scope :outside_mares_allowed, -> { where("outside_mares_allowed > 0") }
     scope :bookings_available, -> { where(total_booked_count: ...Config::Breedings.max_mares_per_year) }
     scope :outside_bookings_available, -> { where("outside_mares_allowed > outside_mares_count") }

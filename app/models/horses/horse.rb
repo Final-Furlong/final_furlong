@@ -49,15 +49,15 @@ module Horses
     before_validation :calculate_age
 
     scope :game_owned, -> { joins(:owner).where(owner: { name: Config::Game.stable }) }
-    scope :not_game_owned, -> { game_owned.invert_where }
+    scope :not_game_owned, -> { joins(:owner).where.not(owner: { name: Config::Game.stable }) }
 
     scope :alive, -> { where.not(state: %w[unborn deceased]) }
     scope :retired, -> { where(state: "retired") }
-    scope :not_retired, -> { retired.invert_where }
+    scope :not_retired, -> { where.not(state: "retired") }
     scope :deceased, -> { where(status: "deceased") }
     scope :not_deceased, -> { where.not(status: "deceased") }
     scope :born, -> { where.not(state: "unborn") }
-    scope :unborn, -> { born.invert_where }
+    scope :unborn, -> { where(state: "unborn") }
     scope :stillborn, -> { deceased.where("date_of_birth = date_of_death") }
     scope :not_stillborn, -> { where(date_of_death: nil).or(where("#{table_name}.date_of_death > #{table_name}.date_of_birth")) }
     scope :created, -> { where(sire_id: nil, dam_id: nil) }
