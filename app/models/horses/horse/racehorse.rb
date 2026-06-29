@@ -128,7 +128,7 @@ module Horses
       I18n.t("horses.statuses.#{key}")
     end
 
-    def retire(status)
+    def retire(status:)
       Horses::Racehorse::Retirement.new(horse: self, status:).run
     end
 
