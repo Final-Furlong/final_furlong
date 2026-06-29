@@ -61,7 +61,7 @@ module Horses
     scope :stillborn, -> { deceased.where("date_of_birth = date_of_death") }
     scope :not_stillborn, -> { where(date_of_death: nil).or(where("#{table_name}.date_of_death > #{table_name}.date_of_birth")) }
     scope :created, -> { where(sire_id: nil, dam_id: nil) }
-    scope :not_created, -> { created.invert_where }
+    scope :not_created, -> { where("sire_id IS NOT NULL OR dam_id IS NOT NULL") }
     scope :female, -> { where(gender: Gender::FEMALE_GENDERS) }
     scope :not_female, -> { where.not(gender: Gender::FEMALE_GENDERS) }
     scope :min_age, ->(age) { where(age: age..) }

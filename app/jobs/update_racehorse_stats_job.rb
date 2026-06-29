@@ -11,7 +11,11 @@ class UpdateRacehorseStatsJob < ApplicationJob
       updated_horses += 1
     end
     deleted = 0
-    Horses::Horse.where.not(status: "racehorse").where.associated(:racehorse_metadata).find_each do |horse|
+    Horses::Horse::Racehorse.where.not(state: "active").where.associated(:racehorse_metadata).find_each do |horse|
+      Racing::RacehorseMetadata.where(horse:).first&.destroy
+      deleted += 1
+    end
+    Horses::Horse.where.not(type: "Horses::Horse::Racehorse").where(id: Racing::RacehorseMetadata.select(:horse_id)).find_each do |horse|
       Racing::RacehorseMetadata.where(horse:).first&.destroy
       deleted += 1
     end
