@@ -77,7 +77,7 @@
             th= t(".location")
             td
               - if horse.racehorse?
-                = horse.race_metadata.location_string
+                = horse.racehorse_metadata.location_string
                 - if horse.in_transit?
                   em.ml-2= t(".in_transit", date: l(horse.last_shipment.arrival_date))
                 - elsif (board = horse.current_boarding)
@@ -124,7 +124,7 @@
           tr
             th= t(".race_qualification")
             td= horse.race_qualification.to_s
-        - if horse.race_metadata&.last_raced_at
+        - if horse.racehorse_metadata&.last_raced_at
           tr
             th= t(".last_race")
             td

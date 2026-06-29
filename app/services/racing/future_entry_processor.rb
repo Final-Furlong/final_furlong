@@ -136,7 +136,7 @@ module Racing
       racing_settings = stable.user.setting&.racing
       result = { error: false, message: nil, ship_mode: nil }
 
-      data = horse.race_metadata
+      data = horse.racehorse_metadata
       if racing_settings&.apply_minimums_for_future_races
         if (energy = racing_settings.min_energy_for_race_entry).present?
           unless data.grade_at_least?(energy, :energy_grade)
@@ -187,7 +187,7 @@ module Racing
             end
           else
             max_travel_days = (race.travel_deadline - Date.current).to_i
-            route = Shipping::Route.with_locations(race.racetrack.location, horse.race_metadata.location).first
+            route = Shipping::Route.with_locations(race.racetrack.location, horse.racehorse_metadata.location).first
             costs = []
             days = []
             if (entry.ship_mode.blank? || entry.ship_mode.road?) && route.road_days && route.road_days <= max_travel_days
@@ -234,7 +234,7 @@ module Racing
     def sort_entries(entries, race, max)
       entries.shuffle
       if race.race_type != "stakes"
-        entries.sort_by { |entry| entry.horse.race_metadata.last_raced_at ? (Date.current - date.last_raced_at).to_i / 7 : FIVE_YEARS_IN_WEEKS }.reverse
+        entries.sort_by { |entry| entry.horse.racehorse_metadata.last_raced_at ? (Date.current - date.last_raced_at).to_i / 7 : FIVE_YEARS_IN_WEEKS }.reverse
       else
         entries.sort_by do |entry|
           base_query = Racing::RaceResultHorse.joins(:race).merge(Racing::RaceResult.since_date(1.year.ago)).where(horse: entry.horse)

@@ -18,7 +18,7 @@ module Racing
       return result if race.entries.count >= Config::Racing.entry_limit_overall
 
       fee = race.entry_fee
-      data = horse.race_metadata
+      data = horse.racehorse_metadata
       @race_location = race.racetrack.location
       needs_shipment = false
       if data.location != race_location && !data.in_transit
@@ -43,7 +43,7 @@ module Racing
       return result if fee > stable.available_balance
 
       ActiveRecord::Base.transaction do
-        horse.race_metadata.update(location: @race_location, racetrack: race.racetrack) if needs_shipment
+        horse.racehorse_metadata.update(location: @race_location, racetrack: race.racetrack) if needs_shipment
         ::Horses::Racehorse::BoardingUpdater.new.stop_boarding(boarding: horse.current_boarding) if stop_boarding
         description = I18n.t("racing.entry_options.budget_description", date: race.date, number: race.number, name: horse.name)
         Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: race.entry_fee.to_i * -1, activity_type: "entering")

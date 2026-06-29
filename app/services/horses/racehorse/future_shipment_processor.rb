@@ -13,7 +13,7 @@ module Horses
 
         stable = horse.manager
         end_location_name = ending_location_name(stable, shipment.shipping_type)
-        if horse.race_metadata.location != shipment.starting_location
+        if horse.racehorse_metadata.location != shipment.starting_location
           notify_failed_shipment(end_location_name, stable)
           return
         end
@@ -35,11 +35,11 @@ module Horses
         end
 
         racetrack = ::Racing::Racetrack.find_by(location: shipment.ending_location)
-        current_location = horse.race_metadata.location.name
+        current_location = horse.racehorse_metadata.location.name
         saved = false
         ActiveRecord::Base.transaction do
           shipment.update(scheduled: false)
-          horse.race_metadata&.update(in_transit: true, last_shipped_at: Time.current, location_string: end_location_name, location: racetrack.location, racetrack:)
+          horse.racehorse_metadata&.update(in_transit: true, last_shipped_at: Time.current, location_string: end_location_name, location: racetrack.location, racetrack:)
           description = I18n.t("services.shipment_creator.description", horse: horse.name, start: current_location, end: end_location_name)
           Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: cost.abs * -1)
           saved = true

@@ -15,7 +15,7 @@ module Racing
     end
 
     def qualified(apply_settings: true)
-      @query = @query.managed_by(Current.stable).joins(:race_metadata).where.missing(:race_entries)
+      @query = @query.managed_by(Current.stable).joins(:racehorse_metadata).where.missing(:race_entries)
       if apply_settings
         @query = CurrentStable::RacehorsePolicy::Scope.new(Current.user, query).resolve
       end

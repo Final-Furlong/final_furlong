@@ -26,31 +26,39 @@ module Horses
       end
 
       def url_with_params(status)
+        params ||= {}
         params[:q] ||= {}
-        if status == :retired
-          set_retired_status
-        else
-          set_unretired_status
-        end
-        update_genders_list
+        params = set_state_value(params, status)
+        params = set_status_value(params, status)
+        params = update_genders_list(params)
 
         send(path_name.to_sym, q: params[:q])
       end
 
-      def update_genders_list
-        return unless params.dig(:q, :gender_in)
+      def set_state_value(params, status)
+        return params unless %i[retired deceased].include?(status)
+
+        params[:q][:state_eq] = status
+        params
+      end
+
+      def set_status_value(params, status)
+        return params if %i[retired deceased].include?(status)
+
+        if %i[weanling yearling].include?(status)
+          params[:q][:type_eq] = "Horses::Horse::Foal"
+          params[:q][:age_eq] = (status == :yearling) ? 1 : 0
+        else
+          params[:q][:type_eq] = "Horses::Horse::#{status.to_s.capitalize}"
+          params[:q][:state_eq] = "active"
+        end
+        params
+      end
+
+      def update_genders_list(params)
+        return params unless params&.dig(:q, :gender_in)
 
         params[:q][:gender_in] = params[:q][:gender_in].join(",")
-      end
-
-      def set_unretired_status
-        params[:q].delete(:status_in)
-        params[:q][:status_eq] = status
-      end
-
-      def set_retired_status
-        params[:q].delete(:status_eq)
-        params[:q][:status_in] = %i[retired retired_broodmare retired_stud]
       end
 
       def localised_status(status, count)

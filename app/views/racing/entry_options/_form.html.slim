@@ -36,7 +36,7 @@
     div
       = render Ui::EquipmentForm::Component.new(blinkers: entry.blinkers, shadow_roll: entry.shadow_roll, wraps: entry.wraps,
               figure_8: entry.figure_8, no_whip: entry.no_whip, disabled: false, classes: "", id: "racing_race_entry", object: entry)
-    = render("shipment_form", horse:, entry:, form: f) if !edit && horse.race_metadata.racetrack != entry.race.racetrack
+    = render("shipment_form", horse:, entry:, form: f) if !edit && horse.racehorse_metadata.racetrack != entry.race.racetrack
   .float-right
     = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
     = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.save"))

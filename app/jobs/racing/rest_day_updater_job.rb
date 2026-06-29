@@ -6,8 +6,8 @@ class Racing::RestDayUpdaterJob < ApplicationJob
 
     horses = 0
 
-    Horses::Horse::Racehorse.joins(:race_metadata).where(race_metadata: { at_home: true, in_transit: false }).find_each do |horse|
-      data = horse.race_metadata
+    Horses::Horse::Racehorse.joins(:racehorse_metadata).where(racehorse_metadata: { at_home: true, in_transit: false }).find_each do |horse|
+      data = horse.racehorse_metadata
       data.update(rest_days_since_last_race: data.rest_days_since_last_race.to_i + 1, last_rested_at: Date.current)
       horses += 1
     end
