@@ -16,7 +16,7 @@ describe Horses::Horse do
     it { is_expected.to have_one(:leaser).through(:current_lease).source(:leaser) }
     it { is_expected.to have_many(:past_leases).class_name("Horses::Lease").dependent(:destroy) }
     it { is_expected.to have_one(:race_options).class_name("Racing::RaceOption").dependent(:delete) }
-    it { is_expected.to have_one(:race_metadata).class_name("Racing::RacehorseMetadata").dependent(:delete) }
+    it { is_expected.to have_one(:racehorse_metadata).class_name("Racing::RacehorseMetadata").dependent(:delete) }
     it { is_expected.to have_many(:race_result_finishes).class_name("Racing::RaceResultHorse").dependent(:destroy) }
     it { is_expected.to have_many(:race_results).class_name("Racing::RaceResult").through(:race_result_finishes) }
     it { is_expected.to have_one(:sale_offer).class_name("Horses::SaleOffer").dependent(:delete) }
@@ -65,7 +65,7 @@ describe Horses::Horse do
   describe ".ransackable_attributes" do
     it "returns correct fields" do
       expect(described_class.ransackable_attributes).to match_array(
-                                                          %w[id age breeder_id dam_id date_of_birth date_of_death foals_count gender location_bred_id name owner_id sire_id status unborn_foals_count]
+                                                          %w[id age breeder_id dam_id date_of_birth date_of_death foals_count gender location_bred_id name owner_id sire_id state type unborn_foals_count]
                                                         )
     end
   end
@@ -73,7 +73,7 @@ describe Horses::Horse do
   describe ".ransackable_associations" do
     it "returns correct list" do
       expect(described_class.ransackable_associations).to match_array(
-                                                            %w[breeder dam location_bred owner sire race_stats race_metadata race_options latest_injury latest_race_result race_qualification race_results next_foal]
+                                                            %w[breeder dam location_bred owner sire race_stats racehorse_metadata race_options latest_injury latest_race_result race_qualification race_results next_foal]
                                                           )
     end
   end

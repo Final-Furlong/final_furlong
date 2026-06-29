@@ -392,7 +392,7 @@ describe Racing::FutureEntryCreator do
 
     @horse = create(:racehorse)
     @race_option = create(:race_option, horse: @horse)
-    horse.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
+    horse.racehorse_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
     refresh_views
     @horse
   end

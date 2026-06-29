@@ -1,6 +1,6 @@
 /# locals: (boarding:)
 - horse = boarding.horse
-- data = horse.race_metadata
+- data = horse.racehorse_metadata
 tr
   td class="text-#{horse.gender.downcase}"= link_to horse.name, horse_path(horse), data: { turbo_frame: "_top" }
   td= l(boarding.start_date)

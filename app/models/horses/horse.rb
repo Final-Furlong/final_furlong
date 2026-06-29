@@ -131,7 +131,7 @@ module Horses
     end
 
     def name_with_boarding_info
-      data = race_metadata
+      data = racehorse_metadata
       return name if data.blank?
 
       location = data.racetrack.name
@@ -184,11 +184,11 @@ module Horses
     end
 
     def self.ransackable_attributes(_auth_object = nil)
-      %w[id age breeder_id dam_id date_of_birth date_of_death foals_count gender location_bred_id name owner_id sire_id status unborn_foals_count]
+      %w[id age breeder_id dam_id date_of_birth date_of_death foals_count gender location_bred_id name owner_id sire_id state type unborn_foals_count]
     end
 
     def self.ransackable_associations(_auth_object = nil)
-      %w[breeder dam location_bred owner sire race_stats race_metadata race_options race_qualification race_results latest_race_result latest_injury next_foal]
+      %w[breeder dam location_bred owner sire race_stats racehorse_metadata race_options race_qualification race_results latest_race_result latest_injury next_foal]
     end
 
     def self.ransackable_scopes(_auth_object = nil)

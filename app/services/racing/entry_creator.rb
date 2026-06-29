@@ -67,7 +67,7 @@ module Racing
       end
 
       fee = race.entry_fee
-      data = horse.race_metadata
+      data = horse.racehorse_metadata
       @race_location = race.racetrack.location
       max_travel_days = (race.travel_deadline - Date.current).to_i
       needs_shipment = false

@@ -1,5 +1,5 @@
 /# locals: (horse:)
-- data = horse.race_metadata
+- data = horse.racehorse_metadata
 tr
   td.text-sm class="text-#{horse.gender.downcase}"= link_to horse.name_with_title, horse_path(horse), data: { turbo_frame: "_top" }
   td.text-sm.text-center= horse.age

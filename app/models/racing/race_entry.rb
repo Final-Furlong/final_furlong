@@ -69,7 +69,7 @@ module Racing
       return false if persisted?
       return false unless horse
 
-      horse.race_metadata.racetrack != race.racetrack
+      horse.racehorse_metadata.racetrack != race.racetrack
     end
   end
 end

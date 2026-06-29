@@ -188,7 +188,7 @@ describe Racing::RaceResultCreator do
     return @horse1 if defined?(@horse1)
 
     @horse1 = create(:racehorse)
-    @horse1.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
+    @horse1.racehorse_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
     create(:race_entry, horse: @horse1, race:, jockey: jockey1)
     @horse1
   end
@@ -197,7 +197,7 @@ describe Racing::RaceResultCreator do
     return @horse2 if defined?(@horse2)
 
     @horse2 = create(:racehorse)
-    @horse2.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
+    @horse2.racehorse_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
     create(:race_entry, horse: @horse2, race:, jockey: jockey2)
     @horse2
   end

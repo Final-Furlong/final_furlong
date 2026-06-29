@@ -112,7 +112,7 @@ module Auctions
             last_shipment = horse.shipments.order(arrival_date: :desc).first
             if last_shipment&.shipping_type == "track_to_farm"
               racetrack = buyer.racetrack
-              horse.race_metadata&.update(racetrack:, location: racetrack.location, location_string: buyer.name)
+              horse.racehorse_metadata&.update(racetrack:, location: racetrack.location, location_string: buyer.name)
             end
           end
         end

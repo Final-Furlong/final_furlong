@@ -6,7 +6,7 @@ module Racing
         horse = injury.horse
         next unless Racing::RaceResultHorse.by_date(date).exists?(horse:)
 
-        horse.race_metadata&.update(last_injured_at: date, currently_injured: true)
+        horse.racehorse_metadata&.update(last_injured_at: date, currently_injured: true)
         injuries += 1
       end
       injuries
