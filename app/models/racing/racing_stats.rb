@@ -18,7 +18,7 @@ module Racing
       presence: true
 
     scope :min_energy, ->(energy) { where(energy: energy..) }
-    scope :not_peaked, -> { where("peak_start_date > ?", Date.current) }
+    scope :peaked, -> { where("peak_start_date > ?", Date.current) }
     scope :not_peaked, -> { where(peak_start_date: ..Date.current) }
 
     has_flags 1 => :blinkers,
