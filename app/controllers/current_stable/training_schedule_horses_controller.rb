@@ -15,7 +15,7 @@ module CurrentStable
       if type.workouts?
         query = policy_scope(Horses::Horse::Racehorse.joins(:training_schedule).where(training_schedules: { id: schedule }),
           policy_scope_class: Racing::TrainingScheduleHorsePolicy::Scope)
-        query = query.includes(:race_metadata, :race_options, :current_boarding).order(name: :asc)
+        query = query.includes(:racehorse_metadata, :race_options, :current_boarding).order(name: :asc)
       else
         horses_query = Horses::Horse::Racehorse.left_joins(:training_schedule).where(training_schedules: { id: [schedule, nil] })
         query = policy_scope(horses_query, policy_scope_class: CurrentStable::HorsePolicy::Scope)

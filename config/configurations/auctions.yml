@@ -10,7 +10,8 @@ shared:
     - racehorse
     - stud
     - broodmare
-    - foal
+    - yearling
+    - weanling
   hours_until_sold:
     - 12
     - 24

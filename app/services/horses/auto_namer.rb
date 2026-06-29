@@ -2,11 +2,11 @@ module Horses
   class AutoNamer
     def call
       horses_updated = 0
-      Horses::Horse::Racehorse.min_age(2).not_created.where(name: nil).find_each do |horse|
+      Horses::Horse::Racehorse.min_age(2).active.not_created.where(name: nil).find_each do |horse|
         set_name(horse:)
         horses_updated += 1
       end
-      Horses::Horse.born.not_stillborn.created.min_age(2).joins(:owner).where(name: nil, owner: { name: Config::Game.stable }).find_each do |horse|
+      Horses::Horse::Racehorse.born.not_stillborn.active.created.min_age(2).joins(:owner).where(name: nil, owner: { name: Config::Game.stable }).find_each do |horse|
         set_name(horse:)
         horses_updated += 1
       end
@@ -17,7 +17,7 @@ module Horses
 
     def set_name(horse:)
       adjective, noun, name = generate_name
-      while Horses::Horse.where.not(id: horse.id).exists?(["name LIKE ?", "#{adjective}%#{noun}%"])
+      while Horses::Horse.where.not(id: horse.id).exists?(["name ILIKE ?", "#{adjective}%#{noun}%"])
         adjective, noun, name = generate_name
       end
       horse.update(name:)

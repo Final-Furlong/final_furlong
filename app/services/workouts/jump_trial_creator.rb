@@ -7,7 +7,7 @@ module Workouts
       jockey
 
       trial_result = do_jumps
-      racetrack = horse.race_metadata.racetrack
+      racetrack = horse.racehorse_metadata.racetrack
       condition = racetrack.surfaces.steeplechase.first.condition
       trial = Workouts::JumpTrial.new(horse:, date: Date.current, racetrack:, condition:, jockey:)
       trial.time_in_seconds = trial_result[:time]
@@ -27,7 +27,7 @@ module Workouts
         stats.fitness += trial_result[:fitness_gain]
         stats.fitness = stats.fitness.clamp(-50, 100)
         stats.save
-        if (data = horse.race_metadata)
+        if (data = horse.racehorse_metadata)
           data.assign_attributes(workouts_since_last_race: data.workouts_since_last_race.to_i + 1)
           data.update_grades(energy: stats.energy, fitness: stats.fitness)
         end

@@ -69,7 +69,7 @@ module Racing
 
       ActiveRecord::Base.transaction do
         result.updated = entry.save!
-        data = horse.race_metadata
+        data = horse.racehorse_metadata
         data.next_entry_date = race.date if data.next_entry_date.blank? || data.next_entry_date > race.date
         data.save!
       end

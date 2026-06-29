@@ -79,7 +79,7 @@ module Workouts
           stats.fitness += workout.fitness_gain
           stats.fitness = stats.fitness.clamp(-50, 100)
           stats.save
-          if (data = horse.race_metadata)
+          if (data = horse.racehorse_metadata)
             data.assign_attributes(workouts_since_last_race: data.workouts_since_last_race.to_i + 1)
             data.update_grades(energy: stats.energy, fitness: stats.fitness)
           end

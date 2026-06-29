@@ -12,7 +12,7 @@ module Horses::Racehorse
         current_year_days = (end_date - start_date).to_i
 
         horse = boarding.horse
-        if (data = horse.race_metadata)
+        if (data = horse.racehorse_metadata)
           data.update(last_rested_at: Date.current, rest_days_since_last_race: data.rest_days_since_last_race.to_i + 1)
         end
         current_year_days += horse.boardings.current_year.where(location: boarding.location).sum(:days)

@@ -11,11 +11,11 @@ class Racing::EnergyFitnessUpdaterJob < ApplicationJob
 
     # rubocop:disable Rails/SkipsModelValidations
     Racing::RacingStats.where(natural_energy_gain: "0.000").update_all(Arel.sql("natural_energy_gain = (FLOOR(RANDOM() * (444 - 220 + 1) + 220) / 100)"))
-    Racing::RacingStats.where(horse: Horses::Horse::Racehorse.joins(:race_metadata).where(race_metadata: { at_home: true }))
+    Racing::RacingStats.where(horse: Horses::Horse::Racehorse.joins(:racehorse_metadata).where(racehorse_metadata: { at_home: true }))
       .update_all(Arel.sql("energy = (energy + ((natural_energy_gain + energy_regain) * #{days_since})), fitness = (fitness - #{days_since})"))
-    Racing::RacingStats.where(horse: Horses::Horse::Racehorse.joins(:race_metadata).where.associated(:current_boarding))
+    Racing::RacingStats.where(horse: Horses::Horse::Racehorse.joins(:racehorse_metadata).where.associated(:current_boarding))
       .update_all(Arel.sql("energy = (energy + ((natural_energy_gain + energy_regain) * #{days_since})), fitness = (fitness - #{days_since})"))
-    Racing::RacingStats.where(horse: Horses::Horse::Racehorse.joins(:race_metadata).where.missing(:current_boarding).where(race_metadata: { at_home: false }))
+    Racing::RacingStats.where(horse: Horses::Horse::Racehorse.joins(:racehorse_metadata).where.missing(:current_boarding).where(racehorse_metadata: { at_home: false }))
       .update_all(Arel.sql("energy = (energy + (energy_regain * #{days_since})), fitness = (fitness - #{days_since})"))
     Racing::RacingStats.where("energy > 100").update_all(energy: 100)
     Racing::RacingStats.where("energy < -100").update_all(energy: -100)

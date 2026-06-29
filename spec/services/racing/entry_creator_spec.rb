@@ -351,7 +351,7 @@ describe Racing::EntryCreator do
 
             before do
               other_racetrack = create(:racetrack)
-              horse.race_metadata.update(racetrack: other_racetrack, location: other_racetrack.location)
+              horse.racehorse_metadata.update(racetrack: other_racetrack, location: other_racetrack.location)
               horse_location = other_racetrack.location
               race_location = race.racetrack.location
               create(:shipping_route, starting_location: horse_location, ending_location: race_location, road_cost: 1000)
@@ -369,7 +369,7 @@ describe Racing::EntryCreator do
 
           before do
             other_racetrack = create(:racetrack)
-            horse.race_metadata.update(racetrack: other_racetrack, location: other_racetrack.location)
+            horse.racehorse_metadata.update(racetrack: other_racetrack, location: other_racetrack.location)
             horse_location = other_racetrack.location
             stable.update(racetrack: other_racetrack)
             race_location = race.racetrack.location
@@ -388,7 +388,7 @@ describe Racing::EntryCreator do
 
           before do
             other_racetrack = create(:racetrack)
-            horse.race_metadata.update(racetrack: other_racetrack, location: other_racetrack.location)
+            horse.racehorse_metadata.update(racetrack: other_racetrack, location: other_racetrack.location)
             horse_location = other_racetrack.location
             race_location = race.racetrack.location
             create(:shipping_route, starting_location: horse_location, ending_location: race_location, road_cost: 1000)
@@ -411,7 +411,7 @@ describe Racing::EntryCreator do
 
           before do
             other_racetrack = create(:racetrack)
-            horse.race_metadata.update(racetrack: other_racetrack, location: other_racetrack.location)
+            horse.racehorse_metadata.update(racetrack: other_racetrack, location: other_racetrack.location)
             horse_location = other_racetrack.location
             race_location = race.racetrack.location
             create(:shipping_route, starting_location: horse_location, ending_location: race_location, road_cost: 1000, road_days: 10)
@@ -477,10 +477,10 @@ describe Racing::EntryCreator do
 
         before do
           horse = create(:racehorse, owner: stable)
-          horse.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
+          horse.racehorse_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
           create(:race_entry, race:, horse:)
           horse = create(:racehorse, owner: stable)
-          horse.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
+          horse.racehorse_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
           create(:race_entry, race:, horse:)
         end
       end
@@ -491,13 +491,13 @@ describe Racing::EntryCreator do
 
           before do
             horse = create(:racehorse, owner: stable)
-            horse.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
+            horse.racehorse_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
             create(:race_entry, race:, horse:)
             horse = create(:racehorse, owner: stable)
-            horse.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
+            horse.racehorse_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
             create(:race_entry, race:, horse:)
             horse = create(:racehorse, owner: stable)
-            horse.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
+            horse.racehorse_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
             create(:race_entry, race:, horse:)
           end
         end
@@ -508,7 +508,7 @@ describe Racing::EntryCreator do
       it_behaves_like "an entry without errors" do
         before do
           horse = create(:racehorse, owner: stable)
-          horse.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
+          horse.racehorse_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
           create(:race_entry, race:, horse:)
         end
       end
@@ -521,7 +521,7 @@ describe Racing::EntryCreator do
         before do
           14.times do
             horse = create(:racehorse)
-            horse.race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
+            horse.racehorse_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
             create(:race_entry, race:, horse:)
           end
         end
@@ -550,8 +550,8 @@ describe Racing::EntryCreator do
 
     @horse = create(:racehorse)
     @race_option = create(:race_option, horse: @horse)
-    @race_metadata = @horse.race_metadata
-    @race_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
+    @racehorse_metadata = @horse.racehorse_metadata
+    @racehorse_metadata.update(racetrack: race.racetrack, location: race.racetrack.location)
     refresh_views
     @horse
   end
