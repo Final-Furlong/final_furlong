@@ -132,7 +132,7 @@ module Racing
       stats.xp_current += finish[:experience_gained].clamp(5, 20)
       stats.xp_current = Config::Racing.maximum_xp if stats.xp_current > Config::Racing.maximum_xp
       stats.natural_energy_current -= [10, finish[:natural_energy_used]].min
-      if (data = horse.race_metadata)
+      if (data = horse.racehorse_metadata)
         data.update_grades(energy: stats.energy, fitness: stats.fitness)
         next_entry_date = horse.race_entries.where("date > ?", date).minimum(:date) || horse.future_race_entries.where("date > ?", date).minimum(:date)
         data.update(last_raced_at: date, next_entry_date:, racetrack:, location: racetrack.location, location_string: I18n.t("horse.location.at_racetrack", name: racetrack.name))

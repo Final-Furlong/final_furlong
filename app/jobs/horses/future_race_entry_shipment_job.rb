@@ -6,7 +6,7 @@ class Horses::FutureRaceEntryShipmentJob < ApplicationJob
     race = entry.race
     horse = entry.horse
     race_location = race.racetrack.location
-    horse_location = horse.race_metadata.location
+    horse_location = horse.racehorse_metadata.location
     return if race_location == horse_location
 
     route = Shipping::Route.with_locations(race_location, horse_location).first
@@ -23,7 +23,7 @@ class Horses::FutureRaceEntryShipmentJob < ApplicationJob
       days = route.air_days
     end
     shipment.arrival_date = date + days.days
-    shipment.shipping_type = horse.race_metadata.at_home? ? "farm_to_track" : "track_to_track"
+    shipment.shipping_type = horse.racehorse_metadata.at_home? ? "farm_to_track" : "track_to_track"
     Horses::Racehorse::FutureShipmentProcessor.new.ship_horse(shipment:)
   end
 end

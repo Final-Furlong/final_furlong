@@ -56,7 +56,7 @@ module Workouts
       self.effort = 100
       options = horse.race_options
       self.jockey = options&.first_jockey
-      self.racetrack = horse.race_metadata.racetrack
+      self.racetrack = horse.racehorse_metadata.racetrack
       if racetrack && options.racehorse_type == "jump"
         self.surface = racetrack.surfaces.steeplechase.first
       elsif racetrack && options.racehorse_type != "jump"

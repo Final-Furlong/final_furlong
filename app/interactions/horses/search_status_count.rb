@@ -86,7 +86,30 @@ module Horses
     end
 
     def group_by_status_count
-      horse_query.group(:status).count.symbolize_keys
+      list = {}
+      horse_query.group(:type, :state).count.each do |group|
+        type_info = group.first
+        if type_info.first != "Horses::Horse::Foal"
+          case type_info.last
+          when "active"
+            type = type_info.first.sub!("Horses::Horse::", "").downcase.to_sym
+            list[type] ||= 0
+            list[type] += group.last
+          when "retired"
+            list[:retired] ||= 0
+            list[:retired] += group.last
+          when "deceased"
+            list[:deceased] ||= 0
+            list[:deceased] += group.last
+          else
+            # do nothing, unborn
+          end
+        else
+          list[:yearling] = type_info.first.constantize.born.active.with_age(1).count
+          list[:weanling] = type_info.first.constantize.born.active.with_age(0).count
+        end
+      end
+      list
     end
 
     def default_status_list

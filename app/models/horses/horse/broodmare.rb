@@ -15,7 +15,7 @@ module Horses
       return I18n.t("horses.statuses.deceased") if deceased?
 
       key = retired? ? "retired_broodmare" : "broodmare"
-      I18n.t("horses.status.#{key}")
+      I18n.t("horses.statuses.#{key}")
     end
 
     def breed_ranking_string
