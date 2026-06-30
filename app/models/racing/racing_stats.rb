@@ -18,8 +18,10 @@ module Racing
       presence: true
 
     scope :min_energy, ->(energy) { where(energy: energy..) }
-    scope :peaked, -> { where("peak_start_date > ?", Date.current) }
-    scope :not_peaked, -> { where(peak_start_date: ..Date.current) }
+    # rubocop:disable Rails/WhereRange
+    scope :peaked, -> { where("peak_start_date <= ?", Date.current) }
+    # rubocop:enable Rails/WhereRange
+    scope :not_peaked, -> { where("peak_start_date > ?", Date.current) }
 
     has_flags 1 => :blinkers,
       2 => :shadow_roll,

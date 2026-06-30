@@ -3,6 +3,7 @@ module Racing
     def index
       query = policy_scope(Racing::RaceResult).includes(track_surface: :racetrack)
       date = params[:date].presence || Racing::RaceResult.maximum(:date)
+      date = Racing::RaceResult.maximum(:date) if Date.parse(date).future?
       query = query.where(date:)
       query = query.order(number: :asc) # TODO: replace with user-picked field(s)
 
