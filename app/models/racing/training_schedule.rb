@@ -44,10 +44,63 @@ module Racing
         none
       end
     }
+    scope :valid_for_horse, ->(horse) {
+      if horse.age > 2
+        where(stable_id: horse.manager_id)
+      else
+        where(stable_id: horse.manager_id).max_gallop(Config::Workouts.max_gallop_for_2yos).max_distance(Config::Workouts.max_distance_for_2yos)
+      end
+    }
+    scope :max_gallop, ->(value) {
+      where(
+        "(sunday_activities->>'activity1' != :activity OR (sunday_activities->>'activity1' = :activity AND COALESCE(CAST(sunday_activities->>'distance1' AS integer), 0) <= :distance)) AND
+        (sunday_activities->>'activity2' != :activity OR (sunday_activities->>'activity2' = :activity AND COALESCE(CAST(sunday_activities->>'distance2' AS integer), 0) <= :distance)) AND
+        (sunday_activities->>'activity3' != :activity OR (sunday_activities->>'activity3' = :activity AND COALESCE(CAST(sunday_activities->>'distance3' AS integer), 0) <= :distance)) AND
+        (monday_activities->>'activity1' != :activity OR (monday_activities->>'activity1' = :activity AND COALESCE(CAST(monday_activities->>'distance1' AS integer), 0) <= :distance)) AND
+        (monday_activities->>'activity2' != :activity OR (monday_activities->>'activity2' = :activity AND COALESCE(CAST(monday_activities->>'distance2' AS integer), 0) <= :distance)) AND
+        (monday_activities->>'activity3' != :activity OR (monday_activities->>'activity3' = :activity AND COALESCE(CAST(monday_activities->>'distance3' AS integer), 0) <= :distance)) AND
+        (tuesday_activities->>'activity1' != :activity OR (tuesday_activities->>'activity1' = :activity AND COALESCE(CAST(tuesday_activities->>'distance1' AS integer), 0) <= :distance)) AND
+        (tuesday_activities->>'activity2' != :activity OR (tuesday_activities->>'activity2' = :activity AND COALESCE(CAST(tuesday_activities->>'distance2' AS integer), 0) <= :distance)) AND
+        (tuesday_activities->>'activity3' != :activity OR (tuesday_activities->>'activity3' = :activity AND COALESCE(CAST(tuesday_activities->>'distance3' AS integer), 0) <= :distance)) AND
+        (wednesday_activities->>'activity1' != :activity OR (wednesday_activities->>'activity1' = :activity AND COALESCE(CAST(wednesday_activities->>'distance1' AS integer), 0) <= :distance)) AND
+        (wednesday_activities->>'activity2' != :activity OR (wednesday_activities->>'activity2' = :activity AND COALESCE(CAST(wednesday_activities->>'distance2' AS integer), 0) <= :distance)) AND
+        (wednesday_activities->>'activity3' != :activity OR (wednesday_activities->>'activity3' = :activity AND COALESCE(CAST(wednesday_activities->>'distance3' AS integer), 0) <= :distance)) AND
+        (thursday_activities->>'activity1' != :activity OR (thursday_activities->>'activity1' = :activity AND COALESCE(CAST(thursday_activities->>'distance1' AS integer), 0) <= :distance)) AND
+        (thursday_activities->>'activity2' != :activity OR (thursday_activities->>'activity2' = :activity AND COALESCE(CAST(thursday_activities->>'distance2' AS integer), 0) <= :distance)) AND
+        (thursday_activities->>'activity3' != :activity OR (thursday_activities->>'activity3' = :activity AND COALESCE(CAST(thursday_activities->>'distance3' AS integer), 0) <= :distance)) AND
+        (friday_activities->>'activity1' != :activity OR (friday_activities->>'activity1' = :activity AND COALESCE(CAST(friday_activities->>'distance1' AS integer), 0) <= :distance)) AND
+        (friday_activities->>'activity2' != :activity OR (friday_activities->>'activity2' = :activity AND COALESCE(CAST(friday_activities->>'distance2' AS integer), 0) <= :distance)) AND
+        (friday_activities->>'activity3' != :activity OR (friday_activities->>'activity3' = :activity AND COALESCE(CAST(friday_activities->>'distance3' AS integer), 0) <= :distance)) AND
+        (saturday_activities->>'activity1' != :activity OR (saturday_activities->>'activity1' = :activity AND COALESCE(CAST(saturday_activities->>'distance1' AS integer), 0) <= :distance)) AND
+        (saturday_activities->>'activity2' != :activity OR (saturday_activities->>'activity2' = :activity AND COALESCE(CAST(saturday_activities->>'distance2' AS integer), 0) <= :distance)) AND
+        (saturday_activities->>'activity3' != :activity OR (saturday_activities->>'activity3' = :activity AND COALESCE(CAST(saturday_activities->>'distance3' AS integer), 0) <= :distance))",
+        { activity: "gallop", distance: value }
+      )
+    }
+    scope :max_distance, ->(value) {
+      where(
+        "COALESCE(CAST(sunday_activities->>'distance1' AS integer) + CAST(sunday_activities->>'distance2' AS integer) + CAST(sunday_activities->>'distance3' AS integer), 0) <= :distance AND
+        COALESCE(CAST(monday_activities->>'distance1' AS integer) + CAST(monday_activities->>'distance2' AS integer) + CAST(monday_activities->>'distance3' AS integer), 0) <= :distance AND
+        COALESCE(CAST(tuesday_activities->>'distance1' AS integer) + CAST(tuesday_activities->>'distance2' AS integer) + CAST(tuesday_activities->>'distance3' AS integer), 0) <= :distance AND
+        COALESCE(CAST(wednesday_activities->>'distance1' AS integer) + CAST(wednesday_activities->>'distance2' AS integer) + CAST(wednesday_activities->>'distance3' AS integer), 0) <= :distance AND
+        COALESCE(CAST(thursday_activities->>'distance1' AS integer) + CAST(thursday_activities->>'distance2' AS integer) + CAST(thursday_activities->>'distance3' AS integer), 0) <= :distance AND
+        COALESCE(CAST(friday_activities->>'distance1' AS integer) + CAST(friday_activities->>'distance2' AS integer) + CAST(friday_activities->>'distance3' AS integer), 0) <= :distance AND
+        COALESCE(CAST(saturday_activities->>'distance1' AS integer) + CAST(saturday_activities->>'distance2' AS integer) + CAST(saturday_activities->>'distance3' AS integer), 0) <= :distance",
+        { distance: value }
+      )
+    }
 
     def daily_activities
       weekday = Time.zone.today.strftime("%A")
       send(:"#{weekday.downcase}_activities")
+    end
+
+    def valid_for_age?(age)
+      return true if age > 2
+
+      WEEKDAYS.all? do |weekday|
+        send("#{weekday.downcase}_activities").blank? || send("#{weekday.downcase}_activities").valid_for_2yo?
+      end
     end
 
     private

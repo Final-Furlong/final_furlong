@@ -1,0 +1,17 @@
+/# locals: (training_schedule:)
+p= training_schedule.description
+table.table.table-bordered.w-full.mt-3
+  thead
+    tr
+      td Day
+      td Activity
+      td Activity
+      td Activity
+  tbody.table-group-divider
+    - Date::DAYNAMES.each do |day|
+      - if training_schedule.send(:"#{day.downcase}_activities").present?
+        tr
+          td= day
+          td= training_schedule.send(:"#{day.downcase}_activities").activity_with_distance(1)
+          td= training_schedule.send(:"#{day.downcase}_activities").activity_with_distance(2)
+          td= training_schedule.send(:"#{day.downcase}_activities").activity_with_distance(3)

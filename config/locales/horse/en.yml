@@ -26,6 +26,9 @@ en:
         cancel: Cancel Sale Offer
         reject: Reject Sale
       ship: Ship Horse
+      training_schedules:
+        set: Set Training Schedule
+        view: View Training Schedule
       update_race_options: Set Racing Options
       update_stud_options: Set Stud Options
       view_sales: Sales History
@@ -839,6 +842,13 @@ en:
       national: National Champion
       normal: Champion
       world: World Champion
+    training_schedules:
+      edit:
+        title: Assign Schedule for %{name}
+      show:
+        schedule: 'Assigned Schedule: %{name}'
+        schedule_details: Schedule Details
+        title: Training Schedule for %{name}
     type:
       broodmare: broodmare
       generic: horse

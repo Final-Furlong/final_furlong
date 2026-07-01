@@ -1,0 +1,23 @@
+ruby:
+  title = t(".title", name: @horse.name)
+  content_for :title, title
+
+.text-center
+  h1.text-xl.font-bold= title
+
+.my-2
+  .font-bold.text-lg.inline= t(".schedule", name: @schedule.name)
+  ruby:
+    confirm_message = t("current_stable.training_schedules.horse.confirm", name: @horse.name)
+    data = { turbo_confirm: confirm_message, turbo_method: :delete, turbo_frame: "_top" }
+  = render Ui::Button::Component.new(color: :error, style: :outline, size: :small, http_method: :delete, form_class: "inline ml-2", data:, url: horse_training_schedule_path(@horse)) do
+    = t("current_stable.training_schedules.horse.remove")
+
+.card.card-border.bg-base-100.w-full.px-2.rounded-none
+  .card-body.p-0.rounded-none
+    .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
+      input type="checkbox"
+      .collapse-title.font-semibold.font-medium
+        span= t(".schedule_details")
+      .collapse-content.text-sm.border-t-1.border-base-content/40
+        = render partial: "current_stable/training_schedules/training_schedule_details", locals: { training_schedule: @schedule }

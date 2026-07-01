@@ -30,6 +30,8 @@ module Horses
       [
         { key: :ship },
         { key: :update_race_options, policy: CurrentStable::RacehorsePolicy },
+        { key: :view_training_schedule, policy: CurrentStable::RacehorsePolicy },
+        { key: :set_training_schedule, policy: CurrentStable::RacehorsePolicy },
         { key: :board, policy: CurrentStable::RacehorsePolicy },
         { key: :stop_boarding, policy: CurrentStable::RacehorsePolicy },
         { key: :run_workout, policy: CurrentStable::RacehorsePolicy },

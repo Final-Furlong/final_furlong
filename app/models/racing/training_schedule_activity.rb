@@ -47,6 +47,23 @@ module Racing
       activity1.blank? && activity2.blank? && activity3.blank?
     end
 
+    def valid_for_2yo?
+      total_distance = distance1.to_i + distance2.to_i + distance3.to_i
+      return false if total_distance > Config::Workouts.max_distance_for_2yos
+
+      gallop_distance = if activity1 == "gallop"
+        distance1
+      elsif activity2 == "gallop"
+        distance2
+      elsif activity3 == "gallop"
+        distance3
+      else
+        0
+      end
+
+      gallop_distance <= Config::Workouts.max_gallop_for_2yos
+    end
+
     def activity_with_distance(index)
       activity = send(:"activity#{index}")
       return I18n.t("common.none") if activity.blank?

@@ -15,7 +15,7 @@ tr
         data = { turbo_confirm: confirm_message, turbo_method: :delete }
       = render Ui::Button::Component.new(color: :error, style: :outline, size: :small, http_method: :delete, form_class: "inline", data:, url: stable_training_schedule_horse_path(horse_schedule, horse)) do
         = t("current_stable.training_schedules.horse.remove")
-    - else
+    - elsif schedule.valid_for_age?(horse.age)
       - schedule_horse = Racing::TrainingScheduleHorse.new(training_schedule: schedule)
       = form_with model: schedule_horse, url: stable_training_schedule_horses_path do |f|
         = f.hidden_field :training_schedule_id, value: schedule.id

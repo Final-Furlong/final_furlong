@@ -71,6 +71,7 @@ resources :horses, except: %i[new create destroy] do
       end
       resource :status, only: %i[edit update]
       resource :stud_options, only: %i[new create edit update]
+      resource :training_schedule, only: %i[show edit update destroy]
       resources :workouts, only: %i[index new create]
       resources :workout_stats, only: %i[index]
     end
