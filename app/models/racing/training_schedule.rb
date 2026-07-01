@@ -53,27 +53,27 @@ module Racing
     }
     scope :max_gallop, ->(value) {
       where(
-        "(sunday_activities->>'activity1' != :activity OR (sunday_activities->>'activity1' = :activity AND COALESCE(CAST(sunday_activities->>'distance1' AS integer), 0) <= :distance)) AND
-        (sunday_activities->>'activity2' != :activity OR (sunday_activities->>'activity2' = :activity AND COALESCE(CAST(sunday_activities->>'distance2' AS integer), 0) <= :distance)) AND
-        (sunday_activities->>'activity3' != :activity OR (sunday_activities->>'activity3' = :activity AND COALESCE(CAST(sunday_activities->>'distance3' AS integer), 0) <= :distance)) AND
-        (monday_activities->>'activity1' != :activity OR (monday_activities->>'activity1' = :activity AND COALESCE(CAST(monday_activities->>'distance1' AS integer), 0) <= :distance)) AND
-        (monday_activities->>'activity2' != :activity OR (monday_activities->>'activity2' = :activity AND COALESCE(CAST(monday_activities->>'distance2' AS integer), 0) <= :distance)) AND
-        (monday_activities->>'activity3' != :activity OR (monday_activities->>'activity3' = :activity AND COALESCE(CAST(monday_activities->>'distance3' AS integer), 0) <= :distance)) AND
-        (tuesday_activities->>'activity1' != :activity OR (tuesday_activities->>'activity1' = :activity AND COALESCE(CAST(tuesday_activities->>'distance1' AS integer), 0) <= :distance)) AND
-        (tuesday_activities->>'activity2' != :activity OR (tuesday_activities->>'activity2' = :activity AND COALESCE(CAST(tuesday_activities->>'distance2' AS integer), 0) <= :distance)) AND
-        (tuesday_activities->>'activity3' != :activity OR (tuesday_activities->>'activity3' = :activity AND COALESCE(CAST(tuesday_activities->>'distance3' AS integer), 0) <= :distance)) AND
-        (wednesday_activities->>'activity1' != :activity OR (wednesday_activities->>'activity1' = :activity AND COALESCE(CAST(wednesday_activities->>'distance1' AS integer), 0) <= :distance)) AND
-        (wednesday_activities->>'activity2' != :activity OR (wednesday_activities->>'activity2' = :activity AND COALESCE(CAST(wednesday_activities->>'distance2' AS integer), 0) <= :distance)) AND
-        (wednesday_activities->>'activity3' != :activity OR (wednesday_activities->>'activity3' = :activity AND COALESCE(CAST(wednesday_activities->>'distance3' AS integer), 0) <= :distance)) AND
-        (thursday_activities->>'activity1' != :activity OR (thursday_activities->>'activity1' = :activity AND COALESCE(CAST(thursday_activities->>'distance1' AS integer), 0) <= :distance)) AND
-        (thursday_activities->>'activity2' != :activity OR (thursday_activities->>'activity2' = :activity AND COALESCE(CAST(thursday_activities->>'distance2' AS integer), 0) <= :distance)) AND
-        (thursday_activities->>'activity3' != :activity OR (thursday_activities->>'activity3' = :activity AND COALESCE(CAST(thursday_activities->>'distance3' AS integer), 0) <= :distance)) AND
-        (friday_activities->>'activity1' != :activity OR (friday_activities->>'activity1' = :activity AND COALESCE(CAST(friday_activities->>'distance1' AS integer), 0) <= :distance)) AND
-        (friday_activities->>'activity2' != :activity OR (friday_activities->>'activity2' = :activity AND COALESCE(CAST(friday_activities->>'distance2' AS integer), 0) <= :distance)) AND
-        (friday_activities->>'activity3' != :activity OR (friday_activities->>'activity3' = :activity AND COALESCE(CAST(friday_activities->>'distance3' AS integer), 0) <= :distance)) AND
-        (saturday_activities->>'activity1' != :activity OR (saturday_activities->>'activity1' = :activity AND COALESCE(CAST(saturday_activities->>'distance1' AS integer), 0) <= :distance)) AND
-        (saturday_activities->>'activity2' != :activity OR (saturday_activities->>'activity2' = :activity AND COALESCE(CAST(saturday_activities->>'distance2' AS integer), 0) <= :distance)) AND
-        (saturday_activities->>'activity3' != :activity OR (saturday_activities->>'activity3' = :activity AND COALESCE(CAST(saturday_activities->>'distance3' AS integer), 0) <= :distance))",
+        "(COALESCE(sunday_activities->>'activity1', '') != :activity OR (sunday_activities->>'activity1' = :activity AND COALESCE(CAST(sunday_activities->>'distance1' AS integer), 0) <= :distance)) AND
+        (COALESCE(sunday_activities->>'activity2', '') != :activity OR (sunday_activities->>'activity2' = :activity AND COALESCE(CAST(sunday_activities->>'distance2' AS integer), 0) <= :distance)) AND
+        (COALESCE(sunday_activities->>'activity3', '') != :activity OR (sunday_activities->>'activity3' = :activity AND COALESCE(CAST(sunday_activities->>'distance3' AS integer), 0) <= :distance)) AND
+        (COALESCE(monday_activities->>'activity1', '') != :activity OR (monday_activities->>'activity1' = :activity AND COALESCE(CAST(monday_activities->>'distance1' AS integer), 0) <= :distance)) AND
+        (COALESCE(monday_activities->>'activity2', '') != :activity OR (monday_activities->>'activity2' = :activity AND COALESCE(CAST(monday_activities->>'distance2' AS integer), 0) <= :distance)) AND
+        (COALESCE(monday_activities->>'activity3', '') != :activity OR (monday_activities->>'activity3' = :activity AND COALESCE(CAST(monday_activities->>'distance3' AS integer), 0) <= :distance)) AND
+        (COALESCE(tuesday_activities->>'activity1', '') != :activity OR (tuesday_activities->>'activity1' = :activity AND COALESCE(CAST(tuesday_activities->>'distance1' AS integer), 0) <= :distance)) AND
+        (COALESCE(tuesday_activities->>'activity2', '') != :activity OR (tuesday_activities->>'activity2' = :activity AND COALESCE(CAST(tuesday_activities->>'distance2' AS integer), 0) <= :distance)) AND
+        (COALESCE(tuesday_activities->>'activity3', '') != :activity OR (tuesday_activities->>'activity3' = :activity AND COALESCE(CAST(tuesday_activities->>'distance3' AS integer), 0) <= :distance)) AND
+        (COALESCE(wednesday_activities->>'activity1', '') != :activity OR (wednesday_activities->>'activity1' = :activity AND COALESCE(CAST(wednesday_activities->>'distance1' AS integer), 0) <= :distance)) AND
+        (COALESCE(wednesday_activities->>'activity2', '') != :activity OR (wednesday_activities->>'activity2' = :activity AND COALESCE(CAST(wednesday_activities->>'distance2' AS integer), 0) <= :distance)) AND
+        (COALESCE(wednesday_activities->>'activity3', '') != :activity OR (wednesday_activities->>'activity3' = :activity AND COALESCE(CAST(wednesday_activities->>'distance3' AS integer), 0) <= :distance)) AND
+        (COALESCE(thursday_activities->>'activity1', '') != :activity OR (thursday_activities->>'activity1' = :activity AND COALESCE(CAST(thursday_activities->>'distance1' AS integer), 0) <= :distance)) AND
+        (COALESCE(thursday_activities->>'activity2', '') != :activity OR (thursday_activities->>'activity2' = :activity AND COALESCE(CAST(thursday_activities->>'distance2' AS integer), 0) <= :distance)) AND
+        (COALESCE(thursday_activities->>'activity3', '') != :activity OR (thursday_activities->>'activity3' = :activity AND COALESCE(CAST(thursday_activities->>'distance3' AS integer), 0) <= :distance)) AND
+        (COALESCE(friday_activities->>'activity1', '') != :activity OR (friday_activities->>'activity1' = :activity AND COALESCE(CAST(friday_activities->>'distance1' AS integer), 0) <= :distance)) AND
+        (COALESCE(friday_activities->>'activity2', '') != :activity OR (friday_activities->>'activity2' = :activity AND COALESCE(CAST(friday_activities->>'distance2' AS integer), 0) <= :distance)) AND
+        (COALESCE(friday_activities->>'activity3', '') != :activity OR (friday_activities->>'activity3' = :activity AND COALESCE(CAST(friday_activities->>'distance3' AS integer), 0) <= :distance)) AND
+        (COALESCE(saturday_activities->>'activity1', '') != :activity OR (saturday_activities->>'activity1' = :activity AND COALESCE(CAST(saturday_activities->>'distance1' AS integer), 0) <= :distance)) AND
+        (COALESCE(saturday_activities->>'activity2', '') != :activity OR (saturday_activities->>'activity2' = :activity AND COALESCE(CAST(saturday_activities->>'distance2' AS integer), 0) <= :distance)) AND
+        (COALESCE(saturday_activities->>'activity3', '') != :activity OR (saturday_activities->>'activity3' = :activity AND COALESCE(CAST(saturday_activities->>'distance3' AS integer), 0) <= :distance))",
         { activity: "gallop", distance: value }
       )
     }
