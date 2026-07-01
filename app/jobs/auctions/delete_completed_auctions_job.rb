@@ -6,7 +6,8 @@ class Auctions::DeleteCompletedAuctionsJob < ApplicationJob
   good_job_concurrency_rule(
     label: -> { arguments.first[:id] },
     enqueue_limit: 1,
-    perform_limit: 1
+    perform_limit: 1,
+    key: -> { self.class.name }
   )
 
   def perform(id:)

@@ -5,7 +5,8 @@ class Racing::RaceSeriesWinnerCheckJob < ApplicationJob
 
   good_job_concurrency_rule(
     label: -> { arguments.first[:race_id] },
-    total_limit: 1
+    total_limit: 1,
+    key: -> { self.class.name }
   )
 
   def perform(race_id:)

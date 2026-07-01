@@ -5,7 +5,8 @@ class Horses::UpdateAgeJob < ApplicationJob
 
   good_job_concurrency_rule(
     label: -> { arguments.first[:id] },
-    total_limit: 1
+    total_limit: 1,
+    key: -> { self.class.name }
   )
 
   def perform(id:)

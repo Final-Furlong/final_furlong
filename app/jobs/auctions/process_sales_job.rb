@@ -6,7 +6,8 @@ class Auctions::ProcessSalesJob < ApplicationJob
   good_job_concurrency_rule(
     label: -> { arguments.first[:id] },
     total_limit: 2,
-    perform_throttle: [1, 5.minutes]
+    perform_throttle: [1, 5.minutes],
+    key: -> { self.class.name }
   )
 
   discard_on GoodJob::ActiveJobExtensions::Concurrency::ConcurrencyExceededError
