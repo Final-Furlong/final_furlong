@@ -845,10 +845,14 @@ en:
     training_schedules:
       edit:
         title: Assign Schedule for %{name}
+      form:
+        choose_schedule: Select A Schedule
       show:
         schedule: 'Assigned Schedule: %{name}'
         schedule_details: Schedule Details
         title: Training Schedule for %{name}
+      update:
+        success: Training schedule %{schedule} was successfully assigned to %{name}
     type:
       broodmare: broodmare
       generic: horse
