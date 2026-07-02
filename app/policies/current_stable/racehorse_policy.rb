@@ -55,8 +55,7 @@ module CurrentStable
     def set_training_schedule?
       return false unless racehorse_and_manager?
 
-      false
-      # !record.training_schedules_horse.present?
+      record.training_schedules_horse.blank?
     end
 
     def view_jockeys?

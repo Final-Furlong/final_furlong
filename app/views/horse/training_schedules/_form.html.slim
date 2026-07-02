@@ -1,0 +1,7 @@
+/# locals: (horse:, schedule: nil)
+- schedule ||= horse.training_schedules_horse || horse.build_training_schedules_horse
+= styled_form_with model: schedule, url: horse_training_schedule_path(horse), id: "training-schedule-form", method: :put, html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+  = f.collection_radio_buttons :training_schedule_id, Racing::TrainingSchedule.valid_for_horse(horse).order(name: :asc), :id, :name, class: 'select', required: true, label: t(".choose_schedule")
+  .float-right
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.save"))

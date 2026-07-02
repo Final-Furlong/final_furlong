@@ -40,6 +40,7 @@ module CurrentStable
     end
 
     def destroy
+      schedule.strict_loading!(false)
       schedule.destroy!
 
       delete_message = t("current_stable.training_schedules.deleted", name: schedule.name)

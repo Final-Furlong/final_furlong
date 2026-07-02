@@ -8,7 +8,7 @@ module Horse
     def new
       @horse = Horses::Horse::Broodmare.includes(:next_foal, :manager).find(params[:horse_id])
       authorize @horse, :breed?, policy_class: CurrentStable::BroodmarePolicy
-      @stud = Horses::Horse::Stud.left_outer_joins(:stud_nominations).includes(:stud_options, :nominations).merge(Horses::Stud::BreedersCupNomination.possible_current_year).find(params[:stud_id])
+      @stud = Horses::Horse::Stud.left_outer_joins(:nominations).includes(:stud_options, :nominations).merge(Horses::Stud::BreedersCupNomination.possible_current_year).find(params[:stud_id])
       @breeding = Horses::Breeding.new(mare: @horse, stud: @stud)
       if (failure = policy(@breeding).request_booking_result.failure)
         if %i[approval_required outside_mare_limit_met_current_stable].include?(failure)
