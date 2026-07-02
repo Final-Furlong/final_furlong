@@ -1,0 +1,20 @@
+/# locals: (horse:)
+- if horse.foals.born.present?
+  tr
+    th= t("horses.info.last_foal")
+    td
+      - if horse.foals.born.present?
+        - last_dob = horse.foals.born.order(date_of_birth: :desc).pluck(:date_of_birth).first
+        - horse.foals.includes(:sire).born.where(date_of_birth: last_dob).find_each do |foal|
+          - pedigree = Horses::PedigreeDisplayService.new(foal)
+          span class="text-#{foal.gender}" = link_to foal.name || t("horse.unnamed"), horse_path(foal), data: { turbo_frame: "_top" }
+          = " - "
+          = t("horses.info.foal_info", year: l(foal.date_of_birth, format: :year_abbr), gender: foal.gender, sire: pedigree.sire_display(target: "_top")).html_safe
+- if horse.next_foal.present?
+  - stud = horse.next_foal.stud
+  tr
+    th= t("horses.info.next_foal")
+    td
+      span
+        = t("horses.info.in_foal", stud: link_to(stud.name, horse_path(stud), data: { turbo_frame: "_top" })).html_safe
+        = t("horses.info.due_date", date: l(horse.next_foal.due_date, format: :slashes))

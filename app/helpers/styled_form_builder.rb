@@ -163,7 +163,7 @@ class StyledFormBuilder < ActionView::Helpers::FormBuilder
     wrapper_class = "flex items-center justify-start gap-2"
     wrapper_options[:class] = [wrapper_class, wrapper_options[:class]].compact.join(" ")
 
-    content_tag(:div, wrapper_options) do
+    content_tag(:fieldset, wrapper_options) do
       add_default_class!(options, "radio")
       add_error_class!(options) if has_error?(method)
 
@@ -246,6 +246,16 @@ class StyledFormBuilder < ActionView::Helpers::FormBuilder
     end
   end
 
+  def collection_radio_buttons(method, collection, value_method, text_method, options = {}, html_options = {}, &block)
+    add_error_class!(options) if has_error?(method)
+
+    field_wrapper(method, options.merge(use_legend: true)) do
+      super(method, collection, value_method, text_method, options, html_options) do |b|
+        b.label(class: "label") { b.radio_button(class: "radio") + b.text }
+      end
+    end
+  end
+
   def label(method, text = nil, options = {})
     add_default_class!(options, "label")
     add_error_class!(options, "text") if has_error?(method)
@@ -255,11 +265,26 @@ class StyledFormBuilder < ActionView::Helpers::FormBuilder
     super
   end
 
+  def legend(method, text = nil, options = {})
+    add_default_class!(options, "fieldset-legend")
+    add_error_class!(options, "text") if has_error?(method)
+    # Check both the required option and model validators
+    is_required = options.delete(:required) || required_field?(method)
+    options[:class] += " required" if is_required
+    content_tag(:legend, class: options[:class]) do
+      text
+    end
+  end
+
   def error_message(method)
     return unless has_error?(method)
 
+    errors = @object.errors[method]
+    if errors.blank? && method.to_s.ends_with?("_id")
+      errors = @object.errors[method.slice(0, method.length - 3)]
+    end
     content_tag(:p, class: "mt-1 text-sm text-red-600 dark:text-red-400") do
-      @object.errors[method].join(", ")
+      errors.join(", ")
     end
   end
 
@@ -278,6 +303,7 @@ class StyledFormBuilder < ActionView::Helpers::FormBuilder
     wrapper_options = options.delete(:wrapper)
     label_text = options.delete(:label)
     skip_label = options.delete(:skip_label) || false
+    use_legend = options.delete(:use_legend) || false
     help_text = options.delete(:help) || options.delete(:hint)
     is_required = options[:required] || false
 
@@ -292,11 +318,17 @@ class StyledFormBuilder < ActionView::Helpers::FormBuilder
       elements = []
 
       # Add label unless skipped
-      unless skip_label
+      unless skip_label || use_legend
         label_options = options.delete(:label_options) || {}
         # Pass the required flag to the label
         label_options[:required] = is_required if is_required
         elements << label(method, label_text, label_options) if label_text != false
+      end
+      if use_legend
+        label_options = options.delete(:label_options) || {}
+        # Pass the required flag to the label
+        label_options[:required] = is_required if is_required
+        elements << legend(method, label_text, label_options) if label_text != false
       end
 
       # Add the field
@@ -326,7 +358,14 @@ class StyledFormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def has_error?(method)
-    @object.respond_to?(:errors) && @object.errors[method].present?
+    return false unless @object.respond_to?(:errors)
+    return true if @object.errors[method].present?
+
+    if method.to_s.ends_with?("_id")
+      @object.errors[method.slice(0, method.length - 3)].present?
+    else
+      false
+    end
   end
 
   def required_field?(method)
