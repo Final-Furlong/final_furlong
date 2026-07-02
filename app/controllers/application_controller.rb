@@ -3,6 +3,8 @@ require "browser/aliases"
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+  add_flash_types :success
+
   include Pagy::Method
   include Devise::Controllers::Helpers
   include DeviseHooks

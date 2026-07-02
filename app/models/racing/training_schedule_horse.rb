@@ -8,8 +8,19 @@ module Racing
     delegate :stable, to: :training_schedule
 
     validates :horse_id, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex
+    validate :schedule_valid_for_horse
 
     counter_culture :training_schedule, column_name: :horses_count
+
+    private
+
+    def schedule_valid_for_horse
+      return if training_schedule.blank?
+      return if horse.blank?
+      return if training_schedule.valid_for_age?(horse.age)
+
+      errors.add(:training_schedule, :invalid)
+    end
   end
 end
 
