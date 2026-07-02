@@ -51,23 +51,21 @@ module Horses
         shipment.shipping_type = shipping_type(params)
 
         ending_racetrack = ::Racing::Racetrack.find_by(location: shipment.ending_location)
-        ActiveRecord::Base.transaction do
-          shipment.scheduled = shipment.future?
-          if shipment.valid? && shipment.save
-            unless shipment.future?
-              end_location_name = ending_location_name(stable, shipment.shipping_type)
-              horse.racehorse_metadata&.update(in_transit: true, location_string: end_location_name, location: shipment.ending_location, racetrack: ending_racetrack)
-              description = I18n.t("services.shipment_creator.description", horse: horse.name, start: current_location_name, end: end_location_name)
-              Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: cost.abs * -1)
-            end
-
-            result.created = true
-          else
-            result.created = false
-            store_shipment_errors
+        shipment.scheduled = shipment.future?
+        if shipment.valid? && shipment.save
+          unless shipment.future?
+            end_location_name = ending_location_name(stable, shipment.shipping_type)
+            horse.racehorse_metadata&.update(in_transit: true, location_string: end_location_name, location: shipment.ending_location, racetrack: ending_racetrack)
+            description = I18n.t("services.shipment_creator.description", horse: horse.name, start: current_location_name, end: end_location_name)
+            Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: cost.abs * -1)
           end
-          result.shipment = shipment
+
+          result.created = true
+        else
+          result.created = false
+          store_shipment_errors
         end
+        result.shipment = shipment
         result
       end
 

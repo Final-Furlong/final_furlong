@@ -24,9 +24,10 @@ module Racing
 
     def enter?
       return false unless logged_in?
-      return false if Racing::RaceResult.exists?(date: record.date, number: record.number)
+      return false unless Date.current >= record.entry_open_date
+      return true if record.date > Date.current
 
-      Date.current >= record.entry_open_date
+      !Racing::RaceResult.exists?(date: record.date, number: record.number)
     end
 
     def add_entry?
@@ -35,7 +36,7 @@ module Racing
 
     def schedule?
       return false unless logged_in?
-      return false if Racing::RaceResult.exists?(date: record.date, number: record.number)
+      return false if record.date <= Date.current && Racing::RaceResult.exists?(date: record.date, number: record.number)
       if add_entry_result.failure == :max_stable_entries && record.entry_limit < record.last_day_entry_limit
         scheduled_horses_count = Horses::Horse::Racehorse.managed_by(stable).joins(:future_race_entries).where(future_race_entries: { race: record }).count
         return true if scheduled_horses_count < (record.last_day_entry_limit - record.entry_limit)
