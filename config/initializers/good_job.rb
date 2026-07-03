@@ -88,6 +88,11 @@ Rails.application.configure do
         class: "Racing::PreRace::ProcessingJob",
         enabled_by_default: -> { Rails.env.production? }
       },
+      race_entry_prerace_shipping: {
+        cron: "50 10 * * 2,5", # Tues/Fri AM
+        class: "Racing::PreRace::ShippingJob",
+        enabled_by_default: -> { Rails.env.production? }
+      },
       race_runner: {
         cron: "14 11 * * 3,6", # Wed/Sat AM
         class: "Racing::TriggerRaceJob",

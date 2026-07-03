@@ -27,28 +27,28 @@
           = t("horses.info.last_race_info", date:, days: relative_time_in_words(last_race.date), track:, number:, distance:, type:, age_gender:, surface: , position: , horses:)
         - else
           = t("horses.info.last_race_info_equipment", date:, days: relative_time_in_words(last_race.date), track:, number:, distance:, type:, age_gender:, surface: , position: , horses:, equipment:)
+- if horse.race_entries.any?
+  tr
+    th= t("horses.info.next_race")
+    td
+      ruby:
+        next_entry = horse.race_entries.joins(:race).includes(:race).order(race: { date: :asc }).first
+        if next_entry
+          next_race = next_entry.race
+          date = l(next_race.date, format: :slashes)
+          track = next_race.racetrack.name
+          number = next_race.number
+          distance = next_race.distance_abbr
+          type = t("racing.race.#{next_race.race_type}")
+          age_gender = [next_race.race_age_string, next_race.race_gender_string].compact.join(' ')
+          surface = next_race.race_surface_string
+        end
+      - if next_entry
+        = render Ui::Link::Component.new(url: new_racing_race_entry_path(next_race), extra_classes: "mt-2", data: { turbo_frame: "_top" }) do
+          = t("horses.info.next_race_info", date:, days: relative_time_in_words(next_race.date), track:, number:, distance:, type:, age_gender:, surface:)
+      - else
+        = t("common.dash")
 - if horse.manager_id == Current.stable&.id
-  - if horse.race_entries.any?
-    tr
-      th= t("horses.info.next_race")
-      td
-        ruby:
-          next_entry = horse.race_entries.joins(:race).includes(:race).order(race: { date: :asc }).first
-          if next_entry
-            next_race = next_entry.race
-            date = l(next_race.date, format: :slashes)
-            track = next_race.racetrack.name
-            number = next_race.number
-            distance = next_race.distance_abbr
-            type = t("racing.race.#{next_race.race_type}")
-            age_gender = [next_race.race_age_string, next_race.race_gender_string].compact.join(' ')
-            surface = next_race.race_surface_string
-          end
-        - if next_entry
-          = render Ui::Link::Component.new(url: new_racing_race_entry_path(next_race), extra_classes: "mt-2", data: { turbo_frame: "_top" }) do
-            = t("horses.info.next_race_info", date:, days: relative_time_in_words(next_race.date), track:, number:, distance:, type:, age_gender:, surface:)
-        - else
-          = t("common.dash")
   - if horse.future_race_entries.any?
     tr
       th= t("horses.info.scheduled_race")
