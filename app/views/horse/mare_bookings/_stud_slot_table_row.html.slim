@@ -6,7 +6,7 @@ tr id="#{mare.slug}-slot-#{slot.id}"
     td.pt-4
       - used_studs = Horses::Horse::Stud.active.where(id: Horses::Breeding.bookings_available(slot).select(:stud_id)).pluck(:id)
       - unused_studs = Horses::Horse::Stud.active.where.not(id: Horses::Breeding.no_bookings(slot).select(:stud_id)).pluck(:id)
-      - query = Horses::Horse::Stud.active.includes(:stud_options, :manager).where(id: (used_studs + unused_studs).uniq).order(name: :asc)
+      - query = Horses::Horse::Stud.active.where.associated(:stud_options).includes(:stud_options, :manager).where(id: (used_studs + unused_studs).uniq).order(name: :asc)
       - available_studs = query.to_a.reject { |stud| exclude_studs.include?(stud) }
       = f.collection_select :stud_id, available_studs, :id, :name_with_owner_fee, { prompt: t(".select_stud") }, { class: "select w-full", disabled: query.size.zero?, data: { action: 'change->mare-booking#loadRowForSlot', 'mare-booking-target' => "studSlot#{slot.id}" } }
     td
