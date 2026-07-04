@@ -6,7 +6,7 @@ module Horses
         set_name(horse:)
         horses_updated += 1
       end
-      Horses::Horse::Racehorse.born.not_stillborn.active.created.min_age(2).joins(:owner).where(name: nil, owner: { name: Config::Game.stable }).find_each do |horse|
+      Horses::Horse::Racehorse.born.active.created.min_age(2).joins(:owner).where(name: nil, owner: { name: Config::Game.stable }).find_each do |horse|
         set_name(horse:)
         horses_updated += 1
       end

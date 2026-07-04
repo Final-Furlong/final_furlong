@@ -9,11 +9,11 @@ class Horses::UpdateBabiesJob < ApplicationJob
     Horses::Horse.where(status: "unborn").where(date_of_birth: ..Date.current).find_each do |foal|
       ActiveRecord::Base.transaction do
         if foal.date_of_birth == foal.date_of_death
-          foal.update(status: "deceased")
+          foal.update(status: "deceased", state: "deceased")
           notify_stillborn(foal:)
           stillborn += 1
         else
-          foal.update(status: "weanling")
+          foal.update(status: "weanling", state: "active")
           notify_birth(foal:)
           born += 1
         end
