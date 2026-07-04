@@ -14,9 +14,9 @@ module Racing
       Racing::RaceResultHorse.counter_culture_fix_counts
       Racing::RaceRecord.refresh
       Racing::LifetimeRaceRecord.refresh
-      UpdateRaceResultHorseAbbreviationsJob.set(good_job_labels: [date]).perform_later(date:)
-      Racing::RaceDayUpdaterJob.set(good_job_labels: [date]).perform_later(date:)
-      Daily::ProcessFutureShipmentsJob.set(good_job_labels: [date]).perform_later(date:)
+      UpdateRaceResultHorseAbbreviationsJob.set(good_job_labels: [date], wait: 1.minute).perform_later(date:)
+      Racing::RaceDayUpdaterJob.set(good_job_labels: [date], wait: 2.minutes).perform_later(date:)
+      Daily::ProcessFutureShipmentsJob.set(good_job_labels: [date], wait: 5.minutes).perform_later(date:)
       User::SendDeveloperNotifications.call(title: "FF Races Finished", message: "Races finished running!")
     end
   end
