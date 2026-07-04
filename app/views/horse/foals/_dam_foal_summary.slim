@@ -12,8 +12,8 @@
           = t(".breed_ranking")
       tr.text-center
         td
-          = record.born_foals_count
-          - if record.stillborn_foals_count.positive?
+          = record.born_foals_count.to_i
+          - if record.stillborn_foals_count.to_i.positive?
             = "&nbsp;".html_safe
             em= "(#{record.stillborn_foals_count} Stillborn)"
         td= record.breed_ranking_string
