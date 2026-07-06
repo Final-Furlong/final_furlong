@@ -63,7 +63,9 @@ module Horses
     scope :created, -> { where(sire_id: nil, dam_id: nil) }
     scope :not_created, -> { where("sire_id IS NOT NULL OR dam_id IS NOT NULL") }
     scope :female, -> { where(gender: Gender::FEMALE_GENDERS) }
-    scope :not_female, -> { where.not(gender: Gender::FEMALE_GENDERS) }
+    scope :male, -> { where.not(gender: Gender::FEMALE_GENDERS) }
+    scope :not_female, -> { male }
+    scope :gender, ->(value) { send(value) }
     scope :min_age, ->(age) { where(age: age..) }
     scope :max_age, ->(age) { where(age: ..age) }
     scope :with_age, ->(age) { where(age:) }
@@ -192,7 +194,7 @@ module Horses
     end
 
     def self.ransackable_scopes(_auth_object = nil)
-      %w[min_age max_age female not_female racehorse_status min_energy max_energy energy_in
+      %w[min_age max_age gender female male not_female racehorse_status min_energy max_energy energy_in
         min_fitness max_fitness fitness_in runs_on injury_status min_days_since_last_race max_days_since_last_race
         min_days_since_last_shipment max_days_since_last_shipment min_workouts_since_last_race max_workouts_since_last_race
         location entry_status injury_status min_rest_days_since_last_race max_rest_days_since_last_race
