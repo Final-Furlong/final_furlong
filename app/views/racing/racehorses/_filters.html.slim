@@ -1,6 +1,79 @@
-/# locals: (query:, status:)
-= turbo_search_form_for query, url: racing_racehorses_path, method: :get, turbo_frame: "racehorse-status-#{@status}-search" do |f|
-  = f.hidden_field :min_age
-  = f.hidden_field :max_age
-  = f.hidden_field :racehorse_status, value: status
-  = f.text_field :name_i_cont_all, placeholder: t("horses.info.name")
+/# locals: (race:, query:, qualifications:)
+.mx-auto.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100.w-full.sm:w-4/5
+  .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.mb-4
+    input type="checkbox"
+    .collapse-title.font-semibold.font-medium
+      = t("common.filters")
+      - unless !params.key?(:q) || params[:q].except(:race).compact_blank.empty?
+        span.badge.badge-info.badge-outline.ml-2
+          = t("common.active")
+    .collapse-content.text-sm.border-t-1.border-base-content/40
+      .mt-2#race-entry-search data-turbo-permanent=""
+        = turbo_search_form_for query, url: racing_racehorses_path, method: :get, html: { class: "d-flex flex-column", autocomplete: "off" }, data: { turbo_method: :get }, turbo_frame: "racehorse-table" do |f|
+          = f.hidden_field :race, value: race.id
+          .grid.grid-cols-1.sm:grid-cols-4.lg:grid-cols-5.mb-2.gap-4
+            div
+              fieldset.fieldset
+                legend.fieldset-legend= t("current_stable.training_summaries.filters.name")
+                = f.text_field :name_i_cont, class: 'input', type: 'text'
+            .flex.flex-row
+              .basis-1/2.mr-2
+                fieldset.fieldset
+                  legend.fieldset-legend= t("horses.info.energy")
+                  = f.collection_select :min_energy, Config::Racing.letter_grades.map(&:upcase), :to_s, :to_s, { prompt: t("current_stable.training_summaries.filters.min") }, { class: 'select' }
+              .basis-1/2
+                fieldset.fieldset
+                  legend.fieldset-legend= t("horses.info.fitness")
+                  = f.collection_select :min_fitness, Config::Racing.letter_grades.map(&:upcase), :to_s, :to_s, { prompt: t("current_stable.training_summaries.filters.min") }, { class: 'select' }
+            div
+              fieldset.fieldset
+                legend.fieldset-legend= t("current_stable.training_summaries.filters.location")
+                label.label
+                  = f.collection_select :location, Racing::RacehorseMetadata.joins(:horse).merge(Horses::Horse.managed_by(Current.stable)).order(location_string: :asc).select(:location_string).distinct, :location_string, :location_string, { include_blank: true }, { class: 'select' }
+            div
+              fieldset.fieldset
+                legend.fieldset-legend= t("current_stable.training_summaries.filters.age")
+                .join
+                  - Config::Racing.filter_ages.each do |age|
+                    label.label.join-item.mr-2
+                      - plain_age = age.gsub('yo', '')
+                      - disabled = !race.includes_age?(plain_age)
+                      = checkbox_tag 'q[age_in][]', plain_age, checked: params.dig(:q, :age_in).to_a.include?(plain_age), class: class_names("checkbox", "disabled": disabled), disabled: disabled
+                      = age
+            div
+              fieldset.fieldset
+                legend.fieldset-legend= t("current_stable.training_summaries.filters.gender")
+                .join
+                  - Config::Horses.filter_genders.each do |gender|
+                    label.label.join-item.mr-2
+                      - check_gender = gender == "male" ? "colt" : "filly"
+                      - disabled = race.male_only? || race.female_only?
+                      = radio_button_tag "q[gender]", gender, checked: params.dig(:q, gender.to_sym), class: "radio", disabled: disabled
+                      = gender.capitalize
+          .grid.grid-cols-1.sm:grid-cols-4.lg:grid-cols-5.mb-2.gap-4
+            div
+              fieldset.fieldset
+                legend.fieldset-legend= t(".qualification")
+                label.label
+                  = f.collection_select :racehorse_status, qualifications, :first, :last, { include_blank: true }, { class: 'select' }
+            div
+              fieldset.fieldset
+                legend.fieldset-legend= t(".days_since_last_race")
+                = f.text_field :min_days_since_last_race, class: 'input mr-2', type: 'text', placeholder: t("current_stable.training_summaries.filters.min")
+            div
+              fieldset.fieldset
+                legend.fieldset-legend= t("current_stable.training_summaries.filters.rest_days_since_last_race")
+                = f.text_field :min_rest_days_since_last_race, class: 'input mr-2', type: 'text', placeholder: t("current_stable.training_summaries.filters.min")
+            div
+              fieldset.fieldset
+                legend.fieldset-legend= t("current_stable.training_summaries.filters.days_since_last_shipment")
+                = f.text_field :min_days_since_last_shipment, class: 'input mr-2', type: 'text', placeholder: t("current_stable.training_summaries.filters.min")
+            div
+              fieldset.fieldset
+                legend.fieldset-legend= t("current_stable.training_summaries.filters.workouts_since_last_race")
+                = f.text_field :min_workouts_since_last_race, class: 'input mr-2', type: 'text', placeholder: t("current_stable.training_summaries.filters.min")
+
+          .float-right.flex.mt-2.justify-content-end
+            = render Ui::ButtonizedLink::Component.new(url: new_racing_race_entry_path(race), color: :error, style: :outline, size: :small, extra_classes: "me-2", http_method: :get, data: { action: "search#reset" }) do
+              = t("common.search_form.reset_filters")
+            = render Ui::SubmitButton::Component.new(form: f, size: :small, extra_classes: "d-lg-none", text: t("common.search_form.action"))

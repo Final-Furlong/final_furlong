@@ -34,6 +34,27 @@ module Racing
         where("#{type}_qualified": true)
       end
     }
+    scope :max_qualified_for, ->(type) {
+      if Config::Racing.non_qualified_types.include?(type)
+        if type.to_s == "stakes"
+          where(stakes_placed: true)
+        else
+          query = where(stakes_placed: false)
+          previous_qualification_levels(type).each do |qual_type|
+            query = query.or(where("#{qual_type}_qualified": true))
+          end
+          query
+        end
+      elsif type.to_s == "maiden"
+        where("#{type}_qualified": true)
+      else
+        query = where("#{type}_qualified": true)
+        previous_qualification_levels(type).each do |qual_type|
+          query = query.or(where("#{qual_type}_qualified": true))
+        end
+        query
+      end
+    }
     scope :not_qualified_for, ->(type) { where("#{type}_qualified": false) }
     scope :sort_by_qualified_asc, -> {
       order(Arel.sql("CASE

@@ -19,7 +19,9 @@ module Racing
       if apply_settings
         @query = CurrentStable::RacehorsePolicy::Scope.new(Current.user, query).resolve
       end
-      @query = @query.joins(:race_qualification).merge(Racing::RaceQualification.send(:qualified_for, status)) if status.present?
+      @query = @query.joins(:race_qualification)
+      # @query = @query.joins(:race_qualification).merge(Racing::RaceQualification.send(:max_qualified_for, race.race_type))
+      @query = @query.merge(Racing::RaceQualification.send(:qualified_for, status)) if status.present?
       if race
         days = (race.date - Date.current).to_i
         @query = @query.merge(::Racing::RacehorseMetadata.shippable_to_location(race.racetrack.location_id, Current.stable.available_balance, days))
