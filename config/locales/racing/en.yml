@@ -82,9 +82,10 @@ en:
       gender: Gender
       name: Horse
       new:
-        entry_fee: 'Entry Fee: %{fee}'
+        entry_fee: "Entry Fee: %{fee}"
         entry_limit: You may enter %{horses} in this race.
-        horses: 'Horses Entered: %{count}'
+        horses: "Horses Entered: %{count}"
+        loading_entries: Loading horses...
         qualification_entry: The top 14 qualified horses can enter immediately. The remaining 6 qualified horses may enter on the last day of entries (%{date}), if the race is not full.
         requires_qualification: This race requires qualification.
         title: Enter Race
@@ -97,7 +98,7 @@ en:
       stable: Stable
     entry: Entry
     entry_options:
-      budget_description: 'Entry Fee: %{date}, Race %{number} - %{name}'
+      budget_description: "Entry Fee: %{date}, Race %{number} - %{name}"
       create:
         failure: "%{name} could not be entered"
         success: "%{name} was successfully entered"
@@ -106,7 +107,7 @@ en:
       form:
         first_jockey: First Choice Jockey
         jockey_decide: Let the jockey decide
-        next_race_note: 'Note on the next race entry: %{content}'
+        next_race_note: "Note on the next race entry: %{content}"
         racing_style: Running Style
         second_jockey: Second Choice Jockey
         third_jockey: Third Choice Jockey
@@ -126,17 +127,17 @@ en:
       age: Age
       age_desc: for %{age}
       ages:
-        '2': 2yo
+        "2": 2yo
         2+: 2yo+
-        '3': 3yo
+        "3": 3yo
         3+: 3yo+
-        '4': 4yo
+        "4": 4yo
         4+: 4yo+
       allowance: Allowance
       breeders_cup_qualifiers: Breeders' Cup Qualifiers
       breeders_series_qualifiers: Breeders' Series Qualifiers
-      budget_race_jockey_fee: 'Jockey Fee: %{date}, Race %{number} - %{jockey} riding %{horse}'
-      budget_race_winnings: 'Race Winnings: %{date}, Race %{number} - %{name} (%{position})'
+      budget_race_jockey_fee: "Jockey Fee: %{date}, Race %{number} - %{jockey} riding %{horse}"
+      budget_race_winnings: "Race Winnings: %{date}, Race %{number} - %{name} (%{position})"
       claim: Claim
       claiming: Claiming
       claiming_with_price: Claiming (%{price})
@@ -218,17 +219,24 @@ en:
       view_post_parade: View Post Parade
       weight: Weight
     racehorses:
-      racehorse:
-        enter: Enter
-        not_a_jumper: This horse has not switched to SC
-        schedule: Schedule
-        scheduled: Scheduled
-      status:
+      filters:
+        days_since_last_race: Days Since Last Race
+        qualification: Qualification
+      index:
+        horses_count:
+          zero: No horses
+          one: 1 Horse
+          other: "%{count} Horses"
         last_race_hint: Last Race Date (Days)
         last_rest_hint: Last Date At Farm (Rest Days)
         last_shipped_hint: Last Shipment Date (Days)
         not_a_jumper: This horse has not switched to SC
         workouts_hint: Since Last Race
+      racehorse:
+        enter: Enter
+        not_a_jumper: This horse has not switched to SC
+        schedule: Schedule
+        scheduled: Scheduled
     races:
       all:
         races_count:
@@ -270,7 +278,7 @@ en:
         title: Race Results
       injuries: Injuries
       no_injuries: No Injuries
-      race_number: 'Race #%{number}'
+      race_number: "Race #%{number}"
       speed_factor: Speed Factor
       weight: Lbs.
     scheduled_entries:
