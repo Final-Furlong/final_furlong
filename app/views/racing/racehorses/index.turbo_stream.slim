@@ -1,0 +1,4 @@
+= turbo_stream.append "horse-entry-list" do
+  = render partial: "racehorse", collection: @horses, as: :horse, locals: { race: @race }
+
+= render "shared/loading", pagy: @pagy
