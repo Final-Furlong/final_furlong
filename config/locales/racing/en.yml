@@ -85,6 +85,7 @@ en:
         entry_fee: 'Entry Fee: %{fee}'
         entry_limit: You may enter %{horses} in this race.
         horses: 'Horses Entered: %{count}'
+        loading_entries: Loading horses...
         qualification_entry: The top 14 qualified horses can enter immediately. The remaining 6 qualified horses may enter on the last day of entries (%{date}), if the race is not full.
         requires_qualification: This race requires qualification.
         title: Enter Race
@@ -218,17 +219,21 @@ en:
       view_post_parade: View Post Parade
       weight: Weight
     racehorses:
+      filters:
+        days_since_last_race: Days Since Last Race
+        qualification: Qualification
+      index:
+        horses_count:
+          one: 1 Horse
+          other: "%{count} Horses"
+          zero: No horses
+        no_horses: No matching horses found. Please check if any filters are active.
+        not_a_jumper: This horse has not switched to SC
       racehorse:
         enter: Enter
         not_a_jumper: This horse has not switched to SC
         schedule: Schedule
         scheduled: Scheduled
-      status:
-        last_race_hint: Last Race Date (Days)
-        last_rest_hint: Last Date At Farm (Rest Days)
-        last_shipped_hint: Last Shipment Date (Days)
-        not_a_jumper: This horse has not switched to SC
-        workouts_hint: Since Last Race
     races:
       all:
         races_count:

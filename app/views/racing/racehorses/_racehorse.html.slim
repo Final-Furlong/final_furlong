@@ -12,6 +12,7 @@ tr
         i.ph-fill.ph-notepad
   td.wb-break-all= horse.age
   td= t("horses.genders.#{horse.gender}")
+  td= horse.race_qualification.to_s
   td
     - if stats&.last_raced_at
       = stats&.last_raced_at
@@ -22,29 +23,11 @@ tr
       = t("common.dash")
   td= stats&.energy_grade
   td= stats&.fitness_grade
-  td
-    - if stats&.last_rested_at
-      = stats&.last_rested_at
-      = " ("
-      = stats.rest_days_since_last_race
-      = ")"
-    - else
-      = t("common.dash")
   - distance =stats.distance_to_race(race.racetrack.location)
   td data-sort=distance
     = stats&.at_home? ? t("horse.location.at_farm") : stats&.racetrack&.name
     - if distance > 0
       = " (#{number_with_delimiter(distance)})"
-  td
-    - if stats&.last_shipped_at
-      = stats&.last_shipped_at
-      = " ("
-      = (Date.current - stats.last_shipped_at).to_i
-      = ")"
-    - else
-      = t("common.dash")
-  td data-sort=(stats&.workouts_since_last_race || 0)
-    = stats&.workouts_since_last_race || t("common.dash")
   td.actions-column.nav-item.dropdown
     - if Racing::RaceSchedulePolicy.new(Current.user, race).enter?
       = render Ui::ButtonizedLink::Component.new(url: new_racing_race_entry_option_path(race, horse: horse.id), size: :small, data: { turbo_frame: "modal" }) do
