@@ -8,6 +8,8 @@ class Workouts::ProcessWorkoutJob < ApplicationJob
     schedule = Racing::TrainingSchedule.find(schedule_id)
     activities = schedule.send("#{weekday}_activities")
     training_horse = schedule.training_schedule_horses.includes(:horse).where(horse: { id: horse_id }).first
+    return if training_horse.blank?
+
     horse = training_horse.horse
     return if horse.current_boarding.present?
     return if horse.racehorse_metadata.at_home?

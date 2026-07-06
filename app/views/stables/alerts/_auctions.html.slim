@@ -12,16 +12,16 @@ ruby:
           - if current_auctions.positive?
             p
               span= t(".current_auction_count", count: current_auctions)
-              = "&nbsp;".html_safe
-              - AuctionPolicy::Scope.new(Current.user, Auction.current).resolve.find_each do |auction|
+            - AuctionPolicy::Scope.new(Current.user, Auction.current.order(end_time: :asc)).resolve.each do |auction|
+              p
                 = link_to auction.title, auction_path(auction), class: "link", target: "_top"
-                = "&nbsp;".html_safe
+                = t(".ends_at", time: auction.end_time, relative: relative_time_in_words(auction.end_time))
           - if Auctions::Horse.associated_with_stable(Current.stable).unsold.exists?
             p= link_to t(".auction_watch_page"), stable_auctions_path, class: "link", target: "_top"
           - if future_auctions.positive?
             p
               span= t(".future_auction_count", count: future_auctions)
-              = "&nbsp;".html_safe
-              - AuctionPolicy::Scope.new(Current.user, Auction.upcoming_soon).resolve.find_each do |auction|
+            - AuctionPolicy::Scope.new(Current.user, Auction.upcoming_soon.order(start_time: :asc)).resolve.each do |auction|
+              p
                 = link_to auction.title, auction_path(auction), class: "link", target: "_top"
-                = "&nbsp;".html_safe
+                = t(".starts_at", time: auction.start_time, relative: relative_time_in_words(auction.start_time))
