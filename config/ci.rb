@@ -15,7 +15,7 @@ CI.run do
 
   if ci_type == "security" || ci_type == "all"
     step "Setup", external_ci ? "bin/rails assets:precompile" : "bin/setup test"
-    step "Security: Gem audit", "bin/bundler-audit"
+    step "Security: Gem audit", "bin/bundler-audit --config .bundler-audit.yml"
     step "Security: PNPM vulnerability audit", "pnpm audit --ignore-unfixable --prod"
     step "Security: Brakeman code analysis", "bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error"
   end
@@ -45,4 +45,3 @@ CI.run do
     end
   end
 end
-
