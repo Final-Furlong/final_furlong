@@ -371,9 +371,11 @@ en:
         current_auction_count:
           one: There is %{count} auction currently happening.
           other: There are %{count} auctions currently happening.
+        ends_at: " ends at %{time} (%{relative})"
         future_auction_count:
           one: There is %{count} auction coming up in the next two weeks.
           other: There are %{count} auctions coming up in the next two weeks.
+        starts_at: " starts at %{time} (%{relative})"
       foals:
         foals: Foals
         foals_count:
