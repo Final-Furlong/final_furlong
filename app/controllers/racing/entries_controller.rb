@@ -18,6 +18,8 @@ module Racing
       race = Racing::RaceSchedule.includes(:entries).find(params[:race_id])
       @entry = Racing::RaceEntry.new(date: race.date, race:)
       authorize @entry, :show?
+      @entry_params = entry_race_params[:q] || {}
+      @entry_params.merge!(race:)
     end
 
     def destroy
@@ -32,6 +34,12 @@ module Racing
         flash[:error] = result.error
       end
       redirect_to new_racing_race_entry_path(race)
+    end
+
+    private
+
+    def entry_race_params
+      params.permit(:race_id, q: [:race, :name_i_cont])
     end
   end
 end
