@@ -56,7 +56,6 @@ en:
       next_race_info: "%{date} %{track} #%{number}: %{distance} %{type} for %{age_gender} (%{surface}) (%{days})"
       not_for_sale: Not for Sale
       not_in_foal: Not In Foal
-      number_of_workouts: Workouts
       offered_for_lease: 'Offered for lease for %{duration} months (Fee: %{fee})'
       offered_for_sale: 'Offered for sale (Price: %{price})'
       offered_for_sale_private_html: Offered for sale <em>(Private Treaty)</em>

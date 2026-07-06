@@ -22,8 +22,6 @@ module Racing
       return false unless logged_in?
       return false if record.date < Date.current
       race = record.race
-      # return false if Date.current > race.entry_deadline
-      # return false if Date.current < race.entry_open_date
 
       if race.requires_qualification?
         Racing::RaceQualificationQuery.new(race:).qualified.exists?
