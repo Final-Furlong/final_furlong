@@ -153,7 +153,7 @@ class Racing::RaceSchedule < ApplicationRecord
   end
 
   def min_age
-    age[0]
+    age[0].to_i
   end
 
   def max_age
@@ -162,6 +162,10 @@ class Racing::RaceSchedule < ApplicationRecord
     else
       min_age
     end
+  end
+
+  def includes_age?(age)
+    age.to_i.between?(min_age, max_age)
   end
 
   def surface_type
