@@ -35,4 +35,7 @@
   - if race.requires_qualification?
     = render "qualified_list", race:
   - else
-    = render "horses_qualification", race: race
+    = turbo_frame_tag "race-entry", src: racing_racehorses_path(q: @entry_params), loading: "lazy" do
+      .w-full.text-center
+        p.mx-auto= t(".loading_entries")
+        .mt-2.mx-auto.skeleton.w-full
