@@ -11,28 +11,36 @@ module Racing
       if params.dig(:q, :age_in).to_a.include?("4+")
         params[:q][:age_in].push(5, 6, 7, 8, 9, 10)
       end
-      @query = @query.includes(:race_options, manager: { racetrack: :location }, racehorse_metadata: { racetrack: :location })
+      @query = @query.joins(:race_qualification).includes(:race_options, manager: { racetrack: :location }, racehorse_metadata: { racetrack: :location })
+      fetch_counts(@query)
       @query = @query.ransack(params[:q])
       @query.sorts = ["name asc"] if @query.sorts.empty?
       @query.sorts.insert 0, Ransack::Nodes::Sort.extract(@query.context, "race_options_racehorse_type desc")
 
-      fetch_counts(@query)
       @pagy, @horses = pagy(:countless, @query.result)
     end
 
     private
 
     def fetch_counts(query)
-      @count = query.result.count
+      @count = query.ransack(params[:q]).result.count
       @qualifications = {}
       type_index = Config::Racing.all_types.find_index(@race.race_type)
       Config::Racing.all_types.each_with_index do |type, index|
         if @race.race_type != "claiming"
           next if type == "claiming" || index > type_index
-          count = query.result.joins(:race_qualification).merge(Racing::RaceQualification.qualified_for(type)).count
+          query = query.merge(Racing::RaceQualification.qualified_for(type))
         else
-          count = query.result.joins(:race_qualification).where(race_qualifications: { claiming_qualified: true }).merge(Racing::RaceQualification.qualified_for(type)).count
+          query = query.where(race_qualifications: { claiming_qualified: true })
+          query = if type == "stakes"
+            query.where(race_qualifications: { stakes_placed: true })
+          elsif type == "allowance"
+            query.where(race_qualifications: { nw3_allowance_qualified: false })
+          else
+            query.where(race_qualifications: { claiming_qualified: true, "#{type}_qualified": true })
+          end
         end
+        count = query.ransack(params[:q]).result.count
         next if count.zero?
 
         @qualifications[type] = "#{I18n.t("racing.race.#{type}")} (#{count})"
