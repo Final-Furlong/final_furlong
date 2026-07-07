@@ -27,9 +27,12 @@ module Racing
       @qualifications = {}
       type_index = Config::Racing.all_types.find_index(@race.race_type)
       Config::Racing.all_types.each_with_index do |type, index|
-        next if index > type_index
-        next if type == "claiming" && @race.race_type != "claiming"
-        count = query.result.joins(:race_qualification).merge(Racing::RaceQualification.qualified_for(type)).count
+        if @race.race_type != "claiming"
+          next if type == "claiming" || index > type_index
+          count = query.result.joins(:race_qualification).merge(Racing::RaceQualification.qualified_for(type)).count
+        else
+          count = query.result.joins(:race_qualification).where(race_qualifications: { claiming_qualified: true }).merge(Racing::RaceQualification.qualified_for(type)).count
+        end
         next if count.zero?
 
         @qualifications[type] = "#{I18n.t("racing.race.#{type}")} (#{count})"
