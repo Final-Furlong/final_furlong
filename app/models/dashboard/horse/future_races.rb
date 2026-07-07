@@ -32,6 +32,10 @@ module Dashboard
           .for_race_options(@horse.race_options).for_race_qualification(@horse.race_qualification)
           .includes(track_surface: :racetrack)
 
+        if current_entry_ids.present?
+          @query = @query.entries_not_yet_open
+        end
+
         params[:q] ||= {}
         options = @horse.race_options
         case options.racehorse_type.to_s.downcase
