@@ -33,7 +33,7 @@ class Racing::PreRace::ShippingJob < ApplicationJob
     )
     route = lookup_route(shipment, horse.manager)
     max_days = (arrival_date - [start_date, min_date].compact_blank.max).to_i
-    if route.road_days.to_i <= max_days
+    if route.road_days.to_i.positive? && route.road_days.to_i <= max_days
       shipment.mode = "road"
       shipment.departure_date = arrival_date - route.road_days.days
       cost = route.road_cost

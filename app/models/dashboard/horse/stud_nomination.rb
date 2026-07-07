@@ -5,7 +5,7 @@ module Dashboard
 
       def initialize(horse:)
         @horse = horse
-        crop_years = horse.stud_foals.born.group("DATE_PART('Year', date_of_birth)").count.sort
+        crop_years = horse.foals.born.group("DATE_PART('Year', date_of_birth)").count.sort
         @years = []
         crop_years.map do |info|
           year = info.first.to_i
@@ -18,11 +18,11 @@ module Dashboard
             status: horse.nominations.exists?(year:) ? :nominated : :not_nominated
           }
           if year <= Date.current.year - 2 && info.last.to_i.positive?
-            data[:racers] = horse.stud_foals.with_yob(year).where.associated(:lifetime_race_record).count
+            data[:racers] = horse.foals.with_yob(year).where.associated(:lifetime_race_record).count
             if data[:racers] > 0
-              data[:winners] = horse.stud_foals.with_yob(year).joins(:lifetime_race_record).merge(::Racing::LifetimeRaceRecord.winner).count
+              data[:winners] = horse.foals.with_yob(year).joins(:lifetime_race_record).merge(::Racing::LifetimeRaceRecord.winner).count
               if data[:winners] > 0
-                data[:stakes_winners] = horse.stud_foals.with_yob(year).joins(:lifetime_race_record).merge(::Racing::LifetimeRaceRecord.stakes_winner).count
+                data[:stakes_winners] = horse.foals.with_yob(year).joins(:lifetime_race_record).merge(::Racing::LifetimeRaceRecord.stakes_winner).count
               end
             end
           end
