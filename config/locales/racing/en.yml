@@ -227,7 +227,8 @@ en:
           one: 1 Horse
           other: "%{count} Horses"
           zero: No horses
-        no_horses: No matching horses found. Please check if any filters are active.
+        last_race_hint: Last Race Date (Days)
+        no_horses: No matching horses found. Please check if any filters are active. Also, horses who are currently entered to race will not appear.
         not_a_jumper: This horse has not switched to SC
       racehorse:
         enter: Enter
