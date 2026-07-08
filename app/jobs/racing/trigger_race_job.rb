@@ -29,9 +29,8 @@ module Racing
         return
       end
 
-      url = Rails.application.credentials.php_app.url!
-      api_key = Rails.application.credentials.php_app.api_key!
       response = HTTParty.post(url, body: { id: race.id }, headers: { "X_API_KEY" => api_key }, format: :plain)
+      set_senty_context(response)
       if response.code == 200 && !max_race?(date:, number:)
         Racing::TriggerRaceJob.set(good_job_labels: [date], wait: 10.seconds).perform_later(date:, number: number + 1)
       else
@@ -46,6 +45,23 @@ module Racing
     end
 
     private
+
+    def url
+      Rails.application.credentials.php_app.url!
+    end
+
+    def api_key
+      Rails.application.credentials.php_app.api_key!
+    end
+
+    def set_sentry_context(response)
+      Sentry.configure_scope do |scope|
+        scope.set_context(
+          "response",
+          response
+        )
+      end
+    end
 
     def max_race?(date:, number:)
       number == Racing::RaceSchedule.where(date:).maximum(:number)
