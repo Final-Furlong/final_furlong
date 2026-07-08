@@ -58,7 +58,7 @@ module Racing
       Sentry.configure_scope do |scope|
         scope.set_context(
           "response",
-          response
+          { http_data: response }
         )
       end
     end
@@ -68,3 +68,4 @@ module Racing
     end
   end
 end
+
