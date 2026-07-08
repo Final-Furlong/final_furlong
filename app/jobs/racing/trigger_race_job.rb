@@ -30,7 +30,7 @@ module Racing
       end
 
       response = HTTParty.post(url, body: { id: race.id }, headers: { "X_API_KEY" => api_key }, format: :plain)
-      set_senty_context(response)
+      set_sentry_context(response)
       if response.code == 200 && !max_race?(date:, number:)
         Racing::TriggerRaceJob.set(good_job_labels: [date], wait: 10.seconds).perform_later(date:, number: number + 1)
       else
@@ -68,4 +68,3 @@ module Racing
     end
   end
 end
-
