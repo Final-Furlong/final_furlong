@@ -10,12 +10,12 @@ module Racing
 
     scope :shippable_to_location, ->(id, cost, days) {
       # n.b. DISTINCT UNNEST(ARRAY[]) is postgres-specific syntax
-      where("racehorse_metadata.location_id = :id OR racehorse_metadata.location_id IN
+      where("racehorse_metadata.location_id = :id OR (racehorse_metadata.in_transit = FALSE AND racehorse_metadata.location_id IN
         (SELECT DISTINCT UNNEST(ARRAY[starting_location_id, ending_location_id]) FROM shipment_routes
         WHERE ((starting_location_id = racehorse_metadata.location_id AND ending_location_id = :id) OR
           (starting_location_id = :id AND ending_location_id = racehorse_metadata.location_id))
           AND ((road_days IS NOT NULL AND road_days <= :days AND road_cost <= :cost) OR
-            (air_days IS NOT NULL AND air_days <= :days AND air_cost <= :cost)))",
+            (air_days IS NOT NULL AND air_days <= :days AND air_cost <= :cost))))",
         { id:, cost:, days: })
     }
 

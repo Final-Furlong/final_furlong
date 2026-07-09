@@ -42,6 +42,8 @@ module Racing
       horse = record.horse
       return true unless horse
       return false unless horse.racehorse?
+      days = (race.date - Date.current).to_i
+      return false unless Racing::RacehorseMetadata.shippable_to_location(race.racetrack.location_id, stable.available_balance, days).exists?(horse:)
 
       horse.manager == stable
     end

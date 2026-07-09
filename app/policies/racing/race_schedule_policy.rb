@@ -26,6 +26,7 @@ module Racing
       return false unless logged_in?
       return false unless Date.current >= record.entry_open_date
       return true if record.date > Date.current
+      pd record
 
       !Racing::RaceResult.exists?(date: record.date, number: record.number)
     end
