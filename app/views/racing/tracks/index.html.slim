@@ -30,7 +30,6 @@
           - if Date.tomorrow != @next_race_dates.first.date
             - day_rain = Racing::WeatherForecast.where(surface: track.surfaces).by_date(@next_race_dates.first.date).average(:rain_chance).floor
             td= t(".rain_percent", percent: day_rain)
-          - pd Racing::WeatherForecast.where(surface: track.surfaces).by_date(@next_race_dates.last.date).to_sql
           - day_rain = Racing::WeatherForecast.where(surface: track.surfaces).by_date(@next_race_dates.last.date).average(:rain_chance)
           - day_rain = day_rain ? day_rain.floor : :unknown
           td

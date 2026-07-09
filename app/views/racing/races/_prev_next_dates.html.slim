@@ -4,6 +4,7 @@
   .flex-1
     = render Ui::ButtonizedLink::Component.new(color: :none, style: :outline, size: :small, disabled: prev_date <= Date.current, url: racing_races_path(date: prev_date), http_method: :get, data: { turbo_frame: "_top" }) do
       = l(prev_date)
-  .flex-none
-    = render Ui::ButtonizedLink::Component.new(color: :none, style: :outline, size: :small, url: racing_races_path(date: next_date), http_method: :get, data: { turbo_frame: "_top" }) do
-      = l(next_date)
+  - unless next_date.blank?
+    .flex-none
+      = render Ui::ButtonizedLink::Component.new(color: :none, style: :outline, size: :small, url: racing_races_path(date: next_date), http_method: :get, data: { turbo_frame: "_top" }) do
+        = l(next_date)

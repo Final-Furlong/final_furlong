@@ -20,7 +20,11 @@ module Racing
         @query = CurrentStable::RacehorsePolicy::Scope.new(Current.user, query).resolve
       end
       @query = @query.joins(:race_qualification)
-      @query = @query.joins(:race_qualification).merge(Racing::RaceQualification.send(:max_qualified_for, race.race_type))
+      @query = if race.race_type == "stakes"
+        @query.joins(:race_qualification).merge(Racing::RaceQualification.send(:qualified_for, race.race_type))
+      else
+        @query.joins(:race_qualification).merge(Racing::RaceQualification.send(:max_qualified_for, race.race_type))
+      end
       @query = @query.merge(Racing::RaceQualification.send(:qualified_for, status)) if status.present?
       if race
         @query = @query.merge(Racing::RaceQualification.send(:qualified_for_exactly, "claiming")) if race.claiming?

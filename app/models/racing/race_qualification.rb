@@ -6,14 +6,18 @@ module Racing
     belongs_to :horse, class_name: "Horses::Horse", inverse_of: :race_qualification
 
     scope :by_horse, ->(id) { where(horse_id: id) }
+    scope :stakes_level, -> { where(stakes_placed: true) }
+    scope :allowance_level, -> {
+      where(maiden_qualified: false, starter_allowance_qualified: false, nw1_allowance_qualified: false, nw2_allowance_qualified: false, nw3_allowance_qualified: false, stakes_placed: false)
+    }
     scope :qualified_for, ->(type) {
       if Config::Racing.non_qualified_types.include?(type)
         if type.to_s == "stakes"
-          where(stakes_placed: true)
+          all
         else
-          query = where(stakes_placed: false)
+          query = all
           previous_qualification_levels(type).each do |qual_type|
-            query = query.not_qualified_for(qual_type)
+            query.not_qualified_for(qual_type)
           end
           query
         end
@@ -105,6 +109,7 @@ module Racing
         types = Config::Racing.claiming_types.include?(qualification) ? Config::Racing.all_types : Config::Racing.qualified_types
         types = types.dup
         types.delete("claiming") if qualification == "starter_allowance"
+        types.delete("starter_allowance") if %w[claiming starter_allowance].exclude?(qualification)
         types.slice(0, types.find_index(qualification))
       end
     end

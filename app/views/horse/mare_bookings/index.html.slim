@@ -28,7 +28,6 @@
       - if @bookings.empty?
         p.text-center.text-base-content/70= t(".no_bookings", name: @horse.name)
       - else
-        - pd @bookings
         table.table.table-responsive.table-zebra.sortable.n-last.asc
           thead
             tr
