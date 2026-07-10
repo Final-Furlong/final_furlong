@@ -13,8 +13,9 @@ module Dashboard
         if claimed
           description = claimed.description
           horse_name = description.slice(7, description.length - 19)
-          @claim_result = Racing::RaceResultHorse.joins(:race).where(race: { date: }).joins(:horse).where(horse: { name: horse_name.strip }).first
+          @claim_result = ::Racing::RaceResultHorse.joins(:race).includes(:horse).where(race: { date: }).joins(:horse).where(horse: { name: horse_name.strip }).first
           sale = @claim_result.horse.sales.find_by(date:)
+          sale.strict_loading!(false)
           @claim_stable = sale.seller
         end
         @starts = results.size
@@ -154,9 +155,9 @@ module Dashboard
           sale&.buyer&.name
         end
         hex_color = if horse.gelding?
-          Config::Horses.forum_color_gelding
+          ::Config::Horses.forum_color_gelding
         else
-          horse.female? ? Config::Horses.forum_color_female : Config::Horses.forum_color_male
+          horse.female? ? ::Config::Horses.forum_color_female : ::Config::Horses.forum_color_male
         end
         bbcode_name = I18n.t("horse.bbcode_colored_name", color: "##{hex_color}", name: horse.name)
         string += I18n.t("horse.bbcode_url", url: horse_url(horse), name: bbcode_name)
