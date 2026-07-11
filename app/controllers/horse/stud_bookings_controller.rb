@@ -119,7 +119,7 @@ module Horse
       mare_stable = Account::Stable.find(params[:stable_id])
 
       @booking = Horses::Breeding.new(stud: @horse, slot:, stable: mare_stable)
-      broodmares = Horses::Horse::Broodmare.left_outer_joins(:next_foal).where(manager: mare_stable)
+      broodmares = Horses::Horse::Broodmare.active.left_outer_joins(:next_foal).where(manager: mare_stable)
         .where("(breedings.year != ? OR breedings.id IS NULL)", Date.current.year).order(name: :asc)
       stud_slots = @booking.options_for_stud_slot_select(@horse)
       broodmares = broodmares.select do |mare|

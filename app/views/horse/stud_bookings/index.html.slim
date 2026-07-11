@@ -4,7 +4,7 @@
     approved_count = Horses::Breeding.current_year.approved.not_missed.where(stud: @horse).count
     pending_count = Horses::Breeding.current_year.pending.not_missed.where(stud: @horse).count
     missed_count = Horses::Breeding.current_year.approved.missed.where(stud: @horse).count
-    last_race_date = @horse.race_result_finishes.joins(:race).merge(Racing::RaceResult.ordered_by_date(:desc)).first.race.date
+    last_race_date = @horse.race_result_finishes.joins(:race).includes(:race).merge(Racing::RaceResult.ordered_by_date(:desc)).first.race.date
     raced_this_year = last_race_date.year == Date.current.year
     min_breed_date = last_race_date + 1.day if raced_this_year
     stud_bc_nomination = @horse.nominations.exists?(year: Date.current.year + 1)
