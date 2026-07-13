@@ -55,11 +55,15 @@ module Racing
     end
 
     def set_sentry_context(response)
-      Sentry.configure_scope do |scope|
-        scope.set_context(
-          "response",
-          { http_data: response }
-        )
+      if Rails.env.local?
+        Rails.logger.info response.inspect
+      else
+        Sentry.configure_scope do |scope|
+          scope.set_context(
+            "response",
+            { http_data: response }
+          )
+        end
       end
     end
 
