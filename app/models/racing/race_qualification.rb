@@ -43,7 +43,7 @@ module Racing
         if type.to_s == "stakes"
           where(stakes_placed: true)
         else
-          query = where(stakes_placed: false)
+          query = all
           previous_qualification_levels(type).each do |qual_type|
             query = query.or(where("#{qual_type}_qualified": true))
           end
