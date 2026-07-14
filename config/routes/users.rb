@@ -13,8 +13,6 @@ devise_scope :user do
   delete "sign_out", to: "devise/sessions#destroy", as: :destroy_user_session
 end
 
-get "/activation_required", to: "pages#activation", as: :activation
-
 resources :users, except: %i[new create destroy]
 resources :notifications, only: %i[index update destroy]
 resources :settings, only: %i[new create]
