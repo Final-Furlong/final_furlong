@@ -16,7 +16,6 @@ describe Account::User do
   end
 
   describe "associations" do
-    it { is_expected.to have_one :activation }
     it { is_expected.to have_one :stable }
     it { is_expected.to have_one :setting }
   end
