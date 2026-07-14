@@ -41,12 +41,10 @@ FactoryBot.define do
     end
 
     trait :unactivated do
-      activation { association :activation, :unactivated, user: instance }
       status { "pending" }
     end
 
     trait :activated do
-      activation { association :activation, :activated, user: instance }
       status { "active" }
     end
   end
