@@ -31,8 +31,8 @@ module Racing
 
       response = HTTParty.post(url, body: { id: race.id }, headers: { "X_API_KEY" => api_key })
       set_sentry_context(response)
-      if response.code == 200 && !max_race?(date:, number:)
-        Racing::TriggerRaceJob.set(good_job_labels: [date], wait: 10.seconds).perform_later(date:, number: number + 1)
+      if response.code == 200
+        Racing::TriggerRaceJob.set(good_job_labels: [date], wait: 10.seconds).perform_later(date:, number: number + 1) if !max_race?(date:, number:)
       else
         body = JSON.parse(response.parsed_response, symbolize_names: true)
         message = body[:message]
