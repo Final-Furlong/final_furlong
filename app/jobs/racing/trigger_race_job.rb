@@ -29,12 +29,12 @@ module Racing
         return
       end
 
-      response = HTTParty.post(url, body: { id: race.id }, headers: { "X_API_KEY" => api_key }, format: :plain)
+      response = HTTParty.post(url, body: { id: race.id }, headers: { "X_API_KEY" => api_key })
       set_sentry_context(response)
       if response.code == 200 && !max_race?(date:, number:)
         Racing::TriggerRaceJob.set(good_job_labels: [date], wait: 10.seconds).perform_later(date:, number: number + 1)
       else
-        body = JSON.parse(response, symbolize_names: true)
+        body = JSON.parse(response.parsed_response, symbolize_names: true)
         message = body[:message]
         if message == "cannot write to file" || message.starts_with?("Cannot open ")
           raise CodeSetupError.new(message)
