@@ -20,25 +20,25 @@ module Racing
     }
 
     def update_grades(energy:, fitness:)
-      modifier = rand(10..20)
+      modifier = rand(1..10)
       graded_score = (rand(1...2) == 1) ? modifier : modifier * -1
       energy_score = energy * (100 - graded_score).fdiv(100)
       grade = if energy_score <= 40 then "F"
-      elsif energy_score <= 70 then "D"
-      elsif energy_score <= 84 then "C"
-      elsif energy_score <= 94 then "B"
+      elsif energy_score <= 60 then "D"
+      elsif energy_score <= 75 then "C"
+      elsif energy_score <= 90 then "B"
       else
         "A"
       end
       self.energy_grade = grade
 
-      modifier = rand(10..20)
+      modifier = rand(1..10)
       graded_score = (rand(1...2) == 1) ? modifier : modifier * -1
       fitness_score = fitness * (100 - graded_score).fdiv(100)
       grade = if fitness_score <= 40 then "F"
-      elsif fitness_score <= 70 then "D"
-      elsif fitness_score <= 84 then "C"
-      elsif fitness_score <= 94 then "B"
+      elsif fitness_score <= 60 then "D"
+      elsif fitness_score <= 75 then "C"
+      elsif fitness_score <= 90 then "B"
       else
         "A"
       end

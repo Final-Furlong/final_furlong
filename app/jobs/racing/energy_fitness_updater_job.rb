@@ -29,10 +29,10 @@ class Racing::EnergyFitnessUpdaterJob < ApplicationJob
       .where(horse: Horses::Horse::Racehorse.joins(:racing_stats).where("CEIL(racing_stats.energy * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 41, 60))
       .update_all(energy_grade: "D")
     Racing::RacehorseMetadata
-      .where(horse: Horses::Horse::Racehorse.joins(:racing_stats).where("CEIL(racing_stats.energy * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 61, 70))
+      .where(horse: Horses::Horse::Racehorse.joins(:racing_stats).where("CEIL(racing_stats.energy * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 61, 75))
       .update_all(energy_grade: "C")
     Racing::RacehorseMetadata.joins(horse: :racing_stats)
-      .where(horse: Horses::Horse::Racehorse.joins(:racing_stats).where("CEIL(racing_stats.energy * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 71, 90))
+      .where(horse: Horses::Horse::Racehorse.joins(:racing_stats).where("CEIL(racing_stats.energy * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 76, 90))
       .update_all(energy_grade: "B")
     Racing::RacehorseMetadata
       .where(horse: Horses::Horse::Racehorse.joins(:racing_stats).where("CEIL(racing_stats.energy * ((91 + FLOOR(RANDOM() * 20))/100)) > ?", 90))
@@ -45,10 +45,10 @@ class Racing::EnergyFitnessUpdaterJob < ApplicationJob
       .where(horse: Horses::Horse::Racehorse.joins(:racing_stats).where("CEIL(racing_stats.fitness * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 41, 60))
       .update_all(fitness_grade: "D")
     Racing::RacehorseMetadata
-      .where(horse: Horses::Horse::Racehorse.joins(:racing_stats).where("CEIL(racing_stats.fitness * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 61, 70))
+      .where(horse: Horses::Horse::Racehorse.joins(:racing_stats).where("CEIL(racing_stats.fitness * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 61, 75))
       .update_all(fitness_grade: "C")
     Racing::RacehorseMetadata.joins(horse: :racing_stats)
-      .where(horse: Horses::Horse::Racehorse.joins(:racing_stats).where("CEIL(racing_stats.fitness * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 71, 90))
+      .where(horse: Horses::Horse::Racehorse.joins(:racing_stats).where("CEIL(racing_stats.fitness * ((91 + FLOOR(RANDOM() * 20))/100)) BETWEEN ? AND ?", 76, 90))
       .update_all(fitness_grade: "B")
     Racing::RacehorseMetadata
       .where(horse: Horses::Horse::Racehorse.joins(:racing_stats).where("CEIL(racing_stats.fitness * ((91 + FLOOR(RANDOM() * 20))/100)) > ?", 90))
