@@ -33,6 +33,7 @@
 .node-version
 .ruby-version
 .rubocop
+.pnpm-store/
 /config/database.yml
 !config/database.yml.sample
 coverage/
