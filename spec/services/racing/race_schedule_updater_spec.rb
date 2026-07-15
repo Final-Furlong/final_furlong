@@ -124,7 +124,7 @@ describe Racing::RaceScheduleUpdater do
   end
 
   context "when many sets of races need updating" do
-    it "updates all the days" do # rubocop:disable RSpec/ExampleLength, RSpec/MultipleExpectations
+    it "updates all the days" do # rubocop:disable RSpec/MultipleExpectations
       schedule1 = create(:race_schedule, day_number: 1, date: "2025-01-01",
         number: 1)
       create(:race_result, date: "2025-01-01", number: 1)
@@ -171,7 +171,7 @@ describe Racing::RaceScheduleUpdater do
   end
 
   context "when carrying over from a year with 105 race days" do
-    it "does not update the final race day" do # rubocop:disable RSpec/ExampleLength
+    it "does not update the final race day" do
       create(:race_schedule, day_number: 102, date: "2025-12-24", number: 1)
       create(:race_schedule, day_number: 103, date: "2025-12-27", number: 1)
       schedule1 = create(:race_schedule, day_number: 104, date: "2024-12-25", number: 1)
@@ -190,7 +190,7 @@ describe Racing::RaceScheduleUpdater do
   end
 
   context "when carrying over to a year with 105 race days" do
-    it "updates not update the final race day" do # rubocop:disable RSpec/ExampleLength
+    it "updates not update the final race day" do
       create(:race_schedule, day_number: 102, date: "2024-12-18", number: 1)
       create(:race_schedule, day_number: 103, date: "2024-12-21", number: 1)
       schedule1 = create(:race_schedule, day_number: 104, date: "2023-12-25", number: 1)

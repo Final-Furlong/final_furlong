@@ -36,7 +36,6 @@ describe Auctions::RacehorseConsigner do
   end
 
   context "when stakes quality is true" do
-    # rubocop:disable RSpec/ExampleLength
     it "only returns stakes horses" do
       non_stakes = create(:racehorse, :final_furlong, date_of_birth: Date.current - 2.years)
       stakes = create(:racehorse, :final_furlong, date_of_birth: Date.current - 3.years)
@@ -51,7 +50,6 @@ describe Auctions::RacehorseConsigner do
       expect(result).to include stakes, stakes2
       expect(result).not_to include non_stakes
     end
-    # rubocop:enable RSpec/ExampleLength
   end
 
   it "only returns horses owned by FF" do
@@ -65,7 +63,6 @@ describe Auctions::RacehorseConsigner do
     expect(result).not_to include non_ff
   end
 
-  # rubocop:disable RSpec/ExampleLength
   it "ignores already consigned horses" do
     Horses::Horse.destroy_all
     already_consigned = create(:racehorse, :final_furlong)
@@ -80,6 +77,5 @@ describe Auctions::RacehorseConsigner do
     expect(result).to include ff, ff2
     expect(result).not_to include already_consigned
   end
-  # rubocop:enable RSpec/ExampleLength
 end
 

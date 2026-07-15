@@ -41,7 +41,6 @@ describe Auctions::CreateSelectAuctionJob, :perform_enqueued_jobs do
       end
 
       context "when auction creation fails" do
-        # rubocop:disable RSpec/ExampleLength
         it "does not create auction" do
           auction = build_stubbed(:auction, title: nil)
           auction.valid?
@@ -54,7 +53,6 @@ describe Auctions::CreateSelectAuctionJob, :perform_enqueued_jobs do
             end.to raise_error described_class::AuctionNotCreated, "Title can't be blank and Title is too short (minimum is 10 characters)"
           end
         end
-        # rubocop:enable RSpec/ExampleLength
       end
     end
   end
