@@ -9,7 +9,7 @@ Rails.application.configure do
     cron_graceful_restart_period: 10.minutes,
     cron: {
       auto_workouts: {
-        cron: "34 1 * * *",
+        cron: "34 0 * * *",
         class: "Workouts::AutoWorkoutJob",
         enabled_by_default: -> { Rails.env.production? }
       },
@@ -19,27 +19,27 @@ Rails.application.configure do
         enabled_by_default: -> { Rails.env.production? }
       },
       daily_update: {
-        cron: "17 0 * * *",
+        cron: "17 1 * * *",
         class: "Daily::MorningUpdatesJob",
         enabled_by_default: -> { Rails.env.production? }
       },
       yearly_update: {
-        cron: "1 0 1 1 *",
+        cron: "1 1 1 1 *",
         class: "Yearly::StartOfYearJob",
         enabled_by_default: -> { Rails.env.production? }
       },
       horse_energy_fitness: {
-        cron: "25 0 * * *",
+        cron: "25 1 * * *",
         class: "Racing::EnergyFitnessUpdaterJob",
         enabled_by_default: -> { Rails.env.production? }
       },
       horse_natural_energy: {
-        cron: "29 0 * * *",
+        cron: "29 1 * * *",
         class: "Racing::NaturalEnergyUpdaterJob",
         enabled_by_default: -> { Rails.env.production? }
       },
       horse_racing_data: {
-        cron: "7 1 * * *",
+        cron: "7 2 * * *",
         class: "UpdateRacehorseStatsJob",
         enabled_by_default: -> { Rails.env.production? }
       },
@@ -101,7 +101,7 @@ Rails.application.configure do
         enabled_by_default: -> { Rails.env.production? }
       },
       race_future_entry_process: {
-        cron: "44 0 * * 1,2,4,5", # Mon/Tues/Fri/Sat AM
+        cron: "44 2 * * 1,2,4,5", # Mon/Tues/Fri/Sat AM
         class: "Racing::FutureEntryProcessingJob",
         enabled_by_default: -> { Rails.env.production? }
       },
