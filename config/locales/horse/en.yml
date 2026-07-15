@@ -56,6 +56,7 @@ en:
       stop:
         confirm: Are you sure you want to stop boarding %{horse}?
         confirm_title: Stop Boarding
+    breed_ranking: Breed Ranking
     comments:
       comment:
         confirm_delete: Are you sure you want to delete this comment?
@@ -625,6 +626,7 @@ en:
         surface: 'Surface:'
         third: 'Third:'
         winner: 'Winner:'
+    ran_on_surface: Raced on %{surface}
     sale_offer_acceptances:
       create:
         success: Horse was successfully purchased

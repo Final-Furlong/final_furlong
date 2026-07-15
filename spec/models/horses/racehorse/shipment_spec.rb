@@ -126,7 +126,7 @@ describe Horses::Racehorse::Shipment do
     end
 
     context "when horse is not at the farm" do
-      it "includes farm as a destination" do # rubocop:disable RSpec/ExampleLength
+      it "includes farm as a destination" do
         horse = create(:racehorse)
         owner = horse.owner
         shipment = create(:racehorse_shipment, :past, horse:, shipping_type: "track_to_track")

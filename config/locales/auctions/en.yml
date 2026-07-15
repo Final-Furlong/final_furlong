@@ -52,9 +52,6 @@ en:
       form:
         comment: Comment
         reserve_price: Reserve Price
-      horse:
-        breed_ranking: Breed Ranking
-        ran_on_surface: Raced on %{surface}
       info:
         view_full_page: Full Details
       show:

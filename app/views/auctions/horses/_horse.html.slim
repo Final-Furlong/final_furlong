@@ -13,10 +13,10 @@ tr
   td.wb-break-all
     = horse.lifetime_race_record&.race_record_races_only || t("horse.unraced")
     - horse.lifetime_race_record&.surface_icons&.map do |icon|
-      .tooltip.ml-2.text-lg data-tip=t(".ran_on_surface", surface: icon[:surface])
+      .tooltip.ml-2.text-lg data-tip=t("horse.ran_on_surface", surface: icon[:surface])
         span.badge.badge-outline.badge-sm.ml-1 class="badge-#{icon[:style]}" = icon[:letter]
     - if horse.broodmare? || horse.stud?
-      .tooltip.ml-2.text-lg data-tip=t(".breed_ranking")
+      .tooltip.ml-2.text-lg data-tip=t("horse.breed_ranking")
         - if horse.broodmare?
           - if horse.foal_record && horse.breed_ranking_string != I18n.t("common.none")
             span.badge.badge-outline.badge-sm class="text-#{horse.foal_record.breed_ranking}" = horse.breed_ranking_string

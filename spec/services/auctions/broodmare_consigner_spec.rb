@@ -26,7 +26,6 @@ describe Auctions::BroodmareConsigner do
     expect(result).not_to include non_ff
   end
 
-  # rubocop:disable RSpec/ExampleLength
   it "ignores already consigned horses" do
     already_consigned = create(:broodmare, :final_furlong)
     create(:auction_horse, horse: already_consigned)
@@ -38,6 +37,5 @@ describe Auctions::BroodmareConsigner do
     expect(result).to include ff, ff2
     expect(result).not_to include already_consigned
   end
-  # rubocop:enable RSpec/ExampleLength
 end
 

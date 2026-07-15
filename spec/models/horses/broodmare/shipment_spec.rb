@@ -119,7 +119,7 @@ describe Horses::Broodmare::Shipment do
   end
 
   describe "#options_for_destination_select" do
-    it "returns correct array" do # rubocop:disable RSpec/ExampleLength
+    it "returns correct array" do
       stable_with_1_stud = create(:stable, name: "C Stable")
       create(:stallion, owner: stable_with_1_stud)
 

@@ -35,7 +35,7 @@ RSpec/EmptyLineAfterExample:
   AllowConsecutiveOneLiners: true
 
 RSpec/ExampleLength:
-  Max: 10
+  Enabled: false
 
 RSpec/ExcessiveDocstringSpacing:
   Enabled: true
