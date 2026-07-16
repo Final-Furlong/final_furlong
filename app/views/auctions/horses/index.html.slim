@@ -1,11 +1,11 @@
 .mx-auto.overflow-x-auto.rounded-md.w-full
   .table-responsive-md
-    table.table.table-responsive.table-zebra.table-sm.sortable.asc.n-last
+    table.table.table-responsive.table-zebra.table-sm
       thead
         tr
-          th= Horses::Horse.human_attribute_name("name")
-          th= Horses::Horse.human_attribute_name("age")
-          th= Horses::Horse.human_attribute_name("status")
+          th= sort_link @query, :name, Horses::Horse.human_attribute_name("name")
+          th= sort_link @query, :age, Horses::Horse.human_attribute_name("age")
+          th= sort_link @query, :status, Horses::Horse.human_attribute_name("status")
           th= Horses::Horse.human_attribute_name("sire")
           th= Horses::Horse.human_attribute_name("dam")
           th= Horses::Horse.human_attribute_name("record")

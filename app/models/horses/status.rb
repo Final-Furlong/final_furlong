@@ -43,11 +43,10 @@ module Horses
       BREEDING_STATUSES.include?(@status)
     end
 
-    def possible_new_status
-      case @status.downcase
-      when "racehorse"
+    def possible_new_status(type, state)
+      if type == "Horses::Horse::Racehorse"
         ["broodmare", "stud", "retired"]
-      when "broodmare", "stud", "yearling", "weanling"
+      elsif state == "active"
         ["retired"]
       else
         []

@@ -1,6 +1,6 @@
 /# locals: (horse:)
 ruby:
-  possible_statuses = Horses::Status.new(horse.status).possible_new_status
+  possible_statuses = Horses::Status.new("").possible_new_status(horse.type, horse.state)
   statuses = possible_statuses.select { |status| CurrentStable::HorsePolicy.new(Current.user, horse).send(:"status_#{status}?") }
 = form_with model: horse, url: horse_status_path(horse), id: "status-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
   alert.alert.alert-info.alert-outline= t(".status_info")
