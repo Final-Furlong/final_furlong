@@ -5,8 +5,6 @@ class Workouts::AutoWorkoutJob < ApplicationJob
 
   def perform(date: Date.current)
     return if run_today?(date:)
-    return unless run_today?(name: "Racing::EnergyFitnessUpdaterJob", date:)
-    return unless run_today?(name: "UpdateRacehorseStatsJob", date:)
 
     yesterday = date - 1.day
     queued = 0
