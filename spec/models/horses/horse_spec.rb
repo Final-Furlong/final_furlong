@@ -46,15 +46,14 @@ describe Horses::Horse do
       end
 
       it "can be blank for an unnamed horse whose name is not being edited" do
-        horse = create(:horse, name: nil)
-        horse.status = "racehorse"
+        horse = create(:racehorse, name: nil, gender: "colt")
+        horse.gender = "gelding"
 
         expect(horse).to be_valid
       end
 
       it "is valid for a horse whose name is not being edited" do
-        horse = create(:horse, name: "Bob", status: "yearling")
-        horse.status = "racehorse"
+        horse = create(:foal, :yearling, name: "Bob")
         horse.name = "Bob2"
 
         expect(horse).to be_valid

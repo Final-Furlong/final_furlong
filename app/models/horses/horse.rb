@@ -9,6 +9,8 @@ module Horses
     include Breedable
     include Typeable
 
+    self.ignored_columns += ["status"]
+
     friendly_id :name_and_foal_status, use: [:slugged, :finders, :history]
 
     multisearchable against: [:name], if: lambda { |record| %w[stillborn unborn].exclude?(record.state) }
@@ -39,7 +41,7 @@ module Horses
     enum :gender, Gender::VALUES
     enum :state, { active: "active", retired: "retired", deceased: "deceased", unborn: "unborn" }
 
-    validates :date_of_birth, :age, :gender, :status, presence: true
+    validates :date_of_birth, :age, :gender, presence: true
     validates :date_of_death, comparison: { greater_than_or_equal_to: :date_of_birth }, if: :date_of_death
     validates :name, length: { maximum: Config::Horses.max_name_length }
     validates :age, numericality: { only_integer: true, greater_than_or_equal_to: -1, less_than_or_equal_to: 40 }
@@ -54,8 +56,8 @@ module Horses
     scope :alive, -> { where.not(state: %w[unborn deceased]) }
     scope :retired, -> { where(state: "retired") }
     scope :not_retired, -> { where.not(state: "retired") }
-    scope :deceased, -> { where(status: "deceased") }
-    scope :not_deceased, -> { where.not(status: "deceased") }
+    scope :deceased, -> { where(state: "deceased") }
+    scope :not_deceased, -> { where.not(state: "deceased") }
     scope :born, -> { where.not(state: "unborn") }
     scope :unborn, -> { where(state: "unborn") }
     scope :stillborn, -> { deceased.where("date_of_birth = date_of_death") }
@@ -87,6 +89,8 @@ module Horses
     scope :with_leaser, ->(stable) { where(leaser_id: stable&.id) }
     scope :managed_by, ->(stable) { born.where(manager_id: stable&.id) }
     scope :random_order, -> { order("RANDOM()") }
+    scope :sort_by_status_asc, -> { in_order_of(:type, %w[Horses::Horse::Broodmare Horses::Horse::Racehorse Horses::Horse::Stud Horses::Horse::Foal]).order(age: :asc) }
+    scope :sort_by_status_desc, -> { in_order_of(:type, %w[Horses::Horse::Foal Horses::Horse::Stud Horses::Horse::Racehorse Horses::Horse::Broodmare]).order(age: :desc) }
 
     alias_method :dead?, :deceased?
 
@@ -220,29 +224,28 @@ end
 # Table name: horses
 # Database name: primary
 #
-#  id                                                                                                                 :bigint           not null, primary key
-#  age                                                                                                                :integer          default(0), not null, indexed, indexed => [status]
-#  date_of_birth                                                                                                      :date             not null, indexed => [leaser_id], indexed => [manager_id], indexed => [owner_id]
-#  date_of_death                                                                                                      :date             indexed
-#  dosage_abbr                                                                                                        :string
-#  gender(colt, filly, mare, stallion, gelding)                                                                       :enum             not null, indexed, indexed => [status]
-#  name                                                                                                               :string(18)       indexed, indexed => [status]
-#  slug                                                                                                               :string           indexed
-#  state(active,retired,unborn,deceased)                                                                              :enum             default("active"), indexed
-#  status(unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased) :enum             default("unborn"), not null, indexed => [owner_id], indexed => [age], indexed => [breeder_id], indexed => [dam_id], indexed => [gender], indexed => [leaser_id], indexed => [name], indexed => [owner_id], indexed => [sire_id]
-#  title_abbr                                                                                                         :string
-#  type(Racehorse,Broodmare,Stud,Foal)                                                                                :string           default("Horses::Horse::Foal"), indexed
-#  created_at                                                                                                         :datetime         not null
-#  updated_at                                                                                                         :datetime         not null
-#  breeder_id                                                                                                         :bigint           not null, indexed, indexed => [status]
-#  dam_id                                                                                                             :bigint           indexed, indexed => [status]
-#  leaser_id                                                                                                          :bigint           indexed => [date_of_birth], indexed, indexed => [status]
-#  legacy_id                                                                                                          :integer          indexed
-#  location_bred_id                                                                                                   :bigint           not null, indexed
-#  manager_id                                                                                                         :bigint           indexed => [date_of_birth], indexed
-#  owner_id                                                                                                           :bigint           not null, indexed => [date_of_birth], indexed => [status], indexed => [status]
-#  public_id                                                                                                          :string(12)       indexed
-#  sire_id                                                                                                            :bigint           indexed, indexed => [status]
+#  id                                           :bigint           not null, primary key
+#  age                                          :integer          default(0), not null, indexed, indexed => [status]
+#  date_of_birth                                :date             not null, indexed => [leaser_id], indexed => [manager_id], indexed => [owner_id]
+#  date_of_death                                :date             indexed
+#  dosage_abbr                                  :string
+#  gender(colt, filly, mare, stallion, gelding) :enum             not null, indexed, indexed => [status]
+#  name                                         :string(18)       indexed, indexed => [status]
+#  slug                                         :string           indexed
+#  state(active,retired,unborn,deceased)        :enum             default("active"), indexed
+#  title_abbr                                   :string
+#  type(Racehorse,Broodmare,Stud,Foal)          :string           default("Horses::Horse::Foal"), indexed
+#  created_at                                   :datetime         not null
+#  updated_at                                   :datetime         not null
+#  breeder_id                                   :bigint           not null, indexed, indexed => [status]
+#  dam_id                                       :bigint           indexed, indexed => [status]
+#  leaser_id                                    :bigint           indexed => [date_of_birth], indexed, indexed => [status]
+#  legacy_id                                    :integer          indexed
+#  location_bred_id                             :bigint           not null, indexed
+#  manager_id                                   :bigint           indexed => [date_of_birth], indexed
+#  owner_id                                     :bigint           not null, indexed => [date_of_birth], indexed => [status], indexed => [status]
+#  public_id                                    :string(12)       indexed
+#  sire_id                                      :bigint           indexed, indexed => [status]
 #
 # Indexes
 #

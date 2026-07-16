@@ -6,6 +6,7 @@ module Horses
       string :sire_name_i_cont_all, default: nil
       string :dam_name_i_cont_all, default: nil
       string :owner_name_i_cont_all, default: nil
+      string :owner_name_eq, default: nil
       string :breeder_name_i_cont_all, default: nil
       string :age_gteq, default: nil
       string :age_lteq, default: nil
@@ -62,9 +63,13 @@ module Horses
     end
 
     def set_owner_name_query
-      return if query["owner_name_i_cont_all"].blank?
+      return if query["owner_name_eq"].blank? && query["owner_name_i_cont_all"].blank?
 
-      @horse_query = horse_query.joins(:owner).merge(Account::Stable.with_name(query["owner_name_i_cont_all"]))
+      @horse_query = if query["owner_name_eq"]
+        horse_query.joins(:owner).where(owner: { name: query["owner_name_eq"] })
+      else
+        horse_query.joins(:owner).merge(Account::Stable.with_name(query["owner_name_i_cont_all"]))
+      end
     end
 
     def set_breeder_name_query
@@ -105,8 +110,16 @@ module Horses
             # do nothing, unborn
           end
         else
-          list[:yearling] = type_info.first.constantize.born.active.with_age(1).count
-          list[:weanling] = type_info.first.constantize.born.active.with_age(0).count
+          case type_info.last
+          when "active"
+            list[:yearling] = horse_query.where(type: type_info.first).born.active.with_age(1).count
+            list[:weanling] = horse_query.where(type: type_info.first).born.active.with_age(0).count
+          when "deceased"
+            list[:deceased] ||= 0
+            list[:deceased] += group.last
+          else
+            # do nothing, unborn
+          end
         end
       end
       list

@@ -82,7 +82,7 @@ module CurrentStable
 
     def set_status_counts
       params.to_unsafe_hash["q"].symbolize_keys if params[:q]
-      @statuses = Horses::SearchStatusCount.run(query: { owner_name_i_cont_all: Current.stable.name }).result
+      @statuses = Horses::SearchStatusCount.run(query: { owner_name_eq: Current.stable.name }).result
     end
   end
 end

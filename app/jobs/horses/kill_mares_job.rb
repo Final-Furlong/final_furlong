@@ -7,18 +7,18 @@ class Horses::KillMaresJob < ApplicationJob
     died = 0
     stillborn = 0
     premature = 0
-    Horses::Horse.where(status: "broodmare").joins(:future_events).merge(Horses::FutureEvent.past.death).find_each do |mare|
+    Horses::Horse::Broodmare.active.joins(:future_events).merge(Horses::FutureEvent.past.death).find_each do |mare|
       death = mare.future_events.where(event_type: "die").first
       ActiveRecord::Base.transaction do
-        mare.update(status: "deceased", date_of_death: death.date)
+        mare.update(state: "deceased", date_of_death: death.date)
         notify_death(horse: mare)
-        Horses::Horse.where(dam: mare, status: "unborn").find_each do |foal|
+        Horses::Horse::Foal.where(dam: mare, state: "unborn").find_each do |foal|
           if (foal.date_of_birth - death.date).to_i > Config::Horses.max_premature_days
-            foal.update(status: "deceased", date_of_birth: death.date, date_of_death: death.date)
+            foal.update(state: "deceased", date_of_birth: death.date, date_of_death: death.date)
             notify_stillborn(foal:, mare:)
             stillborn += 1
           else
-            foal.update(status: "weanling", date_of_birth: death.date)
+            foal.update(state: "active", date_of_birth: death.date)
             appearance = foal.appearance
             appearance.update(birth_height: appearance.birth_height - rand(1..2))
             notify_premature(foal:, mare:)
