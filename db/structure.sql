@@ -1115,7 +1115,6 @@ CREATE TABLE public.horses (
     date_of_death date,
     age integer DEFAULT 0 NOT NULL,
     gender public.horse_gender NOT NULL,
-    status public.horse_status DEFAULT 'unborn'::public.horse_status NOT NULL,
     sire_id bigint,
     dam_id bigint,
     owner_id bigint NOT NULL,
@@ -1138,13 +1137,6 @@ CREATE TABLE public.horses (
 --
 
 COMMENT ON COLUMN public.horses.gender IS 'colt, filly, mare, stallion, gelding';
-
-
---
--- Name: COLUMN horses.status; Type: COMMENT; Schema: public; Owner: -
---
-
-COMMENT ON COLUMN public.horses.status IS 'unborn, weanling, yearling, racehorse, broodmare, stud, retired, retired_broodmare, retired_stud, deceased';
 
 
 --
@@ -1607,7 +1599,7 @@ CREATE MATERIALIZED VIEW public.breeders_cup_filly_mare_turf_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Filly & Mare Turf'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
+  WHERE ((h.age > 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Filly & Mare Turf'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
   WITH NO DATA;
 
 
@@ -1733,7 +1725,7 @@ CREATE MATERIALIZED VIEW public.breeders_cup_juvenile_turf_fillies_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age = 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = 'filly'::public.horse_gender) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Juvenile Turf Fillies'::text))) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WHERE ((h.age = 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = 'filly'::public.horse_gender) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Juvenile Turf Fillies'::text))) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
 
 
@@ -2036,7 +2028,7 @@ CREATE MATERIALIZED VIEW public.breeders_cup_sc_distaff_endurance_qualifiers AS
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
           WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
-  WHERE ((h.age > 2) AND (h.status = 'racehorse'::public.horse_status) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Distaff Endurance'::text))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
+  WHERE ((h.age > 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Distaff Endurance'::text))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
   WITH NO DATA;
 
 
@@ -3331,7 +3323,7 @@ CREATE MATERIALIZED VIEW public.broodmare_foal_records AS
            FROM (public.horses h2
              LEFT JOIN public.lifetime_race_records lrr ON ((h2.id = lrr.horse_id)))) foals ON ((h.id = foals.dam_id)))
      LEFT JOIN public.breedings b ON (((b.mare_id = h.id) AND (b.status = 'bred'::public.breeding_statuses))))
-  WHERE ((h.status = ANY (ARRAY['broodmare'::public.horse_status, 'retired_broodmare'::public.horse_status, 'deceased'::public.horse_status])) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((h.date_of_death IS NULL) OR (h.date_of_birth <> h.date_of_death)) AND ((b.id IS NULL) OR (b.status = 'bred'::public.breeding_statuses)))
+  WHERE (((h.type)::text = 'Horses::Horse::Broodmare'::text) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((h.date_of_death IS NULL) OR (h.date_of_birth <> h.date_of_death)) AND ((b.id IS NULL) OR (b.status = 'bred'::public.breeding_statuses)))
   GROUP BY h.id
  HAVING (((COALESCE(sum(foals.born), (0)::bigint) + COALESCE(sum(foals.unborn), (0)::bigint)) > 0) OR (count(b.id) > 0))
   WITH NO DATA;
@@ -6758,7 +6750,7 @@ CREATE MATERIALIZED VIEW public.stud_foal_records AS
             h2.sire_id
            FROM (public.horses h2
              LEFT JOIN public.lifetime_race_records lrr ON ((h2.id = lrr.horse_id)))) foals ON ((h.id = foals.sire_id)))
-  WHERE ((h.status = ANY (ARRAY['stud'::public.horse_status, 'retired_stud'::public.horse_status, 'deceased'::public.horse_status])) AND (h.gender = ANY (ARRAY['stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((h.date_of_death IS NULL) OR (h.date_of_birth <> h.date_of_death)))
+  WHERE (((h.type)::text = 'Horses::Horse::Stud'::text) AND (h.gender = ANY (ARRAY['stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((h.date_of_death IS NULL) OR (h.date_of_birth <> h.date_of_death)))
   GROUP BY h.id
  HAVING ((COALESCE(sum(foals.born), (0)::bigint) + COALESCE(sum(foals.unborn), (0)::bigint)) > 0)
   WITH NO DATA;
@@ -11194,13 +11186,6 @@ CREATE INDEX index_horses_on_name ON public.horses USING btree (name);
 
 
 --
--- Name: index_horses_on_owner_id_and_status; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_horses_on_owner_id_and_status ON public.horses USING btree (owner_id, status);
-
-
---
 -- Name: index_horses_on_public_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -11226,62 +11211,6 @@ CREATE INDEX index_horses_on_slug ON public.horses USING btree (slug);
 --
 
 CREATE INDEX index_horses_on_state ON public.horses USING btree (state);
-
-
---
--- Name: index_horses_on_status_and_age; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_horses_on_status_and_age ON public.horses USING btree (status, age);
-
-
---
--- Name: index_horses_on_status_and_breeder_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_horses_on_status_and_breeder_id ON public.horses USING btree (status, breeder_id);
-
-
---
--- Name: index_horses_on_status_and_dam_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_horses_on_status_and_dam_id ON public.horses USING btree (status, dam_id);
-
-
---
--- Name: index_horses_on_status_and_gender; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_horses_on_status_and_gender ON public.horses USING btree (status, gender);
-
-
---
--- Name: index_horses_on_status_and_leaser_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_horses_on_status_and_leaser_id ON public.horses USING btree (status, leaser_id);
-
-
---
--- Name: index_horses_on_status_and_name; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_horses_on_status_and_name ON public.horses USING btree (status, name);
-
-
---
--- Name: index_horses_on_status_and_owner_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_horses_on_status_and_owner_id ON public.horses USING btree (status, owner_id);
-
-
---
--- Name: index_horses_on_status_and_sire_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_horses_on_status_and_sire_id ON public.horses USING btree (status, sire_id);
 
 
 --
@@ -14002,6 +13931,12 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260716130623'),
+('20260716130228'),
+('20260716130227'),
+('20260716130226'),
+('20260716130225'),
+('20260716130224'),
 ('20260716105645'),
 ('20260716105548'),
 ('20260716105517'),
