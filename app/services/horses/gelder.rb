@@ -4,7 +4,7 @@ module Horses
       result = Result.new(horse:)
       attrs = { gender: "gelding" }
       if horse.stud?
-        attrs[:status] = "retired_stud"
+        attrs[:state] = "retired"
       end
       ActiveRecord::Base.transaction do
         if horse.stud?

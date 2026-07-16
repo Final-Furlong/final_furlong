@@ -63,6 +63,14 @@ module Auctions
       public_id
     end
 
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[auction_id buyer_id horse_id maximum_price reserve_price seller_id sold_at]
+    end
+
+    def self.ransackable_associations(_auth_object = nil)
+      %w[auction bids buyer horse seller winning_bid]
+    end
+
     private
 
     def should_generate_new_friendly_id?

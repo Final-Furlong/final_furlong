@@ -18,7 +18,7 @@ describe CurrentStable::HorsePolicy do
     end
 
     context "when the horse is a broodmare" do
-      before { horse.status = "broodmare" }
+      let(:horse) { build(:broodmare) }
 
       it "denies correct actions" do
         horse.owner = user.stable
@@ -27,7 +27,7 @@ describe CurrentStable::HorsePolicy do
     end
 
     context "when the horse is a stud" do
-      before { horse.status = "stud" }
+      let(:horse) { build(:stallion) }
 
       it "denies correct actions" do
         horse.owner = user.stable
@@ -46,7 +46,7 @@ describe CurrentStable::HorsePolicy do
     end
 
     context "when the horse is a broodmare" do
-      before { horse.status = "broodmare" }
+      let(:horse) { build(:broodmare) }
 
       it "denies correct actions" do
         create(:lease, horse:, leaser: user.stable)
@@ -55,7 +55,7 @@ describe CurrentStable::HorsePolicy do
     end
 
     context "when the horse is a stud" do
-      before { horse.status = "stud" }
+      let(:horse) { build(:stallion) }
 
       it "denies correct actions" do
         create(:lease, horse:, leaser: user.stable)

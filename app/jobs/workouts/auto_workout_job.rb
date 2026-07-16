@@ -12,7 +12,7 @@ class Workouts::AutoWorkoutJob < ApplicationJob
     batch = GoodJob::Batch.new
     Racing::TrainingSchedule.with_activities(weekday).distinct.find_each do |schedule|
       schedule.send("#{weekday}_activities")
-      schedule.training_schedule_horses.includes(:horse).where(horse: { status: "racehorse" }).find_each do |training_horse|
+      schedule.training_schedule_horses.includes(:horse).where(horse: { state: "active", type: "Horses::Horse::Racehorse" }).find_each do |training_horse|
         horse = training_horse.horse
         batch.add(Workouts::ProcessWorkoutJob.perform_later(schedule_id: schedule.id, horse_id: horse.id, date: yesterday))
         queued += 1

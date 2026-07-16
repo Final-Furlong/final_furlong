@@ -5,11 +5,11 @@ class Horses::RetireMaresJob < ApplicationJob
     return if run_today?
 
     retired = 0
-    Horses::Horse.where(status: "broodmare").joins(:future_events).merge(Horses::FutureEvent.past.retirement).find_each do |mare|
+    Horses::Horse::Broodmare.active.joins(:future_events).merge(Horses::FutureEvent.past.retirement).find_each do |mare|
       next if Horses::FutureEvent.past.death.exists?(horse: mare)
 
       ActiveRecord::Base.transaction do
-        mare.update(status: "retired_broodmare")
+        mare.update(state: "retired")
         Horses::Breeding.where(mare:).where.not(status: "bred").delete_all
         Horses::Breeding.where(mare:, status: "bred").where("date > ?", Date.current).find_each do |future_breeding|
           future_breeding.first_foal&.destroy!

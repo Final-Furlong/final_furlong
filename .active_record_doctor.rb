@@ -25,17 +25,6 @@ ActiveRecordDoctor.configure do
     "ActiveStorage::VariantRecord",
     "SolidCable::Message",
     "SolidCache::Entry",
-    "SolidQueue::BlockedExecution",
-    "SolidQueue::ClaimedExecution",
-    "SolidQueue::FailedExecution",
-    "SolidQueue::Job",
-    "SolidQueue::Pause",
-    "SolidQueue::Process",
-    "SolidQueue::ReadyExecution",
-    "SolidQueue::RecurringExecution",
-    "SolidQueue::RecurringTask",
-    "SolidQueue::ScheduledExecution",
-    "SolidQueue::Semaphore",
     "GoodJob::BatchRecord",
     "GoodJob::DiscreteExecution",
     "GoodJob::Execution",
@@ -71,11 +60,6 @@ ActiveRecordDoctor.configure do
   ]
 
   detector :missing_non_null_constraint,
-    ignore_tables: [
-      "ff_horses",
-      "ff_trackdata",
-      "ff_users"
-    ],
     ignore_columns: [
       "stables.public_id",
       "users.public_id",
@@ -88,6 +72,11 @@ ActiveRecordDoctor.configure do
 
   detector :missing_presence_validation,
     ignore_attributes: [
+      "Horses::Horse.status",
+      "Horses::Horse::Broodmare.status",
+      "Horses::Horse::Foal.status",
+      "Horses::Horse::Racehorse.status",
+      "Horses::Horse::Stud.status",
       "Account::Setting.dark_mode",
       "Account::Stable.bred_horses_count",
       "Account::Stable.horses_count",
@@ -217,8 +206,6 @@ ActiveRecordDoctor.configure do
 
   detector :unindexed_foreign_keys,
     ignore_tables: [
-      "new_horse_genetics",
-      "new_race_result_horses",
       "horse_genetics",
       "breedings",
       "supplemental_breeders_cup_nominations"
