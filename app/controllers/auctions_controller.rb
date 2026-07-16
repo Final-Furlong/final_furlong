@@ -20,7 +20,9 @@ class AuctionsController < ApplicationController
     else
       (@unsold.positive? ? :unsold : :sold)
     end
-    @pagy, @horses, = pagy(:countless, @auction.paginated_horses(type: @active_tab, pending: @pending, unsold: @unsold))
+    @query = @auction.paginated_horses(type: @active_tab, pending: @pending, unsold: @unsold)
+    @query = @query.ransack(params[:q])
+    @pagy, @horses, = pagy(:countless, @query.result)
   end
 
   def new

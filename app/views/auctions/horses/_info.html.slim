@@ -36,7 +36,7 @@
       tr
         th= t("horses.info.track_record")
         td= horse.lifetime_race_record || t("horse.unraced")
-      - if Horses::Status::BREEDING_STATUSES.include?(horse.status)
+      - if horse.broodmare? || horse.stud?
         tr
           th= t("horses.info.breeding_record")
           td
@@ -44,7 +44,7 @@
               = horse.breed_ranking_string || t("common.none")
             - else
               = horse.stud_breed_ranking_string
-      - if Horses::Status::FEMALE_BREEDING_STATUSES.include?(horse.status)
+      - if horse.broodmare?
         - if horse.foals.born.present?
           tr
             th= t("horses.info.last_foal")
