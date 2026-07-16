@@ -9,7 +9,6 @@ module Horses
 
       # rubocop:disable Metrics/ParameterLists
       def initialize(version:, statuses:, status: nil, active_status: nil, params: {}, path_name: nil)
-        pd statuses
         @statuses = statuses
         @status = status
         @active_status = active_status
