@@ -53,18 +53,20 @@ describe Horses::HorsePolicy do
     end
 
     context "when horse is eligible for naming" do
-      it "allows when horse is 0yo" do
-        horse.date_of_birth = Date.new(Date.current.year, 1, 1)
-        horse.age = 0
-        horse.status = "weanling"
-        expect(policy).to permit_actions(:index, :show, :image, :thumbnail, :edit_name, :update)
+      context "when horse is 0yo" do
+        let(:horse) { build_stubbed(:foal, :weanling, owner: user.stable) }
+
+        it "allows" do
+          expect(policy).to permit_actions(:index, :show, :image, :thumbnail, :edit_name, :update)
+        end
       end
 
-      it "allows when horse is 1yo" do
-        horse.date_of_birth = Date.current - 1.year
-        horse.age = 1
-        horse.status = "yearling"
-        expect(policy).to permit_actions(:index, :show, :image, :thumbnail, :edit_name, :update)
+      context "when horse is 1yo" do
+        let(:horse) { build_stubbed(:foal, :yearling, owner: user.stable) }
+
+        it "allows" do
+          expect(policy).to permit_actions(:index, :show, :image, :thumbnail, :edit_name, :update)
+        end
       end
 
       it "allows when horse is 2yo and created" do
@@ -73,14 +75,13 @@ describe Horses::HorsePolicy do
         horse.sire_id = nil
         horse.dam_id = nil
         horse.name = nil
-        horse.status = "racehorse"
         expect(policy).to permit_actions(:index, :show, :image, :thumbnail, :edit_name, :update)
       end
     end
 
     context "when horse is ineligible for naming" do
       it "denies when horse is dead" do
-        horse.status = "deceased"
+        horse.state = "deceased"
         expect(policy).to permit_actions(:index, :show, :image, :thumbnail)
         expect(policy).not_to permit_actions(:edit_name, :update)
       end
@@ -90,7 +91,6 @@ describe Horses::HorsePolicy do
         horse.name = "Bob"
         horse.sire_id = nil
         horse.dam_id = nil
-        horse.status = "racehorse"
         horse.gender = "filly"
         expect(policy).to permit_actions(:index, :show, :image, :thumbnail)
         expect(policy).not_to permit_actions(:edit_name, :update)
@@ -101,7 +101,6 @@ describe Horses::HorsePolicy do
         horse.name = "Bob"
         horse.sire_id = nil
         horse.dam_id = nil
-        horse.status = "racehorse"
         horse.gender = "colt"
         expect(policy).to permit_actions(:index, :show, :image, :thumbnail, :update)
         expect(policy).not_to permit_actions(:edit_name)
@@ -112,7 +111,6 @@ describe Horses::HorsePolicy do
         horse.sire = build(:stallion)
         horse.dam = build(:broodmare)
         horse.name = nil
-        horse.status = "racehorse"
         horse.gender = "filly"
         expect(policy).to permit_actions(:index, :show, :image, :thumbnail)
         expect(policy).not_to permit_actions(:edit_name, :update)

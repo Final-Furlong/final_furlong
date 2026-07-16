@@ -9,6 +9,7 @@ module Horses
 
       # rubocop:disable Metrics/ParameterLists
       def initialize(version:, statuses:, status: nil, active_status: nil, params: {}, path_name: nil)
+        pd statuses
         @statuses = statuses
         @status = status
         @active_status = active_status
@@ -36,9 +37,9 @@ module Horses
       end
 
       def set_state_value(params, status)
-        return params unless %i[retired deceased].include?(status)
+        state = %i[retired deceased].include?(status) ? status : "active"
 
-        params[:q][:state_eq] = status
+        params[:q][:state_eq] = state
         params
       end
 

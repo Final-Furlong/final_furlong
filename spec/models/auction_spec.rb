@@ -181,11 +181,5 @@ describe Auction do
       end
     end
   end
-
-  private
-
-  def global_id_string(object)
-    object.to_global_id.to_s
-  end
 end
 

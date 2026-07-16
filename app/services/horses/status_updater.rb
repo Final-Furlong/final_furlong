@@ -16,8 +16,9 @@ module Horses
         elsif horse.broodmare?
           horse.update(state: "retired")
           ::Horses::Event.create!(horse:, event_type: "retired_breeding", date: Date.current)
+        elsif horse.foal?
+          horse.update(state: "retired")
         end
-        @horse.update(status:)
       end
       result.updated = @horse.valid?
       result
