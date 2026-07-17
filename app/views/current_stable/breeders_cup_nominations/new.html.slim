@@ -1,6 +1,6 @@
 ruby:
   title = t(".title")
-  weanlings = Horses::Horse.weanling.managed_by(Current.stable).includes(:dam, :breeders_cup_nomination, sire: :nominations).order(name: :asc)
+  weanlings = Horses::Horse.weanling.active.managed_by(Current.stable).includes(:dam, :breeders_cup_nomination, sire: :nominations).order(name: :asc)
 
 - content_for :breadcrumbs do
   = render Nav::Breadcrumbs::Component.new(links: [{ name: Current.stable.name, href: current_stable_path },

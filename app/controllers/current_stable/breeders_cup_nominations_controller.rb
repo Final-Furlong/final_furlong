@@ -13,7 +13,7 @@ module CurrentStable
       else
         flash[:error] = result.error
       end
-      remaining_weanlings = Horses::Horse::Foal.weanling.managed_by(Current.stable).joins(sire: :nominations).where(sire: { stud_breeders_cup_nominations: { year: Date.current.year } }).where.missing(:breeders_cup_nomination).exists?
+      remaining_weanlings = Horses::Horse::Foal.weanling.active.managed_by(Current.stable).joins(sire: :nominations).where(sire: { stud_breeders_cup_nominations: { year: Date.current.year } }).where.missing(:breeders_cup_nomination).exists?
       redirect_to remaining_weanlings ? new_stable_breeders_cup_nomination_path : current_stable_path
     end
   end
