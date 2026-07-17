@@ -125,8 +125,8 @@ module Racing
       finish = horses.find { |hash| hash[:id] == horse.id }
       stats.energy -= finish[:energy_used]
       stats.energy = Config::Racing.minimum_energy if stats.energy < Config::Racing.minimum_energy
-      fitness_gained = finish[:energy_used].abs * 2
-      fitness_gained = fitness_gained.clamp(20, 100)
+      fitness_gained = finish[:fitness_gained]
+      fitness_gained = fitness_gained.clamp(20, 50)
       stats.fitness += fitness_gained
       stats.fitness = Config::Racing.maximum_fitness if stats.fitness > Config::Racing.maximum_fitness
       stats.xp_current += finish[:experience_gained].clamp(5, 20)
