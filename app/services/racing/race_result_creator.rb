@@ -42,9 +42,8 @@ module Racing
             raise ActiveRecord::Rollback, race_horse.errors.full_messages.to_sentence
           end
         end
-        if result.created?
+        if result.created? && race.stakes?
           Racing::RaceSeriesWinnerCheckJob.set(good_job_labels: [race.id], wait: 10.minutes).perform_later(race_id: race.id)
-          Racing::RaceResultFinisherJob.set(good_job_labels: [date]).perform_later(date:) if max_race?(number: race.number)
         end
         return result
       rescue => e
@@ -71,10 +70,6 @@ module Racing
     end
 
     private
-
-    def max_race?(number:)
-      number == Racing::RaceSchedule.where(date:).maximum(:number)
-    end
 
     def create_transactions(result:)
       return if result.earnings.zero?
