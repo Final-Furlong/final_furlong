@@ -5,7 +5,7 @@ module Auctions
 
     def create
       auction = Auction.find(params[:auction_id])
-      auction_horse = auction.horses.find(params[:horse_id])
+      auction_horse = auction.horses.includes(:horse).find(params[:horse_id])
       authorize auction_horse, :bid?
 
       new_bid_params = bid_params.merge(

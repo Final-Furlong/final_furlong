@@ -27,6 +27,7 @@ module Auctions
       end
 
       horse_max_price = auction_horse.maximum_price.to_i
+      other_bids = []
       if horse_max_price.positive?
         if Auctions::Bid.where.not(id: bid.id).with_bid_matching(horse_max_price).exists?(horse: auction_horse)
           all_max_bidders = Auctions::Bid.with_bid_matching(horse_max_price).select { |max_bid|
@@ -38,6 +39,7 @@ module Auctions
             return result
           else
             bid = all_max_bidders.sample
+            other_bids = all_max_bidders.select { |max_bid| max_bid.id != bid.id }
           end
         end
       end
@@ -106,6 +108,9 @@ module Auctions
         end
         auction_horse.update(sold_at: Time.current)
         horse.update(owner: buyer, manager: buyer)
+        other_bids.each do |bid|
+          bid.update(current_high_bid: false)
+        end
         if horse.racehorse?
           horse.training_schedules_horse&.destroy
           unless horse.current_boarding

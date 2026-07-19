@@ -294,29 +294,50 @@ describe Auctions::BidCreator do
 
   context "when bid and auction have a max amount" do
     it "returns created true" do
-      auction.update(spending_cap_per_stable: 100_000)
+      auction.update_columns(spending_cap_per_stable: 100_000)
       result = described_class.new.create_bid(bid_params.merge(current_bid: 1000, maximum_bid: 10_000))
       expect(result.created?).to be true
     end
 
     it "returns no error" do
-      auction.update(spending_cap_per_stable: 100_000)
+      auction.update_columns(spending_cap_per_stable: 100_000)
       result = described_class.new.create_bid(bid_params.merge(current_bid: 1000, maximum_bid: 10_000))
       expect(result.error).to be_nil
     end
 
     it "creates bid" do
-      auction.update(spending_cap_per_stable: 100_000)
+      auction.update_columns(spending_cap_per_stable: 100_000)
       expect do
         described_class.new.create_bid(bid_params.merge(current_bid: 1000, maximum_bid: 10_000))
       end.to change(Auctions::Bid, :count).by(1)
     end
 
     it "sets the right data for tne new current bid" do
-      auction.update(spending_cap_per_stable: 100_000)
+      auction.update_columns(spending_cap_per_stable: 100_000)
       described_class.new.create_bid(bid_params.merge(current_bid: 1000, maximum_bid: 10_000))
       expect(Auctions::Bid.where(horse:).count).to eq 1
       expect(Auctions::Bid.where(horse:).winning.first).to have_attributes(current_bid: 1_000, maximum_bid: 10_000)
+    end
+
+    it "allows single stable to bid max amount" do
+      auction.update_columns(spending_cap_per_stable: 100_000)
+      stable.update(available_balance: 200_000, total_balance: 200_000)
+      described_class.new.create_bid(bid_params.merge(current_bid: 1000, maximum_bid: 100_000))
+
+      expect(Auctions::Bid.where(horse:).count).to eq 1
+      expect(Auctions::Bid.where(horse:).first).to have_attributes(bidder: stable, current_bid: 100_000, maximum_bid: 100_000)
+    end
+
+    it "allows multiple stables to bid max amount" do
+      auction.update_columns(spending_cap_per_stable: 100_000)
+      stable.update(available_balance: 200_000, total_balance: 200_000)
+      described_class.new.create_bid(bid_params.merge(current_bid: 1000, maximum_bid: 100_000))
+
+      other_stable = create(:stable, available_balance: 200_000, total_balance: 200_000)
+      described_class.new.create_bid(bid_params.merge(current_bid: 1000, maximum_bid: 100_000, bidder_id: other_stable.id))
+      expect(Auctions::Bid.where(horse:).count).to eq 2
+      expect(Auctions::Bid.where(horse:).order(id: :asc).first).to have_attributes(bidder: stable, current_bid: 100_000, maximum_bid: 100_000)
+      expect(Auctions::Bid.where(horse:).order(id: :asc).last).to have_attributes(bidder: other_stable, current_bid: 100_000, maximum_bid: 100_000)
     end
   end
 

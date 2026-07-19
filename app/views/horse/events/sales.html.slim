@@ -53,8 +53,7 @@
               td= event[:old_stable]
               td= event[:new_stable]
               td
-                - if event[:public] || [event[:old_stable], event[:new_stable]].include?(Current.stable.name)
+                - if !event[:private] || [event[:old_stable], event[:new_stable]].include?(Current.stable.name)
                   = fee = Game::MoneyFormatter.new(event[:price]).to_s
                 - else
                   em= t(".private_treaty")
-

@@ -121,7 +121,11 @@ module Auctions
       ActiveRecord::Base.transaction do
         max_bid = previous_max_bid
         minimum_bid_amount = max_bid + increment if max_bid.positive?
-        if minimum_bid_amount && bid_params[:current_bid] <= minimum_bid_amount && bid_params[:maximum_bid].to_i <= minimum_bid_amount
+        if money_max.positive? && (minimum_bid_amount.to_i >= money_max || bid[:maximum_bid].to_i >= money_max)
+          previous_bid&.update(current_bid: money_max, maximum_bid: money_max)
+          bid_params[:current_bid] = money_max
+          bid_params[:maximum_bid] = money_max
+        elsif minimum_bid_amount && bid_params[:current_bid] <= minimum_bid_amount && bid_params[:maximum_bid].to_i <= minimum_bid_amount
           Auctions::BidIncrementor.new.increment_bid(
             original_bid_id: previous_bid.id, new_bidder_id: bid_params[:bidder_id],
             current_bid: bid_params[:current_bid], maximum_bid: bid_params[:maximum_bid]
