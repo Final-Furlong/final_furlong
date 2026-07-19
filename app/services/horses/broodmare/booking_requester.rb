@@ -13,7 +13,7 @@ module Horses
 
         booking.date = Date.new(Date.current.year, slot.month, slot.end_day)
 
-        last_race_date = @stud.race_result_finishes.joins(:race).merge(::Racing::RaceResult.ordered_by_date(:desc)).first.race.date
+        last_race_date = @stud.race_result_finishes.joins(:race).includes(:race).merge(::Racing::RaceResult.ordered_by_date(:desc)).first.race.date
         min_breed_date = last_race_date + 1.day
         if booking.date < min_breed_date
           result.error = error("horse_was_racing")

@@ -18,6 +18,14 @@ module Horses
       I18n.t("horses.statuses.#{key}")
     end
 
+    def retire
+      Horses::Broodmare::Retirement.new(horse: self).run
+    end
+
+    def die(date: Date.current)
+      Horses::Broodmare::Death.new(horse: self, date:).run
+    end
+
     def breed_ranking_string
       foal_record&.breed_ranking_string
     end
