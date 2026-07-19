@@ -1,34 +1,31 @@
-class Horses::KillMaresJob < ApplicationJob
+class Horses::FutureEventsJob < ApplicationJob
   queue_as :latency_2m
 
   def perform
     return if run_today?
 
+    retired = 0
     died = 0
     stillborn = 0
     premature = 0
-    Horses::Horse::Broodmare.active.joins(:future_events).merge(Horses::FutureEvent.past.death).find_each do |mare|
-      death = mare.future_events.where(event_type: "die").first
+    Horses::Horse.joins(:future_events).merge(Horses::FutureEvent.past).find_each do |horse|
+      event = horse.future_events.past.order(date: :asc).first
       ActiveRecord::Base.transaction do
-        mare.update(state: "deceased", date_of_death: death.date)
-        notify_death(horse: mare)
-        Horses::Horse::Foal.where(dam: mare, state: "unborn").find_each do |foal|
-          if (foal.date_of_birth - death.date).to_i > Config::Horses.max_premature_days
-            foal.update(state: "deceased", date_of_birth: death.date, date_of_death: death.date)
-            notify_stillborn(foal:, mare:)
-            stillborn += 1
-          else
-            foal.update(state: "active", date_of_birth: death.date)
-            appearance = foal.appearance
-            appearance.update(birth_height: appearance.birth_height - rand(1..2))
-            notify_premature(foal:, mare:)
-            premature += 1
+        if event.event_type == "retire"
+          horse.retire
+          retired += 1
+        elsif event.event_type == "die"
+          result = horse.die
+          if horse.broodmare?
+            stillborn += 1 if result[:stillborn]
+            premature += 1 if result[:premature]
           end
+          died += 1
         end
-        died += 1
+        event.destroy
       end
     end
-    store_job_info(outcome: { died:, stillborn:, premature: })
+    store_job_info(outcome: { retired:, died:, stillborn:, premature: })
   end
 
   private
