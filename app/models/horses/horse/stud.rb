@@ -27,6 +27,14 @@ module Horses
       foal_record&.breed_ranking_string
     end
 
+    def retire
+      Horses::Stud::Retirement.new(horse: self).run
+    end
+
+    def die(date: Date.current)
+      Horses::Stud::Death.new(horse: self, date:).run
+    end
+
     def name_with_owner_fee
       return name_with_title unless active?
 

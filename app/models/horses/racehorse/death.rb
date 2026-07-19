@@ -1,10 +1,10 @@
 module Horses::Racehorse
-  class Retirement
-    attr_reader :horse, :status
+  class Death
+    attr_reader :horse, :date
 
-    def initialize(horse:, status:)
+    def initialize(horse:, date:)
       @horse = horse
-      @status = status
+      @date = date
     end
 
     def run
@@ -21,15 +21,10 @@ module Horses::Racehorse
         horse.training_schedules_horse&.destroy
         horse.breeders_cup_nomination&.destroy
         cancel_lease(horse:) if horse.current_lease
-        case status
-        when "broodmare"
-          horse.update(type: "Horses::Horse::Broodmare")
-        when "stud"
-          horse.update(type: "Horses::Horse::Stud")
-        when "retired"
-          horse.update(state: "retired")
+        if horse.state != "deceased"
+          horse.update(state: "deceased", date_of_death: date)
+          notify_death(horse:, stable: horse.owner)
         end
-        ::Horses::Event.create!(horse:, event_type: "retired_racing", date: Date.current)
       end
     end
 
@@ -38,6 +33,15 @@ module Horses::Racehorse
     def cancel_lease(horse:)
       lease = horse.current_lease
       lease.update(active: false, early_termination_date: Date.current)
+      notify_death(horse:, stable: lease.leaser)
+    end
+
+    def notify_death(horse:, stable:)
+      Game::NotificationCreator.new.create_notification(
+        type: ::Notifications::Horse::DiedNotification,
+        user: stable.user,
+        params: { horse_id: horse.slug, horse_name: horse.name }
+      )
     end
   end
 end

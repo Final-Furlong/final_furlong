@@ -36,12 +36,10 @@ describe Daily::MorningUpdatesJob, :perform_enqueued_jobs do
       expect(Horses::UpdateBabiesJob).to have_received(:perform_later)
     end
 
-    it "triggers mare status jobs" do
-      allow(Horses::RetireMaresJob).to receive(:perform_later)
-      allow(Horses::KillMaresJob).to receive(:perform_later)
+    it "triggers future events jobs" do
+      allow(Horses::FutureEventsJob).to receive(:perform_later)
       described_class.perform_later
-      expect(Horses::RetireMaresJob).to have_received(:perform_later)
-      expect(Horses::KillMaresJob).to have_received(:perform_later)
+      expect(Horses::FutureEventsJob).to have_received(:perform_later)
     end
 
     it "triggers notifications job" do

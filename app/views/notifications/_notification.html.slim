@@ -1,2 +1,3 @@
 li id="#{dom_id(notification)}"
+  - pd notification
   = render Ui::Alert::Component.new(icon: :info, notification: notification)
