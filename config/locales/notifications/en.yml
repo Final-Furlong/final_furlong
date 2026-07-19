@@ -112,6 +112,15 @@ en:
     shared:
       view_horse:
         link: View horse
+    stud_booking_auto_deleted:
+      died: died
+      message: "%{sire} has %{event} so your booking for %{mare} has been cancelled"
+      open: any mare
+      retired: retired from breeding
+      title:
+        died: Died
+        retired: Retired
+        text: 'Stud %{event}: %{name}'
     stud_booking_request_cancellation_notification:
       message: "%{stable} has cancelled a requested booking to %{stud} for %{mare} (Slot %{start} - %{end})"
       title: Stud Booking Request Cancelled
@@ -119,6 +128,14 @@ en:
       message: "%{stable} has requested a booking to %{stud} for %{mare} (Slot %{start} - %{end})"
       message_with_comment: "%{stable} has requested a booking to %{stud} for %{mare} (Slot %{start} - %{end}). Their comment: %{comment}"
       title: Stud Booking Request
+    stud_breeding_auto_deleted:
+      died: died
+      message: "%{sire} has %{event} so your breeding for %{mare} has been deleted, this mare is now unbred for %{year}"
+      retired: retired from breeding
+      title:
+        died: Died
+        retired: Retired
+        text: 'Stud %{event}: %{name}'
     update:
       success: Notification was marked as %{status}
     view_horse: View %{name}

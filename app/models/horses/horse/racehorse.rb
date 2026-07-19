@@ -128,8 +128,12 @@ module Horses
       I18n.t("horses.statuses.#{key}")
     end
 
-    def retire(status:)
+    def retire(status: "retired")
       Horses::Racehorse::Retirement.new(horse: self, status:).run
+    end
+
+    def die(date: Date.current)
+      Horses::Racehorse::Death.new(horse: self, date:).run
     end
 
     def at_farm?

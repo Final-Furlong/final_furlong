@@ -42,7 +42,7 @@ module Racing
             raise ActiveRecord::Rollback, race_horse.errors.full_messages.to_sentence
           end
         end
-        if result.created? && race.stakes?
+        if result.created? && race.race_type.stakes?
           Racing::RaceSeriesWinnerCheckJob.set(good_job_labels: [race.id], wait: 10.minutes).perform_later(race_id: race.id)
         end
         return result
