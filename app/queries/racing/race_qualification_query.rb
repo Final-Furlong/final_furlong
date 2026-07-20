@@ -25,7 +25,14 @@ module Racing
       else
         @query.joins(:race_qualification).merge(Racing::RaceQualification.send(:max_qualified_for, race.race_type))
       end
-      @query = @query.merge(Racing::RaceQualification.send(:qualified_for, status)) if status.present?
+      @query = case status
+      when "stakes", "allowance"
+        @query.merge(Racing::RaceQualification.send(:qualified_for_exactly, status)) if status.present?
+      when nil, ""
+        @query
+      else
+        @query.merge(Racing::RaceQualification.send(:qualified_for, status))
+      end
       if race
         @query = @query.merge(Racing::RaceQualification.send(:qualified_for_exactly, "claiming")) if race.claiming?
         days = (race.date - Date.current).to_i

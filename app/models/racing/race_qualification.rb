@@ -33,7 +33,11 @@ module Racing
     }
     scope :qualified_for_exactly, ->(type) {
       if Config::Racing.non_qualified_types.include?(type)
-        all
+        if type.to_s == "stakes"
+          where(stakes_placed: true)
+        else
+          allowance_level
+        end
       else
         where("#{type}_qualified": true)
       end
