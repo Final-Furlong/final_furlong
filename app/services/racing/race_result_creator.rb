@@ -118,7 +118,7 @@ module Racing
       return unless stats
 
       finish = horses.find { |hash| hash[:id] == horse.id }
-      stats.energy -= finish[:energy_used]
+      stats.energy -= finish[:energy_used].clamp(40, 200)
       stats.energy = Config::Racing.minimum_energy if stats.energy < Config::Racing.minimum_energy
       stats.fitness += finish[:fitness_gained].clamp(20, 50)
       stats.fitness = Config::Racing.maximum_fitness if stats.fitness > Config::Racing.maximum_fitness
