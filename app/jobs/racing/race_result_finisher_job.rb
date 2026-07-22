@@ -10,6 +10,9 @@ module Racing
     )
 
     def perform(date:)
+      require "rake"
+      FinalFurlong::Application.load_tasks
+      system 'bundle exec rake maintenance:start reason="Finalizing today\'s results. This should take approximately 10 minutes."'
       Racing::RaceResultHorse.counter_culture_fix_counts
       Racing::RaceRecord.refresh
       Racing::LifetimeRaceRecord.refresh

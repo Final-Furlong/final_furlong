@@ -32,7 +32,7 @@ module Racing
       response = HTTParty.post(url, body: { id: race.id }, headers: { "X_API_KEY" => api_key })
       set_sentry_context(response)
       if response.code == 200
-        if max_race?(date:, number:)
+        if max_race?(number:)
           Racing::RaceResultFinisherJob.set(good_job_labels: [date], wait: 30.seconds).perform_later(date:)
         else
           Racing::TriggerRaceJob.set(good_job_labels: [date], wait: 10.seconds).perform_later(date:, number: number + 1)
@@ -71,8 +71,8 @@ module Racing
       end
     end
 
-    def max_race?(date:, number:)
-      number == Racing::RaceSchedule.where(date:).maximum(:number)
+    def max_race?(number:)
+      number == Config::Racing.max_races_per_day
     end
   end
 end
