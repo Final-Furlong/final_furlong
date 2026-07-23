@@ -20,6 +20,7 @@ module Horses::Broodmare
           horse.update(state: "deceased", date_of_death: date, manager: horse.owner, leaser: nil)
           notify_death(horse:, stable: horse.owner) if horse.changed?
         end
+        horse.next_foal&.destroy
         Horses::Horse::Foal.where(dam: horse, state: "unborn").find_each do |foal|
           if (foal.date_of_birth - death.date).to_i > Config::Horses.max_premature_days
             foal.update(state: "deceased", date_of_birth: date, date_of_death: date)
