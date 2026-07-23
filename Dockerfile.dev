@@ -1,0 +1,58 @@
+ARG RUBY_VERSION=4.0.5
+FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
+
+ENV INSTALL_PATH /app
+ENV PNPM_VERSION 11.7.0
+ENV NODE_VERSION 25.1.0
+SHELL ["/bin/bash", "-c"]
+
+RUN mkdir -p $INSTALL_PATH
+
+WORKDIR $INSTALL_PATH
+
+# postgresql-client \
+RUN apt-get update -qq && apt-get upgrade && apt-get install -y --no-install-recommends \
+    build-essential \
+    postgresql \
+    postgresql-contrib \
+    tzdata \
+    libgit2-dev \
+    libvips \
+    cmake \
+    pkg-config \
+    libssl-dev \
+    libssh2-1-dev \
+    libzstd-dev \
+    libatomic1 \
+    curl \
+    libyaml-dev \
+    git && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
+RUN curl -sL https://deb.nodesource.com/setup_25.x -o nodesource_setup.sh && bash nodesource_setup.sh && apt install -y nodejs
+RUN npm install -g pnpm@${PNPM_VERSION}
+RUN pnpm self-update
+
+ENV RAILS_ENV="development" \
+    BUNDLE_WITHOUT=""
+
+RUN gem install bundler:2.7.1
+
+COPY .ruby-version ./
+COPY Gemfile Gemfile.lock ./
+COPY package.json pnpm-lock.yaml ./
+
+#RUN pnpm --yes install
+
+RUN bundle install
+
+COPY . .
+
+RUN bundle exec bootsnap precompile -j 1 app/ lib/
+
+EXPOSE 3000
+
+CMD ["./bin/rails", "server"]
