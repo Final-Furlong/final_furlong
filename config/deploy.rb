@@ -27,6 +27,7 @@ after "deploy", "deploy:cleanup"
 set :keep_releases, 3
 
 set :puma_bind, "unix://#{shared_path}/tmp/sockets/puma.sock"
+set :puma_enable_lingering, false
 
 set :ssh_options, {
   keys: %w[~/.ssh/ff_capistrano],
