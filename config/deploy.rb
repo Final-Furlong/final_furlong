@@ -1,8 +1,6 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.20.0"
 
-server "ff", user: "www", roles: %i[web app db], primary: true
-
 set :application, "final_furlong"
 set :repo_url, "git@github.com:Final-Furlong/final_furlong.git"
 

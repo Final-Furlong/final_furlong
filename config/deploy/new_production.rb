@@ -1,8 +1,8 @@
+server "ff2", user: "www", roles: %i[web app db], primary: true
+
 set :branch, "production"
 set :stage, :production
 set :rails_env, :production
-
-server "ff2", user: "www", roles: %i[web app db], primary: true
 
 set :deploy_to, "/var/www/prod.finalfurlong"
 
