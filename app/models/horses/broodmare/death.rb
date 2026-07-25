@@ -23,11 +23,10 @@ module Horses::Broodmare
         horse.next_foal&.destroy
         Horses::Horse::Foal.where(dam: horse, state: "unborn").find_each do |foal|
           if (foal.date_of_birth - death.date).to_i > Config::Horses.max_premature_days
-            foal.update(state: "deceased", date_of_birth: date, date_of_death: date)
-            notify_stillborn(foal:, mare: horse)
+            foal.destroy
             stillborn = true
           else
-            foal.update(state: "active", date_of_birth: date)
+            foal.update(state: "active", date_of_birth: death.date)
             appearance = foal.appearance
             appearance.update(birth_height: appearance.birth_height - rand(1..2))
             notify_premature(foal:, mare: horse)
@@ -51,15 +50,6 @@ module Horses::Broodmare
         type: ::Notifications::Horse::DiedNotification,
         user: stable.user,
         params: { horse_id: horse.slug, horse_name: horse.name }
-      )
-    end
-
-    def notify_stillborn(foal:, mare:)
-      sire = foal.sire.name
-      Game::NotificationCreator.new.create_notification(
-        type: ::Notifications::Horse::StillbornNotification,
-        user: foal.owner.user,
-        params: { horse_id: foal.slug, sire_name: sire, dam_name: mare.name }
       )
     end
 
