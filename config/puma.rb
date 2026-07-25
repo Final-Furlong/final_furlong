@@ -25,19 +25,73 @@
 # Any libraries that use a connection pool or another resource pool should
 # be configured to provide at least as many connections as the number of
 # threads. This includes Active Record's `pool` parameter in `database.yml`.
-threads_count = ENV.fetch("RAILS_MAX_THREADS", 3)
+app_dir = File.expand_path("../../..", __FILE__)
+shared_dir = "#{app_dir}/shared"
+
+# Run from the current symlink so phased restarts load the active release
+directory "#{app_dir}/current"
+
+# Number of Puma workers (processes)
+# Adjust based on RAM: each worker uses ~300-500MB
+workers ENV.fetch("WEB_CONCURRENCY", 3).to_i
+
+# Number of threads per worker
+# Adjust based on application concurrency characteristics
+threads_count = ENV.fetch("RAILS_MAX_THREADS", 5).to_i
 threads threads_count, threads_count
 
-# Specifies the `port` that Puma will listen on to receive requests; default is 3000.
-port ENV.fetch("PORT", 3000)
+# Use Unix socket for Nginx communication (faster than TCP)
+bind "unix://#{shared_dir}/tmp/sockets/puma.sock"
 
-# Allow puma to be restarted by `bin/rails restart` command.
-plugin :tmp_restart
+# PID file location
+pidfile "#{shared_dir}/tmp/pids/puma.pid"
 
-# Run the Solid Queue supervisor inside of Puma for single-server deployments.
-# plugin :solid_queue if ENV["SOLID_QUEUE_IN_PUMA"]
+# State file (used for phased restart)
+state_path "#{shared_dir}/tmp/pids/puma.state"
+
+# Activate Puma's control server for zero-downtime deploys
+activate_control_app
+
+# Log locations
+stdout_redirect "#{shared_dir}/log/puma.stdout.log",
+  "#{shared_dir}/log/puma.stderr.log",
+  true
+
+# Environment
+environment ENV.fetch("RAILS_ENV", "production")
+
+# Allow phased restarts to load code and gems from the active release
+prune_bundler
+
+# Properly handle database connection after forking
+before_worker_boot do
+  ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
+end
+
+# GoodJob setup
+if ENV.fetch("WEB_CONCURRENCY", 3).to_i > 0
+  before_fork do
+    GoodJob.shutdown
+  end
+
+  before_worker_boot do
+    GoodJob.restart
+  end
+
+  before_worker_shutdown do
+    GoodJob.shutdown
+  end
+end
+
+MAIN_PID = Process.pid
+at_exit do
+  GoodJob.shutdown if Process.pid == MAIN_PID
+end
 
 # Specify the PID file. Defaults to tmp/pids/server.pid in development.
 # In other environments, only set the PID file if requested.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
+
+# Allow Puma to be restarted by `rails restart` command
+plugin :tmp_restart
 

@@ -11,7 +11,7 @@ set :branch, ENV.fetch("REVISION", "main")
 set :rbenv_type, :user
 set :rbenv_ruby, "4.0.5"
 
-append :linked_files, "config/database.yml", ".rbenv-vars", ".nvmrc"
+append :linked_files, "config/database.yml", "config/puma.rb", ".rbenv-vars", ".nvmrc"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpacker", "public/system",
   "vendor", "storage", ".bundle", "public/uploads", "public/vite"
 append :assets_manifests, "public/vite/manifest*.*"
@@ -26,7 +26,7 @@ after "deploy", "deploy:cleanup"
 
 set :keep_releases, 3
 
-set :passenger_restart_with_touch, true
+set :puma_bind, "unix://#{shared_path}/tmp/sockets/puma.sock"
 
 set :ssh_options, {
   keys: %w[~/.ssh/ff_capistrano],

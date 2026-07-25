@@ -8,6 +8,15 @@ GIT
       activesupport (>= 7.2)
       i18n
 
+GIT
+  remote: https://github.com/seuros/capistrano-puma.git
+  revision: 00e2cc30ed2d651f943d0e9c4cdabfb1e8fa8883
+  specs:
+    capistrano3-puma (8.1.0)
+      capistrano (~> 3.7)
+      capistrano-bundler
+      puma (>= 6.1, < 9.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -166,8 +175,6 @@ GEM
       capistrano (~> 3.1)
     capistrano-deploytags (1.0.7)
       capistrano (>= 3.7.0)
-    capistrano-passenger (0.2.1)
-      capistrano (~> 3.0)
     capistrano-pnpm (1.0.1)
       capistrano (>= 3.0.0)
     capistrano-rails (1.7.0)
@@ -1062,10 +1069,10 @@ DEPENDENCIES
   capistrano (~> 3.17)
   capistrano-bundler (~> 2.0)
   capistrano-deploytags (~> 1.0.0)
-  capistrano-passenger
   capistrano-pnpm
   capistrano-rails (~> 1.3)
   capistrano-rbenv (~> 2.2)
+  capistrano3-puma!
   capybara (>= 2.15)
   capybara-playwright-driver
   capybara-screenshot
@@ -1242,10 +1249,10 @@ CHECKSUMS
   capistrano (3.20.0) sha256=0113e58dda99add0342e56a244f664734c59f442c5ed734f5303b0b559b479c9
   capistrano-bundler (2.2.0) sha256=47b4cf2ea17ea132bb0a5cabc5663443f5190a54f4da5b322d04e1558ff1468c
   capistrano-deploytags (1.0.7) sha256=8b3d8ff1a192f551868496f6f5e7845d386a4b7650d35256db4bd68ffcba11c3
-  capistrano-passenger (0.2.1) sha256=07a1d25edd5c1d909c19d4fe45fe2ea5f11200569f6967f6bff1d605ade98e13
   capistrano-pnpm (1.0.1) sha256=02f144239cb3352c08195539e5f96d56145ccec6e10f287c5518bdebab8ca0ef
   capistrano-rails (1.7.0) sha256=aca57455e8c5435785e0f938e16aa5b79c263694a755e1dca1c5d1743b40aae7
   capistrano-rbenv (2.2.0) sha256=3c8f39b7c624f3806630dcb475484bb3579aef07a40efe85089d83f64b0c35f5
+  capistrano3-puma (8.1.0)
   capybara (3.40.0) sha256=42dba720578ea1ca65fd7a41d163dd368502c191804558f6e0f71b391054aeef
   capybara-playwright-driver (0.5.9) sha256=4c17fed20817b7e1bde2cfc8186e7bf5cd72017ce1aa695e35130f8e600e7282
   capybara-screenshot (1.0.27) sha256=afa1896cc23df77be1774e8d3b3ce3953bf060aeaa04ff87607b5daf689174f2
