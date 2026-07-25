@@ -85,11 +85,11 @@ module Auctions
 
       result.error = nil
       ActiveRecord::Base.transaction do
-        description = "#{auction.title}: Purchased #{horse.budget_name} (ID# #{horse.legacy_id}) from #{seller.name}"
+        description = "#{auction.title}: Purchased #{horse.budget_name} from #{seller.name}"
         Accounts::BudgetTransactionCreator.new.create_transaction(stable: buyer, description:, amount: bid.current_bid * -1, activity_type: "buying")
         update_activity(buyer.user, :bought_horse)
 
-        description = "#{auction.title}: Sold #{horse.budget_name} (ID# #{horse.legacy_id}) to #{buyer.name}"
+        description = "#{auction.title}: Sold #{horse.budget_name} to #{buyer.name}"
         Accounts::BudgetTransactionCreator.new.create_transaction(stable: seller, description:, amount: bid.current_bid, activity_type: "selling")
         update_activity(seller.user, :sold_horse)
 

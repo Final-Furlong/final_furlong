@@ -24,7 +24,7 @@ describe Auctions::HorseSeller do
       described_class.new.process_sale(bid:)
       budget = Account::Budget.where(stable: @buyer).recent.first
       expect(budget).to have_attributes(
-        description: "#{auction.title}: Purchased #{horse.name} (ID# #{horse.legacy_id}) from #{seller.name}",
+        description: "#{auction.title}: Purchased #{horse.name} from #{seller.name}",
         amount: bid.current_bid * -1,
         balance: bid.current_bid * -1
       )
@@ -34,7 +34,7 @@ describe Auctions::HorseSeller do
       described_class.new.process_sale(bid:)
       budget = Account::Budget.where(stable: @seller).recent.first
       expect(budget).to have_attributes(
-        description: "#{auction.title}: Sold #{horse.name} (ID# #{horse.legacy_id}) to #{buyer.name}",
+        description: "#{auction.title}: Sold #{horse.name} to #{buyer.name}",
         amount: bid.current_bid,
         balance: bid.current_bid
       )
@@ -545,4 +545,3 @@ describe Auctions::HorseSeller do
     @foal_2 = create(:horse, :unborn, dam: horse)
   end
 end
-

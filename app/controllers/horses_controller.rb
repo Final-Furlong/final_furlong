@@ -1,9 +1,7 @@
 class HorsesController < ApplicationController
   include NonNumericIdOnly
 
-  skip_before_action :validate_non_numeric_id, only: :image
-  before_action :set_horse, except: %i[index image]
-  before_action :set_horse_by_legacy_id, only: :image
+  before_action :set_horse, except: :index
   before_action :authorize_horse, except: %i[index gelding geld]
   before_action :set_status_counts, only: :index
 
@@ -65,34 +63,7 @@ class HorsesController < ApplicationController
     redirect_to horse_path(@horse)
   end
 
-  def image
-    raise ActiveRecord::RecordNotFound unless @horse.appearance&.image&.present?
-    image = @horse.appearance.image
-
-    send_image(image)
-  ensure
-    response.stream.close
-  end
-
-  def thumbnail
-    raise ActiveRecord::RecordNotFound unless @horse.appearance&.image(max_width: 100, max_height: 100)&.present?
-    image = @horse.appearance.image(max_width: 100, max_height: 100)
-
-    send_image(image)
-  ensure
-    response.stream.close
-  end
-
   private
-
-  def send_image(image)
-    content_type = File.extname(image.path.split("/").last)
-    response.headers["Content-Type"] = "image/#{content_type.delete(".")}"
-    filename = [@horse.id, content_type].join("")
-    response.headers["Content-Disposition"] = "attachment; filename=#{filename}"
-
-    response.stream.write(File.read(image))
-  end
 
   def authorize_horse
     authorize @horse
@@ -100,10 +71,6 @@ class HorsesController < ApplicationController
 
   def set_horse
     @horse = Horses::Horse.find(params[:id])
-  end
-
-  def set_horse_by_legacy_id
-    @horse = Horses::Horse.find_by(legacy_id: params[:id])
   end
 
   def horse_params

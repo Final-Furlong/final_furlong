@@ -2,7 +2,6 @@ class CustomizedHealthController < Rails::HealthController
   def upstream
     status = UpstreamStatus.new
     status.primary_db = check_primary_db
-    status.legacy_db = UpstreamStatus::STATUS_OK # check_legacy_db
     status.canary = check_canary
 
     render_upstream(status:, ok: status.is_ok)
@@ -34,25 +33,6 @@ class CustomizedHealthController < Rails::HealthController
       nil
     end
     { ok: false, error: e.class.name, message: e.message, duration_s: duration.round(4) }
-  end
-
-  def check_legacy_db
-    Legacy::Record.connected_to(role: :writing) do
-      started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-      if defined?(Legacy::Record)
-        Legacy::Record.connection.verify!
-      end
-      Process.clock_gettime(Process::CLOCK_MONOTONIC)
-      UpstreamStatus::STATUS_OK
-    rescue => e
-      duration = Process.clock_gettime(Process::CLOCK_MONOTONIC) - started
-      begin
-        Rails.logger.warn("[/up] DB check failed: #{e.class}: #{e.message}")
-      rescue
-        nil
-      end
-      { ok: false, error: e.class.name, message: e.message, duration_s: duration.round(4) }
-    end
   end
 
   private

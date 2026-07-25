@@ -1,7 +1,5 @@
 module Horses
   class Breeding < ApplicationRecord
-    self.ignored_columns += [:legacy_id]
-
     attribute :year, default: -> { Date.current.year }
 
     attr_accessor :message
