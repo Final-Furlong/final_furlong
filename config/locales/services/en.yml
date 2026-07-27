@@ -48,9 +48,6 @@ en:
         horse_sold: Horse is already sold
         reserve_not_met: You have not met the reserve price for this horse
         spent_max_money: You have already spent the maximum allowed for this auction
-      legacy_horse_creator:
-        auction_not_future: Auction is not in the future
-        horse_not_found: Could not find horse
     boarding:
       creator:
         horse_currently_boarded: Horse is already being boarded
@@ -65,7 +62,7 @@ en:
       horse_was_racing: Breeding cannot happen on this date as the horse was racing
       slot_taken: This booking slot is no longer available
     breeders_cup_nominator:
-      budget_description: 'Race Nomination: %{year} Breeders'' Cup - %{name}'
+      budget_description: "Race Nomination: %{year} Breeders' Cup - %{name}"
       cannot_afford_nominations: You cannot afford all the nominations
       do_not_own_all_horses: You do not own all the horses you've requested to nominate
     breedings:
@@ -77,14 +74,14 @@ en:
         mare_needs_shipping: Mare needs shipping to the stallion's stable
         mare_not_eligible: Mare is not eligible for this breeding
     late_breeders_cup_nominator:
-      budget_description: 'Late Breeders'' Cup Nomination: %{name} (%{year} Onward)'
+      budget_description: "Late Breeders' Cup Nomination: %{name} (%{year} Onward)"
       cannot_afford_fee: You cannot afford the fee for nomination
       horse_already_nominated: This horse is already nominated for the Breeders' Cup
       horse_not_racehorse: You cannot late nominate non-racehorses
       stable_not_manager: You do not own or lease this horse
     lease_creator:
       cannot_afford_lease: You cannot afford the lease fee
-      description_leaser: 'Lease Fee: %{horse} from %{stable} [%{start_date} to %{end_date}]'
+      description_leaser: "Lease Fee: %{horse} from %{stable} [%{start_date} to %{end_date}]"
       description_owner: Leased %{horse} to %{stable} [%{start_date} to %{end_date}]
       not_for_lease: This horse is not for lease
     races:
@@ -131,13 +128,13 @@ en:
       max_outside_mares: The maximum number of outside mares have booked to this stud
       slot_taken: This booking slot is no longer available
     stud_breeders_cup_nominator:
-      budget_description: 'Breeders'' Cup Stallion Nomination: %{name} - %{year} Foal Crop'
+      budget_description: "Breeders' Cup Stallion Nomination: %{name} - %{year} Foal Crop"
       cannot_afford_fee: You cannot afford to nominate
       horse_already_nominated: This horse is already nominated
       horse_not_stud: This horse is not a breeding stallion
       stable_not_manager: You do not own this horse
     supplemental_breeders_cup_nominator:
-      budget_description: 'Supplemental Breeders'' Cup Nomination: %{name} (%{year} %{race})'
+      budget_description: "Supplemental Breeders' Cup Nomination: %{name} (%{year} %{race})"
       cannot_afford_fee: You cannot afford the fee for nomination
       horse_already_nominated: This horse is already nominated for the Breeders' Cup
       horse_not_racehorse: You cannot late nominate non-racehorses
