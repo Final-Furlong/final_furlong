@@ -98,8 +98,9 @@ namespace :db do
       backup_name.sub!("today", today)
       backup_location = Rails.application.credentials.backup_db.file_location!
       backup_location = backup_location.dup
+      gzip_name = "#{backup_name}.gz"
       gzip_location = "#{backup_location}.gz"
-      temp_file_location = Rails.root.join("tmp/")
+      temp_file_location = Rails.root.join("tmp/#{gzip_name}")
       exists = system "ls -la #{temp_file_location}"
       if exists && !force
         log "Today's backup has been downloaded"
