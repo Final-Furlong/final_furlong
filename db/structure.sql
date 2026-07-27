@@ -3741,15 +3741,6 @@ CREATE VIEW public.condition_race_records AS
 
 
 --
--- Name: data_migrations; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.data_migrations (
-    version character varying NOT NULL
-);
-
-
---
 -- Name: distance_race_records; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -7995,14 +7986,6 @@ ALTER TABLE ONLY public.budget_transactions
 
 ALTER TABLE ONLY public.claims
     ADD CONSTRAINT claims_pkey PRIMARY KEY (id);
-
-
---
--- Name: data_migrations data_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.data_migrations
-    ADD CONSTRAINT data_migrations_pkey PRIMARY KEY (version);
 
 
 --
@@ -13938,6 +13921,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260727090249'),
 ('20260716130624'),
 ('20260716130623'),
 ('20260716130228'),

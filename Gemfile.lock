@@ -217,9 +217,6 @@ GEM
     cuprite (0.15.1)
       capybara (~> 3.0)
       ferrum (~> 0.15.0)
-    data_migrate (11.3.1)
-      activerecord (>= 6.1)
-      railties (>= 6.1)
     date (3.5.1)
     debug (1.11.1)
       irb (~> 1.10)
@@ -570,8 +567,6 @@ GEM
     mustermann (4.0.0)
     mustermann-grape (1.1.0)
       mustermann (>= 1.0.0)
-    mysql2 (0.5.7)
-      bigdecimal
     n_plus_one_control (0.8.0)
     nanoid (2.0.0)
     nenv (0.3.0)
@@ -1080,7 +1075,6 @@ DEPENDENCIES
   colorize
   counter_culture
   cuprite
-  data_migrate
   debug
   devise
   devise-i18n
@@ -1121,7 +1115,6 @@ DEPENDENCIES
   lograge
   mailtrap
   mission_control-jobs
-  mysql2
   n_plus_one_control
   nanoid
   net-ssh
@@ -1268,7 +1261,6 @@ CHECKSUMS
   crass (1.0.7) sha256=94868719948664c89ddcaf0a37c65048413dfcb1c869470a5f7a7ceb5390b295
   csv (3.3.5) sha256=6e5134ac3383ef728b7f02725d9872934f523cb40b961479f69cf3afa6c8e73f
   cuprite (0.15.1) sha256=0b3a25b2e408b345dfa0bae8bc5e7f021f913737c746edece9ca9fbb57eba259
-  data_migrate (11.3.1) sha256=18b9b2189d15e482d5335f3fc2248b8b447204bd8257ded872dd077737168ffb
   date (3.5.1) sha256=750d06384d7b9c15d562c76291407d89e368dda4d4fff957eb94962d325a0dc0
   debug (1.11.1) sha256=2e0b0ac6119f2207a6f8ac7d4a73ca8eb4e440f64da0a3136c30343146e952b6
   debug_inspector (1.2.0) sha256=9bdfa02eebc3da163833e6a89b154084232f5766087e59573b70521c77ea68a2
@@ -1396,7 +1388,6 @@ CHECKSUMS
   multi_xml (0.8.1) sha256=addba0290bac34e9088bfe73dc4878530297a82a7bbd66cb44dcd0a4b86edf5a
   mustermann (4.0.0) sha256=91f67411bb208d1d93c41e6128cb3b0f8ddd9ec7c45966f1007e1c43c08040d7
   mustermann-grape (1.1.0) sha256=8d258a986004c8f01ce4c023c0b037c168a9ed889cf5778068ad54398fa458c5
-  mysql2 (0.5.7) sha256=ba09ede515a0ae8a7192040a1b778c0fb0f025fa5877e9be895cd325fa5e9d7b
   n_plus_one_control (0.8.0) sha256=09da5475051afbc9ec3046ed41bfa7327ffad09b34e5d15d46120cb93ab7d266
   nanoid (2.0.0) sha256=78a5c93c1595981fb37712a166d7ea1ef15a679553e5d3c72337f231febd8bfc
   nenv (0.3.0) sha256=d9de6d8fb7072228463bf61843159419c969edb34b3cef51832b516ae7972765
