@@ -8,6 +8,9 @@ en:
         link: View Bidding
     destroy:
       success: Notification was successfully deleted
+    failed_future_shipment:
+      message: Could not perform the scheduled shipment for %{name} to %{location}
+      title: Failed Scheduled Shipment
     future_entry_processing_notification:
       entered_horses:
         one: 1 horse was entered
