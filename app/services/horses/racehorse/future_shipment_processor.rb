@@ -50,7 +50,7 @@ module Horses
 
       def notify_failed_shipment(location, stable)
         Game::NotificationCreator.new.create_notification(
-          type: ::FailedFutureShipmentNotification,
+          type: ::Notifications::FailedFutureShipmentNotification,
           user: stable.user,
           params: {
             horse_id: horse.slug,
