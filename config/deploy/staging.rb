@@ -9,3 +9,5 @@ set :deploy_to, "/var/www/staging.finalfurlong"
 
 append :linked_files, "config/credentials/staging.key", ".env.staging"
 
+SSHKit.config.command_map[:pnpm] = "/home/www/.local/share/pnpm/bin/pnpm"
+

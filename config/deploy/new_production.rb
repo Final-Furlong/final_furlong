@@ -10,3 +10,5 @@ set :deploytag_time_format, "%Y.%m.%d-%H%M%S-utc"
 
 append :linked_files, "config/credentials/production.key", ".env.production"
 
+SSHKit.config.command_map[:pnpm] = "/home/www/.local/share/pnpm/bin/pnpm"
+
