@@ -99,7 +99,7 @@ namespace :db do
       backup_location = Rails.application.credentials.backup_db.file_location!
       backup_location = backup_location.dup
       gzip_name = "#{backup_name}.gz"
-      gzip_location = "#{backup_location}.gz"
+      gzip_location = "#{backup_location}#{gzip_name}"
       temp_file_location = Rails.root.join("tmp/#{gzip_name}")
       exists = system "ls -la #{temp_file_location}"
       if exists && !force
@@ -130,6 +130,11 @@ namespace :db do
       ActiveRecord::Base.connection.execute "UPDATE ar_internal_metadata SET value = 'staging' WHERE key = 'environment'"
       log "Exiting maintenance mode for site"
       system! "RAILS_ENV=staging bundle exec rake maintenance:end"
+      log "Cleaning up files"
+      system! "rm #{temp_file_location}"
+      temp_file_location = Rails.root.join("tmp/#{gzip_name}")
+      system! "rm #{temp_file_location}"
+      log "All done!"
     end
   end
 end
