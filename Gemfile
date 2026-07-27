@@ -78,11 +78,9 @@ gem "view_component-contrib"
 gem "activerecord_json_validator"
 gem "active_storage_validations"
 gem "counter_culture"
-gem "data_migrate"
 gem "discard"
 gem "flag_shih_tzu" # bit mask
 gem "friendly_id"
-gem "mysql2"
 gem "nanoid"
 gem "pg" # Use postgresql as the database for Active Record
 gem "pghero"
