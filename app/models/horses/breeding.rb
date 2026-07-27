@@ -205,6 +205,7 @@ end
 #  created_at                                               :datetime         not null
 #  updated_at                                               :datetime         not null
 #  first_foal_id                                            :bigint           uniquely indexed
+#  legacy_id                                                :integer          default(0)
 #  mare_id                                                  :bigint           indexed => [stud_id, year], uniquely indexed => [stud_id, year], uniquely indexed => [stud_id, year]
 #  second_foal_id                                           :bigint           uniquely indexed
 #  slot_id                                                  :bigint           indexed

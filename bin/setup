@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'colorize'
+require "colorize"
 require "fileutils"
 
 APP_ROOT = File.expand_path("..", __dir__)
@@ -16,7 +16,7 @@ def setup(test_mode = false)
     system! "bundle check || bundle install"
 
     log "Installing node modules"
-    system! 'pnpm', 'install', '--frozen-lockfile'
+    system! "pnpm", "install", "--frozen-lockfile"
 
     unless test_mode
       log "Dropping & recreating the development database"
@@ -26,7 +26,7 @@ def setup(test_mode = false)
       # Note that the very first time this runs, db:reset
       # will fail, but this failure is fixed by
       # doing a db:migrate
-      system! "USE_LIVE_DB=false bin/rails db:reset || USE_LIVE_DB=false bin/rails db:migrate:with_data && bin/rails db:seed"
+      system! "DATABASE_NAME=final_furlong_development bin/rails db:reset || DATABASE_NAME=final_furlong_development bin/rails db:migrate && bin/rails db:seed"
     end
 
     log "Dropping & recreating the test database"
@@ -117,3 +117,4 @@ if ARGV[0] == "help"
 else
   setup(ARGV[0] == "test")
 end
+

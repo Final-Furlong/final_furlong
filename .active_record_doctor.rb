@@ -148,8 +148,7 @@ ActiveRecordDoctor.configure do
 
   detector :table_without_timestamps,
     ignore_tables: [
-      "active_storage_variant_records",
-      "data_migrations"
+      "active_storage_variant_records"
     ]
 
   detector :missing_foreign_keys,
