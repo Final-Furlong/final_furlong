@@ -59,7 +59,7 @@ blocks:
               value: security
           commands:
             - sem-service start postgres 17.6
-            - cp config/database.yml.github_actions config/database.yml
+            - cp config/database.yml.ci config/database.yml
             - bin/rails db:create:primary db:schema:load:primary
             - bin/rails db:create:cache db:schema:load:cache
             - wget -qO- https://get.pnpm.io/install.sh | sh -
