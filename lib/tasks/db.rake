@@ -1,3 +1,6 @@
+require "colorize"
+require "fileutils"
+
 namespace :db do
   desc "Show database size, table row counts, and index usage"
   task health: :environment do
@@ -80,6 +83,74 @@ namespace :db do
     else
       puts "No long-running queries."
     end
+  end
+
+  desc "Download prod db snapshot and apply to staging environment"
+  task :prod_to_staging, [:force] => [:environment] do |t, args|
+    if !Rails.env.staging?
+      log "This task can only be run in staging environment!", color: :red
+    else
+      force = args[:force] == "yes"
+      log "Force argument: #{force}"
+      today = Date.current.strftime("%y%m%d")
+      backup_name = Rails.application.credentials.backup_db.file_name!
+      backup_name = backup_name.dup
+      backup_name.sub!("today", today)
+      gzip_name = "#{backup_name}.gz"
+      backup_location = Rails.application.credentials.backup_db.file_location!
+      backup_location = backup_location.dup
+      backup_location += backup_name
+      temp_file_location = Rails.root.join("tmp/#{gzip_name}")
+      exists = system "ls -la #{temp_file_location}"
+      if exists && !force
+        log "Today's backup has been downloaded"
+      else
+        log "Copying today's backup"
+        exists = system "ls -la #{backup_location}"
+        if !exists
+          log "Backup file does not exist", color: :red
+          return
+        end
+        system! "cp #{backup_location} #{temp_file_location}"
+      end
+      log "Unzipping backup file"
+      system! "gunzip -k -f #{temp_file_location}"
+      temp_file_location = Rails.root.join("tmp/#{backup_name}")
+      log "Putting site in maintenance mode"
+      system! "RAILS_ENV=staging bundle exec rake maintenance:start"
+      log "Deleting staging database"
+      system! "RAILS_ENV=staging DISABLE_DATABASE_ENVIRONMENT_CHECK=1 rails db:drop"
+      log "Re-creating staging database"
+      system! "RAILS_ENV=staging rails db:create"
+      log "Importing prod database"
+      staging_db_name = Rails.application.credentials.db_name!
+      staging_db_user = Rails.application.credentials.db_user
+      system! "psql -U #{staging_db_user} -h localhost #{staging_db_name} < #{temp_file_location}"
+      log "Update ActiveRecord environment to staging"
+      ActiveRecord::Base.connection.execute "UPDATE ar_internal_metadata SET value = 'staging' WHERE key = 'environment'"
+      log "Exiting maintenance mode for site"
+      system! "RAILS_ENV=staging bundle exec rake maintenance:end"
+    end
+  end
+end
+
+private
+
+def system!(*args)
+  log "Executing #{args}"
+  if system(*args)
+    log "#{args} succeeded", color: :green
+  else
+    log "#{args} failed", color: :red
+    abort
+  end
+end
+
+def log(message, color: :yellow)
+  if color == false
+    puts "[ rake/db ] #{message}".uncolorize
+  else
+    puts "[ rake/db ] #{message}".colorize(color)
   end
 end
 
