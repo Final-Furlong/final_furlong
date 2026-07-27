@@ -45,7 +45,7 @@
       "purpose": "any"
     }
   ],
-  "start_url": "<%= Rails.env.production? ? "https://www.finalfurlong.org" : "/" %>",
+  "start_url": "<%= Rails.env.production? ? "https://www.finalfurlong.org" : Rails.env.local? ? "/" : "https://staging.finalfurlong.org" %>",
   "display": "standalone",
   "description": "An online horse racing game",
   "categories": ["entertainment", "horses", "games"],
@@ -59,12 +59,7 @@
   "prefer_related_applications": false,
   "author": "Shanthi Pendleton",
   "orientation": "portrait",
-  "related_applications": [
-    {
-      "platform": "webapp",
-      "url": "https://www.finalfurlong.org"
-    }
-  ],
+  "related_applications": [],
   "short_name": "FF",
   "theme_color": "#2596be",
   "background_color": "#f1f5fd",
