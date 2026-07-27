@@ -96,22 +96,21 @@ namespace :db do
       backup_name = Rails.application.credentials.backup_db.file_name!
       backup_name = backup_name.dup
       backup_name.sub!("today", today)
-      gzip_name = "#{backup_name}.gz"
       backup_location = Rails.application.credentials.backup_db.file_location!
       backup_location = backup_location.dup
-      backup_location += backup_name
-      temp_file_location = Rails.root.join("tmp/#{gzip_name}")
+      gzip_location = "#{backup_location}.gz"
+      temp_file_location = Rails.root.join("tmp/")
       exists = system "ls -la #{temp_file_location}"
       if exists && !force
         log "Today's backup has been downloaded"
       else
         log "Copying today's backup"
-        exists = system "ls -la #{backup_location}"
+        exists = system "ls -la #{gzip_location}"
         if !exists
           log "Backup file does not exist", color: :red
           return
         end
-        system! "cp #{backup_location} #{temp_file_location}"
+        system! "cp #{gzip_location} #{temp_file_location}"
       end
       log "Unzipping backup file"
       system! "gunzip -k -f #{temp_file_location}"
