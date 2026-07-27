@@ -18,20 +18,19 @@ admin_email = "admin@example.com"
 admin = if Account::User.exists?(email: admin_email)
   Account::User.find_by(email: admin_email)
 else
-  FactoryBot.create(:admin, :without_stable, email: admin_email, username: "admin123",
-    password: "Password1!", password_confirmation: "Password1!")
+  FactoryBot.create(:admin, :without_stable, email: admin_email, username: "admin123")
 end
 FactoryBot.create(:stable, user: admin) unless admin.reload.stable
 if Horses::Horse.count.zero?
   Rails.logger.info "Creating horse"
   FactoryBot.create(:horse)
   Rails.logger.info "Creating stud"
-  stud = FactoryBot.create(:horse, :stallion)
+  stud = FactoryBot.create(:stallion)
   Rails.logger.info "Creating mare"
-  mare = FactoryBot.create(:horse, :broodmare)
+  mare = FactoryBot.create(:broodmare)
   Rails.logger.info "Creating yearling"
-  FactoryBot.create(:horse, :yearling, :plain, dam: mare)
+  FactoryBot.create(:foal, :yearling, :plain, dam: mare)
   Rails.logger.info "Creating weanling"
-  FactoryBot.create(:horse, :weanling, sire: stud, dam: mare)
+  FactoryBot.create(:foal, :weanling, sire: stud, dam: mare)
 end
 
