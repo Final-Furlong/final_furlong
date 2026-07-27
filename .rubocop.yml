@@ -104,6 +104,12 @@ Rails/Output:
     - db/seeds.rb
 Rails/UniqBeforePluck: # uniq.pluck and not pluck.uniq
   Enabled: true
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - development
+    - test
+    - staging
 Rails/WhereEquals:
   Exclude:
     - app/services/migrate_legacy_*.rb

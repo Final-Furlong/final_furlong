@@ -9,8 +9,6 @@ namespace :ops do
   task env_check: :environment do
     critical_vars = %w[
       RAILS_ENV
-      DATABASE_URL
-      RAILS_LOG_TO_STDOUT
       RAILS_SERVE_STATIC_FILES
       RAILS_MAX_THREADS
       WEB_CONCURRENCY
@@ -25,17 +23,6 @@ namespace :ops do
       else
         puts "  #{var}: #{value}"
       end
-    end
-  end
-
-  desc "Show pending migrations"
-  task pending_migrations: :environment do
-    pending = ActiveRecord::Base.connection.migration_context.open.pending_migrations
-    if pending.any?
-      puts "Pending migrations:"
-      pending.each { |m| puts "  #{m.version} - #{m.name}" }
-    else
-      puts "No pending migrations."
     end
   end
 

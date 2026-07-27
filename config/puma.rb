@@ -25,43 +25,49 @@
 # Any libraries that use a connection pool or another resource pool should
 # be configured to provide at least as many connections as the number of
 # threads. This includes Active Record's `pool` parameter in `database.yml`.
-app_dir = File.expand_path("../../..", __FILE__)
-shared_dir = "#{app_dir}/shared"
+#
 
-# Run from the current symlink so phased restarts load the active release
-directory "#{app_dir}/current"
+if %w[production staging].include?(ENV.fetch("RAILS_ENV", "development"))
+  app_dir = File.expand_path("../../..", __FILE__)
+  shared_dir = "#{app_dir}/shared"
 
-# Number of Puma workers (processes)
-# Adjust based on RAM: each worker uses ~300-500MB
-workers ENV.fetch("WEB_CONCURRENCY", 3).to_i
+  # Run from the current symlink so phased restarts load the active release
+  directory "#{app_dir}/current"
+
+  # Number of Puma workers (processes)
+  # Adjust based on RAM: each worker uses ~300-500MB
+  workers ENV.fetch("WEB_CONCURRENCY", 3).to_i
+
+  # PID file location
+  pidfile "#{shared_dir}/tmp/pids/puma.pid"
+
+  # State file (used for phased restart)
+  state_path "#{shared_dir}/tmp/pids/puma.state"
+
+  # Use Unix socket for Nginx communication (faster than TCP)
+  bind "unix://#{shared_dir}/tmp/sockets/puma.sock"
+
+  # Activate Puma's control server for zero-downtime deploys
+  activate_control_app
+
+  # Log locations
+  stdout_redirect "#{shared_dir}/log/puma.stdout.log",
+    "#{shared_dir}/log/puma.stderr.log",
+    true
+
+  # Allow phased restarts to load code and gems from the active release
+  prune_bundler
+else
+  port ENV.fetch("PORT", 3000)
+end
 
 # Number of threads per worker
 # Adjust based on application concurrency characteristics
 threads_count = ENV.fetch("RAILS_MAX_THREADS", 5).to_i
 threads threads_count, threads_count
 
-# Use Unix socket for Nginx communication (faster than TCP)
-bind "unix://#{shared_dir}/tmp/sockets/puma.sock"
-
-# PID file location
-pidfile "#{shared_dir}/tmp/pids/puma.pid"
-
-# State file (used for phased restart)
-state_path "#{shared_dir}/tmp/pids/puma.state"
-
-# Activate Puma's control server for zero-downtime deploys
-activate_control_app
-
-# Log locations
-stdout_redirect "#{shared_dir}/log/puma.stdout.log",
-  "#{shared_dir}/log/puma.stderr.log",
-  true
-
 # Environment
 environment ENV.fetch("RAILS_ENV", "production")
-
-# Allow phased restarts to load code and gems from the active release
-prune_bundler
 
 # Properly handle database connection after forking
 before_worker_boot do
