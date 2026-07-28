@@ -118,6 +118,7 @@ namespace :db do
       temp_file_location = Rails.root.join("tmp/#{backup_name}")
       log "Putting site in maintenance mode"
       system! "RAILS_ENV=staging bundle exec rake maintenance:start"
+      system! "systemctl --user stop final_furlong_puma_staging.service"
       log "Deleting staging database"
       system! "RAILS_ENV=staging DISABLE_DATABASE_ENVIRONMENT_CHECK=1 rails db:drop"
       log "Re-creating staging database"
@@ -130,11 +131,34 @@ namespace :db do
       ActiveRecord::Base.connection.execute "UPDATE ar_internal_metadata SET value = 'staging' WHERE key = 'environment'"
       log "Exiting maintenance mode for site"
       system! "RAILS_ENV=staging bundle exec rake maintenance:end"
+      system! "systemctl --user stop final_furlong_puma_staging.service"
       log "Cleaning up files"
       system! "rm #{temp_file_location}"
       temp_file_location = Rails.root.join("tmp/#{gzip_name}")
       system! "rm #{temp_file_location}"
-      log "All done!"
+      log "All done!", color: :green
+    end
+  end
+
+  desc "Clear out staging db to save space"
+  task :prune_staging, [:force] => [:environment] do |t, args|
+    if !Rails.env.staging?
+      log "This task can only be run in staging environment!", color: :red
+    else
+      force = args[:force] == "yes"
+      log "Force argument: #{force}"
+      log "Putting site in maintenance mode"
+      system! "RAILS_ENV=staging bundle exec rake maintenance:start"
+      system! "systemctl --user stop final_furlong_puma_staging.service"
+      log "Deleting staging database"
+      system! "RAILS_ENV=staging DISABLE_DATABASE_ENVIRONMENT_CHECK=1 rails db:drop"
+      log "Re-creating staging database"
+      system! "RAILS_ENV=staging rails db:create"
+      system! "RAILS_ENV=staging rails db:migrate"
+      log "Exiting maintenance mode for site"
+      system! "RAILS_ENV=staging bundle exec rake maintenance:end"
+      system! "systemctl --user stop final_furlong_puma_staging.service"
+      log "All done!", color: :green
     end
   end
 end
