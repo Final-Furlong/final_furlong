@@ -28,7 +28,6 @@ set :puma_bind, "unix://#{shared_path}/tmp/sockets/puma.sock"
 set :puma_enable_lingering, false
 
 set :ssh_options, {
-  keys: %w[~/.ssh/ff_capistrano],
   forward_agent: true,
   auth_methods: %w[publickey],
   verify_host_key: :always
