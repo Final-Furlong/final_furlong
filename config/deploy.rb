@@ -35,7 +35,7 @@ set :ssh_options, {
 
 SSHKit.config.default_env = { path: "/home/www/.local/share/pnpm:/home/www/.nvm/versions/node/v25.1.0/bin:$PATH" }
 
-before "deploy:migrate", "maintenance:start"
-after "deploy:migrate", "maintenance:stop"
+# before "deploy:migrate", "maintenance:start"
+# after "deploy:migrate", "maintenance:stop"
 before "deploy:updated", "pnpm:install"
 
