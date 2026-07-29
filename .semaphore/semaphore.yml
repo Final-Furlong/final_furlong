@@ -37,6 +37,7 @@ blocks:
     task:
       prologue:
         commands:
+          - libvips --version
           - cache restore
           - bundle config set deployment true
           - bundle config set path vendor/bundle
