@@ -119,7 +119,7 @@ module Racing
     end
 
     def self.refresh
-      Scenic.database.refresh_materialized_view(table_name, concurrently: false, cascade: false)
+      Scenic.database.refresh_materialized_view(table_name, concurrently: true, cascade: false)
     end
 
     def self.populated?
@@ -168,6 +168,10 @@ end
 #  nw3_allowance_qualified     :boolean
 #  stakes_placed               :boolean
 #  starter_allowance_qualified :boolean
-#  horse_id                    :bigint           primary key
+#  horse_id                    :bigint           primary key, uniquely indexed
+#
+# Indexes
+#
+#  index_race_qualifications_on_horse_id  (horse_id) UNIQUE
 #
 
