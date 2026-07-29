@@ -8,7 +8,7 @@ module Racing
     belongs_to :horse, class_name: "Horses::Horse", inverse_of: :race_records
 
     def self.refresh
-      Scenic.database.refresh_materialized_view(table_name, concurrently: false, cascade: true)
+      Scenic.database.refresh_materialized_view(table_name, concurrently: true, cascade: true)
     end
 
     def self.populated?
