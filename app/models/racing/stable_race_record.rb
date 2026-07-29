@@ -8,7 +8,7 @@ module Racing
     belongs_to :stable, class_name: "Account::Stable", inverse_of: :race_records
 
     def self.refresh
-      Scenic.database.refresh_materialized_view(table_name, concurrently: false, cascade: true)
+      Scenic.database.refresh_materialized_view(table_name, concurrently: true, cascade: true)
     end
 
     def self.populated?
@@ -32,10 +32,14 @@ end
 #  stakes_thirds  :integer
 #  stakes_wins    :integer
 #  starts         :integer
-#  surface        :enum             primary key
+#  surface        :enum             primary key, uniquely indexed => [stable_id, year]
 #  thirds         :integer
 #  wins           :integer
-#  year           :integer          primary key
-#  stable_id      :bigint           primary key
+#  year           :integer          primary key, uniquely indexed => [stable_id, surface]
+#  stable_id      :bigint           primary key, uniquely indexed => [year, surface]
+#
+# Indexes
+#
+#  index_stable_race_records_on_stable_id_and_year_and_surface  (stable_id,year,surface) UNIQUE
 #
 
