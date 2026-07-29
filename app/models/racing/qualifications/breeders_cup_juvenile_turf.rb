@@ -21,12 +21,12 @@ end
 #  stakes_thirds  :integer          indexed
 #  stakes_wins    :integer          indexed
 #  starts         :integer
-#  horse_id       :bigint           primary key, indexed
+#  horse_id       :bigint           primary key, uniquely indexed
 #
 # Indexes
 #
 #  index_breeders_cup_juvenile_turf_qualifiers_on_allowance_wins  (allowance_wins)
-#  index_breeders_cup_juvenile_turf_qualifiers_on_horse_id        (horse_id)
+#  index_breeders_cup_juvenile_turf_qualifiers_on_horse_id        (horse_id) UNIQUE
 #  index_breeders_cup_juvenile_turf_qualifiers_on_nominated       (nominated)
 #  index_breeders_cup_juvenile_turf_qualifiers_on_points          (points)
 #  index_breeders_cup_juvenile_turf_qualifiers_on_stakes_seconds  (stakes_seconds)
