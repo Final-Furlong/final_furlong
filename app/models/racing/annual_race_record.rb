@@ -11,7 +11,7 @@ module Racing
     scope :by_year, ->(year) { where(year:) }
 
     def self.refresh
-      Scenic.database.refresh_materialized_view(table_name, concurrently: false, cascade: false)
+      Scenic.database.refresh_materialized_view(table_name, concurrently: true, cascade: false)
     end
 
     def self.populated?
@@ -37,7 +37,11 @@ end
 #  starts         :integer
 #  thirds         :integer
 #  wins           :integer
-#  year           :integer          primary key
-#  horse_id       :bigint           primary key
+#  year           :integer          primary key, uniquely indexed => [horse_id]
+#  horse_id       :bigint           primary key, uniquely indexed => [year]
+#
+# Indexes
+#
+#  index_annual_race_records_on_horse_id_and_year  (horse_id,year) UNIQUE
 #
 
