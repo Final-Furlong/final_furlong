@@ -191,4 +191,3 @@ end
 group :tools do
   gem "colorize", require: false
 end
-

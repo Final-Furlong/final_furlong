@@ -8964,6 +8964,13 @@ CREATE INDEX index_activity_points_on_stable_id_and_created_at ON public.activit
 
 
 --
+-- Name: index_annual_race_records_on_horse_id_and_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_annual_race_records_on_horse_id_and_year ON public.annual_race_records USING btree (horse_id, year);
+
+
+--
 -- Name: index_auction_bids_on_auction_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -9422,7 +9429,7 @@ CREATE INDEX index_breeders_cup_juvenile_turf_qualifiers_on_allowance_wins ON pu
 -- Name: index_breeders_cup_juvenile_turf_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_breeders_cup_juvenile_turf_qualifiers_on_horse_id ON public.breeders_cup_juvenile_turf_qualifiers USING btree (horse_id);
+CREATE UNIQUE INDEX index_breeders_cup_juvenile_turf_qualifiers_on_horse_id ON public.breeders_cup_juvenile_turf_qualifiers USING btree (horse_id);
 
 
 --
@@ -9471,7 +9478,7 @@ CREATE INDEX index_breeders_cup_mile_qualifiers_on_allowance_wins ON public.bree
 -- Name: index_breeders_cup_mile_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_breeders_cup_mile_qualifiers_on_horse_id ON public.breeders_cup_mile_qualifiers USING btree (horse_id);
+CREATE UNIQUE INDEX index_breeders_cup_mile_qualifiers_on_horse_id ON public.breeders_cup_mile_qualifiers USING btree (horse_id);
 
 
 --
@@ -9562,7 +9569,7 @@ CREATE INDEX index_breeders_cup_sc_classic_qualifiers_on_allowance_wins ON publi
 -- Name: index_breeders_cup_sc_classic_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_breeders_cup_sc_classic_qualifiers_on_horse_id ON public.breeders_cup_sc_classic_qualifiers USING btree (horse_id);
+CREATE UNIQUE INDEX index_breeders_cup_sc_classic_qualifiers_on_horse_id ON public.breeders_cup_sc_classic_qualifiers USING btree (horse_id);
 
 
 --
@@ -9604,7 +9611,7 @@ CREATE INDEX index_breeders_cup_sc_classic_qualifiers_on_stakes_wins ON public.b
 -- Name: index_breeders_cup_sc_distaff_endurance_qualifiers_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_breeders_cup_sc_distaff_endurance_qualifiers_on_horse_id ON public.breeders_cup_sc_distaff_endurance_qualifiers USING btree (horse_id);
+CREATE UNIQUE INDEX index_breeders_cup_sc_distaff_endurance_qualifiers_on_horse_id ON public.breeders_cup_sc_distaff_endurance_qualifiers USING btree (horse_id);
 
 
 --
@@ -11463,6 +11470,13 @@ CREATE INDEX index_leases_on_start_date ON public.leases USING btree (start_date
 
 
 --
+-- Name: index_lifetime_race_records_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_lifetime_race_records_on_horse_id ON public.lifetime_race_records USING btree (horse_id);
+
+
+--
 -- Name: index_locations_on_country_and_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -11656,6 +11670,13 @@ CREATE INDEX index_race_options_on_second_jockey_id ON public.race_options USING
 --
 
 CREATE INDEX index_race_options_on_third_jockey_id ON public.race_options USING btree (third_jockey_id);
+
+
+--
+-- Name: index_race_qualifications_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_race_qualifications_on_horse_id ON public.race_qualifications USING btree (horse_id);
 
 
 --
@@ -12268,6 +12289,13 @@ CREATE INDEX index_shipment_routes_on_road_days ON public.shipment_routes USING 
 
 
 --
+-- Name: index_stable_annual_race_records_on_stable_id_and_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_stable_annual_race_records_on_stable_id_and_year ON public.stable_annual_race_records USING btree (stable_id, year);
+
+
+--
 -- Name: index_stable_notes_on_private; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -12293,6 +12321,13 @@ CREATE INDEX index_stable_notes_on_text ON public.stable_notes USING btree (text
 --
 
 CREATE INDEX index_stable_notes_on_title ON public.stable_notes USING btree (title);
+
+
+--
+-- Name: index_stable_race_records_on_stable_id_and_year_and_surface; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_stable_race_records_on_stable_id_and_year_and_surface ON public.stable_race_records USING btree (stable_id, year, surface);
 
 
 --
@@ -13921,6 +13956,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260729120341'),
 ('20260727090249'),
 ('20260716130624'),
 ('20260716130623'),
