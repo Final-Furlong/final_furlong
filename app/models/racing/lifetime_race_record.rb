@@ -21,7 +21,7 @@ module Racing
     scope :ordered_by_performance, -> { order(Arel.sql("stakes_wins DESC, stakes_seconds DESC, stakes_thirds DESC, stakes_fourths DESC, wins DESC, seconds DESC, thirds DESC, fourths DESC, (points / starts) DESC")) }
 
     def self.refresh
-      Scenic.database.refresh_materialized_view(table_name, concurrently: false, cascade: false)
+      Scenic.database.refresh_materialized_view(table_name, concurrently: true, cascade: false)
     end
 
     def self.populated?
@@ -114,6 +114,10 @@ end
 #  thirds             :integer
 #  title_abbreviation :text
 #  wins               :integer
-#  horse_id           :bigint           primary key
+#  horse_id           :bigint           primary key, uniquely indexed
+#
+# Indexes
+#
+#  index_lifetime_race_records_on_horse_id  (horse_id) UNIQUE
 #
 
