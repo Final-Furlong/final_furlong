@@ -26,7 +26,11 @@ class Racing::RaceFiller::RaceJob < ApplicationJob
     query = Horses::Horse::Racehorse.joins(:race_options, :racehorse_metadata, :race_qualification, :racing_stats)
       .managed_by(owner).where.missing(:race_entries).where.missing(:future_race_entries).min_energy(Config::Racing.minimum_energy_racefiller)
     if owner.name != Config::Game.stable || race.race_type != "claiming"
-      query = query.merge(Racing::RaceQualification.qualified_for_exactly(race.race_type))
+      query = if owner.name == Config::Game.stable && %w[claiming allowance].include?(race.race_type.to_s.downcase)
+        query.where(race_qualification: { stakes_placed: false })
+      else
+        query.merge(Racing::RaceQualification.qualified_for_exactly(race.race_type))
+      end
     end
     query = query.min_age(race.min_age).max_age(race.max_age)
     query = query.female if race.female_only
