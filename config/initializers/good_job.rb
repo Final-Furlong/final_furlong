@@ -94,7 +94,7 @@ Rails.application.configure do
         enabled_by_default: -> { Rails.env.production? }
       },
       race_runner: {
-        cron: "14 11 * * 3,6", # Wed/Sat AM
+        cron: "14 10 * * 3,6", # Wed/Sat AM
         class: "Racing::TriggerRaceJob",
         kwargs: -> { { date: Date.current } },
         set: -> { { good_job_label: [Date.current] } },
