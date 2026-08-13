@@ -1,4 +1,4 @@
-server "ff2", user: "www", roles: %i[web app db], primary: true
+server "ff", user: "www", roles: %i[web app db], primary: true
 
 set :no_deploytags, true
 set :branch, "main"

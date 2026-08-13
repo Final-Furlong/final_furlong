@@ -1,4 +1,4 @@
-server "ff2", user: "www", roles: %i[web app db], primary: true
+server "ff", user: "www", roles: %i[web app db], primary: true
 
 set :branch, "production"
 set :stage, :production
