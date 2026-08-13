@@ -3,7 +3,7 @@ name: Final Furlong CI
 agent:
   machine:
     type: f1-standard-2
-    os_image: ubuntu2204
+    os_image: ubuntu2404
 auto_cancel:
   running:
     when: branch != 'master'
