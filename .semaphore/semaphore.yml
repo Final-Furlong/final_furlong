@@ -3,7 +3,7 @@ name: Final Furlong CI
 agent:
   machine:
     type: f1-standard-2
-    os_image: ubuntu2204
+    os_image: ubuntu2404
 auto_cancel:
   running:
     when: branch != 'master'
@@ -37,6 +37,7 @@ blocks:
     task:
       prologue:
         commands:
+          - install-package --update libvips=8.13
           - cache restore
           - bundle config set deployment true
           - bundle config set path vendor/bundle
