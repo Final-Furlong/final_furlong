@@ -91,7 +91,7 @@ Turnout.configure do |config|
   config.maintenance_pages_path = config.app_root.join("app/views/maintenance").to_s
   config.default_maintenance_page = Turnout::MaintenancePage::HTML
   config.default_reason = "The site is temporarily down for maintenance.\nPlease check back soon."
-  config.default_allowed_paths = ["grooming-horse.png"]
+  config.default_allowed_paths = ["grooming-horse.png", "^/jobs/jobs", "^/jobs/jobs/*"]
   config.default_response_code = 503
   config.default_retry_after = 7200
 end
