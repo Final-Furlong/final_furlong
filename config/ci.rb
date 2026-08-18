@@ -30,7 +30,7 @@ CI.run do
     step "Tests: Setup", "pnpm playwright install --with-deps chromium" if external_ci
     step "Tests: Rails", external_ci ? "bin/rspec --format RspecJunitFormatter --out report.xml --format progress" : "bin/rspec"
     unless external_ci
-      step "Tests: Migrations", "RAILS_ENV=test bin/rails db:drop && bin/rails db:create && bin/rails db:migrate"
+      step "Tests: Migrations", "RAILS_ENV=test bin/rails db:drop && RAILS_ENV=test bin/rails db:create && RAILS_ENV=test bin/rails db:migrate"
       step "Tests: Seeds", "RAILS_ENV=test bin/rails db:seed:replant"
     end
   end

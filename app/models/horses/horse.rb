@@ -24,6 +24,7 @@ module Horses
     has_many :slugs, class_name: "FriendlyId::Slug", inverse_of: :sluggable, dependent: :delete_all
 
     has_one :appearance, class_name: "Appearance", dependent: :delete
+    has_one :genetics, class_name: "Horses::Genetics", inverse_of: :horse, dependent: :delete
     has_many :comments, class_name: "Comment", dependent: :delete_all
 
     has_many :historical_injuries, class_name: "Horses::HistoricalInjury", inverse_of: :horse, dependent: :delete_all
