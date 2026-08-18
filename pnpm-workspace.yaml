@@ -2,4 +2,4 @@ allowBuilds:
   '@parcel/watcher': true
   core-js: true
   esbuild: true
-auditConfig: {}
+auditConfig: { ignoreGhsas: null }
