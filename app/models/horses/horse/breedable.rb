@@ -7,6 +7,18 @@ module Horses::Horse::Breedable
 
     scope :full_sibs, ->(horse) { born.not_stillborn.with_sire.with_dam.where(sire: horse.sire, dam: horse.dam).where.not(id: horse.id) }
     scope :half_sibs, ->(horse) { born.not_stillborn.with_sire.with_dam.where.not(sire: horse.sire).where(dam: horse.dam).where.not(id: horse.id) }
+
+    def generate_allele
+      return if genetics&.allele.present?
+
+      Horses::Horse::AlleleGenerator.new(self).run
+    end
+
+    def generate_appearance
+      return if appearance
+
+      Horses::Horse::AppearanceGenerator.new(self).run
+    end
   end
 end
 # == Schema Information
