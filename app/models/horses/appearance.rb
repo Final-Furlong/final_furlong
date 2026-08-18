@@ -1,8 +1,7 @@
-require "image_processing/vips"
-
 module Horses
   class Appearance < ApplicationRecord
     include ActionView::Helpers::TextHelper
+    include Horses::Horse::Appearable
 
     self.table_name = "horse_appearances"
 
@@ -34,45 +33,6 @@ module Horses
     validates :lh_leg_image, absence: true, unless: :lh_leg_marking
 
     delegate :gender, to: :horse
-
-    def image(max_width: 500, max_height: 500)
-      return @image if @image
-
-      result = GenerateHorseImageService.call(horse_id: horse.id, max_height:, max_width:)
-      if result.success?
-        @image = result.payload
-      else
-        raise result.error
-      end
-    end
-
-    def height_display
-      I18n.t("horse.height", height: current_height)
-    end
-
-    def markings_description
-      if no_markings?
-        I18n.t("horse.markings.none").titleize
-      else
-        markings = []
-        markings << I18n.t("horse.markings.#{face_marking}").titleize if face_marking.present?
-        all_legs = [rh_leg_marking, lf_leg_marking, rh_leg_marking, lh_leg_marking].compact
-        if all_legs.size == 4 && all_legs.uniq.size == 1
-          Rails.logger.info "same markings everywhere"
-          markings << pluralize(4, all_legs.first.titleize)
-        else
-          markings << "LF #{lf_leg_marking.titleize}" if lf_leg_marking.present?
-          markings << "RF #{rf_leg_marking.titleize}" if rf_leg_marking.present?
-          markings << "LH #{lh_leg_marking.titleize}" if lh_leg_marking.present?
-          markings << "RH #{rh_leg_marking.titleize}" if rh_leg_marking.present?
-        end
-        markings.join(", ")
-      end
-    end
-
-    def no_markings?
-      [rf_leg_marking, lf_leg_marking, rh_leg_marking, lh_leg_marking, face_marking].all?(&:blank?)
-    end
   end
 end
 

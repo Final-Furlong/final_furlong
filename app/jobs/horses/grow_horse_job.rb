@@ -4,6 +4,8 @@ class Horses::GrowHorseJob < ApplicationJob
   def perform(id:)
     horse = Horses::Horse.find(id)
     stats = horse.racing_stats
+    return unless stats
+
     appearance = horse.appearance
     days_old = (Date.current - horse.date_of_birth).to_i
     birth_hands, birth_extra_inches = appearance.birth_height.to_s.split(".")

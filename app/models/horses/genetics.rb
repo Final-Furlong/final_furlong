@@ -2,7 +2,7 @@ module Horses
   class Genetics < ApplicationRecord
     self.table_name = "horse_genetics"
 
-    belongs_to :horse, class_name: "Horse"
+    belongs_to :horse, class_name: "Horses::Horse"
 
     validates :allele, length: { maximum: 32 }, presence: true
   end
