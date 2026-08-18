@@ -37,6 +37,7 @@ blocks:
     task:
       prologue:
         commands:
+          - install-package libvips42=8.13
           - cache restore
           - bundle config set deployment true
           - bundle config set path vendor/bundle
