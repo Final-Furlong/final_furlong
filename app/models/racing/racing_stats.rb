@@ -84,6 +84,72 @@ module Racing
         1 + total_percent
       end
     end
+
+    def pick_desired_equipment
+      style = if leading >= off_pace && leading >= midpack && leading >= closing
+        "sprinter"
+      elsif off_pace >= leading && off_pace >= midpack && off_pace >= closing
+        (off_pace > midpack) ? "sprinter" : "steady"
+      elsif midpack >= leading && midpack >= off_pace && midpack >= closing
+        (off_pace >= closing) ? "steady" : "closer"
+      else
+        "closer"
+      end
+
+      percent = rand(1..100)
+      items = if percent.between?(1, 35)
+        1
+      elsif percent.between?(36, 64)
+        2
+      elsif percent.between?(65, 84)
+        0
+      elsif percent.between?(85, 94)
+        3
+      elsif percent.between?(95, 97)
+        4
+      else
+        5
+      end
+      if items == 5
+        self.blinkers = true
+        self.shadow_roll = true
+        self.wraps = true
+        self.figure_8 = true
+        self.no_whip = true
+        save
+      end
+      if items == 5 || items == 0
+        return
+      end
+
+      useful_equip = {}
+
+      useful_equip[:blinkers] = 10 - consistency
+      if style == "closer"
+        useful_equip[:blinkers] *= 2
+      elsif style == "sprinter"
+        useful_equip[:blinkers] /= 2
+      end
+      useful_equip[:shadow_roll] = 10 - consistency
+      useful_equip[:shadow_roll] += pissy if pissy > 2
+      useful_equip[:wraps] = 10 - soundness
+      useful_equip[:figure_8] = 5 + pissy
+      useful_equip[:no_whip] = (10 - courage) / 2
+
+      if useful_equip[:blinkers] == useful_equip[:shadow_roll]
+        if consistency > 5
+          useful_equip[:shadow_roll] += 1
+        else
+          useful_equip[:blinkers] += 1
+        end
+      end
+
+      useful_equip = useful_equip.sort_by { |_key, value| value * -1 }.to_h
+      useful_equip.keys.slice(0, items).each do |equip|
+        send("#{equip}=", true)
+      end
+      save
+    end
   end
 end
 

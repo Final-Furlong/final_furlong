@@ -1,8 +1,10 @@
 module Horses
   class BreedingStats < ApplicationRecord
+    self.ignored_columns += ["soundness", "allele"]
+
     belongs_to :horse, class_name: "Horses::Horse", inverse_of: :breeding_stats
 
-    validates :breeding_potential, :breeding_potential_grandparent, :soundness, presence: true
+    validates :breeding_potential, :breeding_potential_grandparent, presence: true
   end
 end
 
@@ -12,11 +14,9 @@ end
 # Database name: primary
 #
 #  id                             :bigint           not null, primary key
-#  allele                         :string
 #  breeding_potential             :integer          default(0), not null
 #  breeding_potential_grandparent :integer          default(0), not null
 #  dosage                         :string           indexed
-#  soundness                      :integer          default(0), not null
 #  created_at                     :datetime         not null
 #  updated_at                     :datetime         not null
 #  horse_id                       :bigint           not null, uniquely indexed
