@@ -247,3 +247,109 @@ shared:
     - key: breeders_series_filly_steeplechase_qualification
       series: steeplechase_filly
       class: Racing::Qualifications::BreedersSeriesFilliesSteeplechase
+  stats:
+    break_speed:
+      min: 1
+      max: 10
+    min_speed:
+      min: 160
+      max: 250
+    average_speed:
+      min: 180
+      max: 290
+    max_speed:
+      min: 210
+      max: 320
+    stamina:
+      min: 210
+      max: 320
+    strides_per_second:
+      min: 2000 # 2.000
+      max: 2750 # 2.750
+    sustain:
+      min: 1
+      max: 35
+    acceleration:
+      min: 1
+      max: 10
+    closing:
+      min: 1
+      max: 10
+    consistency:
+      min: 1
+      max: 10
+    courage:
+      min: 1
+      max: 10
+    dirt:
+      min: 1
+      max: 10
+    energy_regain:
+      min: 5
+      max: 25
+    leading:
+      min: 1
+      max: 10
+    loaf_percent:
+      min: 25
+      max: 95
+    loaf_threshold:
+      min: 1
+      max: 10
+    midpack:
+      min: 1
+      max: 10
+    natural_energy_gain:
+      min: 2200 # 2.2
+      max: 4440 # 4.440
+    natural_energy_loss:
+      min: 20
+      max: 50
+    off_pace:
+      min: 1
+      max: 10
+    peak_start_age_days:
+      min: 720
+      max: 1460
+    peak_length_days:
+      min: 365
+      max: 1000
+    pissy:
+      min: 1
+      max: 10
+    ratability:
+      min: 1
+      max: 10
+    soundness:
+      min: 1
+      max: 10
+    steeplechase:
+      min: 1
+      max: 10
+    track_fast:
+      min: 1
+      max: 10
+    track_good:
+      min: 1
+      max: 10
+    track_slow:
+      min: 1
+      max: 10
+    track_wet:
+      min: 1
+      max: 10
+    traffic:
+      min: 1
+      max: 10
+    turf:
+      min: 1
+      max: 10
+    turning:
+      min: 1
+      max: 10
+    weight:
+      min: 100
+      max: 145
+    xp_rate:
+      min: 5
+      max: 25
