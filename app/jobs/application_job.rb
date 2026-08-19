@@ -38,8 +38,9 @@ class ApplicationJob < ActiveJob::Base
 
   private
 
-  def store_job_info(outcome:)
-    JobStat.create!(name: self.class.name, last_run_at: Time.current, outcome:)
+  def store_job_info(outcome:, class_name: nil)
+    class_name ||= self.class.name
+    JobStat.create!(name: class_name, last_run_at: Time.current, outcome:)
   end
 
   def run_today?(name: self.class.name, date: Date.current)
