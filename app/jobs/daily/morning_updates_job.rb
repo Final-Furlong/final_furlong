@@ -19,6 +19,7 @@ class Daily::MorningUpdatesJob < ApplicationJob
   def class_list
     [Horses::UpdateBoardingJob, Horses::UpdateLeasesJob, Horses::UpdateSalesJob,
       Horses::NameHorsesJob, Horses::UpdateBabiesJob, Horses::GrowthJob,
+      Horses::CreateBabiesJob,
       Horses::FutureEventsJob, Horses::GenerateAppearancesJob,
       Racing::RestDayUpdaterJob, Racing::WeatherForecastJob,
       Daily::DeleteReadNotificationsJob]
