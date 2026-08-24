@@ -11,6 +11,13 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: public; Type: SCHEMA; Schema: -; Owner: -
+--
+
+-- *not* creating schema, since initdb creates it
+
+
+--
 -- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -4930,7 +4937,9 @@ CREATE TABLE public.horse_genetics (
     allele character varying(32) NOT NULL,
     horse_id bigint NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    soundness integer DEFAULT 0 NOT NULL,
+    quality integer DEFAULT 0 NOT NULL
 );
 
 
@@ -11036,6 +11045,20 @@ CREATE UNIQUE INDEX index_horse_genetics_on_horse_id ON public.horse_genetics US
 
 
 --
+-- Name: index_horse_genetics_on_quality; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horse_genetics_on_quality ON public.horse_genetics USING btree (quality);
+
+
+--
+-- Name: index_horse_genetics_on_soundness; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_horse_genetics_on_soundness ON public.horse_genetics USING btree (soundness);
+
+
+--
 -- Name: index_horse_jockey_relationships_on_horse_id_and_jockey_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -13949,6 +13972,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260824130833'),
 ('20260729120341'),
 ('20260727090249'),
 ('20260716130624'),

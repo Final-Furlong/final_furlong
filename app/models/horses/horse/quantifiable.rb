@@ -1,32 +1,10 @@
-module Horses::Horse::Raceable
+module Horses::Horse::Quantifiable
   extend ActiveSupport::Concern
 
   included do
-    include Horses::Horse::Quantifiable
-
-    has_many :race_result_finishes, class_name: "Racing::RaceResultHorse", inverse_of: :horse, dependent: :destroy
-    has_many :race_results, class_name: "Racing::RaceResult", source: :race, through: :race_result_finishes
-    has_one :latest_race_result_finish, -> { order id: :desc }, class_name:
-      "Racing::RaceResultHorse", inverse_of: :horse, dependent: :destroy
-    has_one :latest_race_result, class_name: "Racing::RaceResult", through: :latest_race_result_finish, source: :race
-    has_one :racing_stats, class_name: "Racing::RacingStats", dependent: :delete
-    # rubocop:disable Rails/HasManyOrHasOneDependent
-    has_many :race_records, class_name: "Racing::RaceRecord", inverse_of: :horse
-    has_many :annual_race_records, class_name: "Racing::AnnualRaceRecord", inverse_of: :horse
-    has_one :lifetime_race_record, class_name: "Racing::LifetimeRaceRecord", inverse_of: :horse
-    has_one :condition_race_record, class_name: "Racing::ConditionRaceRecord", inverse_of: :horse
-    has_one :distance_race_record, class_name: "Racing::DistanceRaceRecord", inverse_of: :horse
-    has_many :equipment_race_records, class_name: "Racing::EquipmentRaceRecord", inverse_of: :horse
-    has_many :location_race_records, class_name: "Racing::LocationRaceRecord", inverse_of: :horse
-    has_one :race_type_race_record, class_name: "Racing::RaceTypeRaceRecord", inverse_of: :horse
-    has_one :surface_race_record, class_name: "Racing::SurfaceRaceRecord", inverse_of: :horse
-    has_one :race_qualification, class_name: "Racing::RaceQualification"
-    # rubocop:enable Rails/HasManyOrHasOneDependent
-
-    has_many :eclipse_awards, class_name: "Game::EclipseAward", inverse_of: :awardable, dependent: :delete_all
-    has_many :race_series_wins, class_name: "Racing::RaceSeriesWinner", inverse_of: :horse, dependent: :delete_all
-
-    delegate :track_record, to: :lifetime_race_record, allow_nil: true
+    def quantify
+      Horses::Horse::RaceQualityCalculator.new(horse: self).run
+    end
   end
 end
 # == Schema Information
