@@ -89,6 +89,7 @@ ActiveRecordDoctor.configure do
       "Horses::Horse.unborn_foals_count",
       "Horses::Stallion.foals_count",
       "Horses::Stallion.unborn_foals_count",
+      "Horses::Breeding.soundness",
       "Horses::Stud::StallionOption.outside_mares_count",
       "Horses::Stud::StallionOption.total_booked_count",
       "Racing::TrainingSchedule.horses_count",
