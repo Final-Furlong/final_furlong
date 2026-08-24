@@ -47,6 +47,7 @@ module Horses
       sire_height = height_to_inches(sire&.appearance&.max_height)
       dam_height = height_to_inches(dam&.appearance&.max_height)
       height_inches = rand([sire_height, dam_height].min..[sire_height, dam_height].max)
+      height_inches += horse.female? ? rand(0..1) * -1 : rand(0..2)
       "#{height_inches / 4}.#{height_inches % 4}".to_f
     end
 
