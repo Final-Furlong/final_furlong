@@ -96,7 +96,6 @@ en:
         wait_for_deadline: Cannot enter until %{date}
       record: Record
       stable: Stable
-    entry: Entry
     entry_options:
       budget_description: 'Entry Fee: %{date}, Race %{number} - %{name}'
       create:
