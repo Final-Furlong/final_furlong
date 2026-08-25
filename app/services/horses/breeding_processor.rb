@@ -2,7 +2,7 @@ module Horses
   class BreedingProcessor < ApplicationService
     attr_reader :breeding, :mare, :stud
 
-    def do_breeding(breeding:, mare:, stud:, day: nil)
+    def do_breeding(breeding:, mare:, stud:, day: nil, auto: false)
       @breeding = breeding
       @mare = mare
       @stud = stud
@@ -11,7 +11,7 @@ module Horses
         @breeding.date = Date.new(@breeding.date.year, @breeding.date.month, day.to_i)
       end
 
-      if breeding.date < Date.current
+      if breeding.date < Date.current && !auto
         result.error = error("date_in_past")
         return result
       end
@@ -39,8 +39,34 @@ module Horses
       end
 
       if mare.current_location != breeding.stud.manager
-        result.error = error("mare_needs_shipping")
-        return result
+        if auto
+          starting_location = mare.current_location.racetrack.location
+          ending_location = breeding.stud.manager.racetrack.location
+          route = if starting_location == ending_location
+            Shipping::Route.new(miles: mare.current_location.miles_from_track, road_days: 1, road_cost: 25)
+          else
+            Shipping::Route.find_by(starting_location:, ending_location:)
+          end
+          if route.road_days
+            departure_date = Date.current - route.road_days.days
+            mode = "road"
+          else
+            departure_date = Date.current - route.air_days.days
+            mode = "air"
+          end
+          Horses::Broodmare::Shipment.create(
+            horse: mare,
+            arrival_date: Date.current,
+            departure_date:,
+            mode:,
+            scheduled: false,
+            ending_farm: breeding.stud.manager,
+            starting_farm: mare.current_location
+          )
+        else
+          result.error = error("mare_needs_shipping")
+          return result
+        end
       end
 
       if mare.in_transit?
