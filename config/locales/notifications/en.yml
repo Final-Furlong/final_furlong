@@ -115,6 +115,12 @@ en:
     shared:
       view_horse:
         link: View horse
+    stud_auto_bred_mares:
+      message_html: Final Furlong bred %{mare}
+      title_count:
+        one: "%{stud}: 1 Mare Auto-Bred (Slot %{slot})"
+        other: "%{stud}: %{count} Mares Auto-Bred (Slot %{slot})"
+        zero: "%{stud}: No Mares Auto-Bred (Slot %{slot})"
     stud_booking_auto_deleted:
       died: died
       message: "%{sire} has %{event} so your booking for %{mare} has been cancelled"

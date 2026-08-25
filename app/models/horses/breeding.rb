@@ -20,7 +20,7 @@ module Horses
     validates :due_date, comparison: { greater_than: :date }, allow_nil: true
     validates :mare_id, comparison: { other_than: :stud_id }, allow_nil: true
     validates :first_foal, presence: true, if: :second_foal
-    validates :open_booking, inclusion: { in: [true, false] }
+    validates :open_booking, :auto, inclusion: { in: [true, false] }
     validates :mare_id, uniqueness: { scope: %i[stud_id year], conditions: -> { where.not(status: "denied").where.not(mare_id: nil) } }
 
     enum :status, Config::Breedings.statuses.reduce({}) { |hash, value| hash.merge({ value.to_sym => value }) }
@@ -32,6 +32,7 @@ module Horses
     scope :by_slot, ->(slot) { where(slot:) }
     scope :not_denied, -> { where.not(status: "denied") }
     scope :taken, -> { where(status: %w[approved bred]) }
+    scope :bred, -> { where(status: "bred") }
     scope :not_missed, -> { joins(:slot).merge(::Breeding::Slot.not_missed) }
     scope :missed, -> { joins(:slot).merge(::Breeding::Slot.missed) }
     scope :ordered_by_status, -> { in_order_of(:status, %w[bred approved pending denied]) }
@@ -195,6 +196,7 @@ end
 # Database name: primary
 #
 #  id                                                       :bigint           not null, primary key
+#  auto                                                     :boolean          default(FALSE), not null, indexed
 #  date                                                     :date             indexed
 #  due_date                                                 :date             indexed
 #  event(twins_alive, twins_death, stillborn, death, birth) :enum             indexed
@@ -215,6 +217,7 @@ end
 # Indexes
 #
 #  idx_breedings_denied_stud_mare_year              (stud_id,year,mare_id) WHERE (status = 'denied'::breeding_statuses)
+#  index_breedings_on_auto                          (auto)
 #  index_breedings_on_date                          (date)
 #  index_breedings_on_due_date                      (due_date)
 #  index_breedings_on_event                         (event)

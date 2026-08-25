@@ -20,7 +20,7 @@ module Horses::Broodmare
     end
 
     def living_foals_count
-      born_foals_count - stillborn_foals_count
+      born_foals_count.to_i - stillborn_foals_count.to_i
     end
 
     def raced_foals_string
@@ -44,14 +44,14 @@ module Horses::Broodmare
     end
 
     def earnings_string
-      earnings = (raced_foals_count.positive? && total_foal_earnings.positive?) ? total_foal_earnings / raced_foals_count : 0
+      earnings = (raced_foals_count.to_i.positive? && total_foal_earnings.to_i.positive?) ? total_foal_earnings / raced_foals_count : 0
       Game::MoneyFormatter.new(earnings).to_s
     end
 
     private
 
     def string_with_percent(value, base_value)
-      if value.positive?
+      if value.to_i.positive?
         "#{value} (#{(value.fdiv(base_value) * 100).floor}%)"
       else
         "0 (0%)"

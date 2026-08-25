@@ -3130,7 +3130,8 @@ CREATE TABLE public.breedings (
     open_booking boolean DEFAULT false NOT NULL,
     stable_id bigint NOT NULL,
     event public.birth_events,
-    slot_id bigint
+    slot_id bigint,
+    auto boolean DEFAULT false NOT NULL
 );
 
 
@@ -10345,6 +10346,13 @@ CREATE UNIQUE INDEX index_breeding_stats_on_horse_id ON public.breeding_stats US
 
 
 --
+-- Name: index_breedings_on_auto; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breedings_on_auto ON public.breedings USING btree (auto);
+
+
+--
 -- Name: index_breedings_on_date; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -13972,6 +13980,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260825134338'),
 ('20260824130833'),
 ('20260729120341'),
 ('20260727090249'),
