@@ -2,7 +2,7 @@
 - content_for :breadcrumbs do
   = render Nav::Breadcrumbs::Component.new( links: [{ name: Current.stable.name, href: current_stable_path },
                                                     { name: title, href: "#", title: true }])
-p.font-bold.text-center.w-full.my-2= "#{@count} #{t("racing.entry").downcase.pluralize(@count)}"
+p.font-bold.text-center.w-full.my-2= t(".entries_count", count: @count)
 table.table.table-responsive.table-zebra
   thead
     tr
@@ -13,6 +13,7 @@ table.table.table-responsive.table-zebra
       th= t("racing.race.equipment")
       th= sort_link @query, :horse_race_metadata_energy_grade, t("horses.info.energy")
       th= sort_link @query, :horse_race_metadata_fitness_grade, t("horses.info.fitness")
+      th= sort_link @query, :race_entries_count, t("racing.race.entries_count")
       th= t("common.actions.title")
   tbody id="#{Current.stable.slug}-current-entries"
     = render partial: "entry", collection: @results, as: :entry
