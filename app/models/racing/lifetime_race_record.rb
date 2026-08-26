@@ -14,6 +14,7 @@ module Racing
     scope :not_stakes_level, -> { where("stakes_wins + stakes_seconds + stakes_thirds = ?", 0) }
     scope :stakes_level, -> { where("stakes_wins + stakes_seconds + stakes_thirds >= ?", 1) }
     scope :single_stakes_winner, -> { where(stakes_wins: 1) }
+    scope :not_stakes_winner, -> { where(stakes_wins: 0) }
     scope :stakes_winner, -> { where(stakes_wins: 1..) }
     scope :multi_stakes_winner, -> { where("stakes_wins > ?", 1) }
     scope :millionaire, -> { where(earnings: 1_000_000..1_999_999) }
