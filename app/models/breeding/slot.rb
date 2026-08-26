@@ -20,6 +20,10 @@ module Breeding
       start_date.strftime("%b %-d")
     end
 
+    def formatted_range
+      "#{start_date.strftime("%b %-d")}-#{end_day}"
+    end
+
     def end_day
       (month == 2 && !Date.current.leap?) ? super - 1 : super
     end
