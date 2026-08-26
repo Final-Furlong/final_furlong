@@ -194,7 +194,12 @@ class Horses::AutobreedMaresForSlotJob < ApplicationJob
       false
     else
       last_sale_date = mare.sales.where(buyer: stable).order(date: :desc).first&.date
-      last_sale_date.blank? || last_sale_date <= slot_end_date
+      if last_sale_date.blank? || last_sale_date <= slot_end_date
+        last_foal_date = mare.foals.born.order(date_of_birth: :desc).first&.date_of_birth
+        (last_foal_date + Config::Breeding.min_days_delay_from_previous_foal.days) <= slot_end_date
+      else
+        false
+      end
     end
   end
 end
