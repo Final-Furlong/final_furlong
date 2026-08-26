@@ -43,7 +43,7 @@ class Horses::CreateFoalJob < ApplicationJob
       if breeding.event.starts_with?("twins")
         gender = pick_gender
         twin = Horses::Horse::Foal.create!(
-          sire: breeding.stud, dam: breeding.mare, date_of_birth:, date_of_death:, location_bred:, breeder: stable, owner: stable, manager: stable,
+          sire: breeding.stud, dam: breeding.mare, date_of_birth:, location_bred:, breeder: stable, owner: stable, manager: stable,
           age: Date.current.year - date_of_birth.year, gender:, name: nil, state: "unborn", leaser_id: nil
         )
         twin.generate_allele
