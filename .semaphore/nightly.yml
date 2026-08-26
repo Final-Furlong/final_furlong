@@ -3,16 +3,20 @@ name: Nightly CI
 agent:
   machine:
     type: f1-standard-2
-    os_image: ubuntu2204
+    os_image: ubuntu2404
 global_job_config:
   prologue:
     commands:
       - checkout
+      - sem-service start postgres 17.6
       - sem-version ruby 3.4.5
       - cache restore
       - bundle config set deployment true
       - bundle config set path vendor/bundle
       - bundle install
+      - cp config/database.yml.ci config/database.yml
+      - bin/rails db:create:primary db:schema:load:primary
+      - bin/rails db:create:cache db:schema:load:cache
       - curl -fsSL https://get.pnpm.io/install.sh | sh -
       - source /home/semaphore/.bashrc
       - pnpm install
@@ -26,6 +30,10 @@ global_job_config:
       value: "true"
     - name: LIMITED_CI
       value: "true"
+    - name: DATABASE_URL
+      value: postgresql://postgres:@0.0.0.0:5432/final_furlong_test
+    - name: CACHE_DATABASE_URL
+      value: postgresql://postgres:@0.0.0.0:5432/final_furlong_test_cache
 blocks:
   - name: CI
     dependencies: []
