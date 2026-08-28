@@ -298,24 +298,25 @@ class Horses::CreateFoalJob < ApplicationJob
   end
 
   def generate_stat(stat, horse, quality)
+    record = (stat.to_sym == :soundness) ? :genetics : :racing_stats
     # parents = 32 slots = sire (* bpf) + dam (* bpf) + 2+ random + inbreeding
     parent_stats = []
     # up to 15 for sire based on BPF
     sire_bpf.times do |n|
-      parent_stats << horse.sire.racing_stats.send(stat.to_sym)
+      parent_stats << horse.sire.send(record).send(stat.to_sym)
     end
     if sire_bpf > 5
       (sire_bpf - 5).times do
-        parent_stats << horse.sire.racing_stats.send(stat.to_sym)
+        parent_stats << horse.sire.send(record).send(stat.to_sym)
       end
     end
     # up to 15 for dam based on BPF
     dam_bpf.times do |n|
-      parent_stats << horse.dam.racing_stats.send(stat.to_sym)
+      parent_stats << horse.dam.send(record).send(stat.to_sym)
     end
     if dam_bpf > 5
       (dam_bpf - 5).times do
-        parent_stats << horse.dam.racing_stats.send(stat.to_sym)
+        parent_stats << horse.dam.send(record).send(stat.to_sym)
       end
     end
     # extra for stud if inbred
@@ -323,12 +324,12 @@ class Horses::CreateFoalJob < ApplicationJob
     if sire_inbred
       if inbreeding[:grandparents].key?(horse.sire_id)
         inbreeding[:grandparents][horse.sire_id].times do
-          parent_stats << horse.sire.racing_stats.send(stat.to_sym)
+          parent_stats << horse.sire.send(record).send(stat.to_sym)
         end
       end
       if inbreeding[:great_grandparents].key?(horse.sire_id)
         inbreeding[:great_grandparents][horse.sire_id].times do
-          parent_stats << horse.sire.racing_stats.send(stat.to_sym)
+          parent_stats << horse.sire.send(record).send(stat.to_sym)
         end
       end
     end
@@ -337,12 +338,12 @@ class Horses::CreateFoalJob < ApplicationJob
     if dam_inbred
       if inbreeding[:grandparents].key?(horse.dam_id)
         inbreeding[:grandparents][horse.dam_id].times do
-          parent_stats << horse.dam.racing_stats.send(stat.to_sym)
+          parent_stats << horse.dam.send(record).send(stat.to_sym)
         end
       end
       if inbreeding[:great_grandparents].key?(horse.dam_id)
         inbreeding[:great_grandparents][horse.dam_id].times do
-          parent_stats << horse.dam.racing_stats.send(stat.to_sym)
+          parent_stats << horse.dam.send(record).send(stat.to_sym)
         end
       end
     end
@@ -358,46 +359,46 @@ class Horses::CreateFoalJob < ApplicationJob
     grandparent_stats = []
     if horse.sire.sire
       sire_bpf = horse.sire.sire.breeding_stats.breeding_potential_grandparent
-      grandparent_stats << horse.sire.sire.racing_stats.send(stat.to_sym)
-      grandparent_stats << horse.sire.sire.racing_stats.send(stat.to_sym)
+      grandparent_stats << horse.sire.sire.send(record).send(stat.to_sym)
+      grandparent_stats << horse.sire.sire.send(record).send(stat.to_sym)
       if sire_bpf > 5
-        grandparent_stats << horse.sire.sire.racing_stats.send(stat.to_sym)
+        grandparent_stats << horse.sire.sire.send(record).send(stat.to_sym)
       end
       if inbreeding[:grandparents].key?(horse.sire.sire_id) || inbreeding[:great_grandparents].key?(horse.sire.sire_id)
-        grandparent_stats << horse.sire.sire.racing_stats.send(stat.to_sym)
+        grandparent_stats << horse.sire.sire.send(record).send(stat.to_sym)
       end
     end
     if horse.sire.dam
       dam_bpf = horse.sire.dam.breeding_stats.breeding_potential_grandparent
-      grandparent_stats << horse.sire.dam.racing_stats.send(stat.to_sym)
-      grandparent_stats << horse.sire.dam.racing_stats.send(stat.to_sym)
+      grandparent_stats << horse.sire.dam.send(record).send(stat.to_sym)
+      grandparent_stats << horse.sire.dam.send(record).send(stat.to_sym)
       if dam_bpf > 5
-        grandparent_stats << horse.sire.dam.racing_stats.send(stat.to_sym)
+        grandparent_stats << horse.sire.dam.send(record).send(stat.to_sym)
       end
       if inbreeding[:grandparents].key?(horse.sire.dam_id) || inbreeding[:great_grandparents].key?(horse.sire.dam_id)
-        grandparent_stats << horse.sire.dam.racing_stats.send(stat.to_sym)
+        grandparent_stats << horse.sire.dam.send(record).send(stat.to_sym)
       end
     end
     if horse.dam.sire
       sire_bpf = horse.dam.sire.breeding_stats.breeding_potential_grandparent
-      grandparent_stats << horse.dam.sire.racing_stats.send(stat.to_sym)
-      grandparent_stats << horse.dam.sire.racing_stats.send(stat.to_sym)
+      grandparent_stats << horse.dam.sire.send(record).send(stat.to_sym)
+      grandparent_stats << horse.dam.sire.send(record).send(stat.to_sym)
       if sire_bpf > 5
-        grandparent_stats << horse.dam.sire.racing_stats.send(stat.to_sym)
+        grandparent_stats << horse.dam.sire.send(record).send(stat.to_sym)
       end
       if inbreeding[:grandparents].key?(horse.dam.sire_id) || inbreeding[:great_grandparents].key?(horse.dam.sire_id)
-        grandparent_stats << horse.dam.sire.racing_stats.send(stat.to_sym)
+        grandparent_stats << horse.dam.sire.send(record).send(stat.to_sym)
       end
     end
     if horse.dam.dam
       dam_bpf = horse.dam.dam.breeding_stats.breeding_potential_grandparent
-      grandparent_stats << horse.dam.dam.racing_stats.send(stat.to_sym)
-      grandparent_stats << horse.dam.dam.racing_stats.send(stat.to_sym)
+      grandparent_stats << horse.dam.dam.send(record).send(stat.to_sym)
+      grandparent_stats << horse.dam.dam.send(record).send(stat.to_sym)
       if dam_bpf > 5
-        grandparent_stats << horse.dam.dam.racing_stats.send(stat.to_sym)
+        grandparent_stats << horse.dam.dam.send(record).send(stat.to_sym)
       end
       if inbreeding[:grandparents].key?(horse.dam.dam_id) || inbreeding[:great_grandparents].key?(horse.dam.dam_id)
-        grandparent_stats << horse.dam.dam.racing_stats.send(stat.to_sym)
+        grandparent_stats << horse.dam.dam.send(record).send(stat.to_sym)
       end
     end
     if grandparent_stats.size > 16
@@ -411,28 +412,28 @@ class Horses::CreateFoalJob < ApplicationJob
     # great-grandparents = 8 slots: 1 per great-grandparent (filled with random if no great-grandparents)
     great_grandparent_stats = []
     if horse.sire.sire&.sire
-      great_grandparent_stats << horse.sire.sire.sire.racing_stats.send(stat.to_sym)
+      great_grandparent_stats << horse.sire.sire.sire.send(record).send(stat.to_sym)
     end
     if horse.sire.sire&.dam
-      great_grandparent_stats << horse.sire.sire.dam.racing_stats.send(stat.to_sym)
+      great_grandparent_stats << horse.sire.sire.dam.send(record).send(stat.to_sym)
     end
     if horse.sire.dam&.sire
-      great_grandparent_stats << horse.sire.dam.sire.racing_stats.send(stat.to_sym)
+      great_grandparent_stats << horse.sire.dam.sire.send(record).send(stat.to_sym)
     end
     if horse.sire.dam&.dam
-      great_grandparent_stats << horse.sire.dam.dam.racing_stats.send(stat.to_sym)
+      great_grandparent_stats << horse.sire.dam.dam.send(record).send(stat.to_sym)
     end
     if horse.dam.sire&.sire
-      great_grandparent_stats << horse.dam.sire.sire.racing_stats.send(stat.to_sym)
+      great_grandparent_stats << horse.dam.sire.sire.send(record).send(stat.to_sym)
     end
     if horse.dam.sire&.dam
-      great_grandparent_stats << horse.dam.sire.dam.racing_stats.send(stat.to_sym)
+      great_grandparent_stats << horse.dam.sire.dam.send(record).send(stat.to_sym)
     end
     if horse.dam.dam&.sire
-      great_grandparent_stats << horse.dam.dam.sire.racing_stats.send(stat.to_sym)
+      great_grandparent_stats << horse.dam.dam.sire.send(record).send(stat.to_sym)
     end
     if horse.dam.dam&.dam
-      great_grandparent_stats << horse.dam.dam.dam.racing_stats.send(stat.to_sym)
+      great_grandparent_stats << horse.dam.dam.dam.send(record).send(stat.to_sym)
     end
     if great_grandparent_stats.size > 8
       great_grandparent_stats = great_grandparent_stats.sample(8)

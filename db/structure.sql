@@ -3082,11 +3082,9 @@ CREATE TABLE public.breeding_stats (
     horse_id bigint NOT NULL,
     breeding_potential integer DEFAULT 0 NOT NULL,
     breeding_potential_grandparent integer DEFAULT 0 NOT NULL,
-    soundness integer DEFAULT 0 NOT NULL,
     dosage character varying,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL,
-    allele character varying
+    updated_at timestamp(6) with time zone NOT NULL
 );
 
 
@@ -13980,6 +13978,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260828111041'),
 ('20260825134338'),
 ('20260824130833'),
 ('20260729120341'),

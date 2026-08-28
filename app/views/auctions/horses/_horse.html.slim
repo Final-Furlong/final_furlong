@@ -24,7 +24,7 @@ tr
             span.badge.badge-outline.badge-sm.text-neutral-content/50= t("horse.no_breed_ranking")
         - elsif horse.stud?
           - if horse.foal_record && horse.breed_ranking_string != I18n.t("common.none")
-            span.badge.badge-outline.badge-sm class="text-#{horse.foal_record.breed_ranking}" = horse.stud_breed_ranking_string
+            span.badge.badge-outline.badge-sm class="text-#{horse.foal_record.breed_ranking}" = horse.breed_ranking_string
           - else
             span.badge.badge-outline.badge-sm.text-neutral-content/50= t("horse.no_breed_ranking")
   - if @include_reserve
