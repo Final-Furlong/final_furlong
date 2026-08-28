@@ -2,6 +2,8 @@ class Horses::AutobreedMaresJob < ApplicationJob
   queue_as :latency_5m
 
   def perform
+    return unless valid_date?
+
     @studs = load_studs
     Breeding::Slot.order(month: :asc, start_day: :asc).find_each do |slot|
       next if run_today_for_slot?(slot:)
@@ -26,6 +28,19 @@ class Horses::AutobreedMaresJob < ApplicationJob
   end
 
   private
+
+  def valid_date?
+    Breeding::Slot.order(month: :asc, start_day: :asc).find_each do |slot|
+      current_year = Date.current.year
+      slot_end_day = Date.new(current_year, slot.month, [Time.days_in_month(slot.month, current_year), slot.end_day].min)
+      return false if slot_end_day >= Date.current
+
+      day_diff = (Date.current - slot_end_day).to_i
+      next if day_diff > 1
+      return true if day_diff == 1
+    end
+    false
+  end
 
   def run_today_for_slot?(slot:)
     JobStat.where("outcome ->> 'month' = ?", slot.month.to_s).where("outcome ->> 'day' = ?", slot.start_day.to_s).exists?(name: self.class.name, last_run_at: Date.current.all_day)

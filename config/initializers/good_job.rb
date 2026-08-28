@@ -13,6 +13,11 @@ Rails.application.configure do
         class: "Workouts::AutoWorkoutJob",
         enabled_by_default: -> { Rails.env.production? }
       },
+      auto_breed: {
+        cron: "34 3 * * *",
+        class: "Horses::AutobreedMaresJob",
+        enabled_by_default: -> { Rails.env.production? }
+      },
       canary_health_check: {
         cron: "*/5 * * * *",
         class: "CanaryJob",
