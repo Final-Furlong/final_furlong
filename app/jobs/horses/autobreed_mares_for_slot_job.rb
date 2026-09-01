@@ -198,7 +198,7 @@ class Horses::AutobreedMaresForSlotJob < ApplicationJob
         last_foal_date = mare.foals.born.order(date_of_birth: :desc).first&.date_of_birth
         return true if last_foal_date.blank?
 
-        (last_foal_date + Config::Breeding.min_days_delay_from_previous_foal.days) <= slot_end_date
+        (last_foal_date + Config::Breedings.min_days_delay_from_previous_foal.days) <= slot_end_date
       else
         false
       end
