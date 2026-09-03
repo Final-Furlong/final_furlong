@@ -3,6 +3,7 @@ module CurrentStable
     def update_stud_options?
       return false unless record.stud?
       return false unless record.age >= Config::Breedings.min_age
+      return false unless record.state == "active"
 
       manager?
     end
@@ -10,6 +11,7 @@ module CurrentStable
     def manage_bookings?
       return false unless record.stud?
       return false unless record.age >= Config::Breedings.min_age
+      return false unless record.state == "active"
 
       manager?
     end
@@ -17,6 +19,7 @@ module CurrentStable
     def nominate?
       return false unless record.stud?
       return false unless record.age >= Config::Breedings.min_age
+      return false unless record.state == "active"
       return false if stallion.nominations.current_year.exists?
       raced_this_year = record.annual_race_records.by_year(Date.current.year).exists?
       return false if !raced_this_year && (Date.current.month > Config::Racing.breeders_cup_stud_nomination_deadline_month ||

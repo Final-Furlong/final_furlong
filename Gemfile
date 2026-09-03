@@ -42,7 +42,6 @@ gem "good_job"
 gem "httparty"
 gem "lograge"
 gem "mailtrap"
-gem "mission_control-jobs"
 gem "net-ssh"
 gem "openssl"
 gem "rack-cors"
@@ -116,7 +115,6 @@ group :development do
   gem "good_migrations"
   gem "guard", require: false
   gem "guard-bundler", require: false
-  gem "guard-haml_lint", require: false
   gem "guard-rspec", require: false
   gem "guard-rubocop", require: false
   gem "i18n-debug"
@@ -191,4 +189,3 @@ end
 group :tools do
   gem "colorize", require: false
 end
-

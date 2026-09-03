@@ -53,17 +53,13 @@ class ApplicationController < ActionController::Base
   end
 
   def verify_pundit_authorization
-    return if devise_controller? || mission_control_controller?
+    return if devise_controller?
 
     if %w[index all].include?(action_name)
       verify_policy_scoped
     else
       verify_authorized
     end
-  end
-
-  def mission_control_controller?
-    is_a?(MissionControl::Jobs::ApplicationController)
   end
 
   def unauthorized_path
@@ -113,4 +109,3 @@ class ApplicationController < ActionController::Base
     Current.stable = current_user.stable
   end
 end
-

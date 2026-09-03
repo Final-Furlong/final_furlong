@@ -3,7 +3,7 @@ en:
   account:
     stables:
       stable:
-        last_online: 'Last online at: %{date}'
+        last_online: "Last online at: %{date}"
         no_description: No description
         send_pm: Send PM
   current_stable:
@@ -105,8 +105,8 @@ en:
           sold_or_bought: Sold/Bought/Leased
         no_transactions: Could not find any transactions.
         title: Budget
-        title_with_available: 'Budget: (%{total}, %{available} available)'
-        title_with_total: 'Budget: %{total}'
+        title_with_available: "Budget: (%{total}, %{available} available)"
+        title_with_total: "Budget: %{total}"
       table:
         balance_disclaimer: Balance shown is at the time of the transaction, it will not reflect the amounts displayed if you are searching/sorting.
         total_earned: Total Money Earned
@@ -132,7 +132,7 @@ en:
         cannot_ship_in_time: Cannot ship in time
         energy_too_low: Energy too low
         entered: Entered
-        errored: 'Error: %{message}'
+        errored: "Error: %{message}"
         max_entries: Max horses entered from your stable
         not_at_track: Not at the track
         not_qualified: Not qualified for race
@@ -216,8 +216,8 @@ en:
         title: Horses Offered for Sale
     settings:
       new:
-        browser_subscribed: 'Status: YES! Your browser is currently subscribed to push notifications'
-        browser_unsubscribed: 'Status: Your browser is NOT subscribed to push notifications'
+        browser_subscribed: "Status: YES! Your browser is currently subscribed to push notifications"
+        browser_unsubscribed: "Status: Your browser is NOT subscribed to push notifications"
         instructions: Try sending a web push notification using the form below. The first text box will be used as a title and the second text box represents the message body. Click the button to send a push notification to yourself.
         notification: Hi from Final Furlong
         notification_not_supported: Notifications are not supported in your browser
@@ -292,7 +292,7 @@ en:
         title: New Training Schedule
       show:
         manage_horses: Horses (%{count})
-        title: 'Training Schedule: %{name}'
+        title: "Training Schedule: %{name}"
         workouts_count: Workouts (%{count})
       update:
         success: Training Schedule was successfully updated.
@@ -391,7 +391,7 @@ en:
         mares: Unbred Mares
       races:
         claiming_alert_count:
-          one: '1 horse is available to claim on '
+          one: "1 horse is available to claim on "
           other: "%{count} horses are available to claim on "
         existing_claim: ". You have submitted a claim."
         race_entry_count: Your stable has %{count} %{horses} entered to race on %{date}
@@ -444,7 +444,7 @@ en:
         other: "%{count} Foals Due Next Year"
         zero: No Foals Due Next Year
       owner: Owned by %{name}
-    training:
+    racing:
       earnings: Earnings
       fourths: Fourths
       on_the_board: On The Board %
@@ -453,7 +453,7 @@ en:
       points: Points
       races: Races
       shows: Shows
-      title: Training Statistics
+      title: Racing Statistics
       wins: Wins
     update:
       success: Stable successfully updated

@@ -101,7 +101,10 @@ ruby:
           = " (#{overall_otb_pct}%)"
       tr
         th= t(".earnings")
-        td= Game::MoneyFormatter.new(this_year&.earnings.to_i)
+        td
+          = Game::MoneyFormatter.new(this_year&.earnings.to_i)
+          - earnings_percent = earnings.to_i.positive? ? (this_year&.earnings.to_i.fdiv(earnings.to_i) * 100).round : 0
+          = " (#{earnings_percent}%)"
         td= Game::MoneyFormatter.new(earnings.to_i)
       tr
         th= t(".points")

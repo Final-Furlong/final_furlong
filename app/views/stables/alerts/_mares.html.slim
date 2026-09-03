@@ -1,5 +1,8 @@
 ruby:
-  mares_count = Horses::Horse::Broodmare.managed_by(Current.stable).broodmare.active.where.missing(:next_foal).count
+  final_slot = Breeding::Slot.order(month: :asc, start_day: :asc).last
+  breeding_season_end_date = Date.new(Date.current.year, final_slot.month, final_slot.end_day)
+  breeding_season_ended = Date.current > breeding_season_end_date
+  mares_count = breeding_season_ended ? 0 : Horses::Horse::Broodmare.managed_by(Current.stable).broodmare.active.where.missing(:next_foal).count
 - if mares_count.positive?
   .card.bg-base-100.w-full
     .card-body.p-0.rounded-none
