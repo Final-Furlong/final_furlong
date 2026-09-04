@@ -1,6 +1,9 @@
 ---
 en:
   auctions:
+    actions:
+      create:
+        title: Create Auction
     bids:
       create:
         success: Bid was successful

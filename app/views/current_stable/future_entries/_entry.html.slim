@@ -6,8 +6,8 @@ tr
   td= l(race.date)
   td class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), target: "_top"
   td= race.racetrack.name
-  td class="#{'link' if (Date.current > race.entry_open_date)}"
-    = link_to_if (Date.current > race.entry_open_date), race.race_description_string, new_racing_race_entry_path(race)
+  td class="#{'link' if (Date.current >= race.entry_open_date)}"
+    = link_to_if (Date.current >= race.entry_open_date), race.race_description_string, new_racing_race_entry_path(race)
   td= data.energy_grade
   td= data.fitness_grade
   td

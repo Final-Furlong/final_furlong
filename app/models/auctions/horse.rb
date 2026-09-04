@@ -25,21 +25,21 @@ module Auctions
     scope :unsold, -> { where(sold_at: nil) }
     scope :with_reserve, -> { where.not(reserve_price: nil) }
     scope :racehorse_2yo, -> {
-      joins(:horse).merge(Horses::Horse::Racehorse)
+      joins(:horse).where(horse: { type: "Horses::Horse::Racehorse", state: "active" })
         .merge(Horses::Horse.with_yob(Date.current.year - 2))
     }
     scope :racehorse_3yo, -> {
-      joins(:horse).merge(Horses::Horse::Racehorse)
+      joins(:horse).where(horse: { type: "Horses::Horse::Racehorse", state: "active" })
         .merge(Horses::Horse.with_yob(Date.current.year - 3))
     }
     scope :racehorse_older, -> {
-      joins(:horse).merge(Horses::Horse::Racehorse)
+      joins(:horse).where(horse: { type: "Horses::Horse::Racehorse", state: "active" })
         .merge(Horses::Horse.max_yob(Date.current.year - 4))
     }
-    scope :stallion, -> { joins(:horse).merge(Horses::Horse::Stud) }
-    scope :broodmare, -> { joins(:horse).merge(Horses::Horse::Broodmare) }
-    scope :yearling, -> { joins(:horse).merge(Horses::Horse.yearling) }
-    scope :weanling, -> { joins(:horse).merge(Horses::Horse.weanling) }
+    scope :stallion, -> { joins(:horse).where(horse: { type: "Horses::Horse::Stud", state: "active" }) }
+    scope :broodmare, -> { joins(:horse).where(horse: { type: "Horses::Horse::Broodmare", state: "active" }) }
+    scope :yearling, -> { joins(:horse).where(horse: { type: "Horses::Horse.yearling", state: "active" }) }
+    scope :weanling, -> { joins(:horse).where(horse: { type: "Horses::Horse.weanling", state: "active" }) }
     scope :associated_with_stable, ->(stable) { where("(seller_id = :id OR buyer_id = :id)", { id: stable.id }) }
 
     delegate :name, :sire, :dam, :age, :gender, :status, to: :horse
