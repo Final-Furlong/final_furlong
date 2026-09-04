@@ -2,7 +2,7 @@
 ruby:
   title = t(".title", name: horse.name_with_title, year: Date.current.year + 1)
   sire = horse.sire
-  stud_bc_nomination = sire.nominations.exists?(year: horse.date_of_birth.year)
+  stud_bc_nomination = sire.blank? ? false : sire.nominations.exists?(year: horse.date_of_birth.year)
   content_for :title, title
 
 .text-center
@@ -15,7 +15,7 @@ p.py-2= t(".description")
 - if stud_bc_nomination
   p= t(".stud_nominated_fee", stud: sire.name, fee: Game::MoneyFormatter.new(Config::Racing.breeders_cup_nomination_fee_nominated_stud))
 - else
-  p= t(".stud_unnominated_fee", stud: sire.name, fee: Game::MoneyFormatter.new(Config::Racing.breeders_cup_nomination_fee_unnominated_stud))
+  p= t(".stud_unnominated_fee", stud: sire&.name, fee: Game::MoneyFormatter.new(Config::Racing.breeders_cup_nomination_fee_unnominated_stud))
 
 = form_tag horse_late_breeders_cup_nomination_path(horse), remote: true do |f|
   .float-right

@@ -39,6 +39,9 @@ module Racing
         description = I18n.t("services.supplemental_breeders_cup_nominator.budget_description", year: nomination.year, race: race.name, name: horse.name)
         Accounts::BudgetTransactionCreator.new.create_transaction(stable:, description:, amount: fee * -1)
         result.created = nomination.save
+        key = "#{race.name.delete("'").tr(" ", "_").gsub("&", "and").downcase}_qualification"
+        class_info = Config::Racing.qualification_classes.find { |info| info[:key] == key }
+        Racing::BreedersCup::QualificationUpdater.perform_later(class_name: class_info[:class])
       end
       result
     end
