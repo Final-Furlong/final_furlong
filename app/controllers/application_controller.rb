@@ -109,3 +109,4 @@ class ApplicationController < ActionController::Base
     Current.stable = current_user.stable
   end
 end
+
