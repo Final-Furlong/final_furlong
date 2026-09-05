@@ -60,7 +60,10 @@ module Dashboard::Racing
         params[:q][:min_energy] ||= energy
       end
       if (min_days = game_settings[:minimum_days_since_last_race])
-        params[:q][:min_days_since_last_race] ||= [min_days, race.date]
+        min_days_param = params[:q][:min_days_since_last_race]
+        min_days_param = [min_days_param || min_days] unless min_days_param.is_a?(Array)
+        min_days_param << race.date if min_days_param.size == 1
+        params[:q][:min_days_since_last_race] = min_days_param
       end
       if (min_days = game_settings[:minimum_days_since_last_injury])
         params[:q][:min_days_since_last_injury] ||= min_days
