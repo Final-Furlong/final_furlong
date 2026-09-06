@@ -59,7 +59,7 @@
             div
               fieldset.fieldset
                 legend.fieldset-legend= t(".days_since_last_race")
-                = f.text_field :min_days_since_last_race, value: query.min_days_since_last_race.first, class: 'input mr-2', type: 'text', placeholder: t("current_stable.training_summaries.filters.min")
+                = f.text_field :min_days_since_last_race, value: query.min_days_since_last_race.to_a.first, class: 'input mr-2', type: 'text', placeholder: t("current_stable.training_summaries.filters.min")
             div
               fieldset.fieldset
                 legend.fieldset-legend= t("current_stable.training_summaries.filters.rest_days_since_last_race")

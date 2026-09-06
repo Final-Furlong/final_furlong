@@ -109,7 +109,10 @@ module Horses
     scope :runs_on_dirt, -> { runs_on("dirt") }
     scope :runs_on_turf, -> { runs_on("turf") }
     scope :runs_on_steeplechase, -> { runs_on("sc") }
-    scope :min_days_since_last_race, ->(days, date = Date.current) { joins(:racehorse_metadata).where("last_raced_at IS NULL OR last_raced_at < ?", date - days.to_i.days) }
+    scope :min_days_since_last_race, ->(days = 0, date = Date.current) {
+      pd [days, date]
+      joins(:racehorse_metadata).where("last_raced_at IS NULL OR last_raced_at < ?", date - days.to_i.days)
+    }
     scope :min_rest_days_since_last_race, ->(value) { joins(:racehorse_metadata).where(racehorse_metadata: { rest_days_since_last_race: value.to_i.. }) }
     scope :max_rest_days_since_last_race, ->(value) { joins(:racehorse_metadata).where(racehorse_metadata: { rest_days_since_last_race: ..value.to_i }) }
     scope :min_days_since_last_shipment, ->(days) { joins(:racehorse_metadata).where("last_shipped_at IS NULL OR last_shipped_at < ?", Date.current - days.to_i.days) }
