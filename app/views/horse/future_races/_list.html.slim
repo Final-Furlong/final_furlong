@@ -8,7 +8,7 @@ tr
   td
     - if @dashboard.min_days.positive? && @dashboard.existing_schedules.any? { |es| (race.date - es).to_i.abs < @dashboard.min_days }
       span.text-warning
-        .tooltip.mr-2.text-lg data-tip=t(".min_days_not_met", days: @min_days)
+        .tooltip.mr-2.text-lg data-tip=t(".min_days_not_met", days: @dashboard.min_days)
           i.ph.ph-fill.ph-warning
     - if racehorse_type.flat? && race.jump?
       span.text-error

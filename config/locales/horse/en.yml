@@ -297,6 +297,7 @@ en:
         min_days_not_met: This race is less than %{days} day(s) from an existing/scheduled entry.
       list:
         enter: Enter
+        min_days_not_met: Minimum days (%{days}) since last race is not met
         schedule: Schedule
         view_entries: "%{count} Entered"
         view_scheduled_entries: "%{count} Scheduled"
