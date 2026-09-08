@@ -16,4 +16,6 @@ ruby:
           th= t(".record")
           th= t(".rank")
       tbody
-        = render partial: "qualifier", collection: klass.nominated.joins(:horse).includes(:horse).merge(Horses::Horse.not_game_owned).ordered, as: :qualifier, locals: { klass: }
+        - horses = klass.nominated.joins(:horse).includes(:horse).ordered.limit(20)
+        - horses += klass.nominated.joins(:horse).includes(:horse).merge(Horses::Horse.not_game_owned).where.not(horse_id: horses.map(&:horse_id)).ordered
+        = render partial: "qualifier", collection: horses, as: :qualifier, locals: { klass: }

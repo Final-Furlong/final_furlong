@@ -4,7 +4,7 @@ module BreedersCupQualifiable
   included do
     self.primary_key = :horse_id
 
-    scope :ordered, -> { order(stakes_wins: :desc, stakes_seconds: :desc, stakes_thirds: :desc, allowance_wins: :desc, points: :desc, starts: :asc) }
+    scope :ordered, -> { joins(:horse).order(stakes_wins: :desc, stakes_seconds: :desc, stakes_thirds: :desc, allowance_wins: :desc, points: :desc, starts: :asc).order("horses.name asc") }
     scope :better_ranked, ->(record) {
       where("stakes_wins > :sw OR (stakes_wins = :sw AND (stakes_seconds + stakes_thirds) > :sp) OR
         (stakes_wins = :sw AND (stakes_seconds + stakes_thirds) = :sp AND allowance_wins > :aw) OR

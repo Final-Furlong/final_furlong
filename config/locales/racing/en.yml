@@ -8,6 +8,8 @@ en:
         title: Breeders' Cup Qualifiers
       qualifier:
         age: "%{age}yo"
+        owned_by_game: Final Furlong Horse
+        owned_by_you: Your Horse
         tied_count:
           one: Tied with 1 horse
           other: Tied with %{count} horses
