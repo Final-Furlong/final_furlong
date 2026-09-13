@@ -3,11 +3,57 @@
     {
       "warning_type": "SQL Injection",
       "warning_code": 0,
+      "fingerprint": "20c69f3a2cd9c6062bee276acfdeb1a9419c7a337dec967a7ebbe9c46bddbecb",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/jobs/game/eclipse_awards/contender_selection_job.rb",
+      "line": 164,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"  SELECT horse_id, COUNT(rr.id) AS starts,\\n  SUM(\\n    CASE\\n      WHEN r.race_type = 'stakes' THEN 1\\n      ELSE 0\\n    END\\n  ) AS stakes_starts,\\n  SUM(\\n    CASE\\n      WHEN rr.finish_position = 1 THEN 1\\n      ELSE 0\\n    END\\n  ) AS wins,\\n  SUM(\\n    CASE\\n      WHEN r.race_type = 'stakes'\\n      AND rr.finish_position = 1 THEN 1\\n      ELSE 0\\n    END\\n  ) AS stakes_wins,\\n  SUM(\\n    CASE\\n      WHEN rr.finish_position = 2 THEN 1\\n      ELSE 0\\n    END\\n  ) AS seconds,\\n  SUM(\\n    CASE\\n      WHEN r.race_type = 'stakes'\\n      AND rr.finish_position = 2 THEN 1\\n      ELSE 0\\n    END\\n  ) AS stakes_seconds,\\n  SUM(\\n    CASE\\n      WHEN rr.finish_position = 3 THEN 1\\n      ELSE 0\\n    END\\n  ) AS thirds,\\n  SUM(\\n    CASE\\n      WHEN r.race_type = 'stakes'\\n      AND rr.finish_position = 3 THEN 1\\n      ELSE 0\\n    END\\n  ) AS stakes_thirds,\\n  SUM(\\n    CASE\\n      WHEN rr.finish_position = 4 THEN 1\\n      ELSE 0\\n    END\\n  ) AS fourths,\\n  SUM(\\n    CASE\\n      WHEN r.race_type = 'stakes'\\n      AND rr.finish_position = 4 THEN 1\\n      ELSE 0\\n    END\\n  ) AS stakes_fourths,\\n  SUM(earnings) AS earnings,\\n  SUM(points) AS points\\nFROM\\n  race_result_horses rr\\n  LEFT JOIN race_results r ON rr.race_id = r.id\\n  LEFT JOIN track_surfaces ts ON r.surface_id = ts.id\\nWHERE\\n  DATE_PART('Year', r.date) = '#{year}'\\n  AND ((r.distance >= '#{flat_min}'::float AND r.distance <= '#{flat_max}'::float AND ts.surface != 'steeplechase') OR\\n    (r.distance >= '#{jump_min}'::float AND r.distance <= '#{jump_max}'::float AND ts.surface = 'steeplechase'))\\nGROUP BY\\n  rr.horse_id\\nORDER BY\\n  SUM(\\n    CASE\\n      WHEN r.race_type = 'stakes'\\n      AND rr.finish_position = 1 THEN 1\\n      ELSE 0\\n    END\\n  ) DESC,\\n  SUM(\\n    CASE\\n      WHEN r.race_type = 'stakes' THEN 1\\n      ELSE 0\\n    END\\n  ) DESC,\\n  SUM(points) DESC,\\n  RANDOM()\\n  LIMIT 10\\n\".squish)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Game::EclipseAwards::ContenderSelectionJob",
+        "method": "distance_sql"
+      },
+      "user_input": "year",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "27ac08230b5cb6145d09c8938d77066e845ec78b1abeaff495e0728d92ebe203",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/jobs/game/eclipse_awards/contender_selection_job.rb",
+      "line": 449,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"SELECT s.id, s.name, COUNT(rr.id) AS starts,\\n          SUM(\\n            CASE\\n              WHEN r.race_type = 'stakes' THEN 1\\n              ELSE 0\\n            END\\n          ) AS stakes_starts,\\n          SUM(\\n            CASE\\n              WHEN rr.finish_position = 1 THEN 1\\n              ELSE 0\\n            END\\n          ) AS wins,\\n          SUM(\\n            CASE\\n              WHEN r.race_type = 'stakes'\\n              AND rr.finish_position = 1 THEN 1\\n              ELSE 0\\n            END\\n          ) AS stakes_wins,\\n          SUM(\\n            CASE\\n              WHEN rr.finish_position = 2 THEN 1\\n              ELSE 0\\n            END\\n          ) AS seconds,\\n          SUM(\\n            CASE\\n              WHEN r.race_type = 'stakes'\\n              AND rr.finish_position = 2 THEN 1\\n              ELSE 0\\n            END\\n          ) AS stakes_seconds,\\n          SUM(\\n            CASE\\n              WHEN rr.finish_position = 3 THEN 1\\n              ELSE 0\\n            END\\n          ) AS thirds,\\n          SUM(\\n            CASE\\n              WHEN r.race_type = 'stakes'\\n              AND rr.finish_position = 3 THEN 1\\n              ELSE 0\\n            END\\n          ) AS stakes_thirds,\\n          SUM(\\n            CASE\\n              WHEN rr.finish_position = 4 THEN 1\\n              ELSE 0\\n            END\\n          ) AS fourths,\\n          SUM(\\n            CASE\\n              WHEN r.race_type = 'stakes'\\n              AND rr.finish_position = 4 THEN 1\\n              ELSE 0\\n            END\\n          ) AS stakes_fourths,\\n          SUM(earnings) AS earnings,\\n          SUM(points) AS points\\n        FROM\\n          race_result_horses rr\\n          LEFT JOIN race_results r ON rr.race_id = r.id\\n          LEFT JOIN horses h ON rr.horse_id = h.id\\n          LEFT JOIN horses s ON h.sire_id = s.id\\n        WHERE\\n          DATE_PART('Year', r.date) = '#{year}'\\n        GROUP BY\\n          s.id\\n        ORDER BY\\n          SUM(\\n            CASE\\n              WHEN r.race_type = 'stakes'\\n              AND rr.finish_position = 1 THEN 1\\n              ELSE 0\\n            END\\n          ) DESC,\\n          SUM(points) DESC,\\n  SUM(earnings) DESC,\\n          RANDOM()\\n          LIMIT 10\\n\".squish)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Game::EclipseAwards::ContenderSelectionJob",
+        "method": "pick_top_sire"
+      },
+      "user_input": "year",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
       "fingerprint": "2eb02d2e98da541f4a97c986283506fb30341eee4612fc3c391ac1f8ed9ce0ad",
       "check_name": "SQL",
       "message": "Possible SQL injection",
       "file": "app/models/horses/horse.rb",
-      "line": 155,
+      "line": 81,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
       "code": "Arel.sql(\"DATE_PART('Year', date_of_birth) #{(dir or \"ASC\").upcase}\")",
       "render_path": null,
@@ -17,6 +63,29 @@
         "method": null
       },
       "user_input": "(dir or \"ASC\").upcase",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "51d716f718ceff70dd763af14621ba765213690c125911d1db228c43bc95b79f",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/jobs/game/eclipse_awards/contender_selection_job.rb",
+      "line": 356,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"SELECT h.id, h.name\\n              FROM\\n                race_result_horses rr\\n                LEFT JOIN race_results r ON rr.race_id = r.id\\n                LEFT JOIN horses h ON rr.horse_id = h.id\\n              WHERE\\n                DATE_PART('Year', r.date) = '#{year}' AND h.breeder_id = '#{breeder_id}'::bigint\\n              GROUP BY\\n                h.id\\n              ORDER BY\\n                SUM(\\n                  CASE\\n                    WHEN r.race_type = 'stakes'\\n                    AND rr.finish_position = 1 THEN 1\\n                    ELSE 0\\n                  END\\n                ) DESC,\\n  SUM(earnings) DESC,\\n                SUM(points) DESC\\n                LIMIT 5\\n\".squish)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Game::EclipseAwards::ContenderSelectionJob",
+        "method": "pick_top_bred"
+      },
+      "user_input": "year",
       "confidence": "Medium",
       "cwe_id": [
         89
@@ -56,7 +125,53 @@
         22
       ],
       "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "beee90e8eac655fbd6a390b77980695e7da6718985119ffd3a2ee2a1b3eff29f",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/jobs/game/eclipse_awards/contender_selection_job.rb",
+      "line": 482,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"SELECT h.id, h.name\\n              FROM\\n                race_result_horses rr\\n                LEFT JOIN race_results r ON rr.race_id = r.id\\n                LEFT JOIN horses h ON rr.horse_id = h.id\\n              WHERE\\n                DATE_PART('Year', r.date) = '#{year}' AND h.sire_id = '#{sire_id}'::bigint\\n              GROUP BY\\n                h.id\\n              ORDER BY\\n                SUM(\\n                  CASE\\n                    WHEN r.race_type = 'stakes'\\n                    AND rr.finish_position = 1 THEN 1\\n                    ELSE 0\\n                  END\\n                ) DESC,\\n  SUM(earnings) DESC,\\n                SUM(points) DESC\\n                LIMIT 5\\n\".squish)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Game::EclipseAwards::ContenderSelectionJob",
+        "method": "pick_top_sired"
+      },
+      "user_input": "year",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "d12f45099d8076fcb54dbdf755e785e52221d70c79c49530dc25ba7307448a0b",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/jobs/game/eclipse_awards/contender_selection_job.rb",
+      "line": 323,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"SELECT b.id, b.name, COUNT(rr.id) AS starts,\\n          SUM(\\n            CASE\\n              WHEN r.race_type = 'stakes' THEN 1\\n              ELSE 0\\n            END\\n          ) AS stakes_starts,\\n          SUM(\\n            CASE\\n              WHEN rr.finish_position = 1 THEN 1\\n              ELSE 0\\n            END\\n          ) AS wins,\\n          SUM(\\n            CASE\\n              WHEN r.race_type = 'stakes'\\n              AND rr.finish_position = 1 THEN 1\\n              ELSE 0\\n            END\\n          ) AS stakes_wins,\\n          SUM(\\n            CASE\\n              WHEN rr.finish_position = 2 THEN 1\\n              ELSE 0\\n            END\\n          ) AS seconds,\\n          SUM(\\n            CASE\\n              WHEN r.race_type = 'stakes'\\n              AND rr.finish_position = 2 THEN 1\\n              ELSE 0\\n            END\\n          ) AS stakes_seconds,\\n          SUM(\\n            CASE\\n              WHEN rr.finish_position = 3 THEN 1\\n              ELSE 0\\n            END\\n          ) AS thirds,\\n          SUM(\\n            CASE\\n              WHEN r.race_type = 'stakes'\\n              AND rr.finish_position = 3 THEN 1\\n              ELSE 0\\n            END\\n          ) AS stakes_thirds,\\n          SUM(\\n            CASE\\n              WHEN rr.finish_position = 4 THEN 1\\n              ELSE 0\\n            END\\n          ) AS fourths,\\n          SUM(\\n            CASE\\n              WHEN r.race_type = 'stakes'\\n              AND rr.finish_position = 4 THEN 1\\n              ELSE 0\\n            END\\n          ) AS stakes_fourths,\\n          SUM(earnings) AS earnings,\\n          SUM(points) AS points\\n        FROM\\n          race_result_horses rr\\n          LEFT JOIN race_results r ON rr.race_id = r.id\\n          LEFT JOIN horses h ON rr.horse_id = h.id\\n          LEFT JOIN stables b ON h.breeder_id = b.id\\n        WHERE\\n          DATE_PART('Year', r.date) = '#{year}' AND b.name != 'Final Furlong'\\n        GROUP BY\\n          b.id\\n        ORDER BY\\n          SUM(\\n            CASE\\n              WHEN r.race_type = 'stakes'\\n              AND rr.finish_position = 1 THEN 1\\n              ELSE 0\\n            END\\n          ) DESC,\\n          SUM(points) DESC,\\n  SUM(earnings) DESC,\\n          RANDOM()\\n          LIMIT 10\\n\".squish)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Game::EclipseAwards::ContenderSelectionJob",
+        "method": "pick_top_breeder"
+      },
+      "user_input": "year",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
     }
   ],
-  "brakeman_version": "8.0.4"
+  "brakeman_version": "8.0.6"
 }
