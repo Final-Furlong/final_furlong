@@ -220,17 +220,17 @@ class Game::EclipseAwards::ContenderSelectionJob < ApplicationJob
     results
   end
 
-  def pick_top_jumper(year:, gender:)
+  def pick_top_jumper(year:, gender:, age:)
     query = Racing::RaceRecord.where(year:, surface: "steeplechase").joins(:horse).where(stakes_wins: 2..)
     query = if %w[filly mare].exclude?(gender)
       query.where(horse: Horses::Horse.not_female)
     else
       query.where(horse: Horses::Horse.female)
     end
-    query = if %w[colt filly].exclude?(gender)
-      query.where(horse: Horses::Horse.max_yob(year - 4))
-    else
+    query = if age == 3
       query.where(horse: Horses::Horse.with_yob(year - 3))
+    else
+      query.where(horse: Horses::Horse.max_yob(year - 4))
     end
     query.order(stakes_wins: :desc, stakes_starts: :desc, points: :desc).order("RANDOM()").limit(10)
     results = []
