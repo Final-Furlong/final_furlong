@@ -9,9 +9,8 @@ tr
       = link_to contender.awardable.name, stable_path(contender.awardable), data: { turbo_frame: "_top" }
   - if params[:category] != "horse" && (contender.record.present? && contender.record.downcase != "none")
     td
-      - if contender.record.include?(',')
+      - if contender.record.include?(',') && !contender.record.include?('$')
         - horse_ids = contender.record.split(',')
-        - pd horse_ids.last
         - horse_ids.each do |id|
           - horse = Horses::Horse.find(id)
           = link_to horse.name_with_title, horse_path(horse), class: "text-#{horse.gender}", target: "_blank"
