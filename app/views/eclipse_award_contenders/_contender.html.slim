@@ -7,7 +7,7 @@ tr
       span class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), data: { turbo_frame: "_top" }
     - else
       = link_to contender.awardable.name, stable_path(contender.awardable), data: { turbo_frame: "_top" }
-  - if contender.record.present?
+  - if params[:category] != "horse" && (contender.record.present? && contender.record.downcase != "none")
     td
       - if contender.record.include?(',')
         - horse_ids = contender.record.split(',')
@@ -19,8 +19,7 @@ tr
             = ",&nbsp;".html_safe
       - else
         = contender.record
-  - else
-  - if params[:category] == "horse"
+  - elsif params[:category] == "horse"
     td
       - awards = Game::EclipseAward.where(year: params[:year], awardable: horse)
       - localised_awards = awards.map { |award| t("eclipse_awards.award.category_#{award.category}") }.join(', ')
