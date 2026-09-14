@@ -18,6 +18,11 @@ shared:
     - 48
   default_sort: created_at desc
   reserve_fee: 0.1
+  broodmare_auction:
+    min_age: 6
+    max_age: 18
+    regular_mares: 50
+    stakes_mares: 25
   foal_auction:
     yearlings: 75
     weanlings: 50
@@ -33,7 +38,7 @@ shared:
     broodmares:
       count: 50
       min_age: 4
-      max_age: 12
+      max_age: 16
     yearlings:
       count: 30
     weanlings:
