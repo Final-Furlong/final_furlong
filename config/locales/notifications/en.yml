@@ -8,6 +8,10 @@ en:
         link: View Bidding
     destroy:
       success: Notification was successfully deleted
+    eclipse_award_given_notification:
+      link: View %{title}
+      message: "%{winner} has won an Eclipse Award."
+      title: 'Eclipse Award Given: %{year} %{category}'
     eclipse_award_voting_notification:
       message: You have until %{date} to vote for this award.
       title: 'Eclipse Award Voting: %{year} %{category}'

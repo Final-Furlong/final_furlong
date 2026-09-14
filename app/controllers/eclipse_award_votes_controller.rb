@@ -6,7 +6,7 @@ class EclipseAwardVotesController < AuthenticatedController
     vote = Game::EclipseAwardVote.new(contender: @contender, voter: Current.stable, category: @contender.category)
     ActiveRecord::Base.transaction do
       if vote.save
-        EclipseAwardVotingNotification.where(user: Current.user).param_equals("year", @contender.year).param_equals("category", @contender.category).delete_all
+        ::Notifications::Game::EclipseAwardVotingNotification.where(user: Current.user).param_equals("year", @contender.year).param_equals("category", @contender.category).delete_all
       end
     end
 

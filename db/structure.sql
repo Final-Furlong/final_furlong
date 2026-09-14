@@ -4242,7 +4242,8 @@ CREATE TABLE public.eclipse_award_contenders (
     voting_ends_at timestamp(6) with time zone NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
-    record character varying DEFAULT 'None'::character varying NOT NULL
+    record character varying DEFAULT 'None'::character varying NOT NULL,
+    tie_breaker boolean DEFAULT false NOT NULL
 );
 
 
@@ -10675,6 +10676,13 @@ CREATE INDEX index_claims_on_race_date ON public.claims USING btree (race_date);
 
 
 --
+-- Name: index_eclipse_award_contenders_on_tie_breaker; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_eclipse_award_contenders_on_tie_breaker ON public.eclipse_award_contenders USING btree (tie_breaker);
+
+
+--
 -- Name: index_eclipse_award_contenders_on_voting_ends_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -14157,6 +14165,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260914104930'),
 ('20260913130307'),
 ('20260913102741'),
 ('20260830185319'),
