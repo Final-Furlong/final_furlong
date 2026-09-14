@@ -38,7 +38,13 @@ module Auctions
         else
           raise UnknownConsignmentTypeError
         end
-        horse_type_number_consigned = consigner_class.new.base_class.joins(:auction_horse).where(auction_horse: { auction_id: auction.id }).count
+        horse_type_number_query = consigner_class.new.base_class.joins(:auction_horse).where(auction_horse: { auction_id: auction.id })
+        horse_type_number_query = if config.stakes_quality
+          consigner_class.new.stakes_level(horse_type_number_query)
+        else
+          consigner_class.new.not_stakes_level(horse_type_number_query, config.minimum_count)
+        end
+        horse_type_number_consigned = horse_type_number_query.count
         horses = consigner_class.new.select_horses(
           number: config.minimum_count - horse_type_number_consigned,
           stakes_quality: config.stakes_quality,

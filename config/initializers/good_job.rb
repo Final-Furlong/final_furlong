@@ -49,8 +49,13 @@ Rails.application.configure do
         enabled_by_default: -> { Rails.env.production? }
       },
       auction_create_monthly_auction: {
-        cron: "1 0 1 1,3,4,5,7,9,10,12 *", # first day of every month that does not have another auction
+        cron: "1 0 1 1,3,4,5,7,9,10 *", # first day of every month that does not have another auction
         class: "Auctions::CreateMonthlyAuctionJob",
+        enabled_by_default: -> { Rails.env.production? }
+      },
+      auction_create_broodmare: {
+        cron: "9 0 1 12 *", # first day of Dec
+        class: "Auctions::CreateBroodmareAuctionJob",
         enabled_by_default: -> { Rails.env.production? }
       },
       auction_create_two_year_old: {
