@@ -9132,7 +9132,7 @@ CREATE UNIQUE INDEX index_auction_bids_on_horse_id ON public.auction_bids USING 
 -- Name: index_auction_configs_on_horse_type; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_auction_configs_on_horse_type ON public.auction_consignment_configs USING btree (auction_id, lower((horse_type)::text));
+CREATE UNIQUE INDEX index_auction_configs_on_horse_type ON public.auction_consignment_configs USING btree (auction_id, lower((horse_type)::text), stakes_quality);
 
 
 --
@@ -14165,6 +14165,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260914141247'),
 ('20260914104930'),
 ('20260913130307'),
 ('20260913102741'),
