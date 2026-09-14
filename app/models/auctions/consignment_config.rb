@@ -5,14 +5,14 @@ module Auctions
     belongs_to :auction, class_name: "::Auction"
 
     validates :horse_type, :minimum_age, :maximum_age, :minimum_count, presence: true
-    validates :horse_type, uniqueness: { case_sensitive: false, scope: :auction_id }
+    validates :horse_type, uniqueness: { case_sensitive: false, scope: [:auction_id, :stakes_quality] }
     validates :horse_type, inclusion: { in: Config::Auctions.horse_types }
     validates :minimum_age, numericality: { greater_than_or_equal_to: 2, less_than_or_equal_to: 3 }, if: :racehorse?
     validates :maximum_age, numericality: { greater_than_or_equal_to: 2, less_than_or_equal_to: 5 }, if: :racehorse?
     validates :minimum_age, numericality: { greater_than_or_equal_to: 4, less_than_or_equal_to: 12 }, if: :stallion?
     validates :maximum_age, numericality: { greater_than_or_equal_to: 5, less_than_or_equal_to: 15 }, if: :stallion?
     validates :minimum_age, numericality: { greater_than_or_equal_to: 4, less_than_or_equal_to: 12 }, if: :broodmare?
-    validates :maximum_age, numericality: { greater_than_or_equal_to: 5, less_than_or_equal_to: 15 }, if: :broodmare?
+    validates :maximum_age, numericality: { greater_than_or_equal_to: 5, less_than_or_equal_to: 18 }, if: :broodmare?
     validates :minimum_age, numericality: { equal_to: 1 }, if: :yearling?
     validates :maximum_age, numericality: { equal_to: 1 }, if: :yearling?
     validates :minimum_age, numericality: { equal_to: 0 }, if: :weanling?
@@ -60,7 +60,7 @@ end
 #
 # Indexes
 #
-#  index_auction_configs_on_horse_type              (auction_id, lower((horse_type)::text)) UNIQUE
+#  index_auction_configs_on_horse_type              (auction_id, lower((horse_type)::text), stakes_quality) UNIQUE
 #  index_auction_consignment_configs_on_auction_id  (auction_id)
 #
 # Foreign Keys
