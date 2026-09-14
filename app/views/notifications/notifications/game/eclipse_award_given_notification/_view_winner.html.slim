@@ -1,0 +1,10 @@
+- winner = %w[stable breeder].include?(notification.params["category"]) ? notification.params["stable_name"] : notification.params["horse_name"]
+button.btn.btn-sm.btn-primary.px-3.py-1.5.me-2.text-center.inline-flex.items-center[
+  type="button"
+]
+  - if %w[stable breeder].include?(notification.params["category"])
+    = link_to stable_path(Account::Stable.find(notification.params["stable_id"])) do
+      = t("notifications.eclipse_award_given_notification.link", title: notification.params["stable_name"])
+  - else
+    = link_to horse_path(Horses::Horse.find(notification.params["horse_id"])) do
+      = t("notifications.eclipse_award_given_notification.link", title: notification.params["horse_name"])
