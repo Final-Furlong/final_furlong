@@ -8,6 +8,8 @@ class Game::EclipseAwards::ContenderSelectionJob < ApplicationJob
     existing_contenders = Game::EclipseAwardContender.where(category:, year:).count
     voting_ends_at = (Time.current + Config::Game.eclipse_award_voting_days.days).end_of_day
     contenders = 0
+    return if records.count <= 2
+
     records.each do |record|
       break if contenders >= 10
 
@@ -30,7 +32,7 @@ class Game::EclipseAwards::ContenderSelectionJob < ApplicationJob
     category_name = I18n.t("eclipse_awards.award.category_#{category}")
     Account::User.active.find_each do |user|
       Game::NotificationCreator.new.create_notification(
-        type: ::EclipseAwardVotingNotification,
+        type: ::Notifications::Game::EclipseAwardVotingNotification,
         user:,
         params: { category:, category_name:, year:, deadline: end_time }
       )

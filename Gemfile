@@ -113,10 +113,6 @@ group :development do
   gem "capistrano-rbenv", "~> 2.2", require: false
   gem "ed25519", require: false # required for capistrano
   gem "good_migrations"
-  gem "guard", require: false
-  gem "guard-bundler", require: false
-  gem "guard-rspec", require: false
-  gem "guard-rubocop", require: false
   gem "i18n-debug"
   gem "image_optim", require: false
   gem "image_optim_pack", require: false
@@ -152,6 +148,7 @@ group :development, :test do
   gem "rubocop-rspec", require: false
   gem "rubocop-rspec_rails", require: false
   gem "ruby-debug-ide", require: false
+  gem "rubydex", require: false
   gem "slim_lint", require: false
   gem "solargraph", require: false
   gem "standard"
