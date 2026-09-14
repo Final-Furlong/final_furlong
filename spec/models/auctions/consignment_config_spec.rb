@@ -7,7 +7,7 @@ describe Auctions::ConsignmentConfig do
     subject(:config) { build(:auction_consignment_config) }
 
     it { is_expected.to validate_presence_of(:horse_type) }
-    it { is_expected.to validate_uniqueness_of(:horse_type).case_insensitive.scoped_to(:auction_id) }
+    it { is_expected.to validate_uniqueness_of(:horse_type).case_insensitive.scoped_to([:auction_id, :stakes_quality]) }
     it { is_expected.to validate_inclusion_of(:horse_type).in_array(Config::Auctions.horse_types) }
     it { is_expected.to validate_numericality_of(:minimum_count).is_greater_than(0) }
 
@@ -31,7 +31,7 @@ describe Auctions::ConsignmentConfig do
       subject(:config) { build(:auction_consignment_config, :broodmare) }
 
       it { is_expected.to validate_numericality_of(:minimum_age).is_greater_than_or_equal_to(4).is_less_than_or_equal_to(12) }
-      it { is_expected.to validate_numericality_of(:maximum_age).is_greater_than_or_equal_to(5).is_less_than_or_equal_to(15) }
+      it { is_expected.to validate_numericality_of(:maximum_age).is_greater_than_or_equal_to(5).is_less_than_or_equal_to(18) }
       it { is_expected.to validate_comparison_of(:maximum_age).is_greater_than_or_equal_to(:minimum_age) }
     end
 
