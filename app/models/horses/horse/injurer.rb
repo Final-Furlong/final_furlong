@@ -8,6 +8,8 @@ class Horses::Horse::Injurer
   end
 
   def run
+    return if Horses::Racehorse::Injury.exists?(horse:, date:, injury_type:)
+
     ActiveRecord::Base.transaction do
       Horses::Racehorse::Injury.create!(
         horse:,
