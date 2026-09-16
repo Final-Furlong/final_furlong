@@ -17,7 +17,7 @@ class NotificationsController < ApplicationController
     end
     if @notification.update(attrs)
       flash[:success] = t(".success", status:)
-      redirect_to root_path
+      redirect_to Current.user.notifications.any? ? notifications_path : root_path
     else
       flash[:error] = @notification.errors.full_messages.to_sentence
       redirect_to notifications_path
