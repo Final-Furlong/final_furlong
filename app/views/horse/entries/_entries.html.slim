@@ -101,7 +101,9 @@ ruby:
                   td= l(race.date)
                   td= race.number
                   td= race.racetrack.name
-                  td= race.race_description_string(show_number: false)
+                  td
+                    = link_to new_racing_race_entry_path(race), class: "link", data: { turbo_frame: "_top" } do
+                      = race.race_description_string(show_number: false)
                   td= entry.equipment_string(blank: "")
                   td
                     span.badge.badge-outline.rounded-sm = t(".scheduled")
