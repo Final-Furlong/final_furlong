@@ -40,10 +40,7 @@
         tr
           th= t("horses.info.breeding_record")
           td
-            - if horse.female?
-              = horse.breed_ranking_string || t("common.none")
-            - else
-              = horse.stud_breed_ranking_string
+            = horse.breed_ranking_string || t("common.none")
       - if horse.broodmare?
         - if horse.foals.born.present?
           tr
@@ -51,7 +48,7 @@
             td
               - if horse.foals.born.present?
                 - last_dob = horse.foals.born.order(date_of_birth: :desc).pluck(:date_of_birth).first
-                - horse.foals.born.where(date_of_birth: last_dob).find_each do |foal|
+                - horse.foals.born.where(date_of_birth: last_dob).includes(:sire).find_each do |foal|
                   - pedigree = Horses::PedigreeDisplayService.new(foal)
                   span class="text-#{foal.gender}" = link_to foal.budget_name, horse_path(foal), data: { turbo_frame: "_top" }
                   = " - "
