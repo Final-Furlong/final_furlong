@@ -154,7 +154,7 @@ module Auctions
           update_old_bids(auction:, horse: auction_horse)
           result.created = bid.save
           if result.created? && has_previous_bid
-            notify_previous_bidder(auction:, auction_horse:)
+            notify_previous_bidder(auction:, auction_horse:, new_bid: bid)
             previous_bid.update(current_bid: previous_bid.maximum_bid) if previous_max_bid.positive?
           end
         else
@@ -186,9 +186,10 @@ module Auctions
 
     private
 
-    def notify_previous_bidder(auction:, auction_horse:)
+    def notify_previous_bidder(auction:, auction_horse:, new_bid:)
       return unless previous_bid
       return unless previous_bid.notify_if_outbid
+      return if previous_bid.bidder == new_bid.bidder
 
       horse = auction_horse.horse
       Game::NotificationCreator.new.create_notification(
