@@ -23,7 +23,7 @@
           td
             - track.surfaces.ordered_by_surface.each do |surface|
               - surface_name = surface.surface
-              span.mr-2.badge.badge-outline class="badge-#{surface_name.dirt? ? "warning" : "success"}"
+              span.mr-2.badge class=class_names("badge-warning bg-warning text-warning-content": surface_name.dirt?, "badge-success bg-success text-success-content": !surface_name.dirt?)
                 = "#{surface.surface.titleize} (#{surface.condition.titleize})"
           - tomorrow_rain = Racing::WeatherForecast.where(surface: track.surfaces).by_date(Date.tomorrow).average(:rain_chance).floor
           td= t(".rain_percent", percent: tomorrow_rain)

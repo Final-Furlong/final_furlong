@@ -12,10 +12,10 @@ tr
   td= data.fitness_grade
   td
     - if entry.entry_status == "entered"
-      span.badge.badge-success.badge-outline= t(".entered")
+      span.badge.bg-success.text-success-content.badge-outline= t(".entered")
     - elsif entry.entry_status == "skipped"
-      span.badge.badge-warning.badge-outline= t(".skipped")
+      span.badge.bg-warning.text-warning-content.badge-outline= t(".skipped")
     - elsif entry.entry_status == "errored"
-      span.badge.badge-error.badge-outline= t(".errored", message: t(".#{entry.entry_error}"))
+      span.badge.badge-error.bg-error.text-error-content= t(".errored", message: t(".#{entry.entry_error}"))
     - else
-      span.badge.badge-secondary.badge-outline= t(".scheduled")
+      span.badge.badge-secondary.bg-secondary.text-secondary-content= t(".scheduled")

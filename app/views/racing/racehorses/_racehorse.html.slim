@@ -34,7 +34,7 @@ tr
         i.ph-fill.ph-arrow-fat-right
         = t(".enter")
     - elsif horse.future_race_entries.find_by(race:)
-      span.badge.badge-info= t(".scheduled")
+      span.badge.bg-info.text-info-content= t(".scheduled")
     - elsif Racing::FutureRaceEntryPolicy.new(Current.user, Racing::FutureRaceEntry.new(race:, horse:)).create?
       = render Ui::ButtonizedLink::Component.new(url: horse_new_future_race_path(horse, race), size: :small, data: { turbo_frame: "modal" }) do
         i.ph-fill.ph-arrow-fat-right

@@ -11,7 +11,7 @@
   p.font-bold.text-center.text-lg
     = t(".title", name: @horse.name)
   - if @horse.next_foal.present?
-    p.badge.badge-success.badge-outline = t(".in_foal", mare: @horse.name, due: l(@horse.next_foal.due_date), stud: @horse.next_foal.stud.name)
+    p.badge.badge-success.bg-success.text-success-content = t(".in_foal", mare: @horse.name, due: l(@horse.next_foal.due_date), stud: @horse.next_foal.stud.name)
   - else
     - if raced_this_year
       p

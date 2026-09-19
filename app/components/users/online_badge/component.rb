@@ -21,7 +21,7 @@ module Users
           variants: {
             status: {
               online: "badge-success",
-              offline: "bg-light border border-secondary border-opacity-50 text-dark badge-secondary badge-outline"
+              offline: "bg-light border border-secondary border-opacity-50 text-dark bg-secondary text-secondary-content badge-outline"
             }
           },
           defaults: {

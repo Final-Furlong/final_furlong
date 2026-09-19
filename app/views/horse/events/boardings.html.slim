@@ -21,7 +21,7 @@
                   - if boarding.end_date
                     = l(boarding.end_date)
                   - else
-                    span.badge.badge-warning= t(".current_boarding")
+                    span.badge.bg-warning.text-warning-content= t(".current_boarding")
               .collapse-content.text-sm
                 p
                   span= t(".location")
@@ -47,7 +47,7 @@
                 - if boarding.end_date
                   = l(boarding.end_date)
                 - else
-                  span.badge.badge-warning= t(".current_boarding")
+                  span.badge.bg-warning.text-warning-content= t(".current_boarding")
                   = render Ui::Button::Component.new(url: horse_boarding_path(horse, boarding), color: :error, style: :outline, size: :small,
                           form_class: 'inline', http_method: :delete, data: { turbo_confirm: t("horse.boardings.stop.confirm"), turbo_frame: "_top" }) do
                     = t("horse.actions.boarding.stop")

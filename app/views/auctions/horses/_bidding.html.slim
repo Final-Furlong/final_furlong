@@ -14,17 +14,17 @@
           th.text-center colspan=3
             = t(".bid_history")
             - if auction_horse.sold?
-              span.ml-2.badge.badge-outline.badge-success = t(".sold")
+              span.ml-2.badge.bg-success.text-success-content = t(".sold")
             - elsif bids.count.positive?
               - current_bid = bids.current_high_bid.first
               - sell_time = [current_bid.bid_at + auction.hours_until_sold.hours, auction.end_time].min
               - if current_bid.current_bid >= auction_horse.reserve_price.to_i
                 - if Date.current > sell_time
-                  span.ml-2.badge.badge-outline.badge-success = t(".sold_in", time: relative_time_in_words(sell_time))
+                  span.ml-2.badge.badge-success.bg-success.text-success-content = t(".sold_in", time: relative_time_in_words(sell_time))
                 - else
-                  span.ml-2.badge.badge-outline.badge-warning = t(".sells_in", time: relative_time_in_words(sell_time))
+                  span.ml-2.badge.badge-warning.bg-warning.text-warning-content = t(".sells_in", time: relative_time_in_words(sell_time))
               - else
-                span.ml-2.badge.badge-outline.badge-warning
+                span.ml-2.badge.badge-warning.bg-warning.text-warning-content
                   = Auctions::Horse.human_attribute_name("reserve_price")
                   = "&nbsp;".html_safe
                   = t("auctions.show.reserve_not_met")

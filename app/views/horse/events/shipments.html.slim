@@ -20,7 +20,7 @@
                   - if shipment[:start_date] <= Date.current
                     = l(shipment[:end_date])
                   - else
-                    span.badge.badge-warning= t(".scheduled")
+                    span.badge.bg-warning.text-warning-content= t(".scheduled")
               .collapse-content.text-sm
                 p
                   span= t(".starting_location")
@@ -53,7 +53,7 @@
                 - if shipment[:start_date] <= Date.current
                   = l(shipment[:end_date])
                 - else
-                  span.badge.badge-warning= t(".scheduled")
+                  span.badge.bg-warning.text-warning-content= t(".scheduled")
                   = render Ui::Button::Component.new(url: shipment_horse_path(horse, shipment[:id]), color: :error, style: :outline, size: :small,
                           form_class: 'inline', http_method: :delete, data: { turbo_confirm: t("horse.events.shipments.confirm_delete"), turbo_frame: "_top" }) do
                     i.ml-1.ph-fill.ph-trash.text-error.text-xl

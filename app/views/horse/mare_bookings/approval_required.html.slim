@@ -5,9 +5,9 @@
   p.text-lg
     = t("horse.mare_bookings.new.stud", name: stud.name)
     - if stud.nominations.current_year.exists?
-      span.badge.badge-outline.badge-success.rounded-sm.ml-2= t("horse.mare_bookings.studs.bc_nominated")
+      span.badge.badge-outline.bg-success.text-success-content.rounded-sm.ml-2= t("horse.mare_bookings.studs.bc_nominated")
     - else
-      span.badge.badge-outline.badge-error.rounded-sm.ml-2= t("horse.mare_bookings.studs.not_bc_nominated")
+      span.badge.badge-outline.bg-error.text-error-content.rounded-sm.ml-2= t("horse.mare_bookings.studs.not_bc_nominated")
   p.text-info= t("horse.mare_bookings.new.stud_approval", name: stud.name)
   - unless error.blank?
     p.alert.alert-error.alert-outline= error

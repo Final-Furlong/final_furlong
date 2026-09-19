@@ -28,7 +28,7 @@
               td
                 = l(lease.end_date)
                 - if lease.termination_request
-                  p.ml-2.badge.badge-outline.badge-info= t("horses.info.lease_termination_requested")
+                  p.ml-2.badge.bg-info.text-info-content= t("horses.info.lease_termination_requested")
               td= Game::MoneyFormatter.new(lease.fee).to_s
               td.actions-column.nav-item.dropdown
                 - if CurrentStable::LeasePolicy.new(Current.user, lease).terminate?

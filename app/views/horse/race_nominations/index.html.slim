@@ -53,7 +53,7 @@
               = info[:race].name
               i.ph.ph-info.mx-2
             - if @horse.supplemental_breeders_cup_nomination&.race == info[:race]
-              span.badge.badge-outline.badge-success = t(".supplemented")
+              span.badge.badge-outline.bg-success.text-success-content = t(".supplemented")
             - if needs_supplemental_nomination && policy(info[:race]).supplementally_nominate? && CurrentStable::RacehorsePolicy.new(Current.user, @horse).supplemental_nominate?
               = render Ui::ButtonizedLink::Component.new(url: new_horse_supplemental_breeders_cup_nomination_path(@horse, race: info[:race].id), style: :outline, size: :small, disabled: info[:qualification].blank?, data: { turbo_frame: "modal" }) do
                 = t(".supplement")

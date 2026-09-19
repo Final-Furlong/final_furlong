@@ -5,7 +5,7 @@
   .collapse-title.font-semibold.font-medium
     = t("common.filters")
     - unless !params.key?(:q) || params[:q].compact_blank.empty?
-      span.badge.badge-info.badge-outline.ml-2
+      span.badge.badge-info.bg-info.text-info-content.ml-2
         = t(".active")
   .collapse-content.text-sm.border-t-1.border-base-content/40
     .mt-2#race-schedule-search data-turbo-permanent=""

@@ -36,6 +36,6 @@ ruby:
                 - time_string = "#{t("common.year_count", count: days_old / 365)}, #{t("common.month_count", count: ((days_old % 365) / 31).floor)}"
               = " (#{time_string})"
               - if inches == max_inches && (date + days_per_inch.days) <= Date.current
-                span.badge.badge-outline.badge-warning.ml-2 = t(".fully_grown")
+                span.badge.badge-outline.bg-warning.text-warning-content.ml-2 = t(".fully_grown")
             td= t(".height_display", height: "#{inches / 4}.#{inches % 4}")
           - date += days_per_inch.days

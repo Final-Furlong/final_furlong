@@ -11,17 +11,17 @@
   p.font-bold.text-center.text-lg
     = t(".title", year: Date.current.year)
     - if bred_count.positive?
-      span.ml-2.badge.badge-success = t(".bred_count", count: bred_count)
+      span.ml-2.badge.bg-success.text-success-content = t(".bred_count", count: bred_count)
     - if approved_count.positive?
-      span.ml-2.badge.badge-info = t(".approved_count", count: approved_count)
+      span.ml-2.badge.bg-info.text-info-content = t(".approved_count", count: approved_count)
     - if pending_count.positive?
-      span.ml-2.badge.badge-warning = t(".pending_count", count: pending_count)
+      span.ml-2.badge.bg-warning.text-warning-content = t(".pending_count", count: pending_count)
     - if missed_count.positive?
-      span.ml-2.badge.badge-error = t(".missed_count", count: missed_count)
+      span.ml-2.badge.bg-error.text-error-content = t(".missed_count", count: missed_count)
     - if stud_bc_nomination
-      span.ml-2.badge.badge-info = t(".bc_nominated")
+      span.ml-2.badge.bg-info.text-info-content = t(".bc_nominated")
     - else
-      span.ml-2.badge.badge-error = t(".not_bc_nominated")
+      span.ml-2.badge.bg-error.text-error-content = t(".not_bc_nominated")
   - if raced_this_year
     p.pl-4
       span.text-warning
@@ -52,7 +52,7 @@
             td= link_to mare.manager.name, stable_path(mare.manager), data: { turbo_frame: "_top" }
             td data-sort=breeding.fee = Game::MoneyFormatter.new(breeding.fee)
             td data-sort="bred-#{breeding.date}"
-              span.badge.badge-success.badge-outline= t(".bred", date: l(breeding.due_date))
+              span.badge.badge-success.bg-success.text-success-content= t(".bred", date: l(breeding.due_date))
             td
         - if bred_count < Config::Breedings.mares_per_slot
           - pending_count = bred_count + Horses::Breeding.current_year.not_denied.not_bred.where(slot:, stud: @horse).count
@@ -62,7 +62,7 @@
             tr
               td data-sort=Date.new(Date.current.year, slot.month, slot.end_day).to_s
                 - if pending_count > Config::Breedings.mares_per_slot
-                  span.badge.badge-outline.badge-error = slot.to_s
+                  span.badge.badge-outline.bg-error.text-error-content = slot.to_s
                 - else
                   = slot.to_s
               td data-sort=mare&.name
@@ -74,9 +74,9 @@
               td data-sort=breeding.fee = Game::MoneyFormatter.new(breeding.fee)
               td
                 - if breeding.missed?
-                  span.badge.badge-error.badge-outline= t(".missed", date: l(breeding.date))
+                  span.badge.bg-error.text-error-content= t(".missed", date: l(breeding.date))
                 - elsif breeding.pending?
-                  span.badge.badge-warning.badge-outline= t(".pending_approval")
+                  span.badge.bg-warning.text-warning-content= t(".pending_approval")
                 - else
                   - badge_class = (breeding.date - Date.current).to_i <= Config::Breedings.upcoming_breeding_warning_days ? "warning badge-outline" : "neutral"
                   span.badge class="badge-#{badge_class}" = t(".not_yet_bred", date: l(breeding.date))

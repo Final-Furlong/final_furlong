@@ -44,7 +44,7 @@ ruby:
               = [race.race_short_furlongs_string, race.race_type_string, race.race_age_description, race.race_gender_string].compact_blank.join(" ")
               = ", #{race.race_purse_string}"
               - if result.claimed
-                span.badge.badge-outline.badge-error.ml-2 = t(".claimed")
+                span.badge.bg-error.text-error-content.badge-error.ml-2 = t(".claimed")
             td
               = [race.race_surface_string, race.condition.titleize].join(" - ")
             td data-sort=horse.name class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), data: { turbo_frame: "_top" }
@@ -63,7 +63,7 @@ ruby:
             td data-sort=race.race_type
               = [race.race_short_furlongs_string, race.race_type_string, race.race_age_description, race.race_gender_string].compact_blank.join(" ")
               = ", #{race.race_purse_string}"
-              span.badge.badge-outline.badge-success.ml-2 = t(".claimed")
+              span.badge.bg-success.text-success-content.badge-success.ml-2 = t(".claimed")
             td
               = [race.race_surface_string, race.condition.titleize].join(" - ")
             td data-sort=horse.name class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), data: { turbo_frame: "_top" }
