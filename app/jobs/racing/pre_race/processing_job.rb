@@ -9,6 +9,8 @@ class Racing::PreRace::ProcessingJob < ApplicationJob
     batch = GoodJob::Batch.new
     entries = Racing::RaceEntry.where(date: tomorrow).needs_pre_race
     Racing::RaceSchedule.where(date: tomorrow).joins(:entries).where(entries:).distinct.find_each do |race|
+      next if Racing::RaceResult.exists?(date: tomorrow, number: race.number)
+
       batch.add(Racing::PreRace::RaceJob.perform_later(id: race.id))
     end
     batch.enqueue

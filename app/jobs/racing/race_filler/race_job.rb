@@ -9,11 +9,15 @@ class Racing::RaceFiller::RaceJob < ApplicationJob
     races = 0
 
     Racing::RaceSchedule.includes(:track_surface).where(date: tomorrow).where.not(race_type: "stakes").where(entries_count: ...Config::Racing.minimum_horses).find_each do |race|
+      next if Racing::RaceResult.exists?(date: tomorrow, number: race.number)
+
       horses_needed = Config::Racing.minimum_horses - race.entries_count
       horses, races = process_race(Config::Racing.minimum_horses, horses_needed, race, owner, horses, races)
     end
 
     Racing::RaceSchedule.where(date: tomorrow).where(race_type: "stakes").where(entries_count: ...Config::Racing.minimum_horses_stakes).find_each do |race|
+      next if Racing::RaceResult.exists?(date: tomorrow, number: race.number)
+
       horses_needed = Config::Racing.minimum_horses_stakes - race.entries_count
       horses, races = process_race(Config::Racing.minimum_horses_stakes, horses_needed, race, owner, horses, races)
     end
