@@ -9,7 +9,8 @@ module Game
     def vote?
       return false if Time.current > record.voting_ends_at
 
-      !Game::EclipseAwardVote.exists?(category: record.category, voter: stable)
+      pd Game::EclipseAwardVote.exists?(category: record.category, year: record.year, voter: stable)
+      !Game::EclipseAwardVote.exists?(category: record.category, year: record.year, voter: stable)
     end
   end
 end

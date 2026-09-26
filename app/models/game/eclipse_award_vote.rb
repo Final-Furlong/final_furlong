@@ -5,7 +5,8 @@ module Game
     belongs_to :contender, class_name: "Game::EclipseAwardContender"
     belongs_to :voter, class_name: "Account::Stable"
 
-    validates :category, presence: true
+    validates :category, :year, presence: true
+    validates :voter_id, uniqueness: { scope: [:category, :year] }
   end
 end
 
@@ -15,17 +16,18 @@ end
 # Database name: primary
 #
 #  id           :bigint           not null, primary key
-#  category     :enum             not null, uniquely indexed => [voter_id]
+#  category     :enum             not null, uniquely indexed => [year, voter_id]
+#  year         :integer          default(0), not null, uniquely indexed => [category, voter_id]
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  contender_id :bigint           not null, uniquely indexed => [voter_id]
-#  voter_id     :bigint           not null, uniquely indexed => [category], uniquely indexed => [contender_id], indexed
+#  voter_id     :bigint           not null, uniquely indexed => [category, year], uniquely indexed => [contender_id], indexed
 #
 # Indexes
 #
-#  index_eclipse_award_votes_on_category_and_voter_id      (category,voter_id) UNIQUE
-#  index_eclipse_award_votes_on_contender_id_and_voter_id  (contender_id,voter_id) UNIQUE
-#  index_eclipse_award_votes_on_voter_id                   (voter_id)
+#  index_eclipse_award_votes_on_category_and_year_and_voter_id  (category,year,voter_id) UNIQUE
+#  index_eclipse_award_votes_on_contender_id_and_voter_id       (contender_id,voter_id) UNIQUE
+#  index_eclipse_award_votes_on_voter_id                        (voter_id)
 #
 # Foreign Keys
 #

@@ -1,5 +1,5 @@
 - category = t("eclipse_awards.award.category_#{params[:category]}")
-- vote = Game::EclipseAwardVote.find_by(category: params[:category], voter: Current.stable)
+- vote = Game::EclipseAwardVote.find_by(category: params[:category], year: params[:year], voter: Current.stable)
 - content_for :breadcrumbs do
   = render Nav::Breadcrumbs::Component.new(links: [{ name: t(".title", year: params[:year], category:), href: stables_path }])
 

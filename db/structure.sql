@@ -4283,7 +4283,8 @@ CREATE TABLE public.eclipse_award_votes (
     voter_id bigint NOT NULL,
     category public.eclipse_award_categories NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    year integer DEFAULT 0 NOT NULL
 );
 
 
@@ -10704,10 +10705,10 @@ CREATE INDEX index_eclipse_award_contenders_on_year_and_category ON public.eclip
 
 
 --
--- Name: index_eclipse_award_votes_on_category_and_voter_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_eclipse_award_votes_on_category_and_year_and_voter_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_eclipse_award_votes_on_category_and_voter_id ON public.eclipse_award_votes USING btree (category, voter_id);
+CREATE UNIQUE INDEX index_eclipse_award_votes_on_category_and_year_and_voter_id ON public.eclipse_award_votes USING btree (category, year, voter_id);
 
 
 --
@@ -14165,6 +14166,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260926160431'),
 ('20260914141247'),
 ('20260914104930'),
 ('20260913130307'),
