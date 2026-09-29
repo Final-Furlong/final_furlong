@@ -23,7 +23,7 @@ class Auctions::ProcessSalesJob < ApplicationJob
         wb = ah.bids.winning.first
         wb.update(current_high_bid: true)
       end
-      next unless wb.bid_at < Time.current - auction.hours_until_sold.hours
+      next unless (wb.bid_at < Time.current - auction.hours_until_sold.hours) || Time.current > auction.end_time
 
       horses << { id: ah.id, bid_id: wb.id, time: wb.bid_at }
     end
