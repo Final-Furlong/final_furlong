@@ -43,8 +43,15 @@ class Racing::RaceFiller::RaceJob < ApplicationJob
       query = query.merge(Racing::RaceOption.distance_matching(distance)).merge(Racing::RaceOption.send(surface_name.to_sym))
     end
     surface_type = race.race_surface_type.inquiry
-    if surface_type.flat?
-      query = query.merge(Racing::RaceOption.send(surface_type.to_sym))
+    query = if surface_type.flat?
+      query.merge(Racing::RaceOption.send(surface_type.to_sym))
+    else
+      jumpers_count = query.dup.merge(Racing::RaceOption.jump).count
+      if jumpers_count >= horses_needed
+        query.merge(Racing::RaceOption.jump)
+      else
+        query
+      end
     end
     query = query.order("racehorse_metadata.last_raced_at DESC NULLS FIRST")
     query = query.limit(100)
