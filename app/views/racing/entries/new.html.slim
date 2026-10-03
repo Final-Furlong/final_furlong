@@ -33,6 +33,7 @@
 = render "entries", race: race
 - if policy(Racing::RaceEntry.new(race:, date: race.date)).create?
   - if race.requires_qualification?
+    - pd "hi"
     = render "qualified_list", race:
   - else
     = turbo_frame_tag "race-entry", src: racing_racehorses_path(q: @entry_params), loading: "lazy" do
