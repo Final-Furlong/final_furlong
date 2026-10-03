@@ -4,8 +4,6 @@ class Game::EclipseAwards::EndOfVotingProcessingJob < ApplicationJob
   retry_on ActiveRecord::RecordInvalid
 
   def perform(year: Date.current.year - 1)
-    return if run_today?
-
     batch = GoodJob::Batch.new
     categories = Set.new
     Game::EclipseAwardContender.voting_ended.select(:category).all.each do |record|
