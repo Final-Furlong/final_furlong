@@ -4,16 +4,16 @@ class Game::EclipseAwards::EndOfVotingJob < ApplicationJob
   retry_on ActiveRecord::RecordInvalid
 
   def perform(category:, year:)
-    return unless Game::EclipseAwardContender.voting_ended.exists?(category:)
+    return unless Game::EclipseAwardContender.voting_ended.exists?(category:, year:)
 
-    if Game::EclipseAwardContender.voting_ended.where(category:).count < 2
+    if Game::EclipseAwardContender.voting_ended.where(category:, year:).count < 2
       ::Notifications::Game::EclipseAwardVotingNotification.param_equals("category", category).param_equals("year", year).delete_all
       Game::EclipseAwardVote.where(contender: Game::EclipseAwardContender.voting_ended.where(year:, category:)).delete_all
       Game::EclipseAwardContender.voting_ended.where(year:, category:).delete_all
       return
     end
 
-    votes = Game::EclipseAwardVote.where(category:).group(:contender_id).count
+    votes = Game::EclipseAwardVote.where(category:, year:).group(:contender_id).count
     sorted_votes = votes.sort_by { |_, value| -value }.to_h
     winner_id, vote_count = sorted_votes.first
     ties = votes.select { |key, value| value == vote_count }
@@ -38,7 +38,7 @@ class Game::EclipseAwards::EndOfVotingJob < ApplicationJob
             contender.voting_ends_at = voting_ends_at
             new_contenders << contender
           end
-          Game::EclipseAwardVote.where(contender: Game::EclipseAwardContender.voting_ended.where(year:, category:)).delete_all
+          Game::EclipseAwardVote.where(year:, category:).delete_all
           Game::EclipseAwardContender.voting_ended.where(year:, category:).delete_all
           new_contenders.map(&:save)
           send_new_voting_notifications(category:, year:, end_time: voting_ends_at)
