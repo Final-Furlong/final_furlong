@@ -35,6 +35,13 @@ class Racing::RaceSchedule < ApplicationRecord
   scope :entries_not_closed, -> { where(date: (Date.current + Config::Racing.entry_deadline_days.days)..) }
   scope :available_for_scheduling, -> { future.entries_not_closed.where(date: ..(Date.current + Config::Racing.future_race_max_schedule_days.days)) }
   scope :by_type, ->(type) { where(race_type: type) }
+  scope :for_yob, ->(year) {
+    where("(((DATE_PART('Year', date)::int - :year) = 2 AND age IN ('2', '2+')) OR
+      ((DATE_PART('Year', date)::int - :year) = 3 AND age IN ('2+', '3', '3+')) OR
+      ((DATE_PART('Year', date)::int - :year) = 4 AND age IN ('2+', '3+', '4', '4+')) OR
+      ((DATE_PART('Year', date)::int - :year) > 4 AND age IN ('2+', '3+', '4+')))
+    ", { year: year.to_i })
+  }
   scope :for_age, ->(age) {
     case age.to_i
     when 2
@@ -44,7 +51,7 @@ class Racing::RaceSchedule < ApplicationRecord
     when 4
       where(age: ["2+", "3+", "4", "4+"])
     else
-      where(age: ["3+", "4+"])
+      where(age: ["2+", "3+", "4+"])
     end
   }
   scope :for_gender, ->(gender) {

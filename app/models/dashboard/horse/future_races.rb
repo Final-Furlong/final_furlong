@@ -27,7 +27,7 @@ module Dashboard
       def query
         return @query if defined?(@query)
 
-        @query = ::Racing::RaceSchedule.where.not(date: current_entry_dates.map(&:date)).available_for_scheduling.for_age(@horse.age)
+        @query = ::Racing::RaceSchedule.where.not(date: current_entry_dates.map(&:date)).available_for_scheduling.for_yob(@horse.year_of_birth)
           .for_gender(@horse.gender)
           .for_race_options(@horse.race_options).for_race_qualification(@horse.race_qualification)
           .includes(track_surface: :racetrack)
