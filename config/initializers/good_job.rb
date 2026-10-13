@@ -116,8 +116,13 @@ Rails.application.configure do
         enabled_by_default: -> { Rails.env.production? }
       },
       race_breeders_cup_selection: {
-        cron: "14 11 * * 2,5", # Tues/Fri AM
+        cron: "14 11 * 9,10 2,5", # Tues/Fri AM
         class: "Racing::BreedersCup::BulkSelectionJob",
+        enabled_by_default: -> { Rails.env.production? }
+      },
+      race_breeders_series_selection: {
+        cron: "14 11 * 10,11 2,5", # Tues/Fri AM
+        class: "Racing::BreedersSeries::BulkSelectionJob",
         enabled_by_default: -> { Rails.env.production? }
       }
     },

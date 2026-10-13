@@ -47,37 +47,40 @@
             i.ph.ph-warning.mr-2
             - deadline = races.first[:race].entry_open_date - Config::Racing.breeders_cup_nomination_deadline_days.days
             = t(".supplemental_nomination_deadline", date: l(deadline))
-        - races.each do |info|
-          p.mt-2
-            .tooltip.text-lg data-tip=t(".#{info[:key]}")
-              = info[:race].name
-              i.ph.ph-info.mx-2
-            - if @horse.supplemental_breeders_cup_nomination&.race == info[:race]
-              span.badge.badge-outline.bg-success.text-success-content = t(".supplemented")
-            - if needs_supplemental_nomination && policy(info[:race]).supplementally_nominate? && CurrentStable::RacehorsePolicy.new(Current.user, @horse).supplemental_nominate?
-              = render Ui::ButtonizedLink::Component.new(url: new_horse_supplemental_breeders_cup_nomination_path(@horse, race: info[:race].id), style: :outline, size: :small, disabled: info[:qualification].blank?, data: { turbo_frame: "modal" }) do
-                = t(".supplement")
-            - if info[:qualification]
-              p.text-base-content/80
-                span
-                  = t(".starts_count", count: info[:qualification].starts)
-                  = ", "
-                span
-                  = t(".stakes_wins_count", count: info[:qualification].stakes_wins)
-                  = ", "
-                span
-                  = t(".stakes_places_count", count: info[:qualification].stakes_seconds + info[:qualification].stakes_thirds)
-                  = ", "
-                span
-                  = t(".allowance_wins_count", count: info[:qualification].allowance_wins)
-                  = " - "
-                span= t(".points_count", count: info[:qualification].points)
-              p.text-base-content/80
-                = t(".rank", rank: info[:rank], total: info[:total])
-                - if info[:tied].positive?
-                  = " (#{t(".tied_count", count: info[:tied])})"
-            - else
-              p.text-base-content/50= t(".not_qualified")
+        - if !nomination && needs_supplemental_nomination && !CurrentStable::RacehorsePolicy.new(Current.user, @horse).supplemental_nominate?
+          p.text-warning.text-center.my-2= t(".supplemental_nomination_deadline_passed")
+        - else
+          - races.each do |info|
+            p.mt-2
+              .tooltip.text-lg data-tip=t(".#{info[:key]}")
+                = info[:race].name
+                i.ph.ph-info.mx-2
+              - if @horse.supplemental_breeders_cup_nomination&.race == info[:race]
+                span.badge.badge-outline.bg-success.text-success-content = t(".supplemented")
+              - if needs_supplemental_nomination && policy(info[:race]).supplementally_nominate? && CurrentStable::RacehorsePolicy.new(Current.user, @horse).supplemental_nominate?
+                = render Ui::ButtonizedLink::Component.new(url: new_horse_supplemental_breeders_cup_nomination_path(@horse, race: info[:race].id), style: :outline, size: :small, disabled: info[:qualification].blank?, data: { turbo_frame: "modal" }) do
+                  = t(".supplement")
+              - if info[:qualification]
+                p.text-base-content/80
+                  span
+                    = t(".starts_count", count: info[:qualification].starts)
+                    = ", "
+                  span
+                    = t(".stakes_wins_count", count: info[:qualification].stakes_wins)
+                    = ", "
+                  span
+                    = t(".stakes_places_count", count: info[:qualification].stakes_seconds + info[:qualification].stakes_thirds)
+                    = ", "
+                  span
+                    = t(".allowance_wins_count", count: info[:qualification].allowance_wins)
+                    = " - "
+                  span= t(".points_count", count: info[:qualification].points)
+                p.text-base-content/80
+                  = t(".rank", rank: info[:rank], total: info[:total])
+                  - if info[:tied].positive?
+                    = " (#{t(".tied_count", count: info[:tied])})"
+              - else
+                p.text-base-content/50= t(".not_qualified")
       div
         - nomination = @horse.breeder.breeders_series_nominations.exists?(year: Date.current.year, series_type: @horse.breeders_series_types)
         - races = []
@@ -87,11 +90,13 @@
           ruby:
             options = @horse.race_options
             series = []
+            first_race = Racing::RaceSchedule.breeders_series.current_year.order(date: :asc).first
+            qualification_deadline = first_race.entry_open_date - Config::Racing.breeders_series_deadline_days.days
             @horse.breeders_series_types.each do |series|
               series_info = Config::Racing.qualification_classes.find { |info| info[:series] == series }
               info = { series_name: series_info[:key] }
               surface = series_info[:key].include?('turf') ? 'turf' : (series_info[:key].include?('dirt') ? 'dirt' : 'steeplechase')
-              info[:races] = Racing::RaceSchedule.breeders_series.current_year.for_age(@horse.age).for_gender(@horse.gender).for_racehorse_type(options.racehorse_type).joins(:track_surface).merge(Racing::TrackSurface.send(surface)).all
+              info[:races] = Racing::RaceSchedule.breeders_series.current_year.for_age(@horse.age).for_gender(@horse.gender).for_racehorse_type(options.racehorse_type).joins(:track_surface).merge(Racing::TrackSurface.send(surface)).order(date: :asc).all
               if (qualification = @horse.send(:"#{series_info[:key]}"))
                 info[:qualification] = qualification
                 klass = series_info[:class].constantize
@@ -103,6 +108,7 @@
               end
               races << info
             end
+          p.text-center.text-warning= t(".breeders_series_qualification_ends", date: qualification_deadline)
           - races.each do |info|
             p.mt-2 = t(".#{info[:series_name]}")
             - info[:races].each do |race|

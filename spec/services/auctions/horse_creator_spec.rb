@@ -265,7 +265,7 @@ describe Auctions::HorseCreator do
   context "when 2yos are not allowed and horse is 2yo" do
     before do
       auction.update(racehorse_allowed_2yo: false)
-      horse.update(date_of_birth: 2.years.ago)
+      horse.update(date_of_birth: 2.years.ago, age: 2)
     end
 
     it "returns created false" do

@@ -11,7 +11,7 @@ module Auctions
           winning_bid = Auctions::Bid.current_high_bid.find_by(horse:)
           horse_reserve = horse.reserve_price.to_i
           if winning_bid
-            if horse_reserve.positive? && winning_bid.current_bid >= horse_reserve
+            if horse_reserve.zero? || (horse_reserve.positive? && winning_bid.current_bid >= horse_reserve)
               result = Auctions::HorseSeller.new.process_sale(bid: winning_bid, disable_job_trigger: true)
               raise UnprocessedSaleError, "Could not sell horse #{horse.id}" unless result.sold?
             end

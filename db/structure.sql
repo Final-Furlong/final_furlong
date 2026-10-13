@@ -2965,6 +2965,43 @@ ALTER SEQUENCE public.breeders_series_nominations_id_seq OWNED BY public.breeder
 
 
 --
+-- Name: breeders_series_potential_entries; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.breeders_series_potential_entries (
+    id bigint NOT NULL,
+    horse_id bigint NOT NULL,
+    stable_id bigint NOT NULL,
+    record character varying NOT NULL,
+    rank integer DEFAULT 0 NOT NULL,
+    first_race_id bigint,
+    second_race_id bigint,
+    third_race_id bigint,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: breeders_series_potential_entries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.breeders_series_potential_entries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: breeders_series_potential_entries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.breeders_series_potential_entries_id_seq OWNED BY public.breeders_series_potential_entries.id;
+
+
+--
 -- Name: breeders_series_steeplechase_fillies_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
@@ -7462,6 +7499,13 @@ ALTER TABLE ONLY public.breeders_series_nominations ALTER COLUMN id SET DEFAULT 
 
 
 --
+-- Name: breeders_series_potential_entries id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breeders_series_potential_entries ALTER COLUMN id SET DEFAULT nextval('public.breeders_series_potential_entries_id_seq'::regclass);
+
+
+--
 -- Name: breeding_slots id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -8032,6 +8076,14 @@ ALTER TABLE ONLY public.breeders_cup_potential_entries
 
 ALTER TABLE ONLY public.breeders_series_nominations
     ADD CONSTRAINT breeders_series_nominations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: breeders_series_potential_entries breeders_series_potential_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breeders_series_potential_entries
+    ADD CONSTRAINT breeders_series_potential_entries_pkey PRIMARY KEY (id);
 
 
 --
@@ -8770,6 +8822,13 @@ CREATE UNIQUE INDEX idx_on_horse_id_first_jockey_id_second_jockey_id_th_4d3e2bb1
 --
 
 CREATE UNIQUE INDEX idx_on_horse_id_first_jockey_id_second_jockey_id_th_b7c0ac41cd ON public.race_options USING btree (horse_id, first_jockey_id, second_jockey_id, third_jockey_id);
+
+
+--
+-- Name: idx_on_horse_id_first_race_id_ccde27d4eb; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_horse_id_first_race_id_ccde27d4eb ON public.breeders_series_potential_entries USING btree (horse_id, first_race_id);
 
 
 --
@@ -10401,6 +10460,41 @@ CREATE INDEX index_breeders_series_nominations_on_series_type ON public.breeders
 --
 
 CREATE INDEX index_breeders_series_nominations_on_year ON public.breeders_series_nominations USING btree (year);
+
+
+--
+-- Name: index_breeders_series_potential_entries_on_first_race_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_potential_entries_on_first_race_id ON public.breeders_series_potential_entries USING btree (first_race_id);
+
+
+--
+-- Name: index_breeders_series_potential_entries_on_rank; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_potential_entries_on_rank ON public.breeders_series_potential_entries USING btree (rank);
+
+
+--
+-- Name: index_breeders_series_potential_entries_on_second_race_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_potential_entries_on_second_race_id ON public.breeders_series_potential_entries USING btree (second_race_id);
+
+
+--
+-- Name: index_breeders_series_potential_entries_on_stable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_potential_entries_on_stable_id ON public.breeders_series_potential_entries USING btree (stable_id);
+
+
+--
+-- Name: index_breeders_series_potential_entries_on_third_race_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_breeders_series_potential_entries_on_third_race_id ON public.breeders_series_potential_entries USING btree (third_race_id);
 
 
 --
@@ -13200,6 +13294,14 @@ ALTER TABLE ONLY public.breeders_cup_potential_entries
 
 
 --
+-- Name: breeders_series_potential_entries fk_rails_1bd1aadf0b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breeders_series_potential_entries
+    ADD CONSTRAINT fk_rails_1bd1aadf0b FOREIGN KEY (stable_id) REFERENCES public.stables(id);
+
+
+--
 -- Name: race_result_horses fk_rails_1fdef5dc32; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -13376,6 +13478,14 @@ ALTER TABLE ONLY public.broodmare_shipments
 
 
 --
+-- Name: breeders_series_potential_entries fk_rails_509c17b7ed; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breeders_series_potential_entries
+    ADD CONSTRAINT fk_rails_509c17b7ed FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
 -- Name: breedings fk_rails_51aefdd74c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -13533,6 +13643,14 @@ ALTER TABLE ONLY public.racetracks
 
 ALTER TABLE ONLY public.race_result_horses
     ADD CONSTRAINT fk_rails_7254168319 FOREIGN KEY (odd_id) REFERENCES public.race_odds(id);
+
+
+--
+-- Name: breeders_series_potential_entries fk_rails_7424239e06; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breeders_series_potential_entries
+    ADD CONSTRAINT fk_rails_7424239e06 FOREIGN KEY (first_race_id) REFERENCES public.race_schedules(id);
 
 
 --
@@ -13968,6 +14086,14 @@ ALTER TABLE ONLY public.race_entries
 
 
 --
+-- Name: breeders_series_potential_entries fk_rails_e0e40b13b8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breeders_series_potential_entries
+    ADD CONSTRAINT fk_rails_e0e40b13b8 FOREIGN KEY (second_race_id) REFERENCES public.race_schedules(id);
+
+
+--
 -- Name: shipment_routes fk_rails_e3744a828e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14096,6 +14222,14 @@ ALTER TABLE ONLY public.workouts
 
 
 --
+-- Name: breeders_series_potential_entries fk_rails_f77770d402; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.breeders_series_potential_entries
+    ADD CONSTRAINT fk_rails_f77770d402 FOREIGN KEY (third_race_id) REFERENCES public.race_schedules(id);
+
+
+--
 -- Name: race_entries fk_rails_f7f1d20e77; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14166,6 +14300,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261013091239'),
 ('20260926160431'),
 ('20260914141247'),
 ('20260914104930'),

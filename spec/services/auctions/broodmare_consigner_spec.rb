@@ -8,8 +8,8 @@ describe Auctions::BroodmareConsigner do
 
   context "when min age = max age" do
     it "only returns horses of that age" do
-      younger = create(:broodmare, :final_furlong, date_of_birth: Date.current - 6.years)
-      older = create(:broodmare, :final_furlong, date_of_birth: Date.current - 7.years)
+      younger = create(:broodmare, :final_furlong, date_of_birth: Date.current - 6.years, age: 6)
+      older = create(:broodmare, :final_furlong, date_of_birth: Date.current - 7.years, age: 7)
 
       result = described_class.new.select_horses(number: 10, min_age: 6, max_age: 6)
       expect(result).to include younger

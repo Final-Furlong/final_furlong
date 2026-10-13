@@ -180,6 +180,8 @@ module Horses
     end
 
     def calculate_age
+      return if age.present? && date_of_death.present?
+
       age = if date_of_birth.blank?
         0
       elsif date_of_death

@@ -41,6 +41,8 @@ en:
         title: Breeders' Series Qualifiers
       qualifier:
         age: "%{age}yo"
+        owned_by_game: Final Furlong Horse
+        owned_by_you: Your Horse
         tied_count:
           one: Tied with 1 horse
           other: Tied with %{count} horses
@@ -237,6 +239,7 @@ en:
         schedule: Schedule
         scheduled: Scheduled
       status:
+        cannot_enter: Cannot Enter
         enter: Enter
         race_full: Race Full
     races:

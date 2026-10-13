@@ -15,3 +15,4 @@ class Racing::BreedersCup::SelectionJob < ApplicationJob
     horses + result.horses
   end
 end
+

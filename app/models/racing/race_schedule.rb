@@ -110,7 +110,7 @@ class Racing::RaceSchedule < ApplicationRecord
 
     if name.starts_with?("Breeders' Cup ")
       date - Config::Racing.breeders_cup_nomination_deadline_days.days
-    elsif name.ends_with?(" Breeders' Series")
+    elsif name.ends_with?(" Breeders' Stakes")
       date - Config::Racing.breeders_series_deadline_days.days
     end
   end

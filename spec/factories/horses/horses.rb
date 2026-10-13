@@ -49,7 +49,7 @@ FactoryBot.define do
       trait :weanling do
         name { nil }
         state { "active" }
-        date_of_birth { Date.current - (6 - Date.current.month).months }
+        date_of_birth { Date.new(Date.current.year, 1, 1) }
         age { 0 }
         gender { %w[colt filly].sample }
       end
