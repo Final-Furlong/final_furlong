@@ -6,14 +6,14 @@ module Admin
 
       impersonate_user(user)
       reset_pundit
-      redirect_to root_path
+      redirect_back_or_to root_path
     end
 
     def destroy
       stop_impersonating_user
       reset_pundit
       flash[:notice] = t("users.stop_impersonating.success")
-      redirect_to root_path
+      redirect_back_or_to root_path
     end
 
     private

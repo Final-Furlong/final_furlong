@@ -238,6 +238,7 @@ en:
         scheduled: Scheduled
       status:
         enter: Enter
+        race_full: Race Full
     races:
       all:
         races_count:
