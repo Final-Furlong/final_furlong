@@ -83,7 +83,7 @@ class Game::EclipseAwards::EndOfVotingJob < ApplicationJob
     category_name = I18n.t("eclipse_awards.award.category_horse")
     Account::User.active.find_each do |user|
       Game::NotificationCreator.new.create_notification(
-        type: ::EclipseAwardVotingNotification,
+        type: ::Notifications::Game::EclipseAwardVotingNotification,
         user:,
         params: { category:, category_name:, year:, deadline: end_time }
       )
