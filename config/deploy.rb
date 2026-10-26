@@ -7,7 +7,7 @@ set :repo_url, "git@github.com:Final-Furlong/final_furlong.git"
 set :branch, ENV.fetch("REVISION", "main")
 
 set :rbenv_type, :user
-set :rbenv_ruby, "4.0.5"
+set :rbenv_ruby, "4.0.9"
 
 append :linked_files, "config/database.yml", "config/puma.rb", ".rbenv-vars", ".nvmrc"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpacker", "public/system",
@@ -38,4 +38,3 @@ SSHKit.config.default_env = { path: "/home/www/.local/share/pnpm:/home/www/.nvm/
 before "deploy:migrate", "maintenance:start"
 after "deploy:migrate", "maintenance:stop"
 before "deploy:updated", "pnpm:install"
-
