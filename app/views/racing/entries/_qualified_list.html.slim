@@ -35,7 +35,7 @@ table.table.table-zebra.sortable.n-last.asc
           - else
             - if entry.rank <= Config::Racing.entry_limit_overall || last_day
               - if horse.manager == Current.stable
-                - if entry_policy.new? && entry_policy.create? && race.entries_open?
+                - if entry_policy.new? && entry_policy.create? && race.entries_open? && !Racing::RaceEntry.exists?(horse:, date: race.date)
                   = render Ui::ButtonizedLink::Component.new(url: new_racing_race_entry_option_path(race, horse: horse.id), size: :small, data: { turbo_frame: "modal" }) do
                     i.ph-fill.ph-arrow-fat-right
                     = t("racing.racehorses.status.enter")

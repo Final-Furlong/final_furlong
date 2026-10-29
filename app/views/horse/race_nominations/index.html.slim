@@ -49,8 +49,10 @@
             = t(".supplemental_nomination_deadline", date: l(deadline))
         - if !nomination && needs_supplemental_nomination && !CurrentStable::RacehorsePolicy.new(Current.user, @horse).supplemental_nominate?
           p.text-warning.text-center.my-2= t(".supplemental_nomination_deadline_passed")
-        - else
-          - races.each do |info|
+        - races.each do |info|
+          - if !nomination && needs_supplemental_nomination && @horse.supplemental_breeders_cup_nomination&.race != info[:race]
+            - next
+          - else
             p.mt-2
               .tooltip.text-lg data-tip=t(".#{info[:key]}")
                 = info[:race].name

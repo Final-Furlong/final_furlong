@@ -38,3 +38,4 @@ SSHKit.config.default_env = { path: "/home/www/.local/share/pnpm:/home/www/.nvm/
 before "deploy:migrate", "maintenance:start"
 after "deploy:migrate", "maintenance:stop"
 before "deploy:updated", "pnpm:install"
+

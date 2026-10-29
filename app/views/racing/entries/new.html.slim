@@ -2,6 +2,7 @@
 - content_for :breadcrumbs do
   = render Nav::Breadcrumbs::Component.new(links: [{ name: t("racing.races.index.title"), href: racing_races_path },
           { name: l(@entry.date), href: racing_races_path(date: @entry.date) }, { name: t(".title"), href: "#" }])
+= render "prev_next_races", date: race.date, current_number: race.number
 .mx-auto.overflow-x-auto.rounded-box.border.border-base-content/5.bg-base-100.w-full.sm:w-2/3
   table.table.table-sm
     thead

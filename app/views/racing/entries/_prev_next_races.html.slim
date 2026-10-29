@@ -1,0 +1,14 @@
+/# locals: (date:, current_number:)
+ruby:
+  prev_race = Racing::RaceSchedule.where(date:).where('number < ?', current_number).order(number: :desc).first
+  next_race = Racing::RaceSchedule.where(date:).where('number > ?', current_number).order(number: :asc).first
+
+.w-full.flex.mb-2
+  .flex-1
+    - unless prev_race.blank?
+      = render Ui::ButtonizedLink::Component.new(color: :none, style: :outline, size: :small, url: new_racing_race_entry_path(prev_race), http_method: :get, data: { turbo_frame: "_top" }) do
+        = t(".race", number: prev_race.number)
+  - unless next_race.blank?
+    .flex-none
+      = render Ui::ButtonizedLink::Component.new(color: :none, style: :outline, size: :small, url: new_racing_race_entry_path(next_race), http_method: :get, data: { turbo_frame: "_top" }) do
+        = t(".race", number: next_race.number)

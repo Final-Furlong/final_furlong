@@ -95,6 +95,8 @@ en:
         title: Enter Race
       owner: Owner
       parents: Sire x Dam
+      prev_next_races:
+        race: "Race #%{number}"
       qualified_list:
         game_owned: Owned by %{stable}
         wait_for_deadline: Cannot enter until %{date}
