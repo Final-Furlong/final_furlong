@@ -12,7 +12,10 @@ module CurrentStable
       return false unless record.horse.racehorse? || record.horse.broodmare?
       return false if record.horse.shipments.future.present?
       if record.horse.racehorse?
-        return false if record.horse.race_entries.present?
+        if record.horse.race_entries.present?
+          next_entry = record.horse.race_entries.includes(:race).order(date: :asc).first
+          return record.horse.racehorse_metadata.at_home || record.horse.racehorse_metadata.racetrack != next_entry.race.racetrack
+        end
         return false if record.horse.current_boarding.present?
         last_date = Horses::Racehorse::Shipment.where(horse: record.horse).maximum(:arrival_date)
         return true unless last_date
