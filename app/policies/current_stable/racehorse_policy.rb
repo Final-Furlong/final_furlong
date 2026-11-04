@@ -85,6 +85,7 @@ module CurrentStable
       bc_nom = record.breeders_cup_nomination
       return false if bc_nom&.effective_year.present? && bc_nom.effective_year <= Date.current.year
       bc_race = Racing::RaceSchedule.current_year.breeders_cup.order(date: :asc).first
+      return false unless bc_race
       return false if Date.current > bc_race.entry_open_date - Config::Racing.breeders_cup_nomination_deadline_days.days
 
       racehorse_and_manager?
