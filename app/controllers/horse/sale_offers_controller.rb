@@ -12,7 +12,7 @@ module Horse
       sale_offer = @horse.sale_offer || @horse.build_sale_offer
       authorize sale_offer, :create?, policy_class: CurrentStable::SaleOfferPolicy
 
-      result = Horses::SaleOfferCreator.new.create_offer(horse: @horse, params: sale_params)
+      result = Horses::Selling::OfferCreator.new.create_offer(horse: @horse, params: sale_params)
       @sale_offer = result.offer
       if result.created?
         flash[:success] = t(".success")
