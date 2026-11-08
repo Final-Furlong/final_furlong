@@ -1286,42 +1286,66 @@ CREATE MATERIALIZED VIEW public.breeders_cup_classic_qualifiers AS
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 8.0) AND (r.distance <= 12.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 8.0) AND (r.distance <= 12.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) starts ON ((h.id = starts.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 8.0) AND (r.distance <= 12.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 8.0) AND (r.distance <= 12.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes ON ((h.id = stakes.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 8.0) AND (r.distance <= 12.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 8.0) AND (r.distance <= 12.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_win ON ((h.id = stakes_win.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 8.0) AND (r.distance <= 12.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 8.0) AND (r.distance <= 12.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_second ON ((h.id = stakes_second.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 8.0) AND (r.distance <= 12.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 8.0) AND (r.distance <= 12.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_third ON ((h.id = stakes_third.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 8.0) AND (r.distance <= 12.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 8.0) AND (r.distance <= 12.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
   WHERE ((h.age > 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Classic'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
   WITH NO DATA;
@@ -1355,42 +1379,66 @@ CREATE MATERIALIZED VIEW public.breeders_cup_dirt_mile_qualifiers AS
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) starts ON ((h.id = starts.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes ON ((h.id = stakes.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_win ON ((h.id = stakes_win.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_second ON ((h.id = stakes_second.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_third ON ((h.id = stakes_third.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
   WHERE ((h.age > 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Dirt Mile'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
   WITH NO DATA;
@@ -1424,42 +1472,66 @@ CREATE MATERIALIZED VIEW public.breeders_cup_distaff_qualifiers AS
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 5.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 5.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) starts ON ((h.id = starts.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 5.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 5.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes ON ((h.id = stakes.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 5.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 5.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_win ON ((h.id = stakes_win.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 5.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 5.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_second ON ((h.id = stakes_second.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 5.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 5.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_third ON ((h.id = stakes_third.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 5.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 5.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
   WHERE ((h.age > 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Distaff'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
   WITH NO DATA;
@@ -1493,42 +1565,66 @@ CREATE MATERIALIZED VIEW public.breeders_cup_filly_mare_sprint_qualifiers AS
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) starts ON ((h.id = starts.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes ON ((h.id = stakes.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_win ON ((h.id = stakes_win.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_second ON ((h.id = stakes_second.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_third ON ((h.id = stakes_third.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
   WHERE ((h.age > 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Filly & Mare Sprint'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
   WITH NO DATA;
@@ -1562,42 +1658,66 @@ CREATE MATERIALIZED VIEW public.breeders_cup_filly_mare_turf_qualifiers AS
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) starts ON ((h.id = starts.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes ON ((h.id = stakes.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_win ON ((h.id = stakes_win.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_second ON ((h.id = stakes_second.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_third ON ((h.id = stakes_third.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
   WHERE ((h.age > 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Filly & Mare Turf'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
   WITH NO DATA;
@@ -1639,7 +1759,11 @@ CREATE MATERIALIZED VIEW public.breeders_cup_juvenile_fillies_qualifiers AS
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
   WHERE ((h.age = 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = 'filly'::public.horse_gender) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Juvenile Fillies'::text))) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
@@ -1681,7 +1805,11 @@ CREATE MATERIALIZED VIEW public.breeders_cup_juvenile_qualifiers AS
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
   WHERE ((h.age = 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Juvenile'::text))) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
@@ -1723,7 +1851,11 @@ CREATE MATERIALIZED VIEW public.breeders_cup_juvenile_turf_fillies_qualifiers AS
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
   WHERE ((h.age = 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = 'filly'::public.horse_gender) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Juvenile Turf Fillies'::text))) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
@@ -1765,7 +1897,11 @@ CREATE MATERIALIZED VIEW public.breeders_cup_juvenile_turf_qualifiers AS
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
   WHERE ((h.age = 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Juvenile Turf'::text))) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
@@ -1799,42 +1935,66 @@ CREATE MATERIALIZED VIEW public.breeders_cup_mile_qualifiers AS
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) starts ON ((h.id = starts.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes ON ((h.id = stakes.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_win ON ((h.id = stakes_win.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_second ON ((h.id = stakes_second.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_third ON ((h.id = stakes_third.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 6.0) AND (r.distance <= 10.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
   WHERE ((h.age > 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Mile'::text))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
   WITH NO DATA;
@@ -1922,42 +2082,66 @@ CREATE MATERIALIZED VIEW public.breeders_cup_sc_classic_qualifiers AS
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 9.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 9.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) starts ON ((h.id = starts.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 9.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 9.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes ON ((h.id = stakes.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 9.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 9.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_win ON ((h.id = stakes_win.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 9.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 9.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_second ON ((h.id = stakes_second.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 9.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 9.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_third ON ((h.id = stakes_third.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 9.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 9.0) AND (r.distance <= 15.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
   WHERE ((h.age > 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Classic'::text))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
   WITH NO DATA;
@@ -1991,42 +2175,66 @@ CREATE MATERIALIZED VIEW public.breeders_cup_sc_distaff_endurance_qualifiers AS
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) starts ON ((h.id = starts.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes ON ((h.id = stakes.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_win ON ((h.id = stakes_win.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_second ON ((h.id = stakes_second.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_third ON ((h.id = stakes_third.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
   WHERE ((h.age > 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Distaff Endurance'::text))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
   WITH NO DATA;
@@ -2060,42 +2268,66 @@ CREATE MATERIALIZED VIEW public.breeders_cup_sc_distaff_qualifiers AS
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 7.0) AND (r.distance <= 16.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 7.0) AND (r.distance <= 16.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) starts ON ((h.id = starts.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 7.0) AND (r.distance <= 16.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 7.0) AND (r.distance <= 16.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes ON ((h.id = stakes.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 7.0) AND (r.distance <= 16.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 7.0) AND (r.distance <= 16.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_win ON ((h.id = stakes_win.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 7.0) AND (r.distance <= 16.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 7.0) AND (r.distance <= 16.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_second ON ((h.id = stakes_second.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 7.0) AND (r.distance <= 16.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 7.0) AND (r.distance <= 16.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_third ON ((h.id = stakes_third.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 7.0) AND (r.distance <= 16.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 7.0) AND (r.distance <= 16.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
   WHERE ((h.age > 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Distaff'::text))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
   WITH NO DATA;
@@ -2129,42 +2361,66 @@ CREATE MATERIALIZED VIEW public.breeders_cup_sc_endurance_qualifiers AS
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 14.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 14.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) starts ON ((h.id = starts.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 14.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 14.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes ON ((h.id = stakes.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 14.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 14.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_win ON ((h.id = stakes_win.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 14.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 14.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_second ON ((h.id = stakes_second.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 14.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 14.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_third ON ((h.id = stakes_third.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 14.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'steeplechase'::public.track_surface) AND ((r.distance >= 14.0) AND (r.distance <= 24.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
   WHERE ((h.age > 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup SC Endurance'::text))) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
   WITH NO DATA;
@@ -2267,42 +2523,66 @@ CREATE MATERIALIZED VIEW public.breeders_cup_sprint_qualifiers AS
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) starts ON ((h.id = starts.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes ON ((h.id = stakes.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_win ON ((h.id = stakes_win.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_second ON ((h.id = stakes_second.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_third ON ((h.id = stakes_third.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'dirt'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
   WHERE ((h.age > 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Sprint'::text))) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
   WITH NO DATA;
@@ -2336,42 +2616,66 @@ CREATE MATERIALIZED VIEW public.breeders_cup_turf_qualifiers AS
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) starts ON ((h.id = starts.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes ON ((h.id = stakes.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_win ON ((h.id = stakes_win.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_second ON ((h.id = stakes_second.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_third ON ((h.id = stakes_third.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 10.0) AND (r.distance <= 14.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
   WHERE ((h.age > 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Turf'::text))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
   WITH NO DATA;
@@ -2405,42 +2709,66 @@ CREATE MATERIALIZED VIEW public.breeders_cup_turf_sprint_qualifiers AS
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) starts ON ((h.id = starts.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes ON ((h.id = stakes.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_win ON ((h.id = stakes_win.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 2) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_second ON ((h.id = stakes_second.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 3) AND (r.race_type = 'stakes'::public.race_type) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) stakes_third ON ((h.id = stakes_third.horse_id)))
      LEFT JOIN ( SELECT count(r.id) AS races,
             rr.horse_id
            FROM ((public.race_result_horses rr
              LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
              LEFT JOIN public.track_surfaces ts ON ((r.surface_id = ts.id)))
-          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)))
+          WHERE ((rr.finish_position = 1) AND (r.race_type = ANY (ARRAY['starter_allowance'::public.race_type, 'nw1_allowance'::public.race_type, 'nw2_allowance'::public.race_type, 'nw3_allowance'::public.race_type, 'allowance'::public.race_type])) AND (ts.surface = 'turf'::public.track_surface) AND ((r.distance >= 4.0) AND (r.distance <= 8.0)) AND (date_part('Year'::text, r.date) = date_part('Year'::text, CURRENT_DATE)) AND (r.date < ( SELECT (race_schedules.date - 22)
+                   FROM public.race_schedules
+                  WHERE ((race_schedules.name)::text ~~* 'Breeders'' Cup%'::text)
+                  ORDER BY race_schedules.id
+                 LIMIT 1)))
           GROUP BY rr.horse_id) allowance ON ((h.id = allowance.horse_id)))
   WHERE ((h.age > 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.effective_year IS NULL) OR ((bn.effective_year)::double precision <= date_part('Year'::text, CURRENT_DATE))) AND ((sbn.id IS NULL) OR (((sbn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND ((rs.name)::text = 'Breeders'' Cup Turf Sprint'::text))) AND (COALESCE(starts.races, (0)::bigint) > 0) AND ((((COALESCE(stakes_win.races, (0)::bigint) + COALESCE(stakes_second.races, (0)::bigint)) + COALESCE(stakes_third.races, (0)::bigint)) + COALESCE(allowance.races, (0)::bigint)) > 0))
   WITH NO DATA;
@@ -14300,6 +14628,24 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261108131156'),
+('20261108130646'),
+('20261108130604'),
+('20261108122957'),
+('20261108122916'),
+('20261108122835'),
+('20261108122757'),
+('20261108122705'),
+('20261108122611'),
+('20261108122538'),
+('20261108122504'),
+('20261108122255'),
+('20261108122229'),
+('20261108122134'),
+('20261108122052'),
+('20261108122004'),
+('20261108121816'),
+('20261108121655'),
 ('20261013091239'),
 ('20260926160431'),
 ('20260914141247'),

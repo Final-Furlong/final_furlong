@@ -51,38 +51,42 @@ class Racing::RaceDayUpdaterJob < ApplicationJob
   def update_views
     Racing::StableRaceRecord.refresh
     Racing::StableAnnualRaceRecord.refresh
-    Racing::Qualifications::BreedersCupJuvenile.refresh
-    Racing::Qualifications::BreedersCupJuvenileTurf.refresh
-    Racing::Qualifications::BreedersCupJuvenileTurfFilly.refresh
-    Racing::Qualifications::BreedersCupJuvenileFilly.refresh
-    Racing::Qualifications::BreedersCupSprint.refresh
-    Racing::Qualifications::BreedersCupTurfSprint.refresh
-    Racing::Qualifications::BreedersCupFillyAndMareSprint.refresh
-    Racing::Qualifications::BreedersCupMile.refresh
-    Racing::Qualifications::BreedersCupDirtMile.refresh
-    Racing::Qualifications::BreedersCupClassic.refresh
-    Racing::Qualifications::BreedersCupTurf.refresh
-    Racing::Qualifications::BreedersCupDistaff.refresh
-    Racing::Qualifications::BreedersCupFillyAndMareTurf.refresh
-    Racing::Qualifications::BreedersCupSteeplechaseSprint.refresh
-    Racing::Qualifications::BreedersCupSteeplechaseClassic.refresh
-    Racing::Qualifications::BreedersCupSteeplechaseEndurance.refresh
-    Racing::Qualifications::BreedersCupSteeplechaseDistaff.refresh
-    Racing::Qualifications::BreedersCupSteeplechaseDistaffEndurance.refresh
-    Racing::Qualifications::BreedersSeries2yoDirt.refresh
-    Racing::Qualifications::BreedersSeries2yoFilliesDirt.refresh
-    Racing::Qualifications::BreedersSeries2yoTurf.refresh
-    Racing::Qualifications::BreedersSeries2yoFilliesTurf.refresh
-    Racing::Qualifications::BreedersSeries3yoDirt.refresh
-    Racing::Qualifications::BreedersSeries3yoFilliesDirt.refresh
-    Racing::Qualifications::BreedersSeries3yoTurf.refresh
-    Racing::Qualifications::BreedersSeries3yoFilliesTurf.refresh
-    Racing::Qualifications::BreedersSeries4yoDirt.refresh
-    Racing::Qualifications::BreedersSeries4yoMaresDirt.refresh
-    Racing::Qualifications::BreedersSeries4yoTurf.refresh
-    Racing::Qualifications::BreedersSeries4yoMaresTurf.refresh
-    Racing::Qualifications::BreedersSeriesSteeplechase.refresh
-    Racing::Qualifications::BreedersSeriesFilliesSteeplechase.refresh
+    if Racing::RaceSchedule.breeders_cup.current_year.exists?
+      Racing::Qualifications::BreedersCupJuvenile.refresh
+      Racing::Qualifications::BreedersCupJuvenileTurf.refresh
+      Racing::Qualifications::BreedersCupJuvenileTurfFilly.refresh
+      Racing::Qualifications::BreedersCupJuvenileFilly.refresh
+      Racing::Qualifications::BreedersCupSprint.refresh
+      Racing::Qualifications::BreedersCupTurfSprint.refresh
+      Racing::Qualifications::BreedersCupFillyAndMareSprint.refresh
+      Racing::Qualifications::BreedersCupMile.refresh
+      Racing::Qualifications::BreedersCupDirtMile.refresh
+      Racing::Qualifications::BreedersCupClassic.refresh
+      Racing::Qualifications::BreedersCupTurf.refresh
+      Racing::Qualifications::BreedersCupDistaff.refresh
+      Racing::Qualifications::BreedersCupFillyAndMareTurf.refresh
+      Racing::Qualifications::BreedersCupSteeplechaseSprint.refresh
+      Racing::Qualifications::BreedersCupSteeplechaseClassic.refresh
+      Racing::Qualifications::BreedersCupSteeplechaseEndurance.refresh
+      Racing::Qualifications::BreedersCupSteeplechaseDistaff.refresh
+      Racing::Qualifications::BreedersCupSteeplechaseDistaffEndurance.refresh
+    end
+    if Racing::RaceSchedule.breeders_series.current_year.exists?
+      Racing::Qualifications::BreedersSeries2yoDirt.refresh
+      Racing::Qualifications::BreedersSeries2yoFilliesDirt.refresh
+      Racing::Qualifications::BreedersSeries2yoTurf.refresh
+      Racing::Qualifications::BreedersSeries2yoFilliesTurf.refresh
+      Racing::Qualifications::BreedersSeries3yoDirt.refresh
+      Racing::Qualifications::BreedersSeries3yoFilliesDirt.refresh
+      Racing::Qualifications::BreedersSeries3yoTurf.refresh
+      Racing::Qualifications::BreedersSeries3yoFilliesTurf.refresh
+      Racing::Qualifications::BreedersSeries4yoDirt.refresh
+      Racing::Qualifications::BreedersSeries4yoMaresDirt.refresh
+      Racing::Qualifications::BreedersSeries4yoTurf.refresh
+      Racing::Qualifications::BreedersSeries4yoMaresTurf.refresh
+      Racing::Qualifications::BreedersSeriesSteeplechase.refresh
+      Racing::Qualifications::BreedersSeriesFilliesSteeplechase.refresh
+    end
   end
 end
 

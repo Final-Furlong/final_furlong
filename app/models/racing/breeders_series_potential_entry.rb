@@ -16,29 +16,35 @@ end
 
 # == Schema Information
 #
-# Table name: breeders_cup_potential_entries
+# Table name: breeders_series_potential_entries
 # Database name: primary
 #
-#  id         :bigint           not null, primary key
-#  rank       :integer          default(0), not null, indexed
-#  record     :string           not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  horse_id   :bigint           not null, uniquely indexed => [race_id]
-#  race_id    :bigint           not null, uniquely indexed => [horse_id], indexed
-#  stable_id  :bigint           not null, indexed
+#  id             :bigint           not null, primary key
+#  rank           :integer          default(0), not null, indexed
+#  record         :string           not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  first_race_id  :bigint           uniquely indexed => [horse_id], indexed
+#  horse_id       :bigint           not null, uniquely indexed => [first_race_id]
+#  second_race_id :bigint           indexed
+#  stable_id      :bigint           not null, indexed
+#  third_race_id  :bigint           indexed
 #
 # Indexes
 #
-#  index_breeders_cup_potential_entries_on_horse_id_and_race_id  (horse_id,race_id) UNIQUE
-#  index_breeders_cup_potential_entries_on_race_id               (race_id)
-#  index_breeders_cup_potential_entries_on_rank                  (rank)
-#  index_breeders_cup_potential_entries_on_stable_id             (stable_id)
+#  idx_on_horse_id_first_race_id_ccde27d4eb                   (horse_id,first_race_id) UNIQUE
+#  index_breeders_series_potential_entries_on_first_race_id   (first_race_id)
+#  index_breeders_series_potential_entries_on_rank            (rank)
+#  index_breeders_series_potential_entries_on_second_race_id  (second_race_id)
+#  index_breeders_series_potential_entries_on_stable_id       (stable_id)
+#  index_breeders_series_potential_entries_on_third_race_id   (third_race_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (first_race_id => race_schedules.id)
 #  fk_rails_...  (horse_id => horses.id)
-#  fk_rails_...  (race_id => race_schedules.id)
+#  fk_rails_...  (second_race_id => race_schedules.id)
 #  fk_rails_...  (stable_id => stables.id)
+#  fk_rails_...  (third_race_id => race_schedules.id)
 #
 
