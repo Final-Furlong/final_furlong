@@ -1,0 +1,15 @@
+ruby:
+  bc_qualified = Racing::BreedersCupPotentialEntry.joins(:horse).max_rank.merge(Horses::Horse.managed_by(Current.stable)).exists?
+  bc_qualified = false if !Racing::RaceSchedule.breeders_cup.current_year.exists?
+  bs_qualified = Racing::BreedersSeriesPotentialEntry.joins(:horse).max_rank.merge(Horses::Horse.managed_by(Current.stable)).exists?
+  bs_qualified = false if !Racing::RaceSchedule.breeders_series.current_year.exists?
+- if bc_qualified || bs_qualified
+  .float-right.my-2
+    - if bc_qualified
+      - bc_count = Horses::Horse::Racehorse.managed_by(Current.stable).breeders_cup_qualified_enterable.count
+      = render Ui::ButtonizedLink::Component.new(url: stable_breeders_cup_qualified_index_path, color: :neutral) do
+        = t(".breeders_cup", count: bc_count)
+    - if bs_qualified
+      - bs_count = Horses::Horse::Racehorse.managed_by(Current.stable).breeders_series_qualified_enterable.count
+      = render Ui::ButtonizedLink::Component.new(url: stable_breeders_series_qualified_index_path, color: :neutral) do
+        = t(".breeders_series", count: bs_count)

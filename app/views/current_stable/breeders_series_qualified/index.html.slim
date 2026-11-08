@@ -1,0 +1,14 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new( links: [{ name: Current.stable.name, href: current_stable_path },
+    { name: t(".title"), href: "#", title: true }])
+p.font-bold.text-center.w-full.my-2= t(".qualified_count", count: @count)
+table.table.table-responsive.table-zebra
+  thead
+    tr
+      th= t("racing.race.horse")
+      th= t("racing.breeders_series_qualifiers.show.record")
+      th= t(".races")
+  tbody id="#{Current.stable.slug}-breeders-series-qualified"
+    = render partial: "horse", collection: @results, as: :horse
+
+= render_load_more(@pagy)

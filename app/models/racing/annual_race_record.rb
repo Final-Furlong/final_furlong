@@ -9,6 +9,7 @@ module Racing
 
     scope :ordered, -> { order(year: :asc) }
     scope :by_year, ->(year) { where(year:) }
+    scope :current_year, -> { where(year: Date.current.year) }
 
     def self.refresh
       Scenic.database.refresh_materialized_view(table_name, concurrently: true, cascade: false)

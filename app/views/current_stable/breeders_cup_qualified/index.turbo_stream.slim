@@ -1,0 +1,4 @@
+= turbo_stream.append "#{Current.stable.slug}-breeders-cup-qualified" do
+  = render partial: "horse", collection: @results, as: :horse
+
+= render "shared/loading", pagy: @pagy

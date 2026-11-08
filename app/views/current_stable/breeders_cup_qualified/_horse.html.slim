@@ -1,0 +1,8 @@
+/# locals: (horse:)
+- record = horse.annual_race_records.current_year.order(year: :asc).first
+tr
+  td class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), target: "_top"
+  td= record.overall_string
+  td
+    - Racing::BreedersCupPotentialEntry.max_rank.joins(:horse, :race).includes(:race).where(horse:).order(rank: :asc).each do |entry|
+      p= t(".qualification", race: entry.race.name, rank: entry.rank)

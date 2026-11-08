@@ -235,6 +235,40 @@ class Racing::RaceSchedule < ApplicationRecord
     "#{distance.to_s.gsub(".0", "")}f"
   end
 
+  def breeders_series_name
+    return if race_type != "stakes" && !requires_qualification?
+
+    if ["Rainbow Quest Breeders' Stakes", "Planet Hollywood Breeders' Stakes", "Highland Bandit Breeders' Stakes"].include?(name)
+      "2yo Dirt"
+    elsif ["Demand To Know Breeders' Stakes", "Brandywine Breeders' Stakes", "Seeing Starz Breeders' Stakes"].include?(name)
+      "2yo Dirt Fillies"
+    elsif ["Lucky Cigar Breeders' Stakes", "Seabiscuit Breeders' Stakes", "Man O'War Breeders' Stakes"].include?(name)
+      "2yo Turf"
+    elsif ["Dark Magic Breeders' Stakes", "With Approval Breeders' Stakes", "Eternal Hope Breeders' Stakes"].include?(name)
+      "2yo Turf Fillies"
+    elsif ["Cross Roads Breeders' Stakes", "What's It Worth Breeders' Stakes", "Spectacular Bid Breeders' Stakes"].include?(name)
+      "3yo Dirt"
+    elsif ["Pardon Me Mister Breeders' Stakes", "Evening Flame Breeders' Stakes", "Hollywood Queen Breeders' Stakes"].include?(name)
+      "3yo Dirt Fillies"
+    elsif ["Secretariat Breeders' Stakes", "Bold Ruler Breeders' Stakes", "Cigar Breeders' Stakes"].include?(name)
+      "3yo Turf"
+    elsif ["Amazon Princess Breeders' Stakes", "Nation's Pride Breeders' Stakes", "Highland Sorceress Breeders' Stakes"].include?(name)
+      "3yo Turf Fillies"
+    elsif ["Crimson Lad Breeders' Stakes", "Lonesome Glory Breeders' Stakes", "The Black Breeders' Stakes"].include?(name)
+      "4yo+ Dirt"
+    elsif ["Lymerick Breeders' Stakes", "Ifyoucouldseemenow Breeders' Stakes", "Miss Hayday Breeders' Stakes"].include?(name)
+      "4yo+ Dirt Mares"
+    elsif ["Valid Wager Breeders' Stakes", "A.P. Indy Breeders' Stakes", "Omaha Breeders' Stakes"].include?(name)
+      "4yo+ Turf"
+    elsif ["Fire de Flame Breeders' Stakes", "That's Debatable Breeders' Stakes", "Highland Raven Breeders' Stakes"].include?(name)
+      "4yo+ Turf Mares"
+    elsif ["Moonover Boy Breeders' Stakes", "Highland Rogue Breeders' Stakes", "Townsend Prince Breeders' Stakes"].include?(name)
+      "Steeplechase"
+    elsif ["Townsend Holly Breeders' Stakes", "Backstage Pass Breeders' Stakes", "Dream Skipper Breeders' Stakes"].include?(name)
+      "Steeplechase Fillies/Mares"
+    end
+  end
+
   def self.ransackable_attributes(_auth_object = nil)
     %w[age date distance female_only grade male_only name number qualification_required race_type surface_id]
   end

@@ -32,7 +32,7 @@
           = t(".entry_fee", fee: Game::MoneyFormatter.new(race.entry_fee).to_s)
 
 = render "entries", race: race
-- if policy(Racing::RaceEntry.new(race:, date: race.date)).new?
+- if policy(Racing::RaceEntry.new(race:, date: race.date)).new? || race.requires_qualification?
   - if race.requires_qualification?
     = render "qualified_list", race:
   - else

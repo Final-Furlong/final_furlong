@@ -1,4 +1,5 @@
 = turbo_frame_tag "#{Current.stable.slug}-training-summary" do
+  = render "qualified_lists"
   .mx-auto
     = render "filters", query: @query
     p.text-lg.text-center= t(".horses_count", count: @count)

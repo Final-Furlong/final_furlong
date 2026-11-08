@@ -110,7 +110,6 @@ module Horses
     scope :runs_on_turf, -> { runs_on("turf") }
     scope :runs_on_steeplechase, -> { runs_on("sc") }
     scope :min_days_since_last_race, ->(days = 0, date = Date.current) {
-      pd [days, date]
       joins(:racehorse_metadata).where("last_raced_at IS NULL OR last_raced_at < ?", date - days.to_i.days)
     }
     scope :min_rest_days_since_last_race, ->(value) { joins(:racehorse_metadata).where(racehorse_metadata: { rest_days_since_last_race: value.to_i.. }) }
@@ -121,6 +120,10 @@ module Horses
     scope :max_workouts_since_last_race, ->(value) { joins(:racehorse_metadata).where(racehorse_metadata: { workouts_since_last_race: ..value.to_i }) }
     scope :min_days_since_last_injury, ->(days) { joins(:racehorse_metadata).where("last_injured_at IS NULL OR last_injured_at < ?", Date.current - days.to_i.days) }
     scope :max_days_since_last_injury, ->(days) { joins(:racehorse_metadata).where(racehorse_metadata: { last_injured_at: (Date.current - days.to_i.days).. }) }
+    scope :breeders_cup_qualified, -> { where(id: ::Racing::BreedersCupPotentialEntry.select(:horse_id)) }
+    scope :breeders_series_qualified, -> { where(id: ::Racing::BreedersSeriesPotentialEntry.select(:horse_id)) }
+    scope :breeders_cup_qualified_enterable, -> { where(id: ::Racing::BreedersCupPotentialEntry.max_rank.select(:horse_id)) }
+    scope :breeders_series_qualified_enterable, -> { where(id: ::Racing::BreedersSeriesPotentialEntry.max_rank.select(:horse_id)) }
 
     delegate :in_transit?, to: :racehorse_metadata
 

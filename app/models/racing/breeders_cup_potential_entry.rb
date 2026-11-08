@@ -10,6 +10,7 @@ module Racing
     scope :ordered, -> { order(rank: :asc) }
     scope :game_owned, -> { joins(:horse).merge(Horses::Horse.game_owned) }
     scope :not_game_owned, -> { joins(:horse).merge(Horses::Horse.not_game_owned) }
+    scope :max_rank, -> { where('rank <= ?', Config::Racing.maximum_qualified_rank) }
   end
 end
 
@@ -40,4 +41,3 @@ end
 #  fk_rails_...  (race_id => race_schedules.id)
 #  fk_rails_...  (stable_id => stables.id)
 #
-
