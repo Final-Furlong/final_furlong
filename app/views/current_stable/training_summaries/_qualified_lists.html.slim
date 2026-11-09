@@ -1,12 +1,33 @@
 ruby:
-  bc_qualified = Racing::BreedersCupPotentialEntry.joins(:horse).max_rank.merge(Horses::Horse.managed_by(Current.stable)).exists?
-  bc_qualified = false if !Racing::RaceSchedule.breeders_cup.current_year.exists?
-  bs_qualified = Racing::BreedersSeriesPotentialEntry.joins(:horse).max_rank.merge(Horses::Horse.managed_by(Current.stable)).exists?
-  bs_qualified = false if !Racing::RaceSchedule.breeders_series.current_year.exists?
+  if Racing::RaceSchedule.breeders_cup.current_year.exists?
+    if Racing::BreedersCupPotentialEntry.exists? && Racing::RaceSchedule.breeders_cup.current_year.exists?
+      bc_qualified = Racing::BreedersCupPotentialEntry.joins(:horse).max_rank.merge(Horses::Horse.managed_by(Current.stable)).exists?
+      bc_count = Horses::Horse::Racehorse.managed_by(Current.stable).breeders_cup_qualified_enterable.count
+    else
+      autoload_dir = File.join(Rails.application.root, 'app', 'models', 'racing', 'qualifications')
+      race_classes = Racing::Qualifications.constants.select { |c| Racing::Qualifications.const_get(c).is_a?(Class) && c.to_s.starts_with?("BreedersCup") }
+      bc_horses = Set.new
+      race_classes.each do |class_name|
+        race_count = "Racing::Qualifications::#{class_name}".constantize.joins(:horse).merge(Horses::Horse.managed_by(Current.stable)).count
+        if race_count.positive?
+          horses = "Racing::Qualifications::#{class_name}".constantize.joins(:horse).merge(Horses::Horse.managed_by(Current.stable)).select(:horse_id)
+          bc_horses.merge(horses.map(&:horse_id))
+        end
+      end
+      bc_count = bc_horses.size
+      bc_qualified = bc_horses.any?
+    end
+  else
+    bc_qualified = false
+  end
+  if Racing::RaceSchedule.breeders_series.current_year.exists?
+    bs_qualified = Racing::BreedersSeriesPotentialEntry.joins(:horse).max_rank.merge(Horses::Horse.managed_by(Current.stable)).exists?
+  else
+    bs_qualified = false
+  end
 - if bc_qualified || bs_qualified
   .float-right.my-2
     - if bc_qualified
-      - bc_count = Horses::Horse::Racehorse.managed_by(Current.stable).breeders_cup_qualified_enterable.count
       = render Ui::ButtonizedLink::Component.new(url: stable_breeders_cup_qualified_index_path, color: :neutral) do
         = t(".breeders_cup", count: bc_count)
     - if bs_qualified

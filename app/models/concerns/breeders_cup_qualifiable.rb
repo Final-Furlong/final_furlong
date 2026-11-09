@@ -21,6 +21,17 @@ module BreedersCupQualifiable
     scope :not_nominated, -> { where(nominated: false) }
     scope :random_order, -> { order("RANDOM()") }
 
+    def record_string
+      #  allowance_wins :bigint           indexed
+      #  points         :bigint           indexed
+      #  stakes_seconds :bigint           indexed
+      #  stakes_starts  :bigint
+      #  stakes_thirds  :bigint           indexed
+      #  stakes_wins    :bigint           indexed
+      #  starts         :bigint
+      #  horse_id       :bigint           primary key, uniquely indexed
+    end
+
     def readonly?
       true
     end

@@ -4,5 +4,33 @@ tr
   td class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), target: "_top"
   td= record.overall_string
   td
-    - Racing::BreedersCupPotentialEntry.max_rank.joins(:horse, :race).includes(:race).where(horse:).order(rank: :asc).each do |entry|
-      p= t(".qualification", race: entry.race.name, rank: entry.rank)
+    - if Racing::BreedersCupPotentialEntry.exists? && false
+      - Racing::BreedersCupPotentialEntry.max_rank.joins(:horse, :race).includes(:race).where(horse:).order(rank: :asc).each do |entry|
+        p= t(".qualification", race: entry.race.name, rank: entry.rank)
+    - else
+     - horse.breeders_cup_potential_races.each do |race_string|
+       - if (qualification = horse.send("breeders_cup_#{race_string}_qualification"))
+         ruby:
+           klass = qualification.class
+           better_ranked = klass.nominated.better_ranked(qualification).count
+           rank = better_ranked + 1
+           tied = klass.nominated.identically_ranked(qualification).count - 1
+         p
+           = race_string.humanize.titleize.gsub("Sc ", "SC ")
+           = " - "
+           span
+             = t("horse.race_nominations.index.starts_count", count: qualification.starts)
+             = ", "
+           span
+             = t("horse.race_nominations.index.stakes_wins_count", count: qualification.stakes_wins)
+             = ", "
+           span
+             = t("horse.race_nominations.index.stakes_places_count", count: qualification.stakes_seconds + qualification.stakes_thirds)
+             = ", "
+           span
+             = t("horse.race_nominations.index.allowance_wins_count", count: qualification.allowance_wins)
+             = " - "
+           span= t("horse.race_nominations.index.points_count", count: qualification.points)
+           span= " - Rank #{rank}"
+           - if tied.positive?
+             = " (#{t("racing.breeders_cup_qualifiers.qualifier.tied_count", count: tied)})"

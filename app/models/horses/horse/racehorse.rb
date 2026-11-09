@@ -120,8 +120,28 @@ module Horses
     scope :max_workouts_since_last_race, ->(value) { joins(:racehorse_metadata).where(racehorse_metadata: { workouts_since_last_race: ..value.to_i }) }
     scope :min_days_since_last_injury, ->(days) { joins(:racehorse_metadata).where("last_injured_at IS NULL OR last_injured_at < ?", Date.current - days.to_i.days) }
     scope :max_days_since_last_injury, ->(days) { joins(:racehorse_metadata).where(racehorse_metadata: { last_injured_at: (Date.current - days.to_i.days).. }) }
-    scope :breeders_cup_qualified, -> { where(id: ::Racing::BreedersCupPotentialEntry.select(:horse_id)) }
-    scope :breeders_series_qualified, -> { where(id: ::Racing::BreedersSeriesPotentialEntry.select(:horse_id)) }
+    scope :breeders_cup_qualified, -> {
+      # https://github.com/MaxLap/activerecord_where_assoc
+      where("#{assoc_exists_sql(:breeders_cup_juvenile_qualification)} OR #{assoc_exists_sql(:breeders_cup_juvenile_fillies_qualification)} OR
+        #{assoc_exists_sql(:breeders_cup_juvenile_turf_qualification)} OR #{assoc_exists_sql(:breeders_cup_juvenile_turf_fillies_qualification)} OR
+        #{assoc_exists_sql(:breeders_cup_sprint_qualification)} OR #{assoc_exists_sql(:breeders_cup_turf_sprint_qualification)} OR
+        #{assoc_exists_sql(:breeders_cup_mile_qualification)} OR #{assoc_exists_sql(:breeders_cup_dirt_mile_qualification)} OR
+        #{assoc_exists_sql(:breeders_cup_turf_qualification)} OR #{assoc_exists_sql(:breeders_cup_classic_qualification)} OR
+        #{assoc_exists_sql(:breeders_cup_filly_and_mare_sprint_qualification)} OR #{assoc_exists_sql(:breeders_cup_filly_and_mare_turf_qualification)} OR
+        #{assoc_exists_sql(:breeders_cup_distaff_qualification)} OR #{assoc_exists_sql(:breeders_cup_sc_sprint_qualification)} OR
+        #{assoc_exists_sql(:breeders_cup_sc_classic_qualification)} OR #{assoc_exists_sql(:breeders_cup_sc_endurance_qualification)} OR
+        #{assoc_exists_sql(:breeders_cup_sc_distaff_qualification)} OR #{assoc_exists_sql(:breeders_cup_sc_distaff_endurance_qualification)}")
+    }
+    scope :breeders_series_qualified, -> {
+      # https://github.com/MaxLap/activerecord_where_assoc
+      where("#{assoc_exists_sql(:breeders_series_2yo_dirt_qualification)} OR #{assoc_exists_sql(:breeders_series_2yo_filly_dirt_qualification)} OR
+        #{assoc_exists_sql(:breeders_series_2yo_turf_qualification)} OR #{assoc_exists_sql(:breeders_series_2yo_filly_turf_qualification)} OR
+        #{assoc_exists_sql(:breeders_series_3yo_dirt_qualification)} OR #{assoc_exists_sql(:breeders_series_3yo_filly_dirt_qualification)} OR
+        #{assoc_exists_sql(:breeders_series_3yo_turf_qualification)} OR #{assoc_exists_sql(:breeders_series_3yo_filly_turf_qualification)} OR
+        #{assoc_exists_sql(:breeders_series_4yo_dirt_qualification)} OR #{assoc_exists_sql(:breeders_series_4yo_mare_dirt_qualification)} OR
+        #{assoc_exists_sql(:breeders_series_4yo_turf_qualification)} OR #{assoc_exists_sql(:breeders_series_4yo_mare_turf_qualification)} OR
+        #{assoc_exists_sql(:breeders_series_steeplechase_qualification)} OR #{assoc_exists_sql(:breeders_series_filly_steeplechase_qualification)}")
+    }
     scope :breeders_cup_qualified_enterable, -> { where(id: ::Racing::BreedersCupPotentialEntry.max_rank.select(:horse_id)) }
     scope :breeders_series_qualified_enterable, -> { where(id: ::Racing::BreedersSeriesPotentialEntry.max_rank.select(:horse_id)) }
 
@@ -176,6 +196,23 @@ module Horses
       else
         female? ? ["steeplechase_filly"] : ["steeplechase"]
       end
+    end
+
+    def breeders_cup_potential_races
+      case race_options.racehorse_type
+      when "flat"
+        case age
+        when 2
+          list = female? ? %w[juvenile_fillies juvenile_turf_fillies] : %w[juvenile juvenile_turf]
+        else
+          list = %w[sprint turf_sprint mile dirt_mile turf classic]
+          list += %w[filly_and_mare_sprint filly_and_mare_turf distaff] if female?
+        end
+      else
+        list = %w[sc_sprint sc_classic sc_endurance]
+        list += %w[sc_distaff sc_distaff_endurance] if female?
+      end
+      list
     end
   end
 end

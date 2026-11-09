@@ -93,6 +93,8 @@ GEM
     activerecord_json_validator (3.1.0)
       activerecord (>= 4.2.0, < 9)
       json_schemer (~> 2.2)
+    activerecord_where_assoc (1.4.0)
+      activerecord (>= 4.1.0)
     activestorage (8.1.4.1)
       actionpack (= 8.1.4.1)
       activejob (= 8.1.4.1)
@@ -958,6 +960,7 @@ DEPENDENCIES
   active_record_doctor
   active_storage_validations
   activerecord_json_validator
+  activerecord_where_assoc (~> 1.0)
   annotaterb
   autoprefixer-rails
   axe-core-capybara
@@ -1118,6 +1121,7 @@ CHECKSUMS
   activemodel (8.1.4.1) sha256=063caf105372fbc98b2d789e4be23de63ac5c043f7d9330f04e2caddb7012805
   activerecord (8.1.4.1) sha256=bd65599ca0b5d210937f835d42c7aff69d271741c75aab022730be6cbce67e87
   activerecord_json_validator (3.1.0) sha256=bc3de0b24256b0d1b4536dfd5c74be8248670ed57061b9bb86c00f712873fbab
+  activerecord_where_assoc (1.4.0) sha256=141d1305106415185e93cd781b2e436b0e1d7935ee422d2cebb2e1b0f82b7b39
   activestorage (8.1.4.1) sha256=0f4e2f114f3584723a80a2c089aacc6170e765a0b2c385c9782e26ed78f05c66
   activesupport (8.1.4.1) sha256=16ac4f341ca65c85a1fcdb8ac73f68891aae9e3c4a6f9c3a27daed8b00017ed7
   addressable (2.9.0) sha256=7fdf6ac3660f7f4e867a0838be3f6cf722ace541dd97767fa42bc6cfa980c7af

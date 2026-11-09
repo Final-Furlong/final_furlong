@@ -1,6 +1,10 @@
 class CurrentStable::BreedersCupQualifiedController < AuthenticatedController
   def index
-    @query = policy_scope(Horses::Racehorse.breeders_cup_qualified, policy_scope_class: CurrentStable::HorsePolicy::Scope)
+    @query = if Racing::BreedersCupPotentialEntry.exists? && Racing::RaceSchedule.breeders_cup.current_year.exists?
+      policy_scope(Horses::Horse::Racehorse.breeders_cup_qualified_enterable, policy_scope_class: CurrentStable::HorsePolicy::Scope)
+    else
+      policy_scope(Horses::Horse::Racehorse.breeders_cup_qualified, policy_scope_class: CurrentStable::HorsePolicy::Scope)
+    end
     @query = @query.ransack(params[:q])
     @query.sorts = ["name asc"] if @query.sorts.blank?
 

@@ -77,6 +77,8 @@ en:
           one: 1 Weanling
           other: "%{count} Weanlings"
     breeders_cup_qualified:
+      horse:
+        qualification: "%{race} - Rank %{rank}"
       index:
         qualified_count:
           one: 1 Horse

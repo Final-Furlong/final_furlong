@@ -76,6 +76,7 @@ gem "view_component-contrib"
 
 # Database
 gem "activerecord_json_validator"
+gem "activerecord_where_assoc", "~> 1.0"
 gem "active_storage_validations"
 gem "counter_culture"
 gem "discard"
