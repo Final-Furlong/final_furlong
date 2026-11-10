@@ -244,7 +244,7 @@ class Game::EclipseAwards::ContenderSelectionJob < ApplicationJob
 
   def pick_top_stable(year:)
     query = Racing::StableAnnualRaceRecord.where(year:).joins(:stable).where(stakes_wins: 10..).where.not(stable: { name: Config::Game.stable })
-    query.order(stakes_wins: :desc, stakes_starts: :desc, points: :desc).order("RANDOM()").limit(10)
+    query.order(stakes_wins: :desc, stakes_starts: :desc, points: :desc).limit(10)
     results = []
     query.each do |record|
       results << { id: record.stable_id, record: record.overall_string }
@@ -334,8 +334,7 @@ class Game::EclipseAwards::ContenderSelectionJob < ApplicationJob
                     END
                   ) DESC,
                   SUM(points) DESC,
-          SUM(earnings) DESC,
-                  RANDOM()
+                  SUM(earnings) DESC
                   LIMIT 10
       SQL
     )

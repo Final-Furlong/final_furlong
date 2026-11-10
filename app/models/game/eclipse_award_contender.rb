@@ -11,7 +11,7 @@ module Game
 
     validates :year, :category, :voting_starts_at, :voting_ends_at, :record, presence: true
     validates :tie_breaker, inclusion: { in: [true, false] }
-    validates :awardable_id, uniqueness: { scope: %i[awardable_type category] }
+    validates :awardable_id, uniqueness: { scope: %i[awardable_type category year] }
     validates :voting_ends_at, comparison: { greater_than: :voting_starts_at }
 
     scope :joins_awardable, ->(klass) {
@@ -41,24 +41,24 @@ end
 # Database name: primary
 #
 #  id                                                                                                                                                                                 :bigint           not null, primary key
-#  awardable_type                                                                                                                                                                     :string           not null, indexed => [awardable_id, year], uniquely indexed => [category, awardable_id]
-#  category(2yo_colt,2yo_filly,3yo_colt,3yo_filly,older_horse,older_mare,sprinter,classic,endurance,turf_horse,turf_mare,sc_colt,sc_filly,sc_horse,sc_mare,horse,stable,breeder,sire) :enum             not null, uniquely indexed => [awardable_type, awardable_id], indexed => [year]
+#  awardable_type                                                                                                                                                                     :string           not null, indexed => [awardable_id, year], uniquely indexed => [category, awardable_id, year]
+#  category(2yo_colt,2yo_filly,3yo_colt,3yo_filly,older_horse,older_mare,sprinter,classic,endurance,turf_horse,turf_mare,sc_colt,sc_filly,sc_horse,sc_mare,horse,stable,breeder,sire) :enum             not null, uniquely indexed => [awardable_type, awardable_id, year], indexed => [year]
 #  record                                                                                                                                                                             :string           default("None"), not null
 #  tie_breaker                                                                                                                                                                        :boolean          default(FALSE), not null, indexed
 #  voting_ends_at                                                                                                                                                                     :datetime         not null, indexed
 #  voting_starts_at                                                                                                                                                                   :datetime         not null, indexed
-#  year                                                                                                                                                                               :integer          default(0), not null, indexed => [awardable_type, awardable_id], indexed => [category]
+#  year                                                                                                                                                                               :integer          default(0), not null, indexed => [awardable_type, awardable_id], uniquely indexed => [awardable_type, category, awardable_id], indexed => [category]
 #  created_at                                                                                                                                                                         :datetime         not null
 #  updated_at                                                                                                                                                                         :datetime         not null
-#  awardable_id                                                                                                                                                                       :bigint           not null, indexed => [awardable_type, year], uniquely indexed => [awardable_type, category]
+#  awardable_id                                                                                                                                                                       :bigint           not null, indexed => [awardable_type, year], uniquely indexed => [awardable_type, category, year]
 #
 # Indexes
 #
-#  idx_on_awardable_type_awardable_id_year_5127159ebc      (awardable_type,awardable_id,year)
-#  idx_on_awardable_type_category_awardable_id_080fd0216f  (awardable_type,category,awardable_id) UNIQUE
-#  index_eclipse_award_contenders_on_tie_breaker           (tie_breaker)
-#  index_eclipse_award_contenders_on_voting_ends_at        (voting_ends_at)
-#  index_eclipse_award_contenders_on_voting_starts_at      (voting_starts_at)
-#  index_eclipse_award_contenders_on_year_and_category     (year,category)
+#  idx_on_awardable_type_awardable_id_year_5127159ebc           (awardable_type,awardable_id,year)
+#  idx_on_awardable_type_category_awardable_id_year_d5bae98abc  (awardable_type,category,awardable_id,year) UNIQUE
+#  index_eclipse_award_contenders_on_tie_breaker                (tie_breaker)
+#  index_eclipse_award_contenders_on_voting_ends_at             (voting_ends_at)
+#  index_eclipse_award_contenders_on_voting_starts_at           (voting_starts_at)
+#  index_eclipse_award_contenders_on_year_and_category          (year,category)
 #
 

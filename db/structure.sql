@@ -9167,10 +9167,10 @@ CREATE INDEX idx_on_awardable_type_awardable_id_year_e897327595 ON public.eclips
 
 
 --
--- Name: idx_on_awardable_type_category_awardable_id_080fd0216f; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_on_awardable_type_category_awardable_id_year_d5bae98abc; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX idx_on_awardable_type_category_awardable_id_080fd0216f ON public.eclipse_award_contenders USING btree (awardable_type, category, awardable_id);
+CREATE UNIQUE INDEX idx_on_awardable_type_category_awardable_id_year_d5bae98abc ON public.eclipse_award_contenders USING btree (awardable_type, category, awardable_id, year);
 
 
 --
@@ -14684,6 +14684,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261110105030'),
 ('20261108132522'),
 ('20261108132501'),
 ('20261108132421'),
