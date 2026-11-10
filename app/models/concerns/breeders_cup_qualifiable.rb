@@ -22,14 +22,11 @@ module BreedersCupQualifiable
     scope :random_order, -> { order("RANDOM()") }
 
     def record_string
-      #  allowance_wins :bigint           indexed
-      #  points         :bigint           indexed
-      #  stakes_seconds :bigint           indexed
-      #  stakes_starts  :bigint
-      #  stakes_thirds  :bigint           indexed
-      #  stakes_wins    :bigint           indexed
-      #  starts         :bigint
-      #  horse_id       :bigint           primary key, uniquely indexed
+      parts = [I18n.t("horse.race_nominations.index.starts_count", count: starts),
+        I18n.t("horse.race_nominations.index.stakes_wins_count", count: stakes_wins),
+        I18n.t("horse.race_nominations.index.stakes_places_count", count: stakes_seconds + stakes_thirds),
+        I18n.t("horse.race_nominations.index.allowance_wins_count", count: allowance_wins)]
+      parts.join(", ") + " - " + I18n.t("horse.race_nominations.index.points_count", count: points)
     end
 
     def readonly?

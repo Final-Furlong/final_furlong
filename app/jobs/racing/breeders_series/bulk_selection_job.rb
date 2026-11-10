@@ -4,8 +4,6 @@ class Racing::BreedersSeries::BulkSelectionJob < ApplicationJob
   def perform
     bs_race = Racing::RaceSchedule.breeders_series.current_year.first
     return unless bs_race
-    deadline = bs_race.entry_open_date - Config::Racing.breeders_series_deadline_days.days
-    return unless Date.current == deadline
 
     horses = 0
     races = 0

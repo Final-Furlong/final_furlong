@@ -64,19 +64,7 @@
                   = t(".supplement")
               - if info[:qualification]
                 p.text-base-content/80
-                  span
-                    = t(".starts_count", count: info[:qualification].starts)
-                    = ", "
-                  span
-                    = t(".stakes_wins_count", count: info[:qualification].stakes_wins)
-                    = ", "
-                  span
-                    = t(".stakes_places_count", count: info[:qualification].stakes_seconds + info[:qualification].stakes_thirds)
-                    = ", "
-                  span
-                    = t(".allowance_wins_count", count: info[:qualification].allowance_wins)
-                    = " - "
-                  span= t(".points_count", count: info[:qualification].points)
+                  span= info[:qualification].record_string
                 p.text-base-content/80
                   = t(".rank", rank: info[:rank], total: info[:total])
                   - if info[:tied].positive?

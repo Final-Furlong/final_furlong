@@ -2855,7 +2855,7 @@ CREATE MATERIALIZED VIEW public.breeders_series_2yo_dirt_qualifiers AS
                   ORDER BY race_schedules.id
                  LIMIT 1)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age = 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WHERE ((h.age = 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (bn.series_type = '2yo_dirt'::public.breeders_series_types)) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
 
 
@@ -2897,7 +2897,7 @@ CREATE MATERIALIZED VIEW public.breeders_series_2yo_fillies_dirt_qualifiers AS
                   ORDER BY race_schedules.id
                  LIMIT 1)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age = 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = 'filly'::public.horse_gender) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WHERE ((h.age = 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = 'filly'::public.horse_gender) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (bn.series_type = '2yo_filly_dirt'::public.breeders_series_types)) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
 
 
@@ -2939,7 +2939,7 @@ CREATE MATERIALIZED VIEW public.breeders_series_2yo_fillies_turf_qualifiers AS
                   ORDER BY race_schedules.id
                  LIMIT 1)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age = 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = 'filly'::public.horse_gender) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WHERE ((h.age = 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = 'filly'::public.horse_gender) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (bn.series_type = '2yo_filly_turf'::public.breeders_series_types)) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
 
 
@@ -2981,7 +2981,7 @@ CREATE MATERIALIZED VIEW public.breeders_series_2yo_turf_qualifiers AS
                   ORDER BY race_schedules.id
                  LIMIT 1)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age = 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WHERE ((h.age = 2) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (bn.series_type = '2yo_turf'::public.breeders_series_types)) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
 
 
@@ -3023,7 +3023,7 @@ CREATE MATERIALIZED VIEW public.breeders_series_3yo_dirt_qualifiers AS
                   ORDER BY race_schedules.id
                  LIMIT 1)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age = 3) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WHERE ((h.age = 3) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (bn.series_type = '3yo_dirt'::public.breeders_series_types)) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
 
 
@@ -3065,7 +3065,7 @@ CREATE MATERIALIZED VIEW public.breeders_series_3yo_fillies_dirt_qualifiers AS
                   ORDER BY race_schedules.id
                  LIMIT 1)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age = 3) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = 'filly'::public.horse_gender) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WHERE ((h.age = 3) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = 'filly'::public.horse_gender) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (bn.series_type = '3yo_filly_dirt'::public.breeders_series_types)) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
 
 
@@ -3107,7 +3107,7 @@ CREATE MATERIALIZED VIEW public.breeders_series_3yo_fillies_turf_qualifiers AS
                   ORDER BY race_schedules.id
                  LIMIT 1)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age = 3) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = 'filly'::public.horse_gender) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WHERE ((h.age = 3) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = 'filly'::public.horse_gender) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (bn.series_type = '3yo_filly_turf'::public.breeders_series_types)) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
 
 
@@ -3149,7 +3149,7 @@ CREATE MATERIALIZED VIEW public.breeders_series_3yo_turf_qualifiers AS
                   ORDER BY race_schedules.id
                  LIMIT 1)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age = 3) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WHERE ((h.age = 3) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (bn.series_type = '3yo_turf'::public.breeders_series_types)) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
 
 
@@ -3191,7 +3191,7 @@ CREATE MATERIALIZED VIEW public.breeders_series_4yo_dirt_qualifiers AS
                   ORDER BY race_schedules.id
                  LIMIT 1)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age >= 4) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WHERE ((h.age >= 4) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (bn.series_type = '4yo_dirt'::public.breeders_series_types)) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
 
 
@@ -3233,7 +3233,7 @@ CREATE MATERIALIZED VIEW public.breeders_series_4yo_mares_dirt_qualifiers AS
                   ORDER BY race_schedules.id
                  LIMIT 1)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age >= 4) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WHERE ((h.age >= 4) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (bn.series_type = '4yo_mare_dirt'::public.breeders_series_types)) AND (COALESCE(dirt.starts, 0) > 0) AND ((((COALESCE(dirt.stakes_wins, 0) + COALESCE(dirt.stakes_seconds, 0)) + COALESCE(dirt.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
 
 
@@ -3275,7 +3275,7 @@ CREATE MATERIALIZED VIEW public.breeders_series_4yo_mares_turf_qualifiers AS
                   ORDER BY race_schedules.id
                  LIMIT 1)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age >= 4) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WHERE ((h.age >= 4) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (bn.series_type = '4yo_mare_turf'::public.breeders_series_types)) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
 
 
@@ -3317,7 +3317,7 @@ CREATE MATERIALIZED VIEW public.breeders_series_4yo_turf_qualifiers AS
                   ORDER BY race_schedules.id
                  LIMIT 1)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age >= 4) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WHERE ((h.age >= 4) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'flat'::public.racehorse_type) AND (((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (bn.series_type = '4yo_turf'::public.breeders_series_types)) AND (COALESCE(turf.starts, 0) > 0) AND ((((COALESCE(turf.stakes_wins, 0) + COALESCE(turf.stakes_seconds, 0)) + COALESCE(turf.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
 
 
@@ -3415,7 +3415,7 @@ CREATE MATERIALIZED VIEW public.breeders_series_steeplechase_fillies_qualifiers 
                   ORDER BY race_schedules.id
                  LIMIT 1)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age >= 3) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(jump.starts, 0) > 0) AND ((((COALESCE(jump.stakes_wins, 0) + COALESCE(jump.stakes_seconds, 0)) + COALESCE(jump.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WHERE ((h.age >= 3) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['filly'::public.horse_gender, 'mare'::public.horse_gender])) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (bn.series_type = 'steeplechase_filly'::public.breeders_series_types)) AND (COALESCE(jump.starts, 0) > 0) AND ((((COALESCE(jump.stakes_wins, 0) + COALESCE(jump.stakes_seconds, 0)) + COALESCE(jump.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
 
 
@@ -3457,7 +3457,7 @@ CREATE MATERIALIZED VIEW public.breeders_series_steeplechase_qualifiers AS
                   ORDER BY race_schedules.id
                  LIMIT 1)))
           GROUP BY rr.horse_id) allowance_wins ON ((h.id = allowance_wins.horse_id)))
-  WHERE ((h.age >= 3) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND ((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (COALESCE(jump.starts, 0) > 0) AND ((((COALESCE(jump.stakes_wins, 0) + COALESCE(jump.stakes_seconds, 0)) + COALESCE(jump.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
+  WHERE ((h.age >= 3) AND ((h.type)::text = 'Horses::Horse::Racehorse'::text) AND (h.state = 'active'::public.horse_states) AND (h.gender = ANY (ARRAY['colt'::public.horse_gender, 'stallion'::public.horse_gender, 'gelding'::public.horse_gender])) AND (ro.racehorse_type = 'jump'::public.racehorse_type) AND (((bn.year)::double precision = date_part('Year'::text, CURRENT_DATE)) AND (bn.series_type = 'steeplechase'::public.breeders_series_types)) AND (COALESCE(jump.starts, 0) > 0) AND ((((COALESCE(jump.stakes_wins, 0) + COALESCE(jump.stakes_seconds, 0)) + COALESCE(jump.stakes_thirds, 0)) + COALESCE(allowance_wins.wins, (0)::bigint)) > 0))
   WITH NO DATA;
 
 
@@ -14684,6 +14684,20 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261110114445'),
+('20261110114422'),
+('20261110114356'),
+('20261110114332'),
+('20261110114308'),
+('20261110114242'),
+('20261110114209'),
+('20261110114143'),
+('20261110114119'),
+('20261110114052'),
+('20261110114027'),
+('20261110113952'),
+('20261110113354'),
+('20261110113308'),
 ('20261110105030'),
 ('20261108132522'),
 ('20261108132501'),

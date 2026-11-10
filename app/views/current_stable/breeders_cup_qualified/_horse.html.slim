@@ -18,19 +18,7 @@ tr
          p
            = race_string.humanize.titleize.gsub("Sc ", "SC ")
            = " - "
-           span
-             = t("horse.race_nominations.index.starts_count", count: qualification.starts)
-             = ", "
-           span
-             = t("horse.race_nominations.index.stakes_wins_count", count: qualification.stakes_wins)
-             = ", "
-           span
-             = t("horse.race_nominations.index.stakes_places_count", count: qualification.stakes_seconds + qualification.stakes_thirds)
-             = ", "
-           span
-             = t("horse.race_nominations.index.allowance_wins_count", count: qualification.allowance_wins)
-             = " - "
-           span= t("horse.race_nominations.index.points_count", count: qualification.points)
+           = qualification.record_string
            span= " - Rank #{rank}"
            - if tied.positive?
              = " (#{t("racing.breeders_cup_qualifiers.qualifier.tied_count", count: tied)})"

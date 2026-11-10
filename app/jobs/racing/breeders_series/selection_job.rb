@@ -4,8 +4,6 @@ class Racing::BreedersSeries::SelectionJob < ApplicationJob
   def perform(id:, series:)
     race = Racing::RaceSchedule.breeders_series.current_year.find_by(id:)
     return unless race
-    deadline = race.entry_open_date - Config::Racing.breeders_series_deadline_days.days
-    return unless Date.current <= deadline
 
     horses = 0
 
