@@ -54,7 +54,7 @@ module Horses
     has_one :breeders_series_4yo_turf_qualification, class_name: "Racing::Qualifications::BreedersSeries4yoTurf", foreign_key: :horse_id, inverse_of: :horse
     has_one :breeders_series_4yo_mare_turf_qualification, class_name: "Racing::Qualifications::BreedersSeries4yoMaresTurf", foreign_key: :horse_id, inverse_of: :horse
     has_one :breeders_series_steeplechase_qualification, class_name: "Racing::Qualifications::BreedersSeriesSteeplechase", foreign_key: :horse_id, inverse_of: :horse
-    has_one :breeders_series_filly_steeplechase_qualification, class_name: "Racing::Qualifications::BreedersSeriesFilliesSteeplechase", foreign_key: :horse_id, inverse_of: :horse
+    has_one :breeders_series_steeplechase_filly_qualification, class_name: "Racing::Qualifications::BreedersSeriesFilliesSteeplechase", foreign_key: :horse_id, inverse_of: :horse
     # rubocop:enable Rails/HasManyOrHasOneDependent
 
     scope :racehorse_status, ->(status) {
@@ -140,7 +140,7 @@ module Horses
         #{assoc_exists_sql(:breeders_series_3yo_turf_qualification)} OR #{assoc_exists_sql(:breeders_series_3yo_filly_turf_qualification)} OR
         #{assoc_exists_sql(:breeders_series_4yo_dirt_qualification)} OR #{assoc_exists_sql(:breeders_series_4yo_mare_dirt_qualification)} OR
         #{assoc_exists_sql(:breeders_series_4yo_turf_qualification)} OR #{assoc_exists_sql(:breeders_series_4yo_mare_turf_qualification)} OR
-        #{assoc_exists_sql(:breeders_series_steeplechase_qualification)} OR #{assoc_exists_sql(:breeders_series_filly_steeplechase_qualification)}")
+        #{assoc_exists_sql(:breeders_series_steeplechase_qualification)} OR #{assoc_exists_sql(:breeders_series_steeplechase_filly_qualification)}")
     }
     scope :breeders_cup_qualified_enterable, -> { where(id: ::Racing::BreedersCupPotentialEntry.max_rank.select(:horse_id)) }
     scope :breeders_series_qualified_enterable, -> { where(id: ::Racing::BreedersSeriesPotentialEntry.max_rank.select(:horse_id)) }
