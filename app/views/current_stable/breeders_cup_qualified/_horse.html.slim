@@ -1,13 +1,19 @@
 /# locals: (horse:)
-- record = horse.annual_race_records.current_year.order(year: :asc).first
+ruby:
+  record = horse.annual_race_records.current_year.order(year: :asc).first
+  nomination = horse.breeders_cup_nomination
+  needs_supplemental_nomination = nomination.blank? || (!nomination.effective_year.blank? && nomination.effective_year > Date.current.year)
+  supplemental_nomination = horse.supplemental_breeders_cup_nomination
 tr
   td class="text-#{horse.gender}" = link_to horse.name_with_title, horse_path(horse), target: "_top"
   td= record.overall_string
   td
-    - if Racing::BreedersCupPotentialEntry.exists? && false
+    - if Racing::BreedersCupPotentialEntry.exists?
       - Racing::BreedersCupPotentialEntry.max_rank.joins(:horse, :race).includes(:race).where(horse:).order(rank: :asc).each do |entry|
         p= t(".qualification", race: entry.race.name, rank: entry.rank)
     - else
+     - if !nomination && needs_supplemental_nomination && supplemental_nomination.blank?
+       p.text-error= t("horse.race_nominations.index.not_nominated")
      - horse.breeders_cup_potential_races.each do |race_string|
        - if (qualification = horse.send("breeders_cup_#{race_string}_qualification"))
          ruby:
@@ -15,10 +21,13 @@ tr
            better_ranked = klass.nominated.better_ranked(qualification).count
            rank = better_ranked + 1
            tied = klass.nominated.identically_ranked(qualification).count - 1
-         p
-           = race_string.humanize.titleize.gsub("Sc ", "SC ")
-           = " - "
-           = qualification.record_string
-           span= " - Rank #{rank}"
-           - if tied.positive?
-             = " (#{t("racing.breeders_cup_qualifiers.qualifier.tied_count", count: tied)})"
+         - if nomination || !supplemental_nomination || supplemental_nomination&.race&.breeders_cup_type == race_string
+          - if supplemental_nomination&.race&.breeders_cup_type == race_string
+            p.text-success= t("horse.race_nominations.index.supplemented")
+          p
+            = race_string.humanize.titleize.gsub("Sc ", "SC ")
+            = " - "
+            = qualification.record_string
+            span= " - Rank #{rank}"
+            - if tied.positive?
+              = " (#{t("racing.breeders_cup_qualifiers.qualifier.tied_count", count: tied)})"

@@ -1,6 +1,8 @@
 class CurrentStable::BreedersCupQualifiedController < AuthenticatedController
   def index
-    @query = if Racing::BreedersCupPotentialEntry.exists? && Racing::RaceSchedule.breeders_cup.current_year.exists?
+    @query = if !Racing::RaceSchedule.breeders_cup.current_year.exists?
+      policy_scope(Horses::Horse::Racehorse.none, policy_scope_class: CurrentStable::HorsePolicy::Scope)
+    elsif Racing::BreedersCupPotentialEntry.exists? && Racing::RaceSchedule.breeders_cup.current_year.exists?
       policy_scope(Horses::Horse::Racehorse.breeders_cup_qualified_enterable, policy_scope_class: CurrentStable::HorsePolicy::Scope)
     else
       policy_scope(Horses::Horse::Racehorse.breeders_cup_qualified, policy_scope_class: CurrentStable::HorsePolicy::Scope)

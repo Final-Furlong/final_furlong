@@ -245,7 +245,7 @@ shared:
     - key: breeders_series_steeplechase_qualification
       series: steeplechase
       class: Racing::Qualifications::BreedersSeriesSteeplechase
-    - key: breeders_series_filly_steeplechase_qualification
+    - key: breeders_series_steeplechase_filly_qualification
       series: steeplechase_filly
       class: Racing::Qualifications::BreedersSeriesFilliesSteeplechase
   stats:

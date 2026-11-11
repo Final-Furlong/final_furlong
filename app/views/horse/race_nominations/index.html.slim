@@ -47,7 +47,7 @@
             i.ph.ph-warning.mr-2
             - deadline = races.first[:race].entry_open_date - Config::Racing.breeders_cup_nomination_deadline_days.days
             = t(".supplemental_nomination_deadline", date: l(deadline))
-        - if !nomination && needs_supplemental_nomination && !CurrentStable::RacehorsePolicy.new(Current.user, @horse).supplemental_nominate?
+        - if !nomination && needs_supplemental_nomination && !CurrentStable::RacehorsePolicy.new(Current.user, @horse).supplemental_nominate? && Racing::RaceSchedule.breeders_cup.current_year.exists?
           p.text-warning.text-center.my-2= t(".supplemental_nomination_deadline_passed")
         - races.each do |info|
           - if !nomination && needs_supplemental_nomination && @horse.supplemental_breeders_cup_nomination&.race != info[:race]
@@ -82,23 +82,38 @@
             series = []
             first_race = Racing::RaceSchedule.breeders_series.current_year.order(date: :asc).first
             qualification_deadline = first_race.entry_open_date - Config::Racing.breeders_series_deadline_days.days
-            @horse.breeders_series_types.each do |series|
-              series_info = Config::Racing.qualification_classes.find { |info| info[:series] == series }
-              info = { series_name: series_info[:key] }
-              surface = series_info[:key].include?('turf') ? 'turf' : (series_info[:key].include?('dirt') ? 'dirt' : 'steeplechase')
-              info[:races] = Racing::RaceSchedule.breeders_series.current_year.for_age(@horse.age).for_gender(@horse.gender).for_racehorse_type(options.racehorse_type).joins(:track_surface).merge(Racing::TrackSurface.send(surface)).order(date: :asc).all
-              if (qualification = @horse.send(:"#{series_info[:key]}"))
-                info[:qualification] = qualification
-                klass = series_info[:class].constantize
-                info[:better_ranked] = klass.better_ranked(qualification).count
-                info[:rank] = info[:better_ranked] + 1
-                info[:tied] = klass.identically_ranked(qualification).count - 1
-                info[:total] = klass.count
-                info[:percent] = info[:rank].fdiv(info[:total])
+            if Date.current < qualification_deadline
+              @horse.breeders_series_types.each do |series|
+                series_info = Config::Racing.qualification_classes.find { |info| info[:series] == series }
+                info = { series_name: series_info[:key] }
+                surface = series_info[:key].include?('turf') ? 'turf' : (series_info[:key].include?('dirt') ? 'dirt' : 'steeplechase')
+                info[:races] = Racing::RaceSchedule.breeders_series.current_year.for_age(@horse.age).for_gender(@horse.gender).for_racehorse_type(options.racehorse_type).joins(:track_surface).merge(Racing::TrackSurface.send(surface)).order(date: :asc).all
+                if (qualification = @horse.send(:"#{series_info[:key]}"))
+                  info[:qualification] = qualification
+                  klass = series_info[:class].constantize
+                  info[:better_ranked] = klass.better_ranked(qualification).count
+                  info[:rank] = info[:better_ranked] + 1
+                  info[:tied] = klass.identically_ranked(qualification).count - 1
+                  info[:total] = klass.count
+                  info[:percent] = info[:rank].fdiv(info[:total])
+                end
               end
               races << info
+            else
+              Racing::BreedersSeriesPotentialEntry.where(horse: @horse).max_rank.each do |potential_entry|
+                series_info = Config::Racing.qualification_classes.find { |info| info[:series] == potential_entry.series }
+                info = { series_name: series_info[:key] }
+                surface = series_info[:key].include?('turf') ? 'turf' : (series_info[:key].include?('dirt') ? 'dirt' : 'steeplechase')
+                info[:races] = Racing::RaceSchedule.breeders_series.current_year.for_age(@horse.age).for_gender(@horse.gender).for_racehorse_type(options.racehorse_type).joins(:track_surface).merge(Racing::TrackSurface.send(surface)).order(date: :asc).all
+                klass = series_info[:class].constantize
+                info[:rank] = potential_entry.rank
+                info[:qualification] = @horse.send(:"#{series_info[:key]}")
+                info[:tied] = 0
+                info[:total] = Racing::BreedersSeriesPotentialEntry.max_rank.where(series: potential_entry.series).order(rank: :desc).first.rank
+                races << info
+              end
             end
-          p.text-center.text-warning= t(".breeders_series_qualification_ends", date: qualification_deadline)
+          p.text-center.text-warning= t(".breeders_series_qualification_ends", date: qualification_deadline) if Date.current < qualification_deadline
           - races.each do |info|
             p.mt-2 = t(".#{info[:series_name]}")
             - info[:races].each do |race|

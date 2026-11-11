@@ -3354,7 +3354,8 @@ CREATE TABLE public.breeders_series_potential_entries (
     second_race_id bigint,
     third_race_id bigint,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    series character varying
 );
 
 
@@ -10868,6 +10869,13 @@ CREATE INDEX index_breeders_series_potential_entries_on_second_race_id ON public
 
 
 --
+-- Name: index_breeders_series_potential_entries_on_series_and_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_breeders_series_potential_entries_on_series_and_horse_id ON public.breeders_series_potential_entries USING btree (series, horse_id);
+
+
+--
 -- Name: index_breeders_series_potential_entries_on_stable_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -14684,6 +14692,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261111112728'),
 ('20261110114445'),
 ('20261110114422'),
 ('20261110114356'),

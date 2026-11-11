@@ -1,6 +1,6 @@
 ruby:
   if Racing::RaceSchedule.breeders_cup.current_year.exists?
-    if Racing::BreedersCupPotentialEntry.exists? && Racing::RaceSchedule.breeders_cup.current_year.exists?
+    if Racing::BreedersCupPotentialEntry.exists?
       bc_qualified = Racing::BreedersCupPotentialEntry.joins(:horse).max_rank.merge(Horses::Horse.managed_by(Current.stable)).exists?
       bc_count = Horses::Horse::Racehorse.managed_by(Current.stable).breeders_cup_qualified_enterable.count
     else

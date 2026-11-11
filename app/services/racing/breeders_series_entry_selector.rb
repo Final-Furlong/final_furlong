@@ -8,11 +8,12 @@ module Racing
       result = Result.new
       rank = 1
       horse_ids = []
-      key = "breeders_series_#{series.delete("'").tr(" ", "_").downcase}_qualification"
+      series_key = series.delete("'").tr(" ", "_").downcase
+      key = "breeders_series_#{series_key}_qualification"
       class_info = Config::Racing.qualification_classes.find { |info| info[:key] == key }
       klass = class_info[:class].constantize
       while rank <= 50
-        horse_ids, rank, horses_added = process_qualifiers(klass:, horse_ids:, rank:, series:)
+        horse_ids, rank, horses_added = process_qualifiers(klass:, horse_ids:, rank:, series:, series_key:)
         break if horses_added.zero?
       end
       result.horses += horse_ids.count
@@ -33,7 +34,7 @@ module Racing
       end
     end
 
-    def process_qualifiers(klass:, horse_ids:, rank:, series:)
+    def process_qualifiers(klass:, horse_ids:, rank:, series:, series_key:)
       horses = 0
       max_horses = 50
       query = klass.joins(:horse).includes(:horse).where.not(horse_id: horse_ids).merge(Horses::Horse.not_game_owned)
@@ -49,7 +50,7 @@ module Racing
           tied_horses.each do |tied_qualifier|
             break if rank > max_horses
 
-            if create_entry(horse: tied_qualifier.horse, qualifier: tied_qualifier, rank:, series:)
+            if create_entry(horse: tied_qualifier.horse, qualifier: tied_qualifier, rank:, series:, series_key:)
               horse_ids << tied_qualifier.horse_id
               rank += 1
               horses += 1
@@ -57,7 +58,7 @@ module Racing
           end
           return [horse_ids, rank, horses]
         else
-          create_entry(horse:, qualifier:, rank:, series:)
+          create_entry(horse:, qualifier:, rank:, series:, series_key:)
           horse_ids << qualifier.horse_id
           rank += 1
           horses += 1
@@ -66,7 +67,7 @@ module Racing
       [horse_ids, rank, horses]
     end
 
-    def create_entry(horse:, qualifier:, rank:, series:)
+    def create_entry(horse:, qualifier:, rank:, series:, series_key:)
       race_query = Racing::RaceSchedule.joins(:track_surface).where.not(id: race.id).merge(Racing::RaceSchedule.breeders_series)
       race_query = if series.starts_with?("Steeplechase")
         race_query.where(track_surface: { surface: "steeplechase" })
@@ -97,6 +98,7 @@ module Racing
       record += "#{I18n.t("horse.race_nominations.index.allowance_wins_count", count: qualifier.allowance_wins)}, "
       record += I18n.t("horse.race_nominations.index.points_count", count: qualifier.points)
       entry.record = record
+      entry.series = series_key
       unless entry.persisted?
         entry.rank = rank
       end

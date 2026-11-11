@@ -235,6 +235,12 @@ class Racing::RaceSchedule < ApplicationRecord
     "#{distance.to_s.gsub(".0", "")}f"
   end
 
+  def breeders_cup_type
+    return unless race_type == "stakes" && requires_qualification?
+
+    name.gsub("Breeders' Cup ", "").gsub("&", "and").tr(" ", "_").downcase
+  end
+
   def breeders_series_name
     return if race_type != "stakes" && !requires_qualification?
 

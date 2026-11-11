@@ -12,7 +12,7 @@ class Racing::BreedersSeries::BulkSelectionJob < ApplicationJob
     batch = GoodJob::Batch.new
     Racing::RaceSchedule.breeders_series.current_year.includes(:track_surface).find_each do |race|
       series_name = if race.track_surface.surface.steeplechase?
-        race.male_only? ? "Steeplechase" : "Filly Steeplechase"
+        race.male_only? ? "Steeplechase" : "Steeplechase Filly"
       elsif race.age == "2"
         if race.track_surface.surface.dirt?
           race.male_only? ? "2yo Dirt" : "2yo Filly Dirt"
