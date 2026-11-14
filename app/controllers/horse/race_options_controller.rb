@@ -32,7 +32,7 @@ module Horse
     def options_params
       params.expect(racing_race_option: [:racing_style, :first_jockey, :second_jockey, :third_jockey, :minimum_distance, :maximum_distance,
         :blinkers, :shadow_roll, :wraps, :no_whip, :figure_8, :note_for_next_race, :racing_style, :runs_on_dirt, :runs_on_turf,
-        :trains_on_dirt, :trains_on_turf])
+        :trains_on_dirt, :trains_on_turf, :never_switch_to_jumps, :rest_date_for_racing, :rest_date_for_workouts])
     end
   end
 end

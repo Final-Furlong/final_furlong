@@ -28,6 +28,13 @@
             = t(".trains_on_turf")
             - if options.errors[:trains_on_turf]
               p.text-error= options.errors.where(:trains_on_turf).map(&:full_message).join(', ')
+    .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        label.label
+          = f.checkbox :never_switch_to_jumps, class: 'toggle validator', required: true
+          = t(".never_switch_to_jumping")
+          - if options.errors[:never_switch_to_jumps]
+            p.text-error= options.errors.where(:never_switch_to_jumps).map(&:full_message).join(', ')
   .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
     div
       fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
@@ -85,6 +92,13 @@
         .label= t(".note_hint")
         - if options.errors[:note_for_next_race]
           p.text-error= options.errors.where(:note_for_next_race).map(&:full_message).join(', ')
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".rest_until_date")
+        = f.date_field :rest_date_for_racing, class: 'input w-auto validator', required: true, value: options.rest_date_for_racing, min: Date.current
+        p.label= t(".rest_until_hint")
+      - if options.errors[:rest_date_for_racing]
+        p.text-error= options.errors.where(:rest_date_for_racing).map(&:full_message).join(', ')
   .float-right
     = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
     = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.save"))

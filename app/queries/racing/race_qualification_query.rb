@@ -42,8 +42,10 @@ module Racing
         @query = @query.not_female if male_only
         @query = @query.joins(:race_options).merge(Racing::RaceOption.distance_matching(distance))
           .merge(Racing::RaceOption.send(surface_name.to_sym))
-        if surface_type.flat?
-          @query = @query.merge(Racing::RaceOption.send(surface_type.to_sym))
+        @query = if surface_type.flat?
+          @query.merge(Racing::RaceOption.send(surface_type.to_sym))
+        else
+          @query.merge(Racing::RaceOption.not_excluded_from_jumping)
         end
       end
       @query

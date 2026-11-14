@@ -18,6 +18,20 @@ module CurrentStable
       elsif params.dig(:q, :gender_in) == "female"
         params[:q][:gender_in] = Horses::Gender::FEMALE_GENDERS
       end
+      if params.dig(:q, :missing_training_schedule) == "true"
+        @query = @query.where.missing(:training_schedule)
+      end
+      if params.dig(:q, :missing_jockey_choices) == "true"
+        @query = @query.joins(:race_options).where(race_options: { first_jockey_id: nil })
+      end
+      @query = if params.dig(:q, :resting_from_racing) == "true"
+        @query.joins(:race_options).where.not(race_options: { rest_date_for_racing: nil })
+      else
+        @query.joins(:race_options).where(race_options: { rest_date_for_racing: nil })
+      end
+      if params.dig(:q, :resting_from_workouts) == "true"
+        @query = @query.joins(:race_options).where.not(race_options: { rest_date_for_workouts: nil })
+      end
 
       @query = @query.joins(:race_qualification, :racehorse_metadata)
       @query = @query.includes(:race_qualification, :racehorse_metadata,

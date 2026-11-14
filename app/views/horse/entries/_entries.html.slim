@@ -20,6 +20,7 @@ ruby:
                       t("horses.info.last_race_info_equipment", date:, days: relative_time_in_words(last_race.date.beginning_of_day), track:, number:, distance:, type:, age_gender:, surface: , position: , horses:, equipment:)
                     end
   end
+  options = horse.race_options
 .w-full.text-center.mb-4
   - grade = data.energy_grade
   - grade_class = %w[A B].include?(grade) ? "success" : (grade == "C" ? "warning" : "error")
@@ -47,6 +48,11 @@ ruby:
       i.ph.ph-flag-checkered.mr-2
       = t(".last_race")
       = last_race_info
+- if (rest_date = options&.rest_date_for_racing)
+  .w-full.text-center.mb-4
+    span.text-warning
+      i.ph.ph-pause.mr-2
+      = t(".rest_date", date: l(rest_date))
 
 - if (note = horse.race_options&.note_for_next_race)
   .w-full.text-center.mb-4

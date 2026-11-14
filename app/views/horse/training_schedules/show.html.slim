@@ -13,6 +13,9 @@ ruby:
   = render Ui::Button::Component.new(color: :error, style: :outline, size: :small, http_method: :delete, form_class: "inline ml-2", data:, url: horse_training_schedule_path(@horse)) do
     = t("current_stable.training_schedules.horse.remove")
 
+.my-2
+  = render partial: "pause_workout_form", locals: { horse: @horse }
+
 .card.card-border.bg-base-100.w-full.px-2.rounded-none
   .card-body.p-0.rounded-none
     .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none

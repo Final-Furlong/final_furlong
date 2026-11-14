@@ -1,0 +1,13 @@
+/# locals: (horse:)
+- options = horse.race_options
+= form_with model: options, url: horse_workout_pauses_path(horse), id: "pause-workout-form", html: { class: "form", novalidate: true }, method: :post, data: { turbo_frame: "_top" } do |f|
+  div
+    fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+      legend.fieldset-legend= t(".pause_until_date")
+      = f.date_field :rest_date_for_workouts, class: 'input w-auto validator', required: true, value: options.rest_date_for_workouts, min: Date.current
+      p.label= t(".pause_until_hint")
+    - if options.errors[:rest_date_for_workouts]
+      p.text-error= options.errors.where(:rest_date_for_workouts).map(&:full_message).join(', ')
+  .float-right.mb-2
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.save"))

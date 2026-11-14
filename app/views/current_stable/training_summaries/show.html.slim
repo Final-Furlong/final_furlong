@@ -7,6 +7,9 @@
       thead
         tr
           th.text-sm.text-center= sort_link @query, :name, t(".horse")
+          th.text-sm.text-center
+            .tooltip.ml-2.text-lg data-tip=t(".note_hint")
+              i.ph-fill.ph-note
           th.text-sm.text-center= sort_link @query, :age, [:age, 'name asc'], t(".age")
           th.text-sm.text-center= sort_link @query, :gender, [:gender, 'name asc'], t(".gender")
           th.text-sm.text-center= sort_link @query, :energy, [:energy, 'name asc'], t(".energy")

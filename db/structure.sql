@@ -1178,7 +1178,10 @@ CREATE TABLE public.race_options (
     note_for_next_race text,
     next_race_note_created_at timestamp(6) with time zone,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    never_switch_to_jumps boolean DEFAULT false NOT NULL,
+    rest_date_for_racing date,
+    rest_date_for_workouts date
 );
 
 
@@ -12318,6 +12321,13 @@ CREATE INDEX index_race_options_on_minimum_distance ON public.race_options USING
 
 
 --
+-- Name: index_race_options_on_never_switch_to_jumps; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_options_on_never_switch_to_jumps ON public.race_options USING btree (never_switch_to_jumps);
+
+
+--
 -- Name: index_race_options_on_next_race_note_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -12336,6 +12346,20 @@ CREATE INDEX index_race_options_on_racehorse_type ON public.race_options USING b
 --
 
 CREATE INDEX index_race_options_on_racing_style ON public.race_options USING btree (racing_style);
+
+
+--
+-- Name: index_race_options_on_rest_date_for_racing; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_options_on_rest_date_for_racing ON public.race_options USING btree (rest_date_for_racing);
+
+
+--
+-- Name: index_race_options_on_rest_date_for_workouts; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_race_options_on_rest_date_for_workouts ON public.race_options USING btree (rest_date_for_workouts);
 
 
 --
@@ -14692,6 +14716,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261114134339'),
 ('20261111112728'),
 ('20261110114445'),
 ('20261110114422'),

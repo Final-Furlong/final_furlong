@@ -1,0 +1,3 @@
+= link_to t("horse.actions.switch_to_jumps"), horse_jumper_path(object), class: classes,
+        data: { turbo_method: :put, turbo_confirm: t("horse.switch_to_jumps.confirm", name: object.name),
+                turbo_confirm_title: t("horse.switch_to_jumps.confirm_title"), turbo_frame: "_top" }

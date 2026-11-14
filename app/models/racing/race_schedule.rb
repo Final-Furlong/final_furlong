@@ -86,6 +86,8 @@ class Racing::RaceSchedule < ApplicationRecord
         joins(:track_surface).merge(Racing::TrackSurface.dirt_or_jump)
       elsif options.trains_on_turf && !options.trains_on_dirt
         joins(:track_surface).merge(Racing::TrackSurface.turf_or_jump)
+      elsif options.never_switch_to_jumps
+        joins(:track_surface).merge(Racing::TrackSurface.flat)
       else
         all
       end
@@ -94,6 +96,9 @@ class Racing::RaceSchedule < ApplicationRecord
     end
     query = query.where(distance: options.minimum_distance..)
     query = query.where(distance: ..options.maximum_distance)
+    if options.rest_date_for_racing
+      query = query.where(date: options.rest_date_for_racing..)
+    end
     query
   }
   scope :ordered_by_race_type, -> { in_order_of(:race_type, Config::Racing.all_types) }

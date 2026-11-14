@@ -16,6 +16,9 @@ class Workouts::ProcessWorkoutJob < ApplicationJob
     return if horse.race_result_finishes.joins(:race).where(race: { date: }).present?
     return if horse.workouts.where(date:).present?
     return if horse.race_entries.present?
+    if horse.race_options&.rest_date_for_workouts
+      return if horse.race_options.rest_date_for_workouts >= Date.current
+    end
 
     data = horse.racehorse_metadata
     case horse.manager.user&.setting&.racing&.[](:min_energy_for_workout)

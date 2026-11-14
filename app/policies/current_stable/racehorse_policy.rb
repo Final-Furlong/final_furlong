@@ -69,11 +69,6 @@ module CurrentStable
       logged_in?
     end
 
-    def nominate?
-      # TODO: migrate racehorse noms + implement them
-      false
-    end
-
     def late_nominate?
       return false if record.breeders_cup_nomination
 
@@ -99,6 +94,14 @@ module CurrentStable
       return false unless racehorse_and_manager?
 
       record.future_race_entries.count < Config::Racing.future_race_limit
+    end
+
+    def switch_to_jumps?
+      return false unless racehorse_and_manager?
+      options = record.race_options
+      return false if options&.racehorse_type != "flat"
+
+      options&.never_switch_to_jumps == false
     end
 
     def board?

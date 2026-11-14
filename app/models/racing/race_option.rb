@@ -25,6 +25,9 @@ module Racing
     validates :third_jockey, comparison: { other_than: :second_jockey }, if: :second_jockey
     validates :second_jockey_id, uniqueness: { scope: [:horse_id, :first_jockey_id, :third_jockey_id] }
     validates :third_jockey_id, uniqueness: { scope: [:horse_id, :first_jockey_id, :second_jockey_id] }
+    validates :never_switch_to_jumps, inclusion: { in: [true, false] }
+    validates :rest_date_for_racing, comparison: { greater_than: Date.current }, allow_blank: true
+    validates :rest_date_for_workouts, comparison: { greater_than: Date.current }, allow_blank: true
 
     scope :flat, -> { where(racehorse_type: "flat") }
     scope :jump, -> { where(racehorse_type: "jump") }
@@ -32,6 +35,7 @@ module Racing
     scope :dirt, -> { where(runs_on_dirt: true).flat }
     scope :turf, -> { where(runs_on_turf: true).flat }
     scope :steeplechase, -> {}
+    scope :not_excluded_from_jumping, -> { where(never_switch_to_jumps: false) }
 
     def racehorse_type = super.to_s.inquiry
 
@@ -74,7 +78,7 @@ module Racing
 
     def options_for_surface_select
       options = surface_options
-      options << "steeplechase" if racehorse_type == "flat"
+      options << "steeplechase" if racehorse_type == "flat" && !never_switch_to_jumps
       options.map do |surface|
         [surface, I18n.t("racing.race.surface_#{surface.downcase}")]
       end
@@ -104,10 +108,13 @@ end
 #  equipment                                      :integer          default(0), not null
 #  maximum_distance                               :decimal(3, 1)    default(24.0), not null, indexed
 #  minimum_distance                               :decimal(3, 1)    default(5.0), not null, indexed
+#  never_switch_to_jumps                          :boolean          default(FALSE), not null, indexed
 #  next_race_note_created_at                      :datetime         indexed
 #  note_for_next_race                             :text
 #  racehorse_type(flat,jump)                      :enum             indexed
 #  racing_style(leading,off_pace,midpack,closing) :enum             indexed
+#  rest_date_for_racing                           :date             indexed
+#  rest_date_for_workouts                         :date             indexed
 #  runs_on_dirt                                   :boolean          default(TRUE), not null
 #  runs_on_turf                                   :boolean          default(TRUE), not null
 #  trains_on_dirt                                 :boolean          default(TRUE), not null
@@ -129,9 +136,12 @@ end
 #  index_race_options_on_horse_id                                  (horse_id) UNIQUE
 #  index_race_options_on_maximum_distance                          (maximum_distance)
 #  index_race_options_on_minimum_distance                          (minimum_distance)
+#  index_race_options_on_never_switch_to_jumps                     (never_switch_to_jumps)
 #  index_race_options_on_next_race_note_created_at                 (next_race_note_created_at)
 #  index_race_options_on_racehorse_type                            (racehorse_type)
 #  index_race_options_on_racing_style                              (racing_style)
+#  index_race_options_on_rest_date_for_racing                      (rest_date_for_racing)
+#  index_race_options_on_rest_date_for_workouts                    (rest_date_for_workouts)
 #  index_race_options_on_second_jockey_id                          (second_jockey_id)
 #  index_race_options_on_third_jockey_id                           (third_jockey_id)
 #

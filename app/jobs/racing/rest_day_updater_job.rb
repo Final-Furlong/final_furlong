@@ -12,6 +12,11 @@ class Racing::RestDayUpdaterJob < ApplicationJob
       horses += 1
     end
 
+    # rubocop:disable Rails/SkipsModelValidations
+    Racing::RaceOption.where(rest_date_for_racing: ...Date.current).update_all(rest_date_for_racing: nil)
+    Racing::RaceOption.where(rest_date_for_workouts: ...Date.current).update_all(rest_date_for_workouts: nil)
+    # rubocop:enable Rails/SkipsModelValidations
+
     store_job_info(outcome: { horses: })
     Shipping::ProcessArrivalsJob.perform_later
   end
