@@ -23,7 +23,7 @@ module CurrentStable
         end
         query = policy_scope(horses_query, policy_scope_class: CurrentStable::HorsePolicy::Scope)
       end
-      query = query.order(training_schedules: { id: :asc }, name: :asc)
+      query = query.order("training_schedules.id NULLS FIRST").order(name: :asc)
 
       @pagy, @horses = pagy(:offset, query)
       page = type.workouts? ? "workouts" : "index"

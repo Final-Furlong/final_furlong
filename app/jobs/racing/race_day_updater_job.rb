@@ -70,6 +70,8 @@ class Racing::RaceDayUpdaterJob < ApplicationJob
       Racing::Qualifications::BreedersCupSteeplechaseEndurance.refresh
       Racing::Qualifications::BreedersCupSteeplechaseDistaff.refresh
       Racing::Qualifications::BreedersCupSteeplechaseDistaffEndurance.refresh
+    else
+      Racing::BreedersCupPotentialEntry.delete_all
     end
     if Racing::RaceSchedule.breeders_series.current_year.exists?
       Racing::Qualifications::BreedersSeries2yoDirt.refresh
@@ -86,6 +88,8 @@ class Racing::RaceDayUpdaterJob < ApplicationJob
       Racing::Qualifications::BreedersSeries4yoMaresTurf.refresh
       Racing::Qualifications::BreedersSeriesSteeplechase.refresh
       Racing::Qualifications::BreedersSeriesFilliesSteeplechase.refresh
+    else
+      Racing::BreedersSeriesPotentialEntry.delete_all
     end
   end
 end
