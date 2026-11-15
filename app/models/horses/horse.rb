@@ -90,6 +90,26 @@ module Horses
     scope :random_order, -> { order("RANDOM()") }
     scope :sort_by_status_asc, -> { in_order_of(:type, %w[Horses::Horse::Broodmare Horses::Horse::Racehorse Horses::Horse::Stud Horses::Horse::Foal]).order(age: :asc) }
     scope :sort_by_status_desc, -> { in_order_of(:type, %w[Horses::Horse::Foal Horses::Horse::Stud Horses::Horse::Racehorse Horses::Horse::Broodmare]).order(age: :desc) }
+    scope :status_matches, ->(status) {
+      case status.to_s.downcase
+      when "racehorse"
+        where(type: "Horses::Horse::Racehorse", state: "active")
+      when "broodmare"
+        where(type: "Horses::Horse::Broodmare", state: "active")
+      when "stud"
+        where(type: "Horses::Horse::Stud", state: "active")
+      when "yearling"
+        where(type: "Horses::Horse::Foal", state: "active", age: 1)
+      when "weanling"
+        where(type: "Horses::Horse::Foal", state: "active", age: 0)
+      when "retired"
+        where(state: "retired")
+      when "deceased"
+        where(state: "deceased")
+      else
+        none
+      end
+    }
 
     alias_method :dead?, :deceased?
 
@@ -199,11 +219,12 @@ module Horses
     end
 
     def self.ransackable_scopes(_auth_object = nil)
-      %w[min_age max_age gender female male not_female racehorse_status min_energy max_energy energy_in
+      %i[min_age max_age gender female male not_female racehorse_status min_energy max_energy energy_in
         min_fitness max_fitness fitness_in runs_on injury_status min_days_since_last_race max_days_since_last_race
         min_days_since_last_shipment max_days_since_last_shipment min_workouts_since_last_race max_workouts_since_last_race
         location entry_status injury_status min_rest_days_since_last_race max_rest_days_since_last_race
-        min_days_since_last_shipment max_days_since_last_shipment min_workouts_since_last_race max_workouts_since_last_race]
+        min_days_since_last_shipment max_days_since_last_shipment min_workouts_since_last_race max_workouts_since_last_race
+        status_matches]
     end
 
     def self.ransackable_scopes_skip_sanitize_args

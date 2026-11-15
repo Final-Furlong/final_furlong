@@ -43,26 +43,26 @@
     - if @active_tab == :unsold
       a.tab.tab-active = label
     - else
-      = link_to label, auction_path(@auction, tab: :unsold), class: "tab", data: { turbo_frame: "_top" }
+      = link_to label, auction_path(@auction, tab: :unsold), class: "tab", data: { turbo: false }
     .tab-content.bg-base-100.py-2
       - if @active_tab == :unsold
-        = render "auctions/horses/index", auction: @auction, active_tab: @active_tab, include_reserve: @include_reserve, horses: @horses, pagy: @pagy
+        = render "auctions/horses/index", auction: @auction, active_tab: @active_tab, include_reserve: @include_reserve, horses: @horses, pagy: @pagy, total_count: @unsold
 
     - label = t(".pending_horses_count", count: @pending)
     - if @active_tab == :pending
       a.tab.tab-active = label
     - else
-      = link_to label, auction_path(@auction, tab: :pending), class: "tab", data: { turbo_frame: "_top" }
+      = link_to label, auction_path(@auction, tab: :pending), class: "tab", data: { turbo: false }
     .tab-content.bg-base-100.py-2
       - if @active_tab == :pending
-        = render "auctions/horses/index", auction: @auction, active_tab: @active_tab, include_reserve: @include_reserve, horses: @horses, pagy: @pagy
+        = render "auctions/horses/index", auction: @auction, active_tab: @active_tab, include_reserve: @include_reserve, horses: @horses, pagy: @pagy, total_count: @pending
 
     - label = t(".sold_horses_count", count: @sold)
     - if @active_tab == :sold
       a.tab.tab-active = label
     - else
-      = link_to label, auction_path(@auction, tab: :sold), class: "tab", data: { turbo_frame: "_top" }
+      = link_to label, auction_path(@auction, tab: :sold), class: "tab", data: { turbo: false }
 
     .tab-content.bg-base-100.py-2
       - if @active_tab == :sold
-        = render "auctions/horses/index", auction: @auction, active_tab: @active_tab, include_reserve: @include_reserve, horses: @horses, pagy: @pagy
+        = render "auctions/horses/index", auction: @auction, active_tab: @active_tab, include_reserve: @include_reserve, horses: @horses, pagy: @pagy, total_count: @sold

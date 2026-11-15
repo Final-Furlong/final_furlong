@@ -41,6 +41,7 @@ module Auctions
     scope :yearling, -> { joins(:horse).where(horse: { type: "Horses::Horse.yearling", state: "active" }) }
     scope :weanling, -> { joins(:horse).where(horse: { type: "Horses::Horse.weanling", state: "active" }) }
     scope :associated_with_stable, ->(stable) { where("(seller_id = :id OR buyer_id = :id)", { id: stable.id }) }
+    scope :status_matches, ->(status) { joins(:horse).merge(Horses::Horse.status_matches(status)) }
 
     delegate :name, :sire, :dam, :age, :gender, :status, to: :horse
 
@@ -69,6 +70,10 @@ module Auctions
 
     def self.ransackable_associations(_auth_object = nil)
       %w[auction bids buyer horse seller winning_bid]
+    end
+
+    def self.ransackable_scopes(_auth_object = nil)
+      %i[status_matches]
     end
 
     private

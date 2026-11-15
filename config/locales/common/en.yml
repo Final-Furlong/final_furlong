@@ -16,7 +16,7 @@ en:
     confirm:
       default_message: Are you sure you want to do this?
       title: Are you sure?
-      'yes': Yes, go ahead
+      "yes": Yes, go ahead
     confirmation:
       delete_with_name: Are you sure you want to delete %{name}?
     create: Create
@@ -42,6 +42,8 @@ en:
     edit: Edit
     error: Something went wrong
     filters: Filters
+    max: Max
+    min: Min
     month: Month
     month_count:
       one: 1 month
@@ -57,11 +59,11 @@ en:
     select_deselect_all: Select / Deselect All
     text:
       attention: Attention
-      'false': 'No'
+      "false": "No"
       info: Info
-      'no': 'No'
-      'true': 'Yes'
-      'yes': 'Yes'
+      "no": "No"
+      "true": "Yes"
+      "yes": "Yes"
     year: Year
     year_count:
       one: 1 year

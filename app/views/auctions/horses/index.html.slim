@@ -1,4 +1,5 @@
 .mx-auto.overflow-x-auto.rounded-md.w-full
+  = render partial: "auctions/horses/filters", locals: { auction: @auction, tab: @active_tab }
   .table-responsive-md
     table.table.table-responsive.table-zebra.table-sm
       thead

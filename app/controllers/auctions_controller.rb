@@ -15,13 +15,15 @@ class AuctionsController < ApplicationController
     @unsold = @auction.horses_count - @pending
     @sold = @auction.sold_horses_count
     @include_reserve = @auction.horses.with_reserve.count.positive?
-    @active_tab = if params[:tab]
-      params[:tab].to_sym
+    @active_tab = if params[:tab] || params.dig(:q, :tab)
+      (params[:tab] || params.dig(:q, :tab)).to_sym
     else
       (@unsold.positive? ? :unsold : :sold)
     end
+    set_gender_select
     @query = @auction.paginated_horses(type: @active_tab, pending: @pending, unsold: @unsold)
     @query = @query.ransack(params[:q])
+    @horses_count = @query.result.count
     @pagy, @horses, = pagy(:countless, @query.result)
   end
 
@@ -84,6 +86,10 @@ class AuctionsController < ApplicationController
       :racehorse_allowed_3yo, :racehorse_allowed_older,
       :stallion_allowed, :broodmare_allowed,
       :weanling_allowed, :yearling_allowed])
+  end
+
+  def set_gender_select
+    params[:q][:horse_gender_in] = params[:q][:horse_gender_in].split(",") if params.dig(:q, :horse_gender_in)
   end
 end
 

@@ -93,6 +93,35 @@ class Auction < ApplicationRecord
     end
   end
 
+  def options_for_horse_status_filter(type)
+    statuses = []
+    Horses::Status::STATUSES.each do |status|
+      case status.first
+      when :racehorse, :broodmare, :stud, :yearling, :weanling
+        if (count = horses.send(type).status_matches(status.first).count).positive?
+          statuses << [I18n.t("horses.statuses.#{status.first}") + " (#{count})", status.first.to_s]
+        end
+      end
+    end
+    statuses
+  end
+
+  def unique_studs_list(type)
+    Horses::Horse::Stud.where(id: horses.send(type).joins(:horse).select("horses.sire_id")).order(name: :asc)
+  end
+
+  def unique_broodmare_studs_list(type)
+    Horses::Horse::Stud.where(id: horses.send(type).joins(horse: :dam).select("dams_horses.sire_id")).order(name: :asc)
+  end
+
+  def unique_sellers_list(type)
+    Account::Stable.where(id: horses.send(type).select(:seller_id)).order(name: :asc)
+  end
+
+  def unique_breeders_list(type)
+    Account::Stable.where(id: horses.send(type).joins(:horse).select("horses.breeder_id")).order(name: :asc)
+  end
+
   def today_plus_min_duration
     (Date.current + Config::Auctions.minimum_start_date_days_delay.days).beginning_of_day
   end

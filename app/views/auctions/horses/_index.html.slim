@@ -1,23 +1,26 @@
-/# locals: (auction:, include_reserve:, active_tab:, horses:, pagy:)
+/# locals: (auction:, include_reserve:, active_tab:, horses:, pagy:, total_count:)
 .mx-auto.overflow-x-auto.rounded-md.w-full
-  .table-responsive-md
-    table.table.table-responsive.table-zebra.table-sm
-      thead
-        tr
-          th= sort_link @query, :horse_name, Horses::Horse.human_attribute_name("name")
-          th= sort_link @query, :horse_age, Horses::Horse.human_attribute_name("age")
-          th= sort_link @query, :horse_status, Horses::Horse.human_attribute_name("status")
-          th= Horses::Horse.human_attribute_name("sire")
-          th= Horses::Horse.human_attribute_name("dam")
-          th= Horses::Horse.human_attribute_name("record")
-          - if include_reserve
-            th= Auctions::Horse.human_attribute_name("reserve_price")
-          th= Auctions::Bid.human_attribute_name("current_bid")
-          th= Auctions::Bid.human_attribute_name("bidder_id")
-          - if active_tab == :unsold
-            th= Auctions::Bid.human_attribute_name("time_left")
-          th.no-sort
-            span.sr-only= t("common.actions.title")
-      tbody id="#{@auction.slug}-#{@active_tab}"
-        = render partial: "auctions/horses/horse", collection: horses, as: :auction_horse
-= render_load_more(pagy)
+  .mx-2.my-2
+    = render partial: "auctions/horses/filters", locals: { auction: @auction, tab: @active_tab, query: @query, horses_count: @horses_count, total_horses: total_count }
+  = turbo_frame_tag "auction-horses-#{active_tab}" do
+    .table-responsive-md
+      table.table.table-responsive.table-zebra.table-sm
+        thead
+          tr
+            th= sort_link @query, :horse_name, Horses::Horse.human_attribute_name("name")
+            th= sort_link @query, :horse_age, Horses::Horse.human_attribute_name("age")
+            th= sort_link @query, :horse_status, Horses::Horse.human_attribute_name("status")
+            th= Horses::Horse.human_attribute_name("sire")
+            th= Horses::Horse.human_attribute_name("dam")
+            th= Horses::Horse.human_attribute_name("record")
+            - if include_reserve
+              th= Auctions::Horse.human_attribute_name("reserve_price")
+            th= Auctions::Bid.human_attribute_name("current_bid")
+            th= Auctions::Bid.human_attribute_name("bidder_id")
+            - if active_tab == :unsold
+              th= Auctions::Bid.human_attribute_name("time_left")
+            th.no-sort
+              span.sr-only= t("common.actions.title")
+        tbody id="#{@auction.slug}-#{@active_tab}"
+          = render partial: "auctions/horses/horse", collection: horses, as: :auction_horse
+    = render_load_more(pagy)

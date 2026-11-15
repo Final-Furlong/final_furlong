@@ -41,7 +41,7 @@ en:
         bid_at: Time
         bid_history: Bid History
         bidder: Bidder
-        comment: 'Comment:'
+        comment: "Comment:"
         current_bid: Bid Amount
         no_bids: No Bids
         sells_in: Sells %{time}
@@ -52,6 +52,8 @@ en:
       destroy:
         failure: Could not remove %{horse} from %{auction}
         success: Successfully removed %{horse} from %{auction}
+      filters:
+        seller: Seller
       form:
         comment: Comment
         reserve_price: Reserve Price

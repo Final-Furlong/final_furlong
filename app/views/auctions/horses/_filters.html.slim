@@ -1,0 +1,56 @@
+/# locals: (auction:, tab:, query:, horses_count:, total_horses:)
+.collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1
+  input type="checkbox"
+  .collapse-title.font-semibold.font-medium
+    = t("common.filters")
+    - if horses_count < total_horses
+      = " (" + t("horses.count", count: horses_count) + ")"
+  .collapse-content.text-sm.border-t-1.border-base-content/40
+    .mt-2
+      = search_form_for query, url: auction_path(auction), turbo_frame: "auction-horses-#{tab}", method: :get do |f|
+        = f.hidden_field :tab, value: tab
+        .grid.grid-cols-1.sm:grid-cols-4.mb-2.gap-4
+          div
+            fieldset.fieldset
+              legend.fieldset-legend= t("horses.search.name")
+              = f.text_field :horse_name_i_cont_all, class: 'input', label: false, required: false,
+                                        input_html: { data: { action: 'keyup->auto-submit#submit' } }
+          div
+            fieldset.fieldset
+              legend.fieldset-legend= t("horses.search.gender")
+              = f.collection_select :horse_gender_in, Horses::Gender.localised_filter_options, :last, :first,
+                                  { include_blank: true },
+                                  class: 'select'
+          div
+            fieldset.fieldset
+              legend.fieldset-legend= t("horses.search.status")
+              = f.collection_select :status_matches, auction.options_for_horse_status_filter(tab), :last, :first,
+                                  { include_blank: true },
+                                  class: 'select'
+          div
+            fieldset.fieldset
+              legend.fieldset-legend= t("horses.search.age")
+              .flex
+                = f.text_field :horse_age_gteq, class: 'input mr-2', type: 'text', placeholder: t("common.min")
+                = f.text_field :horse_age_lteq, class: 'input', type: 'text', placeholder: t("common.max")
+          div
+            fieldset.fieldset
+              legend.fieldset-legend= t("horses.search.sire")
+              = f.collection_select :horse_sire_id_eq, auction.unique_studs_list(tab), :id, :name, { include_blank: true }, class: 'select'
+          div
+            fieldset.fieldset
+              legend.fieldset-legend= t("horses.search.dam_sire")
+              = f.collection_select :horse_dam_sire_id_eq, auction.unique_broodmare_studs_list(tab), :id, :name, { include_blank: true }, class: 'select'
+          div
+            fieldset.fieldset
+              legend.fieldset-legend= t(".seller")
+              = f.collection_select :seller_id_eq, auction.unique_sellers_list(tab), :id, :name, { include_blank: true }, class: 'select'
+          div
+            fieldset.fieldset
+              legend.fieldset-legend= t("horses.search.breeder")
+              = f.collection_select :horse_breeder_id_eq, auction.unique_breeders_list(tab), :id, :name, { include_blank: true }, class: 'select'
+
+        .float-right.flex.mt-2.justify-content-end
+          = render Ui::ButtonizedLink::Component.new(url: auction_path(auction, tab:), color: :error, style: :outline, size: :small, extra_classes: "me-2", data: { turbo: false, turbo_frame: "_top" }) do
+            = t("common.search_form.reset_filters")
+          = render Ui::SubmitButton::Component.new(form: f, size: :small, extra_classes: "d-lg-none", text: t("common.search_form.action"))
