@@ -9,8 +9,6 @@ module Horses
     include Breedable
     include Typeable
 
-    self.ignored_columns += ["status"]
-
     friendly_id :name_and_foal_status, use: [:slugged, :finders, :history]
 
     multisearchable against: [:name], if: lambda { |record| %w[stillborn unborn].exclude?(record.state) }

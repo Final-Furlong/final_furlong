@@ -1,6 +1,7 @@
 /# locals: (horse:)
 tr
-  td.wb-break-all class="text-#{horse.gender}"= horse.name_with_title
+  td.wb-break-all class="text-#{horse.gender}"
+    = link_to horse.name_with_title, horse_path(horse), data: { turbo_frame: "_top" }
   td.wb-break-all= horse.age
   td= t("horses.genders.#{horse.gender}")
   td= horse.owner.name

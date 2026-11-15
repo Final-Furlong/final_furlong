@@ -1,3 +1,3 @@
 = render Ui::Link::Component.new(url: url_with_params(status), extra_classes: "tab #{"tab-active" if status == active_status}") do
   = localised_status(status, statuses[status])
-  span.badge.text-bg-light= statuses[status]
+  span.badge.text-bg-light= number_with_delimiter(statuses[status])

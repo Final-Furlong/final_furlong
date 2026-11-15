@@ -79,7 +79,10 @@ class HorsesController < ApplicationController
 
   def set_active_status
     if (type_query = params.dig(:q, :type_eq))
-      @active_status = type_query.delete("Horses::Horse::").downcase.to_sym
+      @active_status = type_query.gsub("Horses::Horse::", "").downcase.to_sym
+      if @active_status == :foal
+        @active_status = (params.dig(:q, :age_eq).to_i == 1) ? :yearling : :weanling
+      end
     elsif (state_query = params.dig(:q, :state_eq))
       @active_status = state_query.to_sym
     else

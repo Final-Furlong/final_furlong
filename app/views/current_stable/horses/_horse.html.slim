@@ -13,10 +13,10 @@ tr
   - unless @active_status.to_s == 'yearling' || @active_status.to_s == 'weanling'
     - if @active_status.to_s == 'racehorse'
       td
-        = horse.lifetime_race_record&.race_record_races_only || t("horse.unraced")
+        = horse.lifetime_race_record&.to_s || t("horse.unraced")
     - if @active_status.to_s == 'broodmare'
       td
-        = horse.breed_ranking_string
+        = horse.breed_ranking_string || t("common.none")
       td
         - if horse.next_foal.present?
           - stud = horse.next_foal.stud
