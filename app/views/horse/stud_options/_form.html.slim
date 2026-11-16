@@ -6,7 +6,7 @@
       legend.fieldset-legend= t(".fee")
       label.input
         i.ph.ph-currency-dollar
-        = f.text_field :stud_fee, value: options.stud_fee.presence || nil, class: "text-md grow", placeholder: t(".max_amount", amount: Game::MoneyFormatter.new(Config::Breedings.max_stud_fee).to_s), disabled: horse.breedings.current_year.exists?
+        = f.text_field :stud_fee, value: options.stud_fee.presence || nil, class: "text-md grow", placeholder: t(".max_amount", amount: Game::MoneyFormatter.new(Config::Breedings.max_stud_fee).to_s), disabled: Game::BreedingSeason.next_season_start_date.year == Date.current.year
       p.label= t(".stud_fee_hint")
       - if options.errors[:stud_fee]
         p.text-error= options.errors.where(:stud_fee).map(&:full_message).join(', ')

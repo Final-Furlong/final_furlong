@@ -59,7 +59,7 @@ module Horse
     private
 
     def options_params
-      params.expect(horses_stallion_option: [:stud_fee, :outside_mares_allowed, :outside_mares_per_stable, :approval_required, :breed_to_game_mares])
+      params.expect(horses_stud_stallion_option: [:stud_fee, :outside_mares_allowed, :outside_mares_per_stable, :approval_required, :breed_to_game_mares])
     end
   end
 end

@@ -12,7 +12,7 @@ module Horses
         options.breed_to_game_mares = params[:breed_to_game_mares].to_i.positive?
         options.outside_mares_allowed = params[:outside_mares_allowed].to_i
         options.outside_mares_per_stable = params[:outside_mares_per_stable].to_i
-        unless horse.breedings.current_year.exists?
+        unless Game::BreedingSeason.next_season_start_date.year == Date.current.year
           options.stud_fee = params[:stud_fee].to_i
         end
 
