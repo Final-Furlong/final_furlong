@@ -3382,6 +3382,51 @@ ALTER SEQUENCE public.breeders_series_potential_entries_id_seq OWNED BY public.b
 
 
 --
+-- Name: breeders_series_stable_standings; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.breeders_series_stable_standings AS
+ SELECT h.breeder_id,
+    s.name,
+    (date_part('Year'::text, r.date))::integer AS year,
+    (count(rr.id))::integer AS starts,
+    (sum(
+        CASE rr.finish_position
+            WHEN 1 THEN 1
+            ELSE 0
+        END))::integer AS wins,
+    (sum(
+        CASE rr.finish_position
+            WHEN 2 THEN 1
+            ELSE 0
+        END))::integer AS seconds,
+    (sum(
+        CASE rr.finish_position
+            WHEN 3 THEN 1
+            ELSE 0
+        END))::integer AS thirds,
+    (sum(
+        CASE rr.finish_position
+            WHEN 4 THEN 1
+            ELSE 0
+        END))::integer AS fourths,
+    (sum(
+        CASE rr.finish_position
+            WHEN 5 THEN 1
+            ELSE 0
+        END))::integer AS fifths,
+    sum(rr.earnings) AS earnings,
+    sum(rr.points) AS points
+   FROM (((public.race_result_horses rr
+     LEFT JOIN public.race_results r ON ((rr.race_id = r.id)))
+     LEFT JOIN public.horses h ON ((rr.horse_id = h.id)))
+     LEFT JOIN public.stables s ON ((h.breeder_id = s.id)))
+  WHERE ((r.race_type = 'stakes'::public.race_type) AND ((r.name)::text ~~* '% Breeders'' Stakes'::text) AND ((s.name)::text <> 'Final Furlong'::text))
+  GROUP BY h.breeder_id, s.name, ((date_part('Year'::text, r.date))::integer)
+  ORDER BY ((date_part('Year'::text, r.date))::integer), (sum(rr.points)) DESC, s.name;
+
+
+--
 -- Name: breeders_series_steeplechase_fillies_qualifiers; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
@@ -14716,6 +14761,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261116125145'),
 ('20261114134339'),
 ('20261111112728'),
 ('20261110114445'),

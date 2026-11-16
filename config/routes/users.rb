@@ -1,5 +1,8 @@
-devise_for :users, class_name: "Account::User", path: "", path_names: {
-  sign_up: "join",
+devise_scope :user do
+  get "/join" => "devise/registrations#new", :as => :new_user_registration
+  delete "sign_out", to: "devise/sessions#destroy", as: :destroy_user_session
+end
+devise_for :users, class_name: "Account::User", path_names: {
   sign_out: "logout",
   confirmation: "confirm-account",
   unlock: "unlock"
@@ -7,11 +10,6 @@ devise_for :users, class_name: "Account::User", path: "", path_names: {
   confirmations: "users/confirmations",
   sessions: "users/sessions"
 }
-devise_scope :user do
-  get "edit", to: "devise/registrations#edit", as: :edit_user_registration
-  patch "/", to: "devise/registrations#update", as: :user_registration
-  delete "sign_out", to: "devise/sessions#destroy", as: :destroy_user_session
-end
 
 resources :users, except: %i[new create destroy]
 resources :notifications, only: %i[index update destroy]

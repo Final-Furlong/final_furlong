@@ -41,7 +41,10 @@ class Game::EclipseAwards::EndOfVotingJob < ApplicationJob
           Game::EclipseAwardVote.where(year:, category:).delete_all
           Game::EclipseAwardContender.voting_ended.where(year:, category:).delete_all
           new_contenders.map(&:save)
-          send_new_voting_notifications(category:, year:, end_time: voting_ends_at)
+          if new_contenders.size.positive?
+            Game::EclipseAwards::EndOfVotingProcessingJob.set(wait_until: voting_ends_at + 2.minutes).perform_later(year:)
+            send_new_voting_notifications(category:, year:, end_time: voting_ends_at)
+          end
         end
       else
         give_award(winner_id:, category:, year:)
@@ -80,6 +83,7 @@ class Game::EclipseAwards::EndOfVotingJob < ApplicationJob
         voting_ends_at: end_time
       )
     end
+    Game::EclipseAwards::EndOfVotingProcessingJob.set(wait_until: end_time + 2.minutes).perform_later(year:)
     category_name = I18n.t("eclipse_awards.award.category_horse")
     Account::User.active.find_each do |user|
       Game::NotificationCreator.new.create_notification(

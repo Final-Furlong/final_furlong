@@ -1,0 +1,11 @@
+/# locals: (stable:)
+- pd stable
+tr
+  td= link_to stable.name, stable_path(stable.breeder_id), data: { turbo_frame: "_top" }
+  td= stable.starts
+  td= stable.wins
+  td= stable.seconds
+  td= stable.thirds
+  td= stable.fourths
+  td= stable.fifths
+  td= number_with_delimiter(stable.points)

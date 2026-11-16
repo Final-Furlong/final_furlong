@@ -42,6 +42,9 @@ module Racing
     scope :ordered_by_date, ->(dir = :asc) { order(date: dir.to_sym) }
     scope :min_distance, ->(distance) { where(distance: distance..) }
     scope :max_distance, ->(distance) { where(distance: ..distance) }
+    scope :breeders_cup, -> { by_type("stakes").by_name("Breeders' Cup %") }
+    scope :breeders_series, -> { by_type("stakes").by_name("% Breeders' Stakes") }
+    scope :by_name, ->(name) { where(arel_table[:name].matches(name)) }
 
     delegate :racetrack, to: :track_surface
 

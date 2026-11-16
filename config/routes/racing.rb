@@ -1,6 +1,7 @@
 namespace :racing do
   resources :breeders_cup_qualifiers, only: %i[index show]
   resources :breeders_series_qualifiers, only: %i[index show]
+  resources :breeders_series_winners, only: %i[index show]
   resources :racehorses, only: :index
   resources :entries, only: :index do
     resources :claims, only: %i[new create destroy]

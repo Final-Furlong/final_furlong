@@ -30,6 +30,12 @@ module Account
       record.user == user
     end
 
+    def show_highlights?
+      return true if Racing::BreedersSeriesStableStanding.exists?(breeder_id: record.id)
+
+      Game::EclipseAward.exists?(category: %w[stable breeder], awardable_id: record.id)
+    end
+
     def send_private_message?
       return false unless logged_in?
       return false if record.user.discourse_id.blank?

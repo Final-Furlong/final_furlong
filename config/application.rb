@@ -71,6 +71,10 @@ module FinalFurlong
     end
 
     # API
+    # opt-out of FLOC tracking: https://andycroll.com/ruby/opt-out-of-google-floc-tracking-in-rails/
+    config.action_dispatch.default_headers["Permissions-Policy"] = "interest-cohort=()"
+    config.middleware.use Rack::Attack
+    config.middleware.use Rack::Deflater
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins "*"

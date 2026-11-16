@@ -1,0 +1,17 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(links: [{ name: t(".title"), href: "#" }])
+
+- @years.each do |year|
+  - year = year.to_i
+  - stables = Account::Stable.joins(:bred_horses).where.not(name: Config::Game.stable).where(bred_horses: Horses::Horse.joins(:race_result_finishes).merge(Racing::RaceResultHorse.joins(:race).merge(Racing::RaceResult.breeders_series.by_year(year.to_i)))).distinct
+  .card.card-border.bg-base-100.w-full.px-2.rounded-none
+    .card-body.p-0.rounded-none
+      .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
+        input type="checkbox"
+        .collapse-title.font-semibold.font-medium
+          span= t(".year", year: year, stables: stables.length)
+        .collapse-content.text-sm.border-t-1.border-base-content/40
+          = turbo_frame_tag "breeders-series-#{year}", src: racing_breeders_series_winner_path(year), loading: "lazy" do
+            .w-full.text-center
+              p.mx-auto= t(".loading_winners")
+              .mt-2.mx-auto.skeleton.w-full

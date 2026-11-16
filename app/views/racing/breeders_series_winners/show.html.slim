@@ -1,0 +1,14 @@
+= turbo_frame_tag "breeders-series-#{@year}" do
+    table.table.table-zebra
+      thead
+        tr
+          th= t(".stable")
+          th= t(".starts")
+          th= t(".wins")
+          th= t(".seconds")
+          th= t(".thirds")
+          th= t(".fourths")
+          th= t(".fifths")
+          th= t(".points")
+      tbody
+        = render partial: "stable", collection: @stables, as: :stable

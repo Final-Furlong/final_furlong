@@ -444,6 +444,13 @@ en:
           one: "%{name} has 1 pending booking"
           other: "%{name} has %{count} pending bookings"
         studs: Stud Alert
+    highlights:
+      breeders_series: "%{year} Breeders' Series - %{rank} / %{total}"
+      breeders_series_title: "Breeders' Series (%{count})"
+      eclipse_awards: "Eclipse Awards"
+      breeder_of_the_year: Breeder of the Year
+      stable_of_the_year: Stable of the Year
+      title: Highlights
     breeding:
       average_earnings: Average Earnings
       foals: Foals
@@ -477,6 +484,7 @@ en:
       wins: Wins
     show:
       joined: Joined on %{date}
+      last_online: (Last Seen on %{date})
     stable:
       foals_due_count:
         one: 1 Foal Due This Year

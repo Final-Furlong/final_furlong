@@ -1,0 +1,41 @@
+/# locals: (stable:)
+.mt-4.overflow-x-auto.mx-auto.w-full.bg-base-100
+  .card.card-border.bg-base-100.w-full.px-2.rounded-md.border.border-primary.dark:border-neutral-200
+    .card-body.p-0.rounded-none
+      .collapse.collapse-open.bg-base-100
+        input type="checkbox" aria-label=t(".title")
+        .collapse-title.font-semibold.font-medium
+          p.font-bold.text-center= t(".title")
+        .collapse-content.text-sm.border-t-1.border-base-content/40.p-2
+          - if Game::EclipseAward.exists?(category: %w[stable breeder], awardable: stable)
+            table.table.table-responsive
+              tr
+                th.text-center colspan=2 = t(".eclipse_awards")
+              - if Game::EclipseAward.exists?(category: "stable", awardable: stable)
+                tr
+                  td= t(".stable_of_the_year")
+                  td
+                    - years = Game::EclipseAward.where(category: "stable", awardable: stable).order(year: :asc).pluck(:year)
+                    = years.map(&:to_s).join(', ')
+              - if Game::EclipseAward.exists?(category: "breeder", awardable: stable)
+                tr
+                  td= t(".breeder_of_the_year")
+                  td
+                    - years = Game::EclipseAward.where(category: "breeder", awardable: stable).order(year: :asc).pluck(:year)
+                    = years.map(&:to_s).join(', ')
+          - if Racing::BreedersSeriesStableStanding.exists?(breeder_id: stable.id)
+            - series = []
+            - Racing::BreedersSeriesStableStanding.where(breeder_id: stable.id).each do |standing|
+              - total = Racing::BreedersSeriesStableStanding.where(year: standing.year).count
+              - rank = Racing::BreedersSeriesStableStanding.where(year: standing.year).where('points > ?', standing.points).count
+              - if rank <= 2 && total >= 4
+                - series << { series: standing, rank: rank + 1, total: }
+            - if series.any?
+              .card.bg-base-100.w-full
+                .card-body.p-0.rounded-none
+                  details.collapse.collapse-arrow.bg-base-100
+                    summary.text-center.collapse-title.font-semibold
+                      = t(".breeders_series_title", count: series.size)
+                    .collapse-content.text-sm
+                      - series.each do |standing|
+                        p= t(".breeders_series", year: standing[:series].year, rank: standing[:rank].ordinalize, total: standing[:total])

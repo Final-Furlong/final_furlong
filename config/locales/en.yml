@@ -2,6 +2,7 @@
 en:
   awards:
     index:
+      breeders_series: Breeders' Series
       eclipse_awards: Eclipse Awards
       loading_eclipse_awards: Loading awards...
       loading_series_winners: Loading winners...

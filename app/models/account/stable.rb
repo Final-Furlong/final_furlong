@@ -16,6 +16,9 @@ module Account
     has_many :budget_transactions, class_name: "Account::Budget", inverse_of: :stable, dependent: :delete_all
     has_many :notes, class_name: "Account::StableNote", inverse_of: :stable, dependent: :delete_all
     has_many :eclipse_awards, class_name: "Game::EclipseAward", inverse_of: :awardable, dependent: :delete_all
+    # rubocop:disable Rails/HasManyOrHasOneDependent
+    has_many :breeders_series_records, class_name: "Racing::BreedersSeriesStableStanding", inverse_of: :stable
+    # rubocop:enable Rails/HasManyOrHasOneDependent
 
     has_many :bred_horses, class_name: "Horses::Horse", foreign_key: :breeder_id, inverse_of: :breeder,
       dependent: :restrict_with_exception

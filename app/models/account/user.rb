@@ -20,7 +20,7 @@ module Account
 
     # Include default devise modules. Others available are:
     # :omniauthable, :database_authenticatable, :registerable, :recoverable, :lockable, :rememberable
-    devise :confirmable, :timeoutable, :trackable
+    devise :registerable, :confirmable, :timeoutable, :trackable
 
     enum :status, { pending: "pending", active: "active", deleted: "deleted", banned: "banned" }
 
