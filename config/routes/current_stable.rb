@@ -10,6 +10,7 @@ namespace :stable, module: "current_stable" do
   resources :current_boardings, only: :index
   get "/current_entries(/:date)", to: "current_entries#index", as: :current_entries
   get "/future_entries(/:date)", to: "future_entries#show", as: :future_entries
+  resources :horse_comments, only: :index
   resources :historical_boardings, only: :index
   resources :horses, only: %i[index edit show update]
   resources :jump_trials, only: %i[index create]

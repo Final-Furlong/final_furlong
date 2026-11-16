@@ -1,0 +1,7 @@
+/# locals: (horse:)
+tr
+  td class="text-#{horse.gender}"= link_to horse.name_with_title, horse_path(horse)
+  td
+    - horse.comments.each do |comment|
+      p.font-bold= comment.title
+      p= comment.comment

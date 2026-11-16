@@ -10,6 +10,14 @@ module Horses
 
     validates :comment, presence: true
     validates :private, inclusion: { in: [true, false] }
+
+    def self.ransackable_associations(_auth_object = nil)
+      %w[horse stable]
+    end
+
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[comment title]
+    end
   end
 end
 

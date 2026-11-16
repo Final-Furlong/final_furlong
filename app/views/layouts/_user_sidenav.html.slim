@@ -49,6 +49,14 @@ li
     a.transition.duration-75 href=stable_trainings_path aria-label=t("layouts.sidenav.stable.training")
       i.ph.ph-fill.ph-timer
       span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.training")
+- if Horses::Horse.where.associated(:comments).managed_by(Current.stable).exists?
+  li
+    button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[
+      data-tip=t("layouts.sidenav.stable.horse_comments") aria-label=t("layouts.sidenav.stable.horse_comments")
+    ]
+      a.transition.duration-75 href=stable_horse_comments_path aria-label=t("layouts.sidenav.stable.horse_comments")
+        i.ph.ph-fill.ph-note
+        span.flex-1.ms-3.whitespace-nowrap class="is-drawer-close:hidden" = t("layouts.sidenav.stable.horse_comments")
 .divider.my-0
 li
   button.is-drawer-close:tooltip.is-drawer-close:tooltip-right[

@@ -1,7 +1,5 @@
 module CurrentStable
   class JumpTrialsController < ApplicationController
-    before_action :set_horse, except: :index
-
     def index
       @query = policy_scope(Workouts::JumpTrial.where.associated(:horse), policy_scope_class: CurrentStable::WorkoutPolicy::Scope)
       @query = @query.includes(:horse, :jockey, :racetrack, :comment).ransack(params[:q])

@@ -1,0 +1,16 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new( links: [{ name: Current.stable.name, href: current_stable_path },
+          { name: t(".title"), href: "#", title: true }])
+
+= turbo_frame_tag "#{Current.stable.slug}-horse-comments" do
+  .mx-auto
+    = render "filters", query: @query
+    p.text-lg.text-center= t(".horses_count", count: @count)
+    table.table-responsive.table.bordered.table-zebra.w-full
+      thead
+        tr
+          th.w-1/3.text-sm.text-center= t(".horse")
+          th.text-sm.text-center= t(".comment")
+      tbody id="horse-comment-list"
+        = render partial: "horse", collection: @horses, as: :horse
+    = render_load_more(@pagy)

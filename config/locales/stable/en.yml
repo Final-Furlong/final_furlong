@@ -165,6 +165,18 @@ en:
         result: Entry Result
         title: Scheduled Entries
         title_with_date: Scheduled Entries for %{date}
+    horse_comments:
+      filters:
+        comment: Comment Text
+        horse: Horse Name
+      index:
+        comment: Comments
+        horse: Horse Name
+        horses_count:
+          zero: No Horses
+          one: 1 Horse
+          other: "%{count} Horses"
+        title: Horse Comments
     horses:
       index:
         lease_offers: Lease Offers (%{count})
@@ -332,14 +344,14 @@ en:
         missing_training_schedule_count:
           one: Without Training Schedule (1)
           other: Without Training Schedule (%{count})
+        name: Horse Name
+        rest_days_since_last_race: Rest Days Since Last Race
         resting_from_racing:
           one: Resting from Racing (1)
           other: Resting from Racing (%{count})
         resting_from_workouts:
           one: Resting from Workouts (1)
           other: Resting from Workouts (%{count})
-        name: Horse Name
-        rest_days_since_last_race: Rest Days Since Last Race
         runs_on: Runs On
         workouts_since_last_race: Workouts Since Last Race
       horse:
@@ -444,13 +456,6 @@ en:
           one: "%{name} has 1 pending booking"
           other: "%{name} has %{count} pending bookings"
         studs: Stud Alert
-    highlights:
-      breeders_series: "%{year} Breeders' Series - %{rank} / %{total}"
-      breeders_series_title: "Breeders' Series (%{count})"
-      eclipse_awards: "Eclipse Awards"
-      breeder_of_the_year: Breeder of the Year
-      stable_of_the_year: Stable of the Year
-      title: Highlights
     breeding:
       average_earnings: Average Earnings
       foals: Foals
@@ -469,6 +474,13 @@ en:
       header: Edit Stable
     form:
       description: Description
+    highlights:
+      breeder_of_the_year: Breeder of the Year
+      breeders_series: "%{year} Breeders' Series - %{rank} / %{total}"
+      breeders_series_title: Breeders' Series (%{count})
+      eclipse_awards: Eclipse Awards
+      stable_of_the_year: Stable of the Year
+      title: Highlights
     index:
       all: All Stables
     racing:
@@ -484,7 +496,7 @@ en:
       wins: Wins
     show:
       joined: Joined on %{date}
-      last_online: (Last Seen on %{date})
+      last_online: "(Last Seen on %{date})"
     stable:
       foals_due_count:
         one: 1 Foal Due This Year

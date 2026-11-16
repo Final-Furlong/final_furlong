@@ -41,7 +41,7 @@ en:
         bid_at: Time
         bid_history: Bid History
         bidder: Bidder
-        comment: "Comment:"
+        comment: 'Comment:'
         current_bid: Bid Amount
         no_bids: No Bids
         sells_in: Sells %{time}

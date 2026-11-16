@@ -215,7 +215,7 @@ module Horses
     end
 
     def self.ransackable_associations(_auth_object = nil)
-      %w[breeder dam location_bred owner sire race_stats racehorse_metadata race_options race_qualification race_results latest_race_result latest_injury next_foal]
+      %w[breeder dam location_bred owner sire race_stats racehorse_metadata race_options race_qualification race_results latest_race_result latest_injury next_foal comments]
     end
 
     def self.ransackable_scopes(_auth_object = nil)
