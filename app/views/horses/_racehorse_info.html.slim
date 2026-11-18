@@ -44,8 +44,9 @@
           surface = next_race.race_surface_string
         end
       - if next_entry
+        - relative_time = next_race.date == Date.current ? t("common.today") : relative_time_in_words(next_race.date)
         = render Ui::Link::Component.new(url: new_racing_race_entry_path(next_race), extra_classes: "mt-2", data: { turbo_frame: "_top" }) do
-          = t("horses.info.next_race_info", date:, days: relative_time_in_words(next_race.date), track:, number:, distance:, type:, age_gender:, surface:)
+          = t("horses.info.next_race_info", date:, days: relative_time, track:, number:, distance:, type:, age_gender:, surface:)
       - else
         = t("common.dash")
 - if horse.manager_id == Current.stable&.id

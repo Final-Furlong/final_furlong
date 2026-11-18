@@ -72,7 +72,7 @@ describe Horses::Horse do
   describe ".ransackable_associations" do
     it "returns correct list" do
       expect(described_class.ransackable_associations).to match_array(
-                                                            %w[breeder dam location_bred owner sire race_stats racehorse_metadata race_options latest_injury latest_race_result race_qualification race_results next_foal]
+                                                            %w[breeder dam location_bred owner sire race_stats racehorse_metadata race_options latest_injury latest_race_result race_qualification race_results next_foal comments]
                                                           )
     end
   end

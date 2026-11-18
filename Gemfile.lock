@@ -89,6 +89,9 @@ GEM
       activemodel (= 8.1.4.1)
       activesupport (= 8.1.4.1)
       timeout (>= 0.4.0)
+    activerecord-sort (8.1.0)
+      activerecord (>= 8.0.0, < 9.0)
+      arel-extensions (>= 9.0.0)
     activerecord_json_validator (3.1.0)
       activerecord (>= 4.2.0, < 9)
       json_schemer (~> 2.2)
@@ -122,6 +125,8 @@ GEM
       activesupport (>= 6.0.0)
     anyway_config (2.8.0)
       ruby-next-core (~> 1.0)
+    arel-extensions (9.1.0)
+      activerecord (>= 8.0.0, < 9.0)
     ast (2.4.3)
     autoprefixer-rails (10.4.21.0)
       execjs (~> 2)
@@ -960,6 +965,7 @@ DEPENDENCIES
   active_record-associated_object
   active_record_doctor
   active_storage_validations
+  activerecord-sort
   activerecord_json_validator
   activerecord_where_assoc (~> 1.0)
   annotaterb
@@ -1122,6 +1128,7 @@ CHECKSUMS
   activejob (8.1.4.1) sha256=82c4c9311ea1016d5f7f134a0c5f9b6527cad5a6237f5f3f60aa17984ef36229
   activemodel (8.1.4.1) sha256=063caf105372fbc98b2d789e4be23de63ac5c043f7d9330f04e2caddb7012805
   activerecord (8.1.4.1) sha256=bd65599ca0b5d210937f835d42c7aff69d271741c75aab022730be6cbce67e87
+  activerecord-sort (8.1.0) sha256=9197273c08b027ac24ccc8861de4be1222b6fe775ab756615405f8724014590b
   activerecord_json_validator (3.1.0) sha256=bc3de0b24256b0d1b4536dfd5c74be8248670ed57061b9bb86c00f712873fbab
   activerecord_where_assoc (1.4.0) sha256=141d1305106415185e93cd781b2e436b0e1d7935ee422d2cebb2e1b0f82b7b39
   activestorage (8.1.4.1) sha256=0f4e2f114f3584723a80a2c089aacc6170e765a0b2c385c9782e26ed78f05c66
@@ -1130,6 +1137,7 @@ CHECKSUMS
   airbrussh (1.6.2) sha256=3278655b2d957d774589a17e01496149288cbd8f1158b377581d82db006401cc
   annotaterb (4.23.0) sha256=0fc59b1d40e07bec75d9d9b0cd479493631ce8901e4b59fefc561689f22b4600
   anyway_config (2.8.0) sha256=f6797a7231f81202dcd3d0c07284e836e45713e761d320180348b13a5c7c9306
+  arel-extensions (9.1.0) sha256=e78d270d23862840a662d46c81cac6aaceab09903337df34f22b6c6a35f01c8e
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   autoprefixer-rails (10.4.21.0) sha256=71b48caf850fc25275abd96f0b1fdd51c82e1c9b99cd30085cacb05da9c70235
   awesome_print (1.9.2) sha256=e99b32b704acff16d768b3468680793ced40bfdc4537eb07e06a4be11133786e
