@@ -26,12 +26,18 @@ module Racing
       end
 
       if Racing::RaceResult.exists?(date:, number:)
-        return
+        if max_race?(number:)
+          return
+        else
+          Racing::TriggerRaceJob.set(good_job_labels: [date], wait: 10.seconds).perform_later(date:, number: number + 1)
+        end
       end
 
       response = HTTParty.post(url, body: { id: race.id }, headers: { "X_API_KEY" => api_key })
       set_sentry_context(response)
-      if response.code == 200
+      if response.blank?
+        Racing::TriggerRaceJob.set(good_job_labels: [date], wait: 10.seconds).perform_later(date:, number:)
+      elsif response.code == 200
         if max_race?(number:)
           Racing::RaceResultFinisherJob.set(good_job_labels: [date], wait: 1.minute).perform_later(date:)
         else
