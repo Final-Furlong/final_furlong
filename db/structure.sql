@@ -3353,9 +3353,9 @@ CREATE TABLE public.breeders_series_potential_entries (
     stable_id bigint NOT NULL,
     record character varying NOT NULL,
     rank integer DEFAULT 0 NOT NULL,
-    first_race_id bigint,
-    second_race_id bigint,
-    third_race_id bigint,
+    first_race_id bigint NOT NULL,
+    second_race_id bigint NOT NULL,
+    third_race_id bigint NOT NULL,
     created_at timestamp(6) with time zone NOT NULL,
     updated_at timestamp(6) with time zone NOT NULL,
     series character varying
@@ -14761,6 +14761,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261119135219'),
 ('20261116125145'),
 ('20261114134339'),
 ('20261111112728'),

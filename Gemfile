@@ -34,12 +34,13 @@ gem "dry-monads"
 gem "dry-validation"
 
 # Utilities
-gem "base64", "0.1.1"
+gem "base64"
 gem "browser"
 gem "dotenv-rails"
 gem "dotenv_validator"
 gem "good_job"
 gem "httparty"
+gem "kamal", "~> 2.12"
 gem "lograge"
 gem "mailtrap"
 gem "net-ssh"
@@ -107,13 +108,6 @@ group :development do
   gem "benchmark"
   gem "better_errors"
   gem "byebug"
-  gem "capistrano", "~> 3.17", require: false
-  gem "capistrano3-puma", github: "seuros/capistrano-puma", require: false
-  gem "capistrano-bundler", "~> 2.0", require: false
-  gem "capistrano-deploytags", "~> 1.0.0", require: false
-  gem "capistrano-pnpm", require: false
-  gem "capistrano-rails", "~> 1.3", require: false
-  gem "capistrano-rbenv", "~> 2.2", require: false
   gem "ed25519", require: false # required for capistrano
   gem "good_migrations"
   gem "i18n-debug"
@@ -188,5 +182,9 @@ end
 
 group :tools do
   gem "colorize", require: false
+end
+
+group :production do
+  gem "thruster"
 end
 
