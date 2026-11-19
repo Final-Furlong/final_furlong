@@ -27,11 +27,11 @@ end
 #  series         :string           uniquely indexed => [horse_id]
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  first_race_id  :bigint           uniquely indexed => [horse_id], indexed
+#  first_race_id  :bigint           not null, uniquely indexed => [horse_id], indexed
 #  horse_id       :bigint           not null, uniquely indexed => [first_race_id], uniquely indexed => [series]
-#  second_race_id :bigint           indexed
+#  second_race_id :bigint           not null, indexed
 #  stable_id      :bigint           not null, indexed
-#  third_race_id  :bigint           indexed
+#  third_race_id  :bigint           not null, indexed
 #
 # Indexes
 #
