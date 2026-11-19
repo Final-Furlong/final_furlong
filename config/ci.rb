@@ -27,7 +27,6 @@ CI.run do
 
   if ci_type == "tests" || ci_type == "all"
     step "Setup", external_ci ? "bin/rails assets:precompile" : "bin/setup test"
-    step "Tests: Setup", "pnpm playwright install --with-deps chromium" if external_ci
     step "Tests: Rails", external_ci ? "bin/rspec --format RspecJunitFormatter --out report.xml --format progress" : "bin/rspec"
     unless external_ci
       step "Tests: Migrations", "RAILS_ENV=test bin/rails db:drop && RAILS_ENV=test bin/rails db:create && RAILS_ENV=test bin/rails db:migrate"
