@@ -46,3 +46,4 @@ class CustomizedHealthController < Rails::HealthController
     render json: status, status: http_status
   end
 end
+
