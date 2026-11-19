@@ -1,0 +1,87 @@
+# Name used for Kamal-managed containers
+service: finalfurlong
+
+# Docker Hub repository
+image: equestrianerd/finalfurlong
+
+logging:
+  driver: local
+  options:
+    max-size: 20m
+    max-file: 5
+
+servers:
+  web:
+    hosts:
+      - 2a01:4f9:c013:dba8::1
+    options:
+      add-host: "host.docker.internal:host-gateway"
+      memory: 1536m
+      cpus: 2
+
+  job:
+    hosts:
+      - 2a01:4f9:c013:dba8::1
+    cmd: bundle exec good_job start
+    options:
+      add-host: "host.docker.internal:host-gateway"
+      memory: 1536m
+      cpus: 1.5
+    stop_timeout: 60
+
+# Kamal Proxy handles deployment switching.
+# Nginx remains the public-facing reverse proxy.
+proxy:
+  host: www.finalfurlong.org
+  app_port: 80
+  ssl: true
+  forward_headers: true
+  healthcheck:
+    path: /health/app
+    interval: 3
+    timeout: 3
+  run:
+    http_port: 8080
+    https_port: 8443
+    bind_ips:
+      - 127.0.0.1
+
+registry:
+  username: equestrianerd
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+builder:
+  arch: amd64
+  remote: ssh://ff
+  local: false
+
+env:
+  clear:
+    RAILS_ENV: production
+    RAILS_LOG_TO_STDOUT: true
+    RAILS_SERVE_STATIC_FILES: true
+    RAILS_MAX_THREADS: 10
+    GOOD_JOB_MAX_THREADS: 5
+    WEB_CONCURRENCY: 2
+
+    DB_HOST: host.docker.internal
+    DB_PORT: 5432
+
+  secret:
+    - RAILS_MASTER_KEY
+    - DATABASE_URL
+    - MAILTRAP_API_KEY
+    - DB_USERNAME
+    - DB_PASSWORD
+
+ssh:
+  user: www
+  port: 13579
+
+# Keep a few previous application versions for rollback
+retain_containers: 3
+
+# Give Rails time to boot
+deploy_timeout: 90
+drain_timeout: 30
