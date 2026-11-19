@@ -34,12 +34,13 @@ gem "dry-monads"
 gem "dry-validation"
 
 # Utilities
-gem "base64", "0.1.1"
+gem "base64"
 gem "browser"
 gem "dotenv-rails"
 gem "dotenv_validator"
 gem "good_job"
 gem "httparty"
+gem "kamal", "~> 2.12"
 gem "lograge"
 gem "mailtrap"
 gem "net-ssh"
@@ -190,3 +191,6 @@ group :tools do
   gem "colorize", require: false
 end
 
+group :production do
+  gem "thruster"
+end
