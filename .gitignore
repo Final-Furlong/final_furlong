@@ -33,8 +33,6 @@
 .node-version
 .ruby-version
 .rubocop
-/config/database.yml
-!config/database.yml.sample
 coverage/
 coverage_system/
 coverage_unit/
@@ -51,6 +49,7 @@ spec/examples.txt
 .idea/
 .zed
 .mise/
+.kamal/secrets
 
 .env
 .env.*.local
