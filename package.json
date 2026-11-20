@@ -48,7 +48,7 @@
     "postcss": "^8.5.23",
     "prettier": "^3.8.1",
     "rails-vite-plugin": "^0.2.5",
-    "vite": "^8.0.16",
+    "vite": "^8.1.6",
     "vite-plugin-manifest-sri": "^0.2.0",
     "vite-plugin-ruby": "^5.2.0"
   },
