@@ -54,7 +54,6 @@ gem "responders"
 gem "sentry-rails"
 gem "sentry-ruby"
 gem "silencer", require: ["silencer/rails/logger"]
-gem "turnout"
 gem "web-push"
 gem "whenever", require: false
 
