@@ -1,7 +1,6 @@
 describe Racing::TrainingSchedulePolicy do
   subject(:policy) { described_class.new(user, schedule) }
 
-  let(:user) { build_stubbed(:user) }
   let(:schedule) { build_stubbed(:training_schedule) }
 
   describe "scope" do
@@ -21,7 +20,6 @@ describe Racing::TrainingSchedulePolicy do
   end
 
   context "when user is logged in and matches schedule" do
-    let(:user) { create(:user) }
     let(:schedule) { create(:training_schedule, stable: user.stable) }
 
     it "allows main actions" do
@@ -46,7 +44,6 @@ describe Racing::TrainingSchedulePolicy do
   end
 
   context "when user is logged in and does not matches schedule" do
-    let(:user) { create(:user) }
     let(:schedule) { create(:training_schedule, stable: create(:stable)) }
 
     it "disallows main actions" do

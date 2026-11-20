@@ -246,6 +246,18 @@ class Racing::RaceSchedule < ApplicationRecord
     name.gsub("Breeders' Cup ", "").gsub("&", "and").tr(" ", "_").downcase
   end
 
+  def breeders_cup?
+    return unless race_type == "stakes" && requires_qualification?
+
+    name.starts_with?("Breeders' Cup")
+  end
+
+  def breeders_series?
+    return unless race_type == "stakes" && requires_qualification?
+
+    name.ends_with?("Breeders' Stakes")
+  end
+
   def breeders_series_name
     return if race_type != "stakes" && !requires_qualification?
 

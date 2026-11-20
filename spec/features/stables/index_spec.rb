@@ -14,7 +14,6 @@ describe "Stable Index" do
   end
 
   it "shows all stables" do
-    stable = create(:stable)
     stable2 = create(:stable)
 
     visit stables_path

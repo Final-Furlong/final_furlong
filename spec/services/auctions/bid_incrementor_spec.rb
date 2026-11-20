@@ -190,10 +190,6 @@ describe Auctions::BidIncrementor do
     @bid ||= create(:auction_bid, horse:, current_bid: 3000, maximum_bid: 5000)
   end
 
-  def stable
-    @stable ||= create(:stable)
-  end
-
   def horse
     @horse ||= create(:auction_horse)
   end

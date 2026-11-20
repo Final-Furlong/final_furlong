@@ -15,6 +15,7 @@ module Horses::Racehorse
         horse.sale_offer&.destroy
         horse.race_entries.delete_all
         horse.future_race_entries.delete_all
+        ::Racing::RaceEntry.counter_culture_fix_counts
         ::Racing::Claim.joins(:entry).where(entry: { horse: }).delete_all
         horse.breeders_cup_nomination&.destroy
         horse.current_injuries.delete_all

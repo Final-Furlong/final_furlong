@@ -9,11 +9,11 @@
       tr
         th.text-center colspan=5 = l(race.date, format: :long)
       tr
-        td.font-normal.text-center colspan=5
+        td.font-normal.text-center.text-pretty.md:text-balance colspan=5
           = race.race_description_string
           = " (" + race.racetrack.name + ")"
       tr
-        td.font-normal.text-center colspan=5
+        td.font-normal.text-center.text-pretty.md:text-balance colspan=5
           = t(".horses", count: race.entries_count)
           = " | "
           - horses = "#{race.entry_limit} #{Horses::Horse.model_name.human.downcase.pluralize(race.entry_limit)}"
@@ -25,7 +25,7 @@
               i.ph.ph-warning.mr-2
               = t(".requires_qualification")
         tr
-          td.text-center colspan=5
+          td.text-pretty.md:text-balance.text-center colspan=5
             span.text-warning.font-normal = t(".qualification_entry", date: l(race.entry_deadline))
       tr
         td.font-normal.text-center colspan=5

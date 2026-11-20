@@ -172,7 +172,7 @@ group :test do
   gem "simplecov", "1.0.0.rc2"
   gem "simplecov-cobertura", require: false
   gem "simplecov-lcov", require: false
-  gem "sus"
+  gem "stackprof", ">= 0.2.9", require: false
   gem "test-prof"
   gem "undercover", require: false
   gem "whenever-test"

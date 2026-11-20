@@ -40,6 +40,8 @@ module Racing
       query = query.order(number: :asc)
 
       @pagy, @races = pagy(:countless, query, limit: 2)
+      raise ActiveRecord::RecordNotFound if @races.empty?
+
       authorize @races.first, :post_parade?
     end
   end

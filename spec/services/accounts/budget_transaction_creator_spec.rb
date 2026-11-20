@@ -222,10 +222,6 @@ describe Accounts::BudgetTransactionCreator do
 
   private
 
-  def stable
-    @stable ||= create(:stable)
-  end
-
   def amount
     -5000
   end

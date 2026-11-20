@@ -6,7 +6,6 @@ describe Account::StablePolicy do
   describe "scope" do
     subject(:scope) { described_class::Scope.new(user, Account::Stable.all).resolve }
 
-    let(:user) { build_stubbed(:user) }
     let(:active_stable) { create(:stable) }
     let(:inactive_stable) { create(:stable, user: build(:user, :pending)) }
 

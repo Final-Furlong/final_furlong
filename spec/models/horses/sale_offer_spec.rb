@@ -60,7 +60,7 @@ describe Horses::SaleOffer do
 
     describe ".offered_to" do
       it "returns correct records" do
-        buyer = create(:stable)
+        buyer = stable
         offer1 = create(:sale_offer, buyer:)
         offer2 = create(:sale_offer, buyer: nil)
         offer3 = create(:sale_offer, buyer: create(:stable))
@@ -73,7 +73,7 @@ describe Horses::SaleOffer do
 
     describe ".with_owner" do
       it "returns correct records" do
-        owner = create(:stable)
+        owner = stable
         offer1 = create(:sale_offer, owner:)
         offer2 = create(:sale_offer, owner: create(:stable))
 
@@ -85,7 +85,7 @@ describe Horses::SaleOffer do
 
     describe ".without_owner" do
       it "returns correct records" do
-        owner = create(:stable)
+        owner = stable
         offer1 = create(:sale_offer, owner: create(:stable))
         offer2 = create(:sale_offer, owner:)
 
@@ -119,7 +119,7 @@ describe Horses::SaleOffer do
     describe ".valid_for_stable" do
       context "when stable is newbie" do
         it "includes active offers only" do
-          stable = create(:stable, created_at: 6.months.ago)
+          stable.update(created_at: 6.months.ago)
           offer1 = create(:sale_offer, offer_start_date: Date.current, buyer: stable)
           offer2 = create(:sale_offer, offer_start_date: 1.day.from_now, buyer: stable)
 
@@ -129,7 +129,7 @@ describe Horses::SaleOffer do
         end
 
         it "includes new member leases and non-new member leases" do
-          stable = create(:stable, created_at: 6.months.ago)
+          stable.update(created_at: 6.months.ago)
           offer1 = create(:sale_offer, buyer: nil, new_members_only: true)
           offer2 = create(:sale_offer, buyer: nil, new_members_only: false)
 
@@ -138,7 +138,7 @@ describe Horses::SaleOffer do
         end
 
         it "includes offers for this stable" do
-          stable = create(:stable, created_at: 6.months.ago)
+          stable.update(created_at: 6.months.ago)
           offer1 = create(:sale_offer, buyer: stable)
           offer2 = create(:sale_offer, buyer: create(:stable))
 
@@ -148,7 +148,7 @@ describe Horses::SaleOffer do
         end
 
         it "excludes offers by this stable" do
-          stable = create(:stable, created_at: 6.months.ago)
+          stable.update(created_at: 6.months.ago)
           offer1 = create(:sale_offer, buyer: stable)
           offer2 = create(:sale_offer, owner: stable)
 
@@ -160,7 +160,7 @@ describe Horses::SaleOffer do
 
       context "when stable is not newbie" do
         it "includes active leases only" do
-          stable = create(:stable, created_at: 18.months.ago)
+          stable.update(created_at: 18.months.ago)
           offer1 = create(:sale_offer, offer_start_date: Date.current, buyer: stable)
           offer2 = create(:sale_offer, offer_start_date: 1.day.from_now, buyer: stable)
 
@@ -170,7 +170,7 @@ describe Horses::SaleOffer do
         end
 
         it "includes non-new member leases, excludes new member leases" do
-          stable = create(:stable, created_at: 18.months.ago)
+          stable.update(created_at: 18.months.ago)
           offer1 = create(:sale_offer, new_members_only: false)
           offer2 = create(:sale_offer, new_members_only: true)
 
@@ -180,7 +180,7 @@ describe Horses::SaleOffer do
         end
 
         it "includes offers for this stable" do
-          stable = create(:stable, created_at: 18.months.ago)
+          stable.update(created_at: 18.months.ago)
           offer1 = create(:sale_offer, buyer: stable)
           offer2 = create(:sale_offer, buyer: create(:stable))
 
@@ -190,7 +190,7 @@ describe Horses::SaleOffer do
         end
 
         it "excludes offers by this stable" do
-          stable = create(:stable, created_at: 18.months.ago)
+          stable.update(created_at: 18.months.ago)
           offer1 = create(:sale_offer, buyer: stable)
           offer2 = create(:sale_offer, owner: stable)
 

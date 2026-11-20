@@ -115,7 +115,7 @@ describe Horses::Leasing::Terminator do
   end
 
   def leaser
-    @leaser ||= create(:stable)
+    @leaser ||= stable
   end
 end
 

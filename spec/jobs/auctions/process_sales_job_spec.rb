@@ -70,7 +70,7 @@ describe Auctions::ProcessSalesJob, :perform_enqueued_jobs do
   end
 
   def bidder
-    @bidder ||= create(:stable)
+    @bidder ||= stable
   end
 
   def final_furlong

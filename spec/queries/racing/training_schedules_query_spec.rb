@@ -3,7 +3,6 @@ describe Racing::TrainingSchedulesQuery do
 
   describe "#with_stable" do
     it "returns schedules for the stable" do
-      stable = create(:stable)
       stable_schedule = create(:training_schedule, stable:)
       other_schedule = create(:training_schedule)
 

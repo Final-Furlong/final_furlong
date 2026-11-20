@@ -72,10 +72,6 @@ describe Horses::Leasing::LeaseCreator do
   def horse
     @horse ||= create(:horse)
   end
-
-  def stable
-    @stable ||= create(:stable)
-  end
 end
 
 #  duration_months  :integer          not null

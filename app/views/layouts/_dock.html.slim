@@ -1,17 +1,17 @@
 .dock.dock-xs.border-t-1.border-neutral-content/50.md:hidden
-  = link_to current_stable_path, class: 'btn' do
+  = link_to current_stable_path, class: 'btn pt-4' do
     i.ph-fill.ph-house
-    = t(".home")
+    span.dock-label= t(".home")
 
   - if signed_in?
     = turbo_stream_from "notification_dot_#{Current.user.id}"
-    = link_to notifications_path, class: 'btn' do
-      i.ph-fill.ph-bell
-      - if current_user.notifications.unread.any?
-        span class="notification-dot"
-          i.ph-fill.ph-circle
-      = t(".notifications")
+    = link_to notifications_path, class: 'btn pt-4' do
+      .flex
+        i.ph-fill.ph-bell
+        - if current_user.notifications.unread.any?
+          .badge.badge-xs.badge-secondary.ml-2= current_user.notifications.unread.count
+      span.dock-label= t(".notifications")
 
-    = link_to new_setting_path, class: 'btn' do
+    = link_to new_setting_path, class: 'btn pt-4' do
       i.ph-fill.ph-gear
-      = t(".settings")
+      span.dock-label= t(".settings")

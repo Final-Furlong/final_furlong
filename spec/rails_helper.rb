@@ -14,6 +14,8 @@ require "capybara-screenshot/rspec"
 require "factory_bot_rails"
 require "factories"
 require "axe-rspec"
+require "test_prof/recipes/rspec/any_fixture"
+using TestProf::AnyFixture::DSL
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -40,7 +42,25 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 
+RSpec.shared_context "fixture:user" do
+  let(:user) { fixture(:user) }
+end
+RSpec.shared_context "fixture:stable" do
+  let(:stable) { fixture(:stable) }
+end
+
 RSpec.configure do |config|
+  config.include TestProf::AnyFixture::DSL
+
+  # Create a user + stable for the whole test run
+  config.before(:suite) do
+    user = fixture(:user) { FactoryBot.create(:user) }
+    fixture(:stable) { user.stable }
+  end
+
+  config.include_context "fixture:user"
+  config.include_context "fixture:stable"
+
   config.define_derived_metadata(file_path: %r{/spec/components}) do |metadata|
     metadata[:type] = :component
   end

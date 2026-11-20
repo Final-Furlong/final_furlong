@@ -29,6 +29,7 @@ module Racing
 
       result = Racing::EntryScratcher.new.scratch_entry(entry: @entry, stable: Current.stable)
       if result.scratched?
+        Racing::RaceEntry.counter_culture_fix_counts
         flash[:success] = result.message
       else
         flash[:error] = result.error

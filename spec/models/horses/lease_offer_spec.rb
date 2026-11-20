@@ -133,7 +133,7 @@ describe Horses::LeaseOffer do
 
     describe ".leased_to" do
       it "returns correct records" do
-        leaser = create(:stable)
+        leaser = stable
         lease1 = create(:lease_offer, leaser:)
         lease2 = create(:lease_offer, leaser: nil)
         lease3 = create(:lease_offer, leaser: create(:stable))
@@ -146,7 +146,7 @@ describe Horses::LeaseOffer do
 
     describe ".with_owner" do
       it "returns correct records" do
-        owner = create(:stable)
+        owner = stable
         lease1 = create(:lease_offer, owner:)
         lease2 = create(:lease_offer, owner: create(:stable))
 
@@ -158,7 +158,7 @@ describe Horses::LeaseOffer do
 
     describe ".without_owner" do
       it "returns correct records" do
-        owner = create(:stable)
+        owner = stable
         lease1 = create(:lease_offer, owner: create(:stable))
         lease2 = create(:lease_offer, owner:)
 

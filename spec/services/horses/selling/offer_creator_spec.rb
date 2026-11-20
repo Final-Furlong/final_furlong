@@ -9,7 +9,7 @@ describe Horses::Selling::OfferCreator do
 
     context "when buyer is set" do
       it "creates notification for buyer if offer has started" do
-        buyer = create(:stable)
+        buyer = stable
         new_params = params.dup.merge(offer_start_date: Date.current, buyer_id: buyer.id)
         expect do
           described_class.new.create_offer(horse:, params: new_params)
@@ -17,7 +17,7 @@ describe Horses::Selling::OfferCreator do
       end
 
       it "does not create notification for buyer if offer has not started" do
-        buyer = create(:stable)
+        buyer = stable
         new_params = params.dup.merge(buyer_id: buyer.id)
         expect do
           described_class.new.create_offer(horse:, params: new_params)

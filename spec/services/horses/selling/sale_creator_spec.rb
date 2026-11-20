@@ -72,9 +72,5 @@ describe Horses::Selling::SaleCreator do
   def horse
     @horse ||= create(:horse)
   end
-
-  def stable
-    @stable ||= create(:stable)
-  end
 end
 

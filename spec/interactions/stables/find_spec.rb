@@ -11,8 +11,6 @@ describe Stables::Find do
 
     context "when stable exists" do
       it "returns stable" do
-        stable = create(:stable)
-
         outcome = described_class.run(id: stable.id)
         expect(outcome.result).to eq stable
       end

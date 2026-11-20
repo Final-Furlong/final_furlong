@@ -9,7 +9,7 @@ describe Horses::Leasing::OfferCreator do
 
     context "when leaser is set" do
       it "creates notification for leaser if offer has started" do
-        leaser = create(:stable)
+        leaser = stable
         new_params = params.dup.merge(offer_start_date: Date.current, leaser_id: leaser.id)
         expect do
           described_class.new.create_offer(horse:, params: new_params)
@@ -17,7 +17,7 @@ describe Horses::Leasing::OfferCreator do
       end
 
       it "does not create notification for leaser if offer has not started" do
-        leaser = create(:stable)
+        leaser = stable
         new_params = params.dup.merge(leaser_id: leaser.id)
         expect do
           described_class.new.create_offer(horse:, params: new_params)
