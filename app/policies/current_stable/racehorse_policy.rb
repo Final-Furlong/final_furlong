@@ -13,7 +13,7 @@ module CurrentStable
           refined_scope = refined_scope.min_days_since_last_injury(min_days) if min_days.positive?
         end
         if (min_days = game_settings[:minimum_rest_days_since_last_race])
-          refined_scope = refined_scope.min_rest_days(min_days) if min_days.positive?
+          refined_scope = refined_scope.min_rest_days_since_last_race(min_days) if min_days.positive?
         end
         if (min_workouts = game_settings[:minimum_workouts_since_last_race])
           refined_scope = refined_scope.min_workouts_since_last_race(min_workouts) if min_workouts.positive?
