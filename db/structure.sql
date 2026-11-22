@@ -4877,6 +4877,94 @@ CREATE VIEW public.equipment_race_records AS
 
 
 --
+-- Name: famous_stud_nominations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.famous_stud_nominations (
+    id bigint NOT NULL,
+    submitter_id bigint NOT NULL,
+    name character varying NOT NULL,
+    sire_id bigint,
+    sire_name character varying,
+    date_of_birth date NOT NULL,
+    ran_on_dirt boolean DEFAULT false NOT NULL,
+    ran_on_turf boolean DEFAULT false NOT NULL,
+    ran_on_jumps boolean DEFAULT false NOT NULL,
+    highlights text NOT NULL,
+    color public.horse_color DEFAULT 'bay'::public.horse_color NOT NULL,
+    height numeric(4,2) DEFAULT 0.0 NOT NULL,
+    face_marking public.horse_face_marking,
+    lf_leg_marking public.horse_leg_marking,
+    lh_leg_marking public.horse_leg_marking,
+    rf_leg_marking public.horse_leg_marking,
+    rh_leg_marking public.horse_leg_marking,
+    created_at timestamp(6) with time zone NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN famous_stud_nominations.color; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.famous_stud_nominations.color IS 'bay, black, blood_bay, blue_roan, brown, chestnut, dapple_grey, dark_bay, dark_grey, flea_bitten_grey, grey, light_bay, light_chestnut, light_grey, liver_chestnut, mahogany_bay, red_chestnut, strawberry_roan';
+
+
+--
+-- Name: COLUMN famous_stud_nominations.face_marking; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.famous_stud_nominations.face_marking IS 'bald_face, blaze, snip, star, star_snip, star_stripe, star_stripe_snip, stripe, stripe_snip';
+
+
+--
+-- Name: COLUMN famous_stud_nominations.lf_leg_marking; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.famous_stud_nominations.lf_leg_marking IS 'coronet, ermine, sock, stocking';
+
+
+--
+-- Name: COLUMN famous_stud_nominations.lh_leg_marking; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.famous_stud_nominations.lh_leg_marking IS 'coronet, ermine, sock, stocking';
+
+
+--
+-- Name: COLUMN famous_stud_nominations.rf_leg_marking; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.famous_stud_nominations.rf_leg_marking IS 'coronet, ermine, sock, stocking';
+
+
+--
+-- Name: COLUMN famous_stud_nominations.rh_leg_marking; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.famous_stud_nominations.rh_leg_marking IS 'coronet, ermine, sock, stocking';
+
+
+--
+-- Name: famous_stud_nominations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.famous_stud_nominations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: famous_stud_nominations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.famous_stud_nominations_id_seq OWNED BY public.famous_stud_nominations.id;
+
+
+--
 -- Name: famous_studs; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -8002,6 +8090,13 @@ ALTER TABLE ONLY public.eclipse_awards ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
+-- Name: famous_stud_nominations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.famous_stud_nominations ALTER COLUMN id SET DEFAULT nextval('public.famous_stud_nominations_id_seq'::regclass);
+
+
+--
 -- Name: famous_studs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -8589,6 +8684,14 @@ ALTER TABLE ONLY public.eclipse_award_votes
 
 ALTER TABLE ONLY public.eclipse_awards
     ADD CONSTRAINT eclipse_awards_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: famous_stud_nominations famous_stud_nominations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.famous_stud_nominations
+    ADD CONSTRAINT famous_stud_nominations_pkey PRIMARY KEY (id);
 
 
 --
@@ -11264,6 +11367,34 @@ CREATE INDEX index_eclipse_award_votes_on_voter_id ON public.eclipse_award_votes
 --
 
 CREATE INDEX index_eclipse_awards_on_year_and_category ON public.eclipse_awards USING btree (year, category);
+
+
+--
+-- Name: index_famous_stud_nominations_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_famous_stud_nominations_on_name ON public.famous_stud_nominations USING btree (name);
+
+
+--
+-- Name: index_famous_stud_nominations_on_sire_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_famous_stud_nominations_on_sire_id ON public.famous_stud_nominations USING btree (sire_id);
+
+
+--
+-- Name: index_famous_stud_nominations_on_sire_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_famous_stud_nominations_on_sire_name ON public.famous_stud_nominations USING btree (sire_name);
+
+
+--
+-- Name: index_famous_stud_nominations_on_submitter_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_famous_stud_nominations_on_submitter_id ON public.famous_stud_nominations USING btree (submitter_id);
 
 
 --
@@ -14203,6 +14334,14 @@ ALTER TABLE ONLY public.race_series_winners
 
 
 --
+-- Name: famous_stud_nominations fk_rails_8e5d211f17; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.famous_stud_nominations
+    ADD CONSTRAINT fk_rails_8e5d211f17 FOREIGN KEY (sire_id) REFERENCES public.horses(id);
+
+
+--
 -- Name: breeders_cup_nominations fk_rails_9113856ed2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14448,6 +14587,14 @@ ALTER TABLE ONLY public.race_series
 
 ALTER TABLE ONLY public.horse_events
     ADD CONSTRAINT fk_rails_bcdc776af0 FOREIGN KEY (horse_id) REFERENCES public.horses(id);
+
+
+--
+-- Name: famous_stud_nominations fk_rails_c0c87d9508; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.famous_stud_nominations
+    ADD CONSTRAINT fk_rails_c0c87d9508 FOREIGN KEY (submitter_id) REFERENCES public.users(id);
 
 
 --
@@ -14765,6 +14912,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20261125111418'),
 ('20261125110349'),
 ('20261123193237'),
+('20261122160125'),
 ('20261119135219'),
 ('20261116125145'),
 ('20261114134339'),
@@ -15152,3 +15300,4 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220502093637'),
 ('20220426211810'),
 ('20220403152231');
+

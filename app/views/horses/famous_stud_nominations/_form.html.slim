@@ -1,0 +1,96 @@
+/# locals: (nomination:)
+= form_with model: nomination, url: horses_famous_stud_nominations_path, id: "nomination-form", html: { class: "form", novalidate: true }, data: { turbo_frame: "_top" } do |f|
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".name")
+        = f.text_field :name, class: 'input w-auto validator', required: true
+      - if nomination.errors[:name]
+        p.text-error= nomination.errors.where(:name).map(&:full_message).join(', ')
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".date_of_birth")
+        = f.date_field :date_of_birth, class: 'input w-auto validator', required: true, value: nomination.date_of_birth, max: Date.new(Date.current.year - 4, 12, 31)
+      - if nomination.errors[:date_of_birth]
+        p.text-error= nomination.errors.where(:date_of_birth).map(&:full_message).join(', ')
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".game_sire")
+        = f.collection_select :sire_id, Horses::Horse::Stud.where.associated(:famous_stud).all.order(name: :asc), :id, :name, include_blank: true, class: 'select'
+      - if nomination.errors[:sire_id]
+        p.text-error= nomination.errors.where(:sire_id).map(&:full_message).join(', ')
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".sire_name")
+        = f.text_field :sire_name, class: 'input'
+      - if nomination.errors[:sire_name]
+        p.text-error= nomination.errors.where(:sire_name).map(&:full_message).join(', ')
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".height")
+        = f.text_field :height, class: 'input'
+      - if nomination.errors[:height]
+        p.text-error= nomination.errors.where(:height).map(&:full_message).join(', ')
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".color")
+        - colors = Horses::Color::VALUES.keys.map { |value| [value, value.to_s.titleize] }
+        = f.collection_select :color, colors, :first, :last, class: 'select', required: true
+      - if nomination.errors[:color]
+        p.text-error= nomination.errors.where(:color).map(&:full_message).join(', ')
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".face")
+        - markings = Horses::FaceMarking::VALUES.keys.map { |value| [value, value.to_s.gsub('_', ' ').titleize] }
+        = f.collection_select :face_marking, markings, :first, :last, include_blank: true, class: 'select'
+      - if nomination.errors[:face_marking]
+        p.text-error= nomination.errors.where(:face_marking).map(&:full_message).join(', ')
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    - leg_markings = Horses::LegMarking::VALUES.keys.map { |value| [value, value.to_s.gsub('_', ' ').titleize] }
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".lf")
+        = f.collection_select :lf_leg_marking, leg_markings, :first, :last, include_blank: true, class: 'select'
+      - if nomination.errors[:lf_leg_marking]
+        p.text-error= nomination.errors.where(:lf_leg_marking).map(&:full_message).join(', ')
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".lh")
+        = f.collection_select :lh_leg_marking, leg_markings, :first, :last, include_blank: true, class: 'select'
+      - if nomination.errors[:lh_leg_marking]
+        p.text-error= nomination.errors.where(:lh_leg_marking).map(&:full_message).join(', ')
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".rf")
+        = f.collection_select :rf_leg_marking, leg_markings, :first, :last, include_blank: true, class: 'select'
+      - if nomination.errors[:rf_leg_marking]
+        p.text-error= nomination.errors.where(:rf_leg_marking).map(&:full_message).join(', ')
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".rh")
+        = f.collection_select :rh_leg_marking, leg_markings, :first, :last, include_blank: true, class: 'select'
+      - if nomination.errors[:rh_leg_marking]
+        p.text-error= nomination.errors.where(:rh_leg_marking).map(&:full_message).join(', ')
+  .grid.grid-cols-1.sm:grid-cols-2.mb-2.gap-4
+    div
+      - surfaces = Config::Racing.surfaces.map { |surface| [surface, I18n.t("racing.race.surface_#{surface}")] }
+      fieldset.fieldset
+        legend.fieldset-legend= t(".runs_on")
+        .join
+          - surfaces.each do |surface|
+            label.label.join-item.mr-2
+              = checkbox_tag "horses_stud_famous_stud_nomination[ran_on_#{surface.first}]", surface.first.to_s, class: "checkbox"
+              = surface.last
+    div
+      fieldset.fieldset.bg-base-100.border-base-300.rounded-box.border.p-4
+        legend.fieldset-legend= t(".highlights")
+        = f.textarea :highlights, class: 'input w-auto h-24'
+      - if nomination.errors[:highlights]
+        p.text-error= nomination.errors.where(:highlights).map(&:full_message).join(', ')
+  .float-right
+    = render Ui::CloseModalButton::Component.new(style: :outline, extra_classes: "mr-2 sm:hidden", onclick:"dialog.close();")
+    = render Ui::SubmitButton::Component.new(form: f, text: t("common.actions.save"))
