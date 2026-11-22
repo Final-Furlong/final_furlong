@@ -17,6 +17,7 @@ module Account
 
     has_many :notifications, inverse_of: :user, dependent: :destroy
     has_many :push_subscriptions, inverse_of: :user, dependent: :delete_all
+    has_many :famous_stud_nominations, class_name: "Horses::Stud::FamousStudNomination", inverse_of: :submitter, dependent: :nullify
 
     # Include default devise modules. Others available are:
     # :omniauthable, :database_authenticatable, :registerable, :recoverable, :lockable, :rememberable
