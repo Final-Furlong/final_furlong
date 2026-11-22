@@ -844,7 +844,6 @@ GEM
     strong_migrations (2.8.0)
       activerecord (>= 7.2)
     strscan (3.1.8)
-    sus (0.37.2)
     tailwind_merge (1.5.2)
       sin_lru_redux (~> 2.5)
     tailwindcss-rails (4.6.0)
@@ -1071,7 +1070,6 @@ DEPENDENCIES
   stimulus-rails
   store_model
   strong_migrations
-  sus
   tailwind_merge
   tailwindcss-rails
   terminal-notifier
@@ -1398,7 +1396,6 @@ CHECKSUMS
   store_model (4.6.0) sha256=13646cf65b7620919ebbe19e363d3e8943b752add1f51c24136902deffeeb149
   strong_migrations (2.8.0) sha256=cb9c0f8160e60f3e9c0e76098d57a6f61825b9618e8eb41cebbd1c1079874439
   strscan (3.1.8) sha256=aae2db611a225559f21ffbb71765c9a4e60fd262534a9ea84f4f11c7f32f679e
-  sus (0.37.2) sha256=c060958436ecaccf3b04482d7ee7af2f0246f3c65a63b6794b89f86d94a42feb
   tailwind_merge (1.5.2) sha256=eef5d5dab01ebabea59de48fc7a3369a362e209d32ea6d42c6f89d6579e9be6f
   tailwindcss-rails (4.6.0) sha256=d99512867173d55c5ef8890427682299d8539f550cec1408b3d8667a538bd365
   tailwindcss-ruby (4.3.2) sha256=e7e583c13f13f645e353922de4a5295f724449576747911d3717f36c4c8a0c45
