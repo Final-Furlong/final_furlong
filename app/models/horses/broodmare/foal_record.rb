@@ -81,11 +81,7 @@ end
 #  total_foal_races                 :integer
 #  unborn_foals_count               :integer
 #  winning_foals_count              :integer
-#  horse_id                         :bigint           primary key, uniquely indexed
+#  horse_id                         :bigint           primary key
 #  in_foal_stud_id                  :bigint
-#
-# Indexes
-#
-#  index_broodmare_foal_records_on_horse_id  (horse_id) UNIQUE
 #
 

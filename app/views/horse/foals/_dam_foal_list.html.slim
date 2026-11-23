@@ -14,6 +14,7 @@
     tbody
       - dashboard.born_foals.each do |foal|
         - pedigree = Horses::PedigreeDisplayService.new(foal)
+        - pd foal.inspect
         tr
           td class="text-#{foal.gender}"
             = render Ui::Link::Component.new(color: :none, url: horse_path(foal), data: { turbo_frame: "_top" }) do
@@ -25,8 +26,8 @@
           td
             - if foal.stillborn?
               em= t("horse.type.stillborn").titleize
-            - else
-              = foal.track_record
+            - elsif foal.age >= 2
+              = foal.lifetime_race_record&.description || t("horse.races.index.unraced")
       - if (unborn_foal = dashboard.unborn_foal)
         tr
           td= t("horse.in_foal").titleize

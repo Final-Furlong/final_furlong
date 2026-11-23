@@ -3680,7 +3680,7 @@ CREATE MATERIALIZED VIEW public.lifetime_race_records AS
                 WHEN ((sum(wins) > 1) AND ((sum(seconds) + sum(thirds)) = 1)) THEN 'Mult. Winner, Placed'::text
                 WHEN ((sum(wins) = 1) AND ((sum(seconds) + sum(thirds)) > 1)) THEN 'Winner, Mult. Placed'::text
                 WHEN ((sum(wins) = 1) AND ((sum(seconds) + sum(thirds)) = 1)) THEN 'Winner, Placed'::text
-                WHEN ((sum(wins) > 1) AND ((sum(seconds) + sum(thirds)) = 1)) THEN 'Mult. Winner'::text
+                WHEN ((sum(wins) > 1) AND ((sum(seconds) + sum(thirds)) = 0)) THEN 'Mult. Winner'::text
                 WHEN ((sum(wins) = 1) AND ((sum(seconds) + sum(thirds)) = 0)) THEN 'Winner'::text
                 WHEN ((sum(wins) = 0) AND ((sum(seconds) + sum(thirds)) > 1)) THEN 'Mult. Placed'::text
                 WHEN ((sum(wins) = 0) AND ((sum(seconds) + sum(thirds)) = 1)) THEN 'Placed'::text
@@ -11099,13 +11099,6 @@ CREATE INDEX index_breedings_on_year ON public.breedings USING btree (year);
 
 
 --
--- Name: index_broodmare_foal_records_on_horse_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_broodmare_foal_records_on_horse_id ON public.broodmare_foal_records USING btree (horse_id);
-
-
---
 -- Name: index_broodmare_shipments_on_arrival_date; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -12422,13 +12415,6 @@ CREATE INDEX index_race_options_on_third_jockey_id ON public.race_options USING 
 
 
 --
--- Name: index_race_qualifications_on_horse_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_race_qualifications_on_horse_id ON public.race_qualifications USING btree (horse_id);
-
-
---
 -- Name: index_race_records_on_horse_id_and_year_and_surface; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -13210,13 +13196,6 @@ CREATE UNIQUE INDEX index_stud_breeders_cup_nominations_on_stud_id_and_year ON p
 --
 
 CREATE INDEX index_stud_breeders_cup_nominations_on_year ON public.stud_breeders_cup_nominations USING btree (year);
-
-
---
--- Name: index_stud_foal_records_on_horse_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_stud_foal_records_on_horse_id ON public.stud_foal_records USING btree (horse_id);
 
 
 --
@@ -14761,6 +14740,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261123193237'),
 ('20261119135219'),
 ('20261116125145'),
 ('20261114134339'),
