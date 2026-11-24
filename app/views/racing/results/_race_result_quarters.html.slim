@@ -10,7 +10,7 @@ ruby:
         = race.race_description_string
         = " | "
         = track_description
-    - race.horses.order(finish_position: :asc).each do |finisher|
+    - race.horses.includes(:horse).order(finish_position: :asc).each do |finisher|
       - horse = finisher.horse
       .collapse.bg-base-100.border-base-content/50.border.border-1.rounded-none
         input type="checkbox"
@@ -62,7 +62,18 @@ ruby:
       input type="checkbox"
       .collapse-title.font-semibold.font-medium
         span= t("racing.results.injuries")
-        span.float-right= "Not Yet Added"
+        span.float-right
+        - if (injuries = Horses::HistoricalInjury.where(date: race.date, horse: race.horses.select(:horse_id))).present?
+          = t("racing.results.injuries")
+          = ": "
+          - injuries.each do |injury|
+            = injury.horse.name
+            = ' - '
+            = t("horse.injuries.#{injury.injury_type.downcase.underscore}")
+            - if injury.leg
+              = " (#{injury.leg})"
+        - else
+          = t("racing.results.no_injuries")
 .hidden.mx-auto.overflow-x-auto.rounded-md.w-full.sm:block
   .table-responsive-md
     table.table.table-responsive.table-zebra.table-sm.sortable.asc.n-last
@@ -83,7 +94,7 @@ ruby:
           th= t("racing.race.equipment")
           th= t("racing.results.speed_factor")
         tbody
-          - race.horses.order(finish_position: :asc).each do |finisher|
+          - race.horses.includes(:horse).order(finish_position: :asc).each do |finisher|
             - horse = finisher.horse
             tr
               td data-sort=horse.name

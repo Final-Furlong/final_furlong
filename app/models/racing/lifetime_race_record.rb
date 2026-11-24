@@ -43,6 +43,12 @@ module Racing
       starts.to_i.zero?
     end
 
+    def stakes_performance?
+      return false if stakes_starts.to_i.zero?
+
+      stakes_wins.to_i.positive? || stakes_seconds.to_i.positive? || stakes_thirds.to_i.positive?
+    end
+
     def surface_icons
       return [] if unraced?
 

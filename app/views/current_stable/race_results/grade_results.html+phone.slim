@@ -1,0 +1,7 @@
+= turbo_frame_tag "stable-grade-#{params[:grade]}-results" do
+  - if @results.blank?
+    p.text-center= t(".no_results")
+  - else
+    = turbo_frame_tag "#{params[:grade]}-list" do
+      = render partial: "grade_result", collection: @results, as: :result
+      = render_load_more(@pagy, tag: "grade-#{params[:grade]}-load-more")

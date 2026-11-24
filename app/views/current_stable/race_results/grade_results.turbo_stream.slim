@@ -1,0 +1,4 @@
+= turbo_stream.append "#{params[:grade]}-list" do
+  = render partial: "grade_result", collection: @results, as: :result
+
+= render "shared/loading", pagy: @pagy, tag: "grade-#{params[:grade]}-load-more"

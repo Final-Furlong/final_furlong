@@ -120,3 +120,4 @@ class Racing::RaceFiller::RaceJob < ApplicationJob
     [horses, races]
   end
 end
+

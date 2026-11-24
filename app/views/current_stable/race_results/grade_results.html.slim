@@ -1,0 +1,13 @@
+= turbo_frame_tag "stable-grade-#{params[:grade]}-results" do
+  - if @results.blank?
+    p.text-center= t(".no_results")
+  - else
+    .mx-auto.overflow-x-auto.border.rounded-md.w-5/6
+      table.table.table-zebra
+        thead
+          tr.border-b-1.border-gray-400.dark:border-neutral-600
+            th= t(".race_name")
+            th= t(".results")
+        tbody id="#{params[:grade]}-list"
+          = render partial: "grade_result", collection: @results, as: :result
+      = render_load_more(@pagy, tag: "grade-#{params[:grade]}-load-more")

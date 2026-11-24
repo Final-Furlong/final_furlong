@@ -10,3 +10,23 @@
         p.text-center.mb-2 = t(".series_wins")
         - @horse.race_series_wins.each do |series|
           p.text-center= t(".series_win", year: series.year, name: series.series.title)
+  - if Racing::RaceResultHorse.where(horse: @horse).by_max_finish(3).joins(:race).merge(Racing::RaceResult.by_type('stakes')).exists?
+    .mt-8.w-full.sm:w-2/3.overflow-x-auto.rounded-md.mx-auto.border.border-primary-200[
+      class="border-base-content/5 bg-base-100 dark:border-neutral-200"
+    ]
+      table.table.table-sm
+        tr
+          th.text-center colspan=2 = t(".stakes_performances")
+        - ["Grade 1", "Grade 2", "Grade 3", "Ungraded"].each do |grade|
+          - if Racing::RaceResultHorse.where(horse: @horse).by_max_finish(3).joins(:race).merge(Racing::RaceResult.by_type('stakes').where(grade:)).exists?
+            tr
+              td.text-center.font-bold colspan=2 = grade
+              - [1, 2, 3].each do |finish|
+                - if Racing::RaceResultHorse.where(horse: @horse).by_finish(finish).joins(:race).merge(Racing::RaceResult.by_type('stakes').where(grade:)).exists?
+                  tr
+                    td.align-top= finish.ordinalize
+                    td
+                      - Racing::RaceResult.by_type('stakes').where(grade:).joins(:horses).where(race_result_horses: { horse: @horse }).merge(Racing::RaceResultHorse.by_finish(finish)).select(:name, :date, :number).order(id: :asc).each do |race|
+                        p
+                          = render Ui::Link::Component.new(url: racing_result_path(race.date, race.number), extra_classes: "mt-2", data: { turbo_frame: "modal" }) do
+                            = t(".race", name: race.name, year: race.date.year)

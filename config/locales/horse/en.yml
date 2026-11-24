@@ -324,6 +324,8 @@ en:
     highlights:
       index:
         award: "%{year} %{name} of the Year"
+        race: "%{name} (%{year})"
+        stakes_performances: Stakes Performances
         eclipse_awards: Eclipse Awards
         series_win: "%{year} %{name}"
         series_wins: Race Series Wins

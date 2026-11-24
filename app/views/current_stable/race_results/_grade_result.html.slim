@@ -1,0 +1,15 @@
+/# locals: (result:)
+- grade = params[:grade].tr("_", " ").titleize
+tr
+  td.font-bold.align-top= result.name
+  td
+    - [1, 2, 3].each do |finish|
+      - if Racing::RaceResultHorse.where(stable: Current.stable).by_finish(finish).joins(:race).where(race: { race_type: 'stakes', grade:, name: result.name }).exists?
+        p.font-bold= finish.ordinalize
+        - finishes = Racing::RaceResultHorse.where(stable: Current.stable).by_finish(finish).joins(:race).where(race: { race_type: 'stakes', grade:, name: result.name }).order(finish_position: :asc, race: { date: :asc }).find_each do |finish|
+          - horse = finish.horse
+          p
+            span class="text-#{horse.gender}"= link_to horse.name_with_title, horse_path(horse), data: { turbo: false }
+            span
+              = render Ui::Link::Component.new(url: racing_result_path(finish.race.date, finish.race.number), extra_classes: "mt-2", data: { turbo_frame: "modal" }) do
+                = " (#{finish.race.date.year})"

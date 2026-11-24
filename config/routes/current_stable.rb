@@ -19,6 +19,7 @@ namespace :stable, module: "current_stable" do
   resources :race_results, only: :index do
     get :summary, on: :collection
     get :list, on: :collection
+    get :grade_results, on: :collection
   end
   resources :recent_foals, only: :index
   get "/recent_results/:date", to: "recent_results#show", as: :recent_results

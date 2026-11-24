@@ -36,7 +36,7 @@
           p.mx-auto= t(".loading_races")
           .mt-2.mx-auto.skeleton.h-32.w-32.sm:w-3/4
 
-  - if horse.eclipse_awards.exists? || horse.race_series_wins.exists?
+  - if horse.eclipse_awards.exists? || horse.race_series_wins.exists? || horse.lifetime_race_record&.stakes_performance?
     input.tab[ type="radio" name="horse" aria-label=t(".highlights") id="highlights" ]
     .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
       = turbo_frame_tag "#{@horse.slug}-highlights", src: horse_highlights_path(@horse), loading: "lazy" do

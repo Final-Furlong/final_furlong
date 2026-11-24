@@ -1,0 +1,250 @@
+/# locals: (records:)
+.card.card-border.bg-base-100.w-full.px-2.rounded-none
+  .card-body.p-0.rounded-none
+    .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
+      input type="checkbox"
+      .collapse-title.font-semibold.text-center
+        span= t("current_stable.race_results.index.by_year")
+      .collapse-content.text-sm
+        ruby:
+          starts = wins = seconds = thirds = fourths = earnings = points = 0
+          records.each do |record|
+            starts += record.starts
+            wins += record.wins
+            seconds += record.seconds
+            thirds += record.thirds
+            fourths += record.fourths
+            earnings += record.earnings
+            points += record.points
+          end
+        .card.card-border.bg-base-100.w-full.px-2.rounded-none
+          .card-body.p-0.rounded-none
+            .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
+              input type="checkbox"
+              .collapse-title.font-semibold.text-center
+                - record = records.last
+                - otb_pct = record.percentage(wins + seconds + thirds, starts)
+                span= t(".total_with_otb", percent: otb_pct)
+              .collapse-content.text-sm
+                p
+                  span= t("horse.races.index.starts")
+                  span.float-right= number_with_delimiter(starts)
+                p
+                  span= t("horse.races.index.wins")
+                  span.float-right
+                    = number_with_delimiter(wins)
+                    = " ("
+                    = t("current_stable.race_results.index.percentage", percent: record.percentage(wins, starts))
+                    = ")"
+                p
+                  span= t("horse.races.index.seconds")
+                  span.float-right
+                    = number_with_delimiter(seconds)
+                    = " ("
+                    = t("current_stable.race_results.index.percentage", percent: record.percentage(seconds, starts))
+                    = ")"
+                p
+                  span= t("horse.races.index.thirds")
+                  span.float-right
+                    = number_with_delimiter(thirds)
+                    = " ("
+                    = t("current_stable.race_results.index.percentage", percent: record.percentage(thirds, starts))
+                    = ")"
+                p
+                  span= t("horse.races.index.fourths")
+                  span.float-right
+                    = number_with_delimiter(fourths)
+                    = " ("
+                    = t("current_stable.race_results.index.percentage", percent: record.percentage(fourths, starts))
+                    = ")"
+                p
+                  span= t("horse.races.index.earnings")
+                  span.float-right
+                    = Game::MoneyFormatter.new(earnings)
+                    = " ("
+                    = t("current_stable.race_results.index.percentage", percent: 100)
+                    = ")"
+                p
+                  span= t("horse.races.index.points")
+                  span.float-right
+                    = number_with_delimiter(points)
+                    = " ("
+                    = t("current_stable.race_results.index.percentage", percent: 100)
+                    = ")"
+        - records.each do |record|
+          .card.card-border.bg-base-100.w-full.px-2.rounded-none
+            .card-body.p-0.rounded-none
+              .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
+                input type="checkbox"
+                .collapse-title.font-semibold.text-center
+                  - otb_pct = record.otb_percentage
+                  span= t(".year_with_otb", year: record.year, percent: otb_pct)
+                .collapse-content.text-sm
+                  p
+                    span= t("horse.races.index.starts")
+                    span.float-right= number_with_delimiter(record.starts)
+                  p
+                    span= t("horse.races.index.wins")
+                    span.float-right
+                      = record.wins
+                      = " ("
+                      = t("current_stable.race_results.index.percentage", percent: record.win_percentage)
+                      = ")"
+                  p
+                    span= t("horse.races.index.seconds")
+                    span.float-right
+                      = record.seconds
+                      = " ("
+                      = t("current_stable.race_results.index.percentage", percent: record.second_percentage)
+                      = ")"
+                  p
+                    span= t("horse.races.index.thirds")
+                    span.float-right
+                      = record.thirds
+                      = " ("
+                      = t("current_stable.race_results.index.percentage", percent: record.third_percentage)
+                      = ")"
+                  p
+                    span= t("horse.races.index.fourths")
+                    span.float-right
+                      = record.fourths
+                      = " ("
+                      = t("current_stable.race_results.index.percentage", percent: record.fourth_percentage)
+                      = ")"
+                  p
+                    span= t("horse.races.index.earnings")
+                    span.float-right
+                      = Game::MoneyFormatter.new(record.earnings)
+                      = " ("
+                      - earnings_pct = record.percentage(record.earnings, earnings)
+                      = t("current_stable.race_results.index.percentage", percent: earnings_pct)
+                      = ")"
+                  p
+                    span= t("horse.races.index.points")
+                    span.float-right
+                      = number_with_delimiter(record.points.to_i)
+                      = " ("
+                      = t("current_stable.race_results.index.percentage", percent: record.percentage(record.points, points))
+                      = ")"
+ruby:
+  starts = wins = seconds = thirds = fourths = 0
+  records.each do |record|
+    starts += record.stakes_starts
+    wins += record.stakes_wins
+    seconds += record.stakes_seconds
+    thirds += record.stakes_thirds
+    fourths += record.stakes_fourths
+  end
+.card.card-border.bg-base-100.w-full.px-2.rounded-none
+  .card-body.p-0.rounded-none
+    .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
+      input type="checkbox"
+      .collapse-title.font-semibold.text-center
+        span= t("current_stable.race_results.index.by_year_stakes")
+      .collapse-content.text-sm
+        .card.card-border.bg-base-100.w-full.px-2.rounded-none
+          .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
+            input type="checkbox"
+            .collapse-title.font-semibold.text-center
+              span= t("current_stable.race_results.index.total")
+            .collapse-content.text-sm
+              p
+                span= t("horse.races.index.starts")
+                span.float-right= number_with_delimiter(starts)
+              p
+                span= t("horse.races.index.wins")
+                span.float-right
+                  = number_with_delimiter(wins)
+                  = " ("
+                  = t("current_stable.race_results.index.percentage", percent: record.percentage(wins, starts))
+                  = ")"
+              p
+                span= t("horse.races.index.seconds")
+                span.float-right
+                  = number_with_delimiter(seconds)
+                  = " ("
+                  = t("current_stable.race_results.index.percentage", percent: record.percentage(seconds, starts))
+                  = ")"
+              p
+                span= t("horse.races.index.thirds")
+                span.float-right
+                  = number_with_delimiter(thirds)
+                  = " ("
+                  = t("current_stable.race_results.index.percentage", percent: record.percentage(thirds, starts))
+                  = ")"
+              p
+                span= t("horse.races.index.fourths")
+                span.float-right
+                  = number_with_delimiter(fourths)
+                  = " ("
+                  = t("current_stable.race_results.index.percentage", percent: record.percentage(fourths, starts))
+                  = ")"
+              p
+                span= t("current_stable.race_results.index.otb_percentage")
+                span.float-right
+                  = t("current_stable.race_results.index.percentage", percent: record.percentage(wins + seconds + thirds, starts))
+          - records.each do |record|
+            .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
+              input type="checkbox"
+              .collapse-title.font-semibold.text-center
+                span= record.year
+              .collapse-content.text-sm
+                p
+                  span= t("horse.races.index.starts")
+                  span.float-right= number_with_delimiter(record.stakes_starts)
+                p
+                  span= t("horse.races.index.wins")
+                  span.float-right
+                    = number_with_delimiter(record.stakes_wins)
+                    = " ("
+                    - win_pct = record.percentage(record.stakes_wins, record.stakes_starts)
+                    = t("current_stable.race_results.index.percentage", percent: win_pct)
+                    = ")"
+                p
+                  span= t("horse.races.index.seconds")
+                  span.float-right
+                    = number_with_delimiter(record.stakes_seconds)
+                    = " ("
+                    - place_pct = record.percentage(record.stakes_seconds, record.stakes_starts)
+                    = t("current_stable.race_results.index.percentage", percent: place_pct)
+                    = ")"
+                p
+                  span= t("horse.races.index.thirds")
+                  span.float-right
+                    = number_with_delimiter(record.stakes_thirds)
+                    = " ("
+                    - show_pct = record.percentage(record.stakes_thirds, record.stakes_starts)
+                    = t("current_stable.race_results.index.percentage", percent: show_pct)
+                    = ")"
+                p
+                  span= t("horse.races.index.fourths")
+                  span.float-right
+                    = number_with_delimiter(record.stakes_fourths)
+                    = " ("
+                    - fourth_pct = record.percentage(record.stakes_fourths, record.stakes_starts)
+                    = t("current_stable.race_results.index.percentage", percent: fourth_pct)
+                    = ")"
+                p
+                  span= t("current_stable.race_results.index.otb_percentage")
+                  span.float-right
+                    - otb_pct = record.percentage(record.stakes_wins + record.stakes_seconds + record.stakes_thirds, record.stakes_starts)
+                    = t("current_stable.race_results.index.percentage", percent: otb_pct)
+- if wins.positive? || places.positive? || thirds.positive?
+  .card.card-border.bg-base-100.w-full.px-2.rounded-none
+    .card-body.p-0.rounded-none
+      .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
+        input type="checkbox"
+        .collapse-title.font-semibold.text-center
+          span= t("current_stable.race_results.index.stakes_results")
+        .collapse-content.text-sm
+          p.text-center.mt-2= t(".click_year")
+          .tabs.tabs-border.dark:border-neutral-400 role="tablist"
+            - ["Grade 1", "Grade 2", "Grade 3", "Ungraded"].each do |grade|
+              - races_count = Racing::RaceResultHorse.where(stable: Current.stable).by_max_finish(3).joins(:race).merge(Racing::RaceResult.by_type('stakes').where(grade:)).count
+              - grade_string = grade.gsub(' ', '_').downcase
+              input.tab type="radio" name="stakes-results" aria-label=t(".stakes_#{grade_string}", count: number_with_delimiter(races_count)) id="grade_#{grade.downcase}" disabled=races_count.zero?
+              .tab-content.border-base-400.bg-base-100.p-2.sm:p-4
+                = turbo_frame_tag "stable-grade-#{grade_string}-results", src: grade_results_stable_race_results_path(grade: grade_string), loading: "lazy" do
+                  .w-full.text-center
+                    p.mx-auto= t(".loading_results")
+                    .mt-2.mx-auto.skeleton.w-full

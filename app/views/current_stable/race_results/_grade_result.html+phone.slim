@@ -1,0 +1,22 @@
+/# locals: (result:)
+- grade = params[:grade].tr("_", " ").titleize
+.card.card-border.bg-base-100.w-full.px-2.rounded-none
+  .card-body.p-0.rounded-none
+    .collapse.collapse-arrow.bg-base-100.border-base-content/50.border.border-1.rounded-none
+      input type="checkbox"
+      .collapse-title.font-semibold.text-center
+        - count = Racing::RaceResultHorse.where(stable: Current.stable).by_max_finish(3).joins(:race).where(race: { race_type: 'stakes', grade:, name: result.name }).count
+        span
+          = result.name
+          = " (#{count})"
+      .collapse-content.text-sm
+        - [1, 2, 3].each do |finish|
+          - if Racing::RaceResultHorse.where(stable: Current.stable).by_finish(finish).joins(:race).where(race: { race_type: 'stakes', grade:, name: result.name }).exists?
+            p.font-bold= finish.ordinalize
+            - finishes = Racing::RaceResultHorse.where(stable: Current.stable).by_finish(finish).joins(:race).where(race: { race_type: 'stakes', grade:, name: result.name }).order(finish_position: :asc, race: { date: :asc }).find_each do |finish|
+              - horse = finish.horse
+              p
+                span class="text-#{horse.gender}"= link_to horse.name_with_title, horse_path(horse), data: { turbo: false }
+                span
+                  = render Ui::Link::Component.new(url: racing_result_path(finish.race.date, finish.race.number), extra_classes: "mt-2", data: { turbo_frame: "modal" }) do
+                    = " (#{finish.race.date.year})"

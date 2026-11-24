@@ -3,7 +3,7 @@ en:
   account:
     stables:
       stable:
-        last_online: 'Last online at: %{date}'
+        last_online: "Last online at: %{date}"
         no_description: No description
         send_pm: Send PM
   current_stable:
@@ -123,8 +123,8 @@ en:
           sold_or_bought: Sold/Bought/Leased
         no_transactions: Could not find any transactions.
         title: Budget
-        title_with_available: 'Budget: (%{total}, %{available} available)'
-        title_with_total: 'Budget: %{total}'
+        title_with_available: "Budget: (%{total}, %{available} available)"
+        title_with_total: "Budget: %{total}"
       table:
         balance_disclaimer: Balance shown is at the time of the transaction, it will not reflect the amounts displayed if you are searching/sorting.
         total_earned: Total Money Earned
@@ -150,7 +150,7 @@ en:
         cannot_ship_in_time: Cannot ship in time
         energy_too_low: Energy too low
         entered: Entered
-        errored: 'Error: %{message}'
+        errored: "Error: %{message}"
         max_entries: Max horses entered from your stable
         not_at_track: Not at the track
         not_qualified: Not qualified for race
@@ -191,6 +191,10 @@ en:
       table:
         age_gender: Age/Gender
     race_results:
+      grade_results:
+        no_results: No results found
+        race_name: Race Name
+        results: Results
       index:
         by_year: Race Results By Year
         by_year_stakes: Stakes Results By Year
@@ -202,10 +206,23 @@ en:
         percent: "%"
         percentage: "%{percent}%"
         results: Results (%{count})
+        stakes_results: Stakes Results
         summary: Summary
         title: Stable Race Results
         total: Totals
         year: Year
+      year:
+        click_year: Click on a year to view the race
+        loading_results: Loading results...
+        stakes_grade_1: Gr. 1 (%{count})
+        stakes_grade_2: Gr. 2 (%{count})
+        stakes_grade_3: Gr. 3 (%{count})
+        stakes_ungraded: Ungr. (%{count})
+        race_count:
+          one: "%{name} (1 Horse)"
+          other: "%{name} (%{count} Horses)"
+        total_with_otb: "Total (%{percent}% OTB)"
+        year_with_otb: "%{year} (%{percent}% OTB)"
     recent_foals:
       copy_button:
         copy_forum_format: Copy List for Forum
@@ -246,8 +263,8 @@ en:
         title: Horses Offered for Sale
     settings:
       new:
-        browser_subscribed: 'Status: YES! Your browser is currently subscribed to push notifications'
-        browser_unsubscribed: 'Status: Your browser is NOT subscribed to push notifications'
+        browser_subscribed: "Status: YES! Your browser is currently subscribed to push notifications"
+        browser_unsubscribed: "Status: Your browser is NOT subscribed to push notifications"
         instructions: Try sending a web push notification using the form below. The first text box will be used as a title and the second text box represents the message body. Click the button to send a push notification to yourself.
         notification: Hi from Final Furlong
         notification_not_supported: Notifications are not supported in your browser
@@ -322,7 +339,7 @@ en:
         title: New Training Schedule
       show:
         manage_horses: Horses (%{count})
-        title: 'Training Schedule: %{name}'
+        title: "Training Schedule: %{name}"
         workouts_count: Workouts (%{count})
       update:
         success: Training Schedule was successfully updated.
@@ -443,7 +460,7 @@ en:
         mares: Unbred Mares
       races:
         claiming_alert_count:
-          one: '1 horse is available to claim on '
+          one: "1 horse is available to claim on "
           other: "%{count} horses are available to claim on "
         existing_claim: ". You have submitted a claim."
         race_entry_count: Your stable has %{count} %{horses} entered to race on %{date}
