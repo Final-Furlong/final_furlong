@@ -168,6 +168,10 @@ end
 #  nw3_allowance_qualified     :boolean
 #  stakes_placed               :boolean
 #  starter_allowance_qualified :boolean
-#  horse_id                    :bigint           primary key
+#  horse_id                    :bigint           primary key, uniquely indexed
+#
+# Indexes
+#
+#  index_race_qualifications_on_horse_id  (horse_id) UNIQUE
 #
 

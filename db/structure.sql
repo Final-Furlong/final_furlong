@@ -12422,6 +12422,13 @@ CREATE INDEX index_race_options_on_third_jockey_id ON public.race_options USING 
 
 
 --
+-- Name: index_race_qualifications_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_race_qualifications_on_horse_id ON public.race_qualifications USING btree (horse_id);
+
+
+--
 -- Name: index_race_records_on_horse_id_and_year_and_surface; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -14754,6 +14761,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261125111418'),
 ('20261125110349'),
 ('20261123193237'),
 ('20261119135219'),
