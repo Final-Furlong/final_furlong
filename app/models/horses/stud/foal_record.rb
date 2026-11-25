@@ -90,6 +90,10 @@ end
 #  total_foal_races                 :integer
 #  unborn_foals_count               :integer
 #  winning_foals_count              :integer
-#  horse_id                         :bigint           primary key
+#  horse_id                         :bigint           primary key, uniquely indexed
+#
+# Indexes
+#
+#  index_stud_foal_records_on_horse_id  (horse_id) UNIQUE
 #
 

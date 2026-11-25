@@ -11099,6 +11099,13 @@ CREATE INDEX index_breedings_on_year ON public.breedings USING btree (year);
 
 
 --
+-- Name: index_broodmare_foal_records_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_broodmare_foal_records_on_horse_id ON public.broodmare_foal_records USING btree (horse_id);
+
+
+--
 -- Name: index_broodmare_shipments_on_arrival_date; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -13199,6 +13206,13 @@ CREATE INDEX index_stud_breeders_cup_nominations_on_year ON public.stud_breeders
 
 
 --
+-- Name: index_stud_foal_records_on_horse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_stud_foal_records_on_horse_id ON public.stud_foal_records USING btree (horse_id);
+
+
+--
 -- Name: index_supplemental_breeders_cup_nominations_on_horse_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -14740,6 +14754,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261125110349'),
 ('20261123193237'),
 ('20261119135219'),
 ('20261116125145'),
