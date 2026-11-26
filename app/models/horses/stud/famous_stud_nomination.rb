@@ -32,6 +32,7 @@ end
 #
 #  id                                                                                                                                                                                                                     :bigint           not null, primary key
 #  color(bay, black, blood_bay, blue_roan, brown, chestnut, dapple_grey, dark_bay, dark_grey, flea_bitten_grey, grey, light_bay, light_chestnut, light_grey, liver_chestnut, mahogany_bay, red_chestnut, strawberry_roan) :enum             default("bay"), not null
+#  dam_name                                                                                                                                                                                                               :string           indexed
 #  date_of_birth                                                                                                                                                                                                          :date             not null
 #  face_marking(bald_face, blaze, snip, star, star_snip, star_stripe, star_stripe_snip, stripe, stripe_snip)                                                                                                              :enum
 #  height                                                                                                                                                                                                                 :decimal(4, 2)    default(0.0), not null
@@ -47,11 +48,14 @@ end
 #  sire_name                                                                                                                                                                                                              :string           indexed
 #  created_at                                                                                                                                                                                                             :datetime         not null
 #  updated_at                                                                                                                                                                                                             :datetime         not null
+#  dam_id                                                                                                                                                                                                                 :bigint           indexed
 #  sire_id                                                                                                                                                                                                                :bigint           indexed
 #  submitter_id                                                                                                                                                                                                           :bigint           not null, indexed
 #
 # Indexes
 #
+#  index_famous_stud_nominations_on_dam_id        (dam_id)
+#  index_famous_stud_nominations_on_dam_name      (dam_name)
 #  index_famous_stud_nominations_on_name          (name)
 #  index_famous_stud_nominations_on_sire_id       (sire_id)
 #  index_famous_stud_nominations_on_sire_name     (sire_name)
@@ -59,6 +63,7 @@ end
 #
 # Foreign Keys
 #
+#  fk_rails_...  (dam_id => horses.id)
 #  fk_rails_...  (sire_id => horses.id)
 #  fk_rails_...  (submitter_id => users.id)
 #

@@ -4886,7 +4886,8 @@ CREATE TABLE public.famous_stud_nominations (
     name character varying NOT NULL,
     sire_id bigint,
     sire_name character varying,
-    date_of_birth date NOT NULL,
+    dam_id bigint,
+    dam_name character varying,
     ran_on_dirt boolean DEFAULT false NOT NULL,
     ran_on_turf boolean DEFAULT false NOT NULL,
     ran_on_jumps boolean DEFAULT false NOT NULL,
@@ -4899,7 +4900,8 @@ CREATE TABLE public.famous_stud_nominations (
     rf_leg_marking public.horse_leg_marking,
     rh_leg_marking public.horse_leg_marking,
     created_at timestamp(6) with time zone NOT NULL,
-    updated_at timestamp(6) with time zone NOT NULL
+    updated_at timestamp(6) with time zone NOT NULL,
+    date_of_birth date NOT NULL
 );
 
 
@@ -11370,6 +11372,20 @@ CREATE INDEX index_eclipse_awards_on_year_and_category ON public.eclipse_awards 
 
 
 --
+-- Name: index_famous_stud_nominations_on_dam_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_famous_stud_nominations_on_dam_id ON public.famous_stud_nominations USING btree (dam_id);
+
+
+--
+-- Name: index_famous_stud_nominations_on_dam_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_famous_stud_nominations_on_dam_name ON public.famous_stud_nominations USING btree (dam_name);
+
+
+--
 -- Name: index_famous_stud_nominations_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -13798,6 +13814,14 @@ ALTER TABLE ONLY public.sale_offers
 
 
 --
+-- Name: famous_stud_nominations fk_rails_090fdc827e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.famous_stud_nominations
+    ADD CONSTRAINT fk_rails_090fdc827e FOREIGN KEY (dam_id) REFERENCES public.horses(id);
+
+
+--
 -- Name: horse_comments fk_rails_0ae080edc5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -14908,6 +14932,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261126230922'),
 ('20261126131939'),
 ('20261125111418'),
 ('20261125110349'),
