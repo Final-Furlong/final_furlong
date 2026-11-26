@@ -1,0 +1,6 @@
+- content_for :title, t(".title")
+
+.text-center
+  h1.text-xl.font-bold= t(".title")
+
+= render "form", nomination: @nomination

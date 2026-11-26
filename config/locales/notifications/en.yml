@@ -20,6 +20,10 @@ en:
     failed_future_shipment:
       message: Could not perform the scheduled shipment for %{name} to %{location}
       title: Failed Scheduled Shipment
+    famous_stud_nominations_notification:
+      message: You have until %{date} to submit nominations for potential famous studs next year.
+      title: Nominate Famous Studs
+      view_nominations: View/Submit Nominations
     future_entry_processing_notification:
       entered_horses:
         one: 1 horse was entered

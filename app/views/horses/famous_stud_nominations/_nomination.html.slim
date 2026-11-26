@@ -1,0 +1,20 @@
+/# locals: (nomination:)
+tr
+  td= nomination.name
+  td= Date.current.year - nomination.date_of_birth.year
+  td
+    - if nomination.sire
+      = link_to nomination.sire.name, horse_path(nomination.sire), class: 'link', target: "_blank"
+    - else
+      = nomination.sire_name
+  td
+    - if nomination.ran_on_dirt
+      .tooltip.ml-2.text-lg data-tip=t("horse.ran_on_surface", surface: "dirt")
+        span.badge.badge-outline.badge-sm.ml-1 class="badge-warning" = "D"
+    - if nomination.ran_on_turf
+      .tooltip.ml-2.text-lg data-tip=t("horse.ran_on_surface", surface: "turf")
+        span.badge.badge-outline.badge-sm.ml-1 class="badge-success" = "T"
+    - if nomination.ran_on_jumps
+      .tooltip.ml-2.text-lg data-tip=t("horse.ran_on_surface", surface: "jumps")
+        span.badge.badge-outline.badge-sm.ml-1 class="badge-secondary" = "SC"
+  td= nomination.highlights
