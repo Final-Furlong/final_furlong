@@ -30,7 +30,6 @@ table.table.table-zebra.sortable.n-last.asc
         td= entry.rank.ordinalize
         td
           - entry_policy = policy(Racing::RaceEntry.new(race:, date: race.date, horse:))
-          - pd race.entries_count
           - if race.entries_count >= Config::Racing.entry_limit_overall
             span.badge.badge-error
               = t("racing.racehorses.status.race_full")

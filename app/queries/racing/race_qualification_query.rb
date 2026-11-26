@@ -40,8 +40,11 @@ module Racing
         @query = @query.min_age(min_age).max_age(max_age)
         @query = @query.female if female_only
         @query = @query.not_female if male_only
-        @query = @query.joins(:race_options).merge(Racing::RaceOption.distance_matching(distance))
-          .merge(Racing::RaceOption.send(surface_name.to_sym))
+        @query = @query.joins(:race_options)
+        unless race.requires_qualification
+          @query = @query.merge(Racing::RaceOption.distance_matching(distance))
+        end
+        @query = @query.merge(Racing::RaceOption.send(surface_name.to_sym))
         @query = if surface_type.flat?
           @query.merge(Racing::RaceOption.send(surface_type.to_sym))
         else
