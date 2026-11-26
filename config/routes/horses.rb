@@ -1,4 +1,5 @@
 namespace :horses, module: "horses" do
+  resources :famous_stud_nominations, only: %i[index new create destroy]
   resources :lease_offers, only: :index
   resources :sale_offers, only: :index
 end

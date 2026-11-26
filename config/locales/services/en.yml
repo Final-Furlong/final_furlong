@@ -73,6 +73,8 @@ en:
         mare_in_transit: Mare is in transit
         mare_needs_shipping: Mare needs shipping to the stallion's stable
         mare_not_eligible: Mare is not eligible for this breeding
+    famous_stud_nominator:
+      already_nominated: There is already a nomination for this stud
     late_breeders_cup_nominator:
       budget_description: 'Late Breeders'' Cup Nomination: %{name} (%{year} Onward)'
       cannot_afford_fee: You cannot afford the fee for nomination

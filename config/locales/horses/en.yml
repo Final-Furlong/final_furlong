@@ -3,6 +3,34 @@ en:
   horses:
     edit_name_form:
       name_hint: Max %{count} characters
+    famous_stud:
+      nominate: Nominate
+    famous_stud_nominations:
+      create:
+        failure: Could not create nomination
+        success: Successfully created famous stud nomination
+      form:
+        color: Color
+        date_of_birth: Date of Birth
+        face: Face (Leave blank for none)
+        game_sire: Sire (In Game)
+        height: Height (in hands)
+        highlights: Highlights (Why Should Someone Vote For Him?)
+        lf: LF Marking (Leave blank for none)
+        lh: LH Marking (Leave blank for none)
+        name: Horse Name
+        rf: RF Marking (Leave blank for none)
+        rh: RH Marking (Leave blank for none)
+        runs_on: Surface(s) Run On
+        sire_name: Sire Name (Not In Game)
+      index:
+        highlights: Highlights
+        info: This page is for nominating potential famous studs. Voting will happen later. The deadline to nominate is end of day on December 16.
+        no_nominations: No studs have been nominated.
+        running_surfaces: Surface(s)
+        title: Famous Stud Nominations
+      new:
+        title: Nominate Famous Stud
     geld:
       success: "%{name} was gelded"
     gelding:

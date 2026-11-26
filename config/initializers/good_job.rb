@@ -33,6 +33,11 @@ Rails.application.configure do
         class: "Yearly::StartOfYearJob",
         enabled_by_default: -> { Rails.env.production? }
       },
+      famous_stud_retirement: {
+        cron: "1 3 25 11 *",
+        class: "Breeding::FamousStudRetirementJob",
+        enabled_by_default: -> { Rails.env.production? }
+      },
       horse_energy_fitness: {
         cron: "25 1 * * *",
         class: "Racing::EnergyFitnessUpdaterJob",

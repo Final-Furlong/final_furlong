@@ -1,0 +1,22 @@
+- content_for :breadcrumbs do
+  = render Nav::Breadcrumbs::Component.new(title: t(".title"))
+    - if Horses::Stud::FamousStudNominationPolicy.new(Current.user, Horses::Stud::FamousStudNomination.new).create?
+      = render Nav::Breadcrumbs::Actions::Component.new(actions: [:create], path: "/horses/famous_stud_nominations/")
+
+p.text-center.font-bold= t(".info")
+.table-responsive-md
+  table.table.table-responsive.table-zebra
+    thead
+      tr
+        th= Horses::Horse.human_attribute_name("name")
+        th= Horses::Horse.human_attribute_name("age")
+        th= Horses::Horse.human_attribute_name("sire")
+        th= t(".running_surfaces")
+        th= t(".highlights")
+      tbody.table-group-divider id="horse-list"
+        - if @nominations.blank?
+          tr
+            td.text-center colspan=5 = t(".no_nominations")
+        - else
+          = render partial: "nomination", collection: @nominations, as: :nomination
+= render_load_more(@pagy)
