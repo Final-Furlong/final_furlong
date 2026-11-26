@@ -218,10 +218,7 @@ en:
         stakes_grade_2: Gr. 2 (%{count})
         stakes_grade_3: Gr. 3 (%{count})
         stakes_ungraded: Ungr. (%{count})
-        race_count:
-          one: "%{name} (1 Horse)"
-          other: "%{name} (%{count} Horses)"
-        total_with_otb: "Total (%{percent}% OTB)"
+        total_with_otb: Total (%{percent}% OTB)
         year_with_otb: "%{year} (%{percent}% OTB)"
     recent_foals:
       copy_button:
