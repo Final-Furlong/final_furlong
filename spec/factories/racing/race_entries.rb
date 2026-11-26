@@ -20,18 +20,18 @@ end
 #  weight                                         :integer          default(0), not null
 #  created_at                                     :datetime         not null
 #  updated_at                                     :datetime         not null
-#  first_jockey_id                                :bigint           uniquely indexed => [horse_id, second_jockey_id, third_jockey_id], indexed
-#  horse_id                                       :bigint           not null, uniquely indexed => [first_jockey_id, second_jockey_id, third_jockey_id], uniquely indexed => [date]
+#  first_jockey_id                                :bigint           uniquely indexed => [horse_id, race_id, second_jockey_id, third_jockey_id], indexed
+#  horse_id                                       :bigint           not null, uniquely indexed => [race_id, first_jockey_id, second_jockey_id, third_jockey_id], uniquely indexed => [date]
 #  jockey_id                                      :bigint           indexed, uniquely indexed => [race_id]
 #  odd_id                                         :bigint           indexed
-#  race_id                                        :bigint           not null, uniquely indexed => [jockey_id]
-#  second_jockey_id                               :bigint           uniquely indexed => [horse_id, first_jockey_id, third_jockey_id], indexed
+#  race_id                                        :bigint           not null, uniquely indexed => [horse_id, first_jockey_id, second_jockey_id, third_jockey_id], uniquely indexed => [jockey_id]
+#  second_jockey_id                               :bigint           uniquely indexed => [horse_id, race_id, first_jockey_id, third_jockey_id], indexed
 #  stable_id                                      :bigint           not null, indexed
-#  third_jockey_id                                :bigint           uniquely indexed => [horse_id, first_jockey_id, second_jockey_id], indexed
+#  third_jockey_id                                :bigint           uniquely indexed => [horse_id, race_id, first_jockey_id, second_jockey_id], indexed
 #
 # Indexes
 #
-#  idx_on_horse_id_first_jockey_id_second_jockey_id_th_4d3e2bb186  (horse_id,first_jockey_id,second_jockey_id,third_jockey_id) UNIQUE
+#  idx_on_horse_id_race_id_first_jockey_id_second_jock_9ae70b2f44  (horse_id,race_id,first_jockey_id,second_jockey_id,third_jockey_id) UNIQUE
 #  index_race_entries_on_date                                      (date)
 #  index_race_entries_on_equipment                                 (equipment)
 #  index_race_entries_on_first_jockey_id                           (first_jockey_id)

@@ -9244,13 +9244,6 @@ CREATE UNIQUE INDEX idx_on_horse_id_a722cf4d93 ON public.breeders_cup_juvenile_t
 
 
 --
--- Name: idx_on_horse_id_first_jockey_id_second_jockey_id_th_4d3e2bb186; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX idx_on_horse_id_first_jockey_id_second_jockey_id_th_4d3e2bb186 ON public.race_entries USING btree (horse_id, first_jockey_id, second_jockey_id, third_jockey_id);
-
-
---
 -- Name: idx_on_horse_id_first_jockey_id_second_jockey_id_th_b7c0ac41cd; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -9269,6 +9262,13 @@ CREATE UNIQUE INDEX idx_on_horse_id_first_race_id_ccde27d4eb ON public.breeders_
 --
 
 CREATE INDEX idx_on_horse_id_race_id_949895b079 ON public.supplemental_breeders_cup_nominations USING btree (horse_id, race_id);
+
+
+--
+-- Name: idx_on_horse_id_race_id_first_jockey_id_second_jock_9ae70b2f44; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_horse_id_race_id_first_jockey_id_second_jock_9ae70b2f44 ON public.race_entries USING btree (horse_id, race_id, first_jockey_id, second_jockey_id, third_jockey_id);
 
 
 --
@@ -14761,6 +14761,7 @@ ALTER TABLE ONLY public.supplemental_breeders_cup_nominations
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261126131939'),
 ('20261125111418'),
 ('20261125110349'),
 ('20261123193237'),
@@ -15151,4 +15152,3 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220502093637'),
 ('20220426211810'),
 ('20220403152231');
-
